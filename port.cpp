@@ -26,8 +26,8 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   portWidth = p_portWidth;
   dir = p_dir;
   fontColor = p_color;
-  jackColor = QColor(250, 200, 50);
-  cableColor = QColor(COLOR_CONNECT_BEZ1);
+  jackColor = synthdata->colorJack;
+  cableColor = synthdata->colorCable;
   highlighted = false;
   index = p_index;
   colorFont1 = synthdata->colorPortFont1;
@@ -38,6 +38,7 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("Disconnect", this, SLOT(disconnectClicked()));
   contextMenu->insertSeparator();
+  contextMenu->insertItem("Default Cable", this, SLOT(cableDefaultClicked()));
   contextMenu->insertItem("Gray Cable", this, SLOT(cableGrayClicked()));
   contextMenu->insertItem("Red Cable", this, SLOT(cableRedClicked()));
   contextMenu->insertItem("Green Cable", this, SLOT(cableGreenClicked()));
@@ -58,6 +59,8 @@ int Port::connectTo(Port *port) {
   if (dir == PORT_OUT) {
     if (port->outTypeAcceptList.contains(outType)) {
       connectedPortList.append(port);
+      port->jackColor = synthdata->colorJack;
+      port->cableColor = synthdata->colorCable;
     }
   } else {
     if (outTypeAcceptList.contains(port->outType)) {
@@ -200,31 +203,37 @@ float **Port::getinputdata (void)
 void Port::cableGrayClicked() {
 
   jackColor = QColor(250, 200, 50);
-  cableColor = QColor(COLOR_CONNECT_BEZ1);
+  cableColor = QColor(180, 180, 180);
 }
 
 void Port::cableRedClicked() {
 
-  jackColor = QColor(190, 140, 140);
-  cableColor = QColor(150, 0, 30);
+  jackColor = QColor(200, 150, 150);
+  cableColor = QColor(190, 0, 60);
 }
 
 void Port::cableGreenClicked() {
 
-  jackColor = QColor(120, 180, 120);
-  cableColor = QColor(30, 130, 30);
+  jackColor = QColor(130, 190, 130);
+  cableColor = QColor(60, 170, 60);
 }
 
 void Port::cableBlueClicked() {
 
-  jackColor = QColor(140, 140, 180);
-  cableColor = QColor(30, 30, 140);
+  jackColor = QColor(150, 150, 190);
+  cableColor = QColor(90, 90, 210);
 }
 
 void Port::cableYellowClicked() {
 
-  jackColor = QColor(210, 170, 100);
-  cableColor = QColor(200, 180, 10);
+  jackColor = QColor(220, 170, 100);
+  cableColor = QColor(220, 195, 10);
+}
+
+void Port::cableDefaultClicked() {
+
+  jackColor = synthdata->colorJack;
+  cableColor = synthdata->colorCable;
 }
 
 void Port::jackColorClicked() {

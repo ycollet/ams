@@ -65,10 +65,14 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
   contextMenu = new QPopupMenu(this);
-  contextMenu->insertItem("Background Color", this, SLOT(colorBackgroundClicked()));
-  contextMenu->insertItem("Module Background Color", this, SLOT(colorModuleBackgroundClicked()));
-  contextMenu->insertItem("Module Border Color", this, SLOT(colorModuleBorderClicked()));
-  contextMenu->insertItem("Module Font Color", this, SLOT(colorModuleFontClicked()));
+  contextMenu->insertItem("Set Background Color", this, SLOT(colorBackgroundClicked()));
+  contextMenu->insertSeparator();
+  contextMenu->insertItem("Set Module Background Color", this, SLOT(colorModuleBackgroundClicked()));
+  contextMenu->insertItem("Set Module Border Color", this, SLOT(colorModuleBorderClicked()));
+  contextMenu->insertItem("Set Module Font Color", this, SLOT(colorModuleFontClicked()));
+  contextMenu->insertSeparator();
+  contextMenu->insertItem("Set Default Cable Color", this, SLOT(colorCableClicked()));
+  contextMenu->insertItem("Set Default Jack Color", this, SLOT(colorJackClicked()));
   contextMenu->insertSeparator();
   contextMenu->insertItem("Default Colors", this, SLOT(colorDefaultClicked()));
   colorDefaultClicked();
@@ -201,8 +205,8 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
     showContextMenu(ev->pos());  
     break;
   case Qt::MidButton:
-    connectorStyle = (connectorStyle == CONNECTOR_STRAIGHT) ? CONNECTOR_BEZIER : CONNECTOR_STRAIGHT;
-    repaintContents(false);
+//    connectorStyle = (connectorStyle == CONNECTOR_STRAIGHT) ? CONNECTOR_BEZIER : CONNECTOR_STRAIGHT;
+//    repaintContents(false);
     break;
   default:
     break;
@@ -1174,6 +1178,18 @@ void ModularSynth::loadColors() {
         fscanf(f, "%d", &b);   
         colorModuleFont = QColor(r, g, b);
       }        
+      if (qs.contains("ColorJack", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        synthdata->colorJack = QColor(r, g, b);
+      }        
+      if (qs.contains("ColorCable", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        synthdata->colorCable = QColor(r, g, b);
+      }        
       refreshColors();
     }      
     fclose(f);
@@ -1195,6 +1211,8 @@ void ModularSynth::saveColors() {
     fprintf(f, "ColorModuleBackground %d %d %d\n", colorModuleBackground.red(), colorModuleBackground.green(), colorModuleBackground.blue());
     fprintf(f, "ColorModuleBorder %d %d %d\n", colorModuleBorder.red(), colorModuleBorder.green(), colorModuleBorder.blue());
     fprintf(f, "ColorModuleFont %d %d %d\n", colorModuleFont.red(), colorModuleFont.green(), colorModuleFont.blue());
+    fprintf(f, "ColorJack %d %d %d\n", synthdata->colorJack.red(), synthdata->colorJack.green(), synthdata->colorJack.blue());
+    fprintf(f, "ColorCable %d %d %d\n", synthdata->colorCable.red(), synthdata->colorCable.green(), synthdata->colorCable.blue());
     fclose(f);
   }
 }                             
@@ -1477,10 +1495,10 @@ void ModularSynth::load(QString *presetName) {
             index_read2 = l1;
           } 
         }   
-        listModule.at(moduleID_read1)->portList.at(index_read1)->jackColor = QColor(red1, green1, blue1);
-        listModule.at(moduleID_read1)->portList.at(index_read1)->cableColor = QColor(red2, green2, blue2);
         listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
         listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
+        listModule.at(moduleID_read1)->portList.at(index_read1)->jackColor = QColor(red1, green1, blue1);
+        listModule.at(moduleID_read1)->portList.at(index_read1)->cableColor = QColor(red2, green2, blue2);
       }
       if (qs.contains("FSlider", false)) {
         fscanf(f, "%d", &moduleID);
@@ -1736,7 +1754,7 @@ void ModularSynth::save() {
   } else {
     for (l1 = 0; l1 < listModule.count(); l1++) {
       fprintf(f, "Module %d %d %d %d ", (int)listModule.at(l1)->M_type, listModule.at(l1)->moduleID, 
-              listModule.at(l1)->x(),  listModule.at(l1)->y());
+              listModule.at(l1)->x() + contentsX(),  listModule.at(l1)->y() + contentsY());
 
       switch(listModule.at(l1)->M_type)
       {
@@ -1791,7 +1809,7 @@ void ModularSynth::save() {
     }
     for (l1 = 0; l1 < listTextEdit.count(); l1++) {
       fprintf(f, "Comment %d %d %d %d %d %d\n", listTextEdit.at(l1)->textEditID, l1, 
-                  listTextEdit.at(l1)->x(), listTextEdit.at(l1)->y(), 
+                  listTextEdit.at(l1)->x() + contentsX(), listTextEdit.at(l1)->y() + contentsY(), 
                   listTextEdit.at(l1)->width(), listTextEdit.at(l1)->height());
     }
     for (l1 = 0; l1 < listTextEdit.count(); l1++) {
@@ -1903,12 +1921,34 @@ void ModularSynth::colorModuleFontClicked() {
   }
 }
 
+void ModularSynth::colorCableClicked() {
+
+  QColor tmp;
+
+  tmp = QColorDialog::getColor(synthdata->colorCable);
+  if (tmp.isValid()) {       
+    synthdata->colorCable = tmp;    
+  }
+}
+
+void ModularSynth::colorJackClicked() {
+
+  QColor tmp;
+
+  tmp = QColorDialog::getColor(synthdata->colorJack);
+  if (tmp.isValid()) {       
+    synthdata->colorJack = tmp;    
+  }
+}
+
 void ModularSynth::colorDefaultClicked() {
 
   colorBackground = QColor(COLOR_MAINWIN_BG);
   colorModuleBackground = QColor(COLOR_MODULE_BG);
   colorModuleBorder = QColor(195, 195, 195);
   colorModuleFont = QColor(255, 255, 255);
+  synthdata->colorCable = QColor(180, 180, 180);
+  synthdata->colorJack = QColor(250, 200, 50);
   refreshColors();
 }
 

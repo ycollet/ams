@@ -123,6 +123,8 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
   colorModuleFont = QColor(255, 255, 255);
   colorPortFont1 = QColor(255, 255, 255);
   colorPortFont2 = QColor(255, 240, 140);
+  colorCable = QColor(180, 180, 180);
+  colorJack = QColor(250, 200, 50);
 }
 
 SynthData::~SynthData()

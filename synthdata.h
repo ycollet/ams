@@ -80,6 +80,7 @@ class SynthData : public QObject
     int midi_out_port[2];
     int midiChannel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
+    QColor colorCable, colorJack;
 
   private:
 

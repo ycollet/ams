@@ -211,6 +211,8 @@ class ModularSynth : public QScrollView
     void colorModuleBorderClicked();
     void colorModuleFontClicked();
     void colorDefaultClicked();
+    void colorCableClicked();
+    void colorJackClicked();
     void refreshColors();
 };
 
