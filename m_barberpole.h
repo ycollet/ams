@@ -29,10 +29,11 @@ class M_barberpole : public Module
 
   private:
     Port *port_out[16];
-    float freq;
+    float freq, gain_saw, gain_tri;
     double tri, saw, d_tri, d_saw;
+    double o[16];
     int state;
-    int dir;
+    int mode;
         
   public:
     M_barberpole(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);

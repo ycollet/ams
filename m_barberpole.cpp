@@ -41,12 +41,24 @@ M_barberpole::M_barberpole(QWidget* parent, const char *name, SynthData *p_synth
     portList.append(port_out[l1]);
   }
   freq = 0.1;
+  gain_saw = 1.0;
+  gain_tri = 1.0;
   tri = 0;
   saw = 0; 
   state = 0;
+  mode = 0;
   d_tri = 4.0 * freq / (double)synthdata->rate;
   d_saw = 0.5 * d_tri;
-  configDialog->addSlider(0.01, 10, freq, "Frequency", &freq, true);
+  configDialog->addSlider(0.01, 20, freq, "Frequency (Hz)", &freq, true);
+  configDialog->addSlider(0.01, 5, gain_saw, "Gain Saw", &gain_saw, true);
+  configDialog->addSlider(0.01, 5, gain_tri, "Gain Triangle", &gain_tri, true);
+  QStrList *modeNames = new QStrList(true);
+  modeNames->append("Saw Up");
+  modeNames->append("Saw Down");
+  modeNames->append("Saw Up (0..135) / Saw Down (180..315)");
+  configDialog->addComboBox(mode, "Saw Mode", &mode, modeNames->count(), modeNames);
+  qs.sprintf("Barber Pole ID %d", moduleID);
+  configDialog->setCaption(qs);
 }
 
 M_barberpole::~M_barberpole() {
@@ -56,6 +68,7 @@ void M_barberpole::generateCycle() {
 
   int l1, l2, l3;
   double tri45, tri90, tri135, saw45, saw90, saw135, saw180, saw225, saw270, saw315;
+  double sign_saw1, sign_saw2;
   
   if (!cycleReady) {
     cycleProcessing = true;
@@ -64,6 +77,20 @@ void M_barberpole::generateCycle() {
     d_tri = ((state > 1) && (state < 6)) ? -4.0 * freq / (double)synthdata->rate 
                                          :  4.0 * freq / (double)synthdata->rate;
     d_saw = 0.5 * fabs(d_tri);
+    switch(mode) {
+      case 0:
+        sign_saw1 = 1.0;
+        sign_saw2 = 1.0;
+        break;
+      case 1:
+        sign_saw1 = -1.0;
+        sign_saw2 = -1.0;
+        break;
+      case 2:
+        sign_saw1 = 1.0;
+        sign_saw2 = -1.0;
+        break;
+    }
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       tri += d_tri;
       saw += d_saw;
@@ -197,23 +224,40 @@ void M_barberpole::generateCycle() {
           break;
       }
           
+      o[0] = gain_saw * (1.0 + sign_saw1 * saw45);
+      o[1] = gain_saw * (1.0 + sign_saw1 * saw);
+      o[2] = gain_saw * (1.0 + sign_saw1 * saw315);
+      o[3] = gain_saw * (1.0 + sign_saw1 * saw270);
+      o[4] = gain_saw * (1.0 + sign_saw2 * saw225);
+      o[5] = gain_saw * (1.0 + sign_saw2 * saw180);
+      o[6] = gain_saw * (1.0 + sign_saw2 * saw135);
+      o[7] = gain_saw * (1.0 + sign_saw2 * saw90);
+      o[8] = gain_tri * (1.0 + tri135);
+      o[9] = gain_tri * (1.0 + tri90);
+      o[10] = gain_tri * (1.0 + tri45);
+      o[11] = gain_tri * (1.0 + tri);
+      o[12] = gain_tri * (1.0 - tri135);
+      o[13] = gain_tri * (1.0 - tri90);
+      o[14] = gain_tri * (1.0 - tri45);
+      o[15] = gain_tri * (1.0 - tri);
+    
       for (l1 = 0; l1 < synthdata->poly; l1++) {
-        data[0][l1][l2] = 1.0 + saw45;
-        data[1][l1][l2] = 1.0 + saw;
-        data[2][l1][l2] = 1.0 + saw315;
-        data[3][l1][l2] = 1.0 + saw270;
-        data[4][l1][l2] = 1.0 + saw225;
-        data[5][l1][l2] = 1.0 + saw180;
-        data[6][l1][l2] = 1.0 + saw135;
-        data[7][l1][l2] = 1.0 + saw90;
-        data[8][l1][l2] = 1.0 + tri135;
-        data[9][l1][l2] = 1.0 + tri90;
-        data[10][l1][l2] = 1.0 + tri45;
-        data[11][l1][l2] = 1.0 + tri;
-        data[12][l1][l2] = 1.0 - tri135;
-        data[13][l1][l2] = 1.0 - tri90;
-        data[14][l1][l2] = 1.0 - tri45;
-        data[15][l1][l2] = 1.0 - tri;
+        data[0][l1][l2] = o[0];
+        data[1][l1][l2] = o[1];
+        data[2][l1][l2] = o[2];
+        data[3][l1][l2] = o[3];
+        data[4][l1][l2] = o[4];
+        data[5][l1][l2] = o[5];
+        data[6][l1][l2] = o[6];
+        data[7][l1][l2] = o[7];
+        data[8][l1][l2] = o[8];
+        data[9][l1][l2] = o[9];
+        data[10][l1][l2] = o[10];
+        data[11][l1][l2] = o[11];
+        data[12][l1][l2] = o[12];
+        data[13][l1][l2] = o[13];
+        data[14][l1][l2] = o[14];
+        data[15][l1][l2] = o[15];
       }
     }
     cycleProcessing = false;
