@@ -148,3 +148,110 @@ void Module::removeThisModule() {
 
   emit removeModule();
 }
+
+int Module::save(FILE *f) {
+
+  saveConnections(f);
+  saveParameters(f);
+  saveBindings(f);
+}
+
+int Module::saveConnections(FILE *f) {
+
+  Port *port[2];
+  int l1;
+
+  fprintf(f, "0 0\n");
+  for (l1 = 0; l1 < portList.count(); l1++) {
+    port[0] = portList.at(l1);
+    if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
+      port[1] = port[0]->connectedPortList.at(0);
+      fprintf(f, "Port %d %d %d %d\n", port[0]->index, port[1]->index,
+              ((Module *)port[0]->parentModule)->moduleID, ((Module *)port[1]->parentModule)->moduleID);
+    }   
+  }     
+}
+
+int Module::saveParameters(FILE *f) {
+
+  int l1;
+
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
+    fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,   
+                configDialog->midiSliderList.at(l1)->slider->value(),
+                configDialog->midiSliderList.at(l1)->isLog,
+                configDialog->midiSliderList.at(l1)->slider->minValue(),
+                configDialog->midiSliderList.at(l1)->slider->maxValue(),
+                configDialog->midiSliderList.at(l1)->midiSign);
+  }  
+  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); l1++) {
+    fprintf(f, "ISlider %d %d %d %d\n", moduleID, l1, 
+                configDialog->intMidiSliderList.at(l1)->slider->value(),
+                configDialog->intMidiSliderList.at(l1)->midiSign);
+  }  
+  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); l1++) {
+    fprintf(f, "LSlider %d %d %d %d\n", moduleID, l1, 
+                configDialog->floatIntMidiSliderList.at(l1)->slider->value(),
+                configDialog->floatIntMidiSliderList.at(l1)->midiSign);
+  }  
+  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); l1++) {
+    fprintf(f, "ComboBox %d %d %d %d\n", moduleID, l1, 
+                configDialog->midiComboBoxList.at(l1)->comboBox->currentItem(),
+                configDialog->midiComboBoxList.at(l1)->midiSign);
+  }  
+  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); l1++) {
+    fprintf(f, "CheckBox %d %d %d %d\n", moduleID, l1, 
+                (int)(configDialog->midiCheckBoxList.at(l1)->checkBox->isChecked()),
+                configDialog->midiCheckBoxList.at(l1)->midiSign);
+  }
+}
+
+int Module::saveBindings(FILE *f) {
+
+  int l1, l2;
+
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
+     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->midiControllerList.count(); l2++) {
+       fprintf(f, "FSMIDI %d %d %d %d %d\n", moduleID, l1,
+                  configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->type,
+                  configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
+                  configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->param);
+     }
+  }  
+  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); l1++) {
+    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->midiControllerList.count(); l2++) {
+      fprintf(f, "ISMIDI %d %d %d %d %d\n", moduleID, l1,
+                  configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->type,
+                  configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
+                  configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->param);
+    }
+  }  
+  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); l1++) {
+    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.count(); l2++) {
+      fprintf(f, "LSMIDI %d %d %d %d %d\n", moduleID, l1,
+                  configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->type,
+                  configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
+                  configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->param);
+    }
+  }  
+  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); l1++) {
+    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->midiControllerList.count(); l2++) {
+      fprintf(f, "CMIDI %d %d %d %d %d\n", moduleID, l1,
+                  configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->type,
+                  configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->ch,    
+                  configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->param);
+    }
+  }  
+  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); l1++) {
+    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->midiControllerList.count(); l2++) {
+      fprintf(f, "TMIDI %d %d %d %d %d\n", moduleID, l1,
+                  configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->type,
+                  configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->ch,    
+                  configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->param);
+    }
+  }
+}
+
+int Module::load(FILE *f) {
+
+}

@@ -64,6 +64,11 @@ class Module : public QWidget
     QPoint getMousePressPos();
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc); 
+    int save(FILE *f);
+    virtual int saveConnections(FILE *f); 
+    virtual int saveParameters(FILE *f);
+    virtual int saveBindings(FILE *f); 
+    virtual int load(FILE *f);
     
   protected:
     virtual void paintEvent(QPaintEvent *ev);
