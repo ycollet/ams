@@ -28,7 +28,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	scopescreen.o scopescreen.moc.o \
 	spectrumscreen.o spectrumscreen.moc.o \
 	function.o function.moc.o \
-	canvasview.o canvasview.moc.o \
+	canvas.o canvas.moc.o \
 	canvasfunction.o canvasfunction.moc.o \
 	m_sh.o m_sh.moc.o \
 	m_vcswitch.o m_vcswitch.moc.o \
@@ -156,18 +156,18 @@ envelope.o: envelope.cpp envelope.h synthdata.h
 envelope.moc.o: envelope.moc.cpp envelope.h synthdata.h 
 envelope.moc.cpp: envelope.h envelope.cpp
 	$(QT_BIN_DIR)/moc envelope.h -o envelope.moc.cpp
-function.o: function.cpp function.h synthdata.h canvasview.h canvasfunction.h
-function.moc.o: function.moc.cpp function.h synthdata.h canvasview.h canvasfunction.h
+function.o: function.cpp function.h synthdata.h canvasfunction.h canvas.h
+function.moc.o: function.moc.cpp function.h synthdata.h canvasfunction.h canvas.h
 function.moc.cpp: function.h function.cpp
 	$(QT_BIN_DIR)/moc function.h -o function.moc.cpp
-canvasview.o: canvasview.cpp canvasview.h 
-canvasview.moc.o: canvasview.moc.cpp canvasview.h 
-canvasview.moc.cpp: canvasview.h canvasview.cpp
-	$(QT_BIN_DIR)/moc canvasview.h -o canvasview.moc.cpp
 canvasfunction.o: canvasfunction.cpp canvasfunction.h 
 canvasfunction.moc.o: canvasfunction.moc.cpp canvasfunction.h 
 canvasfunction.moc.cpp: canvasfunction.h canvasfunction.cpp
 	$(QT_BIN_DIR)/moc canvasfunction.h -o canvasfunction.moc.cpp
+canvas.o: canvas.cpp canvas.h 
+canvas.moc.o: canvas.moc.cpp canvas.h 
+canvas.moc.cpp: canvas.h canvas.cpp
+	$(QT_BIN_DIR)/moc canvas.h -o canvas.moc.cpp
 multi_envelope.o: multi_envelope.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.o: multi_envelope.moc.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.cpp: multi_envelope.h multi_envelope.cpp
@@ -304,8 +304,8 @@ m_mix.o: m_mix.cpp m_mix.h synthdata.h module.h port.h
 m_mix.moc.o: m_mix.moc.cpp m_mix.h synthdata.h module.h port.h 
 m_mix.moc.cpp: m_mix.h m_mix.cpp
 	$(QT_BIN_DIR)/moc m_mix.h -o m_mix.moc.cpp
-m_function.o: m_function.cpp m_function.h synthdata.h module.h port.h
-m_function.moc.o: m_function.moc.cpp m_function.h synthdata.h module.h port.h 
+m_function.o: m_function.cpp m_function.h synthdata.h module.h port.h function.h
+m_function.moc.o: m_function.moc.cpp m_function.h synthdata.h module.h port.h function.h
 m_function.moc.cpp: m_function.h m_function.cpp
 	$(QT_BIN_DIR)/moc m_function.h -o m_function.moc.cpp
 m_stereomix.o: m_stereomix.cpp m_stereomix.h synthdata.h module.h port.h

@@ -23,14 +23,13 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
               : Module(p_functionCount, parent, name, p_synthdata) {
 
   QString qs;
+  QHBox *hbox;
   int l1, l2;
 
   M_type = M_type_function;
   functionCount = p_functionCount;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_FUNCTION_WIDTH, 
               MODULE_FUNCTION_HEIGHT + 20 + 20 * functionCount);
-  gainIn = 1.0;
-  gainOut = 1.0;
   port_in = new Port("In", PORT_IN, 0, this, synthdata);
   port_in->move(0, 40);
   port_in->outTypeAcceptList.append(outType_audio);
@@ -52,9 +51,30 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
     portList.append(audio_out_port);
   }
   qs.sprintf("Function %d -> 1 ID %d", functionCount, moduleID);
-  configDialog->addFunction(functionCount, points, MODULE_FUNCTION_DEFAULT_POINTCOUNT, synthdata);
-  configDialog->addSlider(-5, 5, gainIn, "Input Gain (linear)", &gainIn);
-  configDialog->addSlider(-5, 5, gainOut, "Output Gain (linear)", &gainOut);
+  configDialog->addFunction(functionCount, &mode, points, MODULE_FUNCTION_DEFAULT_POINTCOUNT, synthdata);
+  zoomIndex = 0;
+  zoom = 1.0;
+  mode = 0;
+  QStrList *zoomNames = new QStrList(true);
+  zoomNames->append("   1  ");
+  zoomNames->append("   2  ");
+  zoomNames->append("   4  ");
+  zoomNames->append("   8  ");
+  QStrList *modeNames = new QStrList(true);
+  modeNames->append("Move Point");
+  modeNames->append("Shift X");
+  modeNames->append("Shift Y");
+  modeNames->append("Scale X");
+  modeNames->append("Scale Y");
+  modeNames->append("Reset");
+  modeNames->append("Linear");
+  hbox = configDialog->addHBox();
+  configDialog->addComboBox(mode, "Mode", &mode, modeNames->count(), modeNames, hbox);
+  configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames->count(), zoomNames, hbox);
+  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(activated(int)),
+                   this, SLOT(updateZoom(int)));
+  configDialog->addLabel("Mouse X: _______", hbox);
+  configDialog->addLabel(" Y: _______", hbox);
   configDialog->setCaption(qs);
 }
 
@@ -66,7 +86,7 @@ void M_function::generateCycle() {
   int l1, l2, l3;
   int pointCount;
   Function *cf;  
-  float xg, y, y1, y2;
+  float xg, y;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -77,7 +97,7 @@ void M_function::generateCycle() {
     for (l3 = 0; l3 < functionCount; l3++) {    
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          xg = gainIn * inData[l1][l2];
+          xg = inData[l1][l2];
           while (xg < cf->f[0][l3][i[l1][l3]]) i[l1][l3]--;
           while (xg >= cf->f[0][l3][i[l1][l3]+1]) i[l1][l3]++;
           if (i[l1][l3] < 1) {
@@ -86,10 +106,10 @@ void M_function::generateCycle() {
             y = cf->f[1][l3][pointCount];
           } else {
             y = cf->f[1][l3][i[l1][l3]] + (xg - cf->f[0][l3][i[l1][l3]]) 
-                                    * (cf->f[1][l3][i[l1][l3]+1] - cf->f[1][l3][i[l1][l3]]) 
-                                    / (cf->f[0][l3][i[l1][l3]+1] - cf->f[0][l3][i[l1][l3]]);
+                                        * (cf->f[1][l3][i[l1][l3]+1] - cf->f[1][l3][i[l1][l3]]) 
+                                        / (cf->f[0][l3][i[l1][l3]+1] - cf->f[0][l3][i[l1][l3]]);
           } 
-          data[l3][l1][l2] = gainOut * y;     
+          data[l3][l1][l2] = y;     
         }
       }
     }  
@@ -99,4 +119,10 @@ void M_function::generateCycle() {
 }
 
 void M_function::showConfigDialog() {
+}
+
+void M_function::updateZoom(int p_zoomIndex) {
+
+  zoom = pow(2.0, (double)zoomIndex); // zoomIndex is already set in MidiComboBox event handler
+  configDialog->functionList.at(0)->setZoom(zoom);
 }

@@ -33,9 +33,11 @@ class M_function : public Module
   private:
     QList<Port> out_port_list;
     Port *port_in;
-    float gainIn, gainOut;
+    float zoom;
     QPointArray *points[MAX_FUNCTIONS];
     int i[MAXPOLY][MAX_FUNCTIONS];
+    int zoomIndex;
+    int mode;
         
   public: 
     float **inData;
@@ -48,6 +50,7 @@ class M_function : public Module
   public slots:
     void generateCycle();
     void showConfigDialog();
+    void updateZoom(int p_zoomIndex);
 };
   
 #endif
