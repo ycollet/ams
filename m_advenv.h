@@ -20,7 +20,7 @@
 #include "module.h"
 #include "port.h"
 
-#define MODULE_ADVENV_WIDTH                110
+#define MODULE_ADVENV_WIDTH                120
 #define MODULE_ADVENV_HEIGHT               120
 #define ADVENVELOPE_RESPONSE               256
 

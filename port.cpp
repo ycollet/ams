@@ -13,17 +13,19 @@
 #include "synthdata.h"
 #include "module.h"
 
-Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent, SynthData *p_synthdata) 
+Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent, SynthData *p_synthdata, int p_portWidth, int p_color) 
            : QWidget(parent) {
 
   parentModule = parent;
   portName = p_portName;
   synthdata = p_synthdata;
+  portWidth = p_portWidth;
   dir = p_dir;
+  fontColor = p_color;
   highlighted = false;
   index = p_index;
   setPalette(QPalette(QColor(77, 70, 64), QColor(77, 70, 64)));
-  setFixedSize(PORT_DEFAULT_WIDTH, PORT_DEFAULT_HEIGHT);    
+  setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("disconnect", this, SLOT(disconnectClicked()));
 }
@@ -69,7 +71,11 @@ void Port::paintEvent(QPaintEvent *ev) {
   }
   p.setFont(QFont("Helvetica", 8));
 //  p.setPen(QColor(255, 220, 60));
-  p.setPen(QColor(255, 255, 255));
+  if (fontColor) {
+    p.setPen(QColor(255, 240, 140));
+  } else {
+    p.setPen(QColor(255, 255, 255));
+  }
   if (dir == PORT_IN) { 
     if (highlighted) {
       p.fillRect(0, height()/2-2, 3, 5, QBrush(QColor(240, 0, 0)));

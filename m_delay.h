@@ -19,7 +19,6 @@
 #include "synthdata.h"
 #include "module.h"
 #include "port.h"
-#include "floatparameter.h"
 
 #define MODULE_DELAY_WIDTH                 90
 #define MODULE_DELAY_HEIGHT                75
@@ -30,8 +29,7 @@ class M_delay : public Module
   Q_OBJECT
 
   private:
-    //float delay;
-    FloatParameter *delay;
+    float delay;
     int read_ofs;
     Module *in_M_in; 
     Port *port_M_in, *port_out;

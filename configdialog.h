@@ -5,57 +5,91 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <qwidget.h>
+#include <qstring.h>
+#include <qslider.h>   
+#include <qcheckbox.h>  
+#include <qlabel.h>
 #include <qvbox.h>
 #include <qhbox.h>
+#include <qspinbox.h>
+#include <qradiobutton.h>
 #include <qpushbutton.h>
-#include <qdict.h>
+#include <qdialog.h>
+#include <qstrlist.h>
+#include <qscrollview.h>
 #include <qtabwidget.h>
-
-#include "parameter.h"
-#include "parameterpanel.h"
+#include <qlineedit.h>
+#include <alsa/asoundlib.h>
+#include "synthdata.h"
+#include "midislider.h"
+#include "intmidislider.h"
+#include "floatintmidislider.h"
+#include "midicombobox.h"
+#include "midicheckbox.h"
+#include "midipushbutton.h"
+#include "midiguicomponent.h"
+#include "envelope.h"
+#include "multi_envelope.h"
+#include "scopescreen.h"
+#include "spectrumscreen.h"
 
 class ConfigDialog : public QVBox
 {
   Q_OBJECT
 
   private:
-    QDict<ParameterPanel> mPanels;
+    SynthData *synthdata;
+    QVBox *configBox;
+    QScrollView *scroll;
+    
+  public: 
+    QList<MidiSlider> midiSliderList; 
+    QList<IntMidiSlider> intMidiSliderList; 
+    QList<FloatIntMidiSlider> floatIntMidiSliderList; 
+    QList<MidiComboBox> midiComboBoxList;
+    QList<MidiCheckBox> midiCheckBoxList;
+    QList<MidiPushButton> midiPushButtonList;
+    QList<Envelope> envelopeList;
+    QList<ScopeScreen> scopeScreenList;
+    QList<SpectrumScreen> spectrumScreenList;
+    QList<MultiEnvelope> multiEnvelopeList;
+    QList<MidiGUIcomponent> midiGUIcomponentList;
+    QList<QLineEdit> lineEditList;
+    QList<QHBox> hboxList;
+    QList<QVBox> vboxList;
+    QList<QLabel> labelList;
+    QPushButton *removeButton;
+    QObject *parentModule;
     QTabWidget *tabWidget;
-    QObject * parentModule;
+            
   public:
-    //! @todo ugly, but i am lazy:
-    QPushButton *removeButton;//public so that it can be disabled from outside
-    QVBox *headerBox;// public so you can add your custom headers like envelopes, scopes, etc.
-
-
-    ConfigDialog(QObject *parentModule,QWidget* parent=0, const char *name=0);
+    ConfigDialog(QObject *p_parentModule, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~ConfigDialog();
-
-
-//     int addEnvelope(float *delayRef, float *attackRef, float *holdRef,
-//                     float *decayRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
-//     int addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
-//     int addLabel(QString label, QWidget *parent=0);
-//     int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef,
-//                        float *triggerThrsRef, float *zoomRef, QWidget *parent=0);
-//     int addSpectrumScreen(QWidget *parent=0);
-
-//     QHBox *addHBox(QWidget *parent=0);
-//     QVBox *addVBox(QWidget *parent=0);
-//     int addLineEdit(QString lineName, QWidget *parent=0);
-
-    void addParameter(Parameter * param, const char * panelName=0);
-
-    private:
-//     int initTabWidget();
-//     int addTab(QWidget *tabPage, QString tabLabel);
-
+    int addSlider(float minValue, float maxValue, float value, const char *name, float *valueRef, bool isLog=false, QWidget *parent=0);
+    int addIntSlider(int minValue, int maxValue, int value, const char *name, int *valueRef, QWidget *parent=0);
+    int addFloatIntSlider(float minValue, float maxValue, float value, const char *name, float *valueRef, QWidget *parent=0);
+    int addComboBox(int value, const char * name, int *valueRef, int itemCount, QStrList *itemNames, QWidget *parent=0);
+    int addCheckBox(float value, const char * name, float *valueRef, QWidget *parent=0);
+    int addPushButton(const char * name, QWidget *parent=0);
+    int addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
+                    float *decayRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
+    int addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
+    int addLabel(QString label, QWidget *parent=0);
+    int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
+                       float *triggerThrsRef, float *zoomRef, QWidget *parent=0);
+    int addSpectrumScreen(QWidget *parent=0);
+    int addTab(QWidget *tabPage, QString tabLabel);
+    QHBox *addHBox(QWidget *parent=0);
+    QVBox *addVBox(QWidget *parent=0);
+    int addLineEdit(QString lineName, QWidget *parent=0);
+    int initTabWidget();
+    
   signals:
     void removeModuleClicked();
-
-  public slots:
+                
+  public slots: 
     void removeButtonClicked();
 };
-
+  
 #endif
-
+      

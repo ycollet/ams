@@ -44,17 +44,17 @@ M_jackin::M_jackin(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out[1]);
   qs.sprintf("JACK In ID %d", moduleID);
   configDialog->setCaption(qs);
-  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,2.0,&gain);
-  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
-  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
-  configDialog->addParameter(pGain);
-  configDialog->addParameter(pGain1);
-  configDialog->addParameter(pGain2);
+  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
+  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
+  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
   QStrList *agcNames = new QStrList(true);
+  if (synthdata->jack_in_ports < 2 * (1 + synthdata->jackInCount)) {
+    synthdata->addJackPorts(2, 0);
+  }
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("In_ID%d_%d", moduleID, l1);
     jackdata[l1] = (jack_default_audio_sample_t *)malloc(synthdata->periodsize * sizeof(jack_default_audio_sample_t));
-    jack_in[l1] = jack_port_register(synthdata->jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+    jack_in[l1] = synthdata->jack_in[2 * synthdata->jackInCount + l1];
   }
 }
 
@@ -63,7 +63,6 @@ M_jackin::~M_jackin() {
   int l1;
 
   for (l1 = 0; l1 < 2; l1++) {
-    jack_port_unregister(synthdata->jack_handle, jack_in[l1]);
     free(jackdata[l1]);
   }
 }

@@ -53,15 +53,14 @@ M_vcswitch::M_vcswitch(QWidget* parent, const char *name, SynthData *p_synthdata
   qs.sprintf("VC Switch ID %d", moduleID);
   configDialog->setCaption(qs);
   switchLevel = 0.5;
-  FloatParameter *fp = new FloatParameter(this,"Switch Level","",0.0,10.0, &switchLevel);
-  configDialog->addParameter(fp);
+  configDialog->addSlider(0, 10, switchLevel, "Switch Level", &switchLevel);
 }
 
 M_vcswitch::~M_vcswitch() {
 }
 
 void M_vcswitch::paintEvent(QPaintEvent *ev) {
-
+  
   QPainter p(this);
   QString qs;
   int l1;

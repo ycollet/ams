@@ -19,16 +19,16 @@
 #define SPECTRUM_WIDTH               1280
 #define SPECTRUM_HEIGHT               800
 #define SPECTRUM_BUFSIZE           128000
-#ifndef PI
-#define PI                              3.1415926535897932384626433832795029
-#endif
+#define MIN_SPECTRUM_DB               -60   
+#define MAX_SPECTRUM_DB                10   
+
 
 enum spectrumModeType { SPECTRUM_MODE_NORMAL, SPECTRUM_MODE_SUM };
 enum fftModeType { FFT_MODE_POW, FFT_MODE_ABS, FFT_MODE_LOG };
 enum viewModeType { VIEW_MODE_FIF, VIEW_MODE_FIFT };
 enum normModeType { NORM_MODE_EACH, NORM_MODE_GLOBAL, NORM_MODE_FIXED };
 enum spectrumTriggerModeType { SPECTRUM_TRIGGERMODE_CONTINUOUS, SPECTRUM_TRIGGERMODE_SINGLE };
-enum windowType { WINDOW_RECT, WINDOW_BARTLETT, WINDOW_HANN, WINDOW_WELCH };
+enum windowType { WINDOW_HAMMING, WINDOW_BARTLETT, WINDOW_HANNING, WINDOW_WELCH };
 
 class SpectrumScreen : public QWidget
 {
@@ -37,7 +37,8 @@ class SpectrumScreen : public QWidget
   signals:
     void f_minmaxChanged();
     void freqChanged();
-
+    void runSpectrum();
+    
   private:
     SynthData *synthdata;
     spectrumModeType mode;
@@ -54,7 +55,7 @@ class SpectrumScreen : public QWidget
     fftw_real *spectrumbuf_ch2;
     fftw_real *spectrumbuf_sum;
     rfftw_plan plan;
-    bool freqZoom;
+    bool freqZoom, enableMouse;
     QPixmap *fftPixmap1, *fftPixmap2;
     QColor palette1[768], palette2[768]; 
 
@@ -68,10 +69,9 @@ class SpectrumScreen : public QWidget
   protected:
     virtual void paintEvent(QPaintEvent *);
     virtual void resizeEvent (QResizeEvent* );            
-/*
+
     virtual void mousePressEvent (QMouseEvent* );            
-    virtual void mouseMoveEvent (QMouseEvent* );    
-*/
+//    virtual void mouseMoveEvent (QMouseEvent* );    
     
   public:
     SpectrumScreen(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
@@ -86,6 +86,7 @@ class SpectrumScreen : public QWidget
     int setCh1(int p_ch1);
     int setCh2(int p_ch2);
     bool toggleFreqZoom(bool p_freqZoom);
+    bool setEnableMouse(bool p_enableMouse);
     float set_f_min(float p_f_min);
     float set_f_max(float p_f_max);
     windowType setWindow(windowType p_window);

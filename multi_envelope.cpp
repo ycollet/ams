@@ -55,12 +55,12 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
     pm.fill(QColor(20, 20, 80));
     maxlen = 0;
     for (l1 = 0; l1 < envCount; l1++ ) { 
-      len = timeScaleRef[l1] * (attackRef[l1] + attackRef[8+l1] + attackRef[24+l1] + attackRef[40+l1] + attackRef[56+l1]  
-                             + releaseRef[l1] + releaseRef[16+l1] + releaseRef[32+l1]) + SUSTAIN_LEN;
+      len = attackRef[l1] + attackRef[8+l1] + attackRef[24+l1] + attackRef[40+l1] + attackRef[56+l1]  
+                             + releaseRef[l1] + releaseRef[16+l1] + releaseRef[32+l1] + SUSTAIN_LEN;
       if (len > maxlen) maxlen = len;
     }
     for (l1 = 0; l1 < envCount; l1++ ) { 
-      xscale = timeScaleRef[l1] * (float)width() / maxlen;
+      xscale = (float)width() / maxlen;
       yscale = (float)(height()-26);
       x = attackRef[l1] * xscale;   
       points.setPoint(0, (int)x, height());
@@ -76,7 +76,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
       x += attackRef[56+l1] * xscale; 
       y = sustainRef[l1] * yscale;
       points.setPoint(4, (int)x, height() - (int)y);
-      x += SUSTAIN_LEN * xscale / timeScaleRef[l1];
+      x += SUSTAIN_LEN * xscale;
       points.setPoint(5, (int)x, height() - (int)y);
       x += releaseRef[l1] * xscale;
       y = releaseRef[8+l1] * yscale;
@@ -141,7 +141,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
   bitBlt(this, 0, 0, &pm);
 }
 
-void MultiEnvelope::updateMultiEnvelope(float value) {
+void MultiEnvelope::updateMultiEnvelope(int value) {
 
   repaint(false);
 }

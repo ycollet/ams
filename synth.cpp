@@ -13,8 +13,8 @@
 #include "m_out.h"
 #include "m_wavout.h"
 #include "m_midiout.h"
-//#include "m_scope.h"
-//#include "m_spectrum.h"
+#include "m_scope.h"
+#include "m_spectrum.h"
 
 Synth::Synth(SynthData *p_synthdata) {
 
@@ -43,8 +43,8 @@ void Synth::run(){
     fprintf(stderr, "can't set sched_setscheduler - using normal priority\n");
   } else {
     printf("set SCHED_FIFO\n");
-//    mlock_flag = 1;
-//    mlockall(MCL_CURRENT | MCL_FUTURE);
+    mlock_flag = 1;
+    mlockall(MCL_CURRENT | MCL_FUTURE);
   }
   while(synthdata->doSynthesis) {
     for (l1 = 0; l1 < synthdata->channels; l1++) {
@@ -57,14 +57,12 @@ void Synth::run(){
     for (l1 = 0; l1 < synthdata->wavoutModuleList.count(); l1++) {
       ((M_wavout *)synthdata->wavoutModuleList.at(l1))->generateCycle();
     }
-/*
     for (l1 = 0; l1 < synthdata->scopeModuleList.count(); l1++) {
       ((M_scope *)synthdata->scopeModuleList.at(l1))->generateCycle();
     }
     for (l1 = 0; l1 < synthdata->spectrumModuleList.count(); l1++) {
       ((M_spectrum *)synthdata->spectrumModuleList.at(l1))->generateCycle();
     }
-*/
     for (l1 = 0; l1 < synthdata->midioutModuleList.count(); l1++) {
       ((M_midiout *)synthdata->midioutModuleList.at(l1))->generateCycle();
     }
@@ -83,7 +81,7 @@ void Synth::run(){
       }
       while ((pcmreturn = snd_pcm_writei(synthdata->pcm_handle, periodBuf, synthdata->periodsize)) < 0) {
         snd_pcm_prepare(synthdata->pcm_handle);
-//        fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
+        fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
       }
     } else {
       delayTime.tv_sec = 0;

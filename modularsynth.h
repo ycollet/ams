@@ -12,13 +12,13 @@
 #include <qlist.h>
 #include <qframe.h>
 #include <qmessagebox.h>
+#include <qmainwindow.h>
 #include <qsocketnotifier.h>
 #include <qpopupmenu.h>
 #include <qscrollview.h>
 #include <qlistview.h>
 #include <qpoint.h>
 #include <alsa/asoundlib.h>
-#include <qmainwindow.h>
 #include "synth.h"
 #include "capture.h"
 #include "synthdata.h"
@@ -29,10 +29,14 @@
 #include "m_delay.h"
 #include "m_seq.h"
 #include "m_env.h"
+#include "m_vcenv.h"
 #include "m_advenv.h"
 #include "m_mcv.h"
+#include "m_advmcv.h"
+#include "m_scmcv.h"
 #include "m_ringmod.h"
 #include "m_mix.h"
+#include "m_stereomix.h"
 #include "m_out.h"
 #include "m_jackout.h"
 #include "m_jackin.h"
@@ -43,18 +47,22 @@
 #include "m_ladspa.h"
 #include "m_vcf.h"
 #include "m_inv.h"
+#include "m_conv.h"
 #include "m_cvs.h"
 #include "m_vcswitch.h"
 #include "m_slew.h"
 #include "m_sh.h"
 #include "m_midiout.h"
+#include "m_scope.h"
+#include "m_spectrum.h"
 #include "m_vcorgan.h"
 #include "m_dynamicwaves.h"
 #include "m_quantizer.h"
-
+#include "m_scquantizer.h"
+#include "midiwidget.h"
+#include "guiwidget.h"
 #include "textedit.h"
 #include "ladspadialog.h"
-
 
 #define DEFAULT_PCMNAME  "plughw:0,0"
 #define DEFAULT_WIDTH             750
@@ -74,38 +82,37 @@ class ModularSynth : public QScrollView
     Synth *synth;
     Capture *capture;
     QMessageBox *aboutWidget;
+    QMainWindow *mainWindow;
     QList<Module> listModule;
     QList<TextEdit> listTextEdit;
-
     QString PCMname, presetPath, savePath;
-    connectorStyleType connectorStyle;
+    connectorStyleType connectorStyle;    
     bool firstPort;
     Port *connectingPort[2];
     QSocketNotifier *seqNotifier;
     LadspaDialog *ladspaDialog;
-
-
-    QList<ParameterPanel> mPanels;
+    MidiWidget *midiWidget;
+    GuiWidget *guiWidget;
     bool loadingPatch;
+    int portid, clientid;
 
   public:
     SynthData *synthdata;
-
-    //! @note this popup is owned by ModularSynth, not the menubar!
-    QPopupMenu * panelMenu;
-
+    int jack_in_ports, jack_out_ports;
+    
   private:
     void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
-    snd_seq_t *open_seq();
-    int initSeqNotifier();
+    snd_seq_t *open_seq(); 
+    int initSeqNotifier();  
     void newM_mix(int in_channels);
+    void newM_stereomix(int in_channels);
     void newM_seq(int seqLen);
     void newM_vcorgan(int oscCount);
     void newM_dynamicwaves(int oscCount);
     void new_textEdit(int x, int y, int w, int h);
-
+            
   public:
     ModularSynth(int poly, int periodsize, QWidget* parent=0, const char *name=0);
     ~ModularSynth();
@@ -119,18 +126,16 @@ class ModularSynth : public QScrollView
     int setPCMname(QString name);
     int setPresetPath(QString name);
     int setSavePath(QString name);
-
+    
   protected:
     void viewportPaintEvent(QPaintEvent *pe);
     virtual void mousePressEvent (QMouseEvent* );
     virtual void mouseReleaseEvent (QMouseEvent* );
-
-  public slots:
-    void createPanel();
-    void removePanel(int id);
-    void changePanelName(int id, const QString&);
+    
+  public slots: 
     void displayAbout();
     void displayMidiController();
+    void displayParameterView();
     void displayLadspaPlugins();
     void midiAction(int fd);
     void startSynth();
@@ -143,22 +148,33 @@ class ModularSynth : public QScrollView
     void newM_seq_24();
     void newM_seq_32();
     void newM_env();
+    void newM_vcenv();
     void newM_advenv();
     void newM_mcv();
+    void newM_advmcv();
+    void newM_scmcv();
+    void newM_scmcv(QString *p_scalaName);
     void newM_vco();
-    void newM_vca();
+    void newM_vca_lin();
+    void newM_vca_exp();
     void newM_vcf();
     void newM_lfo();
     void newM_noise();
     void newM_ringmod();
     void newM_inv();
+    void newM_conv();
     void newM_cvs();
     void newM_slew();
     void newM_quantizer();
+    void newM_scquantizer(QString *p_scalaName);
+    void newM_scquantizer();
     void newM_mix_2();
     void newM_mix_4();
     void newM_mix_8();
-    void newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspaPoly);
+    void newM_stereomix_2();
+    void newM_stereomix_4();
+    void newM_stereomix_8();
+    void newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspaPoly, bool p_extCtrlPorts);
     void newM_out();
     void newM_jackout();
     void newM_jackin();
@@ -167,8 +183,8 @@ class ModularSynth : public QScrollView
     void newM_sh();
     void newM_midiout();
     void newM_vcswitch();
-    //void newM_scope();
-    //void newM_spectrum();
+    void newM_scope();
+    void newM_spectrum();
     void newM_vcorgan_4();
     void newM_vcorgan_6();
     void newM_vcorgan_8();

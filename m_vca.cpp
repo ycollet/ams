@@ -19,7 +19,7 @@
 #include "m_vca.h"
 #include "port.h"
 
-M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata)
+M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(1, parent, name, p_synthdata) {
 
   QString qs;
@@ -31,6 +31,7 @@ M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata)
   in1 = 1.0;
   in2 = 1.0;
   out = 1.0;
+  expMode = p_expMode;
   port_M_gain1 = new Port("Gain 0", PORT_IN, 0, this, synthdata); 
   port_M_gain1->move(0, 35);
   port_M_gain1->outTypeAcceptList.append(outType_audio);
@@ -51,24 +52,25 @@ M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_out->move(width() - port_out->width(), 115);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VCA ID %d", moduleID);
+  if (expMode) {
+    qs.sprintf("Exp. VCA ID %d", moduleID);
+  } else {
+    qs.sprintf("Lin. VCA ID %d", moduleID);
+  }
   configDialog->setCaption(qs);
-  FloatParameter *fp = new FloatParameter(this,"Gain","",0.0,10.0,&gain1);
-  configDialog->addParameter(fp);
-
-  fp = new FloatParameter(this,"Gain 1","",0.0,10.0,&gain2);
-  configDialog->addParameter(fp);
-
-  fp = new FloatParameter(this,"In 0","",0.0,2.0,&in1);
-  configDialog->addParameter(fp);
-
-  fp = new FloatParameter(this,"In 1","",0.0,2.0,&in1);
-  configDialog->addParameter(fp);
-
-  fp = new FloatParameter(this,"Output level","",0.0,2.0,&out);
-  configDialog->addParameter(fp);
-
-
+  if (expMode) {
+    configDialog->addSlider(0, 10, gain1, "Gain", &gain1, true);
+    configDialog->addSlider(0, 10, gain2, "Gain 1", &gain2, true);
+    configDialog->addSlider(0, 2, in1, "In 0", &in1, true);
+    configDialog->addSlider(0, 2, in2, "In 1", &in2, true);
+    configDialog->addSlider(0, 2, out, "Output level", &out, true);
+  } else {
+    configDialog->addSlider(0, 10, gain1, "Gain", &gain1);
+    configDialog->addSlider(0, 10, gain2, "Gain 1", &gain2);
+    configDialog->addSlider(0, 2, in1, "In 0", &in1);
+    configDialog->addSlider(0, 2, in2, "In 1", &in2);
+    configDialog->addSlider(0, 2, out, "Output level", &out);
+  }
 }
 
 M_vca::~M_vca() {
@@ -86,7 +88,11 @@ void M_vca::paintEvent(QPaintEvent *ev) {
   }
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
-  p.drawText(12, 20, "VCA");
+  if (expMode) {
+    p.drawText(12, 20, "Exp. VCA");
+  } else {
+    p.drawText(12, 20, "Lin. VCA");
+  }
   p.setFont(QFont("Helvetica", 8)); 
   qs.sprintf("ID %d", moduleID);
   p.drawText(15, 32, qs);
@@ -95,6 +101,7 @@ void M_vca::paintEvent(QPaintEvent *ev) {
 void M_vca::generateCycle() {
 
   int l1, l2;
+  float exp0;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -149,13 +156,26 @@ void M_vca::generateCycle() {
       in_M_in2 = NULL;
       inData2 = synthdata->zeroModuleData;
     }
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        data[0][l1][l2] = (gain1 + gainData1[l1][l2] + gain2 * gainData2[l1][l2]) 
-                        * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
-      }
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }  
+    if (expMode) {
+      exp0 = synthdata->exp_table(0);
+      for (l1 = 0; l1 < synthdata->poly; l1++) {
+        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+          data[0][l1][l2] = (gain1 
+                             + synthdata->exp_table(gainData1[l1][l2]) - exp0
+                             + gain2 * (synthdata->exp_table(gainData2[l1][l2]-1.0)-exp0))
+                          * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
+        }
+        memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
+      }  
+    } else {
+      for (l1 = 0; l1 < synthdata->poly; l1++) {
+        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+          data[0][l1][l2] = (gain1 + gainData1[l1][l2] + gain2 * gainData2[l1][l2]) 
+                          * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
+        }
+        memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
+      }   
+    }
   }
   cycleProcessing = false;
   cycleReady = true;

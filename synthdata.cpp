@@ -7,13 +7,14 @@
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_env.h"
+#include "m_vcenv.h"
 #include "m_jackout.h"
 #include "m_jackin.h"
 #include "m_advenv.h"
 #include "m_dynamicwaves.h"
 #include "m_wavout.h"
 #include "m_midiout.h"
-//#include "m_scope.h"
+#include "m_scope.h"
 #include "m_spectrum.h"
 
 SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
@@ -54,7 +55,10 @@ SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
   jackRunning = false;
   jackInCount = 0;
   jackOutCount = 0;
+  jack_in_ports = 2;
+  jack_out_ports = 2;
   withJack = false;
+  midiChannel = -1;
   exp_data = (float *)malloc(EXP_TABLE_LEN * sizeof(float));
   wave_sine = (float *)malloc(WAVE_PERIOD * sizeof(float));
   wave_saw = (float *)malloc(WAVE_PERIOD * sizeof(float));
@@ -163,7 +167,8 @@ SynthData::~SynthData() {
     free(zeroModuleData[l1]);
   }
   free(zeroModuleData);
-  delete(controlCenter);
+  delete(midiWidget);
+  delete(guiWidget);
   if (withJack) {
     jack_client_close(jack_handle);
   }
@@ -180,6 +185,11 @@ int SynthData::nextFreeOsc() {
     tmp_noteActive = false;
     for (l1 = 0; l1 < listM_env.count(); l1++) {
       if (((M_env *)listM_env.at(l1))->noteActive[l2]) {   
+        tmp_noteActive = true;
+      }
+    }  
+    for (l1 = 0; l1 < listM_vcenv.count(); l1++) {
+      if (((M_vcenv *)listM_vcenv.at(l1))->noteActive[l2]) {   
         tmp_noteActive = true;
       }
     }  
@@ -208,6 +218,14 @@ int SynthData::nextFreeOsc() {
       if (((M_env *)listM_env.at(l1))->noteActive[l2]) {
         if (((M_env *)listM_env.at(l1))->e[l2] < min_e) {
           min_e = ((M_env *)listM_env.at(l1))->e[l2];
+          osc = l2;
+        }
+      }
+    }
+    for (l1 = 0; l1 < listM_vcenv.count(); l1++) {
+      if (((M_vcenv *)listM_vcenv.at(l1))->noteActive[l2]) {
+        if (((M_vcenv *)listM_vcenv.at(l1))->e[l2] < min_e) {
+          min_e = ((M_vcenv *)listM_vcenv.at(l1))->e[l2];
           osc = l2;
         }
       }
@@ -347,9 +365,14 @@ float SynthData::exp_table(float x) {
   return(exp_data[index]);
 }     
 
-int SynthData::initJack() {
+int SynthData::initJack(int in, int out) {
+
+  int l1;
+  QString qs;
 
   withJack = true;
+  jack_out_ports = out;
+  jack_in_ports = in;
   fprintf(stderr, "%s\n", jackName.latin1());
   if ((jack_handle = jack_client_new(jackName.latin1())) == 0) {
     fprintf(stderr, "jack server not running ?\n");
@@ -357,6 +380,15 @@ int SynthData::initJack() {
   }
   jack_set_process_callback(jack_handle, playback_callback, (void *)this);
   setRate(jack_get_sample_rate(jack_handle));
+  for (l1 = 0; l1 < jack_out_ports; l1++) {
+    qs.sprintf("ams_out_%d", l1);
+    jack_out[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+  }
+  for (l1 = 0; l1 < jack_in_ports; l1++) {
+    qs.sprintf("ams_in_%d", l1);
+    jack_in[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+  }
+  activateJack();
   return(0);
 }
 
@@ -371,10 +403,18 @@ int SynthData::activateJack() {
 
 int SynthData::deactivateJack() {
 
+  int l1;
+
   if (jackRunning) {
     jackRunning = false;
     if (jack_deactivate(jack_handle)) {
       fprintf(stderr, "cannot deactivate client");
+    }
+    for (l1 = 0; l1 < jack_out_ports; l1++) {
+      jack_port_unregister(jack_handle, jack_out[l1]);
+    }
+    for (l1 = 0; l1 < jack_in_ports; l1++) {
+      jack_port_unregister(jack_handle, jack_in[l1]);
     }
   }
   return(0);
@@ -390,43 +430,98 @@ int SynthData::playback_callback(jack_nframes_t nframes, void *arg) {
 
 int SynthData::jack_playback(jack_nframes_t nframes) {
 
-  int l1, l2;
+  int l1, l2, in_handled, out_handled;
   jack_default_audio_sample_t *buf[2];
 
   if (nframes > 16384) {
     fprintf(stderr, "nframes > 16384\n");
   } else {
+    in_handled = 0;
+    out_handled = 0;
     setCycleSize(nframes);
-    for (l1 = 0; l1 < jackinModuleList.count(); l1++) {
-      for (l2 = 0; l2 < 2; l2++) {
-        buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackin *)jackinModuleList.at(l1))->jack_in[l2], nframes);
-        memcpy(((M_jackin *)jackinModuleList.at(l1))->jackdata[l2], buf[l2], sizeof(jack_default_audio_sample_t) * nframes);
+    if (!doSynthesis) {
+      for (l1 = 0; l1 < jackInCount; l1++) {
+        for (l2 = 0; l2 < 2; l2++) {
+          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackin *)jackinModuleList.at(l1))->jack_in[l2], nframes); 
+          in_handled++;   
+        }
+      }
+      for (l1 = 0; l1 < jackOutCount; l1++) {
+        for (l2 = 0; l2 < 2; l2++) {
+          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackout *)jackoutModuleList.at(l1))->port_out[l2], nframes);
+          memset(buf[l2], 0, sizeof(jack_default_audio_sample_t) * nframes);
+          out_handled++;
+        }
+      }
+    } else {
+      for (l1 = 0; l1 < jackInCount; l1++) {
+        for (l2 = 0; l2 < 2; l2++) {
+          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackin *)jackinModuleList.at(l1))->jack_in[l2], nframes);
+          memcpy(((M_jackin *)jackinModuleList.at(l1))->jackdata[l2], buf[l2], sizeof(jack_default_audio_sample_t) * nframes);
+          in_handled++;
+        }
+      }
+      for (l1 = 0; l1 < jackOutCount; l1++) {
+        ((M_jackout *)jackoutModuleList.at(l1))->generateCycle();
+        for (l2 = 0; l2 < 2; l2++) {
+          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackout *)jackoutModuleList.at(l1))->port_out[l2], nframes);
+          memcpy(buf[l2], ((M_jackout *)jackoutModuleList.at(l1))->jackdata[l2], sizeof(jack_default_audio_sample_t) * nframes);
+          out_handled++;
+        }
+      }
+      for (l1 = 0; l1 < wavoutModuleList.count(); l1++) {
+        ((M_wavout *)wavoutModuleList.at(l1))->generateCycle();
+      }
+      for (l1 = 0; l1 < scopeModuleList.count(); l1++) {
+        ((M_scope *)scopeModuleList.at(l1))->generateCycle();
+      }
+      for (l1 = 0; l1 < spectrumModuleList.count(); l1++) {
+        ((M_spectrum *)spectrumModuleList.at(l1))->generateCycle(); 
+      }
+      for (l1 = 0; l1 < midioutModuleList.count(); l1++) {
+        ((M_midiout *)midioutModuleList.at(l1))->generateCycle();
+      } 
+      for (l1 = 0; l1 < moduleList.count(); l1++) {
+        ((Module *)moduleList.at(l1))->cycleReady = false;
       }
     }
-    for (l1 = 0; l1 < jackoutModuleList.count(); l1++) {
-      ((M_jackout *)jackoutModuleList.at(l1))->generateCycle();
-      for (l2 = 0; l2 < 2; l2++) {
-        buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackout *)jackoutModuleList.at(l1))->port_out[l2], nframes);
-        memcpy(buf[l2], ((M_jackout *)jackoutModuleList.at(l1))->jackdata[l2], sizeof(jack_default_audio_sample_t) * nframes);
-      }
-    }
-    for (l1 = 0; l1 < wavoutModuleList.count(); l1++) {
-      ((M_wavout *)wavoutModuleList.at(l1))->generateCycle();
-    }
-/*
-    for (l1 = 0; l1 < scopeModuleList.count(); l1++) {
-      ((M_scope *)scopeModuleList.at(l1))->generateCycle();
-    }
-    for (l1 = 0; l1 < spectrumModuleList.count(); l1++) {
-      ((M_spectrum *)spectrumModuleList.at(l1))->generateCycle();
-    }
-*/
-    for (l1 = 0; l1 < midioutModuleList.count(); l1++) {
-      ((M_midiout *)midioutModuleList.at(l1))->generateCycle();
-    }
-    for (l1 = 0; l1 < moduleList.count(); l1++) {
-      ((Module *)moduleList.at(l1))->cycleReady = false;
-    }
+    for (l1 = in_handled; l1 < jack_in_ports; l1++) {
+      buf[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_in[l1], nframes);
+    } 
+    
+    for (l1 = out_handled; l1 < jack_out_ports; l1++) {
+      buf[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[l1], nframes);
+      memset(buf[0], 0, sizeof(jack_default_audio_sample_t) * nframes);
+    } 
   }
   return(0);
+}
+
+int SynthData::addJackPorts(int count_in, int count_out) {
+
+  int l1;
+  QString qs;
+
+  for (l1 = jack_out_ports; l1 < jack_out_ports + count_out; l1++) {
+    qs.sprintf("ams_out_%d", l1);
+    jack_out[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+  }  
+  jack_out_ports += count_out;
+  for (l1 = jack_in_ports; l1 < jack_in_ports + count_in; l1++) {
+    qs.sprintf("ams_in_%d", l1);
+    jack_in[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+  }
+  jack_in_ports += count_in;
+}
+
+int SynthData::deleteJackPorts(int count_in, int count_out) {
+
+  int l1;
+
+  for (l1 = jack_out_ports - count_out; l1 < jack_out_ports; l1++) {
+    jack_port_unregister(jack_handle, jack_out[l1]);   
+  }
+  for (l1 = jack_in_ports - count_in; l1 < jack_in_ports; l1++) {
+    jack_port_unregister(jack_handle, jack_in[l1]);
+  }
 }

@@ -32,6 +32,7 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   wave_period = (float)WAVE_PERIOD;
   for (l1 = 0; l1 < MAXPOLY; l1++) {
     trigger[l1] = false;
+    phi[l1] = 0;
   }
   port_M_trigger = new Port("Reset", PORT_IN, 0, this, synthdata);          
   port_M_trigger->move(0, 35);
@@ -59,11 +60,8 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_rect);
   qs.sprintf("LFO ID %d", moduleID);
   configDialog->setCaption(qs);
-  FloatParameter *fp = new FloatParameter(this,"Frequency","", 0.0,100.0,&freq);
-  configDialog->addParameter(fp);
-  fp = new FloatParameter(this,"Phi0","",0.0,6.283,&phi0);
-  configDialog->addParameter(fp);
-  
+  configDialog->addSlider(0, 100, freq, "Frequency", &freq);
+  configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
 }
 
 M_lfo::~M_lfo() {

@@ -48,7 +48,6 @@ M_quantizer::M_quantizer(QWidget* parent, const char *name, SynthData *p_synthda
   port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
   quantum = QUANT_12;
-/*
   QStrList *quantumNames = new QStrList(true);
   quantumNames->append("1/12");
   quantumNames->append("1/6");
@@ -62,21 +61,6 @@ M_quantizer::M_quantizer(QWidget* parent, const char *name, SynthData *p_synthda
   quantumNames->append("Minor 6 Chord");
   quantumNames->append("Pentatonic");
   configDialog->addComboBox(0, "Quantization", (int *)&quantum, quantumNames->count(), quantumNames);
-*/
-  EnumParameter *ep = new EnumParameter(this,"Quantization","",(int*)&quantum);
-  ep->addItem(0,"1/12");
-  ep->addItem(1,"1/6");
-  ep->addItem(2,"Major Scale");
-  ep->addItem(3,"Minor Scale");
-  ep->addItem(4,"Major Chord");
-  ep->addItem(5,"Minor Chord");
-  ep->addItem(6,"Major 7 Chord");
-  ep->addItem(7,"Minor 7 Chord");
-  ep->addItem(8,"Major 6 Chord");
-  ep->addItem(9,"Minor 6 Chord");
-  ep->addItem(10,"Pentatonic");
-  configDialog->addParameter(ep);
-  ep->selectItem(QUANT_12);
   qs.sprintf("Quantizer ID %d", moduleID);
   configDialog->setCaption(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -88,7 +72,6 @@ M_quantizer::M_quantizer(QWidget* parent, const char *name, SynthData *p_synthda
     lut[0][l1] = l1;
     lut[1][l1] = (int)(l1 / 2) * 2;
   }
-  
   lut[2][0] = 0;
   lut[2][1] = 0;
   lut[2][2] = 2;

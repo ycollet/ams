@@ -10,7 +10,6 @@
 #include <jack/jack.h>
 #include <ladspa.h>
 #include <qlist.h>
-#include "midicontrolcenter.h"
 
 #define DEFAULT_RATE            44100
 #define DEFAULT_PERIODSIZE       1024
@@ -23,7 +22,8 @@
 #define WAVE_PERIOD             65536
 #define M_MCV_MAX_FREQ        20000.0
 #define EXP_TABLE_LEN           32768
-
+#define MAX_JACK_PORTS             64
+ 
 class SynthData : public QObject
 {
   private:
@@ -67,9 +67,12 @@ class SynthData : public QObject
     QList<QObject> spectrumModuleList;
     QList<QObject> moduleList;
     QList<QObject> listM_env;
+    QList<QObject> listM_vcenv;
     QList<QObject> listM_advenv;
     QList<QObject> listM_dynamicwaves;
     QList<QObject> listM_mcv;
+    QList<QObject> listM_advmcv;
+    QList<QObject> listM_scmcv;
     snd_pcm_t *pcm_handle;
     snd_pcm_t *pcm_capture_handle;
     snd_seq_t *seq_handle;
@@ -77,11 +80,14 @@ class SynthData : public QObject
     QSemaphore port_sem;          
     LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
     QString ladspa_lib_name[MAX_SO];
-    //QObject *midiWidget;
-    MidiControlCenter * controlCenter;
+    QObject *midiWidget, *guiWidget;
     jack_client_t *jack_handle;
     QString jackName;
     int midi_out_port[2];
+    int midiChannel;
+    int jack_in_ports, jack_out_ports;
+    jack_port_t *jack_in[MAX_JACK_PORTS];
+    jack_port_t *jack_out[MAX_JACK_PORTS];
       
   public:
     SynthData(int p_poly, int p_periodsize);
@@ -92,9 +98,11 @@ class SynthData : public QObject
     int decModuleCount();
     int getModuleCount();
     int getModuleID();
-    int initJack();
+    int initJack(int in, int out);
     int activateJack();
     int deactivateJack(); 
+    int addJackPorts(int count_in, int count_out);
+    int deleteJackPorts(int count_in, int count_out);
     int setCycleSize(int p_cyclesize);
     int setPeriodsize(int p_periodsize);
     int setPeriods(int p_periods);

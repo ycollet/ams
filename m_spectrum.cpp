@@ -31,9 +31,9 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
  
   M_type = M_type_spectrum;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
-  gain = 0.5;
-  mixer_gain[0] = 0.5;
-  mixer_gain[1] = 0.5;
+  gain = 0;
+  mixer_gain[0] = 1.0;
+  mixer_gain[1] = 1.0;
   agc = 1;
   port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
   port_in[0]->move(0, 35);
@@ -51,7 +51,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   fftFrames = 4;
   normMode = 0;
   f_min = 0;
-  f_max = 20000;
+  f_max = (double)synthdata->rate / 2.0;
   freqZoom = 0;  
   refreshMode = 0;
   fftMode = 1;
@@ -72,13 +72,13 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   configDialog->addTab(spectrumTab, "Spectrum");
   QVBox *paramTab = new QVBox(configDialog->tabWidget);
   QVBox *zoomTab = new QVBox(configDialog->tabWidget);
-  configDialog->addSlider(0.1, 10, zoom, "Gain", &zoom, false, zoomTab);
+  configDialog->addSlider(-20, 20, gain, "Gain (dB)", &gain, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(0), SIGNAL(valueChanged(int)),
                    this, SLOT(updateZoom(int)));
-  configDialog->addSlider(0, 20000, f_min, "f_min", &f_min, false, zoomTab);
+  configDialog->addSlider(0, f_max, f_min, "f_min", &f_min, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(1), SIGNAL(valueChanged(int)),
                    this, SLOT(update_f_min(int)));
-  configDialog->addSlider(0, 20000, f_max, "f_max", &f_max, false, zoomTab);
+  configDialog->addSlider(0, f_max, f_max, "f_max", &f_max, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(2), SIGNAL(valueChanged(int)),
                    this, SLOT(update_f_max(int)));
   configDialog->addCheckBox(freqZoom, "Frequency Zoom", &freqZoom, zoomTab);
@@ -97,6 +97,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   QStrList *refreshModeNames = new QStrList(true);
   refreshModeNames->append("Continuous");
   refreshModeNames->append("Single");
+  refreshModeNames->append("Mouse");
   configDialog->addComboBox(refreshMode, "Refresh Mode", &refreshMode, refreshModeNames->count(), refreshModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateRefreshMode(int)));
@@ -110,14 +111,14 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   QStrList *fftModeNames = new QStrList(true);
   fftModeNames->append("Power Spectrum");
   fftModeNames->append("Abs");
-  fftModeNames->append("Log Power Spectrum");
+  fftModeNames->append("dB");
   configDialog->addComboBox(fftMode, "Spectrum Mode", &fftMode, fftModeNames->count(), fftModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(3)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateFFTMode(int)));
   QStrList *windowNames = new QStrList(true);
-  windowNames->append("Rectangular");
+  windowNames->append("Hamming");
   windowNames->append("Bartlett");
-  windowNames->append("Hann");
+  windowNames->append("Hanning");
   windowNames->append("Welch");
   configDialog->addComboBox(window, "Window Function", &window, windowNames->count(), windowNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(4)->comboBox, SIGNAL(highlighted(int)),
@@ -125,6 +126,8 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   configDialog->addPushButton("Trigger", paramTab);
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
                    configDialog->spectrumScreenList.at(0), SLOT(singleShot()));
+  QObject::connect(configDialog->spectrumScreenList.at(0),
+                   SIGNAL(runSpectrum()), this, SLOT(startSpectrum()));
   QStrList *fftFramesNames = new QStrList(true);
   fftFramesNames->append("  128");
   fftFramesNames->append("  256");
@@ -146,7 +149,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   timer = new QTimer(this);   
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
-  timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
+  startSpectrum();
 }
 
 M_spectrum::~M_spectrum() {
@@ -184,43 +187,29 @@ float M_spectrum::getGain() {
 void M_spectrum::generateCycle() {
 
   int l1, l2, l3, index, ofs;
-  float max_ch, mixgain, wavgain;
+  float max_ch, mixgain, wavgain, lin_gain;
   float *spectrumdata;
 
-//  fprintf(stderr, "M_spectrum 0\n");
-  wavgain = GAIN / (float)synthdata->poly;
+  wavgain = 1.0 / (float)synthdata->poly;
+  lin_gain = pow(10, gain/20.0);
   memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
   for (l1 = 0; l1 < 2; l1++) {                       // TODO generalize to more than 2 channels
     if (port_in[l1]->connectedPortList.count()) {
       module_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
       module_in[l1]->generateCycle();
       index = port_in[l1]->connectedPortList.at(0)->index;
-      mixgain = gain * mixer_gain[l1];
+      mixgain = lin_gain * mixer_gain[l1];
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         for (l3 = 0; l3 < synthdata->poly; l3++) {
           floatdata[2 * l2 + l1] += mixgain * module_in[l1]->data[index][l3][l2]; 
-        }
-      }
-      if (agc) {
-        max_ch = 0;
-        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          if (max_ch < fabs(floatdata[2 * l2 + l1])) {
-            max_ch = fabs(floatdata[2 * l2 + l1]);
-          }    
-        }
-        if (max_ch > 0.9) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            floatdata[2 * l2 + l1] *= 0.9 / max_ch;
-          }
         }
       }
     } else {
       module_in[l1] = NULL;
     }
   }  
+
   spectrumdata = configDialog->spectrumScreenList.at(0)->spectrumdata;
-//  fprintf(stderr, "M_spectrum 1\n");
-//  fprintf(stderr, "writeofs: %d\n", configDialog->spectrumScreenList.at(0)->writeofs);
   ofs = configDialog->spectrumScreenList.at(0)->writeofs;
   for (l1 = 0; l1 < synthdata->cyclesize; l1++) {   
     spectrumdata[2 * ofs] = wavgain * floatdata[2 * l1];
@@ -230,9 +219,7 @@ void M_spectrum::generateCycle() {
       ofs -= SPECTRUM_BUFSIZE >> 1;
     }
   }   
-//  fprintf(stderr, "M_spectrum 2\n");
   configDialog->spectrumScreenList.at(0)->writeofs = ofs;
-//  fprintf(stderr, "M_spectrum 3\n");
 }
 
 void M_spectrum::showConfigDialog() {
@@ -240,8 +227,8 @@ void M_spectrum::showConfigDialog() {
 
 void M_spectrum::timerProc() {          
  
-  if (refreshMode < 1) {
-    timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
+  if (configDialog->spectrumScreenList.at(0)->getTriggerMode() == SPECTRUM_TRIGGERMODE_CONTINUOUS) {
+    startSpectrum();
   }
   configDialog->spectrumScreenList.at(0)->refreshSpectrum();
 }
@@ -298,13 +285,25 @@ void M_spectrum::updateFFTMode(int val) {
 
 void M_spectrum::updateRefreshMode(int val) {
 
-  configDialog->spectrumScreenList.at(0)->setTriggerMode((spectrumTriggerModeType)refreshMode); 
-  if (refreshMode < 1) {
-    timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
+  if (refreshMode == 0) {
+    configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_CONTINUOUS); 
+    startSpectrum();
+  } else {
+    configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_SINGLE);
+  } 
+  if (refreshMode == 2) {
+    configDialog->spectrumScreenList.at(0)->setEnableMouse(true);
+  } else {
+    configDialog->spectrumScreenList.at(0)->setEnableMouse(false);
   }
 }
 
 void M_spectrum::freqZoomToggled(bool on) {
 
   configDialog->spectrumScreenList.at(0)->toggleFreqZoom(on);
+}
+
+void M_spectrum::startSpectrum() {
+
+  timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
 }

@@ -45,22 +45,20 @@ M_jackout::M_jackout(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_in[1]);
   qs.sprintf("JACK Out ID %d", moduleID);
   configDialog->setCaption(qs);
-
-  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,1.0,&gain);
-  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
-  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
-  EnumParameter * pAgc = new EnumParameter(this,"Automatic Gain Control","",(int *)&agc);
-  pAgc->addItem(0,"Disabled");
-  pAgc->addItem(1,"Enabled");
-  
-  configDialog->addParameter(pGain);
-  configDialog->addParameter(pGain1);
-  configDialog->addParameter(pGain2);
-  configDialog->addParameter(pAgc);
+  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
+  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
+  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
+  QStrList *agcNames = new QStrList(true);
+  agcNames->append("Disbled");
+  agcNames->append("Enabled");
+  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames);
+  if (synthdata->jack_out_ports < 2 * (1 + synthdata->jackOutCount)) {
+    synthdata->addJackPorts(0, 2);
+  }
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out_ID%d_%d", moduleID, l1);
     jackdata[l1] = (jack_default_audio_sample_t *)malloc(synthdata->periodsize * sizeof(jack_default_audio_sample_t));
-    port_out[l1] = jack_port_register(synthdata->jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+    port_out[l1] = synthdata->jack_out[2 * synthdata->jackOutCount + l1];
   }
 }
 
@@ -69,7 +67,6 @@ M_jackout::~M_jackout() {
   int l1;
 
   for (l1 = 0; l1 < 2; l1++) {
-    jack_port_unregister(synthdata->jack_handle, port_out[l1]);
     free(jackdata[l1]);
   }
 }
@@ -103,7 +100,7 @@ void M_jackout::generateCycle() {
       module_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
       module_in[l1]->generateCycle();
       index = port_in[l1]->connectedPortList.at(0)->index;
-      mixgain = gain * mixer_gain[l1];
+      mixgain = gain * mixer_gain[l1] / (double)synthdata->poly;
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         for (l3 = 0; l3 < synthdata->poly; l3++) {
           jackdata[l1][l2] += mixgain * module_in[l1]->data[index][l3][l2]; 

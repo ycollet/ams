@@ -42,8 +42,7 @@ class M_wavout : public Module
     unsigned char outbuf[8];
     unsigned char *wavdata;
     float *floatdata;
-    QLineEdit *nameField, *timeField;
-    ActionParameter *recStart, *recStop;
+    
   public: 
     float **inData[2];
                             

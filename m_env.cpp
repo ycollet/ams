@@ -18,9 +18,8 @@
 #include "synthdata.h"
 #include "m_env.h"
 #include "port.h"
-#include "envelope.h"
 
-M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata)
+M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(2, parent, name, p_synthdata) {
 
   QString qs;
@@ -43,36 +42,33 @@ M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_retrigger->move(0, 55);
   port_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_retrigger);
-  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);
+  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
   port_gain_out->move(width() - port_gain_out->width(), 75);
   port_gain_out->outType = outType_audio;
   portList.append(port_gain_out);
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);
+  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);          
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
   qs.sprintf("ENV ID %d", moduleID);
   configDialog->setCaption(qs);
-
-  mDelay = new FloatParameter(this, "Delay", "",0.0,1.0, &delay);
-  mHold = new FloatParameter(this, "Hold", "",0.0,1.0, &hold);
-  mTimeScale = new FloatParameter(this, "Time Scale", "",0.1,10.0, &timeScale);
-  mAttack = new FloatParameter(this, "Attack", "",0.0,1.0, &attack);
-  mDecay = new FloatParameter(this, "Decay", "",0.0,1.0, &decay);
-  mSustain = new FloatParameter(this, "Sustain", "",0.0,1.0, &sustain);
-  mRelease = new FloatParameter(this, "Release", "",0.0,1.0, &release);
-
-  Envelope * env = new Envelope(mDelay,mAttack,mHold,mDecay,mSustain,mRelease,configDialog->headerBox);
-  qs="ADSR";
-  configDialog->addParameter(mAttack,qs);
-  configDialog->addParameter(mDecay,qs);
-  configDialog->addParameter(mSustain,qs);
-  configDialog->addParameter(mRelease,qs);
-  qs="Time Scale / Delay / Hold";
-  configDialog->addParameter(mTimeScale,qs);
-  configDialog->addParameter(mDelay,qs);
-  configDialog->addParameter(mHold,qs);
-
+  configDialog->addEnvelope(&delay, &attack, &hold, &decay, &sustain, &release);
+  configDialog->initTabWidget();
+  QVBox *adsrTab = new QVBox(configDialog->tabWidget);
+  QVBox *delayTab = new QVBox(configDialog->tabWidget);
+  configDialog->addSlider(0, 1, delay, "Delay", &delay, false, delayTab);
+  configDialog->addSlider(0, 1, attack, "Attack", &attack, false, adsrTab);
+  configDialog->addSlider(0, 1, hold, "Hold", &hold, false, delayTab);
+  configDialog->addSlider(0, 1, decay, "Decay", &decay, false, adsrTab);
+  configDialog->addSlider(0, 1, sustain, "Sustain", &sustain, false, adsrTab);
+  configDialog->addSlider(0, 1, release, "Release", &release, false, adsrTab);
+  configDialog->addSlider(0.1, 10, timeScale, "Time Scale", &timeScale, false, delayTab);
+  configDialog->addTab(adsrTab, "ADSR");
+  configDialog->addTab(delayTab, "Delay / Hold / Time Scale");
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
+    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
+                     configDialog->envelopeList.at(0), SLOT(updateEnvelope(int)));
+  }
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     noteActive[l1] = false;
     gate[l1] = false;
@@ -89,7 +85,7 @@ M_env::~M_env() {
 }
 
 void M_env::paintEvent(QPaintEvent *ev) {
-
+  
   QPainter p(this);
   QString qs;
   int l1;
@@ -101,7 +97,7 @@ void M_env::paintEvent(QPaintEvent *ev) {
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
   p.drawText(10, 20, "ENV");
-  p.setFont(QFont("Helvetica", 8));
+  p.setFont(QFont("Helvetica", 8)); 
   qs.sprintf("ID %d", moduleID);
   p.drawText(15, 32, qs);
 }
@@ -181,8 +177,9 @@ void M_env::generateCycle() {
         if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
           retrigger[l1] = true;
           if (e[l1] > 0) {
-            noteOnOfs[l1] = -ENVELOPE_RESPONSE;
-            de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
+//            noteOnOfs[l1] = -ENVELOPE_RESPONSE;
+//            de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
+            noteOnOfs[l1] = (de_attack > 0) ? e[l1] / de_attack : 0;
           } else {
             noteOnOfs[l1] = 0;
           }

@@ -31,7 +31,7 @@ M_ringmod::M_ringmod(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_M_vco1->move(0, 35);
   port_M_vco1->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_vco1);
-  port_M_vco2 = new Port("In 1", PORT_IN, 1, this, synthdata);
+  port_M_vco2 = new Port("In 1", PORT_IN, 1, this, synthdata); 
   port_M_vco2->move(0, 55);
   port_M_vco2->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_vco2);
@@ -41,8 +41,7 @@ M_ringmod::M_ringmod(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out);
   qs.sprintf("Ring Modulator ID %d", moduleID);
   configDialog->setCaption(qs);
-  FloatParameter *fp = new FloatParameter(this,"Gain","",0.0,5.0,&gain);
-  configDialog->addParameter(fp);
+  configDialog->addSlider(0, 5, gain, "Gain", &gain);
 }
 
 M_ringmod::~M_ringmod() {

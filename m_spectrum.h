@@ -67,6 +67,7 @@ class M_spectrum : public Module
     void updateFFTMode(int val);
     void updateRefreshMode(int val);
     void freqZoomToggled(bool on);
+    void startSpectrum();
 };
   
 #endif

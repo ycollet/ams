@@ -28,6 +28,7 @@ class LadspaDialog : public QVBox
     SynthData *synthdata;
     QLabel *pluginLabel, *pluginMaker, *pluginCopyright;
     QLineEdit *searchLine;
+    QCheckBox *extCtrlPortsCheck;
            
   public: 
     QListView *ladspaList;
@@ -37,7 +38,7 @@ class LadspaDialog : public QVBox
     ~LadspaDialog();
     
   signals:
-    void createLadspaModule(int index, int n, bool poly);  
+    void createLadspaModule(int index, int n, bool poly, bool extCtrlPorts);  
 
   private slots:
     void insertClicked();

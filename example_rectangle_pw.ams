@@ -68,14 +68,14 @@ FSlider 10 3 1638 0 0 16384 1
 FSlider 10 4 11468 0 0 16384 1
 FSlider 10 5 819 0 0 16384 1
 FSlider 10 6 16384 0 1638 163840 1
-Module 6 12 497 189 0 multivoice_chorus_1201 Multivoice Chorus
+Module 6 12 398 178 0 multivoice_chorus_1201 Multivoice Chorus
 Port 0 0 12 5
-FSlider 12 0 131072 0 16384 131072 1
-FSlider 12 1 346928 0 163840 655360 1
-FSlider 12 2 4601 0 0 32768 1
-FSlider 12 3 76287 0 0 81920 1
-FSlider 12 4 123467 0 32768 491520 1
-FSlider 12 5 -159615 0 -327680 0 1
+FSlider 12 0 346928 0 163840 655360 1
+FSlider 12 1 4601 0 0 32768 1
+FSlider 12 2 76287 0 0 81920 1
+FSlider 12 3 123467 0 32768 491520 1
+FSlider 12 4 -159615 0 -327680 0 1
+LSlider 12 0 8 1
 Module 6 13 938 164 0 cmt Freeverb (Version 3)
 Port 0 0 13 9
 Port 1 0 13 9

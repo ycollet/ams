@@ -46,13 +46,12 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name, SynthData *p_synth
   port_velocity_out->move(width() - port_velocity_out->width(), 95);
   port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
-  port_trigger_out = new Port("Trigger", PORT_OUT, 3, this, synthdata);
+  port_trigger_out = new Port("Trigger", PORT_OUT, 3, this, synthdata);          
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
   port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
   qs.sprintf("SEQ ID %d", moduleID);
   configDialog->setCaption(qs);
-/*
   configDialog->initTabWidget();
   QVBox *generalTab = new QVBox(configDialog->tabWidget);
   for (l1 = 0; l1 < seqLen / 8; l1++) {
@@ -60,7 +59,6 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name, SynthData *p_synth
     gateTab[l1] = new QVBox(configDialog->tabWidget);
     velocityTab[l1] = new QVBox(configDialog->tabWidget);
   }
-*/
   seq_gate = 0;
   seq_freq = 0;
   seq_velocity = 0;
@@ -75,43 +73,42 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name, SynthData *p_synth
   updateTimerFlag = false;
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(nextStep()));
-  qs="Pitch Offset / Tempo / Gate Time";
-
-  IntParameter *ip = new IntParameter(this,"PitchOffset","",0,63,&pitch_ofs);
-  configDialog->addParameter(ip,qs);
-  ip = new IntParameter(this,"Beats per minute","",3,300,&bpm);
-  QObject::connect(ip, SIGNAL(valueChanged(int)),this, SLOT(updateTimer(int)));
-  configDialog->addParameter(ip,qs);
-
-  EnumParameter *ep = new EnumParameter(this,"Gate time","",&note_len);
-  ep->addItem(0,"1");
-  ep->addItem(1,"3/4");
-  ep->addItem(2,"1/2");
-  ep->addItem(3,"1/4");
-  configDialog->addParameter(ep,qs);
+  configDialog->addIntSlider(0, 63, pitch_ofs, "Pitch Offset", &pitch_ofs, generalTab);
+  configDialog->addIntSlider(3, 300, bpm, "Beats per minute", &bpm, generalTab);
+  QStrList *noteLenNames = new QStrList(true);
+  noteLenNames->append("1");
+  noteLenNames->append("3/4");
+  noteLenNames->append("1/2");
+  noteLenNames->append("1/4");
+  configDialog->addComboBox(1, "Gate time", (int *)&note_len, noteLenNames->count(), noteLenNames, generalTab);
   for (l1 = 0; l1 < seqLen; l1++) {
     pitch[l1] = 31;
     velocity[l1] = 63;
     gate[l1] = 0;
   }
-  BoolParameter *bp;
   for (l1 = 0; l1 < seqLen; l1++) {
     sprintf(str, "Gate %d", l1);
-    qs.sprintf("Gate %d",l1/8);
-    bp=new BoolParameter(this,str,"",&gate[l1]);
-    configDialog->addParameter(bp,qs);
-
+    configDialog->addCheckBox(gate[l1], str, &gate[l1], gateTab[l1 / 8]);
     sprintf(str, "Pitch %d", l1);
-    qs.sprintf(str, "Pitch %d", l1/8);
-    ip=new IntParameter(this,str,"",0,64,&pitch[l1]);
-    configDialog->addParameter(ip,qs);
-
+    configDialog->addIntSlider(0, 64, pitch[l1], str, &pitch[l1], pitchTab[l1 / 8]);
     sprintf(str, "Velocity %d", l1);
-    qs.sprintf(str, "Velocity %d", l1/8);
-    ip = new IntParameter(this,str,"",0,127,&velocity[l1]);
-    configDialog->addParameter(ip,qs);
+    configDialog->addIntSlider(0, 127, velocity[l1], str, &velocity[l1], velocityTab[l1 / 8]);
+  } 
+  configDialog->addTab(generalTab, "Pitch Offset / Tempo / Gate Time");
+  for (l1 = 0; l1 < seqLen / 8; l1++) {
+    qs.sprintf("Pitch %d", l1);
+    configDialog->addTab(pitchTab[l1], qs);
   }
-
+  for (l1 = 0; l1 < seqLen / 8; l1++) {
+    qs.sprintf("Gate %d", l1);
+    configDialog->addTab(gateTab[l1], qs);
+  }
+  for (l1 = 0; l1 < seqLen / 8; l1++) {
+    qs.sprintf("Velocity %d", l1);
+    configDialog->addTab(velocityTab[l1], qs);
+  }
+  QObject::connect(configDialog->intMidiSliderList.at(1), SIGNAL(valueChanged(int)),
+                   this, SLOT(updateTimer(int)));
   timer->start(int(3750.0 / (float)bpm), false);
 }
 

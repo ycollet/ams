@@ -15,4 +15,13 @@
  hints regarding speed optimization. Torsten Rahn has helped to
  improve the color scheme of the program. Thanks to Bernhard Kaindl
  for helpful discussion. Bill Allen has contributed an improved 
- Makefile.
+ Makefile. The stereo mixer module has been suggested by
+ Fons Adriaensen who has also contributed many ideas and patches to
+ Spectrum View, MCV and other modules. 
+
+ Special thanks must go to the many authors of LADSPA plugins that 
+ add many useful and cool effects to AlsaModularSynth. Without 
+ the marvelous MCP-Plugins and REV-Plugins by Fons Adriaensen, 
+ AlsaModularSynth would probably not sound half has good as it 
+ sounds today.
+  

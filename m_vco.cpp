@@ -80,36 +80,27 @@ M_vco::M_vco(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_aux);
   qs.sprintf("VCO ID %d", moduleID);
   configDialog->setCaption(qs);
-  //configDialog->initTabWidget();
-  //QVBox *freqTab = new QVBox(configDialog->tabWidget);
-  qs="Frequency";
-  IntParameter *ip = new IntParameter(this,"Octave","",0,6,&octave);
-  configDialog->addParameter(ip,qs);
-  FloatParameter *fp = new FloatParameter(this,"Tune","",0.0,1.0,&freq);
-  configDialog->addParameter(fp,qs);
-  ip = new IntParameter(this,"Harmonic","",1,16,&harmonic);
-  configDialog->addParameter(ip,qs);
-  ip = new IntParameter(this,"Subharmonic","",1,16,&subharmonic);
-  configDialog->addParameter(ip,qs);
-
-  qs="Pulse Width / Phase";
-  fp=new FloatParameter(this,"PW","", 0.1,0.9,&pw0);
-  configDialog->addParameter(fp,qs);
-  fp=new FloatParameter(this,"PW Gain","",0.0,1.0,&pwGain);
-  configDialog->addParameter(fp,qs);
-  fp = new FloatParameter(this,"Phi0","",0.0,6.283,&phi0);
-  configDialog->addParameter(fp,qs);
-  qs="Modulation / Aux Waveform";
-  EnumParameter *ep = new EnumParameter(this, "Aux Wave Form","",(int *)&waveForm);
-  ep->addItem(WAVE_SAW,"Saw");
-  ep->addItem(WAVE_SAW2,"Saw 1");
-  ep->addItem(WAVE_SAW3,"Saw 2");
-  configDialog->addParameter(ep,qs);
-  fp = new FloatParameter(this,"Exp. FM Gain","",0.0,10.0,&vcoExpFMGain);
-  configDialog->addParameter(fp,qs);
-  fp = new FloatParameter(this,"Lin. FM Gain","",0.0,10.0,&vcoLinFMGain);
-  configDialog->addParameter(fp,qs);
- 
+  configDialog->initTabWidget();
+  QVBox *freqTab = new QVBox(configDialog->tabWidget);
+  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, freqTab);
+  configDialog->addSlider(0, 1, freq, "Tune", &freq, false, freqTab);
+  configDialog->addIntSlider(1, 16, harmonic, "Harmonic", &harmonic, freqTab);
+  configDialog->addIntSlider(1, 16, subharmonic, "Subharmonic", &subharmonic, freqTab);
+  configDialog->addTab(freqTab, "Frequency");
+  QVBox *pulseTab = new QVBox(configDialog->tabWidget);
+  configDialog->addSlider(0.1, 0.9, pw0, "PW", &pw0, false, pulseTab);
+  configDialog->addSlider(0, 1, pwGain, "PW Gain", &pwGain, false, pulseTab);
+  configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0, false, pulseTab);
+  configDialog->addTab(pulseTab, "Pulse Width / Phase");
+  QVBox *modulationTab = new QVBox(configDialog->tabWidget);
+  QStrList *waveFormNames = new QStrList(true);
+  waveFormNames->append("Saw");
+  waveFormNames->append("Saw 1");
+  waveFormNames->append("Saw 2");
+  configDialog->addComboBox(0, "Aux Wave Form", (int *)&waveForm, waveFormNames->count(), waveFormNames, modulationTab);
+  configDialog->addSlider(0, 10, vcoExpFMGain, "Exp. FM Gain", &vcoExpFMGain, false, modulationTab);
+  configDialog->addSlider(0, 10, vcoLinFMGain, "Lin. FM Gain", &vcoLinFMGain, false, modulationTab);
+  configDialog->addTab(modulationTab, "Modulation / Aux Waveform");
 }
 
 M_vco::~M_vco() {

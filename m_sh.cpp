@@ -45,8 +45,7 @@ M_sh::M_sh(QWidget* parent, const char *name, SynthData *p_synthdata)
   qs.sprintf("Sample & Hold ID %d", moduleID);
   configDialog->setCaption(qs);
   triggerLevel = 0.5;
-  FloatParameter *fp = new FloatParameter(this,"Trigger Level", "",0.0,10.0,&triggerLevel);
-  configDialog->addParameter(fp);
+  configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel);
   sample = 0;
   gate = false;
 }

@@ -25,9 +25,10 @@ class Port : public QWidget
     QString portName;
     QPopupMenu *contextMenu;
     SynthData *synthdata;
+    int portWidth;
 
   public:
-    Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent=0, SynthData *p_synthdata=0);
+    Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent=0, SynthData *p_synthdata=0, int p_portWidth = PORT_DEFAULT_WIDTH, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
 
@@ -38,7 +39,7 @@ class Port : public QWidget
     QWidget *parentModule;
     QList<Port> connectedPortList;
     dirType dir;
-    int index;
+    int index, fontColor;
     outTypeEnum outType;
     bool highlighted;
     QValueList<outTypeEnum> outTypeAcceptList;

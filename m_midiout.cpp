@@ -39,11 +39,11 @@ M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata)
   controller[0] = 24;
   controller[1] = 25;
   triggerLevel = 0.5;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);
+  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);
+  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
@@ -53,7 +53,6 @@ M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_M_trigger);
   qs.sprintf("MIDI Out ID %d", moduleID);
   configDialog->setCaption(qs);
-/*
   configDialog->initTabWidget();
   QVBox *gainTab = new QVBox(configDialog->tabWidget);
   QVBox *midiTab = new QVBox(configDialog->tabWidget);
@@ -62,54 +61,23 @@ M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata)
     qs.sprintf("%4d", l1);
     channelNames->append(qs);
   }
-*/
-  qs = "Midi Settings";
   channel = 0;
-  EnumParameter * ep = new EnumParameter( this,"MIDI Channel", "", &channel);
-  for (l1 = 1; l1 < 17; l1++) {
-    qs.sprintf("%4d", l1);
-    ep->addItem(l1,qs);
-  }
-  ep->addItem(0,"Any");
-  configDialog->addParameter(ep,qs);
-
-  ep->selectItem(0);
-
-/*
+  configDialog->addComboBox(0, "MIDI Channel", &channel, channelNames->count(), channelNames, midiTab);
+  configDialog->addSlider(0, 10, mixer_gain[0], "Gain 0", &mixer_gain[0], false, gainTab);
+  configDialog->addSlider(0, 10, mixer_gain[1], "Gain 1", &mixer_gain[1], false, gainTab);
+  configDialog->addIntSlider(0, 127, offset[0], "Offset 0", &offset[0], gainTab);
+  configDialog->addIntSlider(0, 127, offset[1], "Offset 1", &offset[1], gainTab);
   QStrList *midiNames = new QStrList(true);
   midiNames->append("In 0/1: Controller");
   midiNames->append("In 0: Controller In 1: Pitchbend");
   midiNames->append("In 0/1: Note");
   midiNames->append("In 0: Note, In 1: Velocity");
   configDialog->addComboBox(midiMode, "MIDI Event Type", &midiMode, midiNames->count(), midiNames, midiTab);
-*/
-  midiMode=0;
-  ep = new EnumParameter( this,"MIDI Event Type", "", &midiMode);
-  ep->addItem(0,"In 0/1: Controller");
-  ep->addItem(1,"In 0: Controller In 1: Pitchbend");
-  ep->addItem(2,"In 0/1: Note");
-  ep->addItem(3,"In 0: Note, In 1: Velocity");
-  configDialog->addParameter(ep,qs);
-  ep->selectItem(0);
-
-  IntParameter * ip = new IntParameter(this,"Controller 0","", 0,127,&controller[0]);
-  configDialog->addParameter(ip,qs);
-  ip = new IntParameter(this,"Controller 0","", 0,127,&controller[1]);
-  configDialog->addParameter(ip,qs);
-
-  qs="Gain / Offset / Trigger Level";
-  FloatParameter *fp = new FloatParameter(this,"Gain 0","", 0.0,10.0,&mixer_gain[0]);
-  configDialog->addParameter(fp,qs);
-  fp = new FloatParameter(this,"Gain 1","", 0.0,10.0,&mixer_gain[1]);
-  configDialog->addParameter(fp,qs);
-  ip = new IntParameter(this,"Offset 0","", 0,127,&offset[0]);
-  configDialog->addParameter(ip,qs);
-  ip = new IntParameter(this,"Offset 1","", 0,127,&offset[1]);
-  configDialog->addParameter(ip,qs);
-  fp = new FloatParameter(this,"Trigger Level","", 0.0,10.0,&triggerLevel);
-  configDialog->addParameter(fp,qs);
-
-
+  configDialog->addIntSlider(0, 127, controller[0], "Controller 0", &controller[0], midiTab);
+  configDialog->addIntSlider(0, 127, controller[1], "Controller 1", &controller[1], midiTab);
+  configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel, false, gainTab);
+  configDialog->addTab(gainTab, "Gain / Offset / Trigger Level");
+  configDialog->addTab(midiTab, "MIDI Settings");
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     trigger[l1] = false;
     for (l2 = 0; l2 < 2; l2++) {
@@ -124,7 +92,7 @@ M_midiout::~M_midiout() {
 }
 
 void M_midiout::paintEvent(QPaintEvent *ev) {
-
+  
   QPainter p(this);
   QString qs;
   int l1;
@@ -136,7 +104,7 @@ void M_midiout::paintEvent(QPaintEvent *ev) {
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
   p.drawText(10, 20, "MIDI Out");
-  p.setFont(QFont("Helvetica", 8));
+  p.setFont(QFont("Helvetica", 8)); 
   qs.sprintf("ID %d", moduleID);
   p.drawText(15, 32, qs);
 }

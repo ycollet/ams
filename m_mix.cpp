@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>
-#include <qcheckbox.h>
+#include <qslider.h>   
+#include <qcheckbox.h>  
 #include <qlabel.h>
 #include <qvbox.h>
 #include <qhbox.h>
@@ -19,7 +19,7 @@
 #include "m_mix.h"
 #include "port.h"
 
-M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_synthdata)
+M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(1, parent, name, p_synthdata) {
 
   QString qs;
@@ -27,11 +27,10 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_
 
   M_type = M_type_mix;
   in_channels = p_in_channels;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIX_WIDTH,
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIX_WIDTH, 
               MODULE_MIX_HEIGHT + 20 + 20 * in_channels);
   gain = 1.0;
-  FloatParameter *fp = new FloatParameter(this,"Gain","",0.0,2.0,&gain);
-  configDialog->addParameter(fp);
+  configDialog->addSlider(0, 2, gain, "Gain", &gain);
   for (l1 = 0; l1 < in_channels; l1++) {
     qs.sprintf("In %d", l1);
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this, synthdata);
@@ -39,9 +38,9 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_
     audio_in_port->outTypeAcceptList.append(outType_audio);
     in_port_list.append(audio_in_port);
     portList.append(audio_in_port);
-    mixer_gain[l1] = 1.0;
+    mixer_gain[l1] = 1.0;    
     qs.sprintf("Volume %d", l1);
-    fp=new FloatParameter(this, qs,"",0.0,2.0,&mixer_gain[l1]);
+    configDialog->addSlider(0, 2, mixer_gain[l1], qs, &mixer_gain[l1]);
   }
   port_out = new Port("Out", PORT_OUT, 0, this, synthdata);
   port_out->move(MODULE_MIX_WIDTH - port_out->width(),
@@ -56,7 +55,7 @@ M_mix::~M_mix() {
 }
 
 void M_mix::paintEvent(QPaintEvent *ev) {
-
+  
   QPainter p(this);
   QString qs;
   int l1;

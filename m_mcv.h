@@ -21,8 +21,7 @@
 #include "port.h"
 
 #define MODULE_MCV_WIDTH                 90
-#define MODULE_MCV_HEIGHT               100
-#define MODULE_MCV_RESPONSE              32
+#define MODULE_MCV_HEIGHT               120
 
 class M_mcv : public Module
 {
@@ -30,11 +29,11 @@ class M_mcv : public Module
 
   private:
     float pitchbend;
-    Port *port_note_out, *port_gate_out, *port_velocity_out;
+    Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
 
   public: 
     int  pitch, channel;
-    float freq[MAXPOLY], lastfreq[MAXPOLY];
+    float freq[MAXPOLY], trig[MAXPOLY];
                 
   public:
     M_mcv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);

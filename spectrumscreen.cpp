@@ -24,7 +24,7 @@ SpectrumScreen::SpectrumScreen(QWidget* parent, const char *name, SynthData *p_s
   viewMode = VIEW_MODE_FIF;
   normMode = NORM_MODE_EACH;
   triggerMode = SPECTRUM_TRIGGERMODE_CONTINUOUS;
-  window = WINDOW_HANN;
+  window = WINDOW_HANNING;
   ch1 = 0;
   ch2 = 1;
   zoom = 1;
@@ -36,6 +36,7 @@ SpectrumScreen::SpectrumScreen(QWidget* parent, const char *name, SynthData *p_s
   maxsum = 0;
   fftFrames = 1024;
   freqZoom = false;
+  enableMouse = false;
   setPalette(QPalette(QColor(50, 50, 100), QColor(50, 50, 100)));
   initPalette(0);
   initPalette(1);
@@ -56,98 +57,136 @@ SpectrumScreen::~SpectrumScreen()
 void SpectrumScreen::paintEvent(QPaintEvent *) {
   
   int l1, l2;
-  double xscale, xscale1, xscale2, yscale, max, ych1Max, ych2Max, fch1Max, fch2Max;
-  int x1, x2, y1ch1, y1ch2, y2ch1, y2ch2, tmp, r, g, b, f1, f2, frame1, frame2, xch1Max, xch2Max;
+  double xscale, xscale1, xscale2, yscale, max, min, ych1Max, ych2Max, fch1Max, fch2Max;
+  int x1, x2, y1ch1, y1ch2, y2ch1, y2ch2, tmp, r, g, y, b, f1, f2, frame1, frame2, xch1Max, xch2Max;
   QPixmap pm(width(), height());
   QPainter p(&pm);
+  QString qs;
 
   pm.fill(QColor(50, 50, 100));
-  p.setPen(QColor(0, 220, 0));
-  if ((ch1 < 0) || (ch2 < 0)) {
-    max = (ch1 < 0) ? max2 : max1;
-  } else {
-    max = (max1 > max2) ? max1 : max2;
-  }
+
+  if ((ch1 < 0) || (ch2 < 0)) max = (ch1 < 0) ? max2 : max1;
+  else max = (max1 > max2) ? max1 : max2;
+
   f1 = int(2.0 * f_min / (double)synthdata->rate * width());
   f2 = int(2.0 * f_max / (double)synthdata->rate * width());
-  if (!freqZoom) {
+
+  if (!freqZoom)
+  {
     p.setPen(QColor(255, 255, 0));
     p.drawLine(f1, 0, f1, height());
     p.drawLine(f2, 0, f2, height());
-    p.setPen(QColor(0, 220, 0));
     f1 = 0;
     f2 = width();
   }
   frame1 = int((double)f1 / width() * (double)fftFrames / 2.0);
   frame2 = int((double)f2 / width() * (double)fftFrames / 2.0);
-  if (viewMode == VIEW_MODE_FIF) {
+
+  min = (fftMode == FFT_MODE_LOG) ? max - (MAX_SPECTRUM_DB - MIN_SPECTRUM_DB) : 0;
+
+  if (viewMode == VIEW_MODE_FIF)
+  {
     xscale = (double)width() / (double)(frame2 - frame1);
-    yscale = - 0.9 * zoom * (double)height() / max;
+    if (fftMode == FFT_MODE_LOG) yscale = (height() - 20.0) / (MIN_SPECTRUM_DB - MAX_SPECTRUM_DB);
+    else yscale = zoom * (20.0 - height()) / max;
+
+    if (fftMode == FFT_MODE_LOG && normMode != NORM_MODE_EACH)
+    {
+      g = 10 * (int)(ceil(0.1 * min + 0.001)); 
+      p.setPen(QColor(0, 200, 200));  
+      while (g <= MAX_SPECTRUM_DB)
+      {
+        y = height() + int(yscale * (g - min));
+        p.drawLine(0, y, width(), y);
+        qs.sprintf("%3d", g);
+        p.drawText(width() - 27, y - 2, qs);
+        g += 10;
+      }
+    }  
+
     ych1Max = 0;
     ych2Max = 0;
     fch1Max = 0;
     fch2Max = 0;
     xch1Max = 0;
     xch2Max = 0;
-    for (l1 = frame1; l1 < frame2 - 1; l1++) {
+
+    for (l1 = frame1; l1 < frame2 - 2; l1++)
+    {
       x1 = int((double)(l1 - frame1) * xscale);
       x2 = int((double)(l1 + 1 - frame1) * xscale);
-      switch (mode) {
+
+      switch (mode)
+      {
       case SPECTRUM_MODE_NORMAL:
-        y1ch1 = int(yscale * spectrumbuf_ch1[l1]);
-        y1ch2 = int(yscale * spectrumbuf_ch2[l1]);
+        y1ch1 = int(yscale * (spectrumbuf_ch1[l1] - min));
+        y1ch2 = int(yscale * (spectrumbuf_ch2[l1] - min));
         break;    
       case SPECTRUM_MODE_SUM:
-        y1ch1 = int(yscale * spectrumbuf_sum[l1]);
+        y1ch1 = int(yscale * (spectrumbuf_sum[l1] - min));
         break;
       }
-      switch (mode) {  
+
+      switch (mode)
+      {  
       case SPECTRUM_MODE_NORMAL: 
-        y2ch1 = int(yscale * spectrumbuf_ch1[l1 + 1]);
-        y2ch2 = int(yscale * spectrumbuf_ch2[l1 + 1]);
-        if (ch1 >= 0) {
+        y2ch1 = int(yscale * (spectrumbuf_ch1[l1 + 1] - min));
+        y2ch2 = int(yscale * (spectrumbuf_ch2[l1 + 1] - min));
+        if (ch1 >= 0)
+        {
           p.setPen(QColor(0, 220, 0));
           p.drawLine(x1, height() + y1ch1, x2, height() + y2ch1);
         }
-        if (ch2 >= 0) { 
+        if (ch2 >= 0)
+        { 
           p.setPen(QColor(255, 255, 0));
           p.drawLine(x1, height() + y1ch2, x2, height() + y2ch2);
         }
         break;      
       case SPECTRUM_MODE_SUM:
-        y2ch1 = int(yscale * spectrumbuf_sum[l1 + 1]);
-        if ((ch1 >= 0) && (ch2 >= 0)) {
+        y2ch1 = int(yscale * (spectrumbuf_sum[l1 + 1] - min));
+        if ((ch1 >= 0) && (ch2 >= 0))
+        {
           p.setPen(QColor(0, 220, 0));
           p.drawLine(x1, height() + y1ch1, x2, height() + y2ch1);
         }
         break;
       }
-      if (-y2ch1 > ych1Max) {
+
+      if (-y2ch1 > ych1Max)
+      {
         ych1Max = -y2ch1;
         fch1Max = (double)(l1 + 1) / (double)fftFrames * (double)synthdata->rate;
         xch1Max = x2;
       }
-      if (-y2ch2 > ych2Max) {
+      if (-y2ch2 > ych2Max)
+      {
         ych2Max = -y2ch2;
         fch2Max = (double)(l1 + 1) / (double)fftFrames * (double)synthdata->rate;
         xch2Max = x2;
-      }
+       }
     }
-    if ((ch1 >= 0) && (fch1Max > 0)) {
+
+    if ((ch1 >= 0) && fch1Max > 0)
+    {
       p.setPen(QColor(0, 220, 0));
-      p.drawText(xch1Max, height() - ych1Max, QString::number(fch1Max));
+      p.drawText(xch1Max, height() - (int)ych1Max, QString::number(fch1Max));
     }
-    if ((ch2 >= 0) && (fch2Max > 0)) {
+    if ((ch2 >= 0) && (fch2Max > 0))
+    {
       p.setPen(QColor(255, 255, 0));
-      p.drawText(xch2Max, height() - ych2Max, QString::number(fch2Max));
+      p.drawText(xch2Max, height() - (int)ych2Max, QString::number(fch2Max));
     }
+
     bitBlt(this, 0, 0, &pm);
+
+
   } else {
     bitBlt(fftPixmap1, 0, -1, fftPixmap1);
     bitBlt(fftPixmap2, 0, -1, fftPixmap2);
     QPainter p1(fftPixmap1); 
     QPainter p2(fftPixmap2);
-    yscale = 764.0 / max;
+    yscale = 764.0 / (max - min);
     xscale1 = (double)fftPixmap1->width() / (double)(frame2 - frame1);
     xscale2 = (double)fftPixmap2->width() / (double)(frame2 - frame1);
     switch (mode) {
@@ -159,14 +198,14 @@ void SpectrumScreen::paintEvent(QPaintEvent *) {
         y1ch2 = 0;
         if (x2 > x1) {
           for (l2 = x1; l2 < x2; l2++) {
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_ch1[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_ch1[l2] - min));
             if (tmp > y1ch1) y1ch1 = tmp;
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_ch2[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_ch2[l2] - min));
             if (tmp > y1ch2) y1ch2 = tmp;
           }
         } else {
-          y1ch1 = int(0.9 * zoom * yscale * spectrumbuf_ch1[x1]);
-          y1ch2 = int(0.9 * zoom * yscale * spectrumbuf_ch2[x1]);
+          y1ch1 = int(0.9 * zoom * yscale * (spectrumbuf_ch1[x1] - min));
+          y1ch2 = int(0.9 * zoom * yscale * (spectrumbuf_ch2[x1] - min));
         }
         if (y1ch1 < 0) y1ch1 = 0;
         if (y1ch2 < 0) y1ch2 = 0;
@@ -188,14 +227,14 @@ void SpectrumScreen::paintEvent(QPaintEvent *) {
         y1ch2 = 0;
         if (x2 > x1) {
           for (l2 = x1; l2 < x2; l2++) {
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_ch1[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_ch1[l2] - min));
             if (tmp > y1ch1) y1ch1 = tmp;
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_ch2[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_ch2[l2] - min));
             if (tmp > y1ch2) y1ch2 = tmp;   
           }
         } else {
-          y1ch1 = int(0.9 * zoom * yscale * spectrumbuf_ch1[x1]);
-          y1ch2 = int(0.9 * zoom * yscale * spectrumbuf_ch2[x1]);
+          y1ch1 = int(0.9 * zoom * yscale * (spectrumbuf_ch1[x1] - min));
+          y1ch2 = int(0.9 * zoom * yscale * (spectrumbuf_ch2[x1] - min));
         }
         if (y1ch1 < 0) y1ch1 = 0;
         if (y1ch2 < 0) y1ch2 = 0;
@@ -219,11 +258,11 @@ void SpectrumScreen::paintEvent(QPaintEvent *) {
         y1ch1 = 0;
         if (x2 > x1) {
           for (l2 = x1; l2 < x2; l2++) {
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_sum[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_sum[l2] - min));
             if (tmp > y1ch1) y1ch1 = tmp;
           }
         } else {
-          y1ch1 = int(0.9 * zoom * yscale * spectrumbuf_sum[x1]);
+          y1ch1 = int(0.9 * zoom * yscale * (spectrumbuf_sum[x1] - min));
         }
         if ((ch1 < 0) || (ch2 < 0)) y1ch1 = 0;
         if (y1ch1 > 764) y1ch1 = 764;
@@ -236,11 +275,11 @@ void SpectrumScreen::paintEvent(QPaintEvent *) {
         y1ch1 = 0;
         if (x2 > x1) {
           for (l2 = x1; l2 < x2; l2++) {
-            tmp = int(0.9 * zoom * yscale * spectrumbuf_sum[l2]);
+            tmp = int(0.9 * zoom * yscale * (spectrumbuf_sum[l2] - min));
             if (tmp > y1ch1) y1ch1 = tmp;
           }
         } else {
-          y1ch1 = int(0.9 * zoom * yscale * spectrumbuf_sum[x1]);
+          y1ch1 = int(0.9 * zoom * yscale * (spectrumbuf_sum[x1] - min));
         }
         if ((ch1 < 0) || (ch2 < 0)) y1ch1 = 0;
         if (y1ch1 > 764) y1ch1 = 764;
@@ -267,114 +306,118 @@ inline float sqr(float x) {
 void SpectrumScreen::refreshSpectrum() {
 
   int l1, ofs, n;
-  float s1, s2;
+  float p1, p2, sum;
   fftw_real *tmpbuf_ch1, *tmpbuf_ch2;
   double w;
 
   tmpbuf_ch1 = (fftw_real *)malloc((SPECTRUM_BUFSIZE >> 1) * sizeof(fftw_real));
   tmpbuf_ch2 = (fftw_real *)malloc((SPECTRUM_BUFSIZE >> 1) * sizeof(fftw_real));
   readofs = writeofs - synthdata->cyclesize - fftFrames;
-  if (readofs < 0 ) {  
-    readofs += SPECTRUM_BUFSIZE >> 1;
-  }
+  if (readofs < 0 ) readofs += SPECTRUM_BUFSIZE >> 1;
+
   ofs = readofs;
-  if (window == WINDOW_RECT) {
-    for (l1 = 0; l1 < fftFrames; l1++) {
-      s1 = spectrumdata[2 * ofs + ch1];
-      s2 = spectrumdata[2 * ofs + ch2];
-      spectrumbuf_ch1[l1] = s1;
-      spectrumbuf_ch2[l1] = s2; 
-      ofs++;
-      if (ofs >= SPECTRUM_BUFSIZE >> 1) {
-        ofs -= SPECTRUM_BUFSIZE >> 1;
-      }
+  n = fftFrames >> 1;
+  for (l1 = 0; l1 < fftFrames; l1++)
+  {
+    switch (window)
+    {
+    case WINDOW_HAMMING:
+      w = 1.0 - 0.85185 * cos(M_PI * l1 / n);
+      break;
+    case WINDOW_BARTLETT:
+      w = 2.0 * (1.0 - fabs(l1 - n) / n);
+      break;
+    case WINDOW_HANNING:
+      w = 1.0 - cos(M_PI * l1 / n);
+      break; 
+    case WINDOW_WELCH:
+      w = 1.5 * (1.0 - sqr(float(l1 - n) / n));
+      break; 
+    default:
+      w = 1.0;
     }
-  } else {
-    for (l1 = 0; l1 < fftFrames; l1++) {
-      switch (window) {
-      case WINDOW_BARTLETT:
-        w = 1.0 - fabs(double(l1 - fftFrames>>1)/double(fftFrames>>1));
-        break;
-      case WINDOW_HANN:
-         w = 0.5 - 0.5 * cos(PI * (double)l1 /  double(fftFrames>>1));
-        break; 
-      case WINDOW_WELCH:
-         w = 1.0 - sqr(double(l1 - fftFrames>>1)/double(fftFrames>>1));
-        break; 
-      default:
-        w = 1;
-        break;
-      }
-      s1 = spectrumdata[2 * ofs + ch1];
-      s2 = spectrumdata[2 * ofs + ch2];
-      spectrumbuf_ch1[l1] = int((double)s1 * w);
-      spectrumbuf_ch2[l1] = int((double)s2 * w); 
-      ofs++;
-      if (ofs >= SPECTRUM_BUFSIZE >> 1) {
+    w /= fftFrames;
+
+    spectrumbuf_ch1[l1] = spectrumdata[2 * ofs + ch1] * w;
+    spectrumbuf_ch2[l1] = spectrumdata[2 * ofs + ch2] * w;
+    ofs++;
+    if (ofs >= SPECTRUM_BUFSIZE >> 1) {
         ofs -= SPECTRUM_BUFSIZE >> 1;
-      }
     }
   }
+
   rfftw_one(plan, spectrumbuf_ch1, tmpbuf_ch1);
   rfftw_one(plan, spectrumbuf_ch2, tmpbuf_ch2);
-  if (normMode == NORM_MODE_EACH) {
-    max1 = 0;
-    max2 = 0;
-    maxsum = 0;
+
+  switch (normMode)
+  {
+  case NORM_MODE_EACH:
+    if (fftMode == FFT_MODE_LOG) max1 = max2 = maxsum = -100;
+    else max1 = max2 =  maxsum = 1e-10;
+    break;
+  case NORM_MODE_GLOBAL:
+    if (fftMode == FFT_MODE_LOG)
+    {
+      if (maxsum > -100)
+      {
+        w = 1e-5 * fftFrames;
+        max1 -= w; 
+        max2 -= w; 
+        maxsum -= w; 
+      }
+    }
+    else
+    {
+      if (maxsum > 0.001)
+      {
+        max1 *= 0.98;
+        max2 *= 0.98;
+        maxsum *= 0.98;
+      } 
+    }
+    break;
+  case NORM_MODE_FIXED:
+    if (fftMode == FFT_MODE_LOG) max1 = max2 = maxsum = MAX_SPECTRUM_DB;
+    else max1 = max2 = maxsum = 1.0;
+    break; 
+  default:
+    ;
   }
+
   n = fftFrames;
-  switch (fftMode) {
-  case FFT_MODE_POW:
-    for (l1 = 1; l1 < (n+1)/2 - 1; l1++) {
-      spectrumbuf_ch1[l1] = sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1]);
-      if ((spectrumbuf_ch1[l1] > max1) && (normMode != NORM_MODE_FIXED)) {
-        max1 = spectrumbuf_ch1[l1];
-      }
-      spectrumbuf_ch2[l1] = sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]);
-      spectrumbuf_sum[l1] = spectrumbuf_ch1[l1] + spectrumbuf_ch2[l1];
-      if ((spectrumbuf_ch2[l1] > max2) && (normMode != NORM_MODE_FIXED)) {
-        max2 = spectrumbuf_ch2[l1];
-      }
-      if ((spectrumbuf_sum[l1] > maxsum) && (normMode != NORM_MODE_FIXED)) {
-        maxsum = spectrumbuf_sum[l1];
-      }
+  sum = 0;
+  for (l1 = 1; l1 < (n+1)/2 - 1; l1++)
+  {
+    p1 = 4 * (sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1]));
+    p2 = 4 * (sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]));
+    switch (fftMode) {
+    case FFT_MODE_POW:
+      sum = p1 + p2;
+      break;
+    case FFT_MODE_ABS:
+      sum = sqrt(p1 + p2);
+      p1 = sqrt(p1);
+      p2 = sqrt(p2);
+      break;
+    case FFT_MODE_LOG:
+      sum = 10 * log10(p1 + p2);
+      p1 = 10 * log10(p1);
+      p2 = 10 * log10(p2);
+      break;
     }
-    break;
-  case FFT_MODE_ABS:
-    for (l1 = 1; l1 < (n+1)/2 - 1; l1++) {
-      spectrumbuf_ch1[l1] = sqrt(sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1]));
-      if ((spectrumbuf_ch1[l1] > max1) && (normMode != NORM_MODE_FIXED)) {
-        max1 = spectrumbuf_ch1[l1];
-      }
-      spectrumbuf_ch2[l1] = sqrt(sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]));
-      spectrumbuf_sum[l1] = sqrt(sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1])
-                                +sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]));
-      if ((spectrumbuf_ch2[l1] > max2) && (normMode != NORM_MODE_FIXED)) {
-        max2 = spectrumbuf_ch2[l1];
-      }
-      if ((spectrumbuf_sum[l1] > maxsum) && (normMode != NORM_MODE_FIXED)) {
-        maxsum = spectrumbuf_sum[l1];
-      }
-    }  
-    break;
-  case FFT_MODE_LOG:
-    for (l1 = 1; l1 < (n+1)/2 - 1; l1++) {
-      spectrumbuf_ch1[l1] = log(sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1]));
-      if ((spectrumbuf_ch1[l1] > max1) && (normMode != NORM_MODE_FIXED)) {
-        max1 = spectrumbuf_ch1[l1];
-      }
-      spectrumbuf_ch2[l1] = log(sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]));
-      spectrumbuf_sum[l1] = log(sqr(tmpbuf_ch1[l1]) + sqr(tmpbuf_ch1[n - l1])   
-                               +sqr(tmpbuf_ch2[l1]) + sqr(tmpbuf_ch2[n - l1]));
-      if ((spectrumbuf_ch2[l1] > max2) && (normMode != NORM_MODE_FIXED)) {
-        max2 = spectrumbuf_ch2[l1];
-      }
-      if ((spectrumbuf_sum[l1] > maxsum) && (normMode != NORM_MODE_FIXED)) {
-        maxsum = spectrumbuf_sum[l1];
-      }
+
+    if (normMode != NORM_MODE_FIXED)
+    {
+      if (p1 > max1) max1 = p1;
+      if (p2 > max2) max2 = p2;
+      if (sum > maxsum) maxsum = sum;
     }
-    break;
+  
+    spectrumbuf_ch1[l1] = p1;
+    spectrumbuf_ch2[l1] = p2;
+    spectrumbuf_sum[l1] = sum;
   }
+
   free(tmpbuf_ch1);
   free(tmpbuf_ch2);
   repaint(false);
@@ -405,9 +448,6 @@ spectrumModeType SpectrumScreen::setMode(spectrumModeType p_mode) {
 fftModeType SpectrumScreen::setFFTMode(fftModeType p_fftMode) {
  
   fftMode = p_fftMode;
-  max1 = 0;
-  max2 = 0;
-  maxsum = 0; 
   return(fftMode);
 }
 
@@ -420,6 +460,8 @@ viewModeType SpectrumScreen::setViewMode(viewModeType p_viewMode) {
 normModeType SpectrumScreen::setNormMode(normModeType p_normMode) {
  
   normMode = p_normMode;
+  if (fftMode == FFT_MODE_LOG) max1 = max2 = maxsum = -100;
+  else max1 = max2 =  maxsum = 1e-10;
   return(normMode);
 }
 
@@ -460,6 +502,12 @@ bool SpectrumScreen::toggleFreqZoom(bool p_freqZoom) {
 
   freqZoom = p_freqZoom;
   return(freqZoom);
+}
+
+bool SpectrumScreen::setEnableMouse(bool p_enableMouse) {
+
+  enableMouse = p_enableMouse;
+  return(enableMouse);
 }
 
 float SpectrumScreen::set_f_min(float p_f_min) {
@@ -592,36 +640,18 @@ void SpectrumScreen::initPalette (int index) {
   }
 }
 
-/*
 void SpectrumScreen::mousePressEvent(QMouseEvent *ev) {
-  
-  double tmp;
 
-  tmp = (double)ev->x() / (double)width() * (double)synthdata->rate / 2.0;
-  switch (ev->button()) {
-  case Qt::LeftButton: 
-    if (!freqZoom && ((tmp < f_max) || (f_min < 0))) f_min = tmp;
-    break;
-  case Qt::RightButton: 
-    if (!freqZoom && ((tmp > f_min) || (f_max < 0))) f_max = tmp;
-    break;
-  case Qt::MidButton: 
-    freqZoom = !freqZoom;
-    emit f_minmaxChanged();
-    break;
-  default:
-    break;
+  if (!enableMouse) {
+    return;
+  }
+  if (ev->button() == Qt::LeftButton) {
+    if (triggerMode == SPECTRUM_TRIGGERMODE_CONTINUOUS) {
+      triggerMode = SPECTRUM_TRIGGERMODE_SINGLE;
+    } else {
+      triggerMode = SPECTRUM_TRIGGERMODE_CONTINUOUS;
+      emit(runSpectrum());
+    }
   }
 }
 
-void SpectrumScreen::mouseMoveEvent(QMouseEvent *ev) {
-
-  if (freqZoom) {
-    f = (double)ev->x() / (double)width() * (f_max - f_min) + f_min;
-  } else {
-    f = (double)ev->x() / (double)width() * (double)synthdata->rate / 2.0;
-  }
-  if (f < 0) f = 0;
-  emit freqChanged();
-}  
-*/

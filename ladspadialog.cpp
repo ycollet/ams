@@ -112,6 +112,7 @@ LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *
   pluginCopyright->setAlignment(Qt::WordBreak | Qt::AlignLeft);
   QObject::connect(ladspaList, SIGNAL(selectionChanged()), this, SLOT(pluginHighlighted()));
 
+  extCtrlPortsCheck = new QCheckBox("Export control ports as module ports", this);
   QHBox *buttonBox = new QHBox(this);
   QPushButton *insertButton = new QPushButton("Create Plugin", buttonBox);
   QObject::connect(insertButton, SIGNAL(clicked()), this, SLOT(insertClicked()));  
@@ -130,7 +131,7 @@ void LadspaDialog::insertClicked() {
   if (ladspaList->selectedItem()) {
     if (synthdata->getLadspaIDs(ladspaList->selectedItem()->parent()->text(0),
                                 ladspaList->selectedItem()->text(0), &index, &n)) {
-      emit createLadspaModule(index, n, false);
+      emit createLadspaModule(index, n, false, extCtrlPortsCheck->isChecked());
     }
   }  
 }  
@@ -142,7 +143,7 @@ void LadspaDialog::insertPolyClicked() {
   if (ladspaList->selectedItem()) {
     if (synthdata->getLadspaIDs(ladspaList->selectedItem()->parent()->text(0), 
                                 ladspaList->selectedItem()->text(0), &index, &n)) {
-      emit createLadspaModule(index, n, true);
+      emit createLadspaModule(index, n, true, extCtrlPortsCheck->isChecked());
     }
   }
 }

@@ -34,9 +34,10 @@ class M_vca : public Module
     
   public: 
     float **gainData1, **gainData2, **inData1, **inData2;       
+    bool expMode;
                             
   public:
-    M_vca(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_vca(bool p_expMode, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_vca();
 
   protected:

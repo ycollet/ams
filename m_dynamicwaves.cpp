@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>
-#include <qcheckbox.h>
+#include <qslider.h>   
+#include <qcheckbox.h>  
 #include <qlabel.h>
 #include <qvbox.h>
 #include <qhbox.h>
@@ -17,17 +17,15 @@
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_dynamicwaves.h"
-#include "multi_envelope.h"
 #include "port.h"
 
-M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name, SynthData *p_synthdata)
+M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(1, parent, name, p_synthdata) {
 
-  QString qs,label;
+  QString qs;
   int l1, l2;
   QVBox *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
-  QVBox *envAttackTab[MODULE_DYNAMICWAVES_MAX_OSC];
-  QVBox *envReleaseTab[MODULE_DYNAMICWAVES_MAX_OSC];
+  QVBox *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
 
   M_type = M_type_dynamicwaves;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DYNAMICWAVES_WIDTH, MODULE_DYNAMICWAVES_HEIGHT);
@@ -38,9 +36,9 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   linFMGain = 0;
   oscCount = p_oscCount;
   allEnvTerminated = true;
+  timeScale = 1;
   for (l1 = 0; l1 < oscCount; l1++) {
     gain[l1] = 1;
-    timeScale[l1] = 1;
     osc_tune[l1] = 0;
     harmonic[l1] = 1 + l1;
     subharmonic[l1] = 1;
@@ -64,6 +62,7 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   }
   for (l1 = 0; l1 < MAXPOLY; l1++) {
     gate[l1] = false;
+    retrigger[l1] = false;
     noteActive[l1] = false;
     for (l2 = 0; l2 < oscCount; l2++) {
       phi[l1][l2] = 0;
@@ -77,11 +76,11 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   port_M_freq = new Port("Freq", PORT_IN, 0, this, synthdata);
   port_M_freq->move(0, 35);    
   port_M_freq->outTypeAcceptList.append(outType_audio);
-  portList.append(port_M_freq);
+  portList.append(port_M_freq); 
   port_M_exp = new Port("Exp. FM", PORT_IN, 1, this, synthdata);
-  port_M_exp->move(0, 55);
+  port_M_exp->move(0, 55);    
   port_M_exp->outTypeAcceptList.append(outType_audio);
-  portList.append(port_M_exp);
+  portList.append(port_M_exp); 
   port_M_lin = new Port("Lin. FM", PORT_IN, 2, this, synthdata);
   port_M_lin->move(0, 75);
   port_M_lin->outTypeAcceptList.append(outType_audio);
@@ -90,157 +89,98 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   port_gate->move(0, 95);
   port_gate->outTypeAcceptList.append(outType_audio);
   portList.append(port_gate);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);
-  port_out->move(width() - port_out->width(), 115);
+  port_retrigger = new Port("Retrigger", PORT_IN, 4, this, synthdata);
+  port_retrigger->move(0, 115);
+  port_retrigger->outTypeAcceptList.append(outType_audio);
+  portList.append(port_retrigger);
+  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out->move(width() - port_out->width(), 135);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("Dynamic Waves ID %d", moduleID);
   configDialog->setCaption(qs);
-
-
-  MultiEnvelope *menv = new MultiEnvelope(oscCount, &timeScale[0], &attack[0][0], &sustain[0], &release[0][0],configDialog->headerBox);
-
-  qs.sprintf("Tune/Modulation");
-  Parameter *p;
-  p = new IntParameter(this, "Octave","",0,6,&octave);
-  configDialog->addParameter(p,qs);
-  p = new FloatParameter(this, "Tune","",0.0,1.0,&tune);
-  configDialog->addParameter(p,qs);
-  p = new FloatParameter(this, "Exp. FM Gain","",0.0,1.0,&expFMGain);
-  configDialog->addParameter(p,qs);
-  p = new FloatParameter(this, "Lin. FM Gain","",0.0,1.0,&linFMGain);
-  configDialog->addParameter(p,qs);
-
-  qs.sprintf("Mixer");
+  configDialog->initTabWidget();
+  QStrList *waveFormNames = new QStrList(true);
+  waveFormNames->append("Sine");
+  waveFormNames->append("Saw");
+  waveFormNames->append("Tri");
+  waveFormNames->append("Rect");
+  waveFormNames->append("Saw 2");
+  QVBox *generalTab = new QVBox(configDialog->tabWidget);
+  configDialog->addMultiEnvelope(oscCount, &timeScale, &attack[0][0], &sustain[0], &release[0][0], generalTab);
+  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, generalTab);
+  configDialog->addSlider(0, 1, tune, "Tune", &tune, false, generalTab);
+  configDialog->addSlider(0, 10, expFMGain, "Exp. FM Gain", &expFMGain, false, generalTab);
+  configDialog->addSlider(0, 10, linFMGain, "Lin. FM Gain", &linFMGain, false, generalTab);
+  configDialog->addSlider(0.1, 10, timeScale, "Timescale", &timeScale, false, generalTab);
+  configDialog->addTab(generalTab, "Tune / Modulation");
+  QVBox *mixTab = new QVBox(configDialog->tabWidget);
   for (l1 = 0; l1 < oscCount; l1++) {
-    label.sprintf("Volume %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&gain[l1]);
-    configDialog->addParameter(p,qs);
+    qs.sprintf("Volume %d", l1);
+    configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
   }
-  qs.sprintf("Env. Time Scale");
+  configDialog->addTab(mixTab, "Mixer");
   for (l1 = 0; l1 < oscCount; l1++) {
-    label.sprintf("Time Scale %d", l1);
-    p = new FloatParameter(this,label,"",0.1,10.0,&timeScale[l1]);
-    configDialog->addParameter(p,qs);
-  }
-  EnumParameter *ep;
-  for (l1 = 0; l1 < oscCount; l1++) {
+    oscTab[l1] = new QVBox(configDialog->tabWidget);
+    qs.sprintf("Wave Form %d", l1);
+    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames->count(), waveFormNames, oscTab[l1]);
+    qs.sprintf("Octave %d", l1);
+    configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
+    qs.sprintf("Tune %d", l1);
+    configDialog->addSlider(0, 1, osc_tune[l1], qs, &osc_tune[l1], false, oscTab[l1]);
+    qs.sprintf("Harmonic %d", l1);
+    configDialog->addIntSlider(1, 16, harmonic[l1], qs, &harmonic[l1], oscTab[l1]);
+    qs.sprintf("Subharmonic %d", l1);
+    configDialog->addIntSlider(1, 16, subharmonic[l1], qs, &subharmonic[l1], oscTab[l1]);
+    qs.sprintf("Phi0 %d", l1);
+    configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
     qs.sprintf("Osc %d", l1);
-
-    label.sprintf("Wave Form %d", l1);
-    ep=new EnumParameter(this,label,"",(int *)&waveForm[l1]);
-    ep->addItem(DYNAMICWAVE_SINE,"Sine");
-    ep->addItem(DYNAMICWAVE_SAW,"Saw");
-    ep->addItem(DYNAMICWAVE_TRI,"Triangel");
-    ep->addItem(DYNAMICWAVE_RECT,"Square");
-    ep->addItem(DYNAMICWAVE_SAW2,"Saw 2");
-    configDialog->addParameter(ep,qs);
-
-    label.sprintf("Octave %d", l1);
-    p=new IntParameter(this,label,"",0,3,&osc_octave[l1]);
-    configDialog->addParameter(p,qs);
-    label.sprintf("Tune %d", l1);
-    p=new FloatParameter(this,label,"",0.0,1.0,&osc_tune[l1]);
-    configDialog->addParameter(p,qs);
-
-    label.sprintf("Harmonic %d", l1);
-    p=new IntParameter(this,label,"",1,16,&harmonic[l1]);
-    configDialog->addParameter(p,qs);
-
-    label.sprintf("Subharmonic %d", l1);
-    p=new IntParameter(this,label,"",1,16,&subharmonic[l1]);
-    configDialog->addParameter(p,qs);
-
-    label.sprintf("Phi0 %d", l1);
-    p=new FloatParameter(this,label,"",0.0,6.283,phi0[l1]);
-    configDialog->addParameter(p,qs);
-
+    configDialog->addTab(oscTab[l1], qs);
   }
   for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Attack %d", l1);
-
-    label.sprintf("Attack Time 0 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[1][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Level 0 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[2][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Time 1 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[3][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Level 1 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[4][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Time 2 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[5][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Level 2 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[6][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Attack Time 3 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[7][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-
-    qs.sprintf("Sustain / Release %d", l1);
-
-
-    label.sprintf("Delay %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&attack[0][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Sustain %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&sustain[l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Release Time 0 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&release[0][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Release Level 0 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&release[1][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Release Time 1 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&release[2][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Release Level 1 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&release[3][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
-
-    label.sprintf("Release Time 2 %d", l1);
-    p = new FloatParameter(this,label,"",0.0,1.0,&release[4][l1]);
-    configDialog->addParameter(p,qs);
-    connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+    envelopeTab[l1] = new QVBox(configDialog->tabWidget);
+    qs.sprintf("Delay %d", l1);
+    configDialog->addSlider(0, 1, attack[0][l1], qs, &attack[0][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Time 0 %d", l1);
+    configDialog->addSlider(0, 1, attack[1][l1], qs, &attack[1][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Level 0 %d", l1);
+    configDialog->addSlider(0, 1, attack[2][l1], qs, &attack[2][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Time 1 %d", l1);
+    configDialog->addSlider(0, 1, attack[3][l1], qs, &attack[3][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Level 1 %d", l1);
+    configDialog->addSlider(0, 1, attack[4][l1], qs, &attack[4][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Time 2 %d", l1);
+    configDialog->addSlider(0, 1, attack[5][l1], qs, &attack[5][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Level 2 %d", l1);
+    configDialog->addSlider(0, 1, attack[6][l1], qs, &attack[6][l1], false, envelopeTab[l1]);
+    qs.sprintf("Attack Time 3 %d", l1);
+    configDialog->addSlider(0, 1, attack[7][l1], qs, &attack[7][l1], false, envelopeTab[l1]);
+    qs.sprintf("Sustain %d", l1);
+    configDialog->addSlider(0, 1, sustain[l1], qs, &sustain[l1], false, envelopeTab[l1]);
+    qs.sprintf("Release Time 0 %d", l1);
+    configDialog->addSlider(0, 1, release[0][l1], qs, &release[0][l1], false, envelopeTab[l1]);
+    qs.sprintf("Release Level 0 %d", l1);
+    configDialog->addSlider(0, 1, release[1][l1], qs, &release[1][l1], false, envelopeTab[l1]);
+    qs.sprintf("Release Time 1 %d", l1);
+    configDialog->addSlider(0, 1, release[2][l1], qs, &release[2][l1], false, envelopeTab[l1]);
+    qs.sprintf("Release Level 1 %d", l1);
+    configDialog->addSlider(0, 1, release[3][l1], qs, &release[3][l1], false, envelopeTab[l1]);
+    qs.sprintf("Release Time 2 %d", l1);
+    configDialog->addSlider(0, 1, release[4][l1], qs, &release[4][l1], false, envelopeTab[l1]);
+    qs.sprintf("Envelope %d", l1);
+    configDialog->addTab(envelopeTab[l1], qs);
   }
-
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
+    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)),
+                     configDialog->multiEnvelopeList.at(0), SLOT(updateMultiEnvelope(int)));  
+  }
 }
 
 M_dynamicwaves::~M_dynamicwaves() {
 }
 
 void M_dynamicwaves::paintEvent(QPaintEvent *ev) {
-
+  
   QPainter p(this);
   QString qs;
   int l1;
@@ -267,7 +207,7 @@ void M_dynamicwaves::generateCycle() {
   float freq_const[MODULE_DYNAMICWAVES_MAX_OSC], freq_tune[MODULE_DYNAMICWAVES_MAX_OSC];
   float gain_linfm, log2, wave_period_2, current_gain;
   float gain_const[MODULE_DYNAMICWAVES_MAX_OSC], phi_const[MODULE_DYNAMICWAVES_MAX_OSC];
-  float t[8][MODULE_DYNAMICWAVES_MAX_OSC], tscale[MODULE_DYNAMICWAVES_MAX_OSC];
+  float t[8][MODULE_DYNAMICWAVES_MAX_OSC], tscale;
   float de_a[4][MODULE_DYNAMICWAVES_MAX_OSC];
   float de_d[3][MODULE_DYNAMICWAVES_MAX_OSC];
 
@@ -326,34 +266,53 @@ void M_dynamicwaves::generateCycle() {
       in_M_gate = NULL; 
       gateData = synthdata->zeroModuleData;
     }
+    if (port_retrigger->connectedPortList.count()) {
+      in_M_retrigger = (Module *)port_retrigger->connectedPortList.at(0)->parentModule;
+      if (!in_M_retrigger->cycleProcessing) {
+        in_M_retrigger->generateCycle();
+        retriggerData = in_M_retrigger->data[port_retrigger->connectedPortList.at(0)->index];
+      } else {
+        retriggerData = in_M_retrigger->lastdata[port_retrigger->connectedPortList.at(0)->index];
+      }
+    } else {
+      in_M_retrigger = NULL; 
+      retriggerData = synthdata->zeroModuleData;
+    }
     gain_linfm = 1000.0 * linFMGain;
+    tscale = timeScale * synthdata->rate;
     for (l3 = 0; l3 < oscCount; l3++) {
       gain_const[l3] = gain[l3] / (float)oscCount;
       freq_tune[l3] = 4.0313842 + octave + tune + osc_octave[l3] + osc_tune[l3];
       freq_const[l3] = wave_period / (float)synthdata->rate * (float)harmonic[l3] / (float)subharmonic[l3];
       phi_const[l3] = phi0[l3] * wave_period / (2.0 * PI);
-      tscale[l3] = timeScale[l3] * synthdata->rate;
-      de_a[0][l3] = (attack[1][l3] > 0) ? attack[2][l3] / (tscale[l3] * attack[1][l3]) : 0;
-      de_a[1][l3] = (attack[3][l3] > 0) ? (attack[4][l3] - attack[2][l3]) / (tscale[l3] * attack[3][l3]) : 0;
-      de_a[2][l3] = (attack[5][l3] > 0) ? (attack[6][l3] - attack[4][l3]) / (tscale[l3] * attack[5][l3]) : 0;
-      de_a[3][l3] = (attack[7][l3] > 0) ? (sustain[l3] - attack[6][l3]) / (tscale[l3] * attack[7][l3]) : 0;
-      de_d[0][l3] = (release[0][l3] > 0) ? (release[1][l3] - sustain[l3]) / (tscale[l3] * release[0][l3]) : 0;
-      de_d[1][l3] = (release[2][l3] > 0) ? (release[3][l3] - release[1][l3]) / (tscale[l3] * release[2][l3]) : 0;
-      de_d[2][l3] = (release[4][l3] > 0) ? - release[3][l3] / (tscale[l3] * release[4][l3]) : 0;
-      t[0][l3] = tscale[l3] * attack[0][l3];
-      t[1][l3] = t[0][l3] + tscale[l3] * attack[1][l3];
-      t[2][l3] = t[1][l3] + tscale[l3] * attack[3][l3];
-      t[3][l3] = t[2][l3] + tscale[l3] * attack[5][l3];
-      t[4][l3] = t[3][l3] + tscale[l3] * attack[7][l3];
-      t[5][l3] = tscale[l3] * release[0][l3];
-      t[6][l3] = t[5][l3] + tscale[l3] * release[2][l3];
-      t[7][l3] = t[6][l3] + tscale[l3] * release[4][l3];
+      de_a[0][l3] = (attack[1][l3] > 0) ? attack[2][l3] / (tscale * attack[1][l3]) : 0;
+      de_a[1][l3] = (attack[3][l3] > 0) ? (attack[4][l3] - attack[2][l3]) / (tscale * attack[3][l3]) : 0;
+      de_a[2][l3] = (attack[5][l3] > 0) ? (attack[6][l3] - attack[4][l3]) / (tscale * attack[5][l3]) : 0;
+      de_a[3][l3] = (attack[7][l3] > 0) ? (sustain[l3] - attack[6][l3]) / (tscale * attack[7][l3]) : 0;
+      de_d[0][l3] = (release[0][l3] > 0) ? (release[1][l3] - sustain[l3]) / (tscale * release[0][l3]) : 0;
+      de_d[1][l3] = (release[2][l3] > 0) ? (release[3][l3] - release[1][l3]) / (tscale * release[2][l3]) : 0;
+      de_d[2][l3] = (release[4][l3] > 0) ? - release[3][l3] / (tscale * release[4][l3]) : 0;
+      t[0][l3] = tscale * attack[0][l3];
+      t[1][l3] = t[0][l3] + tscale * attack[1][l3];
+      t[2][l3] = t[1][l3] + tscale * attack[3][l3];
+      t[3][l3] = t[2][l3] + tscale * attack[5][l3];
+      t[4][l3] = t[3][l3] + tscale * attack[7][l3];
+      t[5][l3] = tscale * release[0][l3];
+      t[6][l3] = t[5][l3] + tscale * release[2][l3];
+      t[7][l3] = t[6][l3] + tscale * release[4][l3];
     }
     for (l1 = 0; l1 < synthdata->poly; l1++) {  
       memset(data[0][l1], 0, synthdata->cyclesize * sizeof(float));
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         noteActive[l1] = !allEnvTerminated;
         allEnvTerminated = true;
+        if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) {
+          retrigger[l1] = true;
+        }  
+        if (retrigger[l1] && (retriggerData[l1][l2] < 0.5)) {
+          retrigger[l1] = false;
+        }
+
         for (l3 = 0; l3 < oscCount; l3++) {
           if (l3 == 0) {
             if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
@@ -374,9 +333,26 @@ void M_dynamicwaves::generateCycle() {
               for (l4 = 0; l4 < oscCount; l4++) {
                 noteOffOfs[l1][l4] = 0;
                 e_noteOff[l1][l4] = e[l1][l4];
-                de_release[l1][l4] = (release[0][l4] > 0) ? (release[1][l4] - e_noteOff[l1][l4]) / (tscale[l4] * release[0][l4]) : 0;
+                de_release[l1][l4] = (release[0][l4] > 0) ? (release[1][l4] - e_noteOff[l1][l4]) / (tscale * release[0][l4]) : 0;
               }
             }
+          }
+          if (retrigger[l1]) {
+            if (e[l1][l3] > 0) {
+              noteOnOfs[l1][l3] = 0;
+              if (e[l1][l3] < attack[2][l3]) {
+                noteOnOfs[l1][l3] = (de_a[0][l3] > 0) ? t[0][l3] + e[l1][l3] / de_a[0][l3] : t[0][l3];
+              } else if (e[l1][l3] < attack[4][l3]) {
+                noteOnOfs[l1][l3] = (de_a[1][l3] > 0) ? t[1][l3] + (e[l1][l3] - attack[2][l3]) / de_a[1][l3] : t[1][l3];
+              } else if (e[l1][l3] < attack[6][l3]) {
+                noteOnOfs[l1][l3] = (de_a[2][l3] > 0) ? t[2][l3] + (e[l1][l3] - attack[4][l3]) / de_a[2][l3] : t[2][l3];
+              } else if (e[l1][l3] <= sustain[l3]) {
+                noteOnOfs[l1][l3] = (de_a[3][l3] > 0) ? t[3][l3] + (e[l1][l3] - attack[6][l3]) / de_a[3][l3] : t[3][l3];
+              }
+            } else {
+              noteOnOfs[l1][l3] = 0;
+            }
+//            printf("e[%d][%d]: %lf           noteOnOfs [%d][%d]: %d\n", l1, l3, e[l1][l3], l1, l3, noteOnOfs[l1][l3]);
           }
           if (gate[l1]) {
             status = 1;
@@ -433,6 +409,8 @@ void M_dynamicwaves::generateCycle() {
             noteOffOfs[l1][l3]++;
             if (noteOffOfs[l1][l3] >= int(t[7][l3])) {
               oscActive[l1][l3] = false;
+              e[l1][l3] = 0;
+//              fprintf(stderr, "oscActive[%d][%d] = false, e[%d][%d] = %f\n", l1, l3, l1, l3, e[l1][l3]);
             }
 //            if (l3 == 0) {
 //              fprintf(stderr, "Release status: %d, e[%d][%d]: %f\n", status, l1, l3, e[l1][l3]);
