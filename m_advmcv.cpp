@@ -70,7 +70,10 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata)
   pitch = 0;
   pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
-    drift_sign[l1] = (l1 % 2) ? 1.0 : -1.0;
+    for(l2 = 0; l2 < MAXDRIFTARR; l2++) {
+      drift_sign[l1][l2] = (l2 % 2) ? 1.0 : -1.0;
+    }
+    detune_sign[l1] = (l1 % 2) ? 1.0 : -1.0;
     freq[l1] = 0;
     trig[l1] = 0;
     aftertouch_cv[l1] = 0;
@@ -87,6 +90,7 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata)
     qs.sprintf("Controller %d", l1);
     configDialog->addIntSlider(0, 127, controller_num[l1], qs, &controller_num[l1]);
   }
+  drift_pointer = 0;
 }
 
 M_advmcv::~M_advmcv() {
@@ -98,11 +102,11 @@ void M_advmcv::noteOnEvent(int osc) {
   int l1;
 
   trig[osc] = 1;
-  if (synthdata->drift_rate < 0.05) {
+  if (synthdata->detune_rate < 0.05) {
     for (l1 = 0; l1 < MAXPOLY; l1++) {
-      synthdata->drift_a[l1] = 2.0 * (double)random() / (double)RAND_MAX - 1.0;
-      synthdata->drift_c[l1] = 0;
-      synthdata->drift_r[l1] = 0;
+      synthdata->detune_a[l1] = 2.0 * (double)random() / (double)RAND_MAX - 1.0;
+      synthdata->detune_c[l1] = 0;
+      synthdata->detune_r[l1] = 0;
     }  
   }  
 }
@@ -114,23 +118,23 @@ void M_advmcv::noteOffEvent(int osc) {
 void M_advmcv::generateCycle() {
 
   int l1, l2, l3;
-  float gate, velocity, d, qrandmax, r;
+  float gate, velocity, d, qrandmax, r, dr;
 
+  qrandmax = 1.0 / (float)RAND_MAX;
+  r =  0.01 / (float)synthdata->rate;
   if (!cycleReady) {
     cycleProcessing = true;
-    qrandmax = 1.0 / (float)RAND_MAX;
-    d = synthdata->drift_amp * 0.00083333;
-    r =  0.01 / (float)synthdata->rate;
+    d = synthdata->detune_amp * 0.00083333;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
-      synthdata->drift_c[l1] = r * synthdata->drift_rate * (0.5 + qrandmax * (double)random());
+      synthdata->detune_c[l1] = r * synthdata->detune_rate * (0.5 + qrandmax * (double)random());
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
       velocity = (float)synthdata->velocity[l1] / 127.0;
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         data[0][l1][l2] = gate;
-        data[1][l1][l2] = freq[l1] + synthdata->drift_a[l1] * d;
-        synthdata->drift_a[l1] += drift_sign[l1] * synthdata->drift_c[l1];
-        if (fabs(synthdata->drift_a[l1]) > 1.0) drift_sign[l1] *= -1.0;
+        data[1][l1][l2] = freq[l1] + synthdata->detune_a[l1] * d;
+        synthdata->detune_a[l1] += detune_sign[l1] * synthdata->detune_c[l1];
+        if (fabs(synthdata->detune_a[l1]) > 1.0) detune_sign[l1] *= -1.0;
         data[2][l1][l2] = velocity;
         data[4][l1][l2] = aftertouch_cv[l1];
         data[5][l1][l2] = pitchbend_cv[l1];
@@ -143,6 +147,21 @@ void M_advmcv::generateCycle() {
       data[3][l1][15] = trig[l1]; // Added for interpolated input ports (e.g. m_vcenv.cpp)
       trig[l1] = 0;
     }
+  }
+  if (synthdata->drift_amp > 0.01) {
+    dr = synthdata->drift_amp * 0.00083333;
+    for (l1 = 0; l1 < synthdata->poly; l1++) {
+      synthdata->drift_c[l1][drift_pointer] = r * synthdata->drift_rate * (0.5 + qrandmax * (double)random());
+      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        data[1][l1][l2] += synthdata->drift_a[l1][drift_pointer] * dr;
+        synthdata->drift_a[l1][drift_pointer] += drift_sign[l1][drift_pointer] * synthdata->drift_c[l1][drift_pointer];
+        if (fabs(synthdata->drift_a[l1][drift_pointer]) > 1.0) drift_sign[l1][drift_pointer] *= -1.0;
+      }  
+    }
+    drift_pointer++;
+    if ((drift_pointer >= MAXDRIFTARR) || (drift_pointer >= port_note_out->connectedPortList.count())) {
+      drift_pointer = 0;
+    }  
   }
   cycleProcessing = false;
   cycleReady = true;

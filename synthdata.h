@@ -43,9 +43,14 @@ class SynthData : public QObject
     float **zeroModuleData;
     float edge;
 
-    float drift_a[MAXPOLY]; // Oscillator drift amplitude
-    float drift_c[MAXPOLY]; // Oscillator drift coefficient 
-    float drift_r[MAXPOLY]; // Oscillator drift rate 
+    float detune_a[MAXPOLY]; // Voice detune amplitude
+    float detune_c[MAXPOLY]; // Voice detune coefficient 
+    float detune_r[MAXPOLY]; // Voice detune rate 
+    float detune_rate;       // Global detune rate
+    float detune_amp;        // Global detune amplitude
+    float drift_a[MAXPOLY][MAXDRIFTARR]; // Oscillator drift amplitude
+    float drift_c[MAXPOLY][MAXDRIFTARR]; // Oscillator drift coefficient 
+    float drift_r[MAXPOLY][MAXDRIFTARR]; // Oscillator drift rate 
     float drift_rate;       // Global drift rate
     float drift_amp;        // Global drift amplitude
 

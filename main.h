@@ -22,6 +22,7 @@
 #define MAX_CAPT_PORTS             32
 #define MAX_PLAY_PORTS             32
 #define MAXPOLY                   128
+#define MAXDRIFTARR                 8
 #define MAX_SO                    256
 #define WAVE_PERIOD             65536
 #define M_MCV_MAX_FREQ        20000.0
