@@ -784,9 +784,9 @@ void ModularSynth::newM_lfo() {
   initNewModule((Module *)m);
 }
 
-void ModularSynth::newM_barberpole() {
+void ModularSynth::newM_mphlfo() {
 
-  M_barberpole *m = new M_barberpole(viewport(), "Barber Pole", synthdata);
+  M_mphlfo *m = new M_mphlfo(viewport(), "Multiphase LFO", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -1404,8 +1404,8 @@ void ModularSynth::load(QString *presetName) {
           case M_type_lfo: 
             newM_lfo();
             break;
-          case M_type_barberpole: 
-            newM_barberpole();
+          case M_type_mphlfo: 
+            newM_mphlfo();
             break;
           case M_type_noise: 
             newM_noise();

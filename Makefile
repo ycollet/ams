@@ -40,7 +40,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_vca.o m_vca.moc.o \
 	m_vcf.o m_vcf.moc.o \
 	m_lfo.o m_lfo.moc.o \
-	m_barberpole.o m_barberpole.moc.o \
+	m_mphlfo.o m_mphlfo.moc.o \
         m_noise.o m_noise.moc.o \
 	m_delay.o m_delay.moc.o \
 	m_seq.o m_seq.moc.o \
@@ -93,14 +93,14 @@ synthdata.o: synthdata.cpp synthdata.h module.h port.h m_env.h m_advenv.h m_vcen
 modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
-	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_barberpole.h \
+	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_mphlfo.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
 	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h main.h
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
-	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_barberpole.h \
+	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_mphlfo.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
 	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h
@@ -233,10 +233,10 @@ m_lfo.o: m_lfo.cpp m_lfo.h synthdata.h module.h port.h
 m_lfo.moc.o: m_lfo.moc.cpp m_lfo.h synthdata.h module.h port.h
 m_lfo.moc.cpp: m_lfo.h m_lfo.cpp
 	$(QT_BIN_DIR)/moc m_lfo.h -o m_lfo.moc.cpp
-m_barberpole.o: m_barberpole.cpp m_barberpole.h synthdata.h module.h port.h
-m_barberpole.moc.o: m_barberpole.moc.cpp m_barberpole.h synthdata.h module.h port.h
-m_barberpole.moc.cpp: m_barberpole.h m_barberpole.cpp
-	$(QT_BIN_DIR)/moc m_barberpole.h -o m_barberpole.moc.cpp
+m_mphlfo.o: m_mphlfo.cpp m_mphlfo.h synthdata.h module.h port.h
+m_mphlfo.moc.o: m_mphlfo.moc.cpp m_mphlfo.h synthdata.h module.h port.h
+m_mphlfo.moc.cpp: m_mphlfo.h m_mphlfo.cpp
+	$(QT_BIN_DIR)/moc m_mphlfo.h -o m_mphlfo.moc.cpp
 m_noise.o: m_noise.cpp m_noise.h synthdata.h module.h port.h
 m_noise.moc.o: m_noise.moc.cpp m_noise.h synthdata.h module.h port.h
 m_noise.moc.cpp: m_noise.h m_noise.cpp

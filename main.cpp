@@ -154,7 +154,6 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Analogue Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
   newModulePopup->insertItem("Advanced ENV", modularSynth, SLOT(newM_advenv()));
   newModulePopup->insertItem("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
-  newModulePopup->insertItem("Barber Pole", modularSynth, SLOT(newM_barberpole()));
   newModulePopup->insertItem("Comment", modularSynth, SLOT(new_textEdit()));
   newModulePopup->insertItem("Converter", modularSynth, SLOT(newM_conv()));
   newModulePopup->insertItem("CVS", modularSynth, SLOT(newM_cvs()));
@@ -173,6 +172,7 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Mixer 2 -> 1", modularSynth, SLOT(newM_mix_2()));
   newModulePopup->insertItem("Mixer 4 -> 1", modularSynth, SLOT(newM_mix_4()));
   newModulePopup->insertItem("Mixer 8 -> 1", modularSynth, SLOT(newM_mix_8()));
+  newModulePopup->insertItem("Multiphase LFO", modularSynth, SLOT(newM_mphlfo()));
   newModulePopup->insertItem("Noise / Random", modularSynth, SLOT(newM_noise()));
   newModulePopup->insertItem("PCM Out", modularSynth, SLOT(newM_pcmout()));
   newModulePopup->insertItem("PCM In", modularSynth, SLOT(newM_pcmin()));  

@@ -64,7 +64,7 @@
 #include "m_scquantizer.h"
 #include "m_function.h"
 #include "m_vcdoubledecay.h"
-#include "m_barberpole.h"
+#include "m_mphlfo.h"
 #include "midiwidget.h"
 #include "guiwidget.h"
 #include "prefwidget.h"
@@ -170,7 +170,7 @@ class ModularSynth : public QScrollView
     void newM_vca_exp();
     void newM_vcf();
     void newM_lfo();
-    void newM_barberpole();
+    void newM_mphlfo();
     void newM_noise();
     void newM_ringmod();
     void newM_inv();

@@ -1,5 +1,5 @@
-#ifndef M_BARBERPOLE_H
-#define M_BARBERPOLE_H
+#ifndef M_MPHLFO_H
+#define M_MPHLFO_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,10 +20,10 @@
 #include "module.h"
 #include "port.h"
 
-#define MODULE_BARBERPOLE_WIDTH                110
-#define MODULE_BARBERPOLE_HEIGHT               360
+#define MODULE_MPHLFO_WIDTH                115
+#define MODULE_MPHLFO_HEIGHT               360
 
-class M_barberpole : public Module
+class M_mphlfo : public Module
 {
   Q_OBJECT
 
@@ -36,8 +36,8 @@ class M_barberpole : public Module
     int mode;
         
   public:
-    M_barberpole(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
-    ~M_barberpole();
+    M_mphlfo(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    ~M_mphlfo();
 
   public slots:
     void generateCycle();

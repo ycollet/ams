@@ -16,18 +16,18 @@
 #include <qstrlist.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "m_barberpole.h"
+#include "m_mphlfo.h"
 #include "port.h"
 
-M_barberpole::M_barberpole(QWidget* parent, const char *name, SynthData *p_synthdata) 
+M_mphlfo::M_mphlfo(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(16, parent, name, p_synthdata) {
 
   QString qs;
   int l1, l2;
 
-  M_type = M_type_barberpole;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_BARBERPOLE_WIDTH, 
-              MODULE_BARBERPOLE_HEIGHT);
+  M_type = M_type_mphlfo;
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MPHLFO_WIDTH, 
+              MODULE_MPHLFO_HEIGHT);
   for (l1 = 0; l1 < 16; l1++) {
     if (l1 < 8) {
       qs.sprintf("Saw Out %4d", l1 * 45);
@@ -35,7 +35,7 @@ M_barberpole::M_barberpole(QWidget* parent, const char *name, SynthData *p_synth
       qs.sprintf("Tri Out %4d", (l1-8) * 45);
     }  
     port_out[l1] = new Port(qs, PORT_OUT, l1, this, synthdata);
-    port_out[l1]->move(MODULE_BARBERPOLE_WIDTH - port_out[l1]->width(), 
+    port_out[l1]->move(MODULE_MPHLFO_WIDTH - port_out[l1]->width(), 
                        35 + 20 * l1);
     port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
@@ -57,14 +57,14 @@ M_barberpole::M_barberpole(QWidget* parent, const char *name, SynthData *p_synth
   modeNames->append("Saw Down");
   modeNames->append("Saw Up (0..135) / Saw Down (180..315)");
   configDialog->addComboBox(mode, "Saw Mode", &mode, modeNames->count(), modeNames);
-  qs.sprintf("Barber Pole ID %d", moduleID);
+  qs.sprintf("Multiphase LFO ID %d", moduleID);
   configDialog->setCaption(qs);
 }
 
-M_barberpole::~M_barberpole() {
+M_mphlfo::~M_mphlfo() {
 }
 
-void M_barberpole::generateCycle() {
+void M_mphlfo::generateCycle() {
 
   int l1, l2, l3;
   double tri45, tri90, tri135, saw45, saw90, saw135, saw180, saw225, saw270, saw315;
@@ -265,5 +265,5 @@ void M_barberpole::generateCycle() {
   }
 }
 
-void M_barberpole::showConfigDialog() {
+void M_mphlfo::showConfigDialog() {
 }
