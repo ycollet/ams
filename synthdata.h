@@ -64,6 +64,7 @@ class SynthData : public QObject
     QList<QObject> moduleList;
     QList<QObject> listM_env;
     QList<QObject> listM_vcenv;
+    QList<QObject> listM_vcenv2;
     QList<QObject> listM_advenv;
     QList<QObject> listM_dynamicwaves;
     QList<QObject> listM_mcv;

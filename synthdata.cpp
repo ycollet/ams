@@ -6,6 +6,7 @@
 #include "synthdata.h"
 #include "m_env.h"
 #include "m_vcenv.h"
+#include "m_vcenv2.h"
 #include "m_pcmout.h"
 #include "m_pcmin.h"
 #include "m_advenv.h"

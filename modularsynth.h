@@ -30,6 +30,7 @@
 #include "m_seq.h"
 #include "m_env.h"
 #include "m_vcenv.h"
+#include "m_vcenv2.h"
 #include "m_advenv.h"
 #include "m_mcv.h"
 #include "m_advmcv.h"
@@ -147,6 +148,7 @@ class ModularSynth : public QScrollView
     void newM_seq_32();
     void newM_env();
     void newM_vcenv();
+    void newM_vcenv2();
     void newM_vcpanning();
     void newM_advenv();
     void newM_mcv();

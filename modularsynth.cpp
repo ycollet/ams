@@ -698,6 +698,13 @@ void ModularSynth::newM_vcenv() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_vcenv2() {
+
+  M_vcenv2 *m = new M_vcenv2(viewport(), "VC ENV II", synthdata);
+  synthdata->listM_vcenv2.append(m);
+  initNewModule((Module *)m);
+}
+
 void ModularSynth::newM_vcpanning() {
 
   M_vcpanning *m = new M_vcpanning(viewport(), "VC Panning", synthdata);
@@ -1057,6 +1064,9 @@ void ModularSynth::deleteModule(Module *m) {
   if (m->M_type == M_type_vcenv) {
     synthdata->listM_vcenv.removeRef((QObject *)m);
   }
+  if (m->M_type == M_type_vcenv2) {
+    synthdata->listM_vcenv2.removeRef((QObject *)m);
+  }
   if (m->M_type == M_type_advenv) {
     synthdata->listM_advenv.removeRef((QObject *)m);
   }
@@ -1327,6 +1337,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_vcenv: 
             newM_vcenv();
+            break;
+          case M_type_vcenv2: 
+            newM_vcenv2();
             break;
           case M_type_vcpanning: 
             newM_vcpanning();
