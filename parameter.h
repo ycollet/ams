@@ -11,6 +11,14 @@
 #include <qdict.h>
 #include <qmap.h>
 
+//this seems to be neccessary for min/max to work ????
+//<sing> i'm going slightly maaaad....</sing>
+#include <algorithm>
+//No. fuckit! i will not include stl only for this!
+//
+//#define min ((__a),(__b)) ( (__a) < (__b) ? (__a) : (__b) )
+//#define max ((__a),(__b)) ( (__a) > (__b) ? (__a) : (__b) )
+
 /*! @file parameter.h
  *
  *  @brief
