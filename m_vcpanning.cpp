@@ -69,7 +69,9 @@ M_vcpanning::M_vcpanning(QWidget* parent, const char *name, SynthData *p_synthda
   configDialog->addSlider(0, 2, panGain, "Pan Gain", &panGain);
   QStrList *panModeNames = new QStrList(true);
   panModeNames->append("VC control");
-  panModeNames->append("Fixed alternating panorama");
+  panModeNames->append("Fixed alternating panorama, full width");
+  panModeNames->append("Fixed alternating panorama, half width");
+  panModeNames->append("Fixed alternating panorama, quarter width");
   panModeNames->append("Mono");
   configDialog->addComboBox(0, "Panning Mode", &panMode, panModeNames->count(), panModeNames);
   qs.sprintf("VC Panning ID %d", moduleID);
@@ -82,41 +84,51 @@ M_vcpanning::~M_vcpanning() {
 void M_vcpanning::generateCycle() {
 
   int l1, l2;
-  double pan[2], po, pg, x, y;
+  double pan[2], x, y, x_2;
 
   if (!cycleReady) {
     cycleProcessing = true;
 
     inData = port_M_in->getinputdata ();
     panData = port_M_pan->getinputdata ();
-    po = panOffset / 2.0;
-    pg = panGain / 2.0;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         switch (panMode) {
-          case 0: x = po + pg * panData[l1][l2];
-                  y = 0.2125 * (1.0 + x * x);
-                  pan[1] = 0.5 * (1.0 + x) + y;
-                  pan[0] = 0.5 * (1.0 - x) + y;
-                  if (pan[0] < 0) pan[0] = 0;
-                  else if (pan[0] > 1) pan[0] = 1;
-                  if (pan[1] < 0) pan[1] = 0;
-                  else if (pan[1] > 1) pan[1] = 1;
+          case 0: x = panOffset + panGain * panData[l1][l2];
+                  x_2 = 0.5 * x;
+                  if (x < -1) x = -1;
+                  if (x > 1) x = 1;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;
+                  pan[0] = (0.5 - x_2) + y;
                   data[0][l1][l2] = pan[0] * inData[l1][l2];
                   data[1][l1][l2] = pan[1] * inData[l1][l2];
                   break;
           case 1: x = panPos[l1];
-                  y = 0.2125 * (1.0 + x * x);
-                  pan[1] = 0.5 * (1.0 + x) + y;
-                  pan[0] = 0.5 * (1.0 - x) + y;
-                  if (pan[0] < 0) pan[0] = 0;
-                  else if (pan[0] > 1) pan[0] = 1;
-                  if (pan[1] < 0) pan[1] = 0;
-                  else if (pan[1] > 1) pan[1] = 1;
+                  x_2 = 0.5 * x;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;    
+                  pan[0] = (0.5 - x_2) + y;  
                   data[0][l1][l2] = pan[0] * inData[l1][l2];
                   data[1][l1][l2] = pan[1] * inData[l1][l2];
                   break; 
-          case 2: data[0][l1][l2] = inData[l1][l2];
+          case 2: x = 0.5 * panPos[l1];
+                  x_2 = 0.5 * x;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;    
+                  pan[0] = (0.5 - x_2) + y;  
+                  data[0][l1][l2] = pan[0] * inData[l1][l2];
+                  data[1][l1][l2] = pan[1] * inData[l1][l2];
+                  break; 
+          case 3: x = 0.25 * panPos[l1];
+                  x_2 = 0.5 * x;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;    
+                  pan[0] = (0.5 - x_2) + y;  
+                  data[0][l1][l2] = pan[0] * inData[l1][l2];
+                  data[1][l1][l2] = pan[1] * inData[l1][l2];
+                  break; 
+          case 4: data[0][l1][l2] = inData[l1][l2];
                   data[1][l1][l2] = inData[l1][l2];
                   break;
         }
