@@ -19,7 +19,7 @@ CanvasFunction::CanvasFunction(QCanvas *canvas, int p_rtti_id, int p_pointCount,
     QCanvasEllipse *canvasPoint = new QCanvasEllipse(canvas);
     canvasPoint->setBrush(QBrush(color));
     canvasPoint->setPen(QPen(color, 2));
-    canvasPoint->setSize(6, 6);
+    canvasPoint->setSize(7, 7);
     canvasPoint->setVisible(TRUE);
     canvasPoints.append(canvasPoint);
   }

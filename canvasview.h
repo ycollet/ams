@@ -18,7 +18,11 @@ class CanvasView : public QCanvasView
     virtual void contentsMousePressEvent (QMouseEvent* );
     virtual void contentsMouseReleaseEvent (QMouseEvent* );
     virtual void contentsMouseMoveEvent (QMouseEvent* );
-    
+  
+  signals:
+    void mousePressed(QMouseEvent* );
+    void mouseReleased(QMouseEvent* );
+    void mouseMoved(QMouseEvent* );    
 };
   
 #endif

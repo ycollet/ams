@@ -24,6 +24,7 @@
 
 #define MODULE_FUNCTION_WIDTH                 85
 #define MODULE_FUNCTION_HEIGHT                40
+#define MODULE_FUNCTION_DEFAULT_POINTCOUNT     8
        
 class M_function : public Module
 {
@@ -34,6 +35,7 @@ class M_function : public Module
     Port *port_in;
     float gainIn, gainOut;
     QPointArray *points[MAX_FUNCTIONS];
+    int i[MAX_FUNCTIONS];
         
   public: 
     float **inData;
