@@ -213,13 +213,12 @@ int main(int argc, char *argv[])
   }
   getcwd(buf, 2048);
   modularSynth->setSavePath(QString(buf));
+  modularSynth->go (enableJack);
   if (havePreset)
   {
     fprintf(stderr, "Loading preset %s\n", presetName.latin1()); 
     modularSynth->load(&presetName);
   }
-
-  modularSynth->go (enableJack);
 
   return qApp->exec();
 }
