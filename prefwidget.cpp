@@ -31,7 +31,7 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   setMargin(10);
   setSpacing(5);
   synthdata = p_synthdata;
-  updateColors();
+  recallColors();
 
   QWidget *colorGridWidget = new QWidget(this);
   QGridLayout *colorLayout = new QGridLayout(colorGridWidget, 12, 2, 10);
@@ -97,7 +97,10 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   new QWidget(buttonContainer);
   QPushButton *applyButton = new QPushButton("Apply", buttonContainer);
   new QWidget(buttonContainer);
-  QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
+  QPushButton *okButton = new QPushButton("OK", buttonContainer);
+  new QWidget(buttonContainer);
+  QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
+  QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(applyPref()));  
   QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
 }
 
@@ -176,7 +179,7 @@ void PrefWidget::loadPref(QString config_fn) {
     }   
     f.close();
   }        
-  updateColors();
+  recallColors();
   refreshColors();
 }
 
@@ -201,8 +204,15 @@ void PrefWidget::savePref(QString config_fn) {
 
 void PrefWidget::submitPref() {
 
+  storeColors();
   emit prefChanged();
   close();
+}
+
+void PrefWidget::applyPref() {
+
+  storeColors();
+  emit prefChanged();
 }
 
 void PrefWidget::refreshColors() {
@@ -215,7 +225,7 @@ void PrefWidget::refreshColors() {
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
 }
 
-void PrefWidget::updateColors() {
+void PrefWidget::recallColors() {
 
   colorBackground = synthdata->colorBackground;
   colorModuleBackground = synthdata->colorModuleBackground; 
@@ -225,6 +235,17 @@ void PrefWidget::updateColors() {
   colorJack = synthdata->colorJack;
 }
 
+void PrefWidget::storeColors() {
+
+  synthdata->colorBackground = colorBackground;
+  synthdata->colorModuleBackground = colorModuleBackground;
+  synthdata->colorModuleBorder = colorModuleBorder;
+  synthdata->colorModuleFont = colorModuleFont;
+  synthdata->colorPortFont1 = colorModuleFont;
+  synthdata->colorCable = colorCable;
+  synthdata->colorJack = colorJack;
+}
+
 void PrefWidget::colorBackgroundClicked() {
 
   QColor tmp;
@@ -232,7 +253,6 @@ void PrefWidget::colorBackgroundClicked() {
   tmp = QColorDialog::getColor(colorBackground);
   if (tmp.isValid()) {
     colorBackground = tmp;
-    synthdata->colorBackground = tmp;
     refreshColors();
   }
 }
@@ -244,8 +264,7 @@ void PrefWidget::colorModuleBackgroundClicked() {
 
   tmp = QColorDialog::getColor(colorModuleBackground);
   if (tmp.isValid()) {
-    synthdata->colorModuleBackground = tmp;
-    updateColors();
+    colorModuleBackground = tmp;
     refreshColors();
   }
 }
@@ -256,8 +275,7 @@ void PrefWidget::colorModuleBorderClicked() {
 
   tmp = QColorDialog::getColor(colorModuleBorder);
   if (tmp.isValid()) {       
-    synthdata->colorModuleBorder = tmp;
-    updateColors();
+    colorModuleBorder = tmp;
     refreshColors();
   }
 }
@@ -268,8 +286,7 @@ void PrefWidget::colorModuleFontClicked() {
 
   tmp = QColorDialog::getColor(colorModuleFont);
   if (tmp.isValid()) {       
-    synthdata->colorModuleFont = tmp;    
-    updateColors();
+    colorModuleFont = tmp;    
     refreshColors();
   }
 }
@@ -280,8 +297,7 @@ void PrefWidget::colorCableClicked() {
 
   tmp = QColorDialog::getColor(synthdata->colorCable);
   if (tmp.isValid()) {       
-    synthdata->colorCable = tmp;    
-    updateColors();
+    colorCable = tmp;    
     refreshColors();
   }
 }
@@ -292,8 +308,7 @@ void PrefWidget::colorJackClicked() {
 
   tmp = QColorDialog::getColor(synthdata->colorJack);
   if (tmp.isValid()) {       
-    synthdata->colorJack = tmp;    
-    updateColors();
+    colorJack = tmp;    
     refreshColors();
   }
 }

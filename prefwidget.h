@@ -50,8 +50,10 @@ class PrefWidget : public QVBox
     void loadPref(QString config_fn);
     void savePref(QString config_fn);
     void submitPref();
+    void applyPref();
     void refreshColors();
-    void updateColors();
+    void recallColors();
+    void storeColors();
     void colorBackgroundClicked();
     void colorModuleBackgroundClicked();
     void colorModuleBorderClicked();

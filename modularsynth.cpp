@@ -2073,6 +2073,6 @@ void ModularSynth::updateColors() {
   synthdata->colorModuleFont = colorModuleFont;
   synthdata->colorPortFont1 = colorModuleFont;
   synthdata->colorPortFont2 = QColor(255, 240, 140);
-  prefWidget->updateColors();
+  prefWidget->recallColors();
   refreshColors();
 }
