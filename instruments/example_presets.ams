@@ -1,35 +1,35 @@
 Module 22 1 141 179 0 0
-Port 0 0 1 9
-Port 1 3 1 9
+ColorP 0 0 1 9 250 200 50 180 180 180
+ColorP 1 3 1 9 250 200 50 180 180 180
 FSlider 1 0 16384 0 1638 163840 1
-FSlider 1 1 7925 0 0 16384 1
+FSlider 1 1 11468 0 0 16384 1
 FSlider 1 2 0 0 0 16384 1
-FSlider 1 3 155 0 0 16384 1
+FSlider 1 3 541 0 0 16384 1
 FSlider 1 4 11438 0 0 16384 1
-FSlider 1 5 77 0 0 16384 1
-FSlider 1 6 16384 0 0 16384 1
-FSlider 1 7 0 0 0 16384 1
-FSlider 1 8 16384 0 0 16384 1
-FSlider 1 9 12984 0 0 16384 1
+FSlider 1 5 309 0 0 16384 1
+FSlider 1 6 3632 0 0 16384 1
+FSlider 1 7 927 0 0 16384 1
+FSlider 1 8 14745 0 0 16384 1
+FSlider 1 9 2164 0 0 16384 1
 FSlider 1 10 819 0 0 16384 1
-FSlider 1 11 4814 0 0 16384 1
+FSlider 1 11 8192 0 0 16384 1
 FSlider 1 12 819 0 0 16384 1
-FSlider 1 13 3184 0 0 16384 1
-FSlider 1 14 2329 0 0 16384 1
-Module 6 3 141 33 0 mvclpf24 Mvclpf-3
-Port 0 2 3 4
-Port 1 1 3 9
-Port 2 0 3 1
-FSlider 3 0 163840 0 -983040 163840 1
-FSlider 3 1 -81920 0 -81920 81920 1
-FSMIDI 3 1 13 0 0
-FSlider 3 2 163840 0 0 163840 1
-FSlider 3 3 0 0 0 16384 1
-FSMIDI 3 3 10 0 1
+FSlider 1 13 3276 0 0 16384 1
+FSlider 1 14 819 0 0 16384 1
+Module 6 3 141 33 2 mvclpf24 Mvclpf-3
+ColorP 0 2 3 4 250 200 50 180 180 180
+ColorP 1 1 3 9 250 200 50 180 180 180
+ColorP 2 0 3 1 250 200 50 180 180 180
+FSlider 3 0 -65536 0 -983040 163840 1
+FSlider 3 1 -35478 0 -81920 81920 1
+FSlider 3 2 56343 0 0 163840 1
+FSlider 3 3 1290 0 0 16384 1
 FSlider 3 4 0 0 0 16384 1
-FSlider 3 5 -81189 0 -245760 245760 1
+FSlider 3 5 65610 0 -245760 245760 1
+FSMIDI 3 1 13 0 0
+FSMIDI 3 3 10 0 1
 Module 1 4 390 183 0 0
-Port 1 1 4 9
+ColorP 1 1 4 9 250 200 50 180 180 180
 FSlider 4 0 0 0 0 16384 1
 FSlider 4 1 8192 0 1638 14745 1
 FSlider 4 2 0 0 0 16384 1
@@ -41,14 +41,14 @@ ISlider 4 1 1 1
 ISlider 4 2 1 1
 ComboBox 4 0 0 1
 Module 7 5 602 182 0 0
-Port 0 0 5 7
-Port 1 1 5 7
-FSlider 5 0 8192 0 0 16384 1
+ColorP 0 0 5 7 250 200 50 180 180 180
+ColorP 1 1 5 7 250 200 50 180 180 180
+FSlider 5 0 4855 0 0 16384 1
 FSlider 5 1 8192 0 0 16384 1
 FSlider 5 2 8192 0 0 16384 1
-ComboBox 5 0 1 1
-Module 6 7 507 72 0 gverb_1216 GVerb
-Port 0 0 7 8
+ComboBox 5 0 0 1
+Module 6 7 507 72 0 gverb_1216 gverb
+ColorP 0 0 7 8 250 200 50 180 180 180
 FSlider 7 0 1790093 0 16384 4915200 1
 FSlider 7 1 30685 0 1638 5898240 1
 FSlider 7 2 2018 0 0 16384 1
@@ -57,8 +57,8 @@ FSlider 7 4 0 0 -1146880 0 1
 FSlider 7 5 -107343 0 -1146880 0 1
 FSlider 7 6 -50847 0 -1146880 0 1
 Module 2 8 392 16 0 0
-Port 0 0 8 1
-Port 2 0 8 3
+ColorP 0 0 8 1 250 200 50 180 180 180
+ColorP 2 0 8 3 250 200 50 180 180 180
 FSlider 8 0 0 0 0 16384 1
 FSlider 8 1 0 0 0 16384 1
 FSlider 8 2 16384 0 0 32768 1
@@ -80,21 +80,21 @@ Parameter "Attack Time 1 ID 1" 1 5 0 16384 0
 Parameter "Attack Time 2 ID 1" 1 7 0 16384 0
 Parameter "Attack Time 3 ID 1" 1 9 0 16384 0
 Frame "Envelope Release Level" 0
-Parameter "Release Level 0  ID 1" 1 11 0 16384 0
-Parameter "Release Level 1  ID 1" 1 13 0 16384 0
+Parameter "Release Level 0 ID 1" 1 11 0 16384 0
+Parameter "Release Level 1 ID 1" 1 13 0 16384 0
 Frame "Envelope Release Time" 0
-Parameter "Release Time 0  ID 1" 1 10 0 16384 0
-Parameter "Release Time 1  ID 1" 1 12 0 16384 0
-Parameter "Release Time 2  ID 1" 1 14 0 16384 0
+Parameter "Release Time 0 ID 1" 1 10 0 16384 0
+Parameter "Release Time 1 ID 1" 1 12 0 16384 0
+Parameter "Release Time 2 ID 1" 1 14 0 16384 0
 Frame "Envelope General Settings" 0
-Parameter "Sustain  ID 1" 1 1 0 16384 0
-Parameter "Time Scale  ID 1" 1 0 1638 163840 0
-Parameter "Delay  ID 1" 1 2 0 16384 0
+Parameter "Sustain ID 1" 1 1 0 16384 0
+Parameter "Time Scale ID 1" 1 0 1638 163840 0
+Parameter "Delay ID 1" 1 2 0 16384 0
 Frame "Filter" 1
 Parameter "Cutoff" 3 1 -81920 81920 0
 Parameter "Resonance" 3 3 0 16384 0
 Parameter "Filter Envelope Amount" 3 2 0 163840 0
-Parameter "Input gain (dB)  " 3 0 -983040 163840 0
+Parameter "Input gain (dB) " 3 0 -983040 163840 0
 Parameter "Output gain (dB)" 3 5 -245760 245760 0
 Program 0 11438
 Program 0 3632
