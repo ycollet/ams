@@ -337,6 +337,7 @@ void GuiWidget::clearPresets() {
   for (l1 = 0; l1 < MAX_PRESETS; l1++) {
     presetList[l1].clear();
   }
+  presetNameList.clear();
   setPresetCount(0);
 }
 
@@ -346,6 +347,7 @@ void GuiWidget::clearGui() {
   frameBoxList.clear();
   tabList.clear();
   parameterList.clear();
+  presetNameList.clear();
   frameNameList.clear();
   tabNameList.clear();
   tabWidget = new QTabWidget(this);

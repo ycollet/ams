@@ -56,14 +56,14 @@ FSlider 7 3 14729 0 0 16384 1
 FSlider 7 4 0 0 -1146880 0 1
 FSlider 7 5 -107343 0 -1146880 0 1
 FSlider 7 6 -50847 0 -1146880 0 1
-Module 2 8 392 16 1 0
+Module 2 8 392 16 0 0
 Port 0 0 8 1
 Port 2 0 8 3
-FSlider 8 0 -113175 1 -113176 37725 1
-FSlider 8 1 -113175 1 -113176 37725 1
-FSlider 8 2 0 1 -113176 11356 1
-FSlider 8 3 0 1 -113176 11356 1
-FSlider 8 4 0 1 -113176 11356 1
+FSlider 8 0 0 0 0 16384 1
+FSlider 8 1 0 0 0 16384 1
+FSlider 8 2 16384 0 0 32768 1
+FSlider 8 3 16384 0 0 32768 1
+FSlider 8 4 16384 0 0 32768 1
 Module 10 9 5 81 0 0
 FSlider 9 0 0 0 -16384 16384 1
 ISlider 9 0 24 1
@@ -269,48 +269,6 @@ Program 6 0
 Program 6 163840
 Program 6 163840
 Program 6 -81189
-PresetName "Preset 00"
-PresetName "Preset 01"
-PresetName "Preset 02"
-PresetName "Preset 03"
-PresetName "Preset 04"
-PresetName "Preset 05"
-PresetName "Preset 06"
-PresetName "Preset 07"
-PresetName "Preset 08"
-PresetName "Preset 09"
-PresetName "Preset 10"
-PresetName "Preset 11"
-PresetName "Preset 12"
-PresetName "Preset 13"
-PresetName "Preset 14"
-PresetName "Preset 15"
-PresetName "Preset 16"
-PresetName "Preset 17"
-PresetName "Preset 18"
-PresetName "Preset 19"
-PresetName "Preset 20"
-PresetName "Preset 00"
-PresetName "Preset 01"
-PresetName "Preset 02"
-PresetName "Preset 03"
-PresetName "Preset 04"
-PresetName "Preset 05"
-PresetName "Preset 06"
-PresetName "Preset 07"
-PresetName "Preset 08"
-PresetName "Preset 09"
-PresetName "Preset 10"
-PresetName "Preset 11"
-PresetName "Preset 12"
-PresetName "Preset 13"
-PresetName "Preset 14"
-PresetName "Preset 15"
-PresetName "Preset 16"
-PresetName "Preset 17"
-PresetName "Preset 18"
-PresetName "Preset 19"
-PresetName "Preset 20"
 PresetName "Preset 00"
 PresetName "Preset 01"
 PresetName "Preset 02"
