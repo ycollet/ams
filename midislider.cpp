@@ -26,7 +26,6 @@ MidiSlider::MidiSlider(QObject *parentModule, float minValue, float maxValue, fl
   isLog = p_isLog;
   isMaster = true;
   setSpacing(1);
-//  setMargin(1);
   new QWidget(this);
   QVBox *sliderBox = new QVBox(this);
   sliderBox->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));

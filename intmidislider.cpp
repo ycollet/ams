@@ -17,14 +17,13 @@ IntMidiSlider::IntMidiSlider(QObject *parentModule, int minValue, int maxValue, 
 
   componentType = GUIcomponentType_intslider;
   valueRef = p_valueRef;
-  setSpacing(5);
-  setMargin(5);
+  setSpacing(1);
   new QWidget(this);
   QVBox *sliderBox = new QVBox(this);
   sliderBox->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
   QHBox *sliderNameBox = new QHBox(sliderBox);
   new QWidget(sliderNameBox);
-  sliderNameBox->setMargin(5);
+  sliderNameBox->setMargin(1);
   QLabel *nameLabel = new QLabel(sliderNameBox);
   new QWidget(sliderNameBox);
   QHBox *sliderLabels = new QHBox(sliderBox);
