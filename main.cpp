@@ -221,8 +221,8 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Preset path now %s\n", presetPath.latin1()); 
     modularSynth->setPresetPath(presetPath);
   }
-  getcwd(buf, 2048);
-  modularSynth->setSavePath(QString(buf));
+//  getcwd(buf, 2048);
+//  modularSynth->setSavePath(QString(buf));
   modularSynth->go (enableJack);
   if (havePreset)
   {

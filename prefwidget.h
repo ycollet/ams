@@ -35,12 +35,13 @@ class PrefWidget : public QVBox
   private:
     SynthData *synthdata;
     QTabWidget *tabWidget;
-    QString prefPath;
+    QString loadPath, savePath;
     QLabel *colorBackgroundLabel, *colorModuleBackgroundLabel, *colorModuleBorderLabel, *colorModuleFontLabel;
     QLabel *colorCableLabel, *colorJackLabel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
     QComboBox *midiModeComboBox;
+    QLineEdit *loadEdit, *saveEdit;
     int midiControllerMode;
    
   public:
@@ -64,7 +65,11 @@ class PrefWidget : public QVBox
     void colorModuleFontClicked();
     void colorCableClicked();
     void colorJackClicked();
+    void browseLoad();
+    void browseSave();
     void updateMidiMode(int);
+    void loadPathUpdate();
+    void savePathUpdate();
 };
   
 #endif

@@ -79,6 +79,7 @@ class SynthData : public QObject
     QSemaphore port_sem;          
     LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
     QString ladspa_lib_name[MAX_SO];
+    QString loadPath, savePath, rcPath;
     QObject *midiWidget, *guiWidget;
     QString jackName;
     int midi_out_port[2];

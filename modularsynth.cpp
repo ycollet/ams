@@ -59,7 +59,7 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   synthdata->guiWidget = (QObject *)guiWidget;
   prefWidget = new PrefWidget(synthdata, NULL);
   prefWidget->setCaption("AlsaModularSynth Preferences");
-  presetPath = "";
+  synthdata->loadPath = "";
   ladspaDialog = new LadspaDialog(synthdata, NULL);
   QObject::connect(ladspaDialog, SIGNAL(createLadspaModule(int, int, bool, bool)),
                    this, SLOT(newM_ladspa(int, int, bool, bool)));
@@ -79,8 +79,8 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   contextMenu->insertSeparator();
   contextMenu->insertItem("Default Colors", this, SLOT(colorDefaultClicked()));
   colorDefaultClicked();
-  rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
-  prefWidget->loadPref(rcPath);
+  synthdata->rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
+  prefWidget->loadPref(synthdata->rcPath);
   colorModuleBackground = synthdata->colorModuleBackground;
   colorBackground = synthdata->colorBackground;
   colorModuleBorder = synthdata->colorModuleBorder;
@@ -306,13 +306,13 @@ void ModularSynth::displayLadspaPlugins() {
 
 int ModularSynth::setPresetPath(QString name) {
 
-  presetPath = name;
+  synthdata->loadPath = name;
   return(0);
 }
 
 int ModularSynth::setSavePath(QString name) {
 
-  savePath = name;
+  synthdata->savePath = name;
   return(0);
 }
 
@@ -1191,12 +1191,12 @@ void ModularSynth::load() {
 
   QString config_fn;
 
-  if (presetPath.isEmpty()) {
+  if (synthdata->loadPath.isEmpty()) {
     if (!(config_fn = QString(QFileDialog::getOpenFileName(QString::null, "AlsaModularSynth files (*.ams)")))) {
       return;
     }
   } else {
-      if (!(config_fn = QString(QFileDialog::getOpenFileName(presetPath, "AlsaModularSynth files (*.ams)")))) {
+      if (!(config_fn = QString(QFileDialog::getOpenFileName(synthdata->loadPath, "AlsaModularSynth files (*.ams)")))) {
       return;
     }
   }
@@ -1210,12 +1210,12 @@ void ModularSynth::loadColors() {
   char sc[2048];
   int r, g, b;
 
-  if (presetPath.isEmpty()) {
+  if (synthdata->loadPath.isEmpty()) {
     if (!(config_fn = QString(QFileDialog::getOpenFileName(QString::null, "AlsaModularSynth Color files (*.acs)")))) {
       return;
     }
   } else {
-      if (!(config_fn = QString(QFileDialog::getOpenFileName(presetPath, "AlsaModularSynth Color files (*.acs)")))) {
+      if (!(config_fn = QString(QFileDialog::getOpenFileName(synthdata->loadPath, "AlsaModularSynth Color files (*.acs)")))) {
       return;
     }
   }
@@ -1271,7 +1271,7 @@ void ModularSynth::saveColors() {
   FILE *f;
   QString config_fn, qs;
   
-  if (!(config_fn = QString(QFileDialog::getSaveFileName(savePath, "AlsaModularSynth Color files (*.acs)")))) {
+  if (!(config_fn = QString(QFileDialog::getSaveFileName(synthdata->savePath, "AlsaModularSynth Color files (*.acs)")))) {
     return;
   }
   if (!(f = fopen(config_fn, "w"))) { 
@@ -1831,7 +1831,8 @@ void ModularSynth::save() {
   QValueList<int>::iterator it;
   QStringList::iterator presetit;
    
-  if (!(config_fn = QString(QFileDialog::getSaveFileName(savePath, "AlsaModularSynth files (*.ams)")))) {
+  fprintf(stderr, "synthdata->savePath: %s\n", synthdata->savePath.latin1()); 
+  if (!(config_fn = QString(QFileDialog::getSaveFileName(synthdata->savePath, "AlsaModularSynth files (*.ams)")))) {
     return;
   }
   if (!(f = fopen(config_fn, "w"))) {
@@ -1958,7 +1959,7 @@ void ModularSynth::allVoicesOff() {
 
 void ModularSynth::cleanUpSynth()
 {
-  prefWidget->savePref(rcPath);
+  prefWidget->savePref(synthdata->rcPath);
   fprintf(stderr, "Closing synth...\n");
   delete this;
 }

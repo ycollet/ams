@@ -47,6 +47,9 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
   sustainFlag = false;
   midiChannel = -1;
   midiControllerMode = 0;
+  loadPath = "";
+  savePath = "";
+  rcPath = "";
 
   exp_data = (float *)malloc(EXP_TABLE_LEN * sizeof(float));
   wave_sine = (float *)malloc(WAVE_PERIOD * sizeof(float));

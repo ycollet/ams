@@ -37,8 +37,10 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   tabWidget = new QTabWidget(this);
   QVBox *colorBox = new QVBox(tabWidget);
   QVBox *midiBox = new QVBox(tabWidget);
+  QVBox *pathBox = new QVBox(tabWidget);
   tabWidget->insertTab(colorBox, "Colors");
   tabWidget->insertTab(midiBox, "MIDI");
+  tabWidget->insertTab(pathBox, "Paths");
   QWidget *colorGridWidget = new QWidget(colorBox);
   QGridLayout *colorLayout = new QGridLayout(colorGridWidget, 12, 2, 10);
 
@@ -110,6 +112,31 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   midiModeComboBox->insertStrList(midiModeNames);
   midiModeComboBox->setCurrentItem(midiControllerMode);
   QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiMode(int)));                
+
+  QHBox *loadPathBox = new QHBox(pathBox);
+  new QWidget(loadPathBox);
+  QLabel *loadLabel = new QLabel("Load Path:", loadPathBox);
+  new QWidget(loadPathBox);
+  loadEdit = new QLineEdit(loadPathBox);
+  loadEdit->setText(loadPath);
+  new QWidget(loadPathBox);
+  QPushButton *browseLoadButton = new QPushButton("Browse", loadPathBox);
+  new QWidget(loadPathBox);
+  QHBox *savePathBox = new QHBox(pathBox);
+  new QWidget(savePathBox);
+  QLabel *saveLabel = new QLabel("Save Path:", savePathBox);
+  new QWidget(savePathBox);
+  saveEdit = new QLineEdit(savePathBox);
+  saveEdit->setText(savePath);
+  new QWidget(savePathBox);
+  QPushButton *browseSaveButton = new QPushButton("Browse", savePathBox);
+  new QWidget(savePathBox);
+  QObject::connect(browseLoadButton, SIGNAL(clicked()), this, SLOT(browseLoad()));
+  QObject::connect(browseSaveButton, SIGNAL(clicked()), this, SLOT(browseSave()));
+  QObject::connect(loadEdit, SIGNAL(lostFocus()), this, SLOT(loadPathUpdate()));
+  QObject::connect(loadEdit, SIGNAL(returnPressed()), this, SLOT(loadPathUpdate()));
+  QObject::connect(saveEdit, SIGNAL(lostFocus()), this, SLOT(savePathUpdate()));
+  QObject::connect(saveEdit, SIGNAL(returnPressed()), this, SLOT(savePathUpdate()));
 
   QHBox *buttonContainer = new QHBox(this);
   new QWidget(buttonContainer);
@@ -201,9 +228,20 @@ void PrefWidget::loadPref(QString config_fn) {
         midiControllerMode = qs2.toInt();
         synthdata->midiControllerMode = midiControllerMode;
       }       
+      if (qs.contains("LoadPath", false)) {
+        loadPath = qs.section(sep, 1, 1); 
+        loadEdit->setText(loadPath);
+        synthdata->loadPath = loadPath;
+      }       
+      if (qs.contains("SavePath", false)) {
+        savePath = qs.section(sep, 1, 1); 
+        saveEdit->setText(savePath);
+        synthdata->savePath = savePath;
+      }       
     }   
     f.close();
   }        
+  fprintf(stderr, "loadPath: %s, savePath: %s\n", synthdata->loadPath.latin1(), synthdata->savePath.latin1());
   recallColors();
   refreshColors();
 }
@@ -224,6 +262,8 @@ void PrefWidget::savePref(QString config_fn) {
     rctext << "ColorJack " << synthdata->colorJack.red() << " " << synthdata->colorJack.green() << " " << synthdata->colorJack.blue() << "\n";
     rctext << "ColorCable " << synthdata->colorCable.red() << " " << synthdata->colorCable.green() << " " << synthdata->colorCable.blue() << "\n";
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
+    rctext << "LoadPath " << synthdata->loadPath << "\n";
+    rctext << "SavePath " << synthdata->savePath << "\n";
     f.close();
   }       
 }                             
@@ -250,6 +290,8 @@ void PrefWidget::refreshColors() {
   colorCableLabel->setPalette(QPalette(colorCable, colorCable));  
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
   midiModeComboBox->setCurrentItem(midiControllerMode);
+  loadEdit->setText(loadPath);
+  saveEdit->setText(savePath);
 }
 
 void PrefWidget::recallColors() {
@@ -261,6 +303,8 @@ void PrefWidget::recallColors() {
   colorCable = synthdata->colorCable;
   colorJack = synthdata->colorJack;
   midiControllerMode = synthdata->midiControllerMode;
+  loadPath = synthdata->loadPath;
+  savePath = synthdata->savePath;
 }
 
 void PrefWidget::storeColors() {
@@ -273,6 +317,8 @@ void PrefWidget::storeColors() {
   synthdata->colorCable = colorCable;
   synthdata->colorJack = colorJack;
   synthdata->midiControllerMode = midiControllerMode;
+  synthdata->loadPath = loadPath;
+  synthdata->savePath = savePath;
 }
 
 void PrefWidget::colorBackgroundClicked() {
@@ -345,4 +391,36 @@ void PrefWidget::colorJackClicked() {
 void PrefWidget::updateMidiMode(int mode) {
 
   midiControllerMode = mode;
+}
+
+void PrefWidget::browseLoad() {
+
+  QString qs;
+
+  if (!(qs = QString(QFileDialog::getExistingDirectory(loadPath)))) {
+    return;
+  }
+  loadPath = qs;
+  loadEdit->setText(loadPath);
+}
+
+void PrefWidget::browseSave() {
+
+  QString qs;
+
+  if (!(qs = QString(QFileDialog::getExistingDirectory(savePath)))) {
+    return;
+  }
+  savePath = qs;
+  saveEdit->setText(savePath);
+}
+
+void PrefWidget::loadPathUpdate() {
+
+  loadPath = loadEdit->text();
+}
+  
+void PrefWidget::savePathUpdate() {
+
+  savePath = saveEdit->text();
 }
