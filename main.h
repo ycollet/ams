@@ -3,7 +3,7 @@
 
 // Compile time options for AlsaModularSynth
 
-//#define DEFAULT_SETUP
+#define DEFAULT_SETUP
 
 #ifdef DEFAULT_SETUP
 
