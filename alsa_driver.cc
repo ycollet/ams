@@ -659,8 +659,8 @@ int Alsa_driver::recover (void)
 
 	gettimeofday (&tnow, 0);
 	snd_pcm_status_get_trigger_tstamp (stat, &trig);
-//	fprintf (stderr, "Alsa_driver: stat = %02x, xrun of at least %8.3lf ms\n", _stat,
-//		 1e3 * tnow.tv_sec - 1e3 * trig.tv_sec + 1e-3 * tnow.tv_usec - 1e-3 * trig.tv_usec);
+	fprintf (stderr, "Alsa_driver: stat = %02x, xrun of at least %8.3lf ms\n", _stat,
+		 1e3 * tnow.tv_sec - 1e3 * trig.tv_sec + 1e-3 * tnow.tv_usec - 1e-3 * trig.tv_usec);
     }
 
     if (pcm_stop () || pcm_start ()) return -1;

@@ -6,7 +6,7 @@ X11_LIB_DIR=/usr/X11R6/lib
 VERSION=1.7.1
 
 #CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -I/usr/X11R6/include -I. -O2 -g -Wall
-CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -I/usr/X11R6/include -I. -O2 -Wall -g
+CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -I/usr/X11R6/include -I. -O2 -Wall 
 
 AMS_O = synthdata.o module.o module.moc.o \
 	configdialog.o configdialog.moc.o \
