@@ -8,9 +8,9 @@
 #include <qcolor.h>
 #include <qlist.h>
 #include <ladspa.h>
+#include <clalsadrv.h>
 #include <jack/jack.h>
 #include "main.h"
-#include "alsa_driver.h"
 
 
  

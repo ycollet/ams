@@ -327,38 +327,38 @@ void *SynthData::alsa_thr_main (void)
        	{
             if (capt_ports)
 	    {
-                alsa_handle->read_init ();
+                alsa_handle->capt_init (cyclesize);
                 for (i = 0; i < capt_ports; i += 2)
                 {
                     C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
                     if (C)
                     {
-                        alsa_handle->read_chan (i,     C->pcmdata [0]);
-                        alsa_handle->read_chan (i + 1, C->pcmdata [1]);
+                        alsa_handle->capt_chan (i,     C->pcmdata [0], cyclesize);
+                        alsa_handle->capt_chan (i + 1, C->pcmdata [1], cyclesize);
 		    }
 		}
-                alsa_handle->read_done ();
+                alsa_handle->capt_done (cyclesize);
 	    }
 
             if (play_ports)
 	    {
-                alsa_handle->write_init ();
+                alsa_handle->play_init (cyclesize);
                 for (i = 0; i < play_ports; i += 2)
                 {
                     P = doSynthesis ? (M_pcmout *)(play_mods [i / 2]) : 0;
                     if (P)
                     {
                         P->generateCycle ();
-                        alsa_handle->write_chan (i,     P->pcmdata [0]);
-                        alsa_handle->write_chan (i + 1, P->pcmdata [1]);
+                        alsa_handle->play_chan (i,     P->pcmdata [0], cyclesize);
+                        alsa_handle->play_chan (i + 1, P->pcmdata [1], cyclesize);
 		    }
 	            else
                     {
-                        alsa_handle->clear_chan (i);
-                        alsa_handle->clear_chan (i + 1);
+                        alsa_handle->clear_chan (i, cyclesize);
+                        alsa_handle->clear_chan (i + 1, cyclesize);
 		    }
 		}
-                alsa_handle->write_done ();
+                alsa_handle->play_done (cyclesize);
 	    }       
 
             if (doSynthesis) call_modules ();

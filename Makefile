@@ -75,12 +75,12 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_spectrum.o m_spectrum.moc.o \
 	textedit.o textedit.moc.o \
 	modularsynth.o modularsynth.moc.o \
-	main.o alsa_driver.o
+	main.o
 
 ams:	$(AMS_O)
 	gcc -g -o ams $(AMS_O) \
 	-L$(QT_LIB_DIR) -L$(X11_LIB_DIR) \
-	-lqt-mt -ljack -lasound -lsrfftw -lsfftw -lm
+	-lqt-mt -lclalsadrv -ljack -lasound -lsrfftw -lsfftw -lm
 
 clean:
 	/bin/rm -f *.o *.moc.cpp *~
