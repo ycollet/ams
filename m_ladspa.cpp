@@ -96,7 +96,7 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
       }
     }
   }
-  configDialog->addLabel(QString("Label: ")+QString(ladspa_dsc->Label));
+  configDialog->addLabel(QString("Name: ")+QString(ladspa_dsc->Name));
   configDialog->addLabel(QString("Author: ")+QString(ladspa_dsc->Maker));
   configDialog->addLabel(QString("Copyright: ")+QString(ladspa_dsc->Copyright));
   port_ofs = 35;
@@ -285,11 +285,11 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
        ? (out_port_list.count() + out_ctrl_port_list.count()) : (in_port_list.count() + in_ctrl_port_list.count());
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
               MODULE_LADSPA_HEIGHT + 20 * itmp);
-  pluginName.sprintf("%s", ladspa_dsc->Name);
+  pluginName.sprintf("%s", ladspa_dsc->Label);
   if (isPoly) {
-    qs.sprintf("%s ID %d Poly", ladspa_dsc->Name, moduleID);
+    qs.sprintf("%s ID %d Poly", ladspa_dsc->Label, moduleID);
   } else {
-    qs.sprintf("%s ID %d", ladspa_dsc->Name, moduleID);
+    qs.sprintf("%s ID %d", ladspa_dsc->Label, moduleID);
   }
   configDialog->setCaption(qs);
 }
@@ -339,7 +339,7 @@ void M_ladspa::paintEvent(QPaintEvent *ev) {
   }
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
-  qs.sprintf("LADSPA %s", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Name);
+  qs.sprintf("LADSPA %s", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Label);
   p.drawText(10, 20, qs);
   p.setFont(QFont("Helvetica", 8));
   qs.sprintf("ID %d", moduleID);

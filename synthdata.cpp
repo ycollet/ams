@@ -235,8 +235,8 @@ int SynthData::getModuleID() {
 
 int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int *n) {
      
-  int l1, l2, subID1, subID2;
-  QString qs;
+  int l1, l2, subID1, subID2Name, subID2Label;
+  QString qsn, qsl;
 
   setName = setName.stripWhiteSpace();
   pluginName = pluginName.stripWhiteSpace();
@@ -246,12 +246,17 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
     if (setName == ladspa_lib_name[l1].stripWhiteSpace()) {
       subID1 = l1;
       l2 = 0;
-      subID2 = -1;
+      subID2Label = -1;
+      subID2Name = -1;
       while(ladspa_dsc_func_list[l1](l2) != NULL) {
-        qs.sprintf("%s", ladspa_dsc_func_list[l1](l2)->Name);
-        if (pluginName == qs.stripWhiteSpace()) {
-          subID2 = l2;
+        qsl.sprintf("%s", ladspa_dsc_func_list[l1](l2)->Label);
+        qsn.sprintf("%s", ladspa_dsc_func_list[l1](l2)->Name);
+        if (pluginName == qsl.stripWhiteSpace()) {
+          subID2Label = l2;
           break;
+        } 
+        if (pluginName == qsn.stripWhiteSpace()) {
+          subID2Name = l2;                            // No break to give the priority to "Label"
         }
         l2++;
       }  
@@ -260,8 +265,8 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
     l1++;
   }
   *index = subID1;
-  *n = subID2;
-  return((subID1 >= 0) && (subID2 >= 0));
+  *n = (subID2Label < 0) ? subID2Name : subID2Label; // Use "Name" only if no match for "Label"
+  return( (subID1 >= 0) && ( (subID2Name >= 0) || (subID2Label >= 0) ) );
 }
 
 float SynthData::exp_table(float x) {
