@@ -49,6 +49,7 @@ class SynthData : public QObject
     long noteCounter[MAXPOLY];
     int sustainNote[MAXPOLY]; // Sustain Pedal Buffer
     bool sustainFlag;
+    int midiControllerMode;
    
     int poly;
     int rate;

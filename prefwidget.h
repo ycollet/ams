@@ -17,6 +17,7 @@
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
+#include <qcombobox.h>
 #include <qstringlist.h>
 #include <qlineedit.h>
 #include <qfile.h>
@@ -33,11 +34,14 @@ class PrefWidget : public QVBox
 
   private:
     SynthData *synthdata;
+    QTabWidget *tabWidget;
     QString prefPath;
     QLabel *colorBackgroundLabel, *colorModuleBackgroundLabel, *colorModuleBorderLabel, *colorModuleFontLabel;
     QLabel *colorCableLabel, *colorJackLabel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
+    QComboBox *midiModeComboBox;
+    int midiControllerMode;
    
   public:
     PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name=0);
@@ -60,6 +64,7 @@ class PrefWidget : public QVBox
     void colorModuleFontClicked();
     void colorCableClicked();
     void colorJackClicked();
+    void updateMidiMode(int);
 };
   
 #endif

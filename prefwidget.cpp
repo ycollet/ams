@@ -15,6 +15,7 @@
 #include <qfiledialog.h>
 #include <qradiobutton.h>
 #include <qcolordialog.h>
+#include <qcombobox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
@@ -33,7 +34,12 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   synthdata = p_synthdata;
   recallColors();
 
-  QWidget *colorGridWidget = new QWidget(this);
+  tabWidget = new QTabWidget(this);
+  QVBox *colorBox = new QVBox(tabWidget);
+  QVBox *midiBox = new QVBox(tabWidget);
+  tabWidget->insertTab(colorBox, "Colors");
+  tabWidget->insertTab(midiBox, "MIDI");
+  QWidget *colorGridWidget = new QWidget(colorBox);
   QGridLayout *colorLayout = new QGridLayout(colorGridWidget, 12, 2, 10);
 
   QLabel *label1 = new QLabel("Background Color", colorGridWidget);
@@ -90,7 +96,21 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   QObject::connect(changeColorModuleFontButton, SIGNAL(clicked()), this, SLOT(colorModuleFontClicked()));
   QObject::connect(changeColorCableButton, SIGNAL(clicked()), this, SLOT(colorCableClicked()));
   QObject::connect(changeColorJackButton, SIGNAL(clicked()), this, SLOT(colorJackClicked()));
-  
+
+  QHBox *midiModeSelectorBox = new QHBox(midiBox);
+  new QWidget(midiModeSelectorBox);
+  QLabel *midiModeLabel = new QLabel("MIDI Controller Mode: ", midiModeSelectorBox);
+  new QWidget(midiModeSelectorBox);
+  QStrList *midiModeNames = new QStrList(true);
+  midiModeNames->append("Avoid Parameter Jumps");
+  midiModeNames->append("Init MIDI Controller");
+  midiModeNames->append("Follow MIDI Controller");
+  midiModeComboBox = new QComboBox(midiModeSelectorBox);
+  new QWidget(midiModeSelectorBox);
+  midiModeComboBox->insertStrList(midiModeNames);
+  midiModeComboBox->setCurrentItem(midiControllerMode);
+  QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiMode(int)));                
+
   QHBox *buttonContainer = new QHBox(this);
   new QWidget(buttonContainer);
   QPushButton *cancelButton = new QPushButton("Cancel", buttonContainer);
@@ -176,6 +196,11 @@ void PrefWidget::loadPref(QString config_fn) {
         b = qs2.toInt();
         synthdata->colorCable = QColor(r, g, b);
       }       
+      if (qs.contains("MidiControllerMode", false)) {
+        qs2 = qs.section(sep, 1, 1); 
+        midiControllerMode = qs2.toInt();
+        synthdata->midiControllerMode = midiControllerMode;
+      }       
     }   
     f.close();
   }        
@@ -198,6 +223,7 @@ void PrefWidget::savePref(QString config_fn) {
     rctext << "ColorModuleFont " << synthdata->colorModuleFont.red() << " " << synthdata->colorModuleFont.green() << " " << synthdata->colorModuleFont.blue() << "\n";
     rctext << "ColorJack " << synthdata->colorJack.red() << " " << synthdata->colorJack.green() << " " << synthdata->colorJack.blue() << "\n";
     rctext << "ColorCable " << synthdata->colorCable.red() << " " << synthdata->colorCable.green() << " " << synthdata->colorCable.blue() << "\n";
+    rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     f.close();
   }       
 }                             
@@ -223,6 +249,7 @@ void PrefWidget::refreshColors() {
   colorModuleFontLabel->setPalette(QPalette(colorModuleFont, colorModuleFont));  
   colorCableLabel->setPalette(QPalette(colorCable, colorCable));  
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
+  midiModeComboBox->setCurrentItem(midiControllerMode);
 }
 
 void PrefWidget::recallColors() {
@@ -233,6 +260,7 @@ void PrefWidget::recallColors() {
   colorModuleFont = synthdata->colorModuleFont;
   colorCable = synthdata->colorCable;
   colorJack = synthdata->colorJack;
+  midiControllerMode = synthdata->midiControllerMode;
 }
 
 void PrefWidget::storeColors() {
@@ -244,6 +272,7 @@ void PrefWidget::storeColors() {
   synthdata->colorPortFont1 = colorModuleFont;
   synthdata->colorCable = colorCable;
   synthdata->colorJack = colorJack;
+  synthdata->midiControllerMode = midiControllerMode;
 }
 
 void PrefWidget::colorBackgroundClicked() {
@@ -311,4 +340,9 @@ void PrefWidget::colorJackClicked() {
     colorJack = tmp;    
     refreshColors();
   }
+}
+
+void PrefWidget::updateMidiMode(int mode) {
+
+  midiControllerMode = mode;
 }

@@ -2061,6 +2061,7 @@ void ModularSynth::refreshColors() {
     }
   }      
   prefWidget->refreshColors();
+  repaintContents(true);
 }
 
 void ModularSynth::updateColors() {

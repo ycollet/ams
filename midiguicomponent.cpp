@@ -93,7 +93,7 @@ void MidiGUIcomponent::midiValueChanged(int value) {
   snd_seq_event_t ev;
 
   if (!controllerOK) {
-    if (midiControllerList.count()) {
+    if ((synthdata->midiControllerMode == 1) && midiControllerList.count()) {
       type = midiControllerList.at(0)->type;
       if (type == SND_SEQ_EVENT_CONTROLLER) {
         ch = midiControllerList.at(0)->ch;
@@ -109,15 +109,17 @@ void MidiGUIcomponent::midiValueChanged(int value) {
         snd_seq_event_output_direct(synthdata->seq_handle, &ev);
 //        fprintf(stderr, "--> %d %d %d\n", type, ch, param);
       }
+      if (synthdata->midiControllerMode > 0) {
+        controllerOK = true;
+      }  
     }  
-    controllerOK = true;
-  } else {
-    setMidiValue(value);
   }  
+  setMidiValue(value);
 }
 
 void MidiGUIcomponent::resetControllerOK() {
 
+  fprintf(stderr, "--> resetControllerOK\n");
   controllerOK = false;
 }
 
