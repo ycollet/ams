@@ -32,6 +32,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
     notes[l1] = 0;
     velocity[l1] = 0;
     noteCounter[l1] = 1000000;
+    sustainNote[l1] = false;
   }
 
   poly = p_poly;
@@ -43,6 +44,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
   moduleCount = 0;
   moduleID = 0;
   doSynthesis = false;
+  sustainFlag = false;
   midiChannel = -1;
 
   exp_data = (float *)malloc(EXP_TABLE_LEN * sizeof(float));

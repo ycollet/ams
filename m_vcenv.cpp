@@ -158,6 +158,7 @@ void M_vcenv::generateCycle() {
           case 1: e[l1] += ((tmp = a0 + aGain * attackData[l1][l2]) > 0.001) ? tsr / tmp : tsr / 0.001;
                   if (e[l1] >= 1.0) {
                     state[l1] = 2;
+                    e[l1] = 1.0;
                   }
                   break;
           case 2: if (decayReleaseMode) {

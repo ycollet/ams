@@ -30,7 +30,7 @@ class M_noise : public Module
   private:
     int count;
     float rate, level;
-    float buf[3][MAXPOLY], r[MAXPOLY];
+    float buf[3], r;
     Port *port_white, *port_pink, *port_random;
 
   public:

@@ -47,7 +47,9 @@ class SynthData : public QObject
     int velocity[MAXPOLY];            // Velocity
     int channel[MAXPOLY];
     long noteCounter[MAXPOLY];
-
+    int sustainNote[MAXPOLY]; // Sustain Pedal Buffer
+    bool sustainFlag;
+   
     int poly;
     int rate;
     int cyclesize;

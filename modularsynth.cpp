@@ -462,6 +462,7 @@ void ModularSynth::midiAction(int fd) {
           }
           if (foundOsc) {
             synthdata->noteCounter[osc] = 0;
+            synthdata->sustainNote[osc] = false;
             synthdata->velocity[osc] = ev->data.note.velocity;
             synthdata->channel[osc] = ev->data.note.channel;
             synthdata->notes[osc] = ev->data.note.note;   
@@ -476,24 +477,43 @@ void ModularSynth::midiAction(int fd) {
         for (l2 = 0; l2 < synthdata->poly; l2++) {
           if ((synthdata->notes[l2] == ev->data.note.note)
             && (synthdata->channel[l2] == ev->data.note.channel)) {
-            synthdata->noteCounter[l2] = 1000000; 
-            for (l1 = 0; l1 < listModule.count(); l1++) {
-              listModule.at(l1)->noteOffEvent(l2);
-            } 
+            if (synthdata->sustainFlag) {
+              synthdata->sustainNote[l2] = true;
+            } else {
+              synthdata->noteCounter[l2] = 1000000; 
+              for (l1 = 0; l1 < listModule.count(); l1++) {
+                listModule.at(l1)->noteOffEvent(l2);
+              } 
+            }  
           }   
         }     
       }       
     }
     
-    if ((ev->type == SND_SEQ_EVENT_CONTROLLER) && (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)) {
-      for (l2 = 0; l2 < synthdata->poly; l2++) {
-        if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel)) {
-          synthdata->noteCounter[l2] = 1000000;
-          for (l1 = 0; l1 < listModule.count(); l1++) {
-            listModule.at(l1)->noteOffEvent(l2);
-          } 
-        }   
-      }     
+    if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
+      if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF) {
+        for (l2 = 0; l2 < synthdata->poly; l2++) {
+          if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel)) {
+            synthdata->noteCounter[l2] = 1000000;
+            for (l1 = 0; l1 < listModule.count(); l1++) {
+              listModule.at(l1)->noteOffEvent(l2);
+            } 
+          }   
+        }     
+      }  
+      if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
+        synthdata->sustainFlag = ev->data.control.value > 63;
+        if (synthdata->sustainFlag) {
+          for (l2 = 0; l2 < synthdata->poly; l2++) {
+            if (synthdata->sustainNote[l2]) {
+              synthdata->noteCounter[l2] = 1000000;
+              for (l1 = 0; l1 < listModule.count(); l1++) {
+                listModule.at(l1)->noteOffEvent(l2);
+              }  
+            } 
+          }   
+        }     
+      }  
     }
     if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
       guiWidget->setCurrentPreset(ev->data.control.value);
