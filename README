@@ -1,88 +1,39 @@
-                   ******************************
-                   *  Kalsatools version 1.2.8  *
-                   ******************************
 
           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           !!!               Warning                     !!!
-          !!! These programs may generate electronic    !!!
+          !!! This program may generate electronic      !!!
           !!! sounds which might damage your speakers.  !!!
-          !!! The use of headphones is NOT recommended. !!!
           !!! Use the software at your own risk.        !!!
           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Kalsatools currently implements three applications:
+The online manual for AlsaModularSynth is found at
+http://alsamodular.sourceforge.net/alsamodularsynth_doc.html
 
-AlsaModularSynth, a realtime modular synthesizer for ALSA.
-                  All parameters can be modified in realtime 
-                  via MIDI.
+The files in the instruments folder are patches that have a Parameter View
+GUI in addition to the parameter dialogs of the modules. Each instrument has 
+several presets that can be selected via MIDI program change or in the
+Parameter View dialog.
 
-Kaconnect, which is a KDE version of the aconnect 
-           utility for the ALSA sequencer system. 
+The files in the tutorial folder feature a complete tutorial on modular
+synthesis with many commented examples which you can use for own
+experiments.
 
-KWaveView, a realtime scope and spectrum analyzer. 
-           KWaveView captures sound from "Line In" 
-           or "Mic In" and displays the sound waves 
-           in the time domain and Fourier domain.
+The files in the demos folder demonstrate certain modules or special sounds.
+Note that some of these patches are monophonic, i.e. work only with poly 1.
 
-
-Example for AlsaModularSynth
-----------------------------
-
-Requires: vkeybd
-
-1) Start Kaconnect and vkeybd. Enable "View"-->"Controls"
-   and "View"-->"Pitchwheel" in vkeybd.
-2) Start AlsaModularSynth with ams.
-3) Use "File"-->"Load" to load /usr/share/doc/packages/kalsatools/example_basic.ams
-4) Use Kaconnect to connect vkeybd and AlsaModularSynth.
-5) Play vkeybd and listen to what happens when you move the pitch and
-   modulation wheels !
-
-In both examples you can adjust the volume by opening the configuration
-dialog of the PCM output module. This is done by clicking with the right
-mouse button on the module.
- 
-Kaconnect
----------
-
-Kaconnect displays the readable and writable ports of the ALSA sequencer 
-system. Connections between those ports can be subscribed by highlighting one 
-port in the list of readable ports and one port in the list of writable ports 
-and then mouseclicking on "connect". Disconnecting works the same way, but 
-with mouseclick on "disconnect". 
-
-The height of the listboxes can be configured using the --height option.
-Note that Kaconnect automagically updates the lists when ALSA clients, 
-which implement readable/writable ports, are started or terminated. The
-display of subscribed connections is also updated whenever a new client is 
-started or a new subscribtion is performed (also when using aconnect to 
-subscribe/unsubscribe). 
-
-KWaveView
----------
-
-KWaveView displays the sound captured from "Line In" or "Mic In". On a
-Soundblaster Live or Soundblaster Audigy, the sound can also be captured
-internally. On these cards, the sound which is sent to the PCM output, can
-be routed to the capture path. In alsamixer there are two sliders for this
-purpose: "Wave" and "Wave Capture". "Wave" is the level for playback, 
-"Wave Capture" is the capture level. On a Soundblaster Live, you have to
-activate wave capture on the "Wave" slider. Use <space> to activate capture 
-devices in alsamixer. Wave capture is always active on a Soundblaster Audigy.
-The sound data can be displayed in the temporal as well as the Fourier domain. 
-Both the scope and the spectrum analyzer can display two channels 
-simultaneously, which can be selected from your input channels. Frequency 
-areas can be enlarged in the spectrum view. The lower frequency boundary is 
-determined by clicking the left mouse button in the spectrum view. Right 
-clicking in the spectrum view determines the higher frequency boundary. 
-Toggling between full frequency view and enlarged view is done by clicking 
-the middle mouse button in the spectrum view. 
-When moving the mouse in the spectrum, the frequency at the mouse cursor is 
-displayed. For this feature to work also exactly in the enlarged view,
-please make sure, not to change the number of frames and the window size
-after you determined the boundaries for the enlargement. Otherwise you'll
-get roundoff errors due to the conversion between mouse coordinates and 
-frequency channels.
+AlsaModularSynth 1.8.5 features a new module Analogue Driver. This emulates
+the oscillator drift effects present in analogue electronic circuits and also 
+includes a voice detune. The detune and drift amplitudes are always displayed
+in the configuration dialog of the module. Note that these values are
+normalized to 1.0. The actual detune/drift depends on the Amplitude parameter  
+in the Parameter tab. The amplitude is measured in Volt, the maximum of
+0.084 is a tiny bit more than a semitone. The rate is measured in Hz. 
+The drift/detune process is a modified random walk where random coefficients
+are generated at the detune/drift rate. These coefficients are multiplied by
+the Modulation parameter (divided by the sample rate) and then added to the
+current detune/drift amplitude (for each sample). These detune/drift 
+amplitudes are added to the input CV and the sum is then passed to the 
+outputs. The Autotune button will reset detune/drift amplitudes.
 
 Have a lot of fun !
 
