@@ -11,7 +11,7 @@ LSMIDI 1 0 10 0 24
 Module 6 2 663 495 2 blvco Saw-VCO
 ColorP 0 1 2 6 250 200 50 180 180 180
 ColorP 1 0 2 19 250 200 50 180 180 180
-FSlider 2 0 -96245 1 -150902 0 1
+FSlider 2 0 -98621 1 -150902 0 1
 FSlider 2 1 16466 0 0 65536 1
 FSlider 2 2 0 0 0 65536 1
 FSlider 2 3 9303 0 0 16384 1
@@ -21,7 +21,7 @@ LSMIDI 2 0 10 0 26
 Module 6 3 664 654 2 blvco Saw-VCO
 ColorP 0 1 3 6 250 200 50 180 180 180
 ColorP 1 0 3 19 250 200 50 180 180 180
-FSlider 3 0 -123574 1 -150902 0 1
+FSlider 3 0 -122386 1 -150902 0 1
 FSlider 3 1 16466 0 0 65536 1
 FSlider 3 2 0 0 0 65536 1
 FSlider 3 3 11115 0 0 16384 1
@@ -44,12 +44,12 @@ ColorP 1 1 5 6 250 200 50 180 180 180
 ColorP 2 0 5 22 250 200 50 180 180 180
 ColorP 3 0 5 21 250 200 50 180 180 180
 FSlider 5 0 44869 0 -983040 163840 1
-FSlider 5 1 -95208 0 -98304 98304 1
+FSlider 5 1 10062 0 -98304 98304 1
 FSlider 5 2 14190 0 0 163840 1
-FSlider 5 3 6063 0 0 16384 1
+FSlider 5 3 686 0 0 16384 1
 FSlider 5 4 16384 0 0 16384 1
 FSlider 5 5 190693 0 -245760 245760 1
-LSlider 5 0 3 1
+LSlider 5 0 4 1
 FSMIDI 5 0 10 0 34
 FSMIDI 5 1 10 0 1
 FSMIDI 5 1 10 0 32
@@ -67,11 +67,11 @@ FSMIDI 6 0 13 0 0
 Module 39 7 333 31 0 0
 ColorP 0 0 7 6 250 200 50 180 180 180
 ColorP 1 3 7 6 250 200 50 180 180 180
-FSlider 7 0 -131072 0 -131072 131072 1
-FSlider 7 1 -38187 0 -131072 131072 1
+FSlider 7 0 -88562 0 -131072 131072 1
+FSlider 7 1 -85020 0 -131072 131072 1
 FSlider 7 2 0 0 0 16384 1
-FSlider 7 3 516 0 0 16384 1
-FSlider 7 4 -75341 0 -131072 131072 1
+FSlider 7 3 0 0 0 16384 1
+FSlider 7 4 -102732 0 -131072 131072 1
 FSlider 7 5 16384 0 -131072 131072 1
 FSlider 7 6 16384 0 -131072 131072 1
 FSlider 7 7 16384 0 0 16384 1
@@ -85,11 +85,11 @@ FSMIDI 7 4 10 0 51
 Module 39 8 334 305 0 0
 ColorP 0 0 8 6 250 200 50 180 180 180
 ColorP 1 3 8 6 250 200 50 180 180 180
-FSlider 8 0 -46443 0 -131072 131072 1
-FSlider 8 1 13416 0 -131072 131072 1
+FSlider 8 0 -131072 0 -131072 131072 1
+FSlider 8 1 -11591 0 -131072 131072 1
 FSlider 8 2 0 0 0 16384 1
 FSlider 8 3 3290 0 0 16384 1
-FSlider 8 4 -9289 0 -131072 131072 1
+FSlider 8 4 -18725 0 -131072 131072 1
 FSlider 8 5 16384 0 -131072 131072 1
 FSlider 8 6 16384 0 -131072 131072 1
 FSlider 8 7 16384 0 0 16384 1
@@ -106,7 +106,7 @@ ColorP 1 3 9 6 250 200 50 180 180 180
 FSlider 9 0 -131072 0 -131072 131072 1
 FSlider 9 1 -13055 0 -131072 131072 1
 FSlider 9 2 12533 0 0 16384 1
-FSlider 9 3 4644 0 0 16384 1
+FSlider 9 3 3525 0 0 16384 1
 FSlider 9 4 -15367 0 -131072 131072 1
 FSlider 9 5 16384 0 -131072 131072 1
 FSlider 9 6 16384 0 -131072 131072 1
@@ -124,7 +124,7 @@ ColorP 2 0 10 4 250 200 50 180 180 180
 ColorP 3 0 10 5 250 200 50 180 180 180
 FSlider 10 0 0 0 0 16384 1
 FSlider 10 1 0 0 0 16384 1
-FSlider 10 2 13674 0 0 32768 1
+FSlider 10 2 15019 0 0 32768 1
 FSlider 10 3 16452 0 0 32768 1
 FSlider 10 4 16384 0 0 32768 1
 FSMIDI 10 2 10 0 45
@@ -141,7 +141,7 @@ FSlider 14 0 -139485 0 -163840 163840 1
 FSMIDI 14 0 10 0 46
 Module 41 15 641 178 0 0
 ColorP 0 0 15 8 250 200 50 180 180 180
-FSlider 15 0 130297 0 -163840 163840 1
+FSlider 15 0 88050 0 -163840 163840 1
 FSMIDI 15 0 10 0 41
 Module 14 16 784 806 0 0
 FSlider 16 0 81920 0 0 163840 1
@@ -161,7 +161,7 @@ FSMIDI 17 2 10 0 23
 FSMIDI 17 3 10 0 30
 FSMIDI 17 4 10 0 31
 Module 3 18 24 570 0 0
-FSlider 18 0 30892 1 -150902 75450 1
+FSlider 18 0 29734 1 -150902 75450 1
 FSlider 18 1 0 0 0 102940 1
 FSMIDI 18 0 10 0 64
 Module 41 19 341 818 0 0
@@ -174,10 +174,10 @@ ColorP 1 2 20 18 250 200 50 180 180 180
 ColorP 2 4 20 18 250 200 50 180 180 180
 ColorP 3 5 20 18 250 200 50 180 180 180
 FSlider 20 0 16384 0 0 32768 1
-FSlider 20 1 16254 0 0 32768 1
-FSlider 20 2 3870 0 0 32768 1
-FSlider 20 3 1290 0 0 32768 1
-FSlider 20 4 1548 0 0 32768 1
+FSlider 20 1 16384 0 0 32768 1
+FSlider 20 2 0 0 0 32768 1
+FSlider 20 3 0 0 0 32768 1
+FSlider 20 4 0 0 0 32768 1
 FSMIDI 20 1 10 0 72
 FSMIDI 20 2 10 0 65
 FSMIDI 20 3 10 0 73
@@ -198,21 +198,21 @@ FSMIDI 22 2 10 0 75
 Module 37 24 1649 408 0 0
 ColorP 0 0 24 10 250 200 50 180 180 180
 ColorP 1 0 24 20 250 200 50 180 180 180
-FSlider 24 0 0 0 -16384 16384 1
-FSlider 24 1 19609 0 0 32768 1
-ComboBox 24 0 5 1
+FSlider 24 0 -3463 0 -16384 16384 1
+FSlider 24 1 23614 0 0 32768 1
+ComboBox 24 0 4 1
 FSMIDI 24 0 10 0 76
 FSMIDI 24 1 10 0 68
 Module 6 26 1805 437 0 g2reverb G2reverb
 ColorP 0 0 26 24 250 200 50 180 180 180
 ColorP 1 1 26 24 250 200 50 180 180 180
-FSlider 26 0 398634 0 163840 2457600 1
-FSlider 26 1 31090 0 16384 327680 1
-FSlider 26 2 8643 0 0 16384 1
-FSlider 26 3 5160 0 0 16384 1
+FSlider 26 0 660278 0 163840 2457600 1
+FSlider 26 1 25728 0 16384 327680 1
+FSlider 26 2 10612 0 0 16384 1
+FSlider 26 3 4814 0 0 16384 1
 FSlider 26 4 0 0 -1310720 0 1
-FSlider 26 5 -660521 0 -1310720 0 1
-FSlider 26 6 -443788 0 -1310720 0 1
+FSlider 26 5 -525945 0 -1310720 0 1
+FSlider 26 6 -565287 0 -1310720 0 1
 FSMIDI 26 0 10 0 69
 FSMIDI 26 1 10 0 77
 FSMIDI 26 2 10 0 70
@@ -221,7 +221,7 @@ FSMIDI 26 5 10 0 71
 FSMIDI 26 6 10 0 79
 Module 41 29 839 46 0 0
 ColorP 0 0 29 7 250 200 50 180 180 180
-FSlider 29 0 16384 0 -16384 16384 1
+FSlider 29 0 -397 0 -16384 16384 1
 FSMIDI 29 0 10 0 60
 Module 41 30 839 177 0 0
 ColorP 0 0 30 8 250 200 50 180 180 180
@@ -725,7 +725,7 @@ Program 7 12533
 Program 7 3525
 Program 7 -15367
 Program 7 44869
-Program 7 -98304
+Program 7 10062
 Program 7 686
 Program 7 4
 Program 7 190693
@@ -807,8 +807,8 @@ Program 9 -97433
 Program 9 0
 Program 9 -103374
 Program 9 15593
-Program 9 15672
-Program 9 15819
+Program 9 0
+Program 9 0
 Program 9 0
 Program 9 29734
 Program 9 16384
@@ -817,30 +817,30 @@ Program 9 0
 Program 9 0
 Program 9 242
 Program 9 320
-Program 9 -86069
-Program 9 -45566
+Program 9 -40251
+Program 9 -58828
 Program 9 0
-Program 9 0
-Program 9 -87895
+Program 9 8069
+Program 9 -93918
 Program 9 -163840
 Program 9 -443
-Program 9 -117091
-Program 9 30940
+Program 9 -25802
+Program 9 -29930
 Program 9 0
-Program 9 0
-Program 9 3938
-Program 9 69614
+Program 9 8066
+Program 9 -9289
+Program 9 -24512
 Program 9 0
 Program 9 -131072
-Program 9 18564
-Program 9 9230
-Program 9 0
-Program 9 3938
+Program 9 -19610
+Program 9 5088
+Program 9 8882
+Program 9 -29930
 Program 9 163840
-Program 9 -51543
-Program 9 0
+Program 9 93659
+Program 9 1983
 Program 9 4
-Program 9 129508
+Program 9 245760
 Program 9 10008
 Program 9 163840
 Program 9 81920
@@ -916,7 +916,7 @@ Program 11 0
 Program 11 -150902
 Program 11 0
 Program 11 -102186
-Program 11 0
+Program 11 -3
 Program 11 -92680
 Program 11 16384
 Program 11 15672
@@ -930,34 +930,34 @@ Program 11 0
 Program 11 242
 Program 11 320
 Program 11 -90979
-Program 11 -65279
+Program 11 -63856
 Program 11 0
 Program 11 0
 Program 11 -87895
 Program 11 -95734
-Program 11 -9188
+Program 11 -4789
 Program 11 -73693
 Program 11 11813
-Program 11 14556
+Program 11 0
 Program 11 1969
 Program 11 -563
 Program 11 21798
 Program 11 0
 Program 11 -131072
-Program 11 33190
-Program 11 12663
+Program 11 7394
+Program 11 0
 Program 11 1958
 Program 11 563
-Program 11 44869
-Program 11 -9033
-Program 11 8281
+Program 11 163840
+Program 11 5418
+Program 11 6072
 Program 11 4
 Program 11 245760
 Program 11 16074
 Program 11 163840
 Program 11 81920
 Program 11 -34406
-Program 11 1393
+Program 11 2322
 Program 11 23614
 Program 11 -3463
 Program 11 4
@@ -985,35 +985,35 @@ Program 12 0
 Program 12 0
 Program 12 242
 Program 12 320
-Program 12 -131072
-Program 12 -44269
+Program 12 -112495
+Program 12 -58828
 Program 12 0
 Program 12 0
 Program 12 -87895
 Program 12 -163840
 Program 12 -8355
-Program 12 -69391
-Program 12 33681
-Program 12 0
+Program 12 -71213
+Program 12 5160
+Program 12 387
 Program 12 1953
 Program 12 2675
-Program 12 37029
+Program 12 104496
 Program 12 0
 Program 12 -131072
 Program 12 67154
 Program 12 12663
 Program 12 1958
 Program 12 -20814
-Program 12 7447
-Program 12 -23250
-Program 12 8294
+Program 12 163840
+Program 12 -37929
+Program 12 0
 Program 12 4
-Program 12 168049
+Program 12 164485
 Program 12 16452
 Program 12 163840
 Program 12 81920
-Program 12 -245760
-Program 12 3886
+Program 12 -164486
+Program 12 22705
 Program 12 23614
 Program 12 -3463
 Program 12 4
@@ -1042,7 +1042,7 @@ Program 13 0
 Program 13 242
 Program 13 320
 Program 13 -131072
-Program 13 -32363
+Program 13 -50572
 Program 13 0
 Program 13 0
 Program 13 -45566
@@ -1053,7 +1053,7 @@ Program 13 45043
 Program 13 0
 Program 13 1953
 Program 13 -11768
-Program 13 22826
+Program 13 76114
 Program 13 0
 Program 13 -80443
 Program 13 29815
@@ -1061,15 +1061,15 @@ Program 13 13642
 Program 13 1958
 Program 13 -20227
 Program 13 -26514
-Program 13 6217
-Program 13 5407
+Program 13 -5419
+Program 13 2322
 Program 13 4
 Program 13 245760
 Program 13 16074
 Program 13 163840
 Program 13 81920
-Program 13 -245760
-Program 13 11657
+Program 13 -203188
+Program 13 26575
 Program 13 23614
 Program 13 -3463
 Program 13 4
@@ -1097,35 +1097,35 @@ Program 14 0
 Program 14 0
 Program 14 242
 Program 14 320
-Program 14 -90979
-Program 14 -65279
+Program 14 -79469
+Program 14 -50572
 Program 14 0
 Program 14 0
 Program 14 -87895
 Program 14 -95734
 Program 14 -9188
-Program 14 -92886
+Program 14 -79724
 Program 14 -1032
 Program 14 10385
 Program 14 1953
 Program 14 -36122
-Program 14 15481
+Program 14 21931
 Program 14 0
 Program 14 -131072
 Program 14 4700
 Program 14 12663
 Program 14 1958
 Program 14 -31457
-Program 14 163840
-Program 14 13483
-Program 14 11808
+Program 14 -1047
+Program 14 17803
+Program 14 11610
 Program 14 4
-Program 14 -6202
-Program 14 16074
+Program 14 245760
+Program 14 26591
 Program 14 163840
 Program 14 81920
-Program 14 -34406
-Program 14 1393
+Program 14 -56714
+Program 14 2322
 Program 14 23614
 Program 14 -3463
 Program 14 4
@@ -1165,7 +1165,7 @@ Program 15 -11591
 Program 15 0
 Program 15 3290
 Program 15 -18725
-Program 15 88050
+Program 15 163840
 Program 15 170
 Program 15 -131072
 Program 15 -13055
@@ -1173,7 +1173,7 @@ Program 15 12533
 Program 15 3525
 Program 15 -15367
 Program 15 44869
-Program 15 -98304
+Program 15 -47217
 Program 15 686
 Program 15 4
 Program 15 190693
@@ -1221,7 +1221,7 @@ Program 16 5243
 Program 16 0
 Program 16 3290
 Program 16 -18725
-Program 16 127795
+Program 16 163840
 Program 16 170
 Program 16 -131072
 Program 16 4611
@@ -1229,7 +1229,7 @@ Program 16 12533
 Program 16 3525
 Program 16 -15367
 Program 16 44869
-Program 16 -98304
+Program 16 -61150
 Program 16 686
 Program 16 4
 Program 16 190693
@@ -1272,8 +1272,8 @@ Program 17 516
 Program 17 -75341
 Program 17 -139485
 Program 17 16384
-Program 17 -46443
-Program 17 13416
+Program 17 -59455
+Program 17 -2703
 Program 17 0
 Program 17 3290
 Program 17 -9289
@@ -1284,16 +1284,16 @@ Program 17 -13055
 Program 17 12533
 Program 17 4644
 Program 17 -15367
-Program 17 44869
+Program 17 97885
 Program 17 -95208
 Program 17 6063
 Program 17 3
 Program 17 190693
-Program 17 16452
+Program 17 32768
 Program 17 77824
 Program 17 81920
 Program 17 -69632
-Program 17 13674
+Program 17 17539
 Program 17 23614
 Program 17 -3463
 Program 17 4
