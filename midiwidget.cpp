@@ -205,8 +205,8 @@ void MidiWidget::clearClicked() {
 void MidiWidget::addToParameterViewClicked() {
 
   QString qs, qs2, qs3;
-  bool ok, success, foundFrameName;
-  int l1, l2, frameIndex;
+  bool ok, success, foundFrameName, foundTabName;
+  int l1, l2, frameIndex, tabIndex;
   QListViewItem *tmp;
   Module *module;
 
@@ -224,19 +224,32 @@ void MidiWidget::addToParameterViewClicked() {
   }
   foundFrameName = false;
   frameIndex = 0;
-//  for (l1 = 0; l1 < ((GuiWidget *)synthdata->guiWidget)->frameNameList.count(); l1++) { 
-//    qs3 = ((GuiWidget *)synthdata->guiWidget)->frameNameList.at(l1);
-    if ((l1 =((GuiWidget *)synthdata->guiWidget)->frameNameList.findIndex(qs.stripWhiteSpace())) >= 0) {
-      foundFrameName = true;
-      frameIndex = l1;
-//      break;
-    }
-//  }
+  if ((l1 =((GuiWidget *)synthdata->guiWidget)->frameNameList.findIndex(qs.stripWhiteSpace())) >= 0) {
+    foundFrameName = true;
+    frameIndex = l1;
+  }
   if (!foundFrameName) {
     qs2.sprintf("Frame %s does not exist. Create ?", qs.latin1()); 
     QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
                          QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
     if (question.exec() == QMessageBox::Yes) {
+      qs3 = QInputDialog::getText("AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, QString::null, &ok, this);
+      foundTabName = false;
+      tabIndex = 0;
+      if ((l1 =((GuiWidget *)synthdata->guiWidget)->tabNameList.findIndex(qs3.stripWhiteSpace())) >= 0) {
+        foundTabName = true;
+        tabIndex = l1;
+      } else {
+        qs2.sprintf("Tab %s does not exist. Create ?", qs3.latin1());
+        QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
+                             QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
+        if (question.exec() == QMessageBox::Yes) {
+        printf("Creating tab %s.\n", qs3.latin1());
+          ((GuiWidget *)synthdata->guiWidget)->addTab(qs3.stripWhiteSpace());
+        } else {
+          return;
+        }
+      }
       printf("Creating frame %s.\n", qs.latin1());
       ((GuiWidget *)synthdata->guiWidget)->addFrame(qs.stripWhiteSpace());
     } else {
