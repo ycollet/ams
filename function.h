@@ -23,6 +23,8 @@
 #define MAX_POINTS                      8
 #define FUNCTION_WIDTH              10000
 #define FUNCTION_HEIGHT             10000
+#define FUNCTION_BORDER_1               5
+#define FUNCTION_BORDER_2              25
 
 class Function : public QWidget
 {

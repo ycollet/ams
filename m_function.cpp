@@ -40,7 +40,6 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
     for (l2 = 0; l2 < MAX_POINTS; l2++) {
       points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MAX_POINTS - 1), (FUNCTION_HEIGHT >> 1) + (l1 - (functionCount >> 1)) * 1000);
     }
-    fprintf(stderr, "M_function::M_function points[%d] = %p\n", l1, points[l1]);    
     qs.sprintf("Out %d", l1);
     Port *audio_out_port = new Port(qs, PORT_OUT, out_port_list.count(), this, synthdata);
     audio_out_port->move(MODULE_FUNCTION_WIDTH - audio_out_port->width(), 55 + 20 * l1);
