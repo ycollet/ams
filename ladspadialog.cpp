@@ -6,9 +6,9 @@
 #include <qregexp.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h> 
-#include <qlistbox.h> 
+#include <qslider.h>
+#include <qcheckbox.h>
+#include <qlistbox.h>
 #include <qlabel.h>
 #include <qvbox.h>
 #include <qhbox.h>
@@ -22,19 +22,19 @@
 #include "ladspadialog.h"
 #include "synthdata.h"
 
-LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *name) 
+LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *name)
                 : QVBox(parent, name) {
 
   char *error;
   QString ladspadir, ladspapath, qs;
-  void *so_handle;                                                             
+  void *so_handle;
   LADSPA_Descriptor_Function ladspa_dsc_func;
-  const LADSPA_Descriptor *ladspa_dsc;                   
+  const LADSPA_Descriptor *ladspa_dsc;
   int l1, l2, colon, lastcolon;
   glob_t globbuf;
   QListViewItem *ladspaSetItem;
 
-  setCaption("Ladspa Browser");  
+  setCaption("Ladspa Browser");
   setMargin(10);
   setSpacing(10);
   synthdata = p_synthdata;
@@ -45,14 +45,14 @@ LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *
   ladspapath.sprintf("%s", getenv("LADSPA_PATH"));
   if (ladspapath.length() < 1) {
     fprintf(stderr, "\nYou did not set the environment variable LADSPA_PATH.\n");
-    fprintf(stderr, "Assuming LADSPA_PATH=/usr/lib/ladspa:/usr/local/lib/ladspa\n");
-    ladspapath = "/usr/lib/ladspa:/usr/local/lib/ladspa";
+    fprintf(stderr, "Assuming LADSPA_PATH=" LADSPA_PATH "\n");
+    ladspapath = LADSPA_PATH;
   } else {
     fprintf(stderr, "LADSPA_PATH: %s\n", ladspapath.latin1());
   }
   colon = -1;
   l2 = 0;
-  do {   
+  do {
     lastcolon = colon;
     colon = ladspapath.find(QRegExp(":"), lastcolon + 1);
     if (colon >= 0) {
@@ -74,7 +74,7 @@ LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *
       if ((error = dlerror()) != NULL) {
         fprintf(stderr, "Error accessing ladspa descriptor in %s.\n", globbuf.gl_pathv[l1]);
         continue;
-      } 
+      }
       synthdata->ladspa_dsc_func_list[l2] = ladspa_dsc_func;
       qs.sprintf("%s", globbuf.gl_pathv[l1]);
       synthdata->ladspa_lib_name[l2] = qs.mid(qs.findRev("/") + 1, qs.findRev(".") - qs.findRev("/") - 1);
@@ -88,11 +88,11 @@ LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *
     QListViewItem *ladspaSetItem = new QListViewItem(ladspaList, QString(synthdata->ladspa_lib_name[l1]));
     ladspaSetItem->setSelectable(false);
     while((ladspa_dsc = synthdata->ladspa_dsc_func_list[l1](l2)) != NULL) {
-      new QListViewItem(ladspaSetItem, QString(ladspa_dsc->Name));   
+      new QListViewItem(ladspaSetItem, QString(ladspa_dsc->Name));
       l2++;
     }
-    l1++;  
-  }  
+    l1++;
+  }
 
   QHBox *searchBox = new QHBox(this);
   searchBox->setSpacing(10);
@@ -106,18 +106,18 @@ LadspaDialog::LadspaDialog(SynthData *p_synthdata, QWidget* parent, const char *
   labelBox->setSpacing(5);
   pluginLabel = new QLabel(labelBox);
   pluginLabel->setAlignment(Qt::WordBreak | Qt::AlignLeft);
-  pluginMaker = new QLabel(labelBox);             
+  pluginMaker = new QLabel(labelBox);
   pluginMaker->setAlignment(Qt::WordBreak | Qt::AlignLeft);
-  pluginCopyright = new QLabel(labelBox);             
+  pluginCopyright = new QLabel(labelBox);
   pluginCopyright->setAlignment(Qt::WordBreak | Qt::AlignLeft);
   QObject::connect(ladspaList, SIGNAL(selectionChanged()), this, SLOT(pluginHighlighted()));
 
   extCtrlPortsCheck = new QCheckBox("Export control ports as module ports", this);
   QHBox *buttonBox = new QHBox(this);
   QPushButton *insertButton = new QPushButton("Create Plugin", buttonBox);
-  QObject::connect(insertButton, SIGNAL(clicked()), this, SLOT(insertClicked()));  
+  QObject::connect(insertButton, SIGNAL(clicked()), this, SLOT(insertClicked()));
   new QWidget(buttonBox);
-  QPushButton *insertPolyButton = new QPushButton("Create Poly Plugin", buttonBox);  
+  QPushButton *insertPolyButton = new QPushButton("Create Poly Plugin", buttonBox);
   QObject::connect(insertPolyButton, SIGNAL(clicked()), this, SLOT(insertPolyClicked()));
 }
 
@@ -133,15 +133,15 @@ void LadspaDialog::insertClicked() {
                                 ladspaList->selectedItem()->text(0), &index, &n)) {
       emit createLadspaModule(index, n, false, extCtrlPortsCheck->isChecked());
     }
-  }  
-}  
+  }
+}
 
 void LadspaDialog::insertPolyClicked() {
 
   int index, n;
 
   if (ladspaList->selectedItem()) {
-    if (synthdata->getLadspaIDs(ladspaList->selectedItem()->parent()->text(0), 
+    if (synthdata->getLadspaIDs(ladspaList->selectedItem()->parent()->text(0),
                                 ladspaList->selectedItem()->text(0), &index, &n)) {
       emit createLadspaModule(index, n, true, extCtrlPortsCheck->isChecked());
     }
@@ -160,7 +160,7 @@ void LadspaDialog::pluginHighlighted() {
       pluginLabel->setText(QString("Label: ")+QString(ladspa_dsc->Label));
       pluginMaker->setText(QString("Author: ")+QString(ladspa_dsc->Maker));
       pluginCopyright->setText(QString("Copyright: ")+QString(ladspa_dsc->Copyright));
-    } 
+    }
   } else {
     pluginLabel->setText("");
     pluginMaker->setText("");
@@ -189,7 +189,7 @@ void LadspaDialog::searchClicked() {
     ++it;
   }
   if (!it.current()) {
-    it = firstItem;   
+    it = firstItem;
     while (it.current()) {
       if ((it.current()->isSelectable()) && (it.current()->text(0).contains(searchLine->text(), false))) {
         break;
