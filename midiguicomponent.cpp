@@ -119,7 +119,6 @@ void MidiGUIcomponent::midiValueChanged(int value) {
 
 void MidiGUIcomponent::resetControllerOK() {
 
-  fprintf(stderr, "--> resetControllerOK\n");
   controllerOK = false;
 }
 

@@ -40,7 +40,10 @@ class PrefWidget : public QVBox
     QLabel *colorCableLabel, *colorJackLabel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
+    float drift_rate, drift_amp;
     QComboBox *midiModeComboBox;
+    QSlider *driftRateSlider, *driftAmpSlider;
+    QLabel *driftAmpLabel, *driftRateLabel;
     QLineEdit *loadEdit, *saveEdit;
     int midiControllerMode;
    
@@ -68,6 +71,8 @@ class PrefWidget : public QVBox
     void browseLoad();
     void browseSave();
     void updateMidiMode(int);
+    void updateDriftAmp(int);
+    void updateDriftRate(int);
     void loadPathUpdate();
     void savePathUpdate();
 };

@@ -43,6 +43,12 @@ class SynthData : public QObject
     float **zeroModuleData;
     float edge;
 
+    float drift_a[MAXPOLY]; // Oscillator drift amplitude
+    float drift_c[MAXPOLY]; // Oscillator drift coefficient 
+    float drift_r[MAXPOLY]; // Oscillator drift rate 
+    float drift_rate;       // Global drift rate
+    float drift_amp;        // Global drift amplitude
+
     int notes[MAXPOLY];               // Midi notes
     int velocity[MAXPOLY];            // Velocity
     int channel[MAXPOLY];
