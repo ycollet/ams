@@ -36,7 +36,7 @@ class M_function : public Module
     QPointArray *points[MAX_FUNCTIONS];
         
   public: 
-    float **inData, **outData[MAX_FUNCTIONS];
+    float **inData;
     int functionCount;
                             
   public:
