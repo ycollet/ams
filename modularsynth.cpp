@@ -33,7 +33,6 @@
 #include "midicontroller.h"
 #include "ladspadialog.h"
 
-
 ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp, int p_frsize, int p_nfrags,
                             int p_ncapt, int p_nplay, int poly, float edge) 
     : QScrollView (parent, "", Qt::WResizeNoErase | Qt::WRepaintNoErase | Qt::WStaticContents),
@@ -217,8 +216,8 @@ int ModularSynth::go (bool withJack) {
 
 void ModularSynth::displayAbout() {
  
-    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth 1.7.2\n"
-                     "by Matthias Nagorni and Fons Adriaensen\n"
+    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth " AMS_VERSION 
+                     "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n\n" 
                      "Documentation and examples can be found in\n"
@@ -299,7 +298,7 @@ snd_seq_t *ModularSynth::open_seq() {
       exit(1);
     }
   }
-  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d)", clientid, portid, synthdata->poly);
+  qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setCaption(qs);
   synthdata->jackName.sprintf("ams_%d_%d", clientid, portid);
   return(seq_handle);
@@ -1130,7 +1129,7 @@ void ModularSynth::clearConfig() {
   bool restartSynth;
   QString qs;
 
-  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d)", clientid, portid, synthdata->poly);
+  qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setCaption(qs);
   restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
@@ -1191,7 +1190,7 @@ void ModularSynth::load(QString *presetName) {
   } else {
     clearConfig();
     qs2 = config_fn.mid(config_fn.findRev('/') + 1);
-    qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.latin1());
+    qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.latin1());
     mainWindow->setCaption(qs);
     ladspaLoadErr = false;
     commentFlag = false;

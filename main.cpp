@@ -31,9 +31,10 @@ static struct option options[] =
 
 int main(int argc, char *argv[])  
 {
-  QString aboutText ("AlsaModularSynth 1.7.1\n"
-                     "by Matthias Nagorni\n"
-                     "(c)2002-2003 SuSE AG Nuremberg\n\n");
+  QString aboutText ("AlsaModularSynth " AMS_VERSION 
+                     "\nby Matthias Nagorni and Fons Adriaensen\n"
+                     "(c)2002-2003 SuSE AG Nuremberg\n"
+                     "(c)2003 Fons Adriaensen\n\n");
   QApplication *qApp = new QApplication(argc, argv);
   QMainWindow *top = new QMainWindow();
   top->setCaption("AlsaModularSynth");

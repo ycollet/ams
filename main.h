@@ -1,6 +1,8 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
+#define AMS_VERSION "1.7.2"
+
 // Compile time options for AlsaModularSynth
 
 #define DEFAULT_SETUP

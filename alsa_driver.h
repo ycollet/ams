@@ -1,6 +1,8 @@
 #ifndef __ALSA_DRIVER_H
 #define __ALSA_DRIVER_H
 
+#define ALSA_PCM_OLD_HW_PARAMS_API 
+#define ALSA_PCM_OLD_SW_PARAMS_API 
 
 #include <alsa/asoundlib.h>
 
