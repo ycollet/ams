@@ -1355,6 +1355,7 @@ void ModularSynth::load(QString *presetName) {
         qs = m->configDialog->caption();
         qs2 = qs.left(qs.findRev(" "));
         qs.sprintf(" %d", moduleID);
+//        fprintf(stderr, "load() setCaption %s%s\n", qs2.latin1(), qs.latin1());
         m->configDialog->setCaption(qs2+qs);
         midiWidget->addModule(m);
         if (synthdata->moduleID <= moduleID) {

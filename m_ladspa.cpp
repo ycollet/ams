@@ -286,11 +286,13 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
               MODULE_LADSPA_HEIGHT + 20 * itmp);
   pluginName.sprintf("%s", ladspa_dsc->Label);
+//  fprintf(stderr, "--> isPoly: %d  ladspa_dsc->Label: %s  moduleID: %d\n", isPoly, ladspa_dsc->Label, moduleID);
   if (isPoly) {
-    qs.sprintf("%s ID %d Poly", ladspa_dsc->Label, moduleID);
+    qs.sprintf("Poly %s ID %d", ladspa_dsc->Label, moduleID);
   } else {
     qs.sprintf("%s ID %d", ladspa_dsc->Label, moduleID);
   }
+//  fprintf(stderr, "m_ladspa setCaption %s\n", qs.latin1());
   configDialog->setCaption(qs);
 }
 
