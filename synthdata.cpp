@@ -32,6 +32,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
     velocity[l1] = 0;
     notePressed[l1] = false;
     noteActive[l1] = false;
+    noteCounter[l1] = 0;
   }
 
   poly = p_poly;
@@ -547,5 +548,9 @@ void SynthData::call_modules (void)
     for (i = 0; i < spectrumModuleList.count(); i++) ((M_spectrum *)spectrumModuleList.at(i))->generateCycle(); 
     for (i = 0; i < midioutModuleList.count();  i++) ((M_midiout *)midioutModuleList.at(i))->generateCycle();
     for (i = 0; i < moduleList.count();         i++) ((Module *)moduleList.at(i))->cycleReady = false;
+    for (i = 0; i < poly; i++) {
+      noteCounter[i]++;
+      if (noteCounter[i] > 1000000000) noteCounter[i] = 1000000000;
+    }
 }
 

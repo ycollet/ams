@@ -321,9 +321,8 @@ void ModularSynth::midiAction(int fd) {
 
   snd_seq_event_t *ev;
   QString qs;
-  int l1, l2, osc;
+  int l1, l2, osc, noteCount;
   bool noteActive, foundOsc;
-  float min_e;
   MidiController *midiController; 
 
   do {
@@ -414,10 +413,16 @@ void ModularSynth::midiAction(int fd) {
         }    
       }
     }   
+
+// Voice assignment
+
     if (((ev->type == SND_SEQ_EVENT_NOTEON) || (ev->type == SND_SEQ_EVENT_NOTEOFF)) 
          && ((synthdata->midiChannel < 0) || (synthdata->midiChannel == ev->data.control.channel))) {
       for (l2 = 0; l2 < synthdata->poly; l2++) {
         noteActive = false; 
+
+// If any of the envelopes has an noteActive flag for the voice it is considered "busy".
+
         for (l1 = 0; l1 < synthdata->listM_env.count(); l1++) {
           if (((M_env *)synthdata->listM_env.at(l1))->noteActive[l2]) {   
             noteActive = true;
@@ -439,14 +444,21 @@ void ModularSynth::midiAction(int fd) {
           }
         }  
         synthdata->noteActive[l2] = noteActive || synthdata->notePressed[l2];
-      }
+      }  
       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
+
+// Assign new note
+
         foundOsc = false;
         for (l2 = 0; l2 < synthdata->poly; l2++) {
           if (!synthdata->noteActive[l2]) {
+          
+// Easiest case: found a free voice          
+          
             foundOsc = true;
             synthdata->noteActive[l2] = true;
             synthdata->notePressed[l2] = true;
+            synthdata->noteCounter[l2] = 0;
             synthdata->velocity[l2] = ev->data.note.velocity;
             synthdata->channel[l2] = ev->data.note.channel;  
             synthdata->notes[l2] = ev->data.note.note;
@@ -461,56 +473,37 @@ void ModularSynth::midiAction(int fd) {
           || synthdata->listM_vcenv.count() 
           || synthdata->listM_dynamicwaves.count())
           && !foundOsc) {
-          min_e = 1.0;
+          
+// Search for oldest voice to allocate new note.          
+          
           osc = 0;
+          noteCount = 0;
+          foundOsc = false;
           for (l2 = 0; l2 < synthdata->poly; l2++) {
-            for (l1 = 0; l1 < synthdata->listM_dynamicwaves.count(); l1++) {
-              if (((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->noteActive[l2]) {
-                if (((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->e[l2][0] < min_e) {
-                   min_e = ((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->e[l2][0];
-                   osc = l2;
-                }
-              }
-            }
-            for (l1 = 0; l1 < synthdata->listM_env.count(); l1++) {
-              if (((M_env *)synthdata->listM_env.at(l1))->noteActive[l2]) {
-                if (((M_env *)synthdata->listM_env.at(l1))->e[l2] < min_e) {
-                   min_e = ((M_env *)synthdata->listM_env.at(l1))->e[l2];
-                   osc = l2;
-                }
-              }
-            }
-            for (l1 = 0; l1 < synthdata->listM_vcenv.count(); l1++) {
-              if (((M_vcenv *)synthdata->listM_vcenv.at(l1))->noteActive[l2]) {
-                if (((M_vcenv *)synthdata->listM_vcenv.at(l1))->e[l2] < min_e) {
-                   min_e = ((M_vcenv *)synthdata->listM_vcenv.at(l1))->e[l2];
-                   osc = l2;
-                }
-              }
-            }
-            for (l1 = 0; l1 < synthdata->listM_advenv.count(); l1++) {
-              if (((M_advenv *)synthdata->listM_advenv.at(l1))->noteActive[l2]) {
-                if (((M_advenv *)synthdata->listM_advenv.at(l1))->e[l2] < min_e) {
-                   min_e = ((M_advenv *)synthdata->listM_advenv.at(l1))->e[l2];
-                   osc = l2;
-                }
-              }
+            if (synthdata->noteCounter[l2] > noteCount) {
+              noteCount = synthdata->noteCounter[l2];
+              osc = l2;
+              foundOsc = true;
             }
           }
-          synthdata->noteActive[osc] = true; 
-          synthdata->notePressed[osc] = true;
-          synthdata->velocity[osc] = ev->data.note.velocity;
-          synthdata->channel[osc] = ev->data.note.channel;
-          synthdata->notes[osc] = ev->data.note.note;   
-          for (l1 = 0; l1 < listModule.count(); l1++) {
-            listModule.at(l1)->noteOnEvent(osc);
-          }
-        }
+          if (foundOsc) {
+            synthdata->noteActive[osc] = true; 
+            synthdata->notePressed[osc] = true;
+            synthdata->noteCounter[osc] = 0;
+            synthdata->velocity[osc] = ev->data.note.velocity;
+            synthdata->channel[osc] = ev->data.note.channel;
+            synthdata->notes[osc] = ev->data.note.note;   
+            for (l1 = 0; l1 < listModule.count(); l1++) {
+              listModule.at(l1)->noteOnEvent(osc);
+            }
+          }  
+        }  
       } else {
         for (l2 = 0; l2 < synthdata->poly; l2++) {
           if ((synthdata->notes[l2] == ev->data.note.note)
             && (synthdata->channel[l2] == ev->data.note.channel)) {
             synthdata->notePressed[l2] = false;
+            synthdata->noteCounter[l2] = 1000000; 
             for (l1 = 0; l1 < listModule.count(); l1++) {
               listModule.at(l1)->noteOffEvent(l2);
             } 

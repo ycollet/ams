@@ -47,6 +47,7 @@ class SynthData : public QObject
     int channel[MAXPOLY];
     bool notePressed[MAXPOLY];
     bool noteActive[MAXPOLY];
+    long noteCounter[MAXPOLY];
 
     int poly;
     int rate;
