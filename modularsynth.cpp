@@ -1310,6 +1310,9 @@ void ModularSynth::load(QString *presetName) {
           case M_type_mix: 
             newM_mix(subID1);
             break;
+          case M_type_function: 
+            newM_function(subID1);
+            break;
           case M_type_stereomix: 
             newM_stereomix(subID1);
             break;
@@ -1626,6 +1629,9 @@ void ModularSynth::save() {
           break;
         case M_type_mix: 
           fprintf(f, "%d 0\n", ((M_mix *)listModule.at(l1))->in_channels);
+          break;
+        case M_type_function: 
+          fprintf(f, "%d 0\n", ((M_function *)listModule.at(l1))->functionCount);
           break;
         case M_type_stereomix: 
           fprintf(f, "%d 0\n", ((M_stereomix *)listModule.at(l1))->in_channels);

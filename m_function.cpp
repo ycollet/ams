@@ -78,8 +78,6 @@ void M_function::generateCycle() {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
           xg = gainIn * inData[l1][l2];
-          if (xg > 10) xg = 10;
-          else if (xg < -10) xg = -10;
           while (xg < x[i[l3]]) i[l3]--;
           while (xg >= x[i[l3]+1]) i[l3]++;
           if ((i[l3] >= 1) && (i[l3] < pointCount)) {

@@ -86,7 +86,7 @@ void Function::updateFunction(int index) {
   matrix.translate((double)FUNCTION_BORDER_1/scale[0], (double)FUNCTION_BORDER_1/scale[0]-FUNCTION_HEIGHT);
   *screenPoints[index] = matrix.map(*points[index]);
   fx[index][0] = -1e30;
-  fx[index][pointCount] = 1e30;
+  fx[index][pointCount+1] = 1e30;
   for (l1 = 0; l1 < pointCount; l1++) {
     qp = screenPoints[index]->point(l1);
     fx[index][l1 + 1] = (double)(points[index]->point(l1).x() - FUNCTION_CENTER_X) / (double)FUNCTION_SCALE;
@@ -168,16 +168,14 @@ void Function::mouseMoveEvent(QMouseEvent *ev) {
     if (matrix.isInvertible()) {
       invMatrix = matrix.invert();
       qp = invMatrix.map(ev->pos());
-      if ((activePoint == 0) || (activePoint == pointCount - 1)) {
-        qp.setX(points[activeFunction]->point(activePoint).x());
-      } else {
-        if (qp.x() < points[activeFunction]->point(activePoint - 1).x()) {
-          qp.setX(points[activeFunction]->point(activePoint-1).x() + 1);     // a minimum dx of 1 corresponds to 0.002 V
-        } else if (qp.x() > points[activeFunction]->point(activePoint + 1).x()) {
-          qp.setX(points[activeFunction]->point(activePoint+1).x() - 1); 
-        }
+      if ((activePoint > 0) && (qp.x() < points[activeFunction]->point(activePoint - 1).x())) {
+        qp.setX(points[activeFunction]->point(activePoint-1).x() + 1);     // a minimum dx of 1 corresponds to 0.002 V
+      } else if ((activePoint < pointCount - 1) && (qp.x() > points[activeFunction]->point(activePoint + 1).x())) {
+        qp.setX(points[activeFunction]->point(activePoint+1).x() - 1); 
       }
-      if (qp.y() < 0) qp.setY(0); // only y needs to be checked here
+      if (qp.x() < 0) qp.setX(0);
+      if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
+      if (qp.y() < 0) qp.setY(0);
       if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
       points[activeFunction]->setPoint(activePoint, qp);
       updateFunction(activeFunction);
