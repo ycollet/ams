@@ -70,6 +70,9 @@ class GuiWidget : public QVBox
     int setPresetCount(int count);
     int setCurrentPreset(int presetNum);
     int addParameter(MidiGUIcomponent *midiGUIcomponent, QString parameterName);
+
+  signals:
+    void updateMIDIController();
     
   public slots:
     void presetDec();

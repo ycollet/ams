@@ -140,6 +140,7 @@ class ModularSynth : public QScrollView
     void displayParameterView();
     void displayLadspaPlugins();
     void midiAction(int fd);
+    void initMIDIController();
     void startSynth();
     void stopSynth();
     void new_textEdit();

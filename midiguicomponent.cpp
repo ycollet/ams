@@ -89,6 +89,39 @@ int MidiGUIcomponent::getMidiValue() {
 
 void MidiGUIcomponent::midiValueChanged(int value) {
 
-  setMidiValue(value);
+  int type, ch, param;
+  snd_seq_event_t ev;
+
+  if (!controllerOK) {
+    if (midiControllerList.count()) {
+      type = midiControllerList.at(0)->type;
+      if (type == SND_SEQ_EVENT_CONTROLLER) {
+        ch = midiControllerList.at(0)->ch;
+        param = midiControllerList.at(0)->param;
+        snd_seq_ev_clear(&ev);
+        snd_seq_ev_set_subs(&ev);
+        snd_seq_ev_set_direct(&ev);
+        ev.type = SND_SEQ_EVENT_CONTROLLER;
+        ev.data.control.channel = ch;
+        ev.data.control.param = param;
+        ev.data.control.value = getMidiValue();
+        snd_seq_ev_set_source(&ev, synthdata->midi_out_port[0]);
+        snd_seq_event_output_direct(synthdata->seq_handle, &ev);
+//        fprintf(stderr, "--> %d %d %d\n", type, ch, param);
+      }
+    }  
+    controllerOK = true;
+  } else {
+    setMidiValue(value);
+  }  
 }
 
+void MidiGUIcomponent::resetControllerOK() {
+
+  controllerOK = false;
+}
+
+void MidiGUIcomponent::invalidateController() {
+
+  emit sigResetController();
+}

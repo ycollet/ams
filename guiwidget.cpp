@@ -152,6 +152,7 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
 //        QObject::connect(slider, SIGNAL(logModeChanged(bool)), (MidiSlider *)midiGUIcomponent, SLOT(setLogMode(bool)));
         QObject::connect((MidiSlider *)midiGUIcomponent, SIGNAL(logModeChanged(bool)),
                          slider, SLOT(setLogMode(bool)));
+        QObject::connect(slider, SIGNAL(sigResetController()), (MidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
         slider->show();
       }
       break;
@@ -167,6 +168,7 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
         QObject::connect(slider, SIGNAL(valueChanged(int)), (IntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
         QObject::connect((IntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
                          slider, SLOT(updateSlider(int)));
+        QObject::connect(slider, SIGNAL(sigResetController()), (IntMidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
         slider->show();
       }
       break;
@@ -182,6 +184,7 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
         QObject::connect(slider, SIGNAL(valueChanged(int)), (FloatIntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
         QObject::connect((FloatIntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
                          slider, SLOT(updateSlider(int)));
+        QObject::connect(slider, SIGNAL(sigResetController()), (FloatIntMidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
         slider->show();
       }
       break;
@@ -203,6 +206,7 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
         parameterList.append((MidiGUIcomponent *)midiComboBox);
         QObject::connect(midiComboBox->comboBox, SIGNAL(highlighted(int)), (MidiComboBox *)midiGUIcomponent, SLOT(updateValue(int)));
         QObject::connect(((MidiComboBox *)midiGUIcomponent)->comboBox, SIGNAL(highlighted(int)), midiComboBox, SLOT(updateValue(int)));
+        QObject::connect(midiComboBox, SIGNAL(sigResetController()), (MidiComboBox *)midiGUIcomponent, SLOT(resetControllerOK()));                          
         midiComboBox->show();
       }
       break;
@@ -241,6 +245,7 @@ int GuiWidget::setCurrentPreset(int presetNum) {
   index = 0;
   for (it = presetList[currentPreset].begin(); it != presetList[currentPreset].end(); it++) {
     value = *it;
+    parameterList.at(index)->invalidateController();
     switch(parameterList.at(index)->componentType) {  
       case GUIcomponentType_slider:
         ((MidiSlider *)parameterList.at(index))->updateValue(value);
@@ -264,6 +269,7 @@ int GuiWidget::setCurrentPreset(int presetNum) {
       presetName->setText(qs);
     }
   }
+  emit updateMIDIController();
 }
 
 void GuiWidget::presetDec() {

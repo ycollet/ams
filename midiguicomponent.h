@@ -38,15 +38,18 @@ public:
   void disconnectController(MidiController *p_midiController);
   virtual void setMidiValue(int value);
   virtual int getMidiValue();
+  void invalidateController();
 
 signals:
   void guiComponentTouched();
+  void sigResetController();
   
 public slots:
   void midiValueChanged(int);
   void connectToController();
   void disconnectController();
   void disconnectController(int);
+  void resetControllerOK();
 };
   
 #endif
