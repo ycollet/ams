@@ -173,7 +173,7 @@ int Module::saveConnections(FILE *f) {
 
 int Module::saveParameters(FILE *f) {
 
-  int l1;
+  int l1, l2, l3;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
     fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,   
@@ -202,6 +202,18 @@ int Module::saveParameters(FILE *f) {
     fprintf(f, "CheckBox %d %d %d %d\n", moduleID, l1, 
                 (int)(configDialog->midiCheckBoxList.at(l1)->checkBox->isChecked()),
                 configDialog->midiCheckBoxList.at(l1)->midiSign);
+  }
+  for (l1 = 0; l1 < configDialog->functionList.count(); l1++) {
+    fprintf(f, "Function %d %d %d %d\n", moduleID, l1, 
+                configDialog->functionList.at(l1)->functionCount,
+                configDialog->functionList.at(l1)->pointCount);
+    for (l2 = 0; l2 < configDialog->functionList.at(l1)->functionCount; l2++) {
+      for (l3 = 0; l3 < configDialog->functionList.at(l1)->pointCount; l3++) {
+        fprintf(f, "Point %d %d %d %d %d %d\n", moduleID, l1, l2, l3,
+                    configDialog->functionList.at(l1)->getPoint(l2, l3).x(),
+                    configDialog->functionList.at(l1)->getPoint(l2, l3).y());
+      }
+    }                
   }
 }
 

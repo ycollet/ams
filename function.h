@@ -42,7 +42,6 @@ class Function : public QCanvasView
 
   private:
     SynthData *synthdata;
-    int functionCount;
     int *mode;
     QPointArray *screenPoints[MAX_FUNCTIONS];
     QPointArray *points[MAX_FUNCTIONS];
@@ -60,6 +59,7 @@ class Function : public QCanvasView
   public:
     float_function f;
     int pointCount;
+    int functionCount;
     
   protected:
     virtual void resizeEvent (QResizeEvent* );            
@@ -71,11 +71,17 @@ class Function : public QCanvasView
     Function(int p_functionCount, int *p_mode, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget* parent=0, const char *name=0);
     ~Function();
     void setPointCount(int count);
+    void setFunctionCount(int count);
+    void setPoint(int f_index, int p_index, int x, int y);
+    QPoint getPoint(int f_index, int p_index);
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
     void redrawFunction();
     void redrawGrid();
     void updateScale();
+
+  signals:
+    void mousePos(int, int);
 
   public slots: 
     void updateFunction(int index);

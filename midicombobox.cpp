@@ -23,11 +23,7 @@ MidiComboBox::MidiComboBox(QObject *parentModule, int value, QWidget * parent, c
   new QWidget(this);
   QVBox *comboFrame = new QVBox(this);
   comboFrame->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-  QHBox *comboNameBox = new QHBox(comboFrame);
-  new QWidget(comboNameBox);
-  comboNameBox->setMargin(5);
-  QLabel *nameLabel = new QLabel(comboNameBox);
-  new QWidget(comboNameBox);
+  QLabel *nameLabel = new QLabel(comboFrame);
   if (name) {
     nameLabel->setFixedHeight(nameLabel->sizeHint().height());
     nameLabel->setText(name);

@@ -71,8 +71,10 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
   hbox = configDialog->addHBox();
   configDialog->addComboBox(mode, "Mode", &mode, modeNames->count(), modeNames, hbox);
   configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames->count(), zoomNames, hbox);
-  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(activated(int)),
+  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateZoom(int)));
+  QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
+                   this, SLOT(updateMouseLabels(int, int)));
   configDialog->addLabel("Mouse X: _______", hbox);
   configDialog->addLabel(" Y: _______", hbox);
   configDialog->setCaption(qs);
@@ -125,4 +127,14 @@ void M_function::updateZoom(int p_zoomIndex) {
 
   zoom = pow(2.0, (double)zoomIndex); // zoomIndex is already set in MidiComboBox event handler
   configDialog->functionList.at(0)->setZoom(zoom);
+}
+
+void M_function::updateMouseLabels(int x, int y) {
+
+  QString qs;
+
+  qs.sprintf("Mouse X: %8.3f", (float)(x-FUNCTION_CENTER_X)/(float)FUNCTION_SCALE);
+  configDialog->labelList.at(0)->setText(qs);
+  qs.sprintf(" Y: %8.3f", (float)(FUNCTION_CENTER_Y-y)/(float)FUNCTION_SCALE);
+  configDialog->labelList.at(1)->setText(qs);
 }

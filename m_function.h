@@ -51,6 +51,7 @@ class M_function : public Module
     void generateCycle();
     void showConfigDialog();
     void updateZoom(int p_zoomIndex);
+    void updateMouseLabels(int x, int y);
 };
   
 #endif

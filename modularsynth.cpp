@@ -1478,6 +1478,31 @@ void ModularSynth::load(QString *presetName) {
           }
         }
       }
+      if (qs.contains("Function", false)) {
+        fscanf(f, "%d", &moduleID);
+        fscanf(f, "%d", &index);
+        fscanf(f, "%d", &subID1);
+        fscanf(f, "%d", &subID2);
+        for (l1 = 0; l1 < listModule.count(); l1++) {
+          if (listModule.at(l1)->moduleID == moduleID) {
+            listModule.at(l1)->configDialog->functionList.at(index)->setPointCount(subID2);
+            break;
+          }
+        }
+      }
+      if (qs.contains("Point", false)) {
+        fscanf(f, "%d", &moduleID);
+        fscanf(f, "%d", &index);
+        fscanf(f, "%d", &subID1);
+        fscanf(f, "%d", &subID2); 
+        fscanf(f, "%d", &x); 
+        fscanf(f, "%d", &y); 
+        for (l1 = 0; l1 < listModule.count(); l1++) {
+          if (listModule.at(l1)->moduleID == moduleID) {
+            listModule.at(l1)->configDialog->functionList.at(index)->setPoint(subID1, subID2, x, y);
+          }
+        }
+      }
       if (qs.contains("MIDI", false)) {
         fscanf(f, "%d", &moduleID);
         fscanf(f, "%d", &index);   

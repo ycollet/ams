@@ -34,7 +34,7 @@ Function::Function(int p_functionCount, int *p_mode, QPointArray *p_points[], in
   activePoint = -1;
   zoom = 1.0;
   updateScale();
-  for (l1 = 0; l1 < functionCount; l1++) {
+  for (l1 = 0; l1 < MAX_FUNCTIONS; l1++) {
     points[l1] = p_points[l1];
     setPointCount(MAX_POINTS);
     screenPoints[l1] = new QPointArray(MAX_POINTS);
@@ -232,22 +232,24 @@ void Function::contentsMouseReleaseEvent(QMouseEvent *ev) {
   int l1;
   
   mousePressed = false;
-  switch (*mode) {
-    case 5:
-      for (l1 = 0; l1 < pointCount; l1++) {
-        qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), FUNCTION_HEIGHT >> 1);
-        points[activeFunction]->setPoint(l1, qp);                              
-      }
-      break;
-    case 6:
-      for (l1 = 0; l1 < pointCount; l1++) {
-        qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), (pointCount - 1 - l1) * FUNCTION_WIDTH / (pointCount - 1));
-        points[activeFunction]->setPoint(l1, qp);                              
-      }
-      break;
-  } 
-  updateFunction(activeFunction);
-  repaintContents(false);
+  if ((activeFunction >=0) && (activePoint >= 0)) {
+    switch (*mode) {
+      case 5:
+        for (l1 = 0; l1 < pointCount; l1++) {
+          qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), FUNCTION_HEIGHT >> 1);
+          points[activeFunction]->setPoint(l1, qp);                              
+        }
+        break;
+      case 6:
+        for (l1 = 0; l1 < pointCount; l1++) {
+          qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), (pointCount - 1 - l1) * FUNCTION_WIDTH / (pointCount - 1));
+          points[activeFunction]->setPoint(l1, qp);                              
+        }
+        break;
+    } 
+    updateFunction(activeFunction);
+    repaintContents(false);
+  }  
 }
 
 void Function::contentsMouseMoveEvent(QMouseEvent *ev) {
@@ -257,11 +259,12 @@ void Function::contentsMouseMoveEvent(QMouseEvent *ev) {
   int l1, delta;
   float scaleFactor;
 
-  if (mousePressed && (activeFunction >=0) && (activePoint >= 0)) {
+  if (matrix.isInvertible()) {
+    invMatrix = matrix.invert();
+    qp = invMatrix.map(ev->pos());
+    emit mousePos(qp.x(), qp.y());
+    if (mousePressed && (activeFunction >=0) && (activePoint >= 0)) {
 //    fprintf(stderr, "mouseMoveEvent scale[0] = %f, scale[1] = %f\n", scale[0], scale[1]);
-    if (matrix.isInvertible()) {
-      invMatrix = matrix.invert();
-      qp = invMatrix.map(ev->pos());
       switch (*mode) {
         case 0:
           if ((activePoint > 0) && (qp.x() < points[activeFunction]->point(activePoint - 1).x())) {
@@ -324,9 +327,9 @@ void Function::contentsMouseMoveEvent(QMouseEvent *ev) {
 //      fprintf(stderr, "mouseMoveEvent f[0][%d][%d+1] = %f f[1][%d][%d+1] = %f\n", activeFunction, activePoint, f[0][activeFunction][activePoint+1],
 //              activeFunction, activePoint, f[1][activeFunction][activePoint+1]);
       repaintContents(false);
-    } else {
-      fprintf(stderr, "Matrix not invertible !\n");
     }
+  } else {
+    fprintf(stderr, "Matrix not invertible !\n");
   }
 }
 
@@ -354,3 +357,14 @@ void Function::updateScale() {
   matrix.translate((double)FUNCTION_BORDER_L/scale[0], (double)FUNCTION_BORDER_B/scale[1]);
   ((Canvas *)canvas())->setMatrix(matrix);
 }
+
+void Function::setPoint(int f_index, int p_index, int x, int y) {
+
+  points[f_index]->setPoint(p_index, QPoint(x, y));
+}
+
+QPoint Function::getPoint(int f_index, int p_index) {
+
+  return(points[f_index]->point(p_index));
+}
+        

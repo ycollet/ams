@@ -69,9 +69,9 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
     qp_out[0] = matrix.map(qp_in[0]);
     qp_out[1] = matrix.map(qp_in[1]);    
     painter.drawLine(qp_out[0], qp_out[1]);
-    qs.sprintf("%6.2f", val);
+    qs.sprintf("%7.2f", val);
     painter.setFont(QFont("Helvetica", 9));
-    painter.drawText(qp_out[0].x() - 40, qp_out[0].y() + 4, qs);
+    painter.drawText(qp_out[0].x() - 44, qp_out[0].y() + 4, qs);
   }
 }  
 
