@@ -29,6 +29,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	spectrumscreen.o spectrumscreen.moc.o \
 	function.o function.moc.o \
 	canvasview.o canvasview.moc.o \
+	canvasfunction.o canvasfunction.moc.o \
 	m_sh.o m_sh.moc.o \
 	m_vcswitch.o m_vcswitch.moc.o \
 	m_vcorgan.o m_vcorgan.moc.o \
@@ -155,14 +156,18 @@ envelope.o: envelope.cpp envelope.h synthdata.h
 envelope.moc.o: envelope.moc.cpp envelope.h synthdata.h 
 envelope.moc.cpp: envelope.h envelope.cpp
 	$(QT_BIN_DIR)/moc envelope.h -o envelope.moc.cpp
-function.o: function.cpp function.h synthdata.h canvasview.h
-function.moc.o: function.moc.cpp function.h synthdata.h canvasview.h
+function.o: function.cpp function.h synthdata.h canvasview.h canvasfunction.h
+function.moc.o: function.moc.cpp function.h synthdata.h canvasview.h canvasfunction.h
 function.moc.cpp: function.h function.cpp
 	$(QT_BIN_DIR)/moc function.h -o function.moc.cpp
 canvasview.o: canvasview.cpp canvasview.h 
 canvasview.moc.o: canvasview.moc.cpp canvasview.h 
 canvasview.moc.cpp: canvasview.h canvasview.cpp
 	$(QT_BIN_DIR)/moc canvasview.h -o canvasview.moc.cpp
+canvasfunction.o: canvasfunction.cpp canvasfunction.h 
+canvasfunction.moc.o: canvasfunction.moc.cpp canvasfunction.h 
+canvasfunction.moc.cpp: canvasfunction.h canvasfunction.cpp
+	$(QT_BIN_DIR)/moc canvasfunction.h -o canvasfunction.moc.cpp
 multi_envelope.o: multi_envelope.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.o: multi_envelope.moc.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.cpp: multi_envelope.h multi_envelope.cpp

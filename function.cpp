@@ -101,4 +101,3 @@ void Function::resizeEvent (QResizeEvent* )
   canvasView->resize(width(), height());
   repaint(true);
 }
-
