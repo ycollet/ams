@@ -60,7 +60,11 @@ class Port : public QWidget
     
   public slots:
     void disconnectClicked();  
-    void defaultClicked();
+    void cableGrayClicked();
+    void cableRedClicked();
+    void cableGreenClicked();
+    void cableBlueClicked();
+    void cableYellowClicked();
     void jackColorClicked();
     void cableColorClicked();
     void checkConnectionStatus();

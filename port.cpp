@@ -26,7 +26,7 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   portWidth = p_portWidth;
   dir = p_dir;
   fontColor = p_color;
-  jackColor = QColor(20, 150, 20);
+  jackColor = QColor(250, 200, 50);
   cableColor = QColor(COLOR_CONNECT_BEZ1);
   highlighted = false;
   index = p_index;
@@ -34,7 +34,13 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("Disconnect", this, SLOT(disconnectClicked()));
-  contextMenu->insertItem("Default Colors", this, SLOT(defaultClicked()));
+  contextMenu->insertSeparator();
+  contextMenu->insertItem("Gray Cable", this, SLOT(cableGrayClicked()));
+  contextMenu->insertItem("Red Cable", this, SLOT(cableRedClicked()));
+  contextMenu->insertItem("Green Cable", this, SLOT(cableGreenClicked()));
+  contextMenu->insertItem("Blue Cable", this, SLOT(cableBlueClicked()));
+  contextMenu->insertItem("Yellow Cable", this, SLOT(cableYellowClicked()));
+  contextMenu->insertSeparator();
   contextMenu->insertItem("Set Jack Color", this, SLOT(jackColorClicked()));
   contextMenu->insertItem("Set Cable Color", this, SLOT(cableColorClicked()));
 }
@@ -187,10 +193,34 @@ float **Port::getinputdata (void)
     else return synthdata->zeroModuleData;
 }
 
-void Port::defaultClicked() {
+void Port::cableGrayClicked() {
 
-  jackColor = QColor(20, 150, 20);
+  jackColor = QColor(250, 200, 50);
   cableColor = QColor(COLOR_CONNECT_BEZ1);
+}
+
+void Port::cableRedClicked() {
+
+  jackColor = QColor(190, 140, 140);
+  cableColor = QColor(150, 0, 30);
+}
+
+void Port::cableGreenClicked() {
+
+  jackColor = QColor(120, 180, 120);
+  cableColor = QColor(30, 130, 30);
+}
+
+void Port::cableBlueClicked() {
+
+  jackColor = QColor(140, 140, 180);
+  cableColor = QColor(30, 30, 140);
+}
+
+void Port::cableYellowClicked() {
+
+  jackColor = QColor(210, 170, 100);
+  cableColor = QColor(200, 180, 10);
 }
 
 void Port::jackColorClicked() {

@@ -108,7 +108,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           qpa.setPoint(2, port_x[1], port_y[1]);
           qpa.setPoint(3, port_x[1], port_y[1]);
           pen->setWidth(5);
-          pen->setColor(cableColor.dark());
+          pen->setColor(cableColor.dark(120));
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(3);
@@ -116,17 +116,17 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(1);
-          pen->setColor(cableColor.light());
+          pen->setColor(cableColor.light(120));
           p.setPen(*pen);          
           p.drawCubicBezier(qpa);
-          p.fillRect(port_x[0], port_y[0] - 3, 11, 7, QBrush(jackColor.dark()));
-          p.fillRect(port_x[1] - 11, port_y[1] - 3, 11, 7, QBrush(jackColor.dark()));
+          p.fillRect(port_x[0], port_y[0] - 3, 11, 7, QBrush(jackColor.dark(120)));
+          p.fillRect(port_x[1] - 11, port_y[1] - 3, 11, 7, QBrush(jackColor.dark(120)));
           p.fillRect(port_x[0], port_y[0] - 2, 11, 5, QBrush(jackColor));
           p.fillRect(port_x[1] - 11, port_y[1] - 2, 11, 5, QBrush(jackColor));
-          p.fillRect(port_x[0], port_y[0] - 1, 11, 3, QBrush(jackColor.light()));
-          p.fillRect(port_x[1] - 11, port_y[1] - 1, 11, 3, QBrush(jackColor.light()));
+          p.fillRect(port_x[0], port_y[0] - 1, 11, 3, QBrush(jackColor.light(120)));
+          p.fillRect(port_x[1] - 11, port_y[1] - 1, 11, 3, QBrush(jackColor.light(120)));
           pen->setWidth(1);
-          pen->setColor(jackColor.light(250));
+          pen->setColor(jackColor.light(170));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] + 11, port_y[0]);
           p.drawLine(port_x[1] - 11, port_y[1], port_x[1], port_y[1]);
@@ -136,7 +136,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
         }
         if (port[0]->parentModule->x() < port[1]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(cableColor.dark());
+          pen->setColor(cableColor.dark(120));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 5, port_y[0]);
           pen->setWidth(3);
@@ -144,13 +144,13 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 6, port_y[0]);
           pen->setWidth(1);
-          pen->setColor(cableColor.light());
+          pen->setColor(cableColor.light(120));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 7, port_y[0]);
         }
         if (port[1]->parentModule->x() > port[0]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(cableColor.dark());
+          pen->setColor(cableColor.dark(120));
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 5, port_y[1]);
           pen->setWidth(3);
@@ -158,7 +158,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 6, port_y[1]);
           pen->setWidth(1);
-          pen->setColor(cableColor.light());
+          pen->setColor(cableColor.light(120));
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 7, port_y[1]);
         }
