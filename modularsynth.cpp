@@ -1434,8 +1434,9 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); l1++) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
+            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
+            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);
             break;
           }
         }
@@ -1447,8 +1448,9 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); l1++) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
+            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
+            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);
             break;
           }
         }
