@@ -36,6 +36,7 @@ class MidiWidget : public QVBox
    QSlider *slider;
    QCheckBox *logCheck, *currentCheck;
    QPushButton *currentPushButton;
+   QString currentFrameName, currentTabName;
    QComboBox *comboBox;
    float minValue, maxValue, value, initial_min, initial_max;
    MidiGUIcomponent *midiGUIcomponent;

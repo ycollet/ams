@@ -338,6 +338,7 @@ void GuiWidget::clearPresets() {
     presetList[l1].clear();
   }
   presetNameList.clear();
+  presetName->setText(" ");
   setPresetCount(0);
 }
 
@@ -348,6 +349,7 @@ void GuiWidget::clearGui() {
   tabList.clear();
   parameterList.clear();
   presetNameList.clear();
+  presetName->setText(" ");
   frameNameList.clear();
   tabNameList.clear();
   tabWidget = new QTabWidget(this);

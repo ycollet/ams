@@ -48,7 +48,7 @@ MidiWidget::MidiWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   followMidi = false;
   firstBindingMightHaveChanged = false;
   QSplitter *listViewBox = new QSplitter(this);
-  setStretchFactor(listViewBox, 10);
+  setStretchFactor(listViewBox, 2);
   midiControllerListView = new QListView(listViewBox);
   midiControllerListView->setRootIsDecorated(true);
   midiControllerListView->addColumn("MIDI Controller / Parameter");
@@ -218,7 +218,8 @@ void MidiWidget::addToParameterViewClicked() {
       return;
     }
   }
-  qs = QInputDialog::getText("AlsaModularSynth", "Add this parameter to frame:", QLineEdit::Normal, QString::null, &ok, this);
+  qs = QInputDialog::getText("AlsaModularSynth", "Add this parameter to frame:", QLineEdit::Normal, currentFrameName, &ok, this);
+  currentFrameName = qs;
   if (qs.isEmpty()) {
     return;
   }
@@ -233,7 +234,8 @@ void MidiWidget::addToParameterViewClicked() {
     QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
                          QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
     if (question.exec() == QMessageBox::Yes) {
-      qs3 = QInputDialog::getText("AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, QString::null, &ok, this);
+      qs3 = QInputDialog::getText("AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, currentTabName, &ok, this);
+      currentTabName = qs3;
       foundTabName = false;
       tabIndex = 0;
       if ((l1 =((GuiWidget *)synthdata->guiWidget)->tabNameList.findIndex(qs3.stripWhiteSpace())) >= 0) {
