@@ -191,6 +191,7 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("VC Organ (4 Oscillators)", modularSynth, SLOT(newM_vcorgan_4()));
   newModulePopup->insertItem("VC Organ (6 Oscillators)", modularSynth, SLOT(newM_vcorgan_6()));
   newModulePopup->insertItem("VC Organ (8 Oscillators)", modularSynth, SLOT(newM_vcorgan_8()));
+  newModulePopup->insertItem("VC Panning", modularSynth, SLOT(newM_vcpanning()));
   newModulePopup->insertItem("VC Switch", modularSynth, SLOT(newM_vcswitch()));
   newModulePopup->insertItem("VCA lin.", modularSynth, SLOT(newM_vca_lin()));
   newModulePopup->insertItem("VCA exp.", modularSynth, SLOT(newM_vca_exp()));

@@ -46,6 +46,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_advmcv.o m_advmcv.moc.o \
 	m_scmcv.o m_scmcv.moc.o \
 	m_env.o m_env.moc.o \
+	m_vcpanning.o m_vcpanning.moc.o \
 	m_vcenv.o m_vcenv.moc.o \
 	m_advenv.o m_advenv.moc.o \
 	m_ringmod.o m_ringmod.moc.o \
@@ -237,6 +238,10 @@ m_vcenv.o: m_vcenv.cpp m_vcenv.h synthdata.h module.h port.h
 m_vcenv.moc.o: m_vcenv.moc.cpp m_vcenv.h synthdata.h module.h port.h
 m_vcenv.moc.cpp: m_vcenv.h m_vcenv.cpp
 	$(QT_BIN_DIR)/moc m_vcenv.h -o m_vcenv.moc.cpp
+m_vcpanning.o: m_vcpanning.cpp m_vcpanning.h synthdata.h module.h port.h
+m_vcpanning.moc.o: m_vcpanning.moc.cpp m_vcpanning.h synthdata.h module.h port.h
+m_vcpanning.moc.cpp: m_vcpanning.h m_vcpanning.cpp
+	$(QT_BIN_DIR)/moc m_vcpanning.h -o m_vcpanning.moc.cpp
 m_advenv.o: m_advenv.cpp m_advenv.h synthdata.h module.h port.h
 m_advenv.moc.o: m_advenv.moc.cpp m_advenv.h synthdata.h module.h port.h
 m_advenv.moc.cpp: m_advenv.h m_advenv.cpp

@@ -50,6 +50,7 @@
 #include "m_vcswitch.h"
 #include "m_slew.h"
 #include "m_sh.h"
+#include "m_vcpanning.h"
 #include "m_midiout.h"
 #include "m_scope.h"
 #include "m_spectrum.h"
@@ -146,6 +147,7 @@ class ModularSynth : public QScrollView
     void newM_seq_32();
     void newM_env();
     void newM_vcenv();
+    void newM_vcpanning();
     void newM_advenv();
     void newM_mcv();
     void newM_advmcv();

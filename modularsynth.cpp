@@ -698,6 +698,12 @@ void ModularSynth::newM_vcenv() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_vcpanning() {
+
+  M_vcpanning *m = new M_vcpanning(viewport(), "VC Panning", synthdata);
+  initNewModule((Module *)m);
+}
+
 void ModularSynth::newM_advenv() {
 
   M_advenv *m = new M_advenv(viewport(), "Advanced ENV", synthdata);
@@ -1321,6 +1327,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_vcenv: 
             newM_vcenv();
+            break;
+          case M_type_vcpanning: 
+            newM_vcpanning();
             break;
           case M_type_advenv: 
             newM_advenv();
