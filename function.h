@@ -11,6 +11,8 @@
 #include <qpointarray.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
+#include <qcanvas.h>
+#include "canvasview.h"
 #include "synthdata.h"
 
 #define FUNCTION_MINIMUM_WIDTH        100
@@ -31,6 +33,8 @@ class Function : public QWidget
     QPointArray *points[MAX_FUNCTIONS]; 
     QPointArray *screenPoints[MAX_FUNCTIONS];
     QColor colorTable[MAX_FUNCTIONS];
+    QCanvas *canvas;
+    CanvasView *canvasView;
     float zoomMin[2], zoomMax[2];             // Ranges for zoomed display of functions
     
   protected:

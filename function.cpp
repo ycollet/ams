@@ -35,6 +35,9 @@ Function::Function(int p_functionCount, QPointArray *p_points[], SynthData *p_sy
   colorTable[5].setRgb(0, 255, 255);
   colorTable[6].setRgb(255, 100, 255);
   colorTable[7].setRgb(255, 200, 50);
+  canvas = new QCanvas(this);
+  canvas->resize(width(), height());
+  canvasView = new CanvasView(canvas, this);
 }
 
 Function::~Function()
@@ -94,6 +97,8 @@ QSizePolicy Function::sizePolicy() const {
 
 void Function::resizeEvent (QResizeEvent* )
 {
+  canvas->resize(width(), height());
+  canvasView->resize(width(), height());
   repaint(true);
 }
 
