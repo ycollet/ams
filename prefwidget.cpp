@@ -116,14 +116,14 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiMode(int)));                
 
   driftAmpLabel = new QLabel(midiBox);
-  qs.sprintf("Drift Amplitude: %3.3f", drift_amp);
+  qs.sprintf("Drift Amplitude: %3.1f", drift_amp);
   driftAmpLabel->setText(qs);
-  driftAmpSlider = new QSlider(0, 10000, 1, drift_amp * 10000.0, QSlider::Horizontal, midiBox);
+  driftAmpSlider = new QSlider(0, 10000, 100, drift_amp * 100.0, QSlider::Horizontal, midiBox);
   QObject::connect(driftAmpSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDriftAmp(int)));                
   driftRateLabel = new QLabel(midiBox);
-  qs.sprintf("Drift Rate: %3.3f", drift_rate);
+  qs.sprintf("Drift Rate: %3.1f", drift_rate);
   driftRateLabel->setText(qs);  
-  driftRateSlider = new QSlider(0, 10000, 1, drift_rate * 10000.0, QSlider::Horizontal, midiBox);
+  driftRateSlider = new QSlider(0, 10000, 100, drift_rate * 100.0, QSlider::Horizontal, midiBox);
   QObject::connect(driftRateSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDriftRate(int)));                
   new QWidget(midiBox);
   
@@ -239,13 +239,11 @@ void PrefWidget::loadPref(QString config_fn) {
       }       
       if (qs.contains("DriftRate", false)) {
         qs2 = qs.section(sep, 1, 1); 
-        fprintf(stderr, "qs2: %s\n", qs2.latin1());
-        synthdata->drift_rate = (float)qs2.toInt() / 10000.0;
-        fprintf(stderr, "synthdata->drift_rate: %f\n", synthdata->drift_rate);
+        synthdata->drift_rate = (float)qs2.toInt() / 100.0;
       }       
       if (qs.contains("DriftAmplitude", false)) {
         qs2 = qs.section(sep, 1, 1); 
-        synthdata->drift_amp = (float)qs2.toInt() / 10000.0;
+        synthdata->drift_amp = (float)qs2.toInt() / 100.0;
       }       
       if (qs.contains("MidiControllerMode", false)) {
         qs2 = qs.section(sep, 1, 1); 
@@ -288,8 +286,8 @@ void PrefWidget::savePref(QString config_fn) {
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     rctext << "LoadPath " << synthdata->loadPath << "\n";
     rctext << "SavePath " << synthdata->savePath << "\n";
-    rctext << "DriftRate " << (int)(10000.0 * synthdata->drift_rate) << "\n";
-    rctext << "DriftAmplitude " << (int)(10000.0 * synthdata->drift_amp) << "\n";
+    rctext << "DriftRate " << (int)(100.0 * synthdata->drift_rate) << "\n";
+    rctext << "DriftAmplitude " << (int)(100.0 * synthdata->drift_amp) << "\n";
     f.close();
   }       
 }                             
@@ -320,12 +318,12 @@ void PrefWidget::refreshColors() {
   midiModeComboBox->setCurrentItem(midiControllerMode);
   loadEdit->setText(loadPath);
   saveEdit->setText(savePath);
-  qs.sprintf("Drift Amplitude: %3.3f", drift_amp);
+  qs.sprintf("Drift Amplitude: %3.1f", drift_amp);
   driftAmpLabel->setText(qs);  
-  driftAmpSlider->setValue(drift_amp * 10000.0);
-  qs.sprintf("Drift Rate: %3.3f", drift_rate);
+  driftAmpSlider->setValue(drift_amp * 100.0);
+  qs.sprintf("Drift Rate: %3.1f", drift_rate);
   driftRateLabel->setText(qs);  
-  driftRateSlider->setValue(drift_rate * 10000.0);
+  driftRateSlider->setValue(drift_rate * 100.0);
 }
 
 void PrefWidget::recallColors() {
@@ -467,8 +465,8 @@ void PrefWidget::updateDriftRate(int value) {
 
   QString qs;
 
-  drift_rate = (float)value / 10000.0;
-  qs.sprintf("Drift Rate: %3.3f        ", drift_rate);
+  drift_rate = (float)value / 100.0;
+  qs.sprintf("Drift Rate: %3.1f        ", drift_rate);
   driftRateLabel->setText(qs);
 }
 
@@ -476,7 +474,7 @@ void PrefWidget::updateDriftAmp(int value) {
 
   QString qs;
 
-  drift_amp = (float)value / 10000.0;
-  qs.sprintf("Drift Amplitude: %3.3f        ", drift_amp);
+  drift_amp = (float)value / 100.0;
+  qs.sprintf("Drift Amplitude: %3.1f        ", drift_amp);
   driftAmpLabel->setText(qs);
 }
