@@ -784,6 +784,12 @@ void ModularSynth::newM_lfo() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_barberpole() {
+
+  M_barberpole *m = new M_barberpole(viewport(), "Barber Pole", synthdata);
+  initNewModule((Module *)m);
+}
+
 void ModularSynth::newM_noise() {
 
   M_noise *m = new M_noise(viewport(), "Noise", synthdata);
@@ -1397,6 +1403,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_lfo: 
             newM_lfo();
+            break;
+          case M_type_barberpole: 
+            newM_barberpole();
             break;
           case M_type_noise: 
             newM_noise();

@@ -280,17 +280,19 @@ int SynthData::initAlsa (const char *name, int fsamp, int frsize, int nfrags, in
     pthread_attr_setschedpolicy (&attr, SCHED_FIFO);
     pthread_attr_setschedparam (&attr, &parm);
     pthread_attr_setscope (&attr, PTHREAD_SCOPE_SYSTEM);
+    pthread_attr_setinheritsched (&attr, PTHREAD_EXPLICIT_SCHED);
     if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
     {
         fprintf (stderr, "Can't create ALSA thread with RT priority\n");
         pthread_attr_setschedpolicy (&attr, SCHED_OTHER);
+        parm.sched_priority = sched_get_priority_max (SCHED_OTHER);
+        pthread_attr_setschedparam (&attr, &parm);
         if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
         {
             fprintf (stderr, "Can't create ALSA thread\n");
             exit (1);
 	}
     }
-
     return 0;
 }
 

@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Analogue Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
   newModulePopup->insertItem("Advanced ENV", modularSynth, SLOT(newM_advenv()));
   newModulePopup->insertItem("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
+  newModulePopup->insertItem("Barber Pole", modularSynth, SLOT(newM_barberpole()));
   newModulePopup->insertItem("Comment", modularSynth, SLOT(new_textEdit()));
   newModulePopup->insertItem("Converter", modularSynth, SLOT(newM_conv()));
   newModulePopup->insertItem("CVS", modularSynth, SLOT(newM_cvs()));
