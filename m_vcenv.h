@@ -33,7 +33,7 @@ class M_vcenv : public Module
   public: 
     float **gateData, **retriggerData, **attackData, **decayData, **sustainData, **releaseData;        
     float a0, d0, s0, r0, aGain, dGain, sGain, rGain;
-    float e[MAXPOLY];
+    float e[MAXPOLY], old_e[MAXPOLY];
     int timeScale, state[MAXPOLY], decayReleaseMode;
     bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
                                     

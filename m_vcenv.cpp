@@ -72,6 +72,7 @@ M_vcenv::M_vcenv(QWidget* parent, const char *name, SynthData *p_synthdata)
     state[l1] = 0;
     noteActive[l1] = false;
     e[1] = 0;
+    old_e[l1] = 0;
   }
   configDialog->addSlider(0, 1, a0, "Attack Offset", &a0);
   configDialog->addSlider(0, 1, d0, "Decay Offset", &d0);
@@ -98,8 +99,9 @@ M_vcenv::~M_vcenv() {
 
 void M_vcenv::generateCycle() {
 
-  int l1, l2;
-  double ts, tsr, tsn, tmp, c, n;
+  int l1, l2, l2_out;
+  double ts, tsr, tsn, tmp, c, n, de;
+  int k, len;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -120,11 +122,18 @@ void M_vcenv::generateCycle() {
               break;
       default: tsr = 1.0;
     }
-    tsr = ts / (double)synthdata->rate;
-    tsn = ts * (double)synthdata->rate;
+    tsr = 16.0 * ts / (double)synthdata->rate;
+    tsn = ts * (double)synthdata->rate / 16.0;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
 //      fprintf(stderr, "gate:%d retrigger:%d noteActive:%d state: %d\n", gate[l1], retrigger[l1], noteActive[l1], state[l1]);
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      len = synthdata->cyclesize;
+      old_e[l1] = e[l1];
+      l2 = -1;
+      l2_out = 0;
+      do {
+        k = (len > 24) ? 16 : len;
+        l2 += k;
+        len -= k;
         if (!gate[l1] && gateData[l1][l2] > 0.5) {
           gate[l1] = true;
           noteActive[l1] = true;
@@ -182,8 +191,12 @@ void M_vcenv::generateCycle() {
                   break;
           default: e[l1] = 0;
         }
-        data[0][l1][l2] = e[l1];
-      }
+        de = (e[l1] - old_e[l1]) / (double)k;
+        while (k--) {
+          old_e[l1] += de;
+          data[0][l1][l2_out++] = old_e[l1];
+        }   
+      } while(len);
     }
   }
   cycleProcessing = false;

@@ -73,27 +73,50 @@ void M_noise::noteOffEvent(int osc) {
 void M_noise::generateCycle() {
 
   int l1, l2, l3, random_rate;
-  float white_noise;
+  double white_noise;
+  double randmax;
 
   if (!cycleReady) {
     cycleProcessing = true;
-    random_rate = (int)(5000.0 * (float)rate + 100.0);
+    random_rate = (int)(5000.0 * (double)rate + 100.0);
+/* Polyphonic noise    
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       count++; 
       if (count > random_rate) {
         count = 0;
         for (l3 = 0; l3 < synthdata->poly; l3++) {
-          r[l3] = level * (2.0 * (float)rand() / (float)RAND_MAX - 1.0);
+          r[l3] = level * (2.0 * (double)rand() / (double)RAND_MAX - 1.0);
         }
       }
       for (l1 = 0; l1 < synthdata->poly; l1++) {  
-        white_noise = 2.0 * (float)rand() / (float)RAND_MAX - 1.0;
+        white_noise = 2.0 * (double)rand() / (double)RAND_MAX - 1.0;
         data[0][l1][l2] = white_noise;
         buf[0][l1] = 0.99765 * buf[0][l1] + white_noise * 0.099046;
         buf[1][l1] = 0.963 * buf[1][l1] + white_noise * 0.2965164;
         buf[2][l1] = 0.57 * buf[2][l1] + white_noise * 1.0526913;
         data[1][l1][l2] = buf[0][l1] + buf[1][l1] + buf[2][l1] + white_noise * 0.1848;
         data[2][l1][l2] = r[l1];
+      }
+    }
+*/
+
+// Noise and Random identical for all voices.
+    randmax = 2.0 / ((double)RAND_MAX - 1.0);
+    for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      count++; 
+      if (count > random_rate) {
+        count = 0;
+      }
+      white_noise = (double)rand() * randmax;
+      r[0] = level * (double)rand() * randmax;
+      buf[0][0] = 0.99765 * buf[0][0] + white_noise * 0.099046;
+      buf[1][0] = 0.963 * buf[1][0] + white_noise * 0.2965164;
+      buf[2][0] = 0.57 * buf[2][0] + white_noise * 1.0526913;
+      data[1][0][l2] = buf[0][0] + buf[1][0] + buf[2][0] + white_noise * 0.1848;
+      for (l1 = 0; l1 < synthdata->poly; l1++) {
+        data[0][l1][l2] = white_noise;
+        data[1][l1][l2] = data[1][0][l2];
+        data[2][l1][l2] = r[0];
       }
     }
   }
