@@ -56,9 +56,6 @@ class MidiWidget : public QVBox
     int setSelectedController(MidiController *midiController);
     int findFirstBinding(MidiController *midiController);
 
-  signals:
-    void updateMIDIController();     
-
   public slots: 
     void clearAllClicked();
     void clearClicked();

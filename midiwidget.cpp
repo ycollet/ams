@@ -324,7 +324,6 @@ void MidiWidget::bindClicked() {
     }
   }
   firstBindingMightHaveChanged = true;
-  emit updateMIDIController();
 }
 
 void MidiWidget::noteControllerCheckToggle() {
@@ -815,7 +814,6 @@ void MidiWidget::setNewMin() {
     slider->setValue(int(SLIDER_SCALE * value));
   }
   midiGUIcomponent->controllerOK = false;
-  emit updateMIDIController();
 }
 
 void MidiWidget::setNewMax() {        
@@ -837,7 +835,6 @@ void MidiWidget::setNewMax() {
     slider->setValue(int(SLIDER_SCALE * value));
   }
   midiGUIcomponent->controllerOK = false;
-  emit updateMIDIController();
 }  
 
 void MidiWidget::setInitialMinMax() {
@@ -861,7 +858,6 @@ void MidiWidget::setInitialMinMax() {
   ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * maxValue));
   slider->setValue(int(SLIDER_SCALE * value));
   midiGUIcomponent->controllerOK = false;
-  emit updateMIDIController();
 }  
 
 void MidiWidget::updateComboBox(int p_value) {

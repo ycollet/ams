@@ -57,10 +57,6 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   guiWidget = new GuiWidget(synthdata, NULL);
   guiWidget->setCaption("AlsaModularSynth Parameter View");
   synthdata->guiWidget = (QObject *)guiWidget;
-  QObject::connect(guiWidget, SIGNAL(updateMIDIController()),
-                   this, SLOT(initMIDIController()));
-  QObject::connect(midiWidget, SIGNAL(updateMIDIController()),
-                   this, SLOT(initMIDIController()));
   presetPath = "";
   ladspaDialog = new LadspaDialog(synthdata, NULL);
   QObject::connect(ladspaDialog, SIGNAL(createLadspaModule(int, int, bool, bool)),
@@ -536,36 +532,6 @@ void ModularSynth::midiAction(int fd) {
     }
     snd_seq_free_event(ev);
   } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
-}
-
-void ModularSynth::initMIDIController() {
-
-  int l1, l2, type, ch, param;
-  snd_seq_event_t ev;
-  
-  return;
-  
-  for (l1 = 0; l1 < listModule.count(); l1++) {
-    for (l2 = 0; l2 < listModule.at(l1)->configDialog->midiGUIcomponentList.count(); l2++) {
-      if (listModule.at(l1)->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.count()) {
-        type = listModule.at(l1)->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.at(0)->type;
-        if (type != SND_SEQ_EVENT_CONTROLLER) {
-          continue;
-        }
-        ch = listModule.at(l1)->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.at(0)->ch;
-        param = listModule.at(l1)->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.at(0)->param;
-        snd_seq_ev_clear(&ev);
-        snd_seq_ev_set_subs(&ev);
-        snd_seq_ev_set_direct(&ev);
-        ev.type = SND_SEQ_EVENT_CONTROLLER;
-        ev.data.control.channel = ch;
-        ev.data.control.param = param;
-        ev.data.control.value = listModule.at(l1)->configDialog->midiGUIcomponentList.at(l2)->getMidiValue();
-        snd_seq_ev_set_source(&ev, synthdata->midi_out_port[0]);
-        snd_seq_event_output_direct(synthdata->seq_handle, &ev);
-      }
-    }
-  }                      
 }
 
 void ModularSynth::initPorts(Module *m) {
@@ -1837,7 +1803,6 @@ void ModularSynth::load(QString *presetName) {
   synthdata->doSynthesis = true;
   midiWidget->followConfig = followConfig;
   guiWidget->refreshGui();
-  initMIDIController();
 }
 
 void ModularSynth::save() {
