@@ -60,6 +60,7 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
   }
   channel = 0;
   base = 0;
+  pitch = 0;
   lastbase = 12;
   pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -75,7 +76,8 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
   configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider(-36, 36, base, "Note Offset", &base);
+  configDialog->addIntSlider(-60, 60, base, "Scale Offset", &base);
+  configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
   sclname = "No_Scale_loaded";
   configDialog->addLabel("   Scale: " + sclname);
@@ -117,15 +119,15 @@ void M_scmcv::calcScale() {
 
   log2 = log(2.0);
   lastbase = base;
-  base_cv = base / 12.0;
-  base_freq = synthdata->exp_table(log2 * (4.0313842 + base_cv));
+  base_cv = base / 12.0 - 5.0;
+  base_freq = synthdata->exp_table(log2 * (8.0313842 + base_cv));
   fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);  
   scale_notes[0] = base_cv;
   index = 1;
   while (index < 128) {
     for (l1 = 0; l1 < scale_lut_length; l1++) {      
       if (scale_lut_isRatio[l1]) {
-        scale_notes[index] = log(base_freq * scale_lut[l1])/log2 - 4.0313842;
+        scale_notes[index] = log(base_freq * scale_lut[l1])/log2 - 8.0313842;
       } else {
         scale_notes[index] = base_cv + scale_lut[l1] / 1200.0;
       }
@@ -133,7 +135,7 @@ void M_scmcv::calcScale() {
       if (index > 127) break;
     }
     base_cv = scale_notes[index - 1];
-    base_freq = synthdata->exp_table(log2 * (4.0313842 + base_cv));
+    base_freq = synthdata->exp_table(log2 * (8.0313842 + base_cv));
   }
 }
 
@@ -150,10 +152,10 @@ void M_scmcv::generateCycle() {
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       lastfreq[l1] = freq[l1];
-      index = synthdata->notes[l1];
+      index = synthdata->notes[l1] + pitch;
       
       freq[l1] = ((index >=0) && (index < 128)) ? pitchbend + scale_notes[index] : 0;
-      if (freq[l1] < 0) freq[l1] = 0;
+//      if (freq[l1] < 0) freq[l1] = 0;
       velocity = (float)synthdata->velocity[l1] / 127.0;
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
 //      data[3][l1][0] = trig[l1];

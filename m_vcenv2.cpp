@@ -138,7 +138,7 @@ void M_vcenv2::generateCycle() {
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);            
-                  if (e[l1] <= s0 + sGain * sustainData[l1][l2]) {
+                  if (e[l1] <= s0 + sGain * sustainData[l1][l2] + 1e-20) {
                     state[l1] = 3;
                   } else {
                     break;
@@ -149,7 +149,7 @@ void M_vcenv2::generateCycle() {
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);      
-                  if (e[l1] <= 0.000001) {
+                  if (e[l1] <= 1e-20) {
                     e[l1] = 0;
                     state[l1] = 0;
                     noteActive[l1] = false;

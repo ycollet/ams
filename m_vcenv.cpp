@@ -169,7 +169,7 @@ void M_vcenv::generateCycle() {
                   } else {
                     e[l1] -= ((tmp = d0 + dGain * decayData[l1][l2]) > 0.001) ? tsr / tmp : tsr / 0.001;
                   }
-                  if (e[l1] <= s0 + sGain * sustainData[l1][l2]) {
+                  if (e[l1] <= s0 + sGain * sustainData[l1][l2] + 1e-20) {
                     state[l1] = 3;
                   } else {
                     break;
@@ -184,7 +184,7 @@ void M_vcenv::generateCycle() {
                   } else {
                     e[l1] -= ((tmp = r0 + rGain * releaseData[l1][l2]) > 0.001) ? tsr / tmp : tsr / 0.001;
                   }
-                  if (e[l1] <= 0.000001) {
+                  if (e[l1] <= 1e-20) {
                     e[l1] = 0;
                     state[l1] = 0;
                     noteActive[l1] = false;

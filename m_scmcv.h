@@ -33,7 +33,7 @@ class M_scmcv : public Module
     float pitchbend;
     float scale_lut[128]; 
     bool scale_lut_isRatio[128];
-    int scale_lut_length;
+    int scale_lut_length, pitch;
     float scale_notes[128];
     Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
     QFileDialog *fileDialog;

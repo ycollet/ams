@@ -67,7 +67,7 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata)
 //    channelNames->append(qs);
 //  }
   channel = 0;
-  pitch = 24;
+  pitch = 0;
   pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     freq[l1] = 0;
@@ -80,7 +80,7 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata)
     }
   }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider(0, 84, pitch, "Note Offset", &pitch);
+  configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
     qs.sprintf("Controller %d", l1);
@@ -110,7 +110,7 @@ void M_advmcv::generateCycle() {
     cycleProcessing = true;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
-      freq[l1] = pitchbend + float(synthdata->notes[l1]-pitch) / 12.0;
+      freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
       velocity = (float)synthdata->velocity[l1] / 127.0;
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         data[0][l1][l2] = gate;

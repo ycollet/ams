@@ -167,14 +167,17 @@ void M_vcdoubledecay::generateCycle() {
                   c2 = c1 * (r0 + rGain * ratioData[l1][l2]);
                   if (c2 < 0) c2 = 0;
                   e[l1] *= exp(-c1);
+                  if (e[l1] <= 1e-20) e[l1] = 0;
                   e2[l1] *= exp(-c2);           
+                  if (e2[l1] <= 1e-20) e2[l1] = 0;
                   break;
           case 3: n = tsn * (synthdata->exp_table(log2 * (rl0 + rlGain * releaseData[l1][l2])));
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
-                  e[l1] *= exp(-c);      
+                  e[l1] *= exp(-c);  
+                  if (e[l1] <= 1e-20) e[l1] = 0;    
                   e2[l1] *= exp(-c);
-                  if (e[l1] <= 0.000001) {
+                  if (e2[l1] < 1e-20)  {
                     e[l1] = 0;
                     e2[l1] = 0;
                     state[l1] = 0;
