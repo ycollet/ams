@@ -87,6 +87,7 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
                    configDialog->functionList.at(0), SLOT(highlightFunction(int)));
   QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
                    this, SLOT(updateMouseLabels(int, int)));
+  qs.sprintf("Function ID %d", moduleID);
   configDialog->setCaption(qs);
 }
 
