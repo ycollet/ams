@@ -30,6 +30,8 @@
 #define FUNCTION_BORDER_1               5
 #define FUNCTION_BORDER_2              25
 
+typedef float float_function[2][MAX_FUNCTIONS+2][MAX_POINTS+2];
+
 class Function : public QWidget
 {
   Q_OBJECT
@@ -38,8 +40,10 @@ class Function : public QWidget
     SynthData *synthdata;
     int functionCount;
     QPointArray *screenPoints[MAX_FUNCTIONS];
+    QPointArray *points[MAX_FUNCTIONS];
     QColor colorTable[MAX_FUNCTIONS];
     QCanvas *canvas;
+    QList<QCanvasLine> gridX, gridY;
     QList<CanvasFunction> canvasFunctionList;
     QList<QCanvasText> canvasTextList;
     CanvasView *canvasView;
@@ -48,8 +52,7 @@ class Function : public QWidget
     int activeFunction, activePoint;
 
   public:
-    QPointArray *points[MAX_FUNCTIONS];
-    float fx[MAX_FUNCTIONS+2][MAX_POINTS+2];    
+    float_function f;
     int pointCount;
     
   protected:

@@ -35,7 +35,7 @@ class M_function : public Module
     Port *port_in;
     float gainIn, gainOut;
     QPointArray *points[MAX_FUNCTIONS];
-    int i[MAX_FUNCTIONS];
+    int i[MAXPOLY][MAX_FUNCTIONS];
         
   public: 
     float **inData;

@@ -36,7 +36,9 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
   port_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_in);
   for (l1 = 0; l1 < functionCount; l1++) {
-    i[l1] = 1;
+    for (l2 = 0; l2 < MAXPOLY; l2++) {
+      i[l2][l1] = 1;
+    }
     points[l1] = new QPointArray(MAX_POINTS);
     for (l2 = 0; l2 < MODULE_FUNCTION_DEFAULT_POINTCOUNT; l2++) {
       points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MODULE_FUNCTION_DEFAULT_POINTCOUNT - 1), 
@@ -63,31 +65,29 @@ void M_function::generateCycle() {
 
   int l1, l2, l3;
   int pointCount;
-  float *x;
+  Function *cf;  
   float xg, y, y1, y2;
-  QPointArray **points;
 
   if (!cycleReady) {
     cycleProcessing = true;
 
     inData = port_in->getinputdata();
-    points = configDialog->functionList.at(0)->points;
+    cf = configDialog->functionList.at(0);
     pointCount = configDialog->functionList.at(0)->pointCount;
     for (l3 = 0; l3 < functionCount; l3++) {    
-      x = configDialog->functionList.at(0)->fx[l3];
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
           xg = gainIn * inData[l1][l2];
-          while (xg < x[i[l3]]) i[l3]--;
-          while (xg >= x[i[l3]+1]) i[l3]++;
-          if ((i[l3] >= 1) && (i[l3] < pointCount)) {
-            y1 = (double)(points[l3]->point(i[l3]-1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE; // note the different ranges of x and points arrays
-            y2 = (double)(points[l3]->point(i[l3]).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
-            y = y1 + (xg - x[i[l3]]) * (y2 - y1) / (x[i[l3]+1] - x[i[l3]]);
-          } else if (i[l3] < 1) {
-            y = (double)(points[l3]->point(0).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
-          } else if (i[l3] >= pointCount) {
-            y = (double)(points[l3]->point(pointCount - 1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
+          while (xg < cf->f[0][l3][i[l1][l3]]) i[l1][l3]--;
+          while (xg >= cf->f[0][l3][i[l1][l3]+1]) i[l1][l3]++;
+          if (i[l1][l3] < 1) {
+            y = cf->f[1][l3][1];
+          } else if (i[l1][l3] >= pointCount) {
+            y = cf->f[1][l3][pointCount];
+          } else {
+            y = cf->f[1][l3][i[l1][l3]] + (xg - cf->f[0][l3][i[l1][l3]]) 
+                                    * (cf->f[1][l3][i[l1][l3]+1] - cf->f[1][l3][i[l1][l3]]) 
+                                    / (cf->f[0][l3][i[l1][l3]+1] - cf->f[0][l3][i[l1][l3]]);
           } 
           data[l3][l1][l2] = gainOut * y;     
         }

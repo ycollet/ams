@@ -33,7 +33,7 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
-  agc = 1;
+  agc = 0;
   port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
