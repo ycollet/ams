@@ -121,24 +121,6 @@ M_advenv::~M_advenv() {
 
 }
 
-void M_advenv::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Advanced ENV");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_advenv::noteOnEvent(int osc) {
 
 }
@@ -155,35 +137,10 @@ void M_advenv::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l2 = 0; l2 < 2; l2++) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[l2][l1], data[l2][l1], synthdata->cyclesize * sizeof(float));
-      }
-    }
-    if (port_gate->connectedPortList.count()) {
-      in_M_gate = (Module *)port_gate->connectedPortList.at(0)->parentModule;
-      if (!in_M_gate->cycleProcessing) {
-        in_M_gate->generateCycle();
-        gateData = in_M_gate->data[port_gate->connectedPortList.at(0)->index];
-      } else {
-        gateData = in_M_gate->lastdata[port_gate->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_gate = NULL;
-      gateData = synthdata->zeroModuleData;
-    }
-    if (port_retrigger->connectedPortList.count()) {
-      in_M_retrigger = (Module *)port_retrigger->connectedPortList.at(0)->parentModule;
-      if (!in_M_retrigger->cycleProcessing) {
-        in_M_retrigger->generateCycle();
-        retriggerData = in_M_retrigger->data[port_retrigger->connectedPortList.at(0)->index];
-      } else {
-        retriggerData = in_M_retrigger->lastdata[port_retrigger->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_retrigger = NULL;
-      retriggerData = synthdata->zeroModuleData;
-    }
+
+    gateData = port_gate->getinputdata();
+    retriggerData = port_retrigger->getinputdata();
+
     tscale = timeScale * synthdata->rate;
     de_a[0] = (attack[1] > 0) ? attack[2] / (tscale * attack[1]) : 0;
     de_a[1] = (attack[3] > 0) ? (attack[4] - attack[2]) / (tscale * attack[3]) : 0;

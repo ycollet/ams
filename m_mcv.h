@@ -41,9 +41,6 @@ class M_mcv : public Module
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

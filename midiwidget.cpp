@@ -126,7 +126,6 @@ void MidiWidget::clearAllClicked() {
 
   int l1, l2;  
   Module *module;
-  QListViewItem *tmp;
 
   for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
     module = (Module *)synthdata->moduleList.at(l1);
@@ -212,7 +211,7 @@ void MidiWidget::addToParameterViewClicked() {
   Module *module;
 
   if (((GuiWidget *)synthdata->guiWidget)->presetCount > 0) {
-    qs.sprintf("This will erase all presets for this configuration. Continue ?", qs.latin1());
+    qs.sprintf("This will erase all presets for this configuration. Continue ?");
     QMessageBox questionContinue("AlsaModularSynth", qs, QMessageBox::NoIcon,
                                  QMessageBox::Yes | QMessageBox::Default, QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
     if (questionContinue.exec() == QMessageBox::No) {

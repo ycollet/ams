@@ -12,6 +12,8 @@
 #include "port.h"
 #include "synthdata.h"
 #include "module.h"
+#include "main.h"
+
 
 Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent, SynthData *p_synthdata, int p_portWidth, int p_color) 
            : QWidget(parent) {
@@ -24,7 +26,7 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   fontColor = p_color;
   highlighted = false;
   index = p_index;
-  setPalette(QPalette(QColor(77, 70, 64), QColor(77, 70, 64)));
+  setPalette(QPalette(QColor(COLOR_MODULE_BG), QColor(COLOR_MODULE_BG)));
   setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("disconnect", this, SLOT(disconnectClicked()));
@@ -137,9 +139,6 @@ void Port::showContextMenu(QPoint pos) {
 
 void Port::disconnectClicked() {
 
-  int l1;
-  bool moduleConnected;
-
   synthdata->port_sem++;
   if (connectedPortList.count()) {
     connectedPortList.at(0)->connectedPortList.removeRef(this);
@@ -165,4 +164,18 @@ void Port::checkConnectionStatus() {
   if (!moduleConnected) {
     ((Module *)parentModule)->configDialog->removeButton->setEnabled(true);
   }
+}
+
+
+float **Port::getinputdata (void)
+{
+    Module *M;
+
+    if (connectedPortList.count())
+    {
+        M = (Module *)(connectedPortList.at (0)->parentModule);
+        if (! M->cycleReady && ! M->cycleProcessing) M->generateCycle ();
+        return M->data [connectedPortList.at (0)->index];
+    }
+    else return synthdata->zeroModuleData;
 }

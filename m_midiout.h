@@ -31,7 +31,6 @@ class M_midiout : public Module
   private:
     float mixer_gain[2], triggerLevel; 
     int midiMode, offset[2], controller[2], channel;
-    Module *in_M_in[2], *in_M_trigger;
     Port *port_in[2], *port_M_trigger;
     bool trigger[MAXPOLY];    
     int triggeredNote[2][MAXPOLY], lastmididata[2][MAXPOLY];
@@ -43,9 +42,6 @@ class M_midiout : public Module
     M_midiout(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_midiout();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

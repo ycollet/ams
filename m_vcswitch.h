@@ -29,7 +29,6 @@ class M_vcswitch : public Module
 
   private:
     float switchLevel;
-    Module *in_M_in[2], *in_M_cv; 
     Port *port_M_in[2], *port_M_cv, *port_out[2], *port_mix;
     
   public: 
@@ -39,9 +38,6 @@ class M_vcswitch : public Module
     M_vcswitch(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_vcswitch();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

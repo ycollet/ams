@@ -18,10 +18,10 @@
 #include <qfiledialog.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "synth.h"
 #include "m_midiout.h"
-#include "port.h"
 #include "module.h"
+#include "port.h"
+
 
 M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(0, parent, name, p_synthdata) {
@@ -91,54 +91,17 @@ M_midiout::~M_midiout() {
 
 }
 
-void M_midiout::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "MIDI Out");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_midiout::generateCycle() {
 
   int l1, l2, l3, mididata, velocitydata;
   snd_seq_event_t ev;
 
-  if (port_M_trigger->connectedPortList.count()) {
-    in_M_trigger = (Module *)port_M_trigger->connectedPortList.at(0)->parentModule;
-    if (!in_M_trigger->cycleProcessing) {   
-      in_M_trigger->generateCycle();
-      triggerData = in_M_trigger->data[port_M_trigger->connectedPortList.at(0)->index];
-    } else {
-      triggerData = in_M_trigger->lastdata[port_M_trigger->connectedPortList.at(0)->index];
-    }
-  } else {
-    in_M_trigger = NULL;
-    triggerData = synthdata->zeroModuleData;
-  }
-  for (l1 = 0; l1 < 2; l1++) {                      
-    if (port_in[l1]->connectedPortList.count()) {
-      in_M_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
-      in_M_in[l1]->generateCycle();
-      inData[l1] = in_M_in[l1]->data[port_in[l1]->connectedPortList.at(0)->index];
-    } else {
-      in_M_in[l1] = NULL;
-      inData[l1] = synthdata->zeroModuleData;
-    }
-  }
+  triggerData = port_M_trigger->getinputdata();
+  for (l1 = 0; l1 < 2; l1++) inData [l1] = port_in [l1]->getinputdata();
+
   switch (midiMode) {
     case 0:
-      if (!in_M_trigger) {
+      if (triggerData == synthdata->zeroModuleData) {
         for (l1 = 0; l1 < 2; l1++) {
           if (mixer_gain[l1] > 0.01) {
             for (l3 = 0; l3 < synthdata->poly; l3++) {
@@ -195,13 +158,13 @@ void M_midiout::generateCycle() {
       }
       break;
     case 1:
-      if (!in_M_trigger) {
+      if (triggerData == synthdata->zeroModuleData ) {
         for (l1 = 0; l1 < 2; l1++) {
           if (mixer_gain[l1] > 0.01) {
             for (l3 = 0; l3 < synthdata->poly; l3++) {
               for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
                if (l1) {
-                 mididata = 128.0 * offset[l1] + (int)(mixer_gain[l1] * inData[l1][l3][l2] * 16384.0) - 8192.0;
+                 mididata = (int)(128.0 * offset[l1] + (int)(mixer_gain[l1] * inData[l1][l3][l2] * 16384.0) - 8192.0);
                  if (mididata < -8191) mididata = -8191;                                              
                  else if (mididata > 8191) mididata = 8191;
                 } else {
@@ -244,7 +207,7 @@ void M_midiout::generateCycle() {
                   if (l1) {
                     ev.type = SND_SEQ_EVENT_PITCHBEND; 
                     ev.data.control.param = 0;
-                    mididata = 128.0 * offset[l1] + (int)(mixer_gain[l1] * inData[l1][l3][l2] * 16384.0) - 8192.0;
+                    mididata = (int)(128.0 * offset[l1] + (int)(mixer_gain[l1] * inData[l1][l3][l2] * 16384.0) - 8192.0);
                     if (mididata < -8191) mididata = -8191;
                     else if (mididata > 8191) mididata = 8191;
                   } else {
@@ -271,7 +234,7 @@ void M_midiout::generateCycle() {
       }
       break;
     case 2: 
-      if (in_M_trigger) {
+      if (triggerData != synthdata->zeroModuleData ) {
         for (l3 = 0; l3 < synthdata->poly; l3++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
             if (!trigger[l3] && (triggerData[l3][l2] > triggerLevel)) {
@@ -350,7 +313,7 @@ void M_midiout::generateCycle() {
       }
       break;
     case 3: 
-      if (in_M_trigger) {
+      if (triggerData != synthdata->zeroModuleData ) {
         for (l3 = 0; l3 < synthdata->poly; l3++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
             if (!trigger[l3] && (triggerData[l3][l2] > triggerLevel)) {

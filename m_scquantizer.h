@@ -30,7 +30,6 @@ class M_scquantizer : public Module
   Q_OBJECT
 
   private:
-    Module *in_M_in, *in_M_trigger, *in_M_transpose; 
     Port *port_M_in, *port_M_trigger, *port_M_transpose, *port_out, *port_trigger_out;
     int trigCount[MAXPOLY];
     bool trigger[MAXPOLY];
@@ -55,9 +54,6 @@ class M_scquantizer : public Module
     M_scquantizer(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0, QString *p_sclname = 0);
     ~M_scquantizer();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

@@ -203,11 +203,13 @@ void ConfigDialog::removeButtonClicked() {
 int ConfigDialog::addTab(QWidget *tabPage, QString tabLabel) {
 
   tabWidget->insertTab(tabPage, tabLabel);
+  return 0;
 }
 
 int ConfigDialog::initTabWidget() {
 
   tabWidget = new QTabWidget(configBox);
+  return 0;
 }
 
 QHBox *ConfigDialog::addHBox(QWidget *parent) {

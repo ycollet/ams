@@ -62,24 +62,6 @@ M_noise::~M_noise() {
 
 }
 
-void M_noise::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Noise");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_noise::noteOnEvent(int osc) {
 
 }
@@ -95,11 +77,6 @@ void M_noise::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l2 = 0; l2 < 3; l2++) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[l2][l1], data[l2][l1], synthdata->cyclesize * sizeof(float));
-      }
-    }
     random_rate = (int)(5000.0 * (float)rate + 100.0);
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       count++; 

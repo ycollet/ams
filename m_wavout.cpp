@@ -17,10 +17,10 @@
 #include <qtimer.h>
 #include <qfiledialog.h>
 #include "synthdata.h"
-#include "synth.h"
 #include "m_wavout.h"
-#include "port.h"
 #include "module.h"
+#include "port.h"
+
 
 M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(0, parent, name, p_synthdata) {
@@ -98,24 +98,6 @@ M_wavout::~M_wavout() {
   free(floatdata);
 }
 
-void M_wavout::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "WAV Out");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 int M_wavout::setGain(float p_gain) {
   gain = p_gain;
   return(0);
@@ -125,52 +107,49 @@ float M_wavout::getGain() {
   return(gain);
 }
 
-void M_wavout::generateCycle() {
-
-  int l1, l2, l3, index;
-  float max_ch, mixgain, wavgain;
+void M_wavout::generateCycle()
+{
+  int l1, l2, l3;
+  float max, mixgain, wavgain, **indata;
   short s;
 
   memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
-  wavgain = GAIN / (float)synthdata->poly;
-  for (l1 = 0; l1 < 2; l1++) {                       // TODO generalize to more than 2 channels
-    if (port_in[l1]->connectedPortList.count()) {
-      module_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
-      module_in[l1]->generateCycle();
-      index = port_in[l1]->connectedPortList.at(0)->index;
+  wavgain = 32767.0 / synthdata->poly;
+  for (l1 = 0; l1 < 2; l1++)
+  {
+      indata = port_in[l1]->getinputdata ();
       mixgain = gain * mixer_gain[l1];
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        for (l3 = 0; l3 < synthdata->poly; l3++) {
-          floatdata[2 * l2 + l1] += mixgain * module_in[l1]->data[index][l3][l2]; 
-        }
+      for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+      {
+        for (l3 = 0; l3 < synthdata->poly; l3++) floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
       }
-      if (agc) {
-        max_ch = 0;
-        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          if (max_ch < fabs(floatdata[2 * l2 + l1])) {
-            max_ch = fabs(floatdata[2 * l2 + l1]);
-          }    
-        }
-        if (max_ch > 0.9) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            floatdata[2 * l2 + l1] *= 0.9 / max_ch;
+      if (agc)
+      {
+          max = 0;
+          for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+          {
+              if (max < fabs(floatdata[2 * l2 + l1])) max = fabs(floatdata[2 * l2 + l1]);
           }
-        }
+          if (max > 0.9)
+          {
+              max = 0.9 / max;
+              for (l2 = 0; l2 < synthdata->cyclesize; l2++) floatdata[2 * l2 + l1] *= max;
+          }
       }
-    } else {
-      module_in[l1] = NULL;
-    }
-  }  
-  if (doRecord > 0) {
-    for (l2 = 0; l2 < 2; l2++) {
-      for (l1 = 0; l1 < synthdata->cyclesize; l1++) {   
-        s = (short)(wavgain * floatdata[2 * l1 + l2]);
-        wavdata[4*l1+2*l2] = (unsigned char)s;
-        wavdata[4*l1+2*l2+1] = s >> 8;
-      }   
-    }
-    fwrite(wavdata, 1, synthdata->cyclesize * 4, wavfile);
-    wavDataSize += synthdata->cyclesize * 4;
+  }
+  if (doRecord > 0)
+  {
+      for (l2 = 0; l2 < 2; l2++)
+      {
+          for (l1 = 0; l1 < synthdata->cyclesize; l1++)
+          {   
+              s = (short)(wavgain * floatdata[2 * l1 + l2]);
+              wavdata[4*l1+2*l2] = (unsigned char)s;
+              wavdata[4*l1+2*l2+1] = s >> 8;
+          }   
+      }
+      fwrite(wavdata, 1, synthdata->cyclesize * 4, wavfile);
+       wavDataSize += synthdata->cyclesize * 4;
   }
 }
 

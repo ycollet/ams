@@ -28,9 +28,11 @@ class Port : public QWidget
     int portWidth;
 
   public:
-    Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent=0, SynthData *p_synthdata=0, int p_portWidth = PORT_DEFAULT_WIDTH, int p_color = 0);
+    Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent=0, SynthData *p_synthdata=0,
+         int p_portWidth = PORT_DEFAULT_WIDTH, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
+    float **getinputdata (void);
 
   private:
     void showContextMenu(QPoint pos);
@@ -60,4 +62,3 @@ class Port : public QWidget
 };
   
 #endif
-      

@@ -179,24 +179,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
 M_dynamicwaves::~M_dynamicwaves() {
 }
 
-void M_dynamicwaves::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(12, 20, "Dynamic Waves");
-  p.setFont(QFont("Helvetica", 8));
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_dynamicwaves::noteOnEvent(int osc) {
 }
 
@@ -215,76 +197,20 @@ void M_dynamicwaves::generateCycle() {
     cycleProcessing = true; 
     log2 = log(2.0);
     wave_period_2 = wave_period / 2.0;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_freq->connectedPortList.count()) {
-      in_M_freq = (Module *)port_M_freq->connectedPortList.at(0)->parentModule;
-      if (!in_M_freq->cycleProcessing) {
-        in_M_freq->generateCycle();
-        freqData = in_M_freq->data[port_M_freq->connectedPortList.at(0)->index];
-      } else {
-        freqData = in_M_freq->lastdata[port_M_freq->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_freq = NULL;
-      freqData = synthdata->zeroModuleData;
-    }
-    if (port_M_exp->connectedPortList.count()) {
-      in_M_exp = (Module *)port_M_exp->connectedPortList.at(0)->parentModule;
-    if (!in_M_exp->cycleProcessing) {
-        in_M_exp->generateCycle();
-        expFMData = in_M_exp->data[port_M_exp->connectedPortList.at(0)->index];
-    } else {
-        expFMData = in_M_exp->lastdata[port_M_exp->connectedPortList.at(0)->index];
-    }
-    } else {
-      in_M_exp = NULL;
-      expFMData = synthdata->zeroModuleData;
-    }
-    if (port_M_lin->connectedPortList.count()) {
-      in_M_lin = (Module *)port_M_lin->connectedPortList.at(0)->parentModule;
-      if (!in_M_lin->cycleProcessing) {
-        in_M_lin->generateCycle();
-        linFMData = in_M_lin->data[port_M_lin->connectedPortList.at(0)->index];
-      } else {
-        linFMData = in_M_lin->lastdata[port_M_lin->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_lin = NULL;
-      linFMData = synthdata->zeroModuleData;
-    }
-    if (port_gate->connectedPortList.count()) {
-      in_M_gate = (Module *)port_gate->connectedPortList.at(0)->parentModule;
-      if (!in_M_gate->cycleProcessing) {
-        in_M_gate->generateCycle();
-        gateData = in_M_gate->data[port_gate->connectedPortList.at(0)->index];
-      } else {
-        gateData = in_M_gate->lastdata[port_gate->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_gate = NULL; 
-      gateData = synthdata->zeroModuleData;
-    }
-    if (port_retrigger->connectedPortList.count()) {
-      in_M_retrigger = (Module *)port_retrigger->connectedPortList.at(0)->parentModule;
-      if (!in_M_retrigger->cycleProcessing) {
-        in_M_retrigger->generateCycle();
-        retriggerData = in_M_retrigger->data[port_retrigger->connectedPortList.at(0)->index];
-      } else {
-        retriggerData = in_M_retrigger->lastdata[port_retrigger->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_retrigger = NULL; 
-      retriggerData = synthdata->zeroModuleData;
-    }
+
+    freqData = port_M_freq->getinputdata();
+    expFMData = port_M_exp->getinputdata();
+    linFMData = port_M_lin->getinputdata();
+    gateData = port_gate->getinputdata();
+    retriggerData = port_retrigger->getinputdata();
+
     gain_linfm = 1000.0 * linFMGain;
     tscale = timeScale * synthdata->rate;
     for (l3 = 0; l3 < oscCount; l3++) {
       gain_const[l3] = gain[l3] / (float)oscCount;
       freq_tune[l3] = 4.0313842 + octave + tune + osc_octave[l3] + osc_tune[l3];
       freq_const[l3] = wave_period / (float)synthdata->rate * (float)harmonic[l3] / (float)subharmonic[l3];
-      phi_const[l3] = phi0[l3] * wave_period / (2.0 * PI);
+      phi_const[l3] = phi0[l3] * wave_period / (2.0 * M_PI);
       de_a[0][l3] = (attack[1][l3] > 0) ? attack[2][l3] / (tscale * attack[1][l3]) : 0;
       de_a[1][l3] = (attack[3][l3] > 0) ? (attack[4][l3] - attack[2][l3]) / (tscale * attack[3][l3]) : 0;
       de_a[2][l3] = (attack[5][l3] > 0) ? (attack[6][l3] - attack[4][l3]) / (tscale * attack[5][l3]) : 0;
@@ -352,7 +278,6 @@ void M_dynamicwaves::generateCycle() {
             } else {
               noteOnOfs[l1][l3] = 0;
             }
-//            printf("e[%d][%d]: %lf           noteOnOfs [%d][%d]: %d\n", l1, l3, e[l1][l3], l1, l3, noteOnOfs[l1][l3]);
           }
           if (gate[l1]) {
             status = 1;

@@ -330,7 +330,7 @@ M_ladspa::~M_ladspa() {
 void M_ladspa::paintEvent(QPaintEvent *ev) {
   
   QPainter p(this);
-  int l1, qsi;
+  int l1;
   QString qs;
 
   for (l1 = 0; l1 < 4; l1++) {
@@ -339,13 +339,11 @@ void M_ladspa::paintEvent(QPaintEvent *ev) {
   }
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
-  p.drawText(75, 20, "LADSPA");
+  qs.sprintf("LADSPA %s", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Name);
+  p.drawText(10, 20, qs);
   p.setFont(QFont("Helvetica", 8));
-  qs.sprintf("%s ID %d", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Name, moduleID);
-  qsi = qs.find(" ");
-  qsi = qs.find(" ", qsi+1);
-  if (qsi > 22) qsi = 22;
-  p.drawText(75, 32, qs.left(qsi));
+  qs.sprintf("ID %d", moduleID);
+  p.drawText(10, 32, qs);
 }
 
 void M_ladspa::generateCycle() {
@@ -355,41 +353,13 @@ void M_ladspa::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l3 = 0; l3 < out_port_list.count()+ out_ctrl_port_list.count(); l3++) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[l3][l1], data[l3][l1], synthdata->cyclesize * sizeof(float));
-      }
+
+    for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();
+    if (hasExtCtrlPorts)
+    {
+        for (l3 = 0; l3 < in_ctrl_port_list.count(); l3++) inData_ctrl [l3] = in_ctrl_port_list.at(l3)->getinputdata();
     }
-    for (l3 = 0; l3 < in_port_list.count(); l3++) {
-      if (in_port_list.at(l3)->connectedPortList.count()) {
-        in_M[l3] = (Module *)in_port_list.at(l3)->connectedPortList.at(0)->parentModule;
-        if (!in_M[l3]->cycleProcessing) {
-          in_M[l3]->generateCycle();
-          inData[l3] = in_M[l3]->data[in_port_list.at(l3)->connectedPortList.at(0)->index]; 
-        } else {
-          inData[l3] = in_M[l3]->lastdata[in_port_list.at(l3)->connectedPortList.at(0)->index];
-        }
-      } else {
-        in_M[l3] = NULL;
-        inData[l3] = synthdata->zeroModuleData;
-      }
-    }
-    if (hasExtCtrlPorts) {
-      for (l3 = 0; l3 < in_ctrl_port_list.count(); l3++) {
-        if (in_ctrl_port_list.at(l3)->connectedPortList.count()) {
-          in_M_ctrl[l3] = (Module *)in_ctrl_port_list.at(l3)->connectedPortList.at(0)->parentModule;
-          if (!in_M_ctrl[l3]->cycleProcessing) {
-            in_M_ctrl[l3]->generateCycle();
-            inData_ctrl[l3] = in_M_ctrl[l3]->data[in_ctrl_port_list.at(l3)->connectedPortList.at(0)->index]; 
-          } else {
-            inData_ctrl[l3] = in_M_ctrl[l3]->lastdata[in_ctrl_port_list.at(l3)->connectedPortList.at(0)->index];
-          }
-        } else {
-          in_M_ctrl[l3] = NULL;
-          inData_ctrl[l3] = synthdata->zeroModuleData;
-        }
-      }
-    }
+
     if (isPoly) {
       for (l3 = 0; l3 < in_port_list.count(); l3++) {
         for (l1 = 0; l1 < synthdata->poly; l1++) {

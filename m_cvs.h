@@ -36,9 +36,6 @@ class M_cvs : public Module
     M_cvs(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_cvs();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

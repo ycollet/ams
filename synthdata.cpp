@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <qobject.h>
 #include <qstring.h>
-#include <qthread.h>
 #include <math.h>
-#include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_env.h"
 #include "m_vcenv.h"
-#include "m_jackout.h"
-#include "m_jackin.h"
+#include "m_pcmout.h"
+#include "m_pcmin.h"
 #include "m_advenv.h"
 #include "m_dynamicwaves.h"
 #include "m_wavout.h"
@@ -17,8 +15,9 @@
 #include "m_scope.h"
 #include "m_spectrum.h"
 
-SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
 
+SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
+{
   int l1, l2;
   double dphi, phi, dy, dyd;
   int decaytime;
@@ -34,38 +33,26 @@ SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
     notePressed[l1] = false;
     noteActive[l1] = false;
   }
+
   poly = p_poly;
-  oscCount = 0;
-  rate = DEFAULT_RATE;
-  periods = DEFAULT_PERIODS;
-  periodsize = p_periodsize;
-  channels = DEFAULT_CHANNELS;
-  samplesize = DEFAULT_SAMPLESIZE;
-  cyclesize = periodsize; // TODO Allow cyclesize < periodsize;
-  framesize = samplesize * channels;
-  min = -32767;
-  max = 32768;
-  edge = 1.0;
+  edge = p_edge;
+  rate = 0;
+  periods = 0;
+  periodsize = 0;
+  cyclesize = 0;
   moduleCount = 0;
-  moduleInCount = 0;
-  moduleOutCount = 0;
   moduleID = 0;
   doSynthesis = false;
-  doCapture = false;
-  jackRunning = false;
-  jackInCount = 0;
-  jackOutCount = 0;
-  jack_in_ports = 2;
-  jack_out_ports = 2;
-  withJack = false;
   midiChannel = -1;
+
   exp_data = (float *)malloc(EXP_TABLE_LEN * sizeof(float));
   wave_sine = (float *)malloc(WAVE_PERIOD * sizeof(float));
   wave_saw = (float *)malloc(WAVE_PERIOD * sizeof(float));
   wave_saw2 = (float *)malloc(WAVE_PERIOD * sizeof(float));
   wave_rect = (float *)malloc(WAVE_PERIOD * sizeof(float));
   wave_tri = (float *)malloc(WAVE_PERIOD * sizeof(float));
-  dphi = 2.0 * PI / WAVE_PERIOD;
+
+  dphi = 2.0 * M_PI / WAVE_PERIOD;
   phi = 0;
   for (l1 = 0; l1 < WAVE_PERIOD; l1++) {
     wave_sine[l1] = sin(phi);
@@ -123,55 +110,30 @@ SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
   for (l1 = (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1 < WAVE_PERIOD; l1++) {
     wave_tri[l1] = -1.0 + (float)(l1 - (WAVE_PERIOD >> 1) - (WAVE_PERIOD>>2)) * dy;                              
   }
-  data = (float **)malloc(channels * sizeof(float *));
-  for (l1 = 0; l1 < channels; l1++) {
-    data[l1] = (float *)malloc(periodsize * sizeof(float));
-    memset(data[l1], 0, periodsize * sizeof(float));
-  }
-  for (l2 = 0; l2 < 2; l2++) {
-    indata[l2] = (float **)malloc(channels * sizeof(float *));
-    for (l1 = 0; l1 < channels; l1++) {
-      indata[l2][l1] = (float *)malloc(periodsize * sizeof(float));
-      memset(indata[l2][l1], 0, periodsize * sizeof(float));
-    }
-  }
-  zeroModuleData = (float **)malloc(poly * sizeof(float *)); 
-  for (l1 = 0; l1 < poly; l1++) {                                    // TODO realloc, when poly changed
-    zeroModuleData[l1] = (float *)malloc(periodsize * sizeof(float));
-    memset(zeroModuleData[l1], 0, periodsize * sizeof(float));
-  }
-  jackName = "AlsaModularSynth";
+
+  jackName = "AMS";
+  play_ports = 0;
+  capt_ports = 0;
+  withJack = false;
+  withAlsa = false;
+  for (int i = 0; i < MAX_PLAY_PORTS / 2; i++) play_mods [i] = 0;
+  for (int i = 0; i < MAX_CAPT_PORTS / 2; i++) capt_mods [i] = 0;
 }
 
-SynthData::~SynthData() {
-  
-  int l1, l2;
-
-  for (l1 = 0; l1 < channels; l1++) {
-    free(data[l1]);
-  }
-  free(data);
-  for (l2 = 0; l2 < 2; l2++) {
-    for (l1 = 0; l1 < channels; l1++) {
-      free(indata[l2][l1]);
-    }
-    free(indata[l2]);
-  }
-  free(exp_data);
-  free(wave_sine);
-  free(wave_saw);
-  free(wave_saw2);
-  free(wave_rect);
-  free(wave_tri);
-  for (l1 = 0; l1 < poly; l1++) {
-    free(zeroModuleData[l1]);
-  }
-  free(zeroModuleData);
-  delete(midiWidget);
-  delete(guiWidget);
-  if (withJack) {
-    jack_client_close(jack_handle);
-  }
+SynthData::~SynthData()
+{
+    if (withJack) closeJack ();
+    if (withAlsa) closeAlsa ();
+    free (exp_data);
+    free (wave_sine);
+    free (wave_saw);
+    free (wave_saw2);
+    free (wave_rect);
+    free (wave_tri);
+    for (int i = 0; i < poly; i++) free (zeroModuleData [i]);
+    free (zeroModuleData);
+    delete (midiWidget);
+    delete (guiWidget);
 }
 
 int SynthData::nextFreeOsc() {
@@ -180,7 +142,6 @@ int SynthData::nextFreeOsc() {
   bool tmp_noteActive;
   float min_e;
 
-  oscCount = 0;
   for (l2 = 0; l2 < poly; l2++) {
     tmp_noteActive = false;
     for (l1 = 0; l1 < listM_env.count(); l1++) {
@@ -204,7 +165,6 @@ int SynthData::nextFreeOsc() {
       }
     }  
     noteActive[l2] = tmp_noteActive || notePressed[l2];
-    if (noteActive[l2]) oscCount++;
   }
   for (l2 = 0; l2 < poly; l2++) {
     if (!noteActive[l2]) {
@@ -248,57 +208,6 @@ int SynthData::nextFreeOsc() {
     }
   }  
   return(osc);
-}
-
-int SynthData::setCycleSize(int p_cyclesize) {
-
-  cyclesize = p_cyclesize;
-}
-
-int SynthData::setPeriodsize(int p_periodsize) {
- 
-  int l1;
-
-  periodsize = p_periodsize;
-  framesize = samplesize * channels;
-  return(0);
-}
-
-int SynthData::setPeriods(int p_periods) {
-
-  periods = p_periods;
-  return(0);
-}
-
-int SynthData::setRate(int p_rate) {
-
-  rate = p_rate;
-  return(0);
-}
-
-int SynthData::setChannels(int p_channels) {
-
-  int l1;
-
-  for (l1 = 0; l1 < channels; l1++) {
-    free(data[l1]);
-  }
-  free(data);
-  channels = p_channels;
-  framesize = samplesize * channels;
-  data = (float **)malloc(channels * sizeof(float *));
-  for (l1 = 0; l1 < channels; l1++) {
-    data[l1] = (float *)malloc(periodsize * sizeof(float));
-    memset(data[l1], 0, periodsize * sizeof(float));
-  }
-  return(0);
-}
-
-int SynthData::setSampleSize(int p_samplesize) {
-
-  samplesize = p_samplesize;
-  framesize = samplesize * channels;
-  return(0);
 }
 
 int SynthData::incModuleCount() {
@@ -365,163 +274,273 @@ float SynthData::exp_table(float x) {
   return(exp_data[index]);
 }     
 
-int SynthData::initJack(int in, int out) {
-
-  int l1;
-  QString qs;
-
-  withJack = true;
-  jack_out_ports = out;
-  jack_in_ports = in;
-  fprintf(stderr, "%s\n", jackName.latin1());
-  if ((jack_handle = jack_client_new(jackName.latin1())) == 0) {
-    fprintf(stderr, "jack server not running ?\n");
-    exit(1);
-  }
-  jack_set_process_callback(jack_handle, playback_callback, (void *)this);
-  setRate(jack_get_sample_rate(jack_handle));
-  for (l1 = 0; l1 < jack_out_ports; l1++) {
-    qs.sprintf("ams_out_%d", l1);
-    jack_out[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
-  }
-  for (l1 = 0; l1 < jack_in_ports; l1++) {
-    qs.sprintf("ams_in_%d", l1);
-    jack_in[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
-  }
-  activateJack();
-  return(0);
+void SynthData::create_zero_data (void)
+{
+    zeroModuleData = (float **) malloc (poly * sizeof(float *)); 
+    for (int i = 0; i < poly; i++)
+    {
+        zeroModuleData [i] = (float *) malloc (periodsize * sizeof(float));
+        memset (zeroModuleData [i], 0, periodsize * sizeof(float));
+    }
 }
 
-int SynthData::activateJack() {
 
-  jackRunning = true;
-  if (jack_activate(jack_handle)) {
-    fprintf(stderr, "cannot activate client");
-  }
-  return(0);
+
+int SynthData::find_play_mod (void *M)
+{
+    for (int i = 0; i < play_ports / 2; i++) if (play_mods [i] == M) return i;
+    return -1;
 }
 
-int SynthData::deactivateJack() {
-
-  int l1;
-
-  if (jackRunning) {
-    jackRunning = false;
-    if (jack_deactivate(jack_handle)) {
-      fprintf(stderr, "cannot deactivate client");
-    }
-    for (l1 = 0; l1 < jack_out_ports; l1++) {
-      jack_port_unregister(jack_handle, jack_out[l1]);
-    }
-    for (l1 = 0; l1 < jack_in_ports; l1++) {
-      jack_port_unregister(jack_handle, jack_in[l1]);
-    }
-  }
-  return(0);
+int SynthData::find_capt_mod (void *M)
+{
+    for (int i = 0; i < capt_ports / 2; i++) if (capt_mods [i] == M) return i;
+    return -1;
 }
 
-int SynthData::playback_callback(jack_nframes_t nframes, void *arg) {
 
-  SynthData *sd;
 
-  sd = (SynthData *)arg;
-  return(sd->jack_playback(nframes));
-}
+int SynthData::initAlsa (const char *name, int fsamp, int frsize, int nfrags, int ncapt, int nplay)
+{
+    pthread_attr_t     attr;
+    struct sched_param parm;
 
-int SynthData::jack_playback(jack_nframes_t nframes) {
+    withAlsa = true;
+    ncapt &= ~1;
+    nplay &= ~1;
 
-  int l1, l2, in_handled, out_handled;
-  jack_default_audio_sample_t *buf[2];
-
-  if (nframes > 16384) {
-    fprintf(stderr, "nframes > 16384\n");
-  } else {
-    in_handled = 0;
-    out_handled = 0;
-    setCycleSize(nframes);
-    if (!doSynthesis) {
-      for (l1 = 0; l1 < jackInCount; l1++) {
-        for (l2 = 0; l2 < 2; l2++) {
-          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackin *)jackinModuleList.at(l1))->jack_in[l2], nframes); 
-          in_handled++;   
-        }
-      }
-      for (l1 = 0; l1 < jackOutCount; l1++) {
-        for (l2 = 0; l2 < 2; l2++) {
-          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackout *)jackoutModuleList.at(l1))->port_out[l2], nframes);
-          memset(buf[l2], 0, sizeof(jack_default_audio_sample_t) * nframes);
-          out_handled++;
-        }
-      }
-    } else {
-      for (l1 = 0; l1 < jackInCount; l1++) {
-        for (l2 = 0; l2 < 2; l2++) {
-          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackin *)jackinModuleList.at(l1))->jack_in[l2], nframes);
-          memcpy(((M_jackin *)jackinModuleList.at(l1))->jackdata[l2], buf[l2], sizeof(jack_default_audio_sample_t) * nframes);
-          in_handled++;
-        }
-      }
-      for (l1 = 0; l1 < jackOutCount; l1++) {
-        ((M_jackout *)jackoutModuleList.at(l1))->generateCycle();
-        for (l2 = 0; l2 < 2; l2++) {
-          buf[l2] = (jack_default_audio_sample_t *)jack_port_get_buffer(((M_jackout *)jackoutModuleList.at(l1))->port_out[l2], nframes);
-          memcpy(buf[l2], ((M_jackout *)jackoutModuleList.at(l1))->jackdata[l2], sizeof(jack_default_audio_sample_t) * nframes);
-          out_handled++;
-        }
-      }
-      for (l1 = 0; l1 < wavoutModuleList.count(); l1++) {
-        ((M_wavout *)wavoutModuleList.at(l1))->generateCycle();
-      }
-      for (l1 = 0; l1 < scopeModuleList.count(); l1++) {
-        ((M_scope *)scopeModuleList.at(l1))->generateCycle();
-      }
-      for (l1 = 0; l1 < spectrumModuleList.count(); l1++) {
-        ((M_spectrum *)spectrumModuleList.at(l1))->generateCycle(); 
-      }
-      for (l1 = 0; l1 < midioutModuleList.count(); l1++) {
-        ((M_midiout *)midioutModuleList.at(l1))->generateCycle();
-      } 
-      for (l1 = 0; l1 < moduleList.count(); l1++) {
-        ((Module *)moduleList.at(l1))->cycleReady = false;
-      }
-    }
-    for (l1 = in_handled; l1 < jack_in_ports; l1++) {
-      buf[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_in[l1], nframes);
+    alsa_handle = new Alsa_driver (name, fsamp, frsize, nfrags, nplay > 0, ncapt > 0, false);
+    if (alsa_handle->stat () < 0)
+    {
+        fprintf (stderr, "Can't connect to ALSA\n");
+        exit (1);
     } 
-    
-    for (l1 = out_handled; l1 < jack_out_ports; l1++) {
-      buf[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[l1], nframes);
-      memset(buf[0], 0, sizeof(jack_default_audio_sample_t) * nframes);
-    } 
-  }
-  return(0);
+    capt_ports = alsa_handle->ncapt ();
+    play_ports = alsa_handle->nplay ();
+    if (capt_ports > ncapt) capt_ports = ncapt;
+    if (play_ports > nplay) play_ports = nplay;
+    if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
+    if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
+
+    fprintf (stderr, "ALSA device %s opened with %d inputs and %d outputs\n", name, capt_ports, play_ports); 
+
+    rate = fsamp;
+    periodsize = frsize;
+    cyclesize  = frsize;
+    create_zero_data ();
+
+    parm.sched_priority = sched_get_priority_max (SCHED_FIFO);
+    pthread_attr_init (&attr);
+    pthread_attr_setdetachstate (&attr, PTHREAD_CREATE_DETACHED);
+    pthread_attr_setschedpolicy (&attr, SCHED_FIFO);
+    pthread_attr_setschedparam (&attr, &parm);
+    pthread_attr_setscope (&attr, PTHREAD_SCOPE_SYSTEM);
+    if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
+    {
+        fprintf (stderr, "Can't create ALSA thread with RT priority\n");
+        pthread_attr_setschedpolicy (&attr, SCHED_OTHER);
+        if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
+        {
+            fprintf (stderr, "Can't create ALSA thread\n");
+            exit (1);
+	}
+    }
+
+    return 0;
 }
 
-int SynthData::addJackPorts(int count_in, int count_out) {
-
-  int l1;
-  QString qs;
-
-  for (l1 = jack_out_ports; l1 < jack_out_ports + count_out; l1++) {
-    qs.sprintf("ams_out_%d", l1);
-    jack_out[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
-  }  
-  jack_out_ports += count_out;
-  for (l1 = jack_in_ports; l1 < jack_in_ports + count_in; l1++) {
-    qs.sprintf("ams_in_%d", l1);
-    jack_in[l1] = jack_port_register(jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
-  }
-  jack_in_ports += count_in;
+int SynthData::closeAlsa ()
+{
+    fprintf (stderr, "Closing ALSA...\n");
+    withAlsa = false;
+    sleep (1);
+    delete alsa_handle;
+    return 0;
 }
 
-int SynthData::deleteJackPorts(int count_in, int count_out) {
-
-  int l1;
-
-  for (l1 = jack_out_ports - count_out; l1 < jack_out_ports; l1++) {
-    jack_port_unregister(jack_handle, jack_out[l1]);   
-  }
-  for (l1 = jack_in_ports - count_in; l1 < jack_in_ports; l1++) {
-    jack_port_unregister(jack_handle, jack_in[l1]);
-  }
+void *SynthData::alsa_static_thr_main (void *arg)
+{
+    return ((SynthData *) arg)->alsa_thr_main ();
 }
+
+void *SynthData::alsa_thr_main (void)
+{
+    int           i;
+    unsigned long k;
+    M_pcmin     *C;
+    M_pcmout    *P;
+
+    alsa_handle->pcm_start ();
+
+    while (withAlsa)
+    {
+	k = alsa_handle->pcm_wait ();  
+
+        while (k >= cyclesize)
+       	{
+            if (capt_ports)
+	    {
+                alsa_handle->read_init ();
+                for (i = 0; i < capt_ports; i += 2)
+                {
+                    C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
+                    if (C)
+                    {
+                        alsa_handle->read_chan (i,     C->pcmdata [0]);
+                        alsa_handle->read_chan (i + 1, C->pcmdata [1]);
+		    }
+		}
+                alsa_handle->read_done ();
+	    }
+
+            if (play_ports)
+	    {
+                alsa_handle->write_init ();
+                for (i = 0; i < play_ports; i += 2)
+                {
+                    P = doSynthesis ? (M_pcmout *)(play_mods [i / 2]) : 0;
+                    if (P)
+                    {
+                        P->generateCycle ();
+                        alsa_handle->write_chan (i,     P->pcmdata [0]);
+                        alsa_handle->write_chan (i + 1, P->pcmdata [1]);
+		    }
+	            else
+                    {
+                        alsa_handle->clear_chan (i);
+                        alsa_handle->clear_chan (i + 1);
+		    }
+		}
+                alsa_handle->write_done ();
+	    }       
+
+            if (doSynthesis) call_modules ();
+
+            k -= cyclesize;
+	}
+    }
+ 
+    alsa_handle->pcm_stop ();
+
+    return 0;
+}
+
+
+
+int SynthData::initJack (int ncapt, int nplay)
+{
+    QString qs;
+
+    withJack = true;
+
+    play_ports = nplay & ~1;
+    capt_ports = ncapt & ~1;
+    if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
+    if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
+
+    if ((jack_handle = jack_client_new (jackName.latin1())) == 0)
+    {
+        fprintf (stderr, "Can't connect to JACK\n");
+        exit (1);
+    }
+
+    jack_set_process_callback (jack_handle, jack_static_callback, (void *)this);
+ 
+    rate = jack_get_sample_rate (jack_handle);
+    periodsize = MAXIMUM_PERIODSIZE;
+    create_zero_data ();
+
+    for (int i = 0; i < play_ports; i++)
+    {
+        qs.sprintf("ams_out_%d", i);
+        jack_out [i] = jack_port_register (jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+    }
+    for (int i = 0; i < capt_ports; i++)
+    {
+        qs.sprintf("ams_in_%d", i);
+        jack_in [i] = jack_port_register (jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+    }
+
+    if (jack_activate (jack_handle))
+    {
+        fprintf(stderr, "Can't activate JACK");
+        exit (1);
+    }
+
+    fprintf (stderr, "Connected to JACK with %d inputs and %d outputs\n", capt_ports, play_ports); 
+
+    return 0;
+}
+
+int SynthData::closeJack ()
+{
+    fprintf (stderr, "Closing JACK...\n");
+    jack_deactivate (jack_handle);
+    for (int i = 0; i < play_ports; i++) jack_port_unregister(jack_handle, jack_out[i]);
+    for (int i = 0; i < capt_ports; i++) jack_port_unregister(jack_handle, jack_in[i]);
+    jack_client_close (jack_handle);
+    return 0;
+}
+
+
+int SynthData::jack_static_callback (jack_nframes_t nframes, void *arg)
+{
+    return ((SynthData *) arg)->jack_callback (nframes);
+}
+
+
+int SynthData::jack_callback (jack_nframes_t nframes)
+{
+    int         i, j;
+    M_pcmin    *C;
+    M_pcmout   *P;
+    jack_default_audio_sample_t *p;
+
+    if (nframes > MAXIMUM_PERIODSIZE)
+    { 
+        fprintf(stderr, "nframes exceeds allowed value %d\n", MAXIMUM_PERIODSIZE);
+        return 0;
+    }
+
+    cyclesize = nframes;
+
+    for (i = 0; i < capt_ports; i += 2)
+    {
+        C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
+        for (j = 0; j < 2; j++)
+        {
+            p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_in [i + j], nframes));
+            if (C) memcpy (C->pcmdata [j], p, sizeof(jack_default_audio_sample_t) * nframes);
+	}
+    }
+
+    for (i = 0; i < play_ports; i += 2)
+    {
+        P = doSynthesis ? (M_pcmout *)(play_mods [i / 2]) : 0;    
+        if (P) P->generateCycle ();
+        for (j = 0; j < 2; j++)
+        {
+            p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_out [i + j], nframes));
+            if (P) memcpy (p, P->pcmdata [j], sizeof(jack_default_audio_sample_t) * nframes);
+            else   memset (p, 0, sizeof(jack_default_audio_sample_t) * nframes);
+	}
+    }
+
+    if (doSynthesis) call_modules ();
+ 
+    return 0;
+}
+
+
+
+void SynthData::call_modules (void)
+{
+    int i;
+     
+    for (i = 0; i < wavoutModuleList.count();   i++) ((M_wavout *)wavoutModuleList.at(i))->generateCycle();
+    for (i = 0; i < scopeModuleList.count();    i++) ((M_scope *)scopeModuleList.at(i))->generateCycle();
+    for (i = 0; i < spectrumModuleList.count(); i++) ((M_spectrum *)spectrumModuleList.at(i))->generateCycle(); 
+    for (i = 0; i < midioutModuleList.count();  i++) ((M_midiout *)midioutModuleList.at(i))->generateCycle();
+    for (i = 0; i < moduleList.count();         i++) ((Module *)moduleList.at(i))->cycleReady = false;
+}
+

@@ -32,9 +32,7 @@ class M_lfo : public Module
     float phi[MAXPOLY];
     float wave_period;
     bool trigger[MAXPOLY];
-    Module *in_M_trigger; 
     Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect;
-    
     float **triggerData;  
                                 
   public:
@@ -42,9 +40,6 @@ class M_lfo : public Module
     ~M_lfo();
     virtual void noteOnEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

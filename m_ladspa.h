@@ -35,8 +35,6 @@ class M_ladspa : public Module
   private:
     QList<Port> in_port_list, out_port_list;
     QList<Port> in_ctrl_port_list, out_ctrl_port_list;
-    Module *in_M[MAX_AUDIOPORTS], *out_M[MAX_AUDIOPORTS];
-    Module *in_M_ctrl[MAX_CONTROLPORTS], *out_M_ctrl[MAX_CONTROLPORTS];
     const LADSPA_Descriptor *ladspa_dsc;
     LADSPA_Handle ladspa_handle[MAXPOLY];
     LADSPA_Data *ladspaDataIn[MAX_AUDIOPORTS][MAXPOLY], *ladspaDataOut[MAX_AUDIOPORTS][MAXPOLY];
@@ -56,7 +54,8 @@ class M_ladspa : public Module
     QString pluginName;
     
   public:
-    M_ladspa(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0, int p_ladspaDesFuncIndex=0, int p_n=0, bool poly = false, bool extCtrlPorts = false);
+    M_ladspa(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0,
+            int p_ladspaDesFuncIndex=0, int p_n=0, bool poly = false, bool extCtrlPorts = false);
     ~M_ladspa();
 
   protected:

@@ -35,7 +35,8 @@ class M_advmcv : public Module
 
   public: 
     int  pitch, channel, controller_num[MODULE_ADVMCV_CONTROLLER_PORTS];
-    float freq[MAXPOLY], trig[MAXPOLY], aftertouch_cv[MAXPOLY], pitchbend_cv[MAXPOLY], controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY];
+    float freq[MAXPOLY], trig[MAXPOLY], aftertouch_cv[MAXPOLY], pitchbend_cv[MAXPOLY];
+    float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY];
                 
   public:
     M_advmcv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
@@ -46,9 +47,6 @@ class M_advmcv : public Module
     void controllerEvent(int channel, int controlNum, int value, bool is14bit =false);
     void pitchbendEvent(int channel, int value);
     
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

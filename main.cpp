@@ -1,6 +1,7 @@
 #include <stdio.h>      
 #include <stdlib.h>     
 #include <getopt.h>  
+#include <string.h>
 #include <unistd.h>
 #include <qapplication.h>
 #include <qmainwindow.h>
@@ -9,9 +10,8 @@
 #include <qstring.h>
 #include <qvbox.h>
 #include <qscrollview.h>
-
 #include "modularsynth.h"
-#include "synthdata.h"
+
 
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},
@@ -31,7 +31,7 @@ static struct option options[] =
 
 int main(int argc, char *argv[])  
 {
-  QString aboutText ("AlsaModularSynth 1.6.0\n"
+  QString aboutText ("AlsaModularSynth 1.7.1\n"
                      "by Matthias Nagorni\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n\n");
   QApplication *qApp = new QApplication(argc, argv);
@@ -40,39 +40,42 @@ int main(int argc, char *argv[])
   int getopt_return;
   int option_index; 
   int poly = 1;
-  int periodsize = DEFAULT_PERIODSIZE;
-  int periods = 0;
-  int rate = 0;
-  int in = 2;
-  int out = 2;
-  QString pcmname = "plughw:0,0";
+  int fsamp = DEFAULT_RATE;
+  int ncapt = DEFAULT_CAPT_PORTS;
+  int nplay = DEFAULT_PLAY_PORTS;
+  int frsize = DEFAULT_PERIODSIZE;
+  int nfrags = DEFAULT_PERIODS;
+  char pcmname [256];
+  strcpy (pcmname, DEFAULT_PCMNAME);
   QString presetName, presetPath;
   bool havePreset = false;
   bool havePresetPath = false;
   bool noGui = false;
   bool enableJack = false;
-  char buf[2048];
+  char buf [2048];
   float edge = 1.0;
 
-  while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:", options, &option_index)) >= 0) {
-    switch(getopt_return) {
+  while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:", options, &option_index)) >= 0)
+  {
+    switch(getopt_return)
+    {
     case 'p': 
         poly = atoi(optarg);
         break;
     case 'b': 
-        periodsize = atoi(optarg);
+        frsize = atoi(optarg);
         break;
     case 'f': 
-        periods = atoi(optarg);
+        nfrags = atoi(optarg);
         break;
     case 'e': 
         edge = atof(optarg);
         break;
     case 'r': 
-        rate = atoi(optarg);
+        fsamp = atoi(optarg);
         break;
     case 'c': 
-        pcmname.sprintf("%s", optarg);
+        strcpy (pcmname, optarg);
         break; 
     case 'l': 
         presetName.sprintf("%s", optarg);
@@ -89,10 +92,10 @@ int main(int argc, char *argv[])
         enableJack = true;
         break;
     case 'i': 
-        in = atoi(optarg);
+        ncapt = atoi(optarg);
         break;
     case 'o': 
-        out = atoi(optarg);
+        nplay = atoi(optarg);
         break;
     case 'h':
         printf("\n%s", aboutText.latin1());
@@ -104,7 +107,7 @@ int main(int argc, char *argv[])
         printf("--frag <num>                 Number of fragments [%d]\n", DEFAULT_PERIODS);
         printf("--rate <samples/s>           Samplerate [%d]\n", DEFAULT_RATE);
         printf("--edge <0..10>               VCO Edge [1.0]\n");
-        printf("--soundcard <plug>           Soundcard [plughw:0,0]\n");
+        printf("--soundcard <plug>           Soundcard [hw:0,0]\n");
         printf("--preset <file>              Preset file\n");
         printf("--presetpath <path>          Preset path\n");
         printf("--nogui                      Start without GUI\n\n");
@@ -112,20 +115,10 @@ int main(int argc, char *argv[])
         break;
     }
   }
-  if (enableJack) {
-    periodsize = 16384;
-  }
-  ModularSynth *modularSynth = new ModularSynth(poly, periodsize, top);
+
+  ModularSynth *modularSynth = new ModularSynth (top, pcmname, fsamp, frsize, nfrags, ncapt, nplay, poly, edge);
   modularSynth->resizeContents(3000, 4000);
-  if (periods) {
-    modularSynth->setPeriods(periods);
-  }
-  if (rate) {
-    modularSynth->setRate(rate);
-  }
-  modularSynth->jack_in_ports = in;
-  modularSynth->jack_out_ports = out;
-  modularSynth->setPCMname(pcmname);
+
   QPopupMenu *filePopup = new QPopupMenu(top);
   QPopupMenu *synthesisPopup = new QPopupMenu(top);
   QPopupMenu *modulePopup = new QPopupMenu(top);
@@ -151,7 +144,6 @@ int main(int argc, char *argv[])
   synthesisPopup->insertItem("Stop", modularSynth, SLOT(stopSynth()));
   synthesisPopup->insertItem("All Voices Off", modularSynth, SLOT(allVoicesOff()));
 
-
   newModulePopup->insertItem("Advanced ENV", modularSynth, SLOT(newM_advenv()));
   newModulePopup->insertItem("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
   newModulePopup->insertItem("Comment", modularSynth, SLOT(new_textEdit()));
@@ -163,10 +155,6 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Dynamic Waves (8 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_8()));
   newModulePopup->insertItem("ENV", modularSynth, SLOT(newM_env()));
   newModulePopup->insertItem("INV", modularSynth, SLOT(newM_inv()));
-  if (enableJack) {
-    newModulePopup->insertItem("JACK Out", modularSynth, SLOT(newM_jackout()));
-    newModulePopup->insertItem("JACK In", modularSynth, SLOT(newM_jackin()));  
-  } 
   newModulePopup->insertItem("LFO", modularSynth, SLOT(newM_lfo()));
   newModulePopup->insertItem("MCV", modularSynth, SLOT(newM_mcv()));
   newModulePopup->insertItem("MIDI Out", modularSynth, SLOT(newM_midiout()));
@@ -174,10 +162,8 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Mixer 4 -> 1", modularSynth, SLOT(newM_mix_4()));
   newModulePopup->insertItem("Mixer 8 -> 1", modularSynth, SLOT(newM_mix_8()));
   newModulePopup->insertItem("Noise / Random", modularSynth, SLOT(newM_noise()));
-  if (!enableJack) {
-    newModulePopup->insertItem("PCM Out", modularSynth, SLOT(newM_out()));
-    newModulePopup->insertItem("PCM In", modularSynth, SLOT(newM_in()));  
-  }
+  newModulePopup->insertItem("PCM Out", modularSynth, SLOT(newM_pcmout()));
+  newModulePopup->insertItem("PCM In", modularSynth, SLOT(newM_pcmin()));  
   newModulePopup->insertItem("Quantizer", modularSynth, SLOT(newM_quantizer()));
   newModulePopup->insertItem("Ring Modulator", modularSynth, SLOT(newM_ringmod()));
   newModulePopup->insertItem("Sample && Hold", modularSynth, SLOT(newM_sh()));
@@ -212,25 +198,25 @@ int main(int argc, char *argv[])
   aboutMenu->insertItem("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
   top->setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   top->setCentralWidget(modularSynth);
-  if (noGui) {
-    top->hide();
-  } else {
-    top->show();
-  }
+  if (noGui) top->hide();
+  else       top->show();
   qApp->setMainWidget(top);
   QObject::connect(qApp, SIGNAL(aboutToQuit()), modularSynth, SLOT(cleanUpSynth()));
-  modularSynth->go(enableJack);
-  if (havePresetPath) {
+
+  if (havePresetPath)
+  {
     fprintf(stderr, "Preset path now %s\n", presetPath.latin1()); 
     modularSynth->setPresetPath(presetPath);
   }
   getcwd(buf, 2048);
   modularSynth->setSavePath(QString(buf));
-  if (havePreset) {
+  if (havePreset)
+  {
     fprintf(stderr, "Loading preset %s\n", presetName.latin1()); 
     modularSynth->load(&presetName);
   }
-  modularSynth->synthdata->edge = edge;  
+
+  modularSynth->go (enableJack);
+
   return qApp->exec();
-  return (0);
 }

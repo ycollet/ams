@@ -31,4 +31,3 @@ class MidiController : public QObject  {
 };
                               
 #endif
-                              

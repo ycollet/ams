@@ -31,7 +31,6 @@ class M_delay : public Module
   private:
     float delay;
     int read_ofs;
-    Module *in_M_in; 
     Port *port_M_in, *port_out;
     
   public: 
@@ -41,9 +40,6 @@ class M_delay : public Module
     M_delay(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_delay();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

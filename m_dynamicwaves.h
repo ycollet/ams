@@ -47,7 +47,6 @@ class M_dynamicwaves : public Module
     float phi0[MODULE_DYNAMICWAVES_MAX_OSC], phi[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
     float wave_period;
     bool allEnvTerminated;
-    Module *in_M_freq, *in_M_exp, *in_M_lin, *in_M_gate, *in_M_retrigger; 
     Port *port_M_freq, *port_M_exp, *port_M_lin, *port_gate, *port_retrigger;
     Port *port_out;
                     
@@ -69,9 +68,6 @@ class M_dynamicwaves : public Module
     ~M_dynamicwaves();
     virtual void noteOnEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

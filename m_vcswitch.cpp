@@ -59,24 +59,6 @@ M_vcswitch::M_vcswitch(QWidget* parent, const char *name, SynthData *p_synthdata
 M_vcswitch::~M_vcswitch() {
 }
 
-void M_vcswitch::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "VC Switch");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_vcswitch::generateCycle() {
 
   int l1, l2;
@@ -84,47 +66,11 @@ void M_vcswitch::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l2 = 0; l2 < 3; l2++) {        
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[l2][l1], data[l2][l1], synthdata->cyclesize * sizeof(float));
-      }
-    }
-    if (port_M_in[0]->connectedPortList.count()) {
-      in_M_in[0] = (Module *)port_M_in[0]->connectedPortList.at(0)->parentModule;
-      if (!in_M_in[0]->cycleProcessing) {
-        in_M_in[0]->generateCycle();
-        inData[0] = in_M_in[0]->data[port_M_in[0]->connectedPortList.at(0)->index];
-      } else {
-        inData[0] = in_M_in[0]->lastdata[port_M_in[0]->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in[0] = NULL;
-      inData[0] = synthdata->zeroModuleData;
-    }
-    if (port_M_in[1]->connectedPortList.count()) {
-      in_M_in[1] = (Module *)port_M_in[1]->connectedPortList.at(0)->parentModule;
-      if (!in_M_in[1]->cycleProcessing) {
-        in_M_in[1]->generateCycle();
-        inData[1] = in_M_in[1]->data[port_M_in[1]->connectedPortList.at(0)->index];
-      } else {
-        inData[1] = in_M_in[1]->lastdata[port_M_in[1]->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in[1] = NULL;
-      inData[1] = synthdata->zeroModuleData;
-    }
-    if (port_M_cv->connectedPortList.count()) {
-      in_M_cv = (Module *)port_M_cv->connectedPortList.at(0)->parentModule;
-      if (!in_M_cv->cycleProcessing) {
-        in_M_cv->generateCycle();
-        cvData = in_M_cv->data[port_M_cv->connectedPortList.at(0)->index];
-      } else {
-        cvData = in_M_cv->lastdata[port_M_cv->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_cv = NULL;
-      cvData = synthdata->zeroModuleData;
-    }
+
+    inData[0] = port_M_in[0]->getinputdata ();
+    inData[1] = port_M_in[1]->getinputdata ();
+    cvData = port_M_cv->getinputdata ();
+    
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         if (cvData[l1][l2] > switchLevel) {

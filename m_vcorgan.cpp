@@ -119,24 +119,6 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name, SynthDat
 M_vcorgan::~M_vcorgan() {
 }
 
-void M_vcorgan::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(12, 20, "VC Organ");
-  p.setFont(QFont("Helvetica", 8));
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_vcorgan::noteOnEvent(int osc) {
 }
 
@@ -152,51 +134,17 @@ void M_vcorgan::generateCycle() {
     cycleProcessing = true; 
     log2 = log(2.0);
     wave_period_2 = wave_period / 2.0;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_freq->connectedPortList.count()) {
-      in_M_freq = (Module *)port_M_freq->connectedPortList.at(0)->parentModule;
-      if (!in_M_freq->cycleProcessing) {
-        in_M_freq->generateCycle();
-        freqData = in_M_freq->data[port_M_freq->connectedPortList.at(0)->index];
-      } else {
-        freqData = in_M_freq->lastdata[port_M_freq->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_freq = NULL;
-      freqData = synthdata->zeroModuleData;
-    }
-    if (port_M_exp->connectedPortList.count()) {
-      in_M_exp = (Module *)port_M_exp->connectedPortList.at(0)->parentModule;
-    if (!in_M_exp->cycleProcessing) {
-        in_M_exp->generateCycle();
-        expFMData = in_M_exp->data[port_M_exp->connectedPortList.at(0)->index];
-    } else {
-        expFMData = in_M_exp->lastdata[port_M_exp->connectedPortList.at(0)->index];
-    }
-    } else {
-      in_M_exp = NULL;
-      expFMData = synthdata->zeroModuleData;
-    }
-    if (port_M_lin->connectedPortList.count()) {
-      in_M_lin = (Module *)port_M_lin->connectedPortList.at(0)->parentModule;
-      if (!in_M_lin->cycleProcessing) {
-        in_M_lin->generateCycle();
-        linFMData = in_M_lin->data[port_M_lin->connectedPortList.at(0)->index];
-      } else {
-        linFMData = in_M_lin->lastdata[port_M_lin->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_lin = NULL;
-      linFMData = synthdata->zeroModuleData;
-    }
+
+    freqData = port_M_freq->getinputdata();
+    expFMData = port_M_exp->getinputdata();
+    linFMData = port_M_lin->getinputdata();
+
     gain_linfm = 1000.0 * linFMGain;
     for (l3 = 0; l3 < oscCount; l3++) {
       gain_const[l3] = gain[l3] / (float)oscCount;
       freq_tune[l3] = 4.0313842 + octave + tune + osc_octave[l3] + osc_tune[l3];
       freq_const[l3] = wave_period / (float)synthdata->rate * (float)harmonic[l3] / (float)subharmonic[l3];
-      phi_const[l3] = phi0[l3] * wave_period / (2.0 * PI);
+      phi_const[l3] = phi0[l3] * wave_period / (2.0 * M_PI);
     }
     for (l1 = 0; l1 < synthdata->poly; l1++) {  
       memset(data[0][l1], 0, synthdata->cyclesize * sizeof(float));

@@ -54,24 +54,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_
 M_mix::~M_mix() {
 }
 
-void M_mix::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(12, 20, "Mixer");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_mix::generateCycle() {
 
   int l1, l2, l3;
@@ -79,23 +61,9 @@ void M_mix::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    for (l3 = 0; l3 < in_port_list.count(); l3++) {
-      if (in_port_list.at(l3)->connectedPortList.count()) {
-        in_M[l3] = (Module *)in_port_list.at(l3)->connectedPortList.at(0)->parentModule;
-        if (!in_M[l3]->cycleProcessing) {
-          in_M[l3]->generateCycle();
-          inData[l3] = in_M[l3]->data[in_port_list.at(l3)->connectedPortList.at(0)->index];
-        } else {
-          inData[l3] = in_M[l3]->lastdata[in_port_list.at(l3)->connectedPortList.at(0)->index];
-        }
-      } else {
-        in_M[l3] = NULL;
-        inData[l3] = synthdata->zeroModuleData;
-      }
-    }
+
+    for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();
+    
     mixgain = gain * mixer_gain[0];
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {

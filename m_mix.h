@@ -31,7 +31,6 @@ class M_mix : public Module
   private:
     QList<Port> in_port_list;
     Port *port_out;
-    Module *in_M[MAX_MIX_IN];
     float gain;
     float mixer_gain[MAX_MIX_IN];
         
@@ -43,9 +42,6 @@ class M_mix : public Module
     M_mix(int p_in_channels, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_mix();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

@@ -31,8 +31,6 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
 
   QString qs;
   int l1;
-  char buf[2048];
-  glob_t globbuf;
 
   M_type = M_type_scmcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCMCV_WIDTH, MODULE_SCMCV_HEIGHT);
@@ -101,24 +99,6 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
 
 M_scmcv::~M_scmcv() {
 
-}
-
-void M_scmcv::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Scala MCV");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
 }
 
 void M_scmcv::noteOnEvent(int osc) {

@@ -25,7 +25,6 @@
 #include <qlistview.h>
 #include <alsa/asoundlib.h>
 #include <ladspa.h>
-#include <jack/jack.h>
 #include "modularsynth.h"
 #include "port.h"
 #include "midiwidget.h"
@@ -33,9 +32,13 @@
 #include "midicontroller.h"
 #include "ladspadialog.h"
 
-ModularSynth::ModularSynth(int poly, int periodsize, QWidget *parent, const char *name) 
-                          : QScrollView(parent, name, Qt::WResizeNoErase | Qt::WRepaintNoErase | Qt::WStaticContents) {
-  
+
+ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp, int p_frsize, int p_nfrags,
+                            int p_ncapt, int p_nplay, int poly, float edge) 
+    : QScrollView (parent, "", Qt::WResizeNoErase | Qt::WRepaintNoErase | Qt::WStaticContents),
+      pcmname (p_pcmname), fsamp (p_fsamp), frsize (p_frsize), nfrags (p_nfrags),
+      ncapt (p_ncapt), nplay (p_nplay)
+{
   firstPort = true;
   connectingPort[0] = NULL;
   connectingPort[1] = NULL;
@@ -44,21 +47,21 @@ ModularSynth::ModularSynth(int poly, int periodsize, QWidget *parent, const char
   mainWindow = (QMainWindow *)parent;
   clientid = 0;
   portid = 0;
-  jack_in_ports = 2;
-  jack_out_ports = 2;
-  synthdata = new SynthData(poly, periodsize);
+
+  synthdata = new SynthData (poly, edge);
+
   midiWidget = new MidiWidget(synthdata, NULL);
   midiWidget->setCaption("AlsaModularSynth Control Center");
   synthdata->midiWidget = (QObject *)midiWidget;
   guiWidget = new GuiWidget(synthdata, NULL);
   guiWidget->setCaption("AlsaModularSynth Parameter View");
   synthdata->guiWidget = (QObject *)guiWidget;
-  PCMname = DEFAULT_PCMNAME;
+
   presetPath = "";
   ladspaDialog = new LadspaDialog(synthdata, NULL);
   QObject::connect(ladspaDialog, SIGNAL(createLadspaModule(int, int, bool, bool)),
                    this, SLOT(newM_ladspa(int, int, bool, bool)));
-  setPalette(QPalette(QColor(117, 67, 21), QColor(117, 67, 21)));
+  setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
 }
 
@@ -79,8 +82,8 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   QPoint port_pos[2];
   int moduleX[2], moduleY[2];
 
-  pm.fill(QColor(130, 90, 25));
-  p.setPen(QColor(220, 216, 216));
+  pm.fill(QColor((unsigned int)COLOR_MAINWIN_BG));
+  p.setPen(QColor((unsigned int)COLOR_CONNECT_LINE));
   pen = new QPen(QColor(220, 216, 216), 3);
   for (l1 = 0; l1 < listModule.count(); l1++) {
     for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
@@ -102,15 +105,15 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           qpa.setPoint(2, port_x[1], port_y[1]);
           qpa.setPoint(3, port_x[1], port_y[1]);
           pen->setWidth(5);
-          pen->setColor(QColor(150, 140, 140));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(3);
-          pen->setColor(QColor(180, 170, 170));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(1);
-          pen->setColor(QColor(220, 216, 216));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
           p.setPen(*pen);          
           p.drawCubicBezier(qpa);
         }
@@ -119,29 +122,29 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
         }
         if (port[0]->parentModule->x() < port[1]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(QColor(150, 140, 140));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 5, port_y[0]);
           pen->setWidth(3);
-          pen->setColor(QColor(180, 170, 170));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 6, port_y[0]);
           pen->setWidth(1);
-          pen->setColor(QColor(220, 216, 216));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 7, port_y[0]);
         }
         if (port[1]->parentModule->x() > port[0]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(QColor(150, 140, 140));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 5, port_y[1]);
           pen->setWidth(3);
-          pen->setColor(QColor(180, 170, 170));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 6, port_y[1]);
           pen->setWidth(1);
-          pen->setColor(QColor(220, 216, 216));
+          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 7, port_y[1]);
         }
@@ -174,11 +177,7 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
   case Qt::RightButton:
     break;
   case Qt::MidButton:
-    if (connectorStyle == CONNECTOR_STRAIGHT) {
-      connectorStyle = CONNECTOR_BEZIER;
-    } else {
-      connectorStyle = CONNECTOR_STRAIGHT;
-    }
+    connectorStyle = (connectorStyle == CONNECTOR_STRAIGHT) ? CONNECTOR_BEZIER : CONNECTOR_STRAIGHT;
     repaintContents(false);
     break;
   default:
@@ -197,28 +196,30 @@ QSizePolicy ModularSynth::sizePolicy() const {
 }
 
 
-int ModularSynth::go(bool withJack) {
+int ModularSynth::go (bool withJack) {
 
   synthdata->seq_handle = open_seq();
   initSeqNotifier();
-  if (withJack) {
-    synthdata->initJack(jack_in_ports, jack_out_ports);
+
+  if (withJack)
+  {
+    synthdata->initJack (ncapt, nplay);
     synthdata->doSynthesis = true;
-  } else {
-    synth = new Synth(synthdata);
-    capture = new Capture(synthdata);
-    synthdata->doSynthesis = true;
-    synthdata->doCapture = false;
-    synth->start();
   }
-  return(0);
+  else
+  {
+    synthdata->initAlsa (pcmname, fsamp, frsize, nfrags, ncapt, nplay);
+    synthdata->doSynthesis = true;
+  }
+  return 0;
 }
 
 void ModularSynth::displayAbout() {
  
-    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth 1.6.0\n"
-                     "by Matthias Nagorni\n"
-                     "(c)2002-2003 SuSE AG Nuremberg\n\n"
+    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth 1.7.2\n"
+                     "by Matthias Nagorni and Fons Adriaensen\n"
+                     "(c)2002-2003 SuSE AG Nuremberg\n"
+                     "(c)2003 Fons Adriaensen\n\n" 
                      "Documentation and examples can be found in\n"
                      "/usr/share/doc/packages/kalsatools\n\n"
                      "More presets and updates are available from\n"
@@ -237,8 +238,7 @@ void ModularSynth::displayAbout() {
     "answered many questions about QT. Thanks to Jörg Arndt for valuable\n"
     "hints regarding speed optimization. Torsten Rahn has helped to\n" 
     "improve the color scheme of the program. Thanks to Bernhard Kaindl\n"
-    "for helpful discussion. Fons Adriaensen has contributed patches for the\n"
-    "MCV and Spectrum View modules. He has also contributed many valuable ideas.\n");
+    "for helpful discussion.\n");
     aboutWidget->raise();
 }
 
@@ -260,38 +260,6 @@ void ModularSynth::displayLadspaPlugins() {
   ladspaDialog->raise();
 }
 
-int ModularSynth::setPeriodsize(int p_periodsize){
-
-  synthdata->setPeriodsize(p_periodsize);
-  synthdata->setCycleSize(synthdata->periodsize);  // TODO allow cyclesize < periodsize
-  fprintf(stderr, "Cyclesize: %d Periodsize: %d\n", synthdata->cyclesize, synthdata->periodsize); 
-  return(0);
-}
-
-int ModularSynth::setPeriods(int p_periods){
-
-  synthdata->setPeriods(p_periods);
-  return(0);
-}
-
-int ModularSynth::setRate(int p_rate){
-
-  synthdata->setRate(p_rate);
-  return(0);
-}
-
-int ModularSynth::setChannels(int p_channels){
-
-  synthdata->setChannels(p_channels);
-  return(0);
-}
-
-int ModularSynth::setPCMname(QString p_name){
-
-  PCMname = p_name;
-  return(0);
-}
-
 int ModularSynth::setPresetPath(QString name) {
 
   presetPath = name;
@@ -302,60 +270,6 @@ int ModularSynth::setSavePath(QString name) {
 
   savePath = name;
   return(0);
-}
-
-snd_pcm_t *ModularSynth::open_pcm(bool openCapture) {
-  
-  snd_pcm_t *pcm_handle;
-  snd_pcm_stream_t stream;
-  snd_pcm_hw_params_t *hwparams;
-  int buffersize_return;
-
-  stream = (openCapture) ? SND_PCM_STREAM_CAPTURE : SND_PCM_STREAM_PLAYBACK; 
-  if (snd_pcm_open(&pcm_handle, PCMname.latin1(), stream, 0) < 0) {
-    fprintf(stderr, "Error opening PCM device %s\n", PCMname.latin1());
-    exit(1);
-  }
-  snd_pcm_hw_params_alloca(&hwparams);
-  if (snd_pcm_hw_params_any(pcm_handle, hwparams) < 0) {
-    fprintf(stderr, "Can not configure this PCM device.\n");
-    exit(1);
-  }
-  if (snd_pcm_hw_params_set_access(pcm_handle, hwparams, SND_PCM_ACCESS_RW_INTERLEAVED) < 0) {
-    fprintf(stderr, "Error setting access.\n");
-    exit(1);
-  }
-  if (snd_pcm_hw_params_set_format(pcm_handle, hwparams, SND_PCM_FORMAT_S16_LE) < 0) {
-    fprintf(stderr, "Error setting format.\n");
-    exit(1);
-  }
-  if (snd_pcm_hw_params_set_rate_near(pcm_handle, hwparams, synthdata->rate, 0) < 0) {
-    fprintf(stderr, "Error setting rate.\n");
-    exit(1);
-  }
-  if (snd_pcm_hw_params_set_channels(pcm_handle, hwparams, synthdata->channels) < 0) {
-    fprintf(stderr, "Error setting channels.\n");
-    exit(1);
-  }
-  if (snd_pcm_hw_params_set_periods(pcm_handle, hwparams, synthdata->periods, 0) < 0) {
-    fprintf(stderr, "Error setting periods.\n");
-    exit(1);
-  }
-  if ((buffersize_return = snd_pcm_hw_params_set_buffer_size_near(pcm_handle, hwparams, 
-                           synthdata->periodsize * synthdata->periods)) < 0) {
-    fprintf(stderr, "Error setting buffersize.\n");
-    exit(1);
-  }
-  if (buffersize_return != synthdata->periodsize * synthdata->periods) {
-    fprintf(stderr, "Buffersize %d is not available on your hardware. Using %d instead.\n", 
-            synthdata->periodsize, buffersize_return * synthdata->periods);
-    setPeriodsize(buffersize_return / synthdata->periods);
-  }
-  if (snd_pcm_hw_params(pcm_handle, hwparams) < 0) {
-    fprintf(stderr, "Error setting HW params.\n");
-    exit(1);
-  }
-  return(pcm_handle);
 }
 
 snd_seq_t *ModularSynth::open_seq() {
@@ -384,7 +298,7 @@ snd_seq_t *ModularSynth::open_seq() {
       exit(1);
     }
   }
-  qs.sprintf("AlsaModularSynth 1.6.0 - %d:%d", clientid, portid);
+  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d", clientid, portid);
   mainWindow->setCaption(qs);
   synthdata->jackName.sprintf("ams_%d_%d", clientid, portid);
   return(seq_handle);
@@ -692,39 +606,19 @@ void ModularSynth::new_textEdit(int x, int y, int w, int h) {
   listTextEdit.append(te);
 }
 
-void ModularSynth::startSynth() {
-  
-  if (!synthdata->withJack) {
-    synthdata->doSynthesis = true;
-    if (!synth->running()) {
-      synth->start();
-    }
-    if (synthdata->moduleInCount) {
-      synthdata->doCapture = true;
-      if (!capture->running()) {
-        capture->start();
-      }
-    }
-  } else {
-    synthdata->doSynthesis = true;
-//    if (!synthdata->jackRunning && (synthdata->jackOutCount + synthdata->jackInCount > 0)) {
-//      synthdata->activateJack();
-//    }
-  }
+void ModularSynth::startSynth()
+{
+  synthdata->doSynthesis = true;
 }
 
-void ModularSynth::stopSynth() {
-
+void ModularSynth::stopSynth()
+{
   synthdata->doSynthesis = false;
-  synthdata->doCapture = false;
-//  if (synthdata->withJack) {
-//    synthdata->deactivateJack();
-//  }
 }
 
 void ModularSynth::newM_seq(int seqLen) {
 
-  M_seq *m = new M_seq(seqLen, viewport(), "M_seq", synthdata);
+  M_seq *m = new M_seq(seqLen, viewport(), "Sequencer", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -755,7 +649,7 @@ void ModularSynth::newM_seq_32() {
 
 void ModularSynth::newM_vcorgan(int oscCount) {
  
-  M_vcorgan *m = new M_vcorgan(oscCount, viewport(), "M_vcorgan", synthdata);
+  M_vcorgan *m = new M_vcorgan(oscCount, viewport(), "VC_Organ", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -776,7 +670,7 @@ void ModularSynth::newM_vcorgan_8() {
 
 void ModularSynth::newM_dynamicwaves(int oscCount) {
  
-  M_dynamicwaves *m = new M_dynamicwaves(oscCount, viewport(), "M_dynamicwaves", synthdata);
+  M_dynamicwaves *m = new M_dynamicwaves(oscCount, viewport(), "DynamicWaves", synthdata);
   synthdata->listM_dynamicwaves.append(m);
   initNewModule((Module *)m);
 }
@@ -798,158 +692,158 @@ void ModularSynth::newM_dynamicwaves_8() {
 
 void ModularSynth::newM_mcv() {
 
-  M_mcv *m = new M_mcv(viewport(), "M_mcv", synthdata);
+  M_mcv *m = new M_mcv(viewport(), "MCV", synthdata);
   synthdata->listM_mcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_advmcv() {
 
-  M_advmcv *m = new M_advmcv(viewport(), "M_advmcv", synthdata);
+  M_advmcv *m = new M_advmcv(viewport(), "Adv_MCV", synthdata);
   synthdata->listM_advmcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scmcv() {
 
-  M_scmcv *m = new M_scmcv(viewport(), "M_scmcv", synthdata);
+  M_scmcv *m = new M_scmcv(viewport(), "Scala_MCV", synthdata);
   synthdata->listM_scmcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scmcv(QString *p_scalaName) {
 
-  M_scmcv *m = new M_scmcv(viewport(), "M_scmcv", synthdata, p_scalaName);
+  M_scmcv *m = new M_scmcv(viewport(), "Scala_MCV", synthdata, p_scalaName);
   synthdata->listM_scmcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_env() {
 
-  M_env *m = new M_env(viewport(), "M_env", synthdata);
+  M_env *m = new M_env(viewport(), "ENV", synthdata);
   synthdata->listM_env.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vcenv() {
 
-  M_vcenv *m = new M_vcenv(viewport(), "M_vcenv", synthdata);
+  M_vcenv *m = new M_vcenv(viewport(), "VC_ENV", synthdata);
   synthdata->listM_vcenv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_advenv() {
 
-  M_advenv *m = new M_advenv(viewport(), "M_advenv", synthdata);
+  M_advenv *m = new M_advenv(viewport(), "Adv_ENV", synthdata);
   synthdata->listM_advenv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vco() {
 
-  M_vco *m = new M_vco(viewport(), "M_vco", synthdata);
+  M_vco *m = new M_vco(viewport(), "VCO", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vca_lin() {
 
-  M_vca *m = new M_vca(false, viewport(), "M_vca", synthdata);
+  M_vca *m = new M_vca(false, viewport(), "Lin VCA", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vca_exp() {
 
-  M_vca *m = new M_vca(true, viewport(), "M_vca", synthdata);
+  M_vca *m = new M_vca(true, viewport(), "Exp VCA", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_lfo() {
 
-  M_lfo *m = new M_lfo(viewport(), "M_lfo", synthdata);
+  M_lfo *m = new M_lfo(viewport(), "LFO", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_noise() {
 
-  M_noise *m = new M_noise(viewport(), "M_noise", synthdata);
+  M_noise *m = new M_noise(viewport(), "Noise", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_ringmod() {
 
-  M_ringmod *m = new M_ringmod(viewport(), "M_ringmod", synthdata);
+  M_ringmod *m = new M_ringmod(viewport(), "Ringmod", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_inv() {
 
-  M_inv *m = new M_inv(viewport(), "M_inv", synthdata);
+  M_inv *m = new M_inv(viewport(), "INV", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_conv() {
 
-  M_conv *m = new M_conv(viewport(), "M_conv", synthdata);
+  M_conv *m = new M_conv(viewport(), "Converter", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_cvs() {
 
-  M_cvs *m = new M_cvs(viewport(), "M_cvs", synthdata);
+  M_cvs *m = new M_cvs(viewport(), "CV Source", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_sh() {
 
-  M_sh *m = new M_sh(viewport(), "M_sh", synthdata);
+  M_sh *m = new M_sh(viewport(), "Sample/Hold", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vcswitch() {
 
-  M_vcswitch *m = new M_vcswitch(viewport(), "M_vcswitch", synthdata);
+  M_vcswitch *m = new M_vcswitch(viewport(), "VC_Switch", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_slew() {
 
-  M_slew *m = new M_slew(viewport(), "M_slew", synthdata);
+  M_slew *m = new M_slew(viewport(), "Slew Limiter", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_quantizer() {
 
-  M_quantizer *m = new M_quantizer(viewport(), "M_quantizer", synthdata);
+  M_quantizer *m = new M_quantizer(viewport(), "Quantizer", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scquantizer(QString *p_scalaName) {
 
-  M_scquantizer *m = new M_scquantizer(viewport(), "M_scquantizer", synthdata, p_scalaName);
+  M_scquantizer *m = new M_scquantizer(viewport(), "Scala Quant", synthdata, p_scalaName);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scquantizer() {
 
-  M_scquantizer *m = new M_scquantizer(viewport(), "M_scquantizer", synthdata);
+  M_scquantizer *m = new M_scquantizer(viewport(), "Scala Quant", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_delay() {
 
-  M_delay *m = new M_delay(viewport(), "M_delay", synthdata);
+  M_delay *m = new M_delay(viewport(), "Delay", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_mix(int in_channels) {
 
-  M_mix *m = new M_mix(in_channels, viewport(), "M_mix", synthdata);
+  M_mix *m = new M_mix(in_channels, viewport(), "Mixer", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_stereomix(int in_channels) {
 
-  M_stereomix *m = new M_stereomix(in_channels, viewport(), "M_stereomix", synthdata);
+  M_stereomix *m = new M_stereomix(in_channels, viewport(), "Stero mix", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -992,83 +886,67 @@ void ModularSynth::newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspa
   initNewModule((Module *)m);
 }
 
-void ModularSynth::newM_out() {
-
-  if (!synthdata->moduleOutCount) {
-    synthdata->pcm_handle = open_pcm(false);
-  }
-  M_out *m = new M_out(viewport(), "M_out", synthdata);
-  synthdata->outModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
-  synthdata->moduleOutCount++;
-}
-
 void ModularSynth::newM_wavout() {
 
-  M_wavout *m = new M_wavout(viewport(), "M_wavout", synthdata);
+  M_wavout *m = new M_wavout(viewport(), "WAV Out", synthdata);
   synthdata->wavoutModuleList.append((QObject *)m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_midiout() {
 
-  M_midiout *m = new M_midiout(viewport(), "M_midiout", synthdata);
+  M_midiout *m = new M_midiout(viewport(), "Midi Out", synthdata);
   synthdata->midioutModuleList.append((QObject *)m);
   initNewModule((Module *)m);
 }
 
-void ModularSynth::newM_jackout() {
+void ModularSynth::newM_pcmout()
+{
+    int k;
+    M_pcmout *M; 
 
-  M_jackout *m = new M_jackout(viewport(), "M_jackout", synthdata);
-  synthdata->jackoutModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
-  synthdata->jackOutCount++;
-//  if (!synthdata->jackRunning) {
-//    synthdata->activateJack();
-//  }
+    k = synthdata->find_play_mod (0);
+    if (k >= 0) 
+    {
+        M = new M_pcmout (viewport(), "PCM Out", synthdata, 2 * k);
+        initNewModule ((Module *)M);
+        synthdata->set_play_mod (k, M);
+    } 
+    else fprintf (stderr, "All available output ports are in use\n");
 }
-void ModularSynth::newM_jackin() {
 
-  M_jackin *m = new M_jackin(viewport(), "M_jackin", synthdata);
-  synthdata->jackinModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
-  synthdata->jackInCount++;
-//  if (!synthdata->jackRunning) {
-//    synthdata->activateJack();
-//  }
+void ModularSynth::newM_pcmin()
+{
+    int k;
+    M_pcmin *M; 
+
+    k = synthdata->find_capt_mod (0);
+    if (k >= 0) 
+    {
+        M = new M_pcmin (viewport(), "PCM_In", synthdata, 2 * k);
+        initNewModule ((Module *)M);
+        synthdata->set_capt_mod (k, M);
+    } 
+    else fprintf (stderr, "All available input ports are in use\n");
 }
 
 void ModularSynth::newM_scope() {
 
-  M_scope *m = new M_scope(viewport(), "M_scope", synthdata);
+  M_scope *m = new M_scope(viewport(), "Scope", synthdata);
   synthdata->scopeModuleList.append((QObject *)m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_spectrum() {
 
-  M_spectrum *m = new M_spectrum(viewport(), "M_spectrum", synthdata);
+  M_spectrum *m = new M_spectrum(viewport(), "Spectrum", synthdata);
   synthdata->spectrumModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
-}
-
-void ModularSynth::newM_in() {
-
-  if (!synthdata->moduleInCount) {
-    synthdata->pcm_capture_handle = open_pcm(true);
-    synthdata->doCapture = synthdata->doSynthesis; 
-    if (!capture->running()) {
-      capture->start();
-    }
-  } 
-  synthdata->moduleInCount++;
-  M_in *m = new M_in(viewport(), "M_in", synthdata);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_vcf() {
  
-  M_vcf *m = new M_vcf(viewport(), "M_vcf", synthdata);
+  M_vcf *m = new M_vcf(viewport(), "VCF", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -1162,69 +1040,8 @@ void ModularSynth::deleteModule() {
   connectingPort[1] = NULL;
   firstPort = true;
   m = (Module *)sender();
-  midiWidget->deleteModule(m);
-  if (m->M_type == M_type_env) {
-    synthdata->listM_env.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_vcenv) {
-    synthdata->listM_vcenv.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_advenv) {
-    synthdata->listM_advenv.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_dynamicwaves) {
-    synthdata->listM_dynamicwaves.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_mcv) {
-    synthdata->listM_mcv.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_advmcv) {
-    synthdata->listM_advmcv.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_out) {
-    synthdata->moduleOutCount--;
-    if (!synthdata->moduleOutCount) {
-      sleep(1);
-      snd_pcm_close(synthdata->pcm_handle);
-    }
-    synthdata->outModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_jackout) {
-    synthdata->jackOutCount--;
-//    if (synthdata->jackOutCount + synthdata->jackInCount == 0) {
-//      synthdata->deactivateJack();
-//    }
-    synthdata->jackoutModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_jackin) {
-    synthdata->jackInCount--;
-//    if (synthdata->jackOutCount + synthdata->jackInCount == 0) {
-//      synthdata->deactivateJack();
-//    }
-    synthdata->jackinModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_wavout) {
-    synthdata->wavoutModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_midiout) {
-    synthdata->midioutModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_scope) {
-    synthdata->scopeModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_spectrum) {
-    synthdata->spectrumModuleList.removeRef((QObject *)sender());
-  }
-  if (m->M_type == M_type_in) {
-    synthdata->moduleInCount--;
-    if (!synthdata->moduleInCount) {
-      synthdata->doCapture = false;
-      sleep(1);
-      snd_pcm_close(synthdata->pcm_capture_handle);
-    }
-  }  
   listModule.removeRef(m);
-  delete(m);
+  deleteModule (m);
 }
 
 void ModularSynth::deleteTextEdit() {
@@ -1259,27 +1076,15 @@ void ModularSynth::deleteModule(Module *m) {
   if (m->M_type == M_type_advmcv) {
     synthdata->listM_advmcv.removeRef((QObject *)m);
   }
-  if (m->M_type == M_type_out) {
-    synthdata->moduleOutCount--;  
-    if (!synthdata->moduleOutCount) {
-      sleep(1);
-      snd_pcm_close(synthdata->pcm_handle);
-    }
-    synthdata->outModuleList.removeRef((QObject *)m);
+  if (m->M_type == M_type_pcmout)
+  {
+      int k = synthdata->find_play_mod (m);
+      if (k >= 0) synthdata->set_play_mod (k, 0);
   }
-  if (m->M_type == M_type_jackout) {
-    synthdata->jackOutCount--;
-//    if (synthdata->jackOutCount + synthdata->jackInCount == 0) {
-//      synthdata->deactivateJack();
-//    }
-    synthdata->jackoutModuleList.removeRef((QObject *)m);
-  }
-  if (m->M_type == M_type_jackin) {
-    synthdata->jackInCount--;
-//    if (synthdata->jackOutCount + synthdata->jackInCount == 0) {
-//      synthdata->deactivateJack();
-//    }
-    synthdata->jackinModuleList.removeRef((QObject *)m);
+  if (m->M_type == M_type_pcmin)
+  {
+      int k = synthdata->find_capt_mod (m);
+      if (k >= 0) synthdata->set_capt_mod (k, 0);
   }
   if (m->M_type == M_type_wavout) {
     synthdata->wavoutModuleList.removeRef((QObject *)m);
@@ -1293,14 +1098,7 @@ void ModularSynth::deleteModule(Module *m) {
   if (m->M_type == M_type_spectrum) {
     synthdata->spectrumModuleList.removeRef((QObject *)m);
   }
-  if (m->M_type == M_type_in) {
-    synthdata->moduleInCount--;
-    if (!synthdata->moduleInCount) {
-      synthdata->doCapture = false;
-      sleep(1);
-      snd_pcm_close(synthdata->pcm_capture_handle);
-    }
-  }  
+
   delete(m);
 }
 
@@ -1310,21 +1108,12 @@ void ModularSynth::clearConfig() {
   bool restartSynth;
   QString qs;
 
-  qs.sprintf("AlsaModularSynth 1.6.0 - %d:%d", clientid, portid);
+  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d", clientid, portid);
   mainWindow->setCaption(qs);
   restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
-  synthdata->doCapture = false;
-  if (!synthdata->withJack) {
-    while(synth->running()) {
-      sleep(1);
-    }
-  } else {
-//    synthdata->deactivateJack();
-//    sleep(1);
-  }
+  sleep (1);
   guiWidget->clearGui();
-//  delete guiWidget;
   for (l1 = 0; l1 < listModule.count(); l1++) {
     deleteModule(listModule.at(l1));
   }
@@ -1335,27 +1124,7 @@ void ModularSynth::clearConfig() {
   listTextEdit.clear();
   synthdata->moduleID = 0;
   synthdata->moduleCount = 0;
-//  guiWidget = new GuiWidget(synthdata, NULL);   
-//  guiWidget->setCaption("AlsaModularSynth Parameter View");
-//  synthdata->guiWidget = (QObject *)guiWidget;
-  if (restartSynth) {
-    synthdata->doSynthesis = true;    
-    if (!synthdata->withJack) { 
-      if (!synth->running()) {
-        synth->start();
-      } else {
-        fprintf(stderr, "Audio thread is already running...\n");
-      }
-      if (synthdata->moduleInCount) {
-        synthdata->doCapture = true;
-        if (!capture->running()) {
-          capture->start();
-        } else {
-          fprintf(stderr, "Capture thread is already running...\n");
-        }
-      }
-    }
-  }
+  if (restartSynth) synthdata->doSynthesis = true;    
 }
 
 void ModularSynth::load() {
@@ -1400,7 +1169,7 @@ void ModularSynth::load(QString *presetName) {
   } else {
     clearConfig();
     qs2 = config_fn.mid(config_fn.findRev('/') + 1);
-    qs.sprintf("AlsaModularSynth 1.6.0 - %d:%d - %s", clientid, portid, qs2.latin1());
+    qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - %s", clientid, portid, qs2.latin1());
     mainWindow->setCaption(qs);
     ladspaLoadErr = false;
     commentFlag = false;
@@ -1434,11 +1203,11 @@ void ModularSynth::load(QString *presetName) {
             }
             break;
           case M_type_scquantizer: 
-            fscanf(f, "%s", &sc);
+            fscanf(f, "%s", sc);
             scalaName = QString(sc);
             break;
           case M_type_scmcv: 
-            fscanf(f, "%s", &sc);
+            fscanf(f, "%s", sc);
             scalaName = QString(sc);
             break;
           default: 
@@ -1446,6 +1215,7 @@ void ModularSynth::load(QString *presetName) {
             fscanf(f, "%d", &subID2);
             break;
         }
+
         switch((M_typeEnum)M_type) {
           case M_type_custom: 
             break;
@@ -1453,11 +1223,8 @@ void ModularSynth::load(QString *presetName) {
             newM_vco();
             break;
           case M_type_vca: 
-            if (subID1) {
-              newM_vca_exp();
-            } else {
-              newM_vca_lin();
-            }
+            if (subID1) newM_vca_exp();
+            else        newM_vca_lin();
             break;
           case M_type_vcf: 
             newM_vcf();
@@ -1536,26 +1303,13 @@ void ModularSynth::load(QString *presetName) {
               newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2, newLadspaPolyFlag & 1);
             } 
             break;
-          case M_type_out:
-            if (synthdata->withJack) {
-              newM_jackout();
-            } else {
-              newM_out(); 
-            }
-            break;
+          case M_type_pcmout:
           case M_type_jackout:
-            if (synthdata->withJack) {
-              newM_jackout();
-            } else {
-              newM_out();
-            }
+            newM_pcmout();
             break;
+          case M_type_pcmin:
           case M_type_jackin:
-            if (synthdata->withJack) {
-              newM_jackin();
-            } else {
-              newM_in();
-            }
+            newM_pcmin();
             break;
           case M_type_wavout:
             newM_wavout(); 
@@ -1568,13 +1322,6 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_spectrum:
             newM_spectrum(); 
-            break;
-          case M_type_in:
-            if (synthdata->withJack) {
-              newM_jackin();
-            } else {
-              newM_in(); 
-            }
             break;
         }
         m = listModule.at(listModule.count()-1);
@@ -1813,21 +1560,6 @@ void ModularSynth::load(QString *presetName) {
     loadingPatch = false;
   }
   synthdata->doSynthesis = true;
-  if (!synthdata->withJack) {
-    if (restartSynth && !synth->running()) {
-      synth->start();
-    } else {
-      fprintf(stderr, "Audio thread is already running...\n");
-    } 
-    if (synthdata->moduleInCount) {
-      synthdata->doCapture = true;
-      if (!capture->running()) {
-        capture->start();
-      } else {
-        fprintf(stderr, "Capture thread is already running...\n");
-      }
-    }
-  }
   midiWidget->followConfig = followConfig;
 }
 
@@ -1848,7 +1580,9 @@ void ModularSynth::save() {
     for (l1 = 0; l1 < listModule.count(); l1++) {
       fprintf(f, "Module %d %d %d %d ", (int)listModule.at(l1)->M_type, listModule.at(l1)->moduleID, 
               listModule.at(l1)->x(),  listModule.at(l1)->y());
-      switch(listModule.at(l1)->M_type) {
+
+      switch(listModule.at(l1)->M_type)
+      {
         case M_type_custom: 
           break;
         case M_type_vca: 
@@ -2017,11 +1751,8 @@ void ModularSynth::allVoicesOff() {
   } 
 }
 
-void ModularSynth::cleanUpSynth() {
-
-  fprintf(stderr, "Closing Synth...\n");
-  if (synthdata->withJack && synthdata->jackRunning) {
-    synthdata->deactivateJack();
-  }
-  fprintf(stderr, "Ready.\n"); 
+void ModularSynth::cleanUpSynth()
+{
+  fprintf(stderr, "Closing synth...\n");
+  delete this;
 }

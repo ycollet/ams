@@ -19,4 +19,3 @@ class MidiControllerList : public QList<MidiController> {
 };
                      
 #endif
-                      

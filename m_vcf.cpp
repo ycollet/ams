@@ -79,24 +79,6 @@ M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_vcf::~M_vcf() {
 }
 
-void M_vcf::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "VCF");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_vcf::initBuf(int index) {
 
   int l1, l2;
@@ -118,69 +100,13 @@ void M_vcf::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_in->connectedPortList.count()) {
-      in_M_in = (Module *)port_M_in->connectedPortList.at(0)->parentModule;
-      if (!in_M_in->cycleProcessing) {
-        in_M_in->generateCycle();
-        inData = in_M_in->data[port_M_in->connectedPortList.at(0)->index];
-      } else {
-        inData = in_M_in->lastdata[port_M_in->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in = NULL;
-      inData = synthdata->zeroModuleData;
-    }
-    if (port_M_freq->connectedPortList.count()) {
-      in_M_freq = (Module *)port_M_freq->connectedPortList.at(0)->parentModule;
-      if (!in_M_freq->cycleProcessing) {
-        in_M_freq->generateCycle();
-        freqData = in_M_freq->data[port_M_freq->connectedPortList.at(0)->index];
-      } else {
-        freqData = in_M_freq->lastdata[port_M_freq->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_freq = NULL;
-      freqData = synthdata->zeroModuleData;
-    }
-    if (port_M_exp->connectedPortList.count()) {
-      in_M_exp = (Module *)port_M_exp->connectedPortList.at(0)->parentModule;
-      if (!in_M_exp->cycleProcessing) {
-          in_M_exp->generateCycle();   
-          expFMData = in_M_exp->data[port_M_exp->connectedPortList.at(0)->index];
-      } else {
-          expFMData = in_M_exp->lastdata[port_M_exp->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_exp = NULL;
-      expFMData = synthdata->zeroModuleData;
-    }
-    if (port_M_lin->connectedPortList.count()) {
-      in_M_lin = (Module *)port_M_lin->connectedPortList.at(0)->parentModule;
-      if (!in_M_lin->cycleProcessing) {
-        in_M_lin->generateCycle();
-        linFMData = in_M_lin->data[port_M_lin->connectedPortList.at(0)->index];
-      } else {
-        linFMData = in_M_lin->lastdata[port_M_lin->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_lin = NULL;
-      linFMData = synthdata->zeroModuleData;
-    }
-    if (port_M_resonance->connectedPortList.count()) {
-      in_M_resonance = (Module *)port_M_resonance->connectedPortList.at(0)->parentModule;
-      if (!in_M_resonance->cycleProcessing) {
-        in_M_resonance->generateCycle();
-        resonanceData = in_M_resonance->data[port_M_resonance->connectedPortList.at(0)->index];
-      } else {
-        resonanceData = in_M_resonance->lastdata[port_M_resonance->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_resonance = NULL;
-      resonanceData = synthdata->zeroModuleData;
-    }
+
+    inData = port_M_in->getinputdata();
+    freqData = port_M_freq->getinputdata();
+    expFMData = port_M_exp->getinputdata();
+    linFMData = port_M_lin->getinputdata();
+    resonanceData = port_M_resonance->getinputdata();
+
     pi2_rate = 2.0 * M_PI / synthdata->rate;
     switch (vcfType) {
       case VCF_LR:
@@ -199,7 +125,8 @@ void M_vcf::generateCycle() {
             else if (q > 1) q = 1;
             fa = 1.0 - f;
             fb = q * (1.0 + (1.0 / fa));
-            buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1]) + 0.00001 * ((float)rand() / (float)RAND_MAX - 1.0));
+            buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1])
+                        + 0.00001 * ((float)rand() / (float)RAND_MAX - 1.0));
             buf[1][l1] = fa * buf[1][l1] + f * buf[0][l1];
             data[0][l1][l2] = buf[1][l1];
           }

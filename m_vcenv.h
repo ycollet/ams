@@ -28,7 +28,6 @@ class M_vcenv : public Module
   Q_OBJECT
 
   private:
-    Module *in_M_gate, *in_M_retrigger, *in_M_attack, *in_M_decay, *in_M_sustain, *in_M_release; 
     Port *port_M_gate, *port_M_retrigger, *port_M_attack, *port_M_decay, *port_M_sustain, *port_M_release, *port_out;
     
   public: 
@@ -42,9 +41,6 @@ class M_vcenv : public Module
     M_vcenv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_vcenv();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

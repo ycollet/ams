@@ -28,7 +28,6 @@ class M_conv : public Module
   Q_OBJECT
 
   private:
-    Module *in_M_in; 
     Port *port_M_in, *port_out;
     int convMode, octave;
     
@@ -39,9 +38,6 @@ class M_conv : public Module
     M_conv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_conv();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

@@ -17,10 +17,10 @@
 #include <qtimer.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "synth.h"
 #include "m_scope.h"
-#include "port.h"
 #include "module.h"
+#include "port.h"
+
 
 M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(0, parent, name, p_synthdata) {
@@ -91,31 +91,13 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   timer = new QTimer(this);   
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
-  timer->start(timeScale, true);
+  timer->start((int)(timeScale), true);
   updateTriggerMode(1);
 }
 
 M_scope::~M_scope() {
 
   free(floatdata);
-}
-
-void M_scope::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Scope");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
 }
 
 int M_scope::setGain(float p_gain) {
@@ -127,46 +109,42 @@ float M_scope::getGain() {
   return(gain);
 }
 
-void M_scope::generateCycle() {
+void M_scope::generateCycle()
+{
+  int l1, l2, l3, ofs;
+  float max, mixgain, wavgain;
+  float *scopedata, **indata;
 
-  int l1, l2, l3, index, ofs;
-  float max_ch, mixgain, wavgain;
-  float *scopedata;
-
-//  fprintf(stderr, "M_scope 0\n");
-  wavgain = GAIN / (float)synthdata->poly;
+  wavgain = 32767.0 / synthdata->poly;
   memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
-  for (l1 = 0; l1 < 2; l1++) {                       // TODO generalize to more than 2 channels
-    if (port_in[l1]->connectedPortList.count()) {
-      module_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
-      module_in[l1]->generateCycle();
-      index = port_in[l1]->connectedPortList.at(0)->index;
+
+  for (l1 = 0; l1 < 2; l1++)
+  {
+      indata = port_in [l1]->getinputdata ();
       mixgain = gain * mixer_gain[l1];
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        for (l3 = 0; l3 < synthdata->poly; l3++) {
-          floatdata[2 * l2 + l1] += mixgain * module_in[l1]->data[index][l3][l2]; 
-        }
-      }
-      if (agc) {
-        max_ch = 0;
-        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          if (max_ch < fabs(floatdata[2 * l2 + l1])) {
-            max_ch = fabs(floatdata[2 * l2 + l1]);
-          }    
-        }
-        if (max_ch > 0.9) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            floatdata[2 * l2 + l1] *= 0.9 / max_ch;
+      for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+      {
+          for (l3 = 0; l3 < synthdata->poly; l3++)
+          {
+              floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
           }
-        }
       }
-    } else {
-      module_in[l1] = NULL;
-    }
-  }  
+      if (agc)
+      {
+          max = 0;
+          for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+          {
+            if (max < fabs(floatdata[2 * l2 + l1])) max = fabs(floatdata[2 * l2 + l1]);
+          }
+          if (max > 0.9)
+          {
+	      max = 0.9 / max;
+              for (l2 = 0; l2 < synthdata->cyclesize; l2++) floatdata[2 * l2 + l1] *= max;
+  	  }
+      }
+  }
+
   scopedata = configDialog->scopeScreenList.at(0)->scopedata;
-//  fprintf(stderr, "M_scope 1\n");
-//  fprintf(stderr, "writeofs: %d\n", configDialog->scopeScreenList.at(0)->writeofs);
   ofs = configDialog->scopeScreenList.at(0)->writeofs;
   for (l1 = 0; l1 < synthdata->cyclesize; l1++) {   
     scopedata[2 * ofs] = wavgain * floatdata[2 * l1];
@@ -176,9 +154,7 @@ void M_scope::generateCycle() {
       ofs -= SCOPE_BUFSIZE >> 1;
     }
   }   
-//  fprintf(stderr, "M_scope 2\n");
   configDialog->scopeScreenList.at(0)->writeofs = ofs;
-//  fprintf(stderr, "M_scope 3\n");
 }
 
 void M_scope::showConfigDialog() {
@@ -187,7 +163,7 @@ void M_scope::showConfigDialog() {
 void M_scope::timerProc() {          
  
   if (triggerMode < 2) {
-    timer->start(timeScale, true);
+    timer->start((int)(timeScale), true);
   }
   configDialog->scopeScreenList.at(0)->refreshScope();
 }
@@ -216,6 +192,6 @@ void M_scope::updateTriggerMode(int val) {
 
   configDialog->scopeScreenList.at(0)->setTriggerMode((triggerModeType)triggerMode);
   if (triggerMode < 2) {   
-    timer->start(timeScale, true);
+    timer->start((int)(timeScale), true);
   }
 }

@@ -84,24 +84,6 @@ M_env::~M_env() {
 
 }
 
-void M_env::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "ENV");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_env::noteOnEvent(int osc) {
 
 }
@@ -118,35 +100,10 @@ void M_env::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l2 = 0; l2 < 2; l2++) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[l2][l1], data[l2][l1], synthdata->cyclesize * sizeof(float));
-      }
-    }
-    if (port_gate->connectedPortList.count()) {
-      in_M_gate = (Module *)port_gate->connectedPortList.at(0)->parentModule;
-      if (!in_M_gate->cycleProcessing) {
-        in_M_gate->generateCycle();
-        gateData = in_M_gate->data[port_gate->connectedPortList.at(0)->index];
-      } else {
-        gateData = in_M_gate->lastdata[port_gate->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_gate = NULL;
-      gateData = synthdata->zeroModuleData;
-    }
-    if (port_retrigger->connectedPortList.count()) {
-      in_M_retrigger = (Module *)port_retrigger->connectedPortList.at(0)->parentModule;
-      if (!in_M_retrigger->cycleProcessing) {
-        in_M_retrigger->generateCycle();
-        retriggerData = in_M_retrigger->data[port_retrigger->connectedPortList.at(0)->index];
-      } else {
-        retriggerData = in_M_retrigger->lastdata[port_retrigger->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_retrigger = NULL;
-      retriggerData = synthdata->zeroModuleData;
-    }
+
+    gateData = port_gate->getinputdata();
+    retriggerData = port_retrigger->getinputdata();
+
     tscale = timeScale * (float)synthdata->rate;
     de_attack = (attack > 0) ? 1.0 / (attack * tscale) : 0;
     de_decay = (decay > 0) ? (1.0 - sustain) / (decay * tscale) : 0;
@@ -177,8 +134,6 @@ void M_env::generateCycle() {
         if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
           retrigger[l1] = true;
           if (e[l1] > 0) {
-//            noteOnOfs[l1] = -ENVELOPE_RESPONSE;
-//            de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
             noteOnOfs[l1] = (de_attack > 0) ? e[l1] / de_attack : 0;
           } else {
             noteOnOfs[l1] = 0;

@@ -29,7 +29,6 @@ class M_vca : public Module
 
   private:
     float gain1, gain2, in1, in2, out;
-    Module *in_M_gain1, *in_M_in1, *in_M_gain2, *in_M_in2; 
     Port *port_M_gain1, *port_M_in1, *port_M_gain2, *port_M_in2, *port_out;
     
   public: 
@@ -40,9 +39,6 @@ class M_vca : public Module
     M_vca(bool p_expMode, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_vca();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

@@ -47,36 +47,9 @@ M_ringmod::M_ringmod(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_ringmod::~M_ringmod() {
 }
 
-void M_ringmod::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Ring Mod");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
 
 int M_ringmod::setGain(float p_gain) {
   gain = p_gain;
-  return(0);
-}
-
-int M_ringmod::connect_vco1(Module *p_M_vco) {
-  in_M_vco1 = p_M_vco;
-  return(0);
-}
-
-int M_ringmod::connect_vco2(Module *p_M_vco) {
-  in_M_vco2 = p_M_vco;
   return(0);
 }
 
@@ -84,39 +57,17 @@ float M_ringmod::getGain() {
   return(gain);
 }
 
+
 void M_ringmod::generateCycle() {
 
   int l1, l2;
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_vco1->connectedPortList.count()) {
-      in_M_vco1 = (Module *)port_M_vco1->connectedPortList.at(0)->parentModule;
-      if (!in_M_vco1->cycleProcessing) {
-        in_M_vco1->generateCycle();
-        vcoData1 = in_M_vco1->data[port_M_vco1->connectedPortList.at(0)->index];
-      } else {
-        vcoData1 = in_M_vco1->lastdata[port_M_vco1->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_vco1 = NULL;
-      vcoData1 = synthdata->zeroModuleData;
-    }
-    if (port_M_vco2->connectedPortList.count()) {
-      in_M_vco2 = (Module *)port_M_vco2->connectedPortList.at(0)->parentModule;
-      if (!in_M_vco2->cycleProcessing) {
-        in_M_vco2->generateCycle();
-        vcoData2 = in_M_vco2->data[port_M_vco2->connectedPortList.at(0)->index];
-      } else {
-        vcoData2 = in_M_vco2->lastdata[port_M_vco2->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_vco2 = NULL;
-      vcoData2 = synthdata->zeroModuleData;
-    }
+
+    vcoData1 = port_M_vco1->getinputdata ();
+    vcoData2 = port_M_vco2->getinputdata ();
+
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         data[0][l1][l2] = gain * vcoData1[l1][l2] * vcoData2[l1][l2];

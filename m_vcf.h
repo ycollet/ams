@@ -35,7 +35,6 @@ class M_vcf : public Module
   private:
     float gain, freq, resonance, dBgain;
     float vcfExpFMGain, vcfLinFMGain, resonanceGain;
-    Module *in_M_resonance, *in_M_freq, *in_M_exp, *in_M_lin, *in_M_in; 
     Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp, *port_M_lin, *port_out;
     double in[5][MAXPOLY], buf[5][MAXPOLY];
     vcfTypeEnum vcfType;
@@ -47,9 +46,6 @@ class M_vcf : public Module
     M_vcf(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_vcf();
                                       
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

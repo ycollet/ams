@@ -31,7 +31,6 @@ class M_env : public Module
   private:
     float delay, attack, hold, decay, sustain, release;
     float e_noteOff[MAXPOLY], de[MAXPOLY];
-    Module *in_M_gate, *in_M_retrigger;
     Port *port_gate, *port_retrigger, *port_inverse_out, *port_gain_out;
 
   public: 
@@ -48,9 +47,6 @@ class M_env : public Module
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

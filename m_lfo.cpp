@@ -67,23 +67,6 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_lfo::~M_lfo() {
 }
 
-void M_lfo::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(12, 20, "LFO");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
 
 void M_lfo::noteOnEvent(int osc) {
 
@@ -94,27 +77,13 @@ void M_lfo::generateCycle() {
   int l1, l2;
   float dphi, phi1, phi_const; 
 
-  if (!cycleReady) {
-    cycleProcessing = true; 
-    for (l2 = 0; l2 < 5; l2++) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-      }
-    }
-    if (port_M_trigger->connectedPortList.count()) {
-      in_M_trigger = (Module *)port_M_trigger->connectedPortList.at(0)->parentModule;
-      if (!in_M_trigger->cycleProcessing) {
-        in_M_trigger->generateCycle();
-        triggerData = in_M_trigger->data[0];
-      } else {
-        triggerData = in_M_trigger->lastdata[0];
-      }
-    } else { 
-      in_M_trigger = NULL;
-      triggerData = synthdata->zeroModuleData;
-    }
+  if (!cycleReady)
+  {
+      cycleProcessing = true; 
+      triggerData = port_M_trigger->getinputdata();
+
       dphi = freq * wave_period / (float)synthdata->rate;
-      phi_const = phi0 * wave_period / (2.0 * PI);
+      phi_const = phi0 * wave_period / (2.0 * M_PI);
       if (phi0 > 0) {
         for (l1 = 0; l1 < synthdata->poly; l1++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {

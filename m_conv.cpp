@@ -49,24 +49,6 @@ M_conv::M_conv(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_conv::~M_conv() {
 }
 
-void M_conv::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Converter");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_conv::generateCycle() {
 
   int l1, l2;
@@ -74,21 +56,9 @@ void M_conv::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_in->connectedPortList.count()) {
-      in_M_in = (Module *)port_M_in->connectedPortList.at(0)->parentModule;
-      if (!in_M_in->cycleProcessing) {
-        in_M_in->generateCycle();
-        inData = in_M_in->data[port_M_in->connectedPortList.at(0)->index];
-      } else {
-        inData = in_M_in->lastdata[port_M_in->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in = NULL;
-      inData = synthdata->zeroModuleData;
-    }
+
+    inData = port_M_in->getinputdata();
+
     log2 = log(2.0);
     offset = octave + 5.0313842;
     if (convMode == 0) {

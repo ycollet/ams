@@ -31,7 +31,6 @@ class M_stereomix : public Module
   private:
     QList<Port> in_port_list;
     Port *port_out[2];
-    Module *in_M[MAX_STEREOMIX_IN];
     float gain;
     float mixer_gain[MAX_STEREOMIX_IN], pan[MAX_STEREOMIX_IN];
     float mute[MAX_STEREOMIX_IN], solo[MAX_STEREOMIX_IN];
@@ -46,9 +45,6 @@ class M_stereomix : public Module
     M_stereomix(int p_in_channels, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_stereomix();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

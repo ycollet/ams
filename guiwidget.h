@@ -66,4 +66,3 @@ class GuiWidget : public QVBox
 };
   
 #endif
-      

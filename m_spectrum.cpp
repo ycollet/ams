@@ -17,14 +17,14 @@
 #include <qtimer.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "synth.h"
 #include "m_spectrum.h"
-#include "port.h"
 #include "module.h"
+#include "port.h"
+
 
 M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(0, parent, name, p_synthdata) {
-
+              : Module(0, parent, name, p_synthdata)
+{
   QString qs;
   QHBox *hbox1, *labelBox;
   QVBox *vbox1, *vbox2;
@@ -152,80 +152,61 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   startSpectrum();
 }
 
-M_spectrum::~M_spectrum() {
-
+M_spectrum::~M_spectrum()
+{
   free(floatdata);
 }
 
-void M_spectrum::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Spectrum");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
-int M_spectrum::setGain(float p_gain) {
+int M_spectrum::setGain(float p_gain)
+{
   gain = p_gain;
   return(0);
 }
 
-float M_spectrum::getGain() {
+float M_spectrum::getGain()
+{
   return(gain);
 }
 
-void M_spectrum::generateCycle() {
+void M_spectrum::generateCycle()
+{
+    int l1, l2, l3, ofs;
+    float  mixgain, wavgain, lin_gain;
+    float *spectrumdata, **indata;
 
-  int l1, l2, l3, index, ofs;
-  float max_ch, mixgain, wavgain, lin_gain;
-  float *spectrumdata;
-
-  wavgain = 1.0 / (float)synthdata->poly;
-  lin_gain = pow(10, gain/20.0);
-  memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
-  for (l1 = 0; l1 < 2; l1++) {                       // TODO generalize to more than 2 channels
-    if (port_in[l1]->connectedPortList.count()) {
-      module_in[l1] = (Module *)port_in[l1]->connectedPortList.at(0)->parentModule;
-      module_in[l1]->generateCycle();
-      index = port_in[l1]->connectedPortList.at(0)->index;
-      mixgain = lin_gain * mixer_gain[l1];
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        for (l3 = 0; l3 < synthdata->poly; l3++) {
-          floatdata[2 * l2 + l1] += mixgain * module_in[l1]->data[index][l3][l2]; 
+    wavgain = 1.0 / (float)synthdata->poly;
+    lin_gain = pow(10, gain/20.0);
+    memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
+    for (l1 = 0; l1 < 2; l1++)
+    {
+        indata = port_in[l1]->getinputdata ();
+        mixgain = lin_gain * mixer_gain[l1];
+        for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+        {
+            for (l3 = 0; l3 < synthdata->poly; l3++)
+            {
+                floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
+            }
         }
-      }
-    } else {
-      module_in[l1] = NULL;
     }
-  }  
 
-  spectrumdata = configDialog->spectrumScreenList.at(0)->spectrumdata;
-  ofs = configDialog->spectrumScreenList.at(0)->writeofs;
-  for (l1 = 0; l1 < synthdata->cyclesize; l1++) {   
-    spectrumdata[2 * ofs] = wavgain * floatdata[2 * l1];
-    spectrumdata[2 * ofs + 1] = wavgain * floatdata[2 * l1 + 1];
-    ofs++;
-    if (ofs >= SPECTRUM_BUFSIZE >> 1) {
-      ofs -= SPECTRUM_BUFSIZE >> 1;
+    spectrumdata = configDialog->spectrumScreenList.at(0)->spectrumdata;
+    ofs = configDialog->spectrumScreenList.at(0)->writeofs;
+    for (l1 = 0; l1 < synthdata->cyclesize; l1++)
+    {   
+        spectrumdata[2 * ofs] = wavgain * floatdata[2 * l1];
+        spectrumdata[2 * ofs + 1] = wavgain * floatdata[2 * l1 + 1];
+        if (++ofs >= SPECTRUM_BUFSIZE >> 1) ofs -= SPECTRUM_BUFSIZE >> 1;
     }
-  }   
-  configDialog->spectrumScreenList.at(0)->writeofs = ofs;
+    configDialog->spectrumScreenList.at(0)->writeofs = ofs;
 }
 
-void M_spectrum::showConfigDialog() {
+void M_spectrum::showConfigDialog()
+{
 }
 
-void M_spectrum::timerProc() {          
+void M_spectrum::timerProc()
+{          
  
   if (configDialog->spectrumScreenList.at(0)->getTriggerMode() == SPECTRUM_TRIGGERMODE_CONTINUOUS) {
     startSpectrum();
@@ -233,15 +214,13 @@ void M_spectrum::timerProc() {
   configDialog->spectrumScreenList.at(0)->refreshSpectrum();
 }
 
-void M_spectrum::updateFFTFrames(int val) {
-
-//  fprintf(stderr, "fftFrames: %d\n", (int)rint(exp(log(2.0) * (7.0 + (float)fftFrames))));
+void M_spectrum::updateFFTFrames(int val)
+{
   configDialog->spectrumScreenList.at(0)->setFFTFrames((int)rint(exp(log(2.0) * (7.0 + (float)fftFrames))));
-//  fprintf(stderr, "getFFTFrames: %d\n", configDialog->spectrumScreenList.at(0)->getFFTFrames());
 }
 
-void M_spectrum::updateViewMode(int val) {
-
+void M_spectrum::updateViewMode(int val)
+{
   configDialog->spectrumScreenList.at(0)->setViewMode((viewModeType)viewMode);
 }
 
@@ -250,8 +229,8 @@ void M_spectrum::updateZoom(int val) {
   configDialog->spectrumScreenList.at(0)->setZoom(zoom);
 }
 
-void M_spectrum::update_f_min(int val) {
-
+void M_spectrum::update_f_min(int val)
+{
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_min(f_min);
@@ -259,8 +238,8 @@ void M_spectrum::update_f_min(int val) {
   minLabel->setText(qs);
 }
 
-void M_spectrum::update_f_max(int val) {
-
+void M_spectrum::update_f_max(int val)
+{
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_max(f_max);
@@ -268,42 +247,48 @@ void M_spectrum::update_f_max(int val) {
   maxLabel->setText(qs);
 }
 
-void M_spectrum::updateNormMode(int val) {
-
+void M_spectrum::updateNormMode(int val)
+{
   configDialog->spectrumScreenList.at(0)->setNormMode((normModeType)normMode);
 }
 
-void M_spectrum::updateWindow(int val) {
-
+void M_spectrum::updateWindow(int val)
+{
   configDialog->spectrumScreenList.at(0)->setWindow((windowType)window);
 }
 
-void M_spectrum::updateFFTMode(int val) {
-
+void M_spectrum::updateFFTMode(int val)
+{
   configDialog->spectrumScreenList.at(0)->setFFTMode((fftModeType)fftMode);
 }
 
-void M_spectrum::updateRefreshMode(int val) {
-
-  if (refreshMode == 0) {
+void M_spectrum::updateRefreshMode(int val)
+{
+  if (refreshMode == 0)
+  {
     configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_CONTINUOUS); 
     startSpectrum();
-  } else {
+  }
+  else
+  {
     configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_SINGLE);
   } 
-  if (refreshMode == 2) {
+  if (refreshMode == 2)
+  {
     configDialog->spectrumScreenList.at(0)->setEnableMouse(true);
-  } else {
+  }
+  else
+  {
     configDialog->spectrumScreenList.at(0)->setEnableMouse(false);
   }
 }
 
-void M_spectrum::freqZoomToggled(bool on) {
-
+void M_spectrum::freqZoomToggled(bool on)
+{
   configDialog->spectrumScreenList.at(0)->toggleFreqZoom(on);
 }
 
-void M_spectrum::startSpectrum() {
-
+void M_spectrum::startSpectrum()
+{
   timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
 }

@@ -92,24 +92,6 @@ M_advmcv::~M_advmcv() {
 
 }
 
-void M_advmcv::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "Advanced MCV");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_advmcv::noteOnEvent(int osc) {
 
   trig[osc] = 1;
@@ -122,15 +104,13 @@ void M_advmcv::noteOffEvent(int osc) {
 void M_advmcv::generateCycle() {
 
   int l1, l2, l3;
-  float df, gate, velocity, log2;
+  float gate, velocity;
 
   if (!cycleReady) {
     cycleProcessing = true;
-    log2 = log(2.0);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (float)synthdata->notePressed[l1];
       freq[l1] = pitchbend + float(synthdata->notes[l1]-pitch) / 12.0;
-//      if (freq[l1] < 0) freq[l1] = 0;
       velocity = (float)synthdata->velocity[l1] / 127.0;
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         data[0][l1][l2] = gate;

@@ -40,9 +40,6 @@ class M_sh : public Module
     M_sh(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_sh();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

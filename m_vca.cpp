@@ -52,11 +52,8 @@ M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name, SynthData *p_syn
   port_out->move(width() - port_out->width(), 115);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  if (expMode) {
-    qs.sprintf("Exp. VCA ID %d", moduleID);
-  } else {
-    qs.sprintf("Lin. VCA ID %d", moduleID);
-  }
+  if (expMode) qs.sprintf("Exp. VCA ID %d", moduleID);
+  else         qs.sprintf("Lin. VCA ID %d", moduleID);
   configDialog->setCaption(qs);
   if (expMode) {
     configDialog->addSlider(0, 10, gain1, "Gain", &gain1, true);
@@ -76,28 +73,6 @@ M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name, SynthData *p_syn
 M_vca::~M_vca() {
 }
 
-void M_vca::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  if (expMode) {
-    p.drawText(12, 20, "Exp. VCA");
-  } else {
-    p.drawText(12, 20, "Lin. VCA");
-  }
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_vca::generateCycle() {
 
   int l1, l2;
@@ -105,57 +80,12 @@ void M_vca::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true;
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
-    }
-    if (port_M_gain1->connectedPortList.count()) {
-      in_M_gain1 = (Module *)port_M_gain1->connectedPortList.at(0)->parentModule;
-      if (!in_M_gain1->cycleProcessing) {
-        in_M_gain1->generateCycle();
-        gainData1 = in_M_gain1->data[port_M_gain1->connectedPortList.at(0)->index];
-      } else {
-        gainData1 = in_M_gain1->lastdata[port_M_gain1->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_gain1 = NULL;
-      gainData1 = synthdata->zeroModuleData;
-    }
-    if (port_M_in1->connectedPortList.count()) {
-      in_M_in1 = (Module *)port_M_in1->connectedPortList.at(0)->parentModule;
-      if (!in_M_in1->cycleProcessing) {
-        in_M_in1->generateCycle();
-        inData1 = in_M_in1->data[port_M_in1->connectedPortList.at(0)->index];
-      } else {
-        inData1 = in_M_in1->lastdata[port_M_in1->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in1 = NULL;
-      inData1 = synthdata->zeroModuleData;
-    }
-    if (port_M_gain2->connectedPortList.count()) {
-      in_M_gain2 = (Module *)port_M_gain2->connectedPortList.at(0)->parentModule;
-      if (!in_M_gain2->cycleProcessing) {
-        in_M_gain2->generateCycle();
-        gainData2 = in_M_gain2->data[port_M_gain2->connectedPortList.at(0)->index];
-      } else {
-        gainData2 = in_M_gain2->lastdata[port_M_gain2->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_gain2 = NULL;
-      gainData2 = synthdata->zeroModuleData;
-    }
-    if (port_M_in2->connectedPortList.count()) {
-      in_M_in2 = (Module *)port_M_in2->connectedPortList.at(0)->parentModule;
-      if (!in_M_in2->cycleProcessing) {
-        in_M_in2->generateCycle();
-        inData2 = in_M_in2->data[port_M_in2->connectedPortList.at(0)->index];
-      } else {
-        inData2 = in_M_in2->lastdata[port_M_in2->connectedPortList.at(0)->index];
-      }
-    } else {
-      in_M_in2 = NULL;
-      inData2 = synthdata->zeroModuleData;
-    }
+
+    gainData1 = port_M_gain1->getinputdata ();
+    gainData2 = port_M_gain2->getinputdata ();
+    inData1 = port_M_in1->getinputdata ();
+    inData2 = port_M_in2->getinputdata ();
+
     if (expMode) {
       exp0 = synthdata->exp_table(0);
       for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -165,7 +95,6 @@ void M_vca::generateCycle() {
                              + gain2 * (synthdata->exp_table(gainData2[l1][l2]-1.0)-exp0))
                           * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
         }
-        memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
       }  
     } else {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -173,7 +102,6 @@ void M_vca::generateCycle() {
           data[0][l1][l2] = (gain1 + gainData1[l1][l2] + gain2 * gainData2[l1][l2]) 
                           * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
         }
-        memcpy(lastdata[0][l1], data[0][l1], synthdata->cyclesize * sizeof(float));
       }   
     }
   }

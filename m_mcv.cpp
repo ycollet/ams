@@ -48,7 +48,7 @@ M_mcv::M_mcv(QWidget* parent, const char *name, SynthData *p_synthdata)
   QStrList *channelNames = new QStrList(true);
   channelNames->append("RESERVED FOR LATER USE");
   for (l1 = 1; l1 < 17; l1++) {
-    qs.sprintf("RESERVED FOR LATER USE", l1);
+    qs.sprintf("RESERVED FOR LATER USE");
     channelNames->append(qs);
   }
   channel = 0;
@@ -67,24 +67,6 @@ M_mcv::~M_mcv() {
 
 }
 
-void M_mcv::paintEvent(QPaintEvent *ev) {
-  
-  QPainter p(this);
-  QString qs;
-  int l1;
-
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
-  }
-  p.setPen(QColor(255, 255, 255));
-  p.setFont(QFont("Helvetica", 10));
-  p.drawText(10, 20, "MCV");
-  p.setFont(QFont("Helvetica", 8)); 
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(15, 32, qs);
-}
-
 void M_mcv::noteOnEvent(int osc) {
 
   trig[osc] = 1;
@@ -97,7 +79,7 @@ void M_mcv::noteOffEvent(int osc) {
 void M_mcv::generateCycle() {
 
   int l1, l2;
-  float df, gate, velocity, log2;
+  float gate, velocity, log2;
 
   if (!cycleReady) {
     cycleProcessing = true;

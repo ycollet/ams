@@ -39,7 +39,6 @@ class M_vcorgan : public Module
     float expFMGain, linFMGain;
     float phi0[MODULE_VCORGAN_MAX_OSC], phi[MAXPOLY][MODULE_VCORGAN_MAX_OSC];
     float wave_period;
-    Module *in_M_freq, *in_M_exp, *in_M_lin; 
     Port *port_M_freq, *port_M_exp, *port_M_lin;
     Port *port_out;
                     
@@ -54,9 +53,6 @@ class M_vcorgan : public Module
     ~M_vcorgan();
     virtual void noteOnEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

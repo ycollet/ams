@@ -29,7 +29,6 @@ class M_ringmod : public Module
 
   private:
     float gain;
-    Module *in_M_vco1, *in_M_vco2; 
     Port *port_M_vco1, *port_M_vco2, *port_out;
     
   public: 
@@ -39,13 +38,8 @@ class M_ringmod : public Module
     M_ringmod(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_ringmod();
     int setGain(float p_gain);
-    int connect_vco1(Module *p_M_vco);
-    int connect_vco2(Module *p_M_vco);
     float getGain();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

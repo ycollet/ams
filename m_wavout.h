@@ -37,7 +37,6 @@ class M_wavout : public Module
     float doRecord;
     QString wavname;
     QTimer *timer;
-    Module *module_in[2];
     Port *port_in[2];
     unsigned char outbuf[8];
     unsigned char *wavdata;
@@ -52,9 +51,6 @@ class M_wavout : public Module
     int setGain(float p_gain);
     float getGain();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

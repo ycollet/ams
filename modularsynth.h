@@ -19,8 +19,7 @@
 #include <qlistview.h>
 #include <qpoint.h>
 #include <alsa/asoundlib.h>
-#include "synth.h"
-#include "capture.h"
+#include "main.h"
 #include "synthdata.h"
 #include "module.h"
 #include "port.h"
@@ -37,11 +36,9 @@
 #include "m_ringmod.h"
 #include "m_mix.h"
 #include "m_stereomix.h"
-#include "m_out.h"
-#include "m_jackout.h"
-#include "m_jackin.h"
+#include "m_pcmout.h"
+#include "m_pcmin.h"
 #include "m_wavout.h"
-#include "m_in.h"
 #include "m_lfo.h"
 #include "m_noise.h"
 #include "m_ladspa.h"
@@ -64,28 +61,20 @@
 #include "textedit.h"
 #include "ladspadialog.h"
 
-#define DEFAULT_PCMNAME  "plughw:0,0"
-#define DEFAULT_WIDTH             750
-#define DEFAULT_HEIGHT            550
-#define SYNTH_DEFAULT_WIDTH       750
-#define SYNTH_DEFAULT_HEIGHT      500
-#define SYNTH_MINIMUM_WIDTH       200
-#define SYNTH_MINIMUM_HEIGHT      150
 
 enum connectorStyleType {CONNECTOR_STRAIGHT, CONNECTOR_BEZIER};
+
 
 class ModularSynth : public QScrollView
 {
   Q_OBJECT
 
   private:
-    Synth *synth;
-    Capture *capture;
     QMessageBox *aboutWidget;
     QMainWindow *mainWindow;
     QList<Module> listModule;
     QList<TextEdit> listTextEdit;
-    QString PCMname, presetPath, savePath;
+    QString presetPath, savePath;
     connectorStyleType connectorStyle;    
     bool firstPort;
     Port *connectingPort[2];
@@ -94,11 +83,17 @@ class ModularSynth : public QScrollView
     MidiWidget *midiWidget;
     GuiWidget *guiWidget;
     bool loadingPatch;
-    int portid, clientid;
+    const char *pcmname;
+    int   fsamp;
+    int   frsize;
+    int   nfrags;
+    int   ncapt;
+    int   nplay;
+    int   portid;
+    int   clientid;
 
   public:
     SynthData *synthdata;
-    int jack_in_ports, jack_out_ports;
     
   private:
     void initPorts(Module *m);
@@ -114,16 +109,12 @@ class ModularSynth : public QScrollView
     void new_textEdit(int x, int y, int w, int h);
             
   public:
-    ModularSynth(int poly, int periodsize, QWidget* parent=0, const char *name=0);
+    ModularSynth (QWidget* parent, const char *pcmname, int fsamp, int frsize, int nfrags, 
+                  int ncapt, int nplay, int poly, float edge);
     ~ModularSynth();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
     int go(bool withJack);
-    int setPeriodsize(int periodsize);
-    int setPeriods(int periods);
-    int setRate(int rate);
-    int setChannels(int channels);
-    int setPCMname(QString name);
     int setPresetPath(QString name);
     int setSavePath(QString name);
     
@@ -175,11 +166,9 @@ class ModularSynth : public QScrollView
     void newM_stereomix_4();
     void newM_stereomix_8();
     void newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspaPoly, bool p_extCtrlPorts);
-    void newM_out();
-    void newM_jackout();
-    void newM_jackin();
+    void newM_pcmout();
+    void newM_pcmin();
     void newM_wavout();
-    void newM_in();
     void newM_sh();
     void newM_midiout();
     void newM_vcswitch();
@@ -207,5 +196,6 @@ class ModularSynth : public QScrollView
     void allVoicesOff();
     void cleanUpSynth();
 };
+
   
 #endif

@@ -33,7 +33,6 @@ class M_spectrum : public Module
     float gain;
     float mixer_gain[2]; 
     int agc;
-    Module *module_in[2];
     Port *port_in[2];
     float *floatdata;
     QTimer *timer;
@@ -50,9 +49,6 @@ class M_spectrum : public Module
     int setGain(float p_gain);
     float getGain();
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

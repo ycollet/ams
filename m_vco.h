@@ -37,7 +37,6 @@ class M_vco : public Module
     float wave_period;
     auxWaveFormType waveForm;
     float vcoExpFMGain, vcoLinFMGain, pwGain;
-    Module *in_M_freq, *in_M_exp, *in_M_lin, *in_M_pw; 
     Port *port_M_freq, *port_M_exp, *port_M_lin, *port_M_pw;
     Port *port_sine, *port_tri, *port_saw, *port_rect, *port_aux;
     
@@ -52,9 +51,6 @@ class M_vco : public Module
     ~M_vco();
     virtual void noteOnEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

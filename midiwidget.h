@@ -83,4 +83,3 @@ class MidiWidget : public QVBox
 };
   
 #endif
-      

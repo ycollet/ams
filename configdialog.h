@@ -92,4 +92,3 @@ class ConfigDialog : public QVBox
 };
   
 #endif
-      

@@ -30,7 +30,6 @@ class M_seq : public Module
   Q_OBJECT
 
   private:
-    Module *in_M_trigger;
     Port *port_trigger, *port_trigger_out, *port_note_out, *port_gate_out, *port_velocity_out;
     float seq_gate, seq_freq, seq_velocity;
     int seq_pos, tick, osc, note_len, triggerCount;
@@ -49,9 +48,6 @@ class M_seq : public Module
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-  
   public slots:
     void generateCycle();
     void showConfigDialog();

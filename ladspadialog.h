@@ -48,4 +48,3 @@ class LadspaDialog : public QVBox
 };
   
 #endif
-      
