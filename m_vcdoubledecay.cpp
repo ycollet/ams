@@ -180,7 +180,6 @@ void M_vcdoubledecay::generateCycle() {
                   if (e2[l1] < 1e-20)  {
                     e[l1] = 0;
                     e2[l1] = 0;
-                    state[l1] = 0;
                     noteActive[l1] = false;
                   }
                   break;

@@ -4,7 +4,6 @@
 #include <qslider.h>
 #include <qhbox.h>
 #include <qlabel.h>
-#include <qcombobox.h>
 #include "synthdata.h"
 #include "midicontroller.h"
 #include "midiguicomponent.h"
@@ -21,11 +20,8 @@ Q_OBJECT
 
 public:
   QSlider *slider;
-  QComboBox *combobox;
   QLabel *valueLabel;
   float *valueRef;
-  bool comboFlag;
-  int mode;
      
 public:
   FloatIntMidiSlider(QObject *parentModule, float minValue, float maxValue, int pageStep, float value, QSlider::Orientation orientation,

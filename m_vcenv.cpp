@@ -186,7 +186,6 @@ void M_vcenv::generateCycle() {
                   }
                   if (e[l1] <= 1e-20) {
                     e[l1] = 0;
-                    state[l1] = 0;
                     noteActive[l1] = false;
                   }
                   break;
