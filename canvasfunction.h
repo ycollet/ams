@@ -27,7 +27,7 @@ class CanvasFunction : public QObject
     ~CanvasFunction();
     int rtti();
     void setColor(QColor p_color);
-    void setPoint(int index, int x, int y);
+    void setPoint(int index, int x, int y, int z);
 
 };
   

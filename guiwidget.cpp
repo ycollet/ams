@@ -37,6 +37,7 @@ GuiWidget::GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name)
   setSpacing(5);
   synthdata = p_synthdata;
   QHBox *presetContainer = new QHBox(this);
+  QHBox *presetNameContainer = new QHBox(this);
 //  frameContainer = new QHBox(this);
   tabWidget = new QTabWidget(this);
   currentTab = NULL;
@@ -56,10 +57,12 @@ GuiWidget::GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name)
   QObject::connect(decButton, SIGNAL(clicked()), this, SLOT(presetDec()));
   QPushButton *incButton = new QPushButton("+1", presetContainer);  
   QObject::connect(incButton, SIGNAL(clicked()), this, SLOT(presetInc()));
-  new QWidget(presetContainer);
-  presetLabel = new QLabel(presetContainer);
-  new QWidget(presetContainer);
-  presetLabel->setText("Preset: 0");
+  new QWidget(presetNameContainer);
+  presetLabel = new QLabel(presetNameContainer);
+  new QWidget(presetNameContainer);
+  presetName = new QLineEdit(presetNameContainer);
+  new QWidget(presetNameContainer);
+  presetLabel->setText("Preset 0 : ");
   setPresetCount(0);
   setCurrentPreset(0);
 }
@@ -233,7 +236,7 @@ int GuiWidget::setCurrentPreset(int presetNum) {
     return(-1);
   }
   currentPreset = presetNum;
-  qs.sprintf("Preset: %d", currentPreset);
+  qs.sprintf("Preset %d : ", currentPreset);
   presetLabel->setText(qs);
   index = 0;
   for (it = presetList[currentPreset].begin(); it != presetList[currentPreset].end(); it++) {
@@ -254,6 +257,13 @@ int GuiWidget::setCurrentPreset(int presetNum) {
     }
     index++;
   }
+  for (QStringList::Iterator it = presetNameList.begin(); it != presetNameList.end(); it++) {
+    qs = (*it).mid(0, 3);
+    if (qs.toInt() == currentPreset) {
+      qs = (*it).mid(3);
+      presetName->setText(qs);
+    }
+  }
 }
 
 void GuiWidget::presetDec() {
@@ -271,17 +281,22 @@ void GuiWidget::presetInc() {
 }
 
 void GuiWidget::addPreset() {
+ 
+  QString qs;
 
   if (presetCount) {
     setPresetCount(presetCount + 1);
     setCurrentPreset(presetCount - 1);
   }
+  qs.sprintf("%3d", currentPreset);
+  presetNameList.append(qs+presetName->text());
   overwritePreset();
 }
 
 void GuiWidget::overwritePreset() {
 
   int l1, value;
+  QString qs;
 
   if (!presetCount) {
     setPresetCount(presetCount + 1);
@@ -306,6 +321,13 @@ void GuiWidget::overwritePreset() {
     }
     presetList[currentPreset].append(value);
   } 
+  for (QStringList::Iterator it = presetNameList.begin(); it != presetNameList.end(); it++) {
+    qs = (*it).mid(0, 3);
+    if (qs.toInt() == currentPreset) {
+      qs.sprintf("%3d", currentPreset);
+      *it = qs+presetName->text();
+    }
+  }
 }
 
 void GuiWidget::clearPresets() {

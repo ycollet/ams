@@ -18,6 +18,7 @@
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qstringlist.h>
+#include <qlineedit.h>
 #include <qtabwidget.h>
 #include <alsa/asoundlib.h>
 #include "midicontroller.h"
@@ -47,12 +48,14 @@ class GuiWidget : public QVBox
     QHBox *currentTab;
     int currentPreset, currentTabIndex;
     QLabel *presetLabel, *presetCountLabel;
+    QLineEdit *presetName;
    
   public: 
     int presetCount;
     QStringList frameNameList;
     QList<GuiFrame> frameBoxList;
     QStringList tabNameList;
+    QStringList presetNameList;
     QList<QHBox> tabList;
     QList<MidiGUIcomponent> parameterList;
     QValueList<int> presetList[MAX_PRESETS];

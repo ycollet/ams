@@ -23,6 +23,7 @@
 #include <qpen.h>
 #include <qscrollview.h>
 #include <qlistview.h>
+#include <qstringlist.h>
 #include <alsa/asoundlib.h>
 #include <ladspa.h>
 #include "modularsynth.h"
@@ -699,21 +700,21 @@ void ModularSynth::newM_mcv() {
 
 void ModularSynth::newM_advmcv() {
 
-  M_advmcv *m = new M_advmcv(viewport(), "Adv_MCV", synthdata);
+  M_advmcv *m = new M_advmcv(viewport(), "Advanced MCV", synthdata);
   synthdata->listM_advmcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scmcv() {
 
-  M_scmcv *m = new M_scmcv(viewport(), "Scala_MCV", synthdata);
+  M_scmcv *m = new M_scmcv(viewport(), "Scala MCV", synthdata);
   synthdata->listM_scmcv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_scmcv(QString *p_scalaName) {
 
-  M_scmcv *m = new M_scmcv(viewport(), "Scala_MCV", synthdata, p_scalaName);
+  M_scmcv *m = new M_scmcv(viewport(), "Scala MCV", synthdata, p_scalaName);
   synthdata->listM_scmcv.append(m);
   initNewModule((Module *)m);
 }
@@ -727,14 +728,14 @@ void ModularSynth::newM_env() {
 
 void ModularSynth::newM_vcenv() {
 
-  M_vcenv *m = new M_vcenv(viewport(), "VC_ENV", synthdata);
+  M_vcenv *m = new M_vcenv(viewport(), "VC ENV", synthdata);
   synthdata->listM_vcenv.append(m);
   initNewModule((Module *)m);
 }
 
 void ModularSynth::newM_advenv() {
 
-  M_advenv *m = new M_advenv(viewport(), "Adv_ENV", synthdata);
+  M_advenv *m = new M_advenv(viewport(), "Advanced ENV", synthdata);
   synthdata->listM_advenv.append(m);
   initNewModule((Module *)m);
 }
@@ -864,7 +865,7 @@ void ModularSynth::newM_function_4() {
 
 void ModularSynth::newM_stereomix(int in_channels) {
 
-  M_stereomix *m = new M_stereomix(in_channels, viewport(), "Stero mix", synthdata);
+  M_stereomix *m = new M_stereomix(in_channels, viewport(), "Stero Mix", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -944,7 +945,7 @@ void ModularSynth::newM_pcmin()
     k = synthdata->find_capt_mod (0);
     if (k >= 0) 
     {
-        M = new M_pcmin (viewport(), "PCM_In", synthdata, 2 * k);
+        M = new M_pcmin (viewport(), "PCM In", synthdata, 2 * k);
         initNewModule ((Module *)M);
         synthdata->set_capt_mod (k, M);
     } 
@@ -1615,6 +1616,19 @@ void ModularSynth::load(QString *presetName) {
         }
         guiWidget->presetList[currentProgram].append(value);
       }
+      if (qs.contains("PresetName", false)) {
+        qs.truncate(0);
+        do {
+          fscanf(f, "%s", sc);
+          qs += QString(sc);
+          if (qs.right(1) != "\"") {
+            qs += " ";
+          }
+        } while (qs.right(1) != "\"");
+        qs = qs.mid(1, qs.length()-2);
+        qs2.sprintf("%3d", guiWidget->presetNameList.count());
+        guiWidget->presetNameList.append(qs2+qs);
+      }
     }
     if (guiWidget->presetCount) {
       guiWidget->setCurrentPreset(0);
@@ -1634,6 +1648,7 @@ void ModularSynth::save() {
   FILE *f;
   QString config_fn, qs;
   QValueList<int>::iterator it;
+  QStringList::iterator presetit;
    
   if (!(config_fn = QString(QFileDialog::getSaveFileName(savePath, "AlsaModularSynth files (*.ams)")))) {
     return;
@@ -1739,7 +1754,9 @@ void ModularSynth::save() {
         fprintf(f, "Program %d %d\n", l1, value);
       } 
     }
-    
+    for (presetit = guiWidget->presetNameList.begin(); presetit != guiWidget->presetNameList.end(); presetit++) {
+      fprintf(f, "PresetName \"%s\"\n", (*presetit).mid(3).latin1());
+    } 
     fclose(f);
   }
 }

@@ -73,10 +73,15 @@ Function::~Function()
 
 void Function::updateFunction(int index) {
 
-  int l1;
+  int l1, z;
   QPoint qp;
 
   *screenPoints[index] = matrix.map(*points[index]);
+  if (*editIndex && (index == *editIndex - 1)) {
+    z = 20;
+  } else {
+    z = 10; 
+  }
   f[0][index][0] = -1e30;
   f[0][index][pointCount+1] = 1e30;
   f[1][index][0] = 0;
@@ -85,7 +90,7 @@ void Function::updateFunction(int index) {
     qp = screenPoints[index]->point(l1);
     f[0][index][l1 + 1] = (double)(points[index]->point(l1).x() - FUNCTION_CENTER_X) / (double)FUNCTION_SCALE;
     f[1][index][l1 + 1] = (double)(FUNCTION_HEIGHT - points[index]->point(l1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
-    canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y());
+    canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y(), z);
   }
   repaint(false);
 }
@@ -174,6 +179,7 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
   QCanvasItemList hitList;
   QWMatrix invMatrix;
   QPoint qp;
+  bool foundHit;
 
   if (matrix.isInvertible()) {
     invMatrix = matrix.invert();
@@ -182,6 +188,7 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
   }
   mousePressPos = ev->pos();
   mousePressed = true;
+  foundHit = false;
   hitList = canvas()->collisions(ev->pos());
   if (hitList.count()) {
     for (l1 = 0; l1 < functionCount; l1++) {
@@ -192,13 +199,19 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
             if (!*editIndex || (l1 == *editIndex - 1)) {
               activeFunction = l1;
               activePoint = l2;
+//              fprintf(stderr, "activeFunction: %d  activePoint: %d\n", l1, l2);
+              foundHit = true;
+              break;
             } else {
               activePoint = -1;
+//              fprintf(stderr, "activePoint: %d\n", l2);
             }
-            break;
           }
         }
       }  
+      if (foundHit) {
+        break;
+      }
     }
     if (*mode == 3) {
       for (l1 = 0; l1 < pointCount; l1++) {
@@ -355,4 +368,9 @@ QPoint Function::getPoint(int f_index, int p_index) {
 
   return(points[f_index]->point(p_index));
 }
-        
+
+void Function::highlightFunction(int index) {
+  
+  redrawFunction();
+  updateContents();
+}        

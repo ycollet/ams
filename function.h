@@ -97,6 +97,7 @@ class Function : public QCanvasView
   public slots: 
     void updateFunction(int index);
     void setZoom(float p_zoom);
+    void highlightFunction(int index);
 };
   
 #endif

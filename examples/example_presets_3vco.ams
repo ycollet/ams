@@ -2,32 +2,32 @@ Module 22 1 141 179 0 0
 Port 0 0 1 9
 Port 1 3 1 9
 FSlider 1 0 16384 0 1638 163840 1
-FSlider 1 1 9297 0 0 16384 1
+FSlider 1 1 11468 0 0 16384 1
 FSlider 1 2 0 0 0 16384 1
-FSlider 1 3 155 0 0 16384 1
+FSlider 1 3 541 0 0 16384 1
 FSlider 1 4 11438 0 0 16384 1
-FSlider 1 5 77 0 0 16384 1
-FSlider 1 6 16384 0 0 16384 1
-FSlider 1 7 0 0 0 16384 1
-FSlider 1 8 16384 0 0 16384 1
-FSlider 1 9 12984 0 0 16384 1
-FSlider 1 10 3882 0 0 16384 1
-FSlider 1 11 6057 0 0 16384 1
-FSlider 1 12 7299 0 0 16384 1
-FSlider 1 13 2562 0 0 16384 1
-FSlider 1 14 11026 0 0 16384 1
-Module 6 3 141 33 0 mvclpf24 Mvclpf-3
+FSlider 1 5 309 0 0 16384 1
+FSlider 1 6 3632 0 0 16384 1
+FSlider 1 7 927 0 0 16384 1
+FSlider 1 8 14745 0 0 16384 1
+FSlider 1 9 2164 0 0 16384 1
+FSlider 1 10 819 0 0 16384 1
+FSlider 1 11 8192 0 0 16384 1
+FSlider 1 12 819 0 0 16384 1
+FSlider 1 13 3276 0 0 16384 1
+FSlider 1 14 819 0 0 16384 1
+Module 6 3 141 33 0 mvclpf24 Mvclpf-3   Digital implementation of the VC filter invented by R.A.Moog
 Port 0 0 3 12
 Port 1 1 3 9
 Port 2 0 3 1
-FSlider 3 0 163840 0 -983040 163840 1
-FSlider 3 1 -81920 0 -81920 81920 1
-FSMIDI 3 1 13 0 0
-FSlider 3 2 163840 0 0 163840 1
-FSlider 3 3 0 0 0 16384 1
-FSMIDI 3 3 10 0 1
+FSlider 3 0 -65536 0 -983040 163840 1
+FSlider 3 1 -35478 0 -81920 81920 1
+FSlider 3 2 56343 0 0 163840 1
+FSlider 3 3 1290 0 0 16384 1
 FSlider 3 4 0 0 0 16384 1
-FSlider 3 5 -103131 0 -245760 245760 1
+FSlider 3 5 65610 0 -245760 245760 1
+FSMIDI 3 1 13 0 0
+FSMIDI 3 3 10 0 1
 Module 1 4 390 183 0 0
 Port 1 1 4 9
 FSlider 4 0 0 0 0 16384 1
@@ -43,11 +43,11 @@ ComboBox 4 0 0 1
 Module 7 5 602 182 0 0
 Port 0 0 5 7
 Port 1 1 5 7
-FSlider 5 0 8192 0 0 16384 1
+FSlider 5 0 3641 0 0 16384 1
 FSlider 5 1 8192 0 0 16384 1
 FSlider 5 2 8192 0 0 16384 1
 ComboBox 5 0 1 1
-Module 6 7 507 72 0 gverb_1216 GVerb
+Module 6 7 507 72 0 gverb_1216 gverb
 Port 0 0 7 8
 FSlider 7 0 1790093 0 16384 4915200 1
 FSlider 7 1 30685 0 1638 5898240 1
@@ -59,8 +59,8 @@ FSlider 7 6 -50847 0 -1146880 0 1
 Module 2 8 392 16 1 0
 Port 0 0 8 1
 Port 2 0 8 3
-FSlider 8 0 -113176 1 -113176 37725 1
-FSlider 8 1 -113176 1 -113176 37725 1
+FSlider 8 0 -113175 1 -113176 37725 1
+FSlider 8 1 -113175 1 -113176 37725 1
 FSlider 8 2 0 1 -113176 11356 1
 FSlider 8 3 0 1 -113176 11356 1
 FSlider 8 4 0 1 -113176 11356 1
@@ -103,7 +103,7 @@ FSlider 12 3 16384 0 0 32768 1
 FSlider 12 4 16384 0 0 32768 1
 Tab "Envelope"
 Tab "Filter"
-Frame "Envelope Attack Level" 0 
+Frame "Envelope Attack Level" 0
 Parameter "Attack Level 0 ID 1" 1 4 0 16384 0
 Parameter "Attack Level 1 ID 1" 1 6 0 16384 0
 Parameter "Attack Level 2 ID 1" 1 8 0 16384 0
@@ -113,21 +113,21 @@ Parameter "Attack Time 1 ID 1" 1 5 0 16384 0
 Parameter "Attack Time 2 ID 1" 1 7 0 16384 0
 Parameter "Attack Time 3 ID 1" 1 9 0 16384 0
 Frame "Envelope Release Level" 0
-Parameter "Release Level 0  ID 1" 1 11 0 16384 0
-Parameter "Release Level 1  ID 1" 1 13 0 16384 0
+Parameter "Release Level 0 ID 1" 1 11 0 16384 0
+Parameter "Release Level 1 ID 1" 1 13 0 16384 0
 Frame "Envelope Release Time" 0
-Parameter "Release Time 0  ID 1" 1 10 0 16384 0
-Parameter "Release Time 1  ID 1" 1 12 0 16384 0
-Parameter "Release Time 2  ID 1" 1 14 0 16384 0
+Parameter "Release Time 0 ID 1" 1 10 0 16384 0
+Parameter "Release Time 1 ID 1" 1 12 0 16384 0
+Parameter "Release Time 2 ID 1" 1 14 0 16384 0
 Frame "Envelope General Settings" 0
-Parameter "Sustain  ID 1" 1 1 0 16384 0
-Parameter "Time Scale  ID 1" 1 0 1638 163840 0
-Parameter "Delay  ID 1" 1 2 0 16384 0
+Parameter "Sustain ID 1" 1 1 0 16384 0
+Parameter "Time Scale ID 1" 1 0 1638 163840 0
+Parameter "Delay ID 1" 1 2 0 16384 0
 Frame "Filter" 1
 Parameter "Cutoff" 3 1 -81920 81920 0
 Parameter "Resonance" 3 3 0 16384 0
 Parameter "Filter Envelope Amount" 3 2 0 163840 0
-Parameter "Input gain (dB)  " 3 0 -983040 163840 0
+Parameter "Input gain (dB) " 3 0 -983040 163840 0
 Parameter "Output gain (dB)" 3 5 -245760 245760 0
 Program 0 11438
 Program 0 3632
@@ -269,3 +269,52 @@ Program 6 0
 Program 6 163840
 Program 6 163840
 Program 6 -81189
+PresetName "Preset 00"
+PresetName "Preset 01"
+PresetName "Preset 02"
+PresetName "Preset 03"
+PresetName "Preset 04"
+PresetName "Preset 05"
+PresetName "Preset 06"
+PresetName "Preset 07"
+PresetName "Preset 08"
+PresetName "Preset 09"
+PresetName "Preset 10"
+PresetName "Preset 11"
+PresetName "Preset 12"
+PresetName "Preset 13"
+PresetName "Preset 14"
+PresetName "Preset 15"
+PresetName "Preset 16"
+PresetName "Preset 17"
+PresetName "Preset 18"
+PresetName "Preset 19"
+PresetName "Preset 20"
+PresetName "Preset 00"
+PresetName "Preset 01"
+PresetName "Preset 02"
+PresetName "Preset 03"
+PresetName "Preset 04"
+PresetName "Preset 05"
+PresetName "Preset 06"
+PresetName "Preset 07"
+PresetName "Preset 08"
+PresetName "Preset 09"
+PresetName "Preset 10"
+PresetName "Preset 11"
+PresetName "Preset 12"
+PresetName "Preset 13"
+PresetName "Preset 14"
+PresetName "Preset 15"
+PresetName "Preset 16"
+PresetName "Preset 17"
+PresetName "Preset 18"
+PresetName "Preset 19"
+PresetName "Preset 20"
+PresetName "Preset 00"
+PresetName "Preset 01"
+PresetName "Preset 02"
+PresetName "Preset 03"
+PresetName "Preset 04"
+PresetName "Preset 05"
+PresetName "Preset 06"

@@ -44,19 +44,22 @@ void CanvasFunction::setColor(QColor p_color) {
   color = p_color;  
 }
 
-void CanvasFunction::setPoint(int index, int x, int y) {
+void CanvasFunction::setPoint(int index, int x, int y, int z) {
 
   QPoint qp;
 
   points->setPoint(index, x, y);
   canvasPoints.at(index)->move(x, y);
+  canvasPoints.at(index)->setZ(z);
   if (index > 0) {
     qp = points->point(index - 1);
     canvasLines.at(index - 1)->setPoints(qp.x(), qp.y(), x, y);
+    canvasLines.at(index - 1)->setZ(z);
   }
   if (index < pointCount - 1) {
     qp = points->point(index);
     canvasLines.at(index)->setPoints(x, y, qp.x(), qp.y());
+    canvasLines.at(index)->setZ(z);
   }
 }
 
