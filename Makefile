@@ -27,6 +27,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	multi_envelope.o multi_envelope.moc.o \
 	scopescreen.o scopescreen.moc.o \
 	spectrumscreen.o spectrumscreen.moc.o \
+	function.o function.moc.o \
 	m_sh.o m_sh.moc.o \
 	m_vcswitch.o m_vcswitch.moc.o \
 	m_vcorgan.o m_vcorgan.moc.o \
@@ -52,6 +53,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_quantizer.o m_quantizer.moc.o \
 	m_scquantizer.o m_scquantizer.moc.o \
 	m_mix.o m_mix.moc.o \
+	m_function.o m_function.moc.o \
 	m_stereomix.o m_stereomix.moc.o \
 	m_ladspa.o m_ladspa.moc.o \
 	m_pcmout.o m_pcmout.moc.o \
@@ -83,21 +85,21 @@ modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
-	m_scmcv.h m_scquantizer.h main.h      
+	m_scmcv.h m_scquantizer.h m_function.h main.h      
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
-	m_scmcv.h m_scquantizer.h       
+	m_scmcv.h m_scquantizer.h m_function.h      
 modularsynth.moc.cpp: modularsynth.h modularsynth.cpp
 	$(QT_BIN_DIR)/moc modularsynth.h -o modularsynth.moc.cpp
 main.o: main.cpp modularsynth.h main.h
-configdialog.o: configdialog.cpp configdialog.h midicontroller.h envelope.h multi_envelope.h \
+configdialog.o: configdialog.cpp configdialog.h midicontroller.h envelope.h multi_envelope.h function.h \
 	midicontrollerlist.h midiwidget.h guiwidget.h midislider.h intmidislider.h floatintmidislider.h midicombobox.h midicheckbox.h synthdata.h \
 	scopescreen.h spectrumscreen.h midipushbutton.h
-configdialog.moc.o: configdialog.moc.cpp configdialog.h midicontroller.h envelope.h multi_envelope.h \
+configdialog.moc.o: configdialog.moc.cpp configdialog.h midicontroller.h envelope.h multi_envelope.h function.h \
 	midicontrollerlist.h midiwidget.h guiwidget.h midislider.h intmidislider.h floatintmidislider.h midicombobox.h midicheckbox.h synthdata.h \
 	scopescreen.h spectrumscreen.h midipushbutton.h
 configdialog.moc.cpp: configdialog.h configdialog.cpp
@@ -152,6 +154,10 @@ envelope.o: envelope.cpp envelope.h synthdata.h
 envelope.moc.o: envelope.moc.cpp envelope.h synthdata.h 
 envelope.moc.cpp: envelope.h envelope.cpp
 	$(QT_BIN_DIR)/moc envelope.h -o envelope.moc.cpp
+function.o: function.cpp function.h synthdata.h 
+function.moc.o: function.moc.cpp function.h synthdata.h 
+function.moc.cpp: function.h function.cpp
+	$(QT_BIN_DIR)/moc function.h -o function.moc.cpp
 multi_envelope.o: multi_envelope.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.o: multi_envelope.moc.cpp multi_envelope.h synthdata.h 
 multi_envelope.moc.cpp: multi_envelope.h multi_envelope.cpp
@@ -288,6 +294,10 @@ m_mix.o: m_mix.cpp m_mix.h synthdata.h module.h port.h
 m_mix.moc.o: m_mix.moc.cpp m_mix.h synthdata.h module.h port.h 
 m_mix.moc.cpp: m_mix.h m_mix.cpp
 	$(QT_BIN_DIR)/moc m_mix.h -o m_mix.moc.cpp
+m_function.o: m_function.cpp m_function.h synthdata.h module.h port.h
+m_function.moc.o: m_function.moc.cpp m_function.h synthdata.h module.h port.h 
+m_function.moc.cpp: m_function.h m_function.cpp
+	$(QT_BIN_DIR)/moc m_function.h -o m_function.moc.cpp
 m_stereomix.o: m_stereomix.cpp m_stereomix.h synthdata.h module.h port.h
 m_stereomix.moc.o: m_stereomix.moc.cpp m_stereomix.h synthdata.h module.h port.h 
 m_stereomix.moc.cpp: m_stereomix.h m_stereomix.cpp

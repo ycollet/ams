@@ -33,7 +33,8 @@ enum M_typeEnum { M_type_custom, M_type_vco, M_type_vca, M_type_lfo, M_type_dela
                   M_type_inv, M_type_noise, M_type_slew, M_type_quantizer, M_type_pcmin, M_type_cvs, 
                   M_type_sh, M_type_vcorgan, M_type_dynamicwaves, M_type_advenv, M_type_wavout, 
                   M_type_scope, M_type_spectrum, M_type_vcswitch, M_type_jackin, M_type_jackout,
-                  M_type_midiout, M_type_scmcv, M_type_scquantizer, M_type_stereomix, M_type_conv, M_type_vcenv, M_type_advmcv };
+                  M_type_midiout, M_type_scmcv, M_type_scquantizer, M_type_stereomix, M_type_conv, 
+                  M_type_vcenv, M_type_advmcv, M_type_function };
 
 // types jackin and jackout kept to ensure existing patches will load. FA
 

@@ -27,6 +27,7 @@
 #include "multi_envelope.h"
 #include "scopescreen.h"
 #include "spectrumscreen.h"
+#include "function.h"
 
 ConfigDialog::ConfigDialog(QObject *p_parentModule, QWidget* parent, const char *name, SynthData *p_synthdata) 
                 : QVBox(parent, name) {
@@ -280,5 +281,18 @@ int ConfigDialog::addSpectrumScreen(QWidget *parent) {
     spectrumScreen = new SpectrumScreen(parent, "Spectrum", synthdata);
   }
   spectrumScreenList.append(spectrumScreen);
+  return(0);
+}
+
+int ConfigDialog::addFunction(int p_functionCount, QPointArray *p_points[], SynthData *p_synthdata, QWidget *parent) {
+
+  Function *function;
+
+  if (!parent) {
+    function = new Function(p_functionCount, p_points, p_synthdata, configBox);
+  } else {
+    function = new Function(p_functionCount, p_points, p_synthdata, parent);
+  }
+  functionList.append(function);
   return(0);
 }

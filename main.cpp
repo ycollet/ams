@@ -154,6 +154,9 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Dynamic Waves (6 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_6()));
   newModulePopup->insertItem("Dynamic Waves (8 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_8()));
   newModulePopup->insertItem("ENV", modularSynth, SLOT(newM_env()));
+  newModulePopup->insertItem("Function 1 --> 1", modularSynth, SLOT(newM_function_1()));
+  newModulePopup->insertItem("Function 1 --> 2", modularSynth, SLOT(newM_function_2()));
+  newModulePopup->insertItem("Function 1 --> 4", modularSynth, SLOT(newM_function_4()));
   newModulePopup->insertItem("INV", modularSynth, SLOT(newM_inv()));
   newModulePopup->insertItem("LFO", modularSynth, SLOT(newM_lfo()));
   newModulePopup->insertItem("MCV", modularSynth, SLOT(newM_mcv()));

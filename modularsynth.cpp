@@ -841,6 +841,27 @@ void ModularSynth::newM_mix(int in_channels) {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_function(int functionCount) {
+
+  M_function *m = new M_function(functionCount, synthdata, viewport(), "Function");
+  initNewModule((Module *)m);
+}
+
+void ModularSynth::newM_function_1() {
+
+  newM_function(1);
+}
+
+void ModularSynth::newM_function_2() {
+
+  newM_function(2);
+}
+
+void ModularSynth::newM_function_4() {
+
+  newM_function(4);
+}
+
 void ModularSynth::newM_stereomix(int in_channels) {
 
   M_stereomix *m = new M_stereomix(in_channels, viewport(), "Stero mix", synthdata);

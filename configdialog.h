@@ -32,6 +32,7 @@
 #include "multi_envelope.h"
 #include "scopescreen.h"
 #include "spectrumscreen.h"
+#include "function.h"
 
 class ConfigDialog : public QVBox
 {
@@ -53,6 +54,7 @@ class ConfigDialog : public QVBox
     QList<ScopeScreen> scopeScreenList;
     QList<SpectrumScreen> spectrumScreenList;
     QList<MultiEnvelope> multiEnvelopeList;
+    QList<Function> functionList;
     QList<MidiGUIcomponent> midiGUIcomponentList;
     QList<QLineEdit> lineEditList;
     QList<QHBox> hboxList;
@@ -74,6 +76,7 @@ class ConfigDialog : public QVBox
     int addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
                     float *decayRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
     int addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
+    int addFunction(int p_functionCount, QPointArray *p_points[], SynthData *p_synthdata, QWidget *parent=0);
     int addLabel(QString label, QWidget *parent=0);
     int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
                        float *triggerThrsRef, float *zoomRef, QWidget *parent=0);

@@ -56,6 +56,7 @@
 #include "m_dynamicwaves.h"
 #include "m_quantizer.h"
 #include "m_scquantizer.h"
+#include "m_function.h"
 #include "midiwidget.h"
 #include "guiwidget.h"
 #include "textedit.h"
@@ -102,6 +103,7 @@ class ModularSynth : public QScrollView
     snd_seq_t *open_seq(); 
     int initSeqNotifier();  
     void newM_mix(int in_channels);
+    void newM_function(int functionCount);
     void newM_stereomix(int in_channels);
     void newM_seq(int seqLen);
     void newM_vcorgan(int oscCount);
@@ -162,6 +164,9 @@ class ModularSynth : public QScrollView
     void newM_mix_2();
     void newM_mix_4();
     void newM_mix_8();
+    void newM_function_1();
+    void newM_function_2();
+    void newM_function_4();
     void newM_stereomix_2();
     void newM_stereomix_4();
     void newM_stereomix_8();
