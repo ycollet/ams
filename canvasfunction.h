@@ -26,8 +26,6 @@ class CanvasFunction : public QObject
     int rtti();
     void setPoint(int index, int x, int y);
 
-  protected:
-    virtual void drawShape(QPainter &p );
 };
   
 #endif

@@ -8,20 +8,27 @@ CanvasFunction::CanvasFunction(QCanvas *canvas, int p_rtti_id, int p_pointCount,
                                : QObject(parent, name) {
 
   int l1;
+
+  fprintf(stderr, "CanvasFunction::CanvasFunction M1\n");
   rtti_id = p_rtti_id;
   pointCount = p_pointCount;
   points = new  QPointArray(pointCount);
   for (l1 = 0; l1 < pointCount; l1++) {
     QCanvasEllipse *canvasPoint = new QCanvasEllipse(canvas);
+    canvasPoint->setSize(5, 5);
+    canvasPoint->setVisible(TRUE);
     canvasPoints.append(canvasPoint);
   }
   for (l1 = 0; l1 < pointCount - 1; l1++) {
     QCanvasLine *canvasLine = new QCanvasLine(canvas);
+    canvasLine->setPoints(0, 0, 0, 0);
+    canvasLine->setVisible(TRUE);
     canvasLines.append(canvasLine);
   }
   for (l1 = 0; l1 < pointCount; l1++) {
     points->setPoint(l1, 0, 0);
   }
+  fprintf(stderr, "CanvasFunction::CanvasFunction M2\n");
 }
 
 CanvasFunction::~CanvasFunction() {
@@ -32,6 +39,7 @@ void CanvasFunction::setPoint(int index, int x, int y) {
 
   QPoint qp;
 
+  fprintf(stderr, "CanvasFunction::setPoint %d %d %d\n", index, x, y);
   points->setPoint(index, x, y);
   canvasPoints.at(index)->move(x, y);
   if (index > 0) {
@@ -42,13 +50,10 @@ void CanvasFunction::setPoint(int index, int x, int y) {
     qp = points->point(index);
     canvasLines.at(index)->setPoints(x, y, qp.x(), qp.y());
   }
+  fprintf(stderr, "CanvasFunction::setPoint finished\n");
 }
 
 int CanvasFunction::rtti() {
   
   return(rtti_id);
-}  
-
-void CanvasFunction::drawShape(QPainter &p) {
-  
 }  

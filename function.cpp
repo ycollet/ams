@@ -10,9 +10,11 @@
 #include <qbrush.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
+#include <qpoint.h>
 #include <qwmatrix.h>
 #include "function.h"
-
+#include "canvasview.h"
+#include "canvasfunction.h"
 
 Function::Function(int p_functionCount, QPointArray *p_points[], SynthData *p_synthdata, QWidget *parent, const char *name) 
              : QWidget (parent, name)
@@ -23,6 +25,7 @@ Function::Function(int p_functionCount, QPointArray *p_points[], SynthData *p_sy
   functionCount = p_functionCount;
   for (l1 = 0; l1 < functionCount; l1++) {
     points[l1] = p_points[l1];
+    setPointCount(l1, MAX_POINTS);
     screenPoints[l1] = new QPointArray(MAX_POINTS);
   }
   setPalette(QPalette(QColor(20, 20, 80), QColor(20, 20, 80)));
@@ -35,9 +38,18 @@ Function::Function(int p_functionCount, QPointArray *p_points[], SynthData *p_sy
   colorTable[5].setRgb(0, 255, 255);
   colorTable[6].setRgb(255, 100, 255);
   colorTable[7].setRgb(255, 200, 50);
+  fprintf(stderr, "Function::Function M1\n");
   canvas = new QCanvas(this);
   canvas->resize(width(), height());
+  canvas->setBackgroundColor(QColor(20, 20, 80));
+  fprintf(stderr, "Function::Function M2\n");
   canvasView = new CanvasView(canvas, this);
+  for (l1 = 0; l1 < functionCount; l1++) {
+    CanvasFunction *canvasFunction = new CanvasFunction(canvas, 1000 + l1, MAX_POINTS, this);
+    canvasFunctionList.append(canvasFunction);
+    updateFunction(l1);
+  }
+  fprintf(stderr, "Function::Function M3\n");
 }
 
 Function::~Function()
@@ -46,6 +58,7 @@ Function::~Function()
 
 void Function::paintEvent(QPaintEvent *) {
 
+/*
   QPixmap pm(width(), height());  
   QPainter p(&pm);
   QPen pen;
@@ -73,11 +86,32 @@ void Function::paintEvent(QPaintEvent *) {
     }
   }
   bitBlt(this, 0, 0, &pm);
+*/
+
+  fprintf(stderr,"Function::paintEvent\n");
+  canvas->update();
 }
 
 void Function::updateFunction(int index) {
 
+  int l1;
+  QPoint qp;
+  QWMatrix matrix;
+  double scale[2];
+
+  fprintf(stderr, "Function::updateFunction M1\n");
+  scale[0] = (double)width() / (double)FUNCTION_WIDTH;
+  scale[1] = -(double)height() / (double)FUNCTION_HEIGHT;
+  fprintf(stderr, "scale: %f %f\n", scale[0], scale[1]);
+  matrix.scale(scale[0], scale[1]);
+  matrix.translate(0, -FUNCTION_HEIGHT);
+  *screenPoints[index] = matrix.map(*points[index]);
+  for (l1 = 0; l1 < pointCount[index]; l1++) {
+    qp = screenPoints[index]->point(l1);
+    canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y());
+  }
   repaint(false);
+  fprintf(stderr, "Function::updateFunction M2\n");
 }
 
 void Function::setPointCount(int index, int count) {

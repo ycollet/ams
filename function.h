@@ -9,16 +9,18 @@
 #include <qlabel.h>
 #include <qcolor.h>
 #include <qpointarray.h>
+#include <qptrlist.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <qcanvas.h>
 #include "canvasview.h"
+#include "canvasfunction.h"
 #include "synthdata.h"
 
 #define FUNCTION_MINIMUM_WIDTH        100
 #define FUNCTION_MINIMUM_HEIGHT        50
 #define MAX_FUNCTIONS                   8
-#define MAX_POINTS                     32
+#define MAX_POINTS                      8
 #define FUNCTION_WIDTH              10000
 #define FUNCTION_HEIGHT             10000
 
@@ -34,6 +36,7 @@ class Function : public QWidget
     QPointArray *screenPoints[MAX_FUNCTIONS];
     QColor colorTable[MAX_FUNCTIONS];
     QCanvas *canvas;
+    QList<CanvasFunction> canvasFunctionList;
     CanvasView *canvasView;
     float zoomMin[2], zoomMax[2];             // Ranges for zoomed display of functions
     
