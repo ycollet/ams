@@ -99,7 +99,7 @@ int GuiWidget::setFrame(int index) {
 
 int GuiWidget::addTab(QString tabName) {
   
-  printf("Adding tab %s.\n", tabName.latin1());
+//  printf("Adding tab %s.\n", tabName.latin1());
   tabNameList.append(tabName);
   currentTab = new QHBox(this, tabName);
   currentTabIndex = tabNameList.count() - 1;
@@ -111,7 +111,7 @@ int GuiWidget::addTab(QString tabName) {
 
 int GuiWidget::setTab(int index) {
 
-  fprintf(stderr, "Setting tab index %d.\n", index);  
+//  fprintf(stderr, "Setting tab index %d.\n", index);  
   currentTab = tabList.at(index);
   currentTab->show();
   currentTabIndex = index;
@@ -331,4 +331,10 @@ void GuiWidget::clearGui() {
   tabWidget->show();
   setPresetCount(0);
   setCurrentPreset(0);
+}
+
+void GuiWidget::refreshGui() {
+
+  tabWidget->hide();
+  tabWidget->show();
 }

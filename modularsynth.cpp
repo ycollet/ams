@@ -1575,6 +1575,7 @@ void ModularSynth::load(QString *presetName) {
   }
   synthdata->doSynthesis = true;
   midiWidget->followConfig = followConfig;
+  guiWidget->refreshGui();
 }
 
 void ModularSynth::save() {

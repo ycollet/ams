@@ -75,6 +75,7 @@ class GuiWidget : public QVBox
     void overwritePreset();
     void clearPresets();
     void clearGui();
+    void refreshGui();
 };
   
 #endif
