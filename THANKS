@@ -1,0 +1,18 @@
+ Thanks
+ ------
+
+ The VCF Module uses the resonant low-pass filter by Paul Kellett
+ and the Cookbook formulae for audio EQ biquad filter coefficients
+ by Robert Bristow-Johnson. The experimental Moog filters have been
+ taken from http://musicdsp.org. They are based on the CSound source
+ code, the paper by Stilson/Smith and modifications by Paul Kellett 
+ and Timo Tossavainen. The pink noise conversion formula is by Paul 
+ Kellett and has been taken from http://musicdsp.org as well.
+
+ The author is grateful to Takashi Iwai for instructions about ALSA.
+ Klaas Freitag, Helmut Herold, Stefan Hundhammer and Arvin Schnell
+ answered many questions about QT. Thanks to Jörg Arndt for valuable
+ hints regarding speed optimization. Torsten Rahn has helped to
+ improve the color scheme of the program. Thanks to Bernhard Kaindl
+ for helpful discussion. Bill Allen has contributed an improved 
+ Makefile.

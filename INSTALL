@@ -1,0 +1,9 @@
+
+  On a SuSE system just type
+
+  make -f make_<programname>
+
+  On a non-SuSE system you will have to modify the makefiles 
+  and adjust the library paths. Sorry, I did not implement 
+  autoconf / automake yet.
+
