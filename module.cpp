@@ -165,8 +165,10 @@ int Module::saveConnections(FILE *f) {
     port[0] = portList.at(l1);
     if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
       port[1] = port[0]->connectedPortList.at(0);
-      fprintf(f, "Port %d %d %d %d\n", port[0]->index, port[1]->index,
-              ((Module *)port[0]->parentModule)->moduleID, ((Module *)port[1]->parentModule)->moduleID);
+      fprintf(f, "ColorP %d %d %d %d %d %d %d %d %d %d\n", port[0]->index, port[1]->index,
+              ((Module *)port[0]->parentModule)->moduleID, ((Module *)port[1]->parentModule)->moduleID, 
+              port[0]->jackColor.red(), port[0]->jackColor.green(), port[0]->jackColor.blue(),
+              port[0]->cableColor.red(), port[0]->cableColor.green(), port[0]->cableColor.blue());
     }   
   }     
 }

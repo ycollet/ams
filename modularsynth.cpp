@@ -80,6 +80,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   Port *port[2];
   int port_x[2], port_y[2];
   QPoint port_pos[2];
+  QColor cableColor, jackColor;
   int moduleX[2], moduleY[2];
 
   pm.fill(QColor((unsigned int)COLOR_MAINWIN_BG));
@@ -88,14 +89,16 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   for (l1 = 0; l1 < listModule.count(); l1++) {
     for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
       port[0] = listModule.at(l1)->portList.at(l2);
+      cableColor = port[0]->cableColor;
+      jackColor = port[0]->jackColor;
       if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
         port[1] = port[0]->connectedPortList.at(0);
         port_pos[0] = port[0]->pos();
         port_pos[1] = port[1]->pos();
         contentsToViewport(childX(port[0]->parentModule), childY(port[0]->parentModule), moduleX[0], moduleY[0]);
         contentsToViewport(childX(port[1]->parentModule), childY(port[1]->parentModule), moduleX[1], moduleY[1]);
-        port_x[0] = port_pos[0].x() + moduleX[0];
-        port_x[1] = port_pos[1].x() + port[1]->width() + moduleX[1];
+        port_x[0] = port_pos[0].x() + moduleX[0] - 11;
+        port_x[1] = port_pos[1].x() + port[1]->width() + moduleX[1] + 11;
         port_y[0] = port_pos[0].y() + moduleY[0] + port[0]->height()/2;
         port_y[1] = port_pos[1].y() + moduleY[1] + port[1]->height()/2;
         if (connectorStyle == CONNECTOR_BEZIER) {
@@ -105,46 +108,57 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           qpa.setPoint(2, port_x[1], port_y[1]);
           qpa.setPoint(3, port_x[1], port_y[1]);
           pen->setWidth(5);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
+          pen->setColor(cableColor.dark());
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(3);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
+          pen->setColor(cableColor);
           p.setPen(*pen);
           p.drawCubicBezier(qpa);
           pen->setWidth(1);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
+          pen->setColor(cableColor.light());
           p.setPen(*pen);          
           p.drawCubicBezier(qpa);
+          p.fillRect(port_x[0], port_y[0] - 3, 11, 7, QBrush(jackColor.dark()));
+          p.fillRect(port_x[1] - 11, port_y[1] - 3, 11, 7, QBrush(jackColor.dark()));
+          p.fillRect(port_x[0], port_y[0] - 2, 11, 5, QBrush(jackColor));
+          p.fillRect(port_x[1] - 11, port_y[1] - 2, 11, 5, QBrush(jackColor));
+          p.fillRect(port_x[0], port_y[0] - 1, 11, 3, QBrush(jackColor.light()));
+          p.fillRect(port_x[1] - 11, port_y[1] - 1, 11, 3, QBrush(jackColor.light()));
+          pen->setWidth(1);
+          pen->setColor(jackColor.light(250));
+          p.setPen(*pen);
+          p.drawLine(port_x[0], port_y[0], port_x[0] + 11, port_y[0]);
+          p.drawLine(port_x[1] - 11, port_y[1], port_x[1], port_y[1]);
         }
         if (connectorStyle == CONNECTOR_STRAIGHT) {
           p.drawLine(port_x[0], port_y[0], port_x[1], port_y[1]);
         }
         if (port[0]->parentModule->x() < port[1]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
+          pen->setColor(cableColor.dark());
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 5, port_y[0]);
           pen->setWidth(3);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
+          pen->setColor(cableColor);
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 6, port_y[0]);
           pen->setWidth(1);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
+          pen->setColor(cableColor.light());
           p.setPen(*pen);
           p.drawLine(port_x[0], port_y[0], port_x[0] - 7, port_y[0]);
         }
         if (port[1]->parentModule->x() > port[0]->parentModule->x()) {
           pen->setWidth(5);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ1));
+          pen->setColor(cableColor.dark());
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 5, port_y[1]);
           pen->setWidth(3);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ2));
+          pen->setColor(cableColor);
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 6, port_y[1]);
           pen->setWidth(1);
-          pen->setColor(QColor(COLOR_CONNECT_BEZ3));
+          pen->setColor(cableColor.light());
           p.setPen(*pen);
           p.drawLine(port_x[1], port_y[1], port_x[1] + 7, port_y[1]);
         }
@@ -1112,6 +1126,7 @@ void ModularSynth::load(QString *presetName) {
   int index1, index2, moduleID1, moduleID2, midiSign;
   int index_read1, index_read2, moduleID_read1, moduleID_read2;
   int type, ch, param, isLogInt, midiIndex, sliderMin, sliderMax;
+  int red1, green1, blue1, red2, green2, blue2;
   FILE *f;
   QString config_fn, qs, qs2, ladspaLibName, pluginName, para, scalaName;
   char sc[2048];
@@ -1344,6 +1359,46 @@ void ModularSynth::load(QString *presetName) {
             index_read2 = l1;
           } 
         }   
+        listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
+        listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
+      }
+      if (qs.contains("ColorP", false)) {
+        fscanf(f, "%d", &index1); 
+        fscanf(f, "%d", &index2);
+        fscanf(f, "%d", &moduleID1);
+        fscanf(f, "%d", &moduleID2); 
+        fscanf(f, "%d", &red1); 
+        fscanf(f, "%d", &green1); 
+        fscanf(f, "%d", &blue1); 
+        fscanf(f, "%d", &red2); 
+        fscanf(f, "%d", &green2); 
+        fscanf(f, "%d", &blue2); 
+        moduleID_read1 = 0;
+        moduleID_read2 = 0;
+        index_read1 = 0;
+        index_read2 = 0;
+        for (l1 = 0; l1 < listModule.count(); l1++) {
+          if (listModule.at(l1)->moduleID == moduleID1) {
+            moduleID_read1 = l1;
+          }
+          if (listModule.at(l1)->moduleID == moduleID2) {
+            moduleID_read2 = l1;
+          }
+        }
+        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); l1++) {
+          if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
+            && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
+            index_read1 = l1;
+          }
+        } 
+        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); l1++) {
+          if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
+            && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
+            index_read2 = l1;
+          } 
+        }   
+        listModule.at(moduleID_read1)->portList.at(index_read1)->jackColor = QColor(red1, green1, blue1);
+        listModule.at(moduleID_read1)->portList.at(index_read1)->cableColor = QColor(red2, green2, blue2);
         listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
         listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
       }

@@ -7,6 +7,7 @@
 #include <qwidget.h>
 #include <qlist.h>
 #include <qstring.h>
+#include <qcolor.h>
 #include <qpopupmenu.h>
 #include <qpoint.h>
 #include "synthdata.h"
@@ -42,6 +43,7 @@ class Port : public QWidget
     QList<Port> connectedPortList;
     dirType dir;
     int index, fontColor;
+    QColor jackColor, cableColor;
     outTypeEnum outType;
     bool highlighted;
     QValueList<outTypeEnum> outTypeAcceptList;
@@ -58,6 +60,9 @@ class Port : public QWidget
     
   public slots:
     void disconnectClicked();  
+    void defaultClicked();
+    void jackColorClicked();
+    void cableColorClicked();
     void checkConnectionStatus();
 };
   

@@ -9,6 +9,8 @@
 #include <qrect.h>
 #include <qpopupmenu.h>
 #include <qpoint.h>
+#include <qcolor.h>
+#include <qcolordialog.h> 
 #include "port.h"
 #include "synthdata.h"
 #include "module.h"
@@ -24,12 +26,17 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   portWidth = p_portWidth;
   dir = p_dir;
   fontColor = p_color;
+  jackColor = QColor(20, 150, 20);
+  cableColor = QColor(COLOR_CONNECT_BEZ1);
   highlighted = false;
   index = p_index;
   setPalette(QPalette(QColor(COLOR_MODULE_BG), QColor(COLOR_MODULE_BG)));
   setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
   contextMenu = new QPopupMenu(this);
-  contextMenu->insertItem("disconnect", this, SLOT(disconnectClicked()));
+  contextMenu->insertItem("Disconnect", this, SLOT(disconnectClicked()));
+  contextMenu->insertItem("Default Colors", this, SLOT(defaultClicked()));
+  contextMenu->insertItem("Set Jack Color", this, SLOT(jackColorClicked()));
+  contextMenu->insertItem("Set Cable Color", this, SLOT(cableColorClicked()));
 }
 
 Port::~Port() {
@@ -178,4 +185,20 @@ float **Port::getinputdata (void)
         return M->data [connectedPortList.at (0)->index];
     }
     else return synthdata->zeroModuleData;
+}
+
+void Port::defaultClicked() {
+
+  jackColor = QColor(20, 150, 20);
+  cableColor = QColor(COLOR_CONNECT_BEZ1);
+}
+
+void Port::jackColorClicked() {
+
+  jackColor = QColorDialog::getColor (jackColor);
+}
+
+void Port::cableColorClicked() {
+
+  cableColor = QColorDialog::getColor (cableColor);
 }
