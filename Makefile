@@ -49,8 +49,7 @@ INCLUDEDIRS = -I$(QT_INCLUDE_DIR) -I$(X11_INCLUDE_DIR) -I.
 
 
 # System libs to link with
-LIBS = -l$(QT) -ljack -lasound -lsrfftw -lsfftw -lm
-
+LIBS = -l$(QT) -lpthread -ldl -lrt -ljack -lasound -lsrfftw -lsfftw -lm
 
 
 SRC = *.cpp
@@ -120,7 +119,7 @@ MOCS += moc_parameter.cpp
 MOCS += moc_parametereditor.cpp
 MOCS += moc_parameterpanel.cpp
 MOCS += moc_port.cpp
-MOCS += moc_stylechooser.cpp
+#MOCS += moc_stylechooser.cpp
 MOCS += moc_textedit.cpp
 OBJS += actionmidibinding.o
 OBJS += actionparameter.o
@@ -183,7 +182,7 @@ OBJS += parametereditor.o
 OBJS += parametereditorfactory.o
 OBJS += parameterpanel.o
 OBJS += port.o
-OBJS += stylechooser.o
+#OBJS += stylechooser.o
 OBJS += synth.o
 OBJS += synthdata.o
 OBJS += textedit.o
@@ -243,7 +242,7 @@ OBJS += moc_parameter.o
 OBJS += moc_parametereditor.o
 OBJS += moc_parameterpanel.o
 OBJS += moc_port.o
-OBJS += moc_stylechooser.o
+#OBJS += moc_stylechooser.o
 OBJS += moc_textedit.o
 
 
