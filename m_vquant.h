@@ -1,5 +1,5 @@
-#ifndef M_INV_H
-#define M_INV_H
+#ifndef M_VQUANT_H
+#define M_VQUANT_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,22 +20,23 @@
 #include "module.h"
 #include "port.h"
 
-#define MODULE_INV_WIDTH                 90
-#define MODULE_INV_HEIGHT                80
+#define MODULE_VQUANT_WIDTH                100
+#define MODULE_VQUANT_HEIGHT                80
 
-class M_inv : public Module
+class M_vquant : public Module
 {
   Q_OBJECT
 
   private:
-    Port *port_M_in, *port_out;
+    Port *port_M_in, *port_quant;
     
   public: 
     float **inData;       
-                            
+    float gain;
+                                
   public:
-    M_inv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
-    ~M_inv();
+    M_vquant(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    ~M_vquant();
 
   public slots:
     void generateCycle();

@@ -95,7 +95,8 @@ void M_mcv::generateCycle() {
         data[2][l1][l2] = velocity;
       } 
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
-      data[3][l1][0] = trig[l1];
+//      data[3][l1][0] = trig[l1];
+      data[3][l1][15] = trig[l1]; // Added for interpolated input ports (e.g. m_vcenv.cpp)
       trig[l1] = 0;
     }
   }

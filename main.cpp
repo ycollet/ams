@@ -172,6 +172,7 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("PCM Out", modularSynth, SLOT(newM_pcmout()));
   newModulePopup->insertItem("PCM In", modularSynth, SLOT(newM_pcmin()));  
   newModulePopup->insertItem("Quantizer", modularSynth, SLOT(newM_quantizer()));
+  newModulePopup->insertItem("Quantizer 2", modularSynth, SLOT(newM_vquant()));
   newModulePopup->insertItem("Ring Modulator", modularSynth, SLOT(newM_ringmod()));
   newModulePopup->insertItem("Sample && Hold", modularSynth, SLOT(newM_sh()));
   newModulePopup->insertItem("Scala MCV", modularSynth, SLOT(newM_scmcv()));  

@@ -47,22 +47,28 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name, SynthData *p
   port_M_sustain->move(0, 115);
   port_M_sustain->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_sustain);
-  port_M_ratio = new Port("Ratio", PORT_IN, 5, this, synthdata); 
-  port_M_ratio->move(0, 135);
+  port_M_release = new Port("Release", PORT_IN, 5, this, synthdata); 
+  port_M_release->move(0, 135);
+  port_M_release->outTypeAcceptList.append(outType_audio);
+  portList.append(port_M_release);
+  port_M_ratio = new Port("Ratio", PORT_IN, 6, this, synthdata); 
+  port_M_ratio->move(0, 155);
   port_M_ratio->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_ratio);
   port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
-  port_out->move(width() - port_out->width(), 155);
+  port_out->move(width() - port_out->width(), 175);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("VC Double Decay ID %d", moduleID);
-  a0 = 0.1;
-  d0 = 0.1;
-  s0 = 0.7;
-  r0 = 0.1;
+  a0 = 0;
+  d0 = 0;
+  s0 = 0;
+  rl0 = 0;
+  r0 = 0.5;
   aGain = 1.0;
   dGain = 1.0;
   sGain = 1.0;
+  rlGain = 1.0;
   rGain = 1.0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     gate[l1] = false;
@@ -71,14 +77,20 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name, SynthData *p
     noteActive[l1] = false;
     e[l1] = 0;
     e2[l1] = 0;
+    old_e[l1] = 0;
+    old_e2[l1] = 0;
+    s[l1] = 0;
+    old_s[l1] = 0;
   }
   configDialog->addSlider(-8, 8, a0, "Attack Offset", &a0);
   configDialog->addSlider(-8, 8, d0, "Decay Offset", &d0);
   configDialog->addSlider(0, 1, s0, "Sustain Offset", &s0);
+  configDialog->addSlider(-8, 8, rl0, "Release Offset", &rl0);
   configDialog->addSlider(0, 1, r0, "Ratio Offset", &r0);
   configDialog->addSlider(-8, 8, aGain, "Attack Gain", &aGain);
   configDialog->addSlider(-8, 8, dGain, "Decay Gain", &dGain);
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
+  configDialog->addSlider(-8, 8, rlGain, "Release Gain", &rlGain);
   configDialog->addSlider(0, 1, rGain, "Ratio Gain", &rGain);
   configDialog->setCaption(qs);
 }
@@ -88,8 +100,8 @@ M_vcdoubledecay::~M_vcdoubledecay() {
 
 void M_vcdoubledecay::generateCycle() {
 
-  int l1, l2;
-  double ts, tsr, tsn, tmp, c1, c2, n1, n, c, log2, s, astep;
+  int l1, l2, k, len, l2_out;
+  double ts, tsr, tsn, tmp, c1, c2, n1, n, c, log2, astep, de, de2, ds;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -99,15 +111,22 @@ void M_vcdoubledecay::generateCycle() {
     attackData = port_M_attack->getinputdata ();
     decayData = port_M_decay->getinputdata ();
     sustainData = port_M_sustain->getinputdata ();
+    releaseData = port_M_sustain->getinputdata ();
     ratioData = port_M_ratio->getinputdata ();
 
     ts = 1.0;
-    tsr = ts / (double)synthdata->rate;
-    tsn = ts * (double)synthdata->rate;
+    tsr = 16.0 * ts / (double)synthdata->rate;
+    tsn = ts * (double)synthdata->rate / 16.0;
     log2 = log(2.0);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
 //      fprintf(stderr, "gate:%d retrigger:%d noteActive:%d state: %d\n", gate[l1], retrigger[l1], noteActive[l1], state[l1]);
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      len = synthdata->cyclesize;
+      l2 = -1;
+      l2_out = 0;
+      do {
+        k = (len > 24) ? 16 : len;
+        l2 += k;
+        len -= k;
         if (!gate[l1] && gateData[l1][l2] > 0.5) {
           gate[l1] = true;
           noteActive[l1] = true;
@@ -126,7 +145,7 @@ void M_vcdoubledecay::generateCycle() {
         if (retrigger[l1] && retriggerData[l1][l2] < 0.5) {
           retrigger[l1] = false;
         }
-        s = s0 + sGain * sustainData[l1][l2];
+        s[l1] = s0 + sGain * sustainData[l1][l2];
         switch (state[l1]) {
           case 0: e[l1] = 0;
                   e2[l1] = 0;
@@ -150,7 +169,7 @@ void M_vcdoubledecay::generateCycle() {
                   e[l1] *= exp(-c1);
                   e2[l1] *= exp(-c2);           
                   break;
-          case 3: n = tsn * (synthdata->exp_table(log2 * (d0 + dGain * decayData[l1][l2])));
+          case 3: n = tsn * (synthdata->exp_table(log2 * (rl0 + rlGain * releaseData[l1][l2])));
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);      
@@ -166,8 +185,17 @@ void M_vcdoubledecay::generateCycle() {
                    e2[l1] = 0;
                    data[0][l1][l2] = e[l1];
         }
-        data[0][l1][l2] = (1.0 - s) * e[l1] + s * e2[l1];
-      }
+      
+        de = (e[l1] - old_e[l1]) / (double)k;
+        de2 = (e2[l1] - old_e2[l1]) / (double)k;
+        ds = (s[l1] - old_s[l1]) / (double)k;
+        while (k--) {
+          old_e[l1] += de;
+          old_e2[l1] += de2;
+          old_s[l1] += ds;
+          data[0][l1][l2_out++] = (1.0 - old_s[l1]) * old_e[l1] + old_s[l1] * old_e2[l1];
+        }  
+      } while (len);
     }
   }
   cycleProcessing = false;

@@ -46,6 +46,7 @@
 #include "m_ladspa.h"
 #include "m_vcf.h"
 #include "m_inv.h"
+#include "m_vquant.h"
 #include "m_conv.h"
 #include "m_cvs.h"
 #include "m_vcswitch.h"
@@ -165,6 +166,7 @@ class ModularSynth : public QScrollView
     void newM_noise();
     void newM_ringmod();
     void newM_inv();
+    void newM_vquant();
     void newM_conv();
     void newM_cvs();
     void newM_slew();

@@ -503,7 +503,7 @@ void ModularSynth::midiAction(int fd) {
       }  
       if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
         synthdata->sustainFlag = ev->data.control.value > 63;
-        if (synthdata->sustainFlag) {
+        if (!synthdata->sustainFlag) {
           for (l2 = 0; l2 < synthdata->poly; l2++) {
             if (synthdata->sustainNote[l2]) {
               synthdata->noteCounter[l2] = 1000000;
@@ -783,6 +783,12 @@ void ModularSynth::newM_ringmod() {
 void ModularSynth::newM_inv() {
 
   M_inv *m = new M_inv(viewport(), "INV", synthdata);
+  initNewModule((Module *)m);
+}
+
+void ModularSynth::newM_vquant() {
+
+  M_vquant *m = new M_vquant(viewport(), "Quantizer 2", synthdata);
   initNewModule((Module *)m);
 }
 
@@ -1390,6 +1396,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_inv: 
             newM_inv();
+            break;
+          case M_type_vquant: 
+            newM_vquant();
             break;
           case M_type_conv: 
             newM_conv();

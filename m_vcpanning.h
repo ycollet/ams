@@ -33,7 +33,7 @@ class M_vcpanning : public Module
   public: 
     float **inData, **panData;        
     float panGain, panOffset;
-    float panPos[MAXPOLY];
+    float panPos[MAXPOLY], pan[2][MAXPOLY], oldpan[2][MAXPOLY];
     int panMode;
                                     
   public:

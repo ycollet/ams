@@ -21,7 +21,7 @@
 #include "port.h"
 
 #define MODULE_VCA_WIDTH                 85
-#define MODULE_VCA_HEIGHT               135
+#define MODULE_VCA_HEIGHT               140
 
 class M_vca : public Module
 {

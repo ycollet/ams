@@ -156,7 +156,8 @@ void M_scmcv::generateCycle() {
       if (freq[l1] < 0) freq[l1] = 0;
       velocity = (float)synthdata->velocity[l1] / 127.0;
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
-      data[3][l1][0] = trig[l1];
+//      data[3][l1][0] = trig[l1];
+      data[3][l1][15] = trig[l1]; // Added for interpolated input ports (e.g. m_vcenv.cpp)
       trig[l1] = 0;
       if ((freq[l1] == lastfreq[l1]) || (freq[l1] == 0) || (lastfreq[l1] == 0)) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
