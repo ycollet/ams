@@ -29,10 +29,22 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LFO_WIDTH, MODULE_LFO_HEIGHT);
   freq = 5;
   phi0 = 0;
-  wave_period = (float)WAVE_PERIOD;
+  wave_period = (double)synthdata->rate / (16.0 * freq);
   for (l1 = 0; l1 < MAXPOLY; l1++) {
     trigger[l1] = false;
-    phi[l1] = 0;
+    si[l1] = 1;
+    old_si[l1] = 1;
+    sa[l1] = -1;
+    old_sa[l1] = 0;
+    t[l1] = 0;
+    old_t[l1] = 0;
+    r[l1] = 0;
+    old_r[l1] = 0;
+    state[l1] = 0;
+    dt[l1] = 4.0 / wave_period;
+    dsi[l1] = 0;
+    ddsi[l1] = -32.0 / (wave_period * wave_period);
+    ddsi0[l1] = 32.0 / (wave_period * wave_period);
   }
   port_M_trigger = new Port("Reset", PORT_IN, 0, this, synthdata);          
   port_M_trigger->move(0, 35);
@@ -60,7 +72,7 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_rect);
   qs.sprintf("LFO ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 100, freq, "Frequency", &freq);
+  configDialog->addSlider(0.01, 100, freq, "Frequency", &freq);
   configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
 }
 
@@ -74,60 +86,83 @@ void M_lfo::noteOnEvent(int osc) {
 
 void M_lfo::generateCycle() {
 
-  int l1, l2;
-  float dphi, phi1, phi_const; 
+  int l1, l2, k, len, phi0i, l2_out;
+  double ldsi, ldsa, ldt, ldr, dt0, dsa, ddsi1;
 
   if (!cycleReady)
   {
-      cycleProcessing = true; 
-      triggerData = port_M_trigger->getinputdata();
-
-      dphi = freq * wave_period / (float)synthdata->rate;
-      phi_const = phi0 * wave_period / (2.0 * M_PI);
-      if (phi0 > 0) {
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            phi1 = phi[l1] + phi_const;
-            if (phi1 < 0) phi1 += wave_period;
-            if (phi1 > wave_period) phi1 -= wave_period;
-            data[0][l1][l2] = synthdata->wave_sine[(int)phi1];
-            data[1][l1][l2] = synthdata->wave_tri[(int)phi1];
-            data[2][l1][l2] = synthdata->wave_saw[(int)phi1];
-            data[3][l1][l2] = synthdata->wave_saw2[(int)phi1];
-            data[4][l1][l2] = synthdata->wave_rect[(int)phi1];
-            phi[l1] += dphi;
-            while (phi[l1] < 0) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
-            if (!trigger[l1] && (triggerData[l1][l2] > 0.5)) {
-              trigger[l1] = true;
-              phi[l1] = 0;
-            }
-            if (trigger[l1] && (triggerData[l1][l2] < 0.5)) {
-              trigger[l1] = false;
-            }
-          }
+    cycleProcessing = true; 
+    triggerData = port_M_trigger->getinputdata();
+    
+    wave_period = (double)synthdata->rate / (16.0 * freq); 
+    dsa = 2.0 / wave_period;
+    dt0 = 4.0 / wave_period;
+    ddsi1 = 32.0 / (wave_period * wave_period);
+    phi0i = phi0 / 6.283 * wave_period;
+    for (l1 = 0; l1 < synthdata->poly; l1++) {
+      len = synthdata->cyclesize;
+      l2 = -1;
+      l2_out = 0;
+      do {
+        k = (len > 24) ? 16 : len;
+        l2 += k;
+        if (!trigger[l1] && (triggerData[l1][l2] > 0.5)) {
+          trigger[l1] = true;
+          t[l1] = 0;
+          state[l1] = 0;
+          dt[l1] = dt0;
+          r[l1] = -1;
+          dsi[l1] = 0;
+          ddsi0[l1] = ddsi1;
+          si[l1] = 1;
         }
-      } else {
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            data[0][l1][l2] = synthdata->wave_sine[(int)phi[l1]];
-            data[1][l1][l2] = synthdata->wave_tri[(int)phi[l1]]; 
-            data[2][l1][l2] = synthdata->wave_saw[(int)phi[l1]]; 
-            data[3][l1][l2] = synthdata->wave_saw2[(int)phi[l1]];
-            data[4][l1][l2] = synthdata->wave_rect[(int)phi[l1]];
-            phi[l1] += dphi;
-            while (phi[l1] < 0) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
-            if (!trigger[l1] && (triggerData[l1][l2] > 0.5)) {
-              trigger[l1] = true;
-              phi[l1] = 0;    
-            }
-            if (trigger[l1] && (triggerData[l1][l2] < 0.5)) {
-              trigger[l1] = false;
-            }
-          }
+        if (trigger[l1] && (triggerData[l1][l2] < 0.5)) {
+          trigger[l1] = false;
         }
-      }
+        if (t[l1] >= 1.0) {
+          state[l1] = 1;
+          dt[l1] = -dt0;
+          ddsi[l1] = ddsi0[l1];
+        } else if (t[l1] <= -1.0) {
+          state[l1] = 3;
+          dt[l1] = dt0;
+          ddsi[l1] = -ddsi0[l1];
+        } else if ((state[l1] == 1) && (t[l1] < 0)) {
+          state[l1] = 2;
+          r[l1] = 1;
+          dsi[l1] = 0;
+          ddsi0[l1] = ddsi1; // after one complete cycle update to new frequency
+          si[l1] = -1;
+        } else if ((state[l1] == 3) && (t[l1] > 0)) {
+          state[l1] = 0;
+          r[l1] = -1;
+          sa[l1] = -1;
+          dsi[l1] = 0;
+          si[l1] = 1;
+        }
+        dsi[l1] += ddsi[l1];
+        si[l1] += dsi[l1];
+        sa[l1] += dsa;
+        t[l1] += dt[l1];
+        len -= k;
+        ldsi = (si[l1] - old_si[l1]) / (double)k;
+        ldsa = (sa[l1] - old_sa[l1]) / (double)k;
+        ldt = (t[l1] - old_t[l1]) / (double)k;
+        ldr = (r[l1] - old_r[l1]) / (double)k;
+        while (k--) {
+          old_si[l1] += ldsi;
+          old_sa[l1] += ldsa;
+          old_t[l1] += ldt;
+          old_r[l1] += ldr;
+          data[0][l1][l2_out] = old_si[l1];
+          data[1][l1][l2_out] = old_t[l1];
+          data[2][l1][l2_out] = old_sa[l1];
+          data[3][l1][l2_out] = -old_sa[l1];
+          data[4][l1][l2_out] = old_r[l1];
+          l2_out++;
+        }
+      } while(len);  
+    }  
   }
   cycleProcessing = false;
   cycleReady = true;

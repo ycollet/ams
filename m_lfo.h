@@ -29,8 +29,12 @@ class M_lfo : public Module
 
   private:
     float freq, phi0;
-    float phi[MAXPOLY];
-    float wave_period;
+    double si[MAXPOLY], old_si[MAXPOLY];
+    double sa[MAXPOLY], old_sa[MAXPOLY];
+    double t[MAXPOLY], old_t[MAXPOLY];
+    double r[MAXPOLY], old_r[MAXPOLY];
+    int state[MAXPOLY];
+    double dt[MAXPOLY], dsi[MAXPOLY], ddsi[MAXPOLY], ddsi0[MAXPOLY], wave_period;
     bool trigger[MAXPOLY];
     Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect;
     float **triggerData;  
