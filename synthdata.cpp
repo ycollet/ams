@@ -117,6 +117,12 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
   withAlsa = false;
   for (int i = 0; i < MAX_PLAY_PORTS / 2; i++) play_mods [i] = 0;
   for (int i = 0; i < MAX_CAPT_PORTS / 2; i++) capt_mods [i] = 0;
+  colorBackground = QColor(COLOR_MAINWIN_BG);
+  colorModuleBackground = QColor(COLOR_MODULE_BG);
+  colorModuleBorder = QColor(195, 195, 195);
+  colorModuleFont = QColor(255, 255, 255);
+  colorPortFont1 = QColor(255, 255, 255);
+  colorPortFont2 = QColor(255, 240, 140);
 }
 
 SynthData::~SynthData()

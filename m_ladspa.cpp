@@ -332,14 +332,15 @@ M_ladspa::~M_ladspa() {
 void M_ladspa::paintEvent(QPaintEvent *ev) {
   
   QPainter p(this);
-  int l1;
+  int i;
   QString qs;
 
-  for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
-    p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
+  p.setPen(colorBorder);
+  for (int i = 0; i < 4; i++) { 
+    p.setPen(colorBorder.light(100 + 15 * i));
+    p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
   }
-  p.setPen(QColor(255, 255, 255));
+  p.setPen(colorFont);
   p.setFont(QFont("Helvetica", 10));
   qs.sprintf("LADSPA %s", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Label);
   p.drawText(10, 20, qs);

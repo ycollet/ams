@@ -14,6 +14,7 @@
 #include <qpixmap.h>
 #include <qvbox.h>
 #include <qpopupmenu.h>
+#include <qcolordialog.h>
 #include <qpointarray.h>
 #include <qmessagebox.h>
 #include <qsocketnotifier.h>
@@ -63,6 +64,14 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
                    this, SLOT(newM_ladspa(int, int, bool, bool)));
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
+  contextMenu = new QPopupMenu(this);
+  contextMenu->insertItem("Background Color", this, SLOT(colorBackgroundClicked()));
+  contextMenu->insertItem("Module Background Color", this, SLOT(colorModuleBackgroundClicked()));
+  contextMenu->insertItem("Module Border Color", this, SLOT(colorModuleBorderClicked()));
+  contextMenu->insertItem("Module Font Color", this, SLOT(colorModuleFontClicked()));
+  contextMenu->insertSeparator();
+  contextMenu->insertItem("Default Colors", this, SLOT(colorDefaultClicked()));
+  colorDefaultClicked();
 }
 
 ModularSynth::~ModularSynth()
@@ -83,7 +92,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   QColor cableColor, jackColor;
   int moduleX[2], moduleY[2];
 
-  pm.fill(QColor((unsigned int)COLOR_MAINWIN_BG));
+  pm.fill(colorBackground);
   p.setPen(QColor((unsigned int)COLOR_CONNECT_LINE));
   pen = new QPen(QColor(220, 216, 216), 3);
   for (l1 = 0; l1 < listModule.count(); l1++) {
@@ -189,6 +198,7 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
   case Qt::LeftButton:   
     break;
   case Qt::RightButton:
+    showContextMenu(ev->pos());  
     break;
   case Qt::MidButton:
     connectorStyle = (connectorStyle == CONNECTOR_STRAIGHT) ? CONNECTOR_BEZIER : CONNECTOR_STRAIGHT;
@@ -1119,6 +1129,76 @@ void ModularSynth::load() {
   load(&config_fn);
 }
 
+void ModularSynth::loadColors() {
+
+  QString config_fn, qs;
+  FILE *f;
+  char sc[2048];
+  int r, g, b;
+
+  if (presetPath.isEmpty()) {
+    if (!(config_fn = QString(QFileDialog::getOpenFileName(QString::null, "AlsaModularSynth Color files (*.acs)")))) {
+      return;
+    }
+  } else {
+      if (!(config_fn = QString(QFileDialog::getOpenFileName(presetPath, "AlsaModularSynth Color files (*.acs)")))) {
+      return;
+    }
+  }
+  if (!(f = fopen(config_fn, "r"))) {
+    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
+  } else {
+    while(fscanf(f, "%s", sc) != EOF) {
+      qs = QString(sc);
+      if (qs.contains("ColorBackground", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        colorBackground = QColor(r, g, b);
+      }        
+      if (qs.contains("ColorModuleBackground", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        colorModuleBackground = QColor(r, g, b);
+      }        
+      if (qs.contains("ColorModuleBorder", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        colorModuleBorder = QColor(r, g, b);
+      }        
+      if (qs.contains("ColorModuleFont", false)) {
+        fscanf(f, "%d", &r);   
+        fscanf(f, "%d", &g);   
+        fscanf(f, "%d", &b);   
+        colorModuleFont = QColor(r, g, b);
+      }        
+      refreshColors();
+    }      
+    fclose(f);
+  }        
+}
+
+void ModularSynth::saveColors() {
+
+  FILE *f;
+  QString config_fn, qs;
+  
+  if (!(config_fn = QString(QFileDialog::getSaveFileName(savePath, "AlsaModularSynth Color files (*.acs)")))) {
+    return;
+  }
+  if (!(f = fopen(config_fn, "w"))) { 
+    QMessageBox::information( this, "AlsaModularSynth", "Could not save file.");
+  } else {
+    fprintf(f, "ColorBackground %d %d %d\n", colorBackground.red(), colorBackground.green(), colorBackground.blue());
+    fprintf(f, "ColorModuleBackground %d %d %d\n", colorModuleBackground.red(), colorModuleBackground.green(), colorModuleBackground.blue());
+    fprintf(f, "ColorModuleBorder %d %d %d\n", colorModuleBorder.red(), colorModuleBorder.green(), colorModuleBorder.blue());
+    fprintf(f, "ColorModuleFont %d %d %d\n", colorModuleFont.red(), colorModuleFont.green(), colorModuleFont.blue());
+    fclose(f);
+  }
+}                             
+
 void ModularSynth::load(QString *presetName) {
 
   int l1, l2;
@@ -1777,4 +1857,85 @@ void ModularSynth::cleanUpSynth()
 {
   fprintf(stderr, "Closing synth...\n");
   delete this;
+}
+
+void ModularSynth::colorBackgroundClicked() {
+
+  QColor tmp;
+  
+  tmp = QColorDialog::getColor(colorBackground);
+  if (tmp.isValid()) {
+    colorBackground = tmp;
+  }
+}
+
+void ModularSynth::colorModuleBackgroundClicked() {
+
+  int l1;
+  QColor tmp;
+
+  tmp = QColorDialog::getColor(colorModuleBackground);
+  if (tmp.isValid()) {
+    colorModuleBackground = tmp;
+    refreshColors();
+  }
+}
+
+void ModularSynth::colorModuleBorderClicked() {
+
+  QColor tmp;
+
+  tmp = QColorDialog::getColor(colorModuleBorder);
+  if (tmp.isValid()) {       
+    colorModuleBorder = tmp;
+    refreshColors();
+  }
+}
+
+void ModularSynth::colorModuleFontClicked() {
+
+  QColor tmp;
+
+  tmp = QColorDialog::getColor(colorModuleFont);
+  if (tmp.isValid()) {       
+    colorModuleFont = tmp;    
+    refreshColors();
+  }
+}
+
+void ModularSynth::colorDefaultClicked() {
+
+  colorBackground = QColor(COLOR_MAINWIN_BG);
+  colorModuleBackground = QColor(COLOR_MODULE_BG);
+  colorModuleBorder = QColor(195, 195, 195);
+  colorModuleFont = QColor(255, 255, 255);
+  refreshColors();
+}
+
+void ModularSynth::showContextMenu(QPoint pos) {
+  
+    contextMenu->popup(mapToGlobal(pos));
+}
+
+void ModularSynth::refreshColors() {
+
+  int l1, l2;
+
+  synthdata->colorModuleBackground = colorModuleBackground;
+  synthdata->colorModuleBorder = colorModuleBorder;
+  synthdata->colorModuleFont = colorModuleFont;
+  synthdata->colorPortFont1 = colorModuleFont;
+  synthdata->colorPortFont2 = QColor(255, 240, 140);
+  for (l1 = 0; l1 < listModule.count(); l1++) {
+    listModule.at(l1)->setPalette(QPalette(colorModuleBackground, colorModuleBackground));
+    listModule.at(l1)->colorBorder = colorModuleBorder;
+    listModule.at(l1)->colorFont = colorModuleFont;
+    listModule.at(l1)->repaint(false);
+    for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
+      listModule.at(l1)->portList.at(l2)->setPalette(QPalette(colorModuleBackground, colorModuleBackground));
+      listModule.at(l1)->portList.at(l2)->colorFont1 = synthdata->colorPortFont1;
+      listModule.at(l1)->portList.at(l2)->colorFont2 = synthdata->colorPortFont2;
+      listModule.at(l1)->portList.at(l2)->repaint(false);
+    }
+  }      
 }

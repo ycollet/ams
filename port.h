@@ -43,7 +43,7 @@ class Port : public QWidget
     QList<Port> connectedPortList;
     dirType dir;
     int index, fontColor;
-    QColor jackColor, cableColor;
+    QColor jackColor, cableColor, colorBackground, colorFont1, colorFont2;
     outTypeEnum outType;
     bool highlighted;
     QValueList<outTypeEnum> outTypeAcceptList;

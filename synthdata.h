@@ -5,6 +5,7 @@
 #include <qobject.h>
 #include <qthread.h>
 #include <qstring.h>
+#include <qcolor.h>
 #include <qlist.h>
 #include <ladspa.h>
 #include <jack/jack.h>
@@ -78,6 +79,7 @@ class SynthData : public QObject
     QString jackName;
     int midi_out_port[2];
     int midiChannel;
+    QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
 
   private:
 

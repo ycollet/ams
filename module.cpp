@@ -30,8 +30,11 @@ Module::Module(int p_outPortCount, QWidget* parent, const char *name, SynthData 
   synthdata = p_synthdata;
   synthdata->incModuleCount();
   moduleID = synthdata->getModuleID();
+  colorBackground = synthdata->colorModuleBackground;
+  colorBorder = synthdata->colorModuleBorder;
+  colorFont = synthdata->colorModuleFont;
   synthdata->moduleList.append(this);
-  setPalette(QPalette(QColor(COLOR_MODULE_BG), QColor(COLOR_MODULE_BG)));
+  setPalette(QPalette(colorBackground, colorBackground));
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DEFAULT_HEIGHT);
   drag = false;
   configDialog = new ConfigDialog((QObject *)this, NULL, name, p_synthdata);
@@ -73,12 +76,13 @@ void Module::paintEvent(QPaintEvent *ev)
   QPainter p(this);
   QString  qs;
 
+  p.setPen(colorBorder);
   for (int i = 0; i < 4; i++)
   { 
-      p.setPen(QColor (195 + 20 * i, 195 + 20 * i, 195 + 20 * i));
+      p.setPen(colorBorder.light(100 + 15 * i));
       p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
   }
-  p.setPen(QColor(255, 255, 255));
+  p.setPen(colorFont);
   p.setFont(QFont("Helvetica", 10));
   p.drawText(10, 20, name ());
   p.setFont(QFont("Helvetica", 8)); 

@@ -137,8 +137,11 @@ int main(int argc, char *argv[])
   top->menuBar()->insertItem("&About", aboutMenu);
   filePopup->insertItem("&New", modularSynth, SLOT(clearConfig()));
   filePopup->insertSeparator();
-  filePopup->insertItem("&Load", modularSynth, SLOT(load()));
-  filePopup->insertItem("&Save", modularSynth, SLOT(save()));
+  filePopup->insertItem("&Load Patch", modularSynth, SLOT(load()));
+  filePopup->insertItem("&Save Patch", modularSynth, SLOT(save()));
+  filePopup->insertSeparator();
+  filePopup->insertItem("&Load Colors", modularSynth, SLOT(loadColors()));
+  filePopup->insertItem("&Save Colors", modularSynth, SLOT(saveColors()));
   filePopup->insertSeparator();
   filePopup->insertItem("&Quit", qApp, SLOT(quit()));
   synthesisPopup->insertItem("Start", modularSynth, SLOT(startSynth()));

@@ -18,6 +18,7 @@
 #include <qscrollview.h>
 #include <qlistview.h>
 #include <qpoint.h>
+#include <qcolor.h>
 #include <alsa/asoundlib.h>
 #include "main.h"
 #include "synthdata.h"
@@ -83,8 +84,10 @@ class ModularSynth : public QScrollView
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
     GuiWidget *guiWidget;
+    QPopupMenu *contextMenu;
     bool loadingPatch;
     const char *pcmname;
+    QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont;
     int   fsamp;
     int   frsize;
     int   nfrags;
@@ -109,6 +112,7 @@ class ModularSynth : public QScrollView
     void newM_vcorgan(int oscCount);
     void newM_dynamicwaves(int oscCount);
     void new_textEdit(int x, int y, int w, int h);
+    void showContextMenu(QPoint pos);
             
   public:
     ModularSynth (QWidget* parent, const char *pcmname, int fsamp, int frsize, int nfrags, 
@@ -198,8 +202,16 @@ class ModularSynth : public QScrollView
     void load(QString *presetName);
     void load();
     void save();
+    void loadColors();
+    void saveColors();
     void allVoicesOff();
     void cleanUpSynth();
+    void colorBackgroundClicked();
+    void colorModuleBackgroundClicked();
+    void colorModuleBorderClicked();
+    void colorModuleFontClicked();
+    void colorDefaultClicked();
+    void refreshColors();
 };
 
   

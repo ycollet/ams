@@ -9,6 +9,7 @@
 #include <qslider.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
+#include <qcolor.h>
 #include <qvbox.h>
 #include <qhbox.h>
 #include <qspinbox.h>
@@ -54,6 +55,7 @@ class Module : public QWidget
     QList<Port> portList;
     int moduleID, outPortCount;
     QListViewItem *listViewItem;
+    QColor colorBackground, colorBorder, colorFont;
 
   protected:
     SynthData *synthdata;

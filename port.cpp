@@ -30,7 +30,10 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* paren
   cableColor = QColor(COLOR_CONNECT_BEZ1);
   highlighted = false;
   index = p_index;
-  setPalette(QPalette(QColor(COLOR_MODULE_BG), QColor(COLOR_MODULE_BG)));
+  colorFont1 = synthdata->colorPortFont1;
+  colorFont2 = synthdata->colorPortFont2;
+  colorBackground = synthdata->colorModuleBackground;
+  setPalette(QPalette(colorBackground, colorBackground));
   setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("Disconnect", this, SLOT(disconnectClicked()));
@@ -76,8 +79,9 @@ void Port::paintEvent(QPaintEvent *ev) {
   QRect textRect;
   int l1;
 
+  p.setPen(synthdata->colorModuleBorder);
   for (l1 = 0; l1 < 4; l1++) {
-    p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
+    p.setPen(synthdata->colorModuleBorder.light(100 + 15 * l1));
     if (dir == PORT_IN) {
       p.drawLine(l1, 0, l1, height());
     } else {
@@ -87,9 +91,9 @@ void Port::paintEvent(QPaintEvent *ev) {
   p.setFont(QFont("Helvetica", 8));
 //  p.setPen(QColor(255, 220, 60));
   if (fontColor) {
-    p.setPen(QColor(255, 240, 140));
+    p.setPen(colorFont2);
   } else {
-    p.setPen(QColor(255, 255, 255));
+    p.setPen(colorFont1);
   }
   if (dir == PORT_IN) { 
     if (highlighted) {
@@ -225,10 +229,20 @@ void Port::cableYellowClicked() {
 
 void Port::jackColorClicked() {
 
-  jackColor = QColorDialog::getColor (jackColor);
+  QColor tmp;
+
+  tmp = QColorDialog::getColor (jackColor);
+  if (tmp.isValid()) {
+    jackColor = tmp;
+  }
 }
 
 void Port::cableColorClicked() {
 
-  cableColor = QColorDialog::getColor (cableColor);
+  QColor tmp;
+  
+  tmp = QColorDialog::getColor (cableColor);
+  if (tmp.isValid()) {
+    cableColor = tmp;
+  }
 }
