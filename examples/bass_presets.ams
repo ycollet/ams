@@ -103,19 +103,21 @@ FSlider 22 3 11536 0 0 16384 1
 FSlider 22 4 0 0 -1146880 0 1
 FSlider 22 5 0 0 -1146880 0 1
 FSlider 22 6 0 0 -1146880 0 1
-Frame "Filter Envelope"
+Tab "Filter"
+Tab "Oscillators / Reverb"
+Frame "Filter Envelope" 0
 Parameter "Attack" 18 1 0 16384 0
 Parameter "Decay" 18 3 0 16384 0
 Parameter "Exp FM gain" 20 2 0 163840 0
-Frame "Filter"
+Frame "Filter" 0
 Parameter "Frequency" 20 1 -81920 81920 0
 Parameter "Resonance" 20 3 0 16384 0
 Parameter "Input gain (dB)" 20 0 -983040 163840 0
-Frame "Reverb"
+Frame "Reverb" 1
 Parameter "Early reflection level" 22 5 -983040 163840 0
 Parameter "Reverb time (s)" 22 1 1638 5898240 0
 Parameter "Tail level (dB)" 22 6 -1146880 0 0
-Frame "Oscillators"
+Frame "Oscillators" 1
 Parameter "Octave" 14 0 
 Parameter "Octave" 15 0 
 Parameter "Octave" 5 0 

@@ -33,6 +33,11 @@
 class GuiWidget : public QVBox
 {
   Q_OBJECT
+
+  struct GuiFrame {
+    int tabIndex;
+    QVBox *frameBox;
+  };
   
   private:
     SynthData *synthdata;
@@ -40,13 +45,13 @@ class GuiWidget : public QVBox
     QHBox *currentGroupBox;
     QTabWidget *tabWidget;
     QHBox *currentTab;
-    int currentPreset;
+    int currentPreset, currentTabIndex;
     QLabel *presetLabel, *presetCountLabel;
    
   public: 
     int presetCount;
     QStringList frameNameList;
-    QList<QVBox> frameBoxList;
+    QList<GuiFrame> frameBoxList;
     QStringList tabNameList;
     QList<QHBox> tabList;
     QList<MidiGUIcomponent> parameterList;

@@ -41,6 +41,7 @@ GuiWidget::GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name)
   tabWidget = new QTabWidget(this);
   currentTab = NULL;
   currentGroupBox = NULL;
+  currentTabIndex = 0;
   new QWidget(presetContainer);
   QPushButton *addPresetButton = new QPushButton("Add Preset", presetContainer);
   new QWidget(presetContainer);
@@ -78,8 +79,12 @@ int GuiWidget::addFrame(QString frameName) {
   QGroupBox *gbox = new QGroupBox(1, Qt::Horizontal, frameName, currentTab);
   QVBox *vbox = new QVBox(gbox, frameName);
   gbox->show();
-  frameBoxList.append(vbox);
+  GuiFrame *guiFrame = new GuiFrame;
+  guiFrame->frameBox = vbox;
+  guiFrame->tabIndex = currentTabIndex;
+  frameBoxList.append(guiFrame);
   currentGroupBox = vbox;
+  vbox->show();
   new QWidget(currentGroupBox);
   return(0);  
 }
@@ -87,7 +92,8 @@ int GuiWidget::addFrame(QString frameName) {
 int GuiWidget::setFrame(int index) {
 
 //  fprintf(stderr, "Setting frame index %d.\n", index);  
-  currentGroupBox = frameBoxList.at(index);
+  currentGroupBox = frameBoxList.at(index)->frameBox;
+  currentGroupBox->show();
   return(0);  
 }
 
@@ -95,7 +101,8 @@ int GuiWidget::addTab(QString tabName) {
   
   printf("Adding tab %s.\n", tabName.latin1());
   tabNameList.append(tabName);
-  currentTab = new QHBox(this);
+  currentTab = new QHBox(this, tabName);
+  currentTabIndex = tabNameList.count() - 1;
   tabWidget->insertTab(currentTab, tabName);
   currentTab->show();
   tabList.append(currentTab);
@@ -106,6 +113,8 @@ int GuiWidget::setTab(int index) {
 
   fprintf(stderr, "Setting tab index %d.\n", index);  
   currentTab = tabList.at(index);
+  currentTab->show();
+  currentTabIndex = index;
   return(0);  
 }
 

@@ -101,27 +101,29 @@ FSlider 12 1 16384 0 0 32768 1
 FSlider 12 2 16384 0 0 32768 1
 FSlider 12 3 16384 0 0 32768 1
 FSlider 12 4 16384 0 0 32768 1
-Frame "Envelope Attack Level"
+Tab "Envelope"
+Tab "Filter"
+Frame "Envelope Attack Level" 0 
 Parameter "Attack Level 0 ID 1" 1 4 0 16384 0
 Parameter "Attack Level 1 ID 1" 1 6 0 16384 0
 Parameter "Attack Level 2 ID 1" 1 8 0 16384 0
-Frame "Envelope Attack Time"
+Frame "Envelope Attack Time" 0
 Parameter "Attack Time 0 ID 1" 1 3 0 16384 0
 Parameter "Attack Time 1 ID 1" 1 5 0 16384 0
 Parameter "Attack Time 2 ID 1" 1 7 0 16384 0
 Parameter "Attack Time 3 ID 1" 1 9 0 16384 0
-Frame "Envelope Release Level"
+Frame "Envelope Release Level" 0
 Parameter "Release Level 0  ID 1" 1 11 0 16384 0
 Parameter "Release Level 1  ID 1" 1 13 0 16384 0
-Frame "Envelope Release Time"
+Frame "Envelope Release Time" 0
 Parameter "Release Time 0  ID 1" 1 10 0 16384 0
 Parameter "Release Time 1  ID 1" 1 12 0 16384 0
 Parameter "Release Time 2  ID 1" 1 14 0 16384 0
-Frame "Envelope General Settings"
+Frame "Envelope General Settings" 0
 Parameter "Sustain  ID 1" 1 1 0 16384 0
 Parameter "Time Scale  ID 1" 1 0 1638 163840 0
 Parameter "Delay  ID 1" 1 2 0 16384 0
-Frame "Filter"
+Frame "Filter" 1
 Parameter "Cutoff" 3 1 -81920 81920 0
 Parameter "Resonance" 3 3 0 16384 0
 Parameter "Filter Envelope Amount" 3 2 0 163840 0

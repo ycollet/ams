@@ -239,6 +239,7 @@ void MidiWidget::addToParameterViewClicked() {
       if ((l1 =((GuiWidget *)synthdata->guiWidget)->tabNameList.findIndex(qs3.stripWhiteSpace())) >= 0) {
         foundTabName = true;
         tabIndex = l1;
+        ((GuiWidget *)synthdata->guiWidget)->setTab(tabIndex);
       } else {
         qs2.sprintf("Tab %s does not exist. Create ?", qs3.latin1());
         QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,

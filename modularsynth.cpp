@@ -1504,6 +1504,18 @@ void ModularSynth::load(QString *presetName) {
         }
         listTextEdit.at(textEditID)->textEdit->insertParagraph(para, index);
       }
+      if (qs.contains("Tab", false)) {
+        qs.truncate(0);
+        do {
+          fscanf(f, "%s", sc);
+          qs += QString(sc);
+          if (qs.right(1) != "\"") {
+            qs += " ";
+          }
+        } while (qs.right(1) != "\"");
+        qs = qs.mid(1, qs.length()-2);
+        guiWidget->addTab(qs);
+      }
       if (qs.contains("Frame", false)) {
         qs.truncate(0);
         do {
@@ -1514,6 +1526,8 @@ void ModularSynth::load(QString *presetName) {
           }
         } while (qs.right(1) != "\"");
         qs = qs.mid(1, qs.length()-2);
+        fscanf(f, "%d", &index);
+        guiWidget->setTab(index);
         guiWidget->addFrame(qs);
       }
       if (qs.contains("Parameter", false)) {
@@ -1641,11 +1655,17 @@ void ModularSynth::save() {
         fprintf(f, "#ARAP#\n");
       }
     }
-
+//    fprintf(stderr, "Saving Tabs\n");
+//    fprintf(stderr, "TabName count: %d Tab count: %d\n", guiWidget->tabNameList.count(), guiWidget->tabList.count());
+    for (l1 = 0; l1 < guiWidget->tabList.count(); l1++) {
+      fprintf(f, "Tab \"%s\"\n", guiWidget->tabList.at(l1)->name());
+    }
+//    fprintf(stderr, "Saving Frames\n");
     for (l1 = 0; l1 < guiWidget->frameBoxList.count(); l1++) {
-      fprintf(f, "Frame \"%s\"\n", guiWidget->frameBoxList.at(l1)->name());
+      fprintf(f, "Frame \"%s\" %d\n", guiWidget->frameBoxList.at(l1)->frameBox->name(),
+                                      guiWidget->frameBoxList.at(l1)->tabIndex);
       for (l2 = 0; l2 < guiWidget->parameterList.count(); l2++) {
-        if (guiWidget->parameterList.at(l2)->parent() == guiWidget->frameBoxList.at(l1)) {
+        if (guiWidget->parameterList.at(l2)->parent() == guiWidget->frameBoxList.at(l1)->frameBox) {
           fprintf(f, "Parameter \"%s\" %d %d ", guiWidget->parameterList.at(l2)->name(), 
                                          ((Module *)guiWidget->parameterList.at(l2)->parentModule)->moduleID, 
                                          guiWidget->parameterList.at(l2)->midiGUIcomponentListIndex);
@@ -1666,7 +1686,7 @@ void ModularSynth::save() {
         fprintf(f, "Program %d %d\n", l1, value);
       } 
     }
-
+    
     fclose(f);
   }
 }

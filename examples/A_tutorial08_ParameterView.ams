@@ -101,37 +101,40 @@ The Parameter View allows you to build your own GUIs for your patches. Any param
 #PARA# 0 0 3
 Note that all presets are lost when you add new parameters, therefore design your GUI first ! 
 #ARAP#
-Frame "Filter Envelope"
+Tab "Oscillators / LFO"
+Tab "Mixer / Filter"
+Tab "Envelopes"
+Frame "Filter Envelope" 2
 Parameter "Attack ID 7" 7 1 -113175 0 1
 Parameter "Decay ID 7" 7 3 -113175 0 1
 Parameter "Hold ID 7" 7 2 0 16384 0
 Parameter "Sustain ID 7" 7 4 0 16384 0
 Parameter "Release ID 7" 7 5 -113175 0 1
-Frame "Volume Envelope"
+Frame "Volume Envelope" 2
 Parameter "Attack ID 6" 6 1 -113175 0 1
 Parameter "Decay ID 6" 6 3 -113175 0 1
 Parameter "Hold ID 6" 6 2 0 16384 0
 Parameter "Sustain ID 6" 6 4 0 16384 0
 Parameter "Release ID 6" 6 5 -113175 0 1
-Frame "Oscillators"
+Frame "Oscillators" 0
 Parameter "Octave ID 1" 1 0 
 Parameter "Octave ID 2" 2 0 
 Parameter "Tune ID 2" 2 1 0 1625 0
 Parameter "PW ID 1" 1 4 1638 14745 0
 Parameter "PW ID 2" 2 4 1638 14745 0
-Frame "Mixer"
+Frame "Mixer" 1
 Parameter "Gain ID 9" 9 0 0 32768 0
 Parameter "Volume 0 ID 9" 9 1 0 32768 0
 Parameter "Volume 1 ID 9" 9 2 0 32768 0
 Parameter "Volume 2 ID 9" 9 3 0 32768 0
 Parameter "Volume 3 ID 9" 9 4 0 32768 0
-Frame "Filter"
+Frame "Filter" 1
 Parameter "Frequency ID 8" 8 1 -81920 81920 0
 Parameter "Resonance ID 8" 8 3 0 16384 0
 Parameter "Filter Envelope Amount" 8 2 0 163840 0
 Parameter "Input gain (dB) ID 8" 8 0 -983040 163840 0
 Parameter "Output gain (dB) ID 8" 8 5 -245760 245760 0
-Frame "LFO"
+Frame "LFO" 0
 Parameter "Frequency ID 10" 10 0 -75451 75449 1
 Parameter "LFO Modulation VCO 1" 1 8 -113175 37723 1
 Parameter "LFO Modulation VCO 2" 2 8 -113175 37723 1
