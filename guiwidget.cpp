@@ -54,13 +54,12 @@ GuiWidget::GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name)
   new QWidget(presetContainer);
   QPushButton *decButton = new QPushButton("-1", presetContainer);  
   QObject::connect(decButton, SIGNAL(clicked()), this, SLOT(presetDec()));
+  QPushButton *incButton = new QPushButton("+1", presetContainer);  
+  QObject::connect(incButton, SIGNAL(clicked()), this, SLOT(presetInc()));
   new QWidget(presetContainer);
   presetLabel = new QLabel(presetContainer);
   new QWidget(presetContainer);
   presetLabel->setText("Preset: 0");
-  QPushButton *incButton = new QPushButton("+1", presetContainer);  
-  QObject::connect(incButton, SIGNAL(clicked()), this, SLOT(presetInc()));
-  new QWidget(presetContainer);
   setPresetCount(0);
   setCurrentPreset(0);
 }
