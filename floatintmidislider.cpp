@@ -67,6 +67,7 @@ void FloatIntMidiSlider::setMidiValue(int value) {
     controllerOK = abs(getMidiValue() - value) < 4;
   }
   if (controllerOK) {
+
     if (midiSign == 1) {
       slider->setValue( slider->minValue() + rint(float(slider->maxValue() - slider->minValue()) * (float)value / 127.0));
     } else {

@@ -59,7 +59,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
     phi += dphi;
   }
   for (l1 = 0; l1 < EXP_TABLE_LEN; l1++) {
-    exp_data[l1] = exp(float(l1) / 1000.0 - 16.0);
+    exp_data[l1] = exp(l1 / 1000.0 - 16.0);
   }
   dy = 2.0 / (float)(WAVE_PERIOD - decaytime);  
   dyd = 2.0 / decaytime;

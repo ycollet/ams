@@ -299,7 +299,7 @@ snd_seq_t *ModularSynth::open_seq() {
       exit(1);
     }
   }
-  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d", clientid, portid);
+  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setCaption(qs);
   synthdata->jackName.sprintf("ams_%d_%d", clientid, portid);
   return(seq_handle);
@@ -1130,7 +1130,7 @@ void ModularSynth::clearConfig() {
   bool restartSynth;
   QString qs;
 
-  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d", clientid, portid);
+  qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setCaption(qs);
   restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
@@ -1191,7 +1191,7 @@ void ModularSynth::load(QString *presetName) {
   } else {
     clearConfig();
     qs2 = config_fn.mid(config_fn.findRev('/') + 1);
-    qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - %s", clientid, portid, qs2.latin1());
+    qs.sprintf("AlsaModularSynth 1.7.1 - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.latin1());
     mainWindow->setCaption(qs);
     ladspaLoadErr = false;
     commentFlag = false;
@@ -1434,7 +1434,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); l1++) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);
+            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
             break;
           }
@@ -1447,7 +1447,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); l1++) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);
+            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
             break;
           }

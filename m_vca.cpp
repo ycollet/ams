@@ -55,19 +55,11 @@ M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name, SynthData *p_syn
   if (expMode) qs.sprintf("Exp. VCA ID %d", moduleID);
   else         qs.sprintf("Lin. VCA ID %d", moduleID);
   configDialog->setCaption(qs);
-  if (expMode) {
-    configDialog->addSlider(0, 10, gain1, "Gain", &gain1, true);
-    configDialog->addSlider(0, 10, gain2, "Gain 1", &gain2, true);
-    configDialog->addSlider(0, 2, in1, "In 0", &in1, true);
-    configDialog->addSlider(0, 2, in2, "In 1", &in2, true);
-    configDialog->addSlider(0, 2, out, "Output level", &out, true);
-  } else {
-    configDialog->addSlider(0, 10, gain1, "Gain", &gain1);
-    configDialog->addSlider(0, 10, gain2, "Gain 1", &gain2);
-    configDialog->addSlider(0, 2, in1, "In 0", &in1);
-    configDialog->addSlider(0, 2, in2, "In 1", &in2);
-    configDialog->addSlider(0, 2, out, "Output level", &out);
-  }
+  configDialog->addSlider(0, 1, gain1, "Gain", &gain1);
+  configDialog->addSlider(0, 1, gain2, "Gain 1", &gain2);
+  configDialog->addSlider(0, 2, in1, "In 0", &in1);
+  configDialog->addSlider(0, 2, in2, "In 1", &in2);
+  configDialog->addSlider(0, 2, out, "Output level", &out);
 }
 
 M_vca::~M_vca() {
@@ -76,7 +68,7 @@ M_vca::~M_vca() {
 void M_vca::generateCycle() {
 
   int l1, l2;
-  float exp0;
+  float  v, g;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -87,13 +79,11 @@ void M_vca::generateCycle() {
     inData2 = port_M_in2->getinputdata ();
 
     if (expMode) {
-      exp0 = synthdata->exp_table(0);
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = (gain1 
-                             + synthdata->exp_table(gainData1[l1][l2]) - exp0
-                             + gain2 * (synthdata->exp_table(gainData2[l1][l2]-1.0)-exp0))
-                          * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
+	  v = gain1 + gainData1[l1][l2] + gain2 * gainData2[l1][l2];                      
+          g = (v > 0) ? synthdata->exp_table ((v - 1.0) * 9.21) : 0;  // This gives a range of 80 dB
+          data[0][l1][l2] = g * out * (in1 * inData1[l1][l2] + in2 * inData2[l1][l2]);
         }
       }  
     } else {
