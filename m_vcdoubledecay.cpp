@@ -16,17 +16,17 @@
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "m_vcenv2.h"
+#include "m_vcdoubledecay.h"
 #include "port.h"
 
-M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata) 
+M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name, SynthData *p_synthdata) 
               : Module(1, parent, name, p_synthdata) {
 
   QString qs;
   int l1;
 
-  M_type = M_type_vcenv2;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV2_WIDTH, MODULE_VCENV2_HEIGHT);
+  M_type = M_type_vcdoubledecay;
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCDOUBLEDECAY_WIDTH, MODULE_VCDOUBLEDECAY_HEIGHT);
   port_M_gate = new Port("Gate", PORT_IN, 0, this, synthdata); 
   port_M_gate->move(0, 35);
   port_M_gate->outTypeAcceptList.append(outType_audio);
@@ -35,7 +35,7 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_M_retrigger->move(0, 55);
   port_M_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_retrigger);
-  port_M_attack = new Port("Attack", PORT_IN, 2, this, synthdata); 
+  port_M_attack = new Port("Attack", PORT_IN, 2, this, synthdata);
   port_M_attack->move(0, 75);
   port_M_attack->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_attack);
@@ -47,19 +47,19 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_M_sustain->move(0, 115);
   port_M_sustain->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_sustain);
-  port_M_release = new Port("Release", PORT_IN, 5, this, synthdata); 
-  port_M_release->move(0, 135);
-  port_M_release->outTypeAcceptList.append(outType_audio);
-  portList.append(port_M_release);
+  port_M_ratio = new Port("Ratio", PORT_IN, 5, this, synthdata); 
+  port_M_ratio->move(0, 135);
+  port_M_ratio->outTypeAcceptList.append(outType_audio);
+  portList.append(port_M_ratio);
   port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
   port_out->move(width() - port_out->width(), 155);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VC Envelope II ID %d", moduleID);
-  a0 = 0.0;
-  d0 = 0.0;
+  qs.sprintf("VC Double Decay ID %d", moduleID);
+  a0 = 0.1;
+  d0 = 0.1;
   s0 = 0.7;
-  r0 = 0.0;
+  r0 = 0.1;
   aGain = 1.0;
   dGain = 1.0;
   sGain = 1.0;
@@ -70,25 +70,26 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata)
     state[l1] = 0;
     noteActive[l1] = false;
     e[l1] = 0;
+    e2[l1] = 0;
   }
   configDialog->addSlider(-8, 8, a0, "Attack Offset", &a0);
   configDialog->addSlider(-8, 8, d0, "Decay Offset", &d0);
   configDialog->addSlider(0, 1, s0, "Sustain Offset", &s0);
-  configDialog->addSlider(-8, 8, r0, "Release Offset", &r0);
+  configDialog->addSlider(0, 1, r0, "Ratio Offset", &r0);
   configDialog->addSlider(-8, 8, aGain, "Attack Gain", &aGain);
   configDialog->addSlider(-8, 8, dGain, "Decay Gain", &dGain);
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
-  configDialog->addSlider(-8, 8, rGain, "Release Gain", &rGain);
+  configDialog->addSlider(0, 1, rGain, "Ratio Gain", &rGain);
   configDialog->setCaption(qs);
 }
 
-M_vcenv2::~M_vcenv2() {
+M_vcdoubledecay::~M_vcdoubledecay() {
 }
 
-void M_vcenv2::generateCycle() {
+void M_vcdoubledecay::generateCycle() {
 
   int l1, l2;
-  double ts, tsr, tsn, tmp, c, n, log2;
+  double ts, tsr, tsn, tmp, c1, c2, n1, n, c, log2, s, astep;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -98,7 +99,7 @@ void M_vcenv2::generateCycle() {
     attackData = port_M_attack->getinputdata ();
     decayData = port_M_decay->getinputdata ();
     sustainData = port_M_sustain->getinputdata ();
-    releaseData = port_M_release->getinputdata ();
+    ratioData = port_M_ratio->getinputdata ();
 
     ts = 1.0;
     tsr = ts / (double)synthdata->rate;
@@ -114,7 +115,7 @@ void M_vcenv2::generateCycle() {
         }
         if (gate[l1] && gateData[l1][l2] < 0.5) {
           gate[l1] = false;
-          state[l1] = 4;
+          state[l1] = 3;
         }
         if (!retrigger[l1] && retriggerData[l1][l2] > 0.5) {
           retrigger[l1] = true; 
@@ -125,39 +126,47 @@ void M_vcenv2::generateCycle() {
         if (retrigger[l1] && retriggerData[l1][l2] < 0.5) {
           retrigger[l1] = false;
         }
+        s = s0 + sGain * sustainData[l1][l2];
         switch (state[l1]) {
           case 0: e[l1] = 0;
+                  e2[l1] = 0;
                   break;
-          case 1: e[l1] += ((tmp = synthdata->exp_table(log2 * (a0 + aGain * attackData[l1][l2]))) > 0.001) ? tsr / tmp : tsr / 0.001;
+          case 1: astep = ((tmp = synthdata->exp_table(log2 * (a0 + aGain * attackData[l1][l2]))) > 0.001) ? tsr / tmp : tsr / 0.001;
+                  e[l1] += astep;
+                  e2[l1] += astep;
                   if (e[l1] >= 1.0) {
                     state[l1] = 2;
                     e[l1] = 1.0;
                   }
-                  break;
-          case 2: n = tsn * (synthdata->exp_table(log2 * (d0 + dGain * decayData[l1][l2])));
-                  if (n < 1) n = 1;
-                  c = 2.3 / n; 
-                  e[l1] *= exp(-c);            
-                  if (e[l1] <= s0 + sGain * sustainData[l1][l2]) {
-                    state[l1] = 3;
-                  } else {
-                    break;
+                  if (e2[l1] >= 1.0) {
+                    e2[l1] = 1.0;
                   }
-          case 3: e[l1] = s0 + sGain * sustainData[l1][l2];
                   break;
-          case 4: n = tsn * (synthdata->exp_table(log2 * (r0 + rGain * releaseData[l1][l2])));
+          case 2: n1 = tsn * (synthdata->exp_table(log2 * (d0 + dGain * decayData[l1][l2])));
+                  if (n1 < 1) n1 = 1;
+                  c1 = 2.3 / n1; 
+                  c2 = c1 * (r0 + rGain * ratioData[l1][l2]);
+                  if (c2 < 0) c2 = 0;
+                  e[l1] *= exp(-c1);
+                  e2[l1] *= exp(-c2);           
+                  break;
+          case 3: n = tsn * (synthdata->exp_table(log2 * (d0 + dGain * decayData[l1][l2])));
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);      
+                  e2[l1] *= exp(-c);
                   if (e[l1] <= 0.000001) {
                     e[l1] = 0;
+                    e2[l1] = 0;
                     state[l1] = 0;
                     noteActive[l1] = false;
                   }
                   break;
           default: e[l1] = 0;
+                   e2[l1] = 0;
+                   data[0][l1][l2] = e[l1];
         }
-        data[0][l1][l2] = e[l1];
+        data[0][l1][l2] = (1.0 - s) * e[l1] + s * e2[l1];
       }
     }
   }
@@ -165,5 +174,5 @@ void M_vcenv2::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcenv2::showConfigDialog() {
+void M_vcdoubledecay::showConfigDialog() {
 }

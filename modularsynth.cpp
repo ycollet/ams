@@ -725,6 +725,12 @@ void ModularSynth::newM_vcenv2() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_vcdoubledecay() {
+
+  M_vcdoubledecay *m = new M_vcdoubledecay(viewport(), "VC Double Decay", synthdata);
+  initNewModule((Module *)m);
+}
+
 void ModularSynth::newM_vcpanning() {
 
   M_vcpanning *m = new M_vcpanning(viewport(), "VC Panning", synthdata);
@@ -1360,6 +1366,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_vcenv2: 
             newM_vcenv2();
+            break;
+          case M_type_vcdoubledecay: 
+            newM_vcdoubledecay();
             break;
           case M_type_vcpanning: 
             newM_vcpanning();

@@ -49,6 +49,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_vcpanning.o m_vcpanning.moc.o \
 	m_vcenv.o m_vcenv.moc.o \
 	m_vcenv2.o m_vcenv2.moc.o \
+	m_vcdoubledecay.o m_vcdoubledecay.moc.o \
 	m_advenv.o m_advenv.moc.o \
 	m_ringmod.o m_ringmod.moc.o \
 	m_inv.o m_inv.moc.o \
@@ -90,14 +91,14 @@ modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
-	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h main.h
+	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h main.h
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
-	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h
+	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h
 modularsynth.moc.cpp: modularsynth.h modularsynth.cpp
 	$(QT_BIN_DIR)/moc modularsynth.h -o modularsynth.moc.cpp
 main.o: main.cpp modularsynth.h main.h
@@ -243,6 +244,10 @@ m_vcenv2.o: m_vcenv2.cpp m_vcenv2.h synthdata.h module.h port.h
 m_vcenv2.moc.o: m_vcenv2.moc.cpp m_vcenv2.h synthdata.h module.h port.h
 m_vcenv2.moc.cpp: m_vcenv2.h m_vcenv2.cpp
 	$(QT_BIN_DIR)/moc m_vcenv2.h -o m_vcenv2.moc.cpp
+m_vcdoubledecay.o: m_vcdoubledecay.cpp m_vcdoubledecay.h synthdata.h module.h port.h
+m_vcdoubledecay.moc.o: m_vcdoubledecay.moc.cpp m_vcdoubledecay.h synthdata.h module.h port.h
+m_vcdoubledecay.moc.cpp: m_vcdoubledecay.h m_vcdoubledecay.cpp
+	$(QT_BIN_DIR)/moc m_vcdoubledecay.h -o m_vcdoubledecay.moc.cpp
 m_vcpanning.o: m_vcpanning.cpp m_vcpanning.h synthdata.h module.h port.h
 m_vcpanning.moc.o: m_vcpanning.moc.cpp m_vcpanning.h synthdata.h module.h port.h
 m_vcpanning.moc.cpp: m_vcpanning.h m_vcpanning.cpp

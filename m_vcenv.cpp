@@ -20,7 +20,7 @@
 #include "port.h"
 
 M_vcenv::M_vcenv(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(6, parent, name, p_synthdata) {
+              : Module(1, parent, name, p_synthdata) {
 
   QString qs;
   int l1;
@@ -71,7 +71,7 @@ M_vcenv::M_vcenv(QWidget* parent, const char *name, SynthData *p_synthdata)
     retrigger[l1] = false;
     state[l1] = 0;
     noteActive[l1] = false;
-    e[1] = 0;
+    e[l1] = 0;
     old_e[l1] = 0;
   }
   configDialog->addSlider(0, 1, a0, "Attack Offset", &a0);

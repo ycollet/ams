@@ -187,6 +187,7 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Stereo Mixer 2", modularSynth, SLOT(newM_stereomix_2()));
   newModulePopup->insertItem("Stereo Mixer 4", modularSynth, SLOT(newM_stereomix_4())); 
   newModulePopup->insertItem("Stereo Mixer 8", modularSynth, SLOT(newM_stereomix_8())); 
+  newModulePopup->insertItem("VC Double Decay", modularSynth, SLOT(newM_vcdoubledecay()));
   newModulePopup->insertItem("VC Envelope", modularSynth, SLOT(newM_vcenv()));
   newModulePopup->insertItem("VC Envelope II", modularSynth, SLOT(newM_vcenv2()));
   newModulePopup->insertItem("VC Organ (4 Oscillators)", modularSynth, SLOT(newM_vcorgan_4()));

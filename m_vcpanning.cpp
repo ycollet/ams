@@ -72,6 +72,8 @@ M_vcpanning::M_vcpanning(QWidget* parent, const char *name, SynthData *p_synthda
   panModeNames->append("Fixed alternating panorama, full width");
   panModeNames->append("Fixed alternating panorama, half width");
   panModeNames->append("Fixed alternating panorama, quarter width");
+  panModeNames->append("Sort by pitch, Low <--> High");
+  panModeNames->append("Sort by pitch, High <--> Low");
   panModeNames->append("Mono");
   configDialog->addComboBox(0, "Panning Mode", &panMode, panModeNames->count(), panModeNames);
   qs.sprintf("VC Panning ID %d", moduleID);
@@ -84,13 +86,14 @@ M_vcpanning::~M_vcpanning() {
 void M_vcpanning::generateCycle() {
 
   int l1, l2;
-  double pan[2], x, y, x_2;
+  double pan[2], x, y, x_2, widthConst;
 
   if (!cycleReady) {
     cycleProcessing = true;
 
     inData = port_M_in->getinputdata ();
     panData = port_M_pan->getinputdata ();
+    widthConst = 2.0 / 88.0;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         switch (panMode) {
@@ -128,7 +131,27 @@ void M_vcpanning::generateCycle() {
                   data[0][l1][l2] = pan[0] * inData[l1][l2];
                   data[1][l1][l2] = pan[1] * inData[l1][l2];
                   break; 
-          case 4: data[0][l1][l2] = inData[l1][l2];
+          case 4: x = ((double)(synthdata->notes[l1] - 21) * widthConst - 1.0 ) * panGain + panOffset;
+                  if (x < -1) x = -1;
+                  if (x > 1) x = 1;
+                  x_2 = 0.5 * x;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;    
+                  pan[0] = (0.5 - x_2) + y;  
+                  data[0][l1][l2] = pan[0] * inData[l1][l2];
+                  data[1][l1][l2] = pan[1] * inData[l1][l2];
+                  break; 
+          case 5: x = ((double)(88 - (synthdata->notes[l1] - 21)) * widthConst - 1.0) * panGain + panOffset;
+                  if (x < -1) x = -1;
+                  if (x > 1) x = 1;
+                  x_2 = 0.5 * x;
+                  y = 0.2125 * (1.0 - x * x);
+                  pan[1] = (0.5 + x_2) + y;    
+                  pan[0] = (0.5 - x_2) + y;  
+                  data[0][l1][l2] = pan[0] * inData[l1][l2];
+                  data[1][l1][l2] = pan[1] * inData[l1][l2];
+                  break; 
+          case 6: data[0][l1][l2] = inData[l1][l2];
                   data[1][l1][l2] = inData[l1][l2];
                   break;
         }

@@ -60,6 +60,7 @@
 #include "m_quantizer.h"
 #include "m_scquantizer.h"
 #include "m_function.h"
+#include "m_vcdoubledecay.h"
 #include "midiwidget.h"
 #include "guiwidget.h"
 #include "textedit.h"
@@ -149,6 +150,7 @@ class ModularSynth : public QScrollView
     void newM_env();
     void newM_vcenv();
     void newM_vcenv2();
+    void newM_vcdoubledecay();
     void newM_vcpanning();
     void newM_advenv();
     void newM_mcv();
