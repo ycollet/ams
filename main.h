@@ -26,6 +26,7 @@
 #define WAVE_PERIOD             65536
 #define M_MCV_MAX_FREQ        20000.0
 #define EXP_TABLE_LEN           32768
+#define MAX_LADPSA_CONTROLS_PER_TAB 8
 
 // Appearance
 #define DEFAULT_WIDTH             750
