@@ -36,9 +36,7 @@ class M_advmcv : public Module
   public: 
     int  pitch, channel, controller_num[MODULE_ADVMCV_CONTROLLER_PORTS];
     float freq[MAXPOLY], trig[MAXPOLY], aftertouch_cv[MAXPOLY], pitchbend_cv[MAXPOLY];
-    float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY], detune_sign[MAXPOLY];
-    float drift_sign[MAXPOLY][MAXDRIFTARR];
-    int drift_pointer;
+    float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY];
                 
   public:
     M_advmcv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);

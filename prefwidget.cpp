@@ -27,8 +27,6 @@
 
 PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name) 
                 : QVBox(parent, name) {
- 
-  QString qs;
 
   setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
   setMargin(10);
@@ -41,7 +39,7 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   QVBox *midiBox = new QVBox(tabWidget);
   QVBox *pathBox = new QVBox(tabWidget);
   tabWidget->insertTab(colorBox, "Colors");
-  tabWidget->insertTab(midiBox, "MIDI / Drift");
+  tabWidget->insertTab(midiBox, "MIDI");
   tabWidget->insertTab(pathBox, "Paths");
   QWidget *colorGridWidget = new QWidget(colorBox);
   QGridLayout *colorLayout = new QGridLayout(colorGridWidget, 12, 2, 10);
@@ -101,7 +99,6 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   QObject::connect(changeColorCableButton, SIGNAL(clicked()), this, SLOT(colorCableClicked()));
   QObject::connect(changeColorJackButton, SIGNAL(clicked()), this, SLOT(colorJackClicked()));
 
-  new QWidget(midiBox);
   QHBox *midiModeSelectorBox = new QHBox(midiBox);
   new QWidget(midiModeSelectorBox);
   QLabel *midiModeLabel = new QLabel("MIDI Controller Mode: ", midiModeSelectorBox);
@@ -115,33 +112,6 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   midiModeComboBox->insertStrList(midiModeNames);
   midiModeComboBox->setCurrentItem(midiControllerMode);
   QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiMode(int)));                
-
-  new QWidget(midiBox);
-  detuneAmpLabel = new QLabel(midiBox);
-  qs.sprintf("Detune Amplitude: %3.1f", detune_amp);
-  detuneAmpLabel->setText(qs);
-  detuneAmpSlider = new QSlider(0, 10000, 100, detune_amp * 100.0, QSlider::Horizontal, midiBox);
-  QObject::connect(detuneAmpSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDetuneAmp(int)));                
-  detuneRateLabel = new QLabel(midiBox);
-  qs.sprintf("Detune Rate: %3.1f", detune_rate);
-  detuneRateLabel->setText(qs);  
-  detuneRateSlider = new QSlider(0, 10000, 100, detune_rate * 100.0, QSlider::Horizontal, midiBox);
-  QObject::connect(detuneRateSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDetuneRate(int)));                
-  new QWidget(midiBox);
-
-  new QWidget(midiBox);
-
-  driftAmpLabel = new QLabel(midiBox);
-  qs.sprintf("Drift Amplitude: %3.1f", drift_amp);
-  driftAmpLabel->setText(qs);
-  driftAmpSlider = new QSlider(0, 10000, 100, drift_amp * 100.0, QSlider::Horizontal, midiBox);
-  QObject::connect(driftAmpSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDriftAmp(int)));                
-  driftRateLabel = new QLabel(midiBox);
-  qs.sprintf("Drift Rate: %3.1f", drift_rate);
-  driftRateLabel->setText(qs);  
-  driftRateSlider = new QSlider(0, 10000, 100, drift_rate * 100.0, QSlider::Horizontal, midiBox);
-  QObject::connect(driftRateSlider, SIGNAL(valueChanged(int)), this, SLOT(updateDriftRate(int)));                
-  new QWidget(midiBox);
 
   QHBox *loadPathBox = new QHBox(pathBox);
   new QWidget(loadPathBox);
@@ -253,22 +223,6 @@ void PrefWidget::loadPref(QString config_fn) {
         b = qs2.toInt();
         synthdata->colorCable = QColor(r, g, b);
       }       
-      if (qs.contains("DriftRate", false)) {
-        qs2 = qs.section(sep, 1, 1); 
-        synthdata->drift_rate = (float)qs2.toInt() / 100.0;
-      }       
-      if (qs.contains("DriftAmplitude", false)) {
-        qs2 = qs.section(sep, 1, 1); 
-        synthdata->drift_amp = (float)qs2.toInt() / 100.0;
-      }       
-      if (qs.contains("DetuneRate", false)) {
-        qs2 = qs.section(sep, 1, 1); 
-        synthdata->detune_rate = (float)qs2.toInt() / 100.0;
-      }       
-      if (qs.contains("DetuneAmplitude", false)) {
-        qs2 = qs.section(sep, 1, 1); 
-        synthdata->detune_amp = (float)qs2.toInt() / 100.0;
-      }       
       if (qs.contains("MidiControllerMode", false)) {
         qs2 = qs.section(sep, 1, 1); 
         midiControllerMode = qs2.toInt();
@@ -310,10 +264,6 @@ void PrefWidget::savePref(QString config_fn) {
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     rctext << "LoadPath " << synthdata->loadPath << "\n";
     rctext << "SavePath " << synthdata->savePath << "\n";
-    rctext << "DetuneRate " << (int)(100.0 * synthdata->detune_rate) << "\n";
-    rctext << "DetuneAmplitude " << (int)(100.0 * synthdata->detune_amp) << "\n";
-    rctext << "DriftRate " << (int)(100.0 * synthdata->drift_rate) << "\n";
-    rctext << "DriftAmplitude " << (int)(100.0 * synthdata->drift_amp) << "\n";
     f.close();
   }       
 }                             
@@ -333,8 +283,6 @@ void PrefWidget::applyPref() {
 
 void PrefWidget::refreshColors() {
 
-  QString qs;
-
   colorBackgroundLabel->setPalette(QPalette(colorBackground, colorBackground));  
   colorModuleBackgroundLabel->setPalette(QPalette(colorModuleBackground, colorModuleBackground));  
   colorModuleBorderLabel->setPalette(QPalette(colorModuleBorder, colorModuleBorder));  
@@ -344,18 +292,6 @@ void PrefWidget::refreshColors() {
   midiModeComboBox->setCurrentItem(midiControllerMode);
   loadEdit->setText(loadPath);
   saveEdit->setText(savePath);
-  qs.sprintf("Drift Amplitude: %3.1f", drift_amp);
-  driftAmpLabel->setText(qs);  
-  driftAmpSlider->setValue(drift_amp * 100.0);
-  qs.sprintf("Drift Rate: %3.1f", drift_rate);
-  driftRateLabel->setText(qs);  
-  driftRateSlider->setValue(drift_rate * 100.0);
-  qs.sprintf("Detune Amplitude: %3.1f", detune_amp);
-  detuneAmpLabel->setText(qs);  
-  detuneAmpSlider->setValue(detune_amp * 100.0);
-  qs.sprintf("Detune Rate: %3.1f", detune_rate);
-  detuneRateLabel->setText(qs);  
-  detuneRateSlider->setValue(detune_rate * 100.0);
 }
 
 void PrefWidget::recallColors() {
@@ -369,10 +305,6 @@ void PrefWidget::recallColors() {
   midiControllerMode = synthdata->midiControllerMode;
   loadPath = synthdata->loadPath;
   savePath = synthdata->savePath;
-  drift_rate = synthdata->drift_rate;
-  drift_amp = synthdata->drift_amp;
-  detune_rate = synthdata->detune_rate;
-  detune_amp = synthdata->detune_amp;
 }
 
 void PrefWidget::storeColors() {
@@ -387,10 +319,6 @@ void PrefWidget::storeColors() {
   synthdata->midiControllerMode = midiControllerMode;
   synthdata->loadPath = loadPath;
   synthdata->savePath = savePath;
-  synthdata->drift_rate = drift_rate;
-  synthdata->drift_amp = drift_amp;
-  synthdata->detune_rate = detune_rate;
-  synthdata->detune_amp = detune_amp;
 }
 
 void PrefWidget::colorBackgroundClicked() {
@@ -495,40 +423,4 @@ void PrefWidget::loadPathUpdate() {
 void PrefWidget::savePathUpdate() {
 
   savePath = saveEdit->text();
-}
-
-void PrefWidget::updateDriftRate(int value) {
-
-  QString qs;
-
-  drift_rate = (float)value / 100.0;
-  qs.sprintf("Drift Rate: %3.1f        ", drift_rate);
-  driftRateLabel->setText(qs);
-}
-
-void PrefWidget::updateDriftAmp(int value) {
-
-  QString qs;
-
-  drift_amp = (float)value / 100.0;
-  qs.sprintf("Drift Amplitude: %3.1f        ", drift_amp);
-  driftAmpLabel->setText(qs);
-}
-
-void PrefWidget::updateDetuneRate(int value) {
-
-  QString qs;
-
-  detune_rate = (float)value / 100.0;
-  qs.sprintf("Detune Rate: %3.1f        ", detune_rate);
-  detuneRateLabel->setText(qs);
-}
-
-void PrefWidget::updateDetuneAmp(int value) {
-
-  QString qs;
-
-  detune_amp = (float)value / 100.0;
-  qs.sprintf("Detune Amplitude: %3.1f        ", detune_amp);
-  detuneAmpLabel->setText(qs);
 }

@@ -47,6 +47,7 @@
 #include "m_vcf.h"
 #include "m_inv.h"
 #include "m_amp.h"
+#include "m_ad.h"
 #include "m_vquant.h"
 #include "m_conv.h"
 #include "m_cvs.h"
@@ -118,6 +119,7 @@ class ModularSynth : public QScrollView
     void newM_seq(int seqLen);
     void newM_vcorgan(int oscCount);
     void newM_dynamicwaves(int oscCount);
+    void newM_ad(int outCount);
     void new_textEdit(int x, int y, int w, int h);
     void showContextMenu(QPoint pos);
             
@@ -171,6 +173,9 @@ class ModularSynth : public QScrollView
     void newM_ringmod();
     void newM_inv();
     void newM_amp();
+    void newM_ad_2();
+    void newM_ad_4();
+    void newM_ad_6();
     void newM_vquant();
     void newM_conv();
     void newM_cvs();

@@ -33,20 +33,8 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
     velocity[l1] = 0;
     noteCounter[l1] = 1000000;
     sustainNote[l1] = false;
-    for (l2 = 0; l2 < MAXDRIFTARR; l2++) { 
-      drift_a[l1][l2] = 2.0 * (double)random() / (double)RAND_MAX - 1.0;
-      drift_c[l1][l2] = 0;
-      drift_r[l1][l2] = 0;
-    }  
-    detune_a[l1] = 2.0 * (double)random() / (double)RAND_MAX - 1.0;
-    detune_c[l1] = 0;
-    detune_r[l1] = 0;
   }
 
-  drift_rate = 0;
-  drift_amp = 0;
-  detune_rate = 0;
-  detune_amp = 0;
   poly = p_poly;
   edge = p_edge;
   rate = 0;

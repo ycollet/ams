@@ -808,6 +808,27 @@ void ModularSynth::newM_amp() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_ad(int outCount) {
+
+  M_ad *m = new M_ad(outCount, viewport(), "Analogue Driver", synthdata);
+  initNewModule((Module *)m);
+}
+
+void ModularSynth::newM_ad_2() { 
+
+  newM_ad(2);
+}
+
+void ModularSynth::newM_ad_4() { 
+
+  newM_ad(4);
+}
+
+void ModularSynth::newM_ad_6() { 
+
+  newM_ad(6);
+}
+
 void ModularSynth::newM_vquant() {
 
   M_vquant *m = new M_vquant(viewport(), "Quantizer 2", synthdata);
@@ -1446,6 +1467,9 @@ void ModularSynth::load(QString *presetName) {
           case M_type_scquantizer: 
             newM_scquantizer(&scalaName);
             break;
+          case M_type_ad: 
+            newM_ad(subID1);
+            break;
           case M_type_mix: 
             newM_mix(subID1);
             break;
@@ -1848,6 +1872,9 @@ void ModularSynth::save() {
           break;
         case M_type_vca: 
           fprintf(f, "%d 0\n", (int)((M_vca *)listModule.at(l1))->expMode); 
+          break;
+        case M_type_ad: 
+          fprintf(f, "%d 0\n", ((M_ad *)listModule.at(l1))->outCount);
           break;
         case M_type_mix: 
           fprintf(f, "%d 0\n", ((M_mix *)listModule.at(l1))->in_channels);

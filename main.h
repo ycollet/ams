@@ -1,7 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-#define AMS_VERSION "1.8.4"
+#define AMS_VERSION "1.8.3"
 
 // Compile time options for AlsaModularSynth
 
@@ -22,12 +22,12 @@
 #define MAX_CAPT_PORTS             32
 #define MAX_PLAY_PORTS             32
 #define MAXPOLY                   128
-#define MAXDRIFTARR                 8
 #define MAX_SO                    256
 #define WAVE_PERIOD             65536
 #define M_MCV_MAX_FREQ        20000.0
 #define EXP_TABLE_LEN           32768
 #define MAX_LADPSA_CONTROLS_PER_TAB 8
+#define MAX_ANALOGUE_DRIVER_OUT     6      
 
 // Appearance
 #define DEFAULT_WIDTH             750
