@@ -161,7 +161,6 @@ int Module::saveConnections(FILE *f) {
   Port *port[2];
   int l1;
 
-  fprintf(f, "0 0\n");
   for (l1 = 0; l1 < portList.count(); l1++) {
     port[0] = portList.at(l1);
     if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
