@@ -32,7 +32,7 @@ Module::Module(int p_outPortCount, QWidget* parent, const char *name, SynthData 
   setPalette(QPalette(QColor(77, 70, 64), QColor(77, 70, 64)));
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DEFAULT_HEIGHT);
   drag = false;
-  configDialog = new ConfigDialog((QObject *)this, NULL, name, p_synthdata);
+  configDialog = new ConfigDialog((QObject *)this, NULL, name);
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
   data = (float ***)malloc(outPortCount * sizeof(float **));
   lastdata = (float ***)malloc(outPortCount * sizeof(float **));

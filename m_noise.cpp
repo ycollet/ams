@@ -46,8 +46,10 @@ M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_random);
   qs.sprintf("Noise ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 10, rate, "Random Rate", &rate);
-  configDialog->addSlider(0, 1, level, "Random Level", &level);
+  FloatParameter *fp = new FloatParameter(this,"Random Rate","", 0.0, 10.0,&rate);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Random Level", "",0.0, 1.0,&level);
+  configDialog->addParameter(fp);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     r[l1] = 0;
     for (l2 = 0; l2 < 3; l2++) {

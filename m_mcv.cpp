@@ -35,28 +35,36 @@ M_mcv::M_mcv(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_note_out->move(width() - port_note_out->width(), 55);
   port_note_out->outType = outType_audio;
   portList.append(port_note_out);
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this, synthdata);          
+  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this, synthdata);
   port_velocity_out->move(width() - port_velocity_out->width(), 75);
   port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
   qs.sprintf("MCV ID %d", moduleID);
   configDialog->setCaption(qs);
-  QStrList *channelNames = new QStrList(true);
-  channelNames->append("Omni");
+
+  channel=0;
+  EnumParameter * ep = new EnumParameter( this,"MIDI Channel", "", &channel);
   for (l1 = 1; l1 < 17; l1++) {
     qs.sprintf("%4d", l1);
-    channelNames->append(qs);
+    ep->addItem(l1,qs);
   }
-  channel = 0;
+  ep->addItem(0,"Any");
+  configDialog->addParameter(ep);
+  ep->selectItem(0);
+
+
   pitch = 48;
-  pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     lastfreq[l1] = 0;
     freq[l1] = 0;
   }
-  configDialog->addComboBox(0, "MIDI Channel", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider(0, 84, pitch, "Note Offset", &pitch);
-  configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
+  IntParameter * ip = new IntParameter(this,"Note Offset", "", 0, 84, &pitch);
+  configDialog->addParameter(ip);
+  ip->setValue(48);
+
+  pitchbend = 0;
+  FloatParameter * fp = new FloatParameter(this,"Pitch","",-1.0,1.0, &pitchbend);
+  configDialog->addParameter(fp);
 }
 
 M_mcv::~M_mcv() {
@@ -64,7 +72,7 @@ M_mcv::~M_mcv() {
 }
 
 void M_mcv::paintEvent(QPaintEvent *ev) {
-  
+
   QPainter p(this);
   QString qs;
   int l1;
@@ -76,7 +84,7 @@ void M_mcv::paintEvent(QPaintEvent *ev) {
   p.setPen(QColor(255, 255, 255));
   p.setFont(QFont("Helvetica", 10));
   p.drawText(10, 20, "MCV");
-  p.setFont(QFont("Helvetica", 8)); 
+  p.setFont(QFont("Helvetica", 8));
   qs.sprintf("ID %d", moduleID);
   p.drawText(15, 32, qs);
 }

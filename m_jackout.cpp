@@ -45,13 +45,18 @@ M_jackout::M_jackout(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_in[1]);
   qs.sprintf("JACK Out ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
-  QStrList *agcNames = new QStrList(true);
-  agcNames->append("Disbled");
-  agcNames->append("Enabled");
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames);
+
+  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,1.0,&gain);
+  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
+  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
+  EnumParameter * pAgc = new EnumParameter(this,"Automatic Gain Control","",(int *)&agc);
+  pAgc->addItem(0,"Disabled");
+  pAgc->addItem(1,"Enabled");
+  
+  configDialog->addParameter(pGain);
+  configDialog->addParameter(pGain1);
+  configDialog->addParameter(pGain2);
+  configDialog->addParameter(pAgc);
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out_ID%d_%d", moduleID, l1);
     jackdata[l1] = (jack_default_audio_sample_t *)malloc(synthdata->periodsize * sizeof(jack_default_audio_sample_t));

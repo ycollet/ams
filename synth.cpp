@@ -13,8 +13,8 @@
 #include "m_out.h"
 #include "m_wavout.h"
 #include "m_midiout.h"
-#include "m_scope.h"
-#include "m_spectrum.h"
+//#include "m_scope.h"
+//#include "m_spectrum.h"
 
 Synth::Synth(SynthData *p_synthdata) {
 
@@ -57,12 +57,14 @@ void Synth::run(){
     for (l1 = 0; l1 < synthdata->wavoutModuleList.count(); l1++) {
       ((M_wavout *)synthdata->wavoutModuleList.at(l1))->generateCycle();
     }
+/*
     for (l1 = 0; l1 < synthdata->scopeModuleList.count(); l1++) {
       ((M_scope *)synthdata->scopeModuleList.at(l1))->generateCycle();
     }
     for (l1 = 0; l1 < synthdata->spectrumModuleList.count(); l1++) {
       ((M_spectrum *)synthdata->spectrumModuleList.at(l1))->generateCycle();
     }
+*/
     for (l1 = 0; l1 < synthdata->midioutModuleList.count(); l1++) {
       ((M_midiout *)synthdata->midioutModuleList.at(l1))->generateCycle();
     }

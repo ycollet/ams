@@ -30,6 +30,7 @@ class M_env : public Module
 
   private:
     float delay, attack, hold, decay, sustain, release;
+    FloatParameter *mDelay, *mAttack, *mHold, *mDecay, *mSustain, *mRelease;
     float e_noteOff[MAXPOLY], de[MAXPOLY];
     Module *in_M_gate, *in_M_retrigger;
     Port *port_gate, *port_retrigger, *port_inverse_out, *port_gain_out;
@@ -37,6 +38,7 @@ class M_env : public Module
   public: 
     float e[MAXPOLY];
     float timeScale;
+    FloatParameter *mTimeScale;
     bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
     int noteOnOfs[MAXPOLY];
     int noteOffOfs[MAXPOLY];

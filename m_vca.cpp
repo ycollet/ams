@@ -19,7 +19,7 @@
 #include "m_vca.h"
 #include "port.h"
 
-M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata) 
+M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata)
               : Module(1, parent, name, p_synthdata) {
 
   QString qs;
@@ -53,11 +53,22 @@ M_vca::M_vca(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out);
   qs.sprintf("VCA ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 10, gain1, "Gain", &gain1);
-  configDialog->addSlider(0, 10, gain2, "Gain 1", &gain2);
-  configDialog->addSlider(0, 2, in1, "In 0", &in1);
-  configDialog->addSlider(0, 2, in2, "In 1", &in2);
-  configDialog->addSlider(0, 2, out, "Output level", &out);
+  FloatParameter *fp = new FloatParameter(this,"Gain","",0.0,10.0,&gain1);
+  configDialog->addParameter(fp);
+
+  fp = new FloatParameter(this,"Gain 1","",0.0,10.0,&gain2);
+  configDialog->addParameter(fp);
+
+  fp = new FloatParameter(this,"In 0","",0.0,2.0,&in1);
+  configDialog->addParameter(fp);
+
+  fp = new FloatParameter(this,"In 1","",0.0,2.0,&in1);
+  configDialog->addParameter(fp);
+
+  fp = new FloatParameter(this,"Output level","",0.0,2.0,&out);
+  configDialog->addParameter(fp);
+
+
 }
 
 M_vca::~M_vca() {

@@ -36,49 +36,47 @@ M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata)
   agc = 1;
   doRecord = 0;
   wavfile = NULL;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   qs.sprintf("WAV Out ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->initTabWidget();
-  QVBox *fileTab = new QVBox(configDialog->tabWidget);
-  QVBox *recordTab = new QVBox(configDialog->tabWidget);
-  QVBox *gainTab = new QVBox(configDialog->tabWidget);
-  configDialog->addLineEdit("File:", fileTab);
-  hbox1 = configDialog->addHBox(fileTab);
-  configDialog->addLabel("Time: 0:00:00        ", recordTab);
-  configDialog->labelList.at(0)->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-  configDialog->addPushButton("New File", hbox1);
-  configDialog->addPushButton("Overwrite Current File", hbox1);
-  hbox2 = configDialog->addHBox(recordTab);
-  configDialog->addPushButton("Record", hbox2);
-  configDialog->addPushButton("Stop", hbox2);  
-  QObject::connect(configDialog->midiPushButtonList.at(1), SIGNAL(clicked()), 
-                   this, SLOT(createWav())); 
-  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()), 
-                   this, SLOT(openBrowser())); 
-  QObject::connect(configDialog->midiPushButtonList.at(2), SIGNAL(clicked()), 
-                   this, SLOT(recordClicked())); 
-  QObject::connect(configDialog->midiPushButtonList.at(3), SIGNAL(clicked()), 
-                   this, SLOT(stopClicked())); 
-  configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
-  configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false, gainTab);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false, gainTab);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false, gainTab);
-  QStrList *agcNames = new QStrList(true);
-  agcNames->append("Disbled");
-  agcNames->append("Enabled");
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames, gainTab);
-  configDialog->addTab(fileTab, "File");
-  configDialog->addTab(recordTab, "Record");
-  configDialog->addTab(gainTab, "Gain");
+  //configDialog->initTabWidget();
+  QString tabName="Actions";
+  nameField=new QLineEdit("File:",configDialog->headerBox);
+  timeField=new QLineEdit("Time:",configDialog->headerBox);
+  nameField->setReadOnly(true);
+  timeField->setReadOnly(true);
+  ActionParameter *ap=new ActionParameter(this,"New file","");
+  connect(ap,SIGNAL(triggered()),this,SLOT(openBrowser()));
+  configDialog->addParameter(ap,tabName);
+  ap=new ActionParameter(this,"Overwrite current file","");
+  connect(ap,SIGNAL(triggered()),this,SLOT(createWav()));
+  configDialog->addParameter(ap,tabName);
+  recStart=new ActionParameter(this,"Record","",false);
+  connect(ap,SIGNAL(triggered()),this,SLOT(recordClicked()));
+  configDialog->addParameter(ap,tabName);
+  recStop=new ActionParameter(this,"Stop","",false);
+  connect(ap,SIGNAL(triggered()),this,SLOT(stopClicked()));
+  configDialog->addParameter(ap,tabName);
+  tabName="Gain controll";
+  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,1.0,&gain);
+  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
+  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
+  EnumParameter * pAgc = new EnumParameter(this,"Automatic Gain Control","",(int *)&agc);
+  pAgc->addItem(0,"Disabled");
+  pAgc->addItem(1,"Enabled");
+
+  configDialog->addParameter(pGain);
+  configDialog->addParameter(pGain1);
+  configDialog->addParameter(pGain2);
+  configDialog->addParameter(pAgc);
+
   wavDataSize = 0;
   wavdata = (unsigned char *)malloc(synthdata->periodsize * 4);
   memset(wavdata, 0, synthdata->periodsize * 4);
@@ -220,7 +218,7 @@ void M_wavout::createWav() {
 
   int tmpint;
 
-  wavname = configDialog->lineEditList.at(0)->text();
+  wavname = nameField->text();
   if ((wavfile = fopen(wavname, "w"))) {
     wavDataSize = 0;
     outbuf[0] = 0x52; outbuf[1] = 0x49; outbuf[2] = 0x46; outbuf[3] = 0x46; // "RIFF"
@@ -256,12 +254,13 @@ void M_wavout::createWav() {
     fwrite(outbuf, 1, 4, wavfile);
     outbuf[0] = 0x00; outbuf[1] = 0x00; outbuf[2] = 0xff; outbuf[3] = 0x00; // Subchunk2Size
     fwrite(outbuf, 1, 4, wavfile);
-    configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(true);
-    configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(true);
-    configDialog->labelList.at(0)->setText("Time: 0:00:00        ");
+    recStart->setEnabled(true);
+    recStop->setEnabled(true);
+    timeField->setText("Time: 0:00:00        ");
+
   } else {
-    configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
-    configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
+    recStart->setEnabled(false);
+    recStop->setEnabled(false);
   }
 }
 
@@ -271,13 +270,13 @@ void M_wavout::openBrowser() {
 
   getcwd(buf, 2048);
   if ((wavname = QString(QFileDialog::getSaveFileName(QString(buf), "WAV files (*.wav)")))) {
-    configDialog->lineEditList.at(0)->setText(wavname);    
+    nameField->setText(wavname);
     createWav();
   }
 }
 
-void M_wavout::timerProc() {          
- 
+void M_wavout::timerProc() {
+
   QString qs1, qs2, qs3;
   int seconds, minutes, displaySeconds;
 
@@ -297,6 +296,6 @@ void M_wavout::timerProc() {
     } else {
       qs3.sprintf("%d", displaySeconds);
     }
-    configDialog->labelList.at(0)->setText("Time: "+qs1+":"+qs2+":"+qs3+"  ");
+    timeField->setText("Time: "+qs1+":"+qs2+":"+qs3+"  ");
   }
 }

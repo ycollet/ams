@@ -40,9 +40,13 @@ M_in::M_in(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out[1]);
   qs.sprintf("PCM In ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 2, gain, "Gain", &gain);
-  configDialog->addSlider(0, 2, mixer_gain[0], "Volume 1", &mixer_gain[0]);
-  configDialog->addSlider(0, 2, mixer_gain[1], "Volume 2", &mixer_gain[1]);
+  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,2.0,&gain);
+  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,2.0,&mixer_gain[0]);
+  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,2.0,&mixer_gain[1]);
+  configDialog->addParameter(pGain);
+  configDialog->addParameter(pGain1);
+  configDialog->addParameter(pGain2);
+  
 }
 
 M_in::~M_in() {

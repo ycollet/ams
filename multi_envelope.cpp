@@ -141,7 +141,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
   bitBlt(this, 0, 0, &pm);
 }
 
-void MultiEnvelope::updateMultiEnvelope(int value) {
+void MultiEnvelope::updateMultiEnvelope(float value) {
 
   repaint(false);
 }

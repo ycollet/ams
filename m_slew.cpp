@@ -37,8 +37,11 @@ M_slew::M_slew(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out);
   timeUp = 0.5;
   timeDown = 0.5;
-  configDialog->addSlider(0, 10, timeUp, "Time Up", &timeUp);
-  configDialog->addSlider(0, 10, timeDown, "Time Down", &timeDown);
+  FloatParameter *fp = new FloatParameter(this,"Time Up","", 0.0,10.0, &timeUp);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Time Down","", 0.0,10.0, &timeDown);
+  configDialog->addParameter(fp);
+
   qs.sprintf("Slew Limiter ID %d", moduleID);
   configDialog->setCaption(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {

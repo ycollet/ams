@@ -10,6 +10,7 @@
 #include <jack/jack.h>
 #include <ladspa.h>
 #include <qlist.h>
+#include "midicontrolcenter.h"
 
 #define DEFAULT_RATE            44100
 #define DEFAULT_PERIODSIZE       1024
@@ -22,7 +23,7 @@
 #define WAVE_PERIOD             65536
 #define M_MCV_MAX_FREQ        20000.0
 #define EXP_TABLE_LEN           32768
- 
+
 class SynthData : public QObject
 {
   private:
@@ -76,7 +77,8 @@ class SynthData : public QObject
     QSemaphore port_sem;          
     LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
     QString ladspa_lib_name[MAX_SO];
-    QObject *midiWidget;
+    //QObject *midiWidget;
+    MidiControlCenter * controlCenter;
     jack_client_t *jack_handle;
     QString jackName;
     int midi_out_port[2];

@@ -44,9 +44,12 @@ M_jackin::M_jackin(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out[1]);
   qs.sprintf("JACK In ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
+  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,2.0,&gain);
+  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
+  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
+  configDialog->addParameter(pGain);
+  configDialog->addParameter(pGain1);
+  configDialog->addParameter(pGain2);
   QStrList *agcNames = new QStrList(true);
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("In_ID%d_%d", moduleID, l1);

@@ -37,7 +37,8 @@ M_delay::M_delay(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out);
   qs.sprintf("Delay ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 10, delay, "Delay", &delay);
+  delay = new FloatParameter(this, "Delay","",0.0,10.0,1.0);
+  configDialog->addParameter(delay);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     buf[l1] = (float *)malloc(MAX_DELAY_FRAMES * sizeof(float));
@@ -49,7 +50,7 @@ M_delay::M_delay(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_delay::~M_delay() {
 
   int l1;
-  
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     free(buf[l1]);
   }
@@ -96,7 +97,7 @@ void M_delay::generateCycle() {
       in_M_in = NULL;
       inData = synthdata->zeroModuleData;
     }
-    delay_frames = (int)((float)(MAX_DELAY_FRAMES - 3) * delay / 10.0);
+    delay_frames = (int)((float)(MAX_DELAY_FRAMES - 3) * *delay / 10.0);
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         buf[l1][read_ofs] = inData[l1][l2];

@@ -57,6 +57,8 @@ M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_out);
   qs.sprintf("VCF ID %d", moduleID);
   configDialog->setCaption(qs);
+  
+/*
   QStrList *vcfTypeNames = new QStrList(true);
   vcfTypeNames->append("Resonant Lowpass");
   vcfTypeNames->append("Lowpass");
@@ -68,12 +70,32 @@ M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata)
   vcfTypeNames->append("Moog Lowpass II");
   configDialog->addComboBox(6, "VCF Type", (int *)&vcfType, vcfTypeNames->count(), vcfTypeNames);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)), this, SLOT(initBuf(int)));
-  configDialog->addSlider(0, 10, gain, "Input Gain", &gain);
-  configDialog->addSlider(0, 10, freq, "Frequency", &freq);
-  configDialog->addSlider(0, 10, vcfExpFMGain, "Exp. FM Gain", &vcfExpFMGain);
-  configDialog->addSlider(0, 10, vcfLinFMGain, "Lin. FM Gain", &vcfLinFMGain);
-  configDialog->addSlider(0.01, 1, resonance, "Resonance", &resonance);
-  configDialog->addSlider(0, 1, resonanceGain, "Resonance Gain", &resonanceGain);
+*/
+  EnumParameter *ep = new EnumParameter(this,"VCF Type","",(int *)&vcfType);
+  ep->addItem(VCF_LR,"Resonant Lowpass");
+  ep->addItem(VCF_LPF,"Lowpass");
+  ep->addItem(VCF_HPF,"Highpass");
+  ep->addItem(VCF_BPF_I,"Bandpass I");
+  ep->addItem(VCF_BPF_II,"Bandpass II");
+  ep->addItem(VCF_NF,"Notch");
+  ep->addItem(VCF_MOOG1,"Moog Lowpass I");
+  ep->addItem(VCF_MOOG2,"Moog Lowpass II");
+  configDialog->addParameter(ep);
+
+  FloatParameter *fp = new FloatParameter(this,"Input Gain","",0.0,10.0,&gain);
+  configDialog->addParameter(fp);
+  
+  fp = new FloatParameter(this,"Frequency","",0.0,10.0,&freq);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Exp. FM Gain","",0.0,10.0,&vcfExpFMGain);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Lin. FM Gain","",0.0,10.0,&vcfLinFMGain);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Resonance","",0.01,1.0,&resonance);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Resonance Gain","",0.0,1.0,&resonanceGain);
+  configDialog->addParameter(fp);
+
 }
 
 M_vcf::~M_vcf() {

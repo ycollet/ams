@@ -18,6 +18,7 @@
 #include <qlistview.h>
 #include <qpoint.h>
 #include <alsa/asoundlib.h>
+#include <qmainwindow.h>
 #include "synth.h"
 #include "capture.h"
 #include "synthdata.h"
@@ -47,14 +48,13 @@
 #include "m_slew.h"
 #include "m_sh.h"
 #include "m_midiout.h"
-#include "m_scope.h"
-#include "m_spectrum.h"
 #include "m_vcorgan.h"
 #include "m_dynamicwaves.h"
 #include "m_quantizer.h"
-#include "midiwidget.h"
+
 #include "textedit.h"
 #include "ladspadialog.h"
+
 
 #define DEFAULT_PCMNAME  "plughw:0,0"
 #define DEFAULT_WIDTH             750
@@ -76,30 +76,36 @@ class ModularSynth : public QScrollView
     QMessageBox *aboutWidget;
     QList<Module> listModule;
     QList<TextEdit> listTextEdit;
+
     QString PCMname, presetPath, savePath;
-    connectorStyleType connectorStyle;    
+    connectorStyleType connectorStyle;
     bool firstPort;
     Port *connectingPort[2];
     QSocketNotifier *seqNotifier;
     LadspaDialog *ladspaDialog;
-    MidiWidget *midiWidget;
+
+
+    QList<ParameterPanel> mPanels;
     bool loadingPatch;
 
   public:
     SynthData *synthdata;
-    
+
+    //! @note this popup is owned by ModularSynth, not the menubar!
+    QPopupMenu * panelMenu;
+
   private:
     void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
-    snd_seq_t *open_seq(); 
-    int initSeqNotifier();  
+    snd_seq_t *open_seq();
+    int initSeqNotifier();
     void newM_mix(int in_channels);
     void newM_seq(int seqLen);
     void newM_vcorgan(int oscCount);
     void newM_dynamicwaves(int oscCount);
     void new_textEdit(int x, int y, int w, int h);
-            
+
   public:
     ModularSynth(int poly, int periodsize, QWidget* parent=0, const char *name=0);
     ~ModularSynth();
@@ -113,13 +119,16 @@ class ModularSynth : public QScrollView
     int setPCMname(QString name);
     int setPresetPath(QString name);
     int setSavePath(QString name);
-    
+
   protected:
     void viewportPaintEvent(QPaintEvent *pe);
     virtual void mousePressEvent (QMouseEvent* );
     virtual void mouseReleaseEvent (QMouseEvent* );
-    
-  public slots: 
+
+  public slots:
+    void createPanel();
+    void removePanel(int id);
+    void changePanelName(int id, const QString&);
     void displayAbout();
     void displayMidiController();
     void displayLadspaPlugins();
@@ -158,8 +167,8 @@ class ModularSynth : public QScrollView
     void newM_sh();
     void newM_midiout();
     void newM_vcswitch();
-    void newM_scope();
-    void newM_spectrum();
+    //void newM_scope();
+    //void newM_spectrum();
     void newM_vcorgan_4();
     void newM_vcorgan_6();
     void newM_vcorgan_8();

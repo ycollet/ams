@@ -18,8 +18,9 @@
 #include "synthdata.h"
 #include "m_advenv.h"
 #include "port.h"
+#include "multi_envelope.h"
 
-M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata) 
+M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
               : Module(2, parent, name, p_synthdata) {
 
   QString qs;
@@ -50,62 +51,75 @@ M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
   port_retrigger->move(0, 55);
   port_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_retrigger);
-  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);
   port_gain_out->move(width() - port_gain_out->width(), 75);
   port_gain_out->outType = outType_audio;
   portList.append(port_gain_out);
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);          
+  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
   qs.sprintf("Advanced ENV ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addMultiEnvelope(1, &timeScale, &attack[0], &sustain, &release[0]);
-  configDialog->initTabWidget();
-  QVBox *sustainTab = new QVBox(configDialog->tabWidget);
-  QVBox *attackTimeTab = new QVBox(configDialog->tabWidget);
-  QVBox *attackLevelTab = new QVBox(configDialog->tabWidget);
-  QVBox *releaseTimeTab = new QVBox(configDialog->tabWidget);
-  QVBox *releaseLevelTab = new QVBox(configDialog->tabWidget);
-  qs.sprintf("Time Scale");
-  configDialog->addSlider(0.1, 10, timeScale, qs, &timeScale, false, sustainTab);
-  qs.sprintf("Sustain");
-  configDialog->addSlider(0, 1, sustain, qs, &sustain, false, sustainTab);
-  qs.sprintf("Delay");
-  configDialog->addSlider(0, 1, attack[0], qs, &attack[0], false, sustainTab);
-  qs.sprintf("Attack Time 0");
-  configDialog->addSlider(0, 1, attack[1], qs, &attack[1], false, attackTimeTab);
-  qs.sprintf("Attack Level 0");
-  configDialog->addSlider(0, 1, attack[2], qs, &attack[2], false, attackLevelTab);
-  qs.sprintf("Attack Time 1");
-  configDialog->addSlider(0, 1, attack[3], qs, &attack[3], false, attackTimeTab);
-  qs.sprintf("Attack Level 1");
-  configDialog->addSlider(0, 1, attack[4], qs, &attack[4], false, attackLevelTab);
-  qs.sprintf("Attack Time 2");
-  configDialog->addSlider(0, 1, attack[5], qs, &attack[5], false, attackTimeTab);
-  qs.sprintf("Attack Level 2");
-  configDialog->addSlider(0, 1, attack[6], qs, &attack[6], false, attackLevelTab);
-  qs.sprintf("Attack Time 3");
-  configDialog->addSlider(0, 1, attack[7], qs, &attack[7], false, attackTimeTab);
-  configDialog->addTab(sustainTab, "Time Scale / Sustain / Delay");
-  configDialog->addTab(attackTimeTab, "Attack Time");
-  configDialog->addTab(attackLevelTab, "Attack Level");
-  qs.sprintf("Release Time 0");
-  configDialog->addSlider(0, 1, release[0], qs, &release[0], false, releaseTimeTab);
-  qs.sprintf("Release Level 0");
-  configDialog->addSlider(0, 1, release[1], qs, &release[1], false, releaseLevelTab);
-  qs.sprintf("Release Time 1");
-  configDialog->addSlider(0, 1, release[2], qs, &release[2], false, releaseTimeTab);
-  qs.sprintf("Release Level 1");
-  configDialog->addSlider(0, 1, release[3], qs, &release[3], false, releaseLevelTab);
-  qs.sprintf("Release Time 2");
-  configDialog->addSlider(0, 1, release[4], qs, &release[4], false, releaseTimeTab);
-  configDialog->addTab(releaseTimeTab, "Release Time");
-  configDialog->addTab(releaseLevelTab, "Release Level");
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
-    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
-                     configDialog->multiEnvelopeList.at(0), SLOT(updateMultiEnvelope(int)));
-  }
+
+  MultiEnvelope *menv = new MultiEnvelope(1, &timeScale, &attack[0], &sustain, &release[0],configDialog->headerBox);
+
+  FloatParameter * p;
+  qs.sprintf("Time Scale / Sustain / Delay");
+  p = new FloatParameter(this,"Time Scale","",0.1,10,&timeScale);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Sustain", "",0.0,1.0, &sustain);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Delay", "",0.0,1.0, &attack[0]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+
+  qs.sprintf("Attack Time");
+  p = new FloatParameter(this, "Attack Time 0", "",0.0,1.0, &attack[1]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Attack Time 1", "",0.0,1.0, &attack[3]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Attack Time 2", "",0.0,1.0, &attack[5]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Attack Time 3", "",0.0,1.0, &attack[7]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+
+  qs.sprintf("Attack Level");
+  p = new FloatParameter(this, "Attack Level 0", "",0.0,1.0, &attack[2]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Attack Level 1", "",0.0,1.0, &attack[4]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Attack Level 2", "",0.0,1.0, &attack[6]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+
+  qs.sprintf("Release Time");
+  p = new FloatParameter(this, "Release Time 0", "",0.0,1.0, &release[0]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Release Time 1", "",0.0,1.0, &release[2]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Release Time 2", "",0.0,1.0, &release[4]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+
+  qs.sprintf("Release Level");
+  p = new FloatParameter(this, "Release Level 0", "",0.0,1.0, &release[1]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+  p = new FloatParameter(this, "Release Level 1", "",0.0,1.0, &release[3]);
+  configDialog->addParameter(p,qs);
+  connect(p,SIGNAL(valueChanged(float)),menv,SLOT(updateMultiEnvelope(float)));
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     noteActive[l1] = false;
     gate[l1] = false;
@@ -122,7 +136,7 @@ M_advenv::~M_advenv() {
 }
 
 void M_advenv::paintEvent(QPaintEvent *ev) {
-  
+
   QPainter p(this);
   QString qs;
   int l1;

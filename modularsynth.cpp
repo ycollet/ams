@@ -26,11 +26,16 @@
 #include <alsa/asoundlib.h>
 #include <ladspa.h>
 #include <jack/jack.h>
+#include <qhbox.h>
+#include <qframe.h>
+#include <qpushbutton.h>
 #include "modularsynth.h"
 #include "port.h"
-#include "midiwidget.h"
 #include "midicontroller.h"
 #include "ladspadialog.h"
+#include "enumparametereditor.h"
+#include "actionparametereditor.h"
+#include "parameterpanel.h"
 
 ModularSynth::ModularSynth(int poly, int periodsize, QWidget *parent, const char *name) 
                           : QScrollView(parent, name, Qt::WResizeNoErase | Qt::WRepaintNoErase | Qt::WStaticContents) {
@@ -41,9 +46,12 @@ ModularSynth::ModularSynth(int poly, int periodsize, QWidget *parent, const char
   connectorStyle = CONNECTOR_BEZIER;
   aboutWidget = new QMessageBox(this); 
   synthdata = new SynthData(poly, periodsize);
+/*
   midiWidget = new MidiWidget(synthdata, NULL);
   midiWidget->setCaption("AlsaModularSynth Control Center");
   synthdata->midiWidget = (QObject *)midiWidget;
+*/
+  synthdata->controlCenter=MidiControlCenter::getInstance();
   PCMname = DEFAULT_PCMNAME;
   presetPath = "";
   ladspaDialog = new LadspaDialog(synthdata, NULL);
@@ -51,15 +59,42 @@ ModularSynth::ModularSynth(int poly, int periodsize, QWidget *parent, const char
                    this, SLOT(newM_ladspa(int, int, bool)));
   setPalette(QPalette(QColor(117, 67, 21), QColor(117, 67, 21)));
   loadingPatch = false;
+  
+  // set up the panel popup
+  panelMenu=new QPopupMenu(this,"Panels");
+  panelMenu->insertItem("New Panel...",this,SLOT(createPanel()));
+  panelMenu->insertSeparator();
+  mPanels.setAutoDelete(true);
 }
 
 ModularSynth::~ModularSynth()
 {
   delete synthdata;
 }
+void ModularSynth::createPanel(){
+  QString name;
+  int id=mPanels.count();
+  name.sprintf("new panel %i",id+1);
+  ParameterPanel *pp=new ParameterPanel(0,name,true,true,id);
+  mPanels.append(pp);
+  connect(pp,SIGNAL(removePanelButtonClicked(int)),this,SLOT(removePanel(int)));
+  connect(pp,SIGNAL(nameChanged(int,const QString &)),this,SLOT(changePanelName(int,const QString &)));
+  panelMenu->insertItem(name,pp,SLOT(show()),0,id);
+  pp->show();
+}
+void ModularSynth::removePanel(int id){
+  ParameterPanel *p=mPanels.at(id);
+  p->hide();
+  panelMenu->removeItem(id);
+  mPanels.remove(id);
 
+}
+
+void ModularSynth::changePanelName(int id, const QString& name){
+  panelMenu->changeItem(id,name);
+}
 void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
-  
+
   QPixmap pm(visibleWidth(), visibleHeight());
   QPainter p(&pm);
   QPen *pen;
@@ -88,7 +123,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
         port_y[1] = port_pos[1].y() + moduleY[1] + port[1]->height()/2;
         if (connectorStyle == CONNECTOR_BEZIER) {
           qpa.setPoint(0, port_x[0], port_y[0]);
-          qpa.setPoint(1, (port_x[1] - port_x[0]) / 2 + port_x[0], 
+          qpa.setPoint(1, (port_x[1] - port_x[0]) / 2 + port_x[0],
                           (port_y[1] - port_y[0]) / 2 + port_y[0] + 50);
           qpa.setPoint(2, port_x[1], port_y[1]);
           qpa.setPoint(3, port_x[1], port_y[1]);
@@ -102,7 +137,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           p.drawCubicBezier(qpa);
           pen->setWidth(1);
           pen->setColor(QColor(220, 216, 216));
-          p.setPen(*pen);          
+          p.setPen(*pen);
           p.drawCubicBezier(qpa);
         }
         if (connectorStyle == CONNECTOR_STRAIGHT) {
@@ -142,11 +177,11 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   bitBlt(viewport(), 0, 0, &pm);
   delete pen;
 }
- 
+
 void ModularSynth::mousePressEvent(QMouseEvent *ev) {
-  
+
   switch (ev->button()) {
-  case Qt::LeftButton:  
+  case Qt::LeftButton:
     break;
   case Qt::RightButton:
     break;
@@ -155,12 +190,12 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev) {
   default:
     break;
   }
-}  
-   
+}
+
 void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
-  
+
   switch (ev->button()) {
-  case Qt::LeftButton:   
+  case Qt::LeftButton:
     break;
   case Qt::RightButton:
     break;
@@ -175,8 +210,8 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
   default:
     break;
   }
-}  
-   
+}
+
 QSize ModularSynth::sizeHint() const {
 
   return QSize(SYNTH_MINIMUM_WIDTH, SYNTH_MINIMUM_HEIGHT);
@@ -206,21 +241,25 @@ int ModularSynth::go(bool withJack) {
 
 void ModularSynth::displayAbout() {
  
-    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth 1.5.5\n"
-                     "by Matthias Nagorni\n"
+    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth 2.0.0pre1\n"
+                     "by Matthias Nagorni, Lukas Degener\n"
                      "(c)2002 SuSE AG Nuremberg\n\n"
+                     "!! This is NOT a stable release !!\n"
+                     "It is only partial functional right now. You\n"
+                     "are propapbly better of with version 1.5.5,\n"
+                     "which is the latest stable release.\n\n"
                      "Documentation and examples can be found in\n"
                      "/usr/share/doc/packages/kalsatools\n\n"
                      "More presets and updates are available from\n"
                      "http://www.suse.de/~mana/kalsatools.html"
     "\n\nAcknowledgements\n"
     "----------------------\n\n"
-    "The VCF Module uses the resonant low-pass filter by Paul Kellett\n" 
+    "The VCF Module uses the resonant low-pass filter by Paul Kellett\n"
     "and the Cookbook formulae for audio EQ biquad filter coefficients\n"
-    "by Robert Bristow-Johnson. The experimental Moog filters have been\n" 
+    "by Robert Bristow-Johnson. The experimental Moog filters have been\n"
     "taken from http://musicdsp.org. They are based on the CSound source\n"
-    "code, the paper by Stilson/Smith and modifications by Paul Kellett\n" 
-    "and Timo Tossavainen. The pink noise conversion formula is by Paul\n" 
+    "code, the paper by Stilson/Smith and modifications by Paul Kellett\n"
+    "and Timo Tossavainen. The pink noise conversion formula is by Paul\n"
     "Kellett and has been taken from http://musicdsp.org as well.\n\n"
     "The author is grateful to Takashi Iwai for instructions about ALSA.\n"
     "Klaas Freitag, Helmut Herold, Stefan Hundhammer and Arvin Schnell\n"
@@ -233,12 +272,12 @@ void ModularSynth::displayAbout() {
 
 void ModularSynth::displayMidiController() {
    
-  midiWidget->show();  
-  midiWidget->raise();
+  synthdata->controlCenter->show();
+  synthdata->controlCenter->raise();
 }
 
 void ModularSynth::displayLadspaPlugins() {
-   
+
   ladspaDialog->show();  
   ladspaDialog->raise();
 }
@@ -393,25 +432,36 @@ void ModularSynth::midiAction(int fd) {
   int l1, l2, osc;
   bool noteActive, foundOsc;
   float min_e;
-  MidiController *midiController; 
+  MidiController *midiController;
 
   do {
+    //delegate the events to MidiController<->Parameter bindings.
+    //some clean up did happen here. The bindings/controllers
+    //organize themself in such way, that we only need to notify the
+    //relevant instances of MidiController.
     snd_seq_event_input(synthdata->seq_handle, &ev);
+//lets do this:
+
+    MidiController::sendMidiEvent(ev, synthdata->controlCenter);
+
+//instead of this:
+    /*
+
     if (midiWidget->isVisible()) {
-      if ((ev->type == SND_SEQ_EVENT_CONTROLLER)  
-        ||(ev->type == SND_SEQ_EVENT_CONTROL14)   
+      if ((ev->type == SND_SEQ_EVENT_CONTROLLER)
+        ||(ev->type == SND_SEQ_EVENT_CONTROL14)
         ||(ev->type == SND_SEQ_EVENT_PITCHBEND)) {
         MidiController *midiController = new MidiController();
         midiController->type = ev->type;
-        midiController->ch = ev->data.control.channel;  
-        midiController->param = (ev->type==SND_SEQ_EVENT_PITCHBEND) 
-                              ? 0 : ev->data.control.param; 
+        midiController->ch = ev->data.control.channel;
+        midiController->param = (ev->type==SND_SEQ_EVENT_PITCHBEND)
+                              ? 0 : ev->data.control.param;
         if (!midiWidget->midiControllerList.contains(midiController)) {
           midiWidget->addMidiController(midiController);
         } else {
           delete midiController;
-        } 
-      } 
+        }
+      }
       if (midiWidget->noteControllerEnabled &&((ev->type == SND_SEQ_EVENT_NOTEON)
         ||(ev->type == SND_SEQ_EVENT_NOTEOFF))) {
         MidiController *midiController = new MidiController();
@@ -419,12 +469,12 @@ void ModularSynth::midiAction(int fd) {
         midiController->ch = ev->data.control.channel;
         midiController->param = ev->data.note.note;
         if (!midiWidget->midiControllerList.contains(midiController)) {
-          midiWidget->addMidiController(midiController);       
+          midiWidget->addMidiController(midiController);
         } else {
           delete midiController;
-        } 
+        }
       }
-    }  
+    }
     if (midiWidget->followMidi) {
       for(l1 = 0; l1 < midiWidget->midiControllerList.count(); l1++) {
         midiController = midiWidget->midiControllerList.at(l1);
@@ -439,22 +489,22 @@ void ModularSynth::midiAction(int fd) {
             emit midiController->sendMidiValue(ev->data.control.value / 128);
             midiWidget->setSelectedController(midiController);
           }
-          if ((ev->type == SND_SEQ_EVENT_CONTROLLER) 
+          if ((ev->type == SND_SEQ_EVENT_CONTROLLER)
            && (midiController->param == ev->data.control.param)) {
             emit midiController->sendMidiValue(ev->data.control.value);
             midiWidget->setSelectedController(midiController);
           }
-          if ((ev->type == SND_SEQ_EVENT_NOTEON) 
+          if ((ev->type == SND_SEQ_EVENT_NOTEON)
            && (midiController->param == ev->data.note.note)) {
             emit midiController->sendMidiValue(ev->data.note.velocity);
             midiWidget->setSelectedController(midiController);
           }
-          if ((ev->type == SND_SEQ_EVENT_NOTEOFF) 
+          if ((ev->type == SND_SEQ_EVENT_NOTEOFF)
            && (midiController->param == ev->data.note.note)) {
             emit midiController->sendMidiValue(0);
             midiWidget->setSelectedController(midiController);
           }
-        }    
+        }
       }
     } else {
       for(l1 = 0; l1 < midiWidget->midiControllerList.count(); l1++) {
@@ -468,39 +518,42 @@ void ModularSynth::midiAction(int fd) {
            && (midiController->param == ev->data.control.param)) {
             emit midiController->sendMidiValue(ev->data.control.value / 128);
           }
-          if ((ev->type == SND_SEQ_EVENT_CONTROLLER) 
+          if ((ev->type == SND_SEQ_EVENT_CONTROLLER)
            && (midiController->param == ev->data.control.param)) {
             emit midiController->sendMidiValue(ev->data.control.value);
           }
-          if ((ev->type == SND_SEQ_EVENT_NOTEON) 
+          if ((ev->type == SND_SEQ_EVENT_NOTEON)
            && (midiController->param == ev->data.note.note)) {
             emit midiController->sendMidiValue(ev->data.note.velocity);
           }
-          if ((ev->type == SND_SEQ_EVENT_NOTEOFF) 
+          if ((ev->type == SND_SEQ_EVENT_NOTEOFF)
            && (midiController->param == ev->data.note.note)) {
             emit midiController->sendMidiValue(0);
           }
-        }    
+        }
       }
-    }   
+    }
+    */
+//nice, huh? :-)
+
     if ((ev->type == SND_SEQ_EVENT_NOTEON) || (ev->type == SND_SEQ_EVENT_NOTEOFF)) {
       for (l2 = 0; l2 < synthdata->poly; l2++) {
-        noteActive = false; 
+        noteActive = false;
         for (l1 = 0; l1 < synthdata->listM_env.count(); l1++) {
-          if (((M_env *)synthdata->listM_env.at(l1))->noteActive[l2]) {   
+          if (((M_env *)synthdata->listM_env.at(l1))->noteActive[l2]) {
             noteActive = true;
           }
-        }  
+        }
         for (l1 = 0; l1 < synthdata->listM_advenv.count(); l1++) {
-          if (((M_advenv *)synthdata->listM_advenv.at(l1))->noteActive[l2]) {   
+          if (((M_advenv *)synthdata->listM_advenv.at(l1))->noteActive[l2]) {
             noteActive = true;
           }
-        }  
+        }
         for (l1 = 0; l1 < synthdata->listM_dynamicwaves.count(); l1++) {
-          if (((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->noteActive[l2]) {   
+          if (((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->noteActive[l2]) {
             noteActive = true;
           }
-        }  
+        }
         synthdata->noteActive[l2] = noteActive || synthdata->notePressed[l2];
       }
       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
@@ -511,16 +564,16 @@ void ModularSynth::midiAction(int fd) {
             synthdata->noteActive[l2] = true;
             synthdata->notePressed[l2] = true;
             synthdata->velocity[l2] = ev->data.note.velocity;
-            synthdata->channel[l2] = ev->data.note.channel;  
+            synthdata->channel[l2] = ev->data.note.channel;
             synthdata->notes[l2] = ev->data.note.note;
             for (l1 = 0; l1 < listModule.count(); l1++) {
-              listModule.at(l1)->noteOnEvent(l2);  
+              listModule.at(l1)->noteOnEvent(l2);
             }
             break;
           }
-        } 
-        if ((synthdata->listM_advenv.count() 
-          || synthdata->listM_env.count() 
+        }
+        if ((synthdata->listM_advenv.count()
+          || synthdata->listM_env.count()
           || synthdata->listM_dynamicwaves.count())
           && !foundOsc) {
           min_e = 1.0;
@@ -551,11 +604,11 @@ void ModularSynth::midiAction(int fd) {
               }
             }
           }
-          synthdata->noteActive[osc] = true; 
+          synthdata->noteActive[osc] = true;
           synthdata->notePressed[osc] = true;
           synthdata->velocity[osc] = ev->data.note.velocity;
           synthdata->channel[osc] = ev->data.note.channel;
-          synthdata->notes[osc] = ev->data.note.note;   
+          synthdata->notes[osc] = ev->data.note.note;
           for (l1 = 0; l1 < listModule.count(); l1++) {
             listModule.at(l1)->noteOnEvent(osc);
           }
@@ -567,10 +620,10 @@ void ModularSynth::midiAction(int fd) {
             synthdata->notePressed[l2] = false;
             for (l1 = 0; l1 < listModule.count(); l1++) {
               listModule.at(l1)->noteOffEvent(l2);
-            } 
-          }   
-        }     
-      }       
+            }
+          }
+        }
+      }
     }
     if ((ev->type == SND_SEQ_EVENT_CONTROLLER) && (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)) {
       for (l2 = 0; l2 < synthdata->poly; l2++) {
@@ -579,9 +632,9 @@ void ModularSynth::midiAction(int fd) {
           synthdata->noteActive[l2] = false;
           for (l1 = 0; l1 < listModule.count(); l1++) {
             listModule.at(l1)->noteOffEvent(l2);
-          } 
-        }   
-      }     
+          }
+        }
+      }
     }
     snd_seq_free_event(ev);
   } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
@@ -592,9 +645,9 @@ void ModularSynth::initPorts(Module *m) {
   int l1;
 
   for (l1 = 0; l1 < m->portList.count(); l1++) {
-    QObject::connect(m->portList.at(l1), SIGNAL(portClicked()), 
+    QObject::connect(m->portList.at(l1), SIGNAL(portClicked()),
                      this, SLOT(portSelected()));
-    QObject::connect(m->portList.at(l1), SIGNAL(portDisconnected()), 
+    QObject::connect(m->portList.at(l1), SIGNAL(portDisconnected()),
                      this, SLOT(updatePortConnections()));
   }
 }
@@ -610,9 +663,12 @@ void ModularSynth::initNewModule(Module *m) {
   QObject::connect(m, SIGNAL(dragged(QPoint)), this, SLOT(moveModule(QPoint)));
   QObject::connect(m, SIGNAL(removeModule()), this, SLOT(deleteModule()));
   listModule.append(m);
+/* 
+  this is not neccessary any more
   if (!loadingPatch) {
     midiWidget->addModule(m);
   }
+*/
   initPorts(m);
 }
 
@@ -645,7 +701,7 @@ void ModularSynth::new_textEdit(int x, int y, int w, int h) {
 }
 
 void ModularSynth::startSynth() {
-  
+
   if (!synthdata->withJack) {
     synthdata->doSynthesis = true;
     if (!synth->running()) {
@@ -705,7 +761,7 @@ void ModularSynth::newM_seq_32() {
 }
 
 void ModularSynth::newM_vcorgan(int oscCount) {
- 
+
   M_vcorgan *m = new M_vcorgan(oscCount, viewport(), "M_vcorgan", synthdata);
   initNewModule((Module *)m);
 }
@@ -726,7 +782,7 @@ void ModularSynth::newM_vcorgan_8() {
 }
 
 void ModularSynth::newM_dynamicwaves(int oscCount) {
- 
+
   M_dynamicwaves *m = new M_dynamicwaves(oscCount, viewport(), "M_dynamicwaves", synthdata);
   synthdata->listM_dynamicwaves.append(m);
   initNewModule((Module *)m);
@@ -916,12 +972,14 @@ void ModularSynth::newM_jackin() {
   }
 }
 
+/*
 void ModularSynth::newM_scope() {
 
   M_scope *m = new M_scope(viewport(), "M_scope", synthdata);
   synthdata->scopeModuleList.append((QObject *)m);
   initNewModule((Module *)m);
 }
+
 
 void ModularSynth::newM_spectrum() {
 
@@ -930,6 +988,7 @@ void ModularSynth::newM_spectrum() {
   initNewModule((Module *)m);
 }
 
+*/
 void ModularSynth::newM_in() {
 
   if (!synthdata->moduleInCount) {
@@ -1035,9 +1094,9 @@ void ModularSynth::updatePortConnections() {
 void ModularSynth::deleteModule() {
 
   Module *m;
- 
+
   m = (Module *)sender();
-  midiWidget->deleteModule(m);
+  //midiWidget->deleteModule(m);
   if (m->M_type == M_type_env) {
     synthdata->listM_env.removeRef((QObject *)sender());
   }
@@ -1091,7 +1150,7 @@ void ModularSynth::deleteModule() {
       sleep(1);
       snd_pcm_close(synthdata->pcm_capture_handle);
     }
-  }  
+  }
   listModule.removeRef(m);
   delete(m);
 }
@@ -1109,7 +1168,7 @@ void ModularSynth::deleteTextEdit(TextEdit *te) {
 
 void ModularSynth::deleteModule(Module *m) {
 
-  midiWidget->deleteModule(m);
+//  midiWidget->deleteModule(m);
   if (m->M_type == M_type_env) {
     synthdata->listM_env.removeRef((QObject *)m);
   }
@@ -1228,7 +1287,7 @@ void ModularSynth::load() {
 }
 
 void ModularSynth::load(QString *presetName) {
-
+/*
   int l1, l2;
   int M_type, moduleID, index, value, x, y, w, h, subID1, subID2;
   int index1, index2, moduleID1, moduleID2, midiSign;
@@ -1241,13 +1300,13 @@ void ModularSynth::load(QString *presetName) {
   int newLadspaPolyFlag, textEditID;
   Module *m;
 
-  restartSynth = synthdata->doSynthesis; 
+  restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
   followConfig = midiWidget->followConfig;
   midiWidget->followConfig = false;
   config_fn = *presetName;
   if (!(f = fopen(config_fn, "r"))) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");  
+    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
   } else {
     clearConfig();
     ladspaLoadErr = false;
@@ -1275,7 +1334,7 @@ void ModularSynth::load(QString *presetName) {
           fprintf(stderr, "Loading LADSPA plugin \"%s\" from library \"%s\".\n", pluginName.latin1(), ladspaLibName.latin1());
           if (!synthdata->getLadspaIDs(ladspaLibName, pluginName, &subID1, &subID2)) {
             sprintf(sc, "Could not find LADSPA plugin \"%s\" from library \"%s\".\n", pluginName.latin1(), ladspaLibName.latin1());
-            QMessageBox::information( this, "AlsaModularSynth", QString(sc));  
+            QMessageBox::information( this, "AlsaModularSynth", QString(sc));
             ladspaLoadErr = true;
           }
         } else {
@@ -1283,78 +1342,78 @@ void ModularSynth::load(QString *presetName) {
           fscanf(f, "%d", &subID2);
         }
         switch((M_typeEnum)M_type) {
-          case M_type_custom: 
+          case M_type_custom:
             break;
-          case M_type_vco: 
+          case M_type_vco:
             newM_vco();
             break;
-          case M_type_vca: 
+          case M_type_vca:
             newM_vca();
             break;
-          case M_type_vcf: 
+          case M_type_vcf:
             newM_vcf();
             break;
-          case M_type_lfo: 
+          case M_type_lfo:
             newM_lfo();
             break;
-          case M_type_noise: 
+          case M_type_noise:
             newM_noise();
             break;
-          case M_type_delay: 
+          case M_type_delay:
             newM_delay();
             break;
-          case M_type_seq: 
+          case M_type_seq:
             newM_seq(subID1);
             break;
-          case M_type_env: 
+          case M_type_env:
             newM_env();
             break;
-          case M_type_advenv: 
+          case M_type_advenv:
             newM_advenv();
             break;
-          case M_type_mcv: 
+          case M_type_mcv:
             newM_mcv();
             break;
-          case M_type_ringmod: 
+          case M_type_ringmod:
             newM_ringmod();
             break;
-          case M_type_inv: 
+          case M_type_inv:
             newM_inv();
             break;
-          case M_type_sh: 
+          case M_type_sh:
             newM_sh();
             break;
-          case M_type_vcswitch: 
+          case M_type_vcswitch:
             newM_vcswitch();
             break;
-          case M_type_cvs: 
+          case M_type_cvs:
             newM_cvs();
             break;
-          case M_type_slew: 
+          case M_type_slew:
             newM_slew();
             break;
-          case M_type_quantizer: 
+          case M_type_quantizer:
             newM_quantizer();
             break;
-          case M_type_mix: 
+          case M_type_mix:
             newM_mix(subID1);
             break;
-          case M_type_vcorgan: 
+          case M_type_vcorgan:
             newM_vcorgan(subID1);
             break;
-          case M_type_dynamicwaves: 
+          case M_type_dynamicwaves:
             newM_dynamicwaves(subID1);
             break;
-          case M_type_ladspa: 
+          case M_type_ladspa:
             if (!ladspaLoadErr) {
               newM_ladspa(subID1, subID2, (bool)newLadspaPolyFlag);
-            } 
+            }
             break;
           case M_type_out:
             if (synthdata->withJack) {
               newM_jackout();
             } else {
-              newM_out(); 
+              newM_out();
             }
             break;
           case M_type_jackout:
@@ -1372,22 +1431,22 @@ void ModularSynth::load(QString *presetName) {
             }
             break;
           case M_type_wavout:
-            newM_wavout(); 
+            newM_wavout();
             break;
           case M_type_midiout:
-            newM_midiout(); 
+            newM_midiout();
             break;
           case M_type_scope:
-            newM_scope(); 
+            newM_scope();
             break;
           case M_type_spectrum:
-            newM_spectrum(); 
+            newM_spectrum();
             break;
           case M_type_in:
             if (synthdata->withJack) {
               newM_jackin();
             } else {
-              newM_in(); 
+              newM_in();
             }
             break;
         }
@@ -1405,7 +1464,7 @@ void ModularSynth::load(QString *presetName) {
       }
       if (qs.contains("Comment", false) && !commentFlag) {
         fscanf(f, "%d", &textEditID);
-        fscanf(f, "%d", &textEditID); // TODO textEditID is not needed yet
+        fscanf(f, "%d", &textEditID); //! @todo TODO textEditID is not needed yet
         fscanf(f, "%d", &x);
         fscanf(f, "%d", &y);
         fscanf(f, "%d", &w);
@@ -1417,10 +1476,10 @@ void ModularSynth::load(QString *presetName) {
     while((fscanf(f, "%s", sc) != EOF) && !ladspaLoadErr) {
       qs = QString(sc);
       if (qs.contains("Port", false)) {
-        fscanf(f, "%d", &index1); 
+        fscanf(f, "%d", &index1);
         fscanf(f, "%d", &index2);
         fscanf(f, "%d", &moduleID1);
-        fscanf(f, "%d", &moduleID2); 
+        fscanf(f, "%d", &moduleID2);
         moduleID_read1 = 0;
         moduleID_read2 = 0;
         index_read1 = 0;
@@ -1434,17 +1493,17 @@ void ModularSynth::load(QString *presetName) {
           }
         }
         for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); l1++) {
-          if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
+          if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1)
             && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
             index_read1 = l1;
           }
-        } 
+        }
         for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); l1++) {
           if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
             && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
             index_read2 = l1;
-          } 
-        }   
+          }
+        }
         listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
         listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
       }
@@ -1576,10 +1635,11 @@ void ModularSynth::load(QString *presetName) {
     }
   }
   midiWidget->followConfig = followConfig;
+  */
 }
 
 void ModularSynth::save() {
-
+/*
   Port *port[2];
   int l1, l2, l3;
   FILE *f;
@@ -1597,7 +1657,7 @@ void ModularSynth::save() {
       switch(listModule.at(l1)->M_type) {
         case M_type_custom: 
           break;
-        case M_type_mix: 
+        case M_type_mix:
           fprintf(f, "%d 0\n", ((M_mix *)listModule.at(l1))->in_channels);
           break;
         case M_type_vcorgan: 
@@ -1615,7 +1675,7 @@ void ModularSynth::save() {
                   ((M_ladspa *)listModule.at(l1))->pluginName.latin1());
           break;
         default:
-          fprintf(f, "0 0\n");  
+          fprintf(f, "0 0\n");
           break; 
       }
       for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
@@ -1669,7 +1729,7 @@ void ModularSynth::save() {
         for (l3 = 0; l3 < listModule.at(l1)->configDialog->midiCheckBoxList.at(l2)->midiControllerList.count(); l3++) {
           fprintf(f, "TMIDI %d %d %d %d %d\n", listModule.at(l1)->moduleID, l2,
                   listModule.at(l1)->configDialog->midiCheckBoxList.at(l2)->midiControllerList.at(l3)->type,
-                  listModule.at(l1)->configDialog->midiCheckBoxList.at(l2)->midiControllerList.at(l3)->ch,  
+                  listModule.at(l1)->configDialog->midiCheckBoxList.at(l2)->midiControllerList.at(l3)->ch,
                   listModule.at(l1)->configDialog->midiCheckBoxList.at(l2)->midiControllerList.at(l3)->param);
         }
       }
@@ -1688,6 +1748,7 @@ void ModularSynth::save() {
     }
   fclose(f);
   }
+*/
 }
 
 void ModularSynth::allVoicesOff() {
@@ -1696,7 +1757,7 @@ void ModularSynth::allVoicesOff() {
 
   for (l2 = 0; l2 < synthdata->poly; l2++) {
     if (synthdata->notePressed[l2]) {
-      synthdata->notePressed[l2] = false; 
+      synthdata->notePressed[l2] = false;
       synthdata->noteActive[l2] = false;
       for (l1 = 0; l1 < listModule.count(); l1++) {      
         listModule.at(l1)->noteOffEvent(l2);

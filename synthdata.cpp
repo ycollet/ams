@@ -13,7 +13,7 @@
 #include "m_dynamicwaves.h"
 #include "m_wavout.h"
 #include "m_midiout.h"
-#include "m_scope.h"
+//#include "m_scope.h"
 #include "m_spectrum.h"
 
 SynthData::SynthData(int p_poly, int p_periodsize) : port_sem(1) {
@@ -163,7 +163,7 @@ SynthData::~SynthData() {
     free(zeroModuleData[l1]);
   }
   free(zeroModuleData);
-  delete(midiWidget);
+  delete(controlCenter);
   if (withJack) {
     jack_client_close(jack_handle);
   }
@@ -413,12 +413,14 @@ int SynthData::jack_playback(jack_nframes_t nframes) {
     for (l1 = 0; l1 < wavoutModuleList.count(); l1++) {
       ((M_wavout *)wavoutModuleList.at(l1))->generateCycle();
     }
+/*
     for (l1 = 0; l1 < scopeModuleList.count(); l1++) {
       ((M_scope *)scopeModuleList.at(l1))->generateCycle();
     }
     for (l1 = 0; l1 < spectrumModuleList.count(); l1++) {
-      ((M_spectrum *)spectrumModuleList.at(l1))->generateCycle(); 
+      ((M_spectrum *)spectrumModuleList.at(l1))->generateCycle();
     }
+*/
     for (l1 = 0; l1 < midioutModuleList.count(); l1++) {
       ((M_midiout *)midioutModuleList.at(l1))->generateCycle();
     }

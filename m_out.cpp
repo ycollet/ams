@@ -31,23 +31,28 @@ M_out::M_out(QWidget* parent, const char *name, SynthData *p_synthdata)
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
   agc = 1;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   qs.sprintf("PCM Out ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0]);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1]);
-  QStrList *agcNames = new QStrList(true);
-  agcNames->append("Disbled");
-  agcNames->append("Enabled");
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames);
+  FloatParameter * pGain = new FloatParameter(this,"Gain","",0.0,1.0,&gain);
+  FloatParameter * pGain1 = new FloatParameter(this,"Volume 1","",0.0,1.0,&mixer_gain[0]);
+  FloatParameter * pGain2 = new FloatParameter(this,"Volume 2","",0.0,1.0,&mixer_gain[1]);
+  EnumParameter * pAgc = new EnumParameter(this,"Automatic Gain Control","",(int *)&agc);
+  pAgc->addItem(0,"Disabled");
+  pAgc->addItem(1,"Enabled");
+
+  configDialog->addParameter(pGain);
+  configDialog->addParameter(pGain1);
+  configDialog->addParameter(pGain2);
+  configDialog->addParameter(pAgc);
+
 }
 
 M_out::~M_out() {

@@ -12,18 +12,28 @@
 #include "envelope.h"
 
 
-Envelope::Envelope(float *p_delayRef, float *p_attackRef, float *p_holdRef,
-                   float *p_decayRef, float *p_sustainRef, float *p_releaseRef,
-                   QWidget* parent, const char *name, SynthData *p_synthdata) 
-             : QWidget (parent, name)
+Envelope::Envelope(FloatParameter *p_delay,
+                   FloatParameter *p_attack,
+                   FloatParameter *p_hold,
+                   FloatParameter *p_decay,
+                   FloatParameter *p_sustain,
+                   FloatParameter *p_release,
+                   QWidget* parent, const char *name, SynthData *p_synthdata)
+: QWidget (parent, name)
 {
   synthdata = p_synthdata;
-  delayRef = p_delayRef;
-  attackRef = p_attackRef;
-  holdRef = p_holdRef;
-  decayRef = p_decayRef;
-  sustainRef = p_sustainRef;
-  releaseRef = p_releaseRef;
+  delay = p_delay;
+  attack = p_attack;
+  hold = p_hold;
+  decay = p_decay;
+  sustain = p_sustain;
+  release = p_release;
+  connect(delay,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
+  connect(attack,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
+  connect(hold,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
+  connect(decay,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
+  connect(sustain,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
+  connect(release,SIGNAL(valueChanged(float)), this,SLOT(updateEnvelope(float)));
   setPalette(QPalette(QColor(0, 20, 100), QColor(0, 20, 100)));
   setMinimumHeight(140);
 }
@@ -33,8 +43,13 @@ Envelope::~Envelope()
 }
 
 void Envelope::paintEvent(QPaintEvent *) {
-
-  QPixmap pm(width(), height());  
+   const float * delayRef=delay->valuePtr();
+   const float * attackRef=attack->valuePtr();
+   const float * holdRef=hold->valuePtr();
+   const float * decayRef=decay->valuePtr();
+   const float * sustainRef=sustain->valuePtr();
+   const float * releaseRef=release->valuePtr();
+  QPixmap pm(width(), height());
   QPainter p(&pm);
   QPointArray points(7);
   QPen pen;
@@ -46,9 +61,9 @@ void Envelope::paintEvent(QPaintEvent *) {
   len = *delayRef + *attackRef + *holdRef + *decayRef + SUSTAIN_LEN + *releaseRef;
   xscale = (float)width() / len;
   yscale = (float)(height()-6);
-  x = *delayRef * xscale;   
+  x = *delayRef * xscale;
   points.setPoint(0, (int)x, height());
-  x += *attackRef * xscale; 
+  x += *attackRef * xscale;
   points.setPoint(1, (int)x, 6);
   x += *holdRef * xscale;
   points.setPoint(2, (int)x, 6);
@@ -74,14 +89,14 @@ void Envelope::paintEvent(QPaintEvent *) {
   bitBlt(this, 0, 0, &pm);
 }
 
-void Envelope::updateEnvelope(int value) {
+void Envelope::updateEnvelope(float value) {
 
   repaint(false);
 }
 
 QSize Envelope::sizeHint() const {
 
-  return QSize(ENVELOPE_MINIMUM_WIDTH, ENVELOPE_MINIMUM_HEIGHT); 
+  return QSize(ENVELOPE_MINIMUM_WIDTH, ENVELOPE_MINIMUM_HEIGHT);
 }
 
 QSizePolicy Envelope::sizePolicy() const {

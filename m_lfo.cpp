@@ -59,8 +59,11 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_rect);
   qs.sprintf("LFO ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 100, freq, "Frequency", &freq);
-  configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
+  FloatParameter *fp = new FloatParameter(this,"Frequency","", 0.0,100.0,&freq);
+  configDialog->addParameter(fp);
+  fp = new FloatParameter(this,"Phi0","",0.0,6.283,&phi0);
+  configDialog->addParameter(fp);
+  
 }
 
 M_lfo::~M_lfo() {

@@ -1,4 +1,4 @@
-#include <stdio.h>      
+#include <stdio.h>
 #include <stdlib.h>     
 #include <getopt.h>  
 #include <unistd.h>
@@ -11,6 +11,7 @@
 #include <qscrollview.h>
 
 #include "modularsynth.h"
+#include "parameterpanel.h"
 
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
   QMainWindow *top = new QMainWindow();
   top->setCaption("AlsaModularSynth");
   int getopt_return;
-  int option_index; 
+  int option_index;
   int poly = 1;
   int periodsize = 1024;
   int periods = 0;
@@ -51,32 +52,32 @@ int main(int argc, char *argv[])
 
   while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:", options, &option_index)) >= 0) {
     switch(getopt_return) {
-    case 'p': 
+    case 'p':
         poly = atoi(optarg);
         break;
-    case 'b': 
+    case 'b':
         periodsize = atoi(optarg);
         break;
-    case 'f': 
+    case 'f':
         periods = atoi(optarg);
         break;
-    case 'e': 
+    case 'e':
         edge = atof(optarg);
         break;
-    case 'r': 
+    case 'r':
         rate = atoi(optarg);
         break;
-    case 'c': 
+    case 'c':
         pcmname.sprintf("%s", optarg);
-        break; 
-    case 'l': 
+        break;
+    case 'l':
         presetName.sprintf("%s", optarg);
         havePreset = true;
-        break; 
-    case 'd': 
+        break;
+    case 'd':
         presetPath.sprintf("%s", optarg);
         havePresetPath = true;
-        break; 
+        break;
     case 'n':
         noGui = true;
         break;
@@ -125,6 +126,8 @@ int main(int argc, char *argv[])
   top->menuBar()->insertSeparator();
   top->menuBar()->insertItem("&Control Center", midiMenu);
   top->menuBar()->insertSeparator();
+  top->menuBar()->insertItem("&Panels", modularSynth->panelMenu);
+  top->menuBar()->insertSeparator();
   top->menuBar()->insertItem("&About", aboutMenu);
   filePopup->insertItem("&New", modularSynth, SLOT(clearConfig()));
   filePopup->insertSeparator();
@@ -167,8 +170,8 @@ int main(int argc, char *argv[])
   newModulePopup->insertItem("Dynamic Waves (8 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_8()));
   newModulePopup->insertItem("MIDI Out", modularSynth, SLOT(newM_midiout()));
   newModulePopup->insertItem("WAV Out", modularSynth, SLOT(newM_wavout()));
-  newModulePopup->insertItem("Scope View", modularSynth, SLOT(newM_scope()));
-  newModulePopup->insertItem("Spectrum View", modularSynth, SLOT(newM_spectrum()));
+//  newModulePopup->insertItem("Scope View", modularSynth, SLOT(newM_scope()));
+//  newModulePopup->insertItem("Spectrum View", modularSynth, SLOT(newM_spectrum()));
   if (enableJack) {
     newModulePopup->insertItem("JACK Out", modularSynth, SLOT(newM_jackout()));
     newModulePopup->insertItem("JACK In", modularSynth, SLOT(newM_jackin()));
@@ -180,6 +183,7 @@ int main(int argc, char *argv[])
   modulePopup->insertItem("&New", newModulePopup);
   modulePopup->insertItem("&Show Ladspa Browser", modularSynth, SLOT(displayLadspaPlugins()));
   midiMenu->insertItem("Show Control Center", modularSynth, SLOT(displayMidiController()));
+
   aboutMenu->insertItem("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
   top->setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   top->setCentralWidget(modularSynth);
@@ -202,6 +206,9 @@ int main(int argc, char *argv[])
     modularSynth->load(&presetName);
   }
   modularSynth->synthdata->edge = edge;  
+
+  //ParameterPanel *p =new ParameterPanel(0,"Panel",true,true);
+  //p->show();
   return qApp->exec();
   return (0);
 }

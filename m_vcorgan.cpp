@@ -49,7 +49,7 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name, SynthDat
     }
   }
   port_M_freq = new Port("Freq", PORT_IN, 0, this, synthdata);
-  port_M_freq->move(0, 35);    
+  port_M_freq->move(0, 35);
   port_M_freq->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_freq); 
   port_M_exp = new Port("Exp. FM", PORT_IN, 1, this, synthdata);
@@ -66,53 +66,69 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name, SynthDat
   portList.append(port_out);
   qs.sprintf("VC Organ ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->initTabWidget();
-  QStrList *waveFormNames = new QStrList(true);
-  waveFormNames->append("Sine");
-  waveFormNames->append("Saw");
-  waveFormNames->append("Tri");
-  waveFormNames->append("Rect");
-  waveFormNames->append("Saw 2");
-  QVBox *generalTab = new QVBox(configDialog->tabWidget);
-  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, generalTab);
-  configDialog->addSlider(0, 1, tune, "Tune", &tune, false, generalTab);
-  configDialog->addSlider(0, 10, expFMGain, "Exp. FM Gain", &expFMGain, false, generalTab);
-  configDialog->addSlider(0, 10, linFMGain, "Lin. FM Gain", &linFMGain, false, generalTab);
-  configDialog->addTab(generalTab, "Tune / Modulation");
-  QVBox *mixTab = new QVBox(configDialog->tabWidget);
+
+  
+  QString tabName = "Tune / Modulation";
+  IntParameter *ip = new IntParameter(this,"Octave","", 0,6,&octave);
+  configDialog->addParameter(ip,tabName);
+  FloatParameter *fp = new FloatParameter(this,"Tune","",0.0,1.0,&tune);
+  configDialog->addParameter(fp,tabName);
+  fp = new FloatParameter(this,"Exp. FM Gain","",0.0,10.0,&expFMGain);
+  configDialog->addParameter(fp,tabName);
+  fp = new FloatParameter(this,"Lin. FM Gain","",0.0,10.0,&linFMGain);
+  configDialog->addParameter(fp,tabName);
+
+
   if (oscCount < 8) {
+    tabName="Mixer";
     for (l1 = 0; l1 < oscCount; l1++) {
       qs.sprintf("Volume %d", l1);
-      configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
+      fp=new FloatParameter(this,qs,"",0.0,1.0,&gain[l1]);
+      configDialog->addParameter(fp,tabName);
+
     }
-    configDialog->addTab(mixTab, "Mixer");
+
   } else {
-    QVBox *mixTab2 = new QVBox(configDialog->tabWidget);
+    
     for (l1 = 0; l1 < 4; l1++) {
       qs.sprintf("Volume %d", l1);
-      configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
+      fp=new FloatParameter(this,qs,"",0.0,1.0,&gain[l1]);
+      configDialog->addParameter(fp,"Mixer 0-3");
+
       qs.sprintf("Volume %d", l1 + 4);
-      configDialog->addSlider(0, 1, gain[l1+4], qs, &gain[l1+4], false, mixTab2);
+      fp=new FloatParameter(this,qs,"",0.0,1.0,&gain[l1+4]);
+      configDialog->addParameter(fp,"Mixer 4-7");
     }
-    configDialog->addTab(mixTab, "Mixer 0-3");
-    configDialog->addTab(mixTab2, "Mixer 4-7");
+
   }
   for (l1 = 0; l1 < oscCount; l1++) {
-    oscTab[l1] = new QVBox(configDialog->tabWidget);
+    tabName.sprintf("Osc %d", l1);
     qs.sprintf("Wave Form %d", l1);
-    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames->count(), waveFormNames, oscTab[l1]);
+    EnumParameter *ep = new EnumParameter(this,qs,"",(int *)&waveForm[l1]);
+    ep->addItem(ORGAN_SINE,"Sine");
+    ep->addItem(ORGAN_SAW,"Saw");
+    ep->addItem(ORGAN_TRI,"Tri");
+    ep->addItem(ORGAN_RECT,"Rect");
+    ep->addItem(ORGAN_SAW2,"Saw2");
+    configDialog->addParameter(ep,tabName);
     qs.sprintf("Octave %d", l1);
-    configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
+    ip=new IntParameter(this,qs,"",0,3,&osc_octave[l1]);
+    configDialog->addParameter(ip,tabName);
     qs.sprintf("Tune %d", l1);
-    configDialog->addSlider(0, 1, osc_tune[l1], qs, &osc_tune[l1], false, oscTab[l1]);
+    fp = new FloatParameter(this,qs,"",0.0,1.0,&osc_tune[l1]);
+    configDialog->addParameter(fp,tabName);
+
     qs.sprintf("Harmonic %d", l1);
-    configDialog->addIntSlider(1, 16, harmonic[l1], qs, &harmonic[l1], oscTab[l1]);
+    ip=new IntParameter(this,qs,"",1,16,&harmonic[l1]);
+    configDialog->addParameter(ip,tabName);
+
     qs.sprintf("Subharmonic %d", l1);
-    configDialog->addIntSlider(1, 16, subharmonic[l1], qs, &subharmonic[l1], oscTab[l1]);
+    ip=new IntParameter(this,qs,"",1,16,&subharmonic[l1]);
+    configDialog->addParameter(ip,tabName);
+
     qs.sprintf("Phi0 %d", l1);
-    configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
-    qs.sprintf("Osc %d", l1);
-    configDialog->addTab(oscTab[l1], qs);
+    fp = new FloatParameter(this,qs,"",0.0,6.283,&phi0[l1]);
+    configDialog->addParameter(fp,tabName);
   }
 }
 

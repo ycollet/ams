@@ -38,7 +38,7 @@ class MultiEnvelope : public QWidget
     virtual QSizePolicy sizePolicy() const;
 
   public slots: 
-    void updateMultiEnvelope(int value);
+    void updateMultiEnvelope(float value);
 };
   
 #endif

@@ -22,6 +22,11 @@
 #include "synthdata.h"
 #include "configdialog.h"
 #include "port.h"
+#include "floatparameter.h"
+#include "intparameter.h"
+#include "enumparameter.h"
+#include "actionparameter.h"
+#include "boolparameter.h"
 
 #define MODULE_DEFAULT_WIDTH                 50
 #define MODULE_DEFAULT_HEIGHT               100 
@@ -51,6 +56,8 @@ class Module : public QWidget
     QList<Port> portList;
     int moduleID, outPortCount;
     QListViewItem *listViewItem;
+    
+
 
   protected:
     SynthData *synthdata;
