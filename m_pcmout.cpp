@@ -65,8 +65,9 @@ M_pcmout::~M_pcmout()
 void M_pcmout::generateCycle()
 {
     int l1, l2, l3;
-    float max, mixgain, **indata;
+    float max, mixgain, **indata, polyroot;
 
+    polyroot = sqrt((double)synthdata->poly);
     for (l1 = 0; l1 < 2; l1++)
     {
         memset(pcmdata[l1], 0, synthdata->cyclesize * sizeof(float));  
@@ -74,7 +75,7 @@ void M_pcmout::generateCycle()
 
         if (indata != synthdata->zeroModuleData)
         {
-            mixgain = gain * mixer_gain[l1] / (double)synthdata->poly;
+            mixgain = gain * mixer_gain[l1] / polyroot;
             for (l2 = 0; l2 < synthdata->cyclesize; l2++)
             {
                 for (l3 = 0; l3 < synthdata->poly; l3++)
