@@ -148,7 +148,7 @@ void M_scmcv::generateCycle() {
       calcScale();
     }
     for (l1 = 0; l1 < synthdata->poly; l1++) {
-      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (float)synthdata->notePressed[l1];
+      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       lastfreq[l1] = freq[l1];
       index = synthdata->notes[l1];
       

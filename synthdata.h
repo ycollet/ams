@@ -45,8 +45,6 @@ class SynthData : public QObject
     int notes[MAXPOLY];               // Midi notes
     int velocity[MAXPOLY];            // Velocity
     int channel[MAXPOLY];
-    bool notePressed[MAXPOLY];
-    bool noteActive[MAXPOLY];
     long noteCounter[MAXPOLY];
 
     int poly;
@@ -96,7 +94,6 @@ class SynthData : public QObject
     ~SynthData();
 
     float exp_table(float x);
-    int nextFreeOsc();
     int incModuleCount();
     int decModuleCount();
     int getModuleCount();

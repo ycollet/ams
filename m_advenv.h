@@ -44,8 +44,6 @@ class M_advenv : public Module
   public:
     M_advenv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_advenv();
-    virtual void noteOnEvent(int osc);
-    virtual void noteOffEvent(int osc);
 
   public slots:
     void generateCycle();

@@ -164,7 +164,8 @@ void M_seq::generateCycle() {
 
 void M_seq::nextStep() {
 
-  int len;
+  int len, l2;
+  long noteCount;
 
   if (updateTimerFlag) {
     timer->stop();
@@ -184,7 +185,17 @@ void M_seq::nextStep() {
   len = 4 - note_len;
   if (tick == 0) {
     seq_freq = float(pitch[seq_pos] + pitch_ofs) / 12.0;
-    osc = synthdata->nextFreeOsc();
+
+// Search for next free voice    
+    osc = -1;
+    noteCount = 0;
+    for (l2 = 0; l2 < synthdata->poly; l2++) {
+      if (synthdata->noteCounter[l2] > noteCount) {
+        noteCount = synthdata->noteCounter[l2];
+        osc = l2;
+      }
+    }  
+    
     seq_gate = (osc < 0) ? 0 : (float)gate[seq_pos];
     seq_velocity = float(velocity[seq_pos]) / 127.0;
     seq_pos++;

@@ -30,9 +30,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
   for (l1 = 0; l1 < MAXPOLY; l1++) {
     notes[l1] = 0;
     velocity[l1] = 0;
-    notePressed[l1] = false;
-    noteActive[l1] = false;
-    noteCounter[l1] = 0;
+    noteCounter[l1] = 1000000;
   }
 
   poly = p_poly;
@@ -135,80 +133,6 @@ SynthData::~SynthData()
     free (zeroModuleData);
     delete (midiWidget);
     delete (guiWidget);
-}
-
-int SynthData::nextFreeOsc() {
-
-  int l1, l2, osc;
-  bool tmp_noteActive;
-  float min_e;
-
-  for (l2 = 0; l2 < poly; l2++) {
-    tmp_noteActive = false;
-    for (l1 = 0; l1 < listM_env.count(); l1++) {
-      if (((M_env *)listM_env.at(l1))->noteActive[l2]) {   
-        tmp_noteActive = true;
-      }
-    }  
-    for (l1 = 0; l1 < listM_vcenv.count(); l1++) {
-      if (((M_vcenv *)listM_vcenv.at(l1))->noteActive[l2]) {   
-        tmp_noteActive = true;
-      }
-    }  
-    for (l1 = 0; l1 < listM_advenv.count(); l1++) {
-      if (((M_advenv *)listM_advenv.at(l1))->noteActive[l2]) {   
-        tmp_noteActive = true;
-      }
-    }  
-    for (l1 = 0; l1 < listM_dynamicwaves.count(); l1++) {
-      if (((M_dynamicwaves *)listM_dynamicwaves.at(l1))->noteActive[l2]) {   
-        tmp_noteActive = true;
-      }
-    }  
-    noteActive[l2] = tmp_noteActive || notePressed[l2];
-  }
-  for (l2 = 0; l2 < poly; l2++) {
-    if (!noteActive[l2]) {
-      return(l2);
-    }
-  } 
-  min_e = 1.0;
-  osc = 0;
-  for (l2 = 0; l2 < poly; l2++) {
-    for (l1 = 0; l1 < listM_env.count(); l1++) {
-      if (((M_env *)listM_env.at(l1))->noteActive[l2]) {
-        if (((M_env *)listM_env.at(l1))->e[l2] < min_e) {
-          min_e = ((M_env *)listM_env.at(l1))->e[l2];
-          osc = l2;
-        }
-      }
-    }
-    for (l1 = 0; l1 < listM_vcenv.count(); l1++) {
-      if (((M_vcenv *)listM_vcenv.at(l1))->noteActive[l2]) {
-        if (((M_vcenv *)listM_vcenv.at(l1))->e[l2] < min_e) {
-          min_e = ((M_vcenv *)listM_vcenv.at(l1))->e[l2];
-          osc = l2;
-        }
-      }
-    }
-    for (l1 = 0; l1 < listM_advenv.count(); l1++) {
-      if (((M_advenv *)listM_advenv.at(l1))->noteActive[l2]) {
-        if (((M_advenv *)listM_advenv.at(l1))->e[l2] < min_e) {
-          min_e = ((M_advenv *)listM_advenv.at(l1))->e[l2];
-          osc = l2;
-        }
-      }
-    }
-    for (l1 = 0; l1 < listM_dynamicwaves.count(); l1++) {
-      if (((M_dynamicwaves *)listM_dynamicwaves.at(l1))->noteActive[l2]) {
-        if (((M_dynamicwaves *)listM_dynamicwaves.at(l1))->e[l2][0] < min_e) {
-          min_e = ((M_dynamicwaves *)listM_dynamicwaves.at(l1))->e[l2][0];
-          osc = l2;
-        }
-      }
-    }
-  }  
-  return(osc);
 }
 
 int SynthData::incModuleCount() {

@@ -84,14 +84,6 @@ M_env::~M_env() {
 
 }
 
-void M_env::noteOnEvent(int osc) {
-
-}
-
-void M_env::noteOffEvent(int osc) {
-
-}
-
 void M_env::generateCycle() {
 
   int l1, l2, status;

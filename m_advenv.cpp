@@ -121,14 +121,6 @@ M_advenv::~M_advenv() {
 
 }
 
-void M_advenv::noteOnEvent(int osc) {
-
-}
-
-void M_advenv::noteOffEvent(int osc) {
-
-}
-
 void M_advenv::generateCycle() {
 
   int l1, l2, status;

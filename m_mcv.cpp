@@ -85,7 +85,7 @@ void M_mcv::generateCycle() {
     cycleProcessing = true;
     log2 = log(2.0);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
-      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (float)synthdata->notePressed[l1];
+      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       freq[l1] = pitchbend + float(synthdata->notes[l1]-pitch) / 12.0;
 //      if (freq[l1] < 0) freq[l1] = 0;
       velocity = (float)synthdata->velocity[l1] / 127.0;

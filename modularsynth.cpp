@@ -418,63 +418,9 @@ void ModularSynth::midiAction(int fd) {
 
     if (((ev->type == SND_SEQ_EVENT_NOTEON) || (ev->type == SND_SEQ_EVENT_NOTEOFF)) 
          && ((synthdata->midiChannel < 0) || (synthdata->midiChannel == ev->data.control.channel))) {
-      for (l2 = 0; l2 < synthdata->poly; l2++) {
-        noteActive = false; 
-
-// If any of the envelopes has an noteActive flag for the voice it is considered "busy".
-
-        for (l1 = 0; l1 < synthdata->listM_env.count(); l1++) {
-          if (((M_env *)synthdata->listM_env.at(l1))->noteActive[l2]) {   
-            noteActive = true;
-          }
-        }  
-        for (l1 = 0; l1 < synthdata->listM_vcenv.count(); l1++) {
-          if (((M_vcenv *)synthdata->listM_vcenv.at(l1))->noteActive[l2]) {   
-            noteActive = true;
-          }
-        }  
-        for (l1 = 0; l1 < synthdata->listM_advenv.count(); l1++) {
-          if (((M_advenv *)synthdata->listM_advenv.at(l1))->noteActive[l2]) {   
-            noteActive = true;
-          }
-        }  
-        for (l1 = 0; l1 < synthdata->listM_dynamicwaves.count(); l1++) {
-          if (((M_dynamicwaves *)synthdata->listM_dynamicwaves.at(l1))->noteActive[l2]) {   
-            noteActive = true;
-          }
-        }  
-        synthdata->noteActive[l2] = noteActive || synthdata->notePressed[l2];
-      }  
       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
 
-// Assign new note
-
-        foundOsc = false;
-        for (l2 = 0; l2 < synthdata->poly; l2++) {
-          if (!synthdata->noteActive[l2]) {
-          
-// Easiest case: found a free voice          
-          
-            foundOsc = true;
-            synthdata->noteActive[l2] = true;
-            synthdata->notePressed[l2] = true;
-            synthdata->noteCounter[l2] = 0;
-            synthdata->velocity[l2] = ev->data.note.velocity;
-            synthdata->channel[l2] = ev->data.note.channel;  
-            synthdata->notes[l2] = ev->data.note.note;
-            for (l1 = 0; l1 < listModule.count(); l1++) {
-              listModule.at(l1)->noteOnEvent(l2);  
-            }
-            break;
-          }
-        } 
-        if ((synthdata->listM_advenv.count() 
-          || synthdata->listM_env.count() 
-          || synthdata->listM_vcenv.count() 
-          || synthdata->listM_dynamicwaves.count())
-          && !foundOsc) {
-          
-// Search for oldest voice to allocate new note.          
+// Note On: Search for oldest voice to allocate new note.          
           
           osc = 0;
           noteCount = 0;
@@ -487,8 +433,6 @@ void ModularSynth::midiAction(int fd) {
             }
           }
           if (foundOsc) {
-            synthdata->noteActive[osc] = true; 
-            synthdata->notePressed[osc] = true;
             synthdata->noteCounter[osc] = 0;
             synthdata->velocity[osc] = ev->data.note.velocity;
             synthdata->channel[osc] = ev->data.note.channel;
@@ -497,12 +441,13 @@ void ModularSynth::midiAction(int fd) {
               listModule.at(l1)->noteOnEvent(osc);
             }
           }  
-        }  
       } else {
+      
+// Note Off      
+      
         for (l2 = 0; l2 < synthdata->poly; l2++) {
           if ((synthdata->notes[l2] == ev->data.note.note)
             && (synthdata->channel[l2] == ev->data.note.channel)) {
-            synthdata->notePressed[l2] = false;
             synthdata->noteCounter[l2] = 1000000; 
             for (l1 = 0; l1 < listModule.count(); l1++) {
               listModule.at(l1)->noteOffEvent(l2);
@@ -511,11 +456,11 @@ void ModularSynth::midiAction(int fd) {
         }     
       }       
     }
+    
     if ((ev->type == SND_SEQ_EVENT_CONTROLLER) && (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)) {
       for (l2 = 0; l2 < synthdata->poly; l2++) {
-        if (synthdata->notePressed[l2] && (synthdata->channel[l2] == ev->data.note.channel)) {
-          synthdata->notePressed[l2] = false;
-          synthdata->noteActive[l2] = false;
+        if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel)) {
+          synthdata->noteCounter[l2] = 1000000;
           for (l1 = 0; l1 < listModule.count(); l1++) {
             listModule.at(l1)->noteOffEvent(l2);
           } 
@@ -1118,10 +1063,13 @@ void ModularSynth::deleteModule(Module *m) {
 
 void ModularSynth::clearConfig() {
 
-  int l1;
+  int l1, l2;
   bool restartSynth;
   QString qs;
 
+  for (l2 = 0; l2 < synthdata->poly; l2++) {
+    synthdata->noteCounter[l2] = 1000000;
+  }
   qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setCaption(qs);
   restartSynth = synthdata->doSynthesis;
@@ -1761,9 +1709,8 @@ void ModularSynth::allVoicesOff() {
   int l1, l2;
 
   for (l2 = 0; l2 < synthdata->poly; l2++) {
-    if (synthdata->notePressed[l2]) {
-      synthdata->notePressed[l2] = false; 
-      synthdata->noteActive[l2] = false;
+    if (synthdata->noteCounter[l2] < 1000000) {
+      synthdata->noteCounter[l2] = 1000000;
       for (l1 = 0; l1 < listModule.count(); l1++) {      
         listModule.at(l1)->noteOffEvent(l2);
       } 
