@@ -10,7 +10,7 @@ ColorP 0 0 2 6 250 200 50 180 180 180
 FSlider 2 0 0 0 -16384 16384 1
 FSlider 2 1 32768 0 0 32768 1
 ComboBox 2 0 4 1
-Module 6 4 16 350 2 vco_sawpulse Saw-VCO
+Module 6 4 16 350 2 blvco Saw-VCO
 ColorP 0 1 4 7 250 200 50 180 180 180
 FSlider 4 0 0 0 0 16384 1
 FSlider 4 1 0 0 0 65536 1

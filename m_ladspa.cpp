@@ -171,6 +171,17 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
           ctrl_index[ctrl_out_index] = out_port_list.count() + out_ctrl_port_list.count() - 1;
           ctrl_out_index++;
         }
+      } else {
+        if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
+          if (isPoly) {
+            for (l2 = 0; l2 < synthdata->poly; l2++) {
+              ladspa_dsc->connect_port(ladspa_handle[l2], l1, &control_out[ctrl_out_index]);
+            }
+          } else {
+            ladspa_dsc->connect_port(ladspa_handle[0], l1, &control_out[ctrl_out_index]);
+          }  
+          ctrl_out_index++;
+        }
       }
       if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
         if (LADSPA_IS_HINT_TOGGLED(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {

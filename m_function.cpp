@@ -37,6 +37,8 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
   for (l1 = 0; l1 < functionCount; l1++) {
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       i[l2][l1] = 1;
+      y[l1][l2] = 0;
+      old_y[l1][l2] = 0;
     }
     points[l1] = new QPointArray(MAX_POINTS);
     for (l2 = 0; l2 < MAX_POINTS; l2++) {
@@ -96,10 +98,10 @@ M_function::~M_function() {
 
 void M_function::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l2, l3, k, len, l2_out;
   int pointCount;
   Function *cf;  
-  float xg, y;
+  float xg, dy;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -107,24 +109,34 @@ void M_function::generateCycle() {
     inData = port_in->getinputdata();
     cf = configDialog->functionList.at(0);
     pointCount = configDialog->functionList.at(0)->pointCount;
-    for (l3 = 0; l3 < functionCount; l3++) {    
+    for (l3 = 0; l3 < functionCount; l3++) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
-        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        len = synthdata->cyclesize;
+        l2 = -1;
+        l2_out = 0;
+        do {
+          k = (len > 24) ? 16 : len;
+          l2 += k;
+          len -= k;    
           xg = inData[l1][l2];
           while (xg < cf->f[0][l3][i[l1][l3]]) i[l1][l3]--;
           while (xg >= cf->f[0][l3][i[l1][l3]+1]) i[l1][l3]++;
           if (i[l1][l3] < 1) {
-            y = cf->f[1][l3][1];
+            y[l3][l1] = cf->f[1][l3][1];
           } else if (i[l1][l3] >= pointCount) {
-            y = cf->f[1][l3][pointCount];
+            y[l3][l1] = cf->f[1][l3][pointCount];
           } else {
-            y = cf->f[1][l3][i[l1][l3]] + (xg - cf->f[0][l3][i[l1][l3]]) 
-                                        * (cf->f[1][l3][i[l1][l3]+1] - cf->f[1][l3][i[l1][l3]]) 
-                                        / (cf->f[0][l3][i[l1][l3]+1] - cf->f[0][l3][i[l1][l3]]);
+            y[l3][l1] = cf->f[1][l3][i[l1][l3]] + (xg - cf->f[0][l3][i[l1][l3]]) 
+                                                * (cf->f[1][l3][i[l1][l3]+1] - cf->f[1][l3][i[l1][l3]]) 
+                                                / (cf->f[0][l3][i[l1][l3]+1] - cf->f[0][l3][i[l1][l3]]);
           } 
-          data[l3][l1][l2] = y;     
-        }
-      }
+          dy = (y[l3][l1] - old_y[l3][l1]) / (double)k;
+          while (k--) {
+            old_y[l3][l1] += dy;
+            data[l3][l1][l2_out++] = old_y[l3][l1];
+          }                                                
+        } while (len); 
+      }  
     }  
     cycleProcessing = false;
     cycleReady = true;

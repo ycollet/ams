@@ -33,6 +33,7 @@ class M_function : public Module
     QList<Port> out_port_list;
     Port *port_in;
     float zoom;
+    float y[MAX_FUNCTIONS][MAXPOLY], old_y[MAX_FUNCTIONS][MAXPOLY];
     QPointArray *points[MAX_FUNCTIONS];
     int i[MAXPOLY][MAX_FUNCTIONS];
     int zoomIndex, editIndex;
