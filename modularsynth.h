@@ -82,7 +82,7 @@ class ModularSynth : public QScrollView
     QMainWindow *mainWindow;
     QList<Module> listModule;
     QList<TextEdit> listTextEdit;
-    QString presetPath, savePath;
+    QString presetPath, savePath, rcPath;
     connectorStyleType connectorStyle;    
     bool firstPort;
     Port *connectingPort[2];

@@ -79,6 +79,13 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   contextMenu->insertSeparator();
   contextMenu->insertItem("Default Colors", this, SLOT(colorDefaultClicked()));
   colorDefaultClicked();
+  rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
+  prefWidget->loadPref(rcPath);
+  colorModuleBackground = synthdata->colorModuleBackground;
+  colorBackground = synthdata->colorBackground;
+  colorModuleBorder = synthdata->colorModuleBorder;
+  colorModuleFont = synthdata->colorModuleFont;
+  refreshColors();
 }
 
 ModularSynth::~ModularSynth()
@@ -1951,6 +1958,7 @@ void ModularSynth::allVoicesOff() {
 
 void ModularSynth::cleanUpSynth()
 {
+  prefWidget->savePref(rcPath);
   fprintf(stderr, "Closing synth...\n");
   delete this;
 }
@@ -1962,6 +1970,7 @@ void ModularSynth::colorBackgroundClicked() {
   tmp = QColorDialog::getColor(colorBackground);
   if (tmp.isValid()) {
     colorBackground = tmp;
+    synthdata->colorBackground = tmp;
   }
 }
 
@@ -2051,6 +2060,7 @@ void ModularSynth::refreshColors() {
       listModule.at(l1)->portList.at(l2)->repaint(false);
     }
   }      
+  prefWidget->refreshColors();
 }
 
 void ModularSynth::updateColors() {
@@ -2058,9 +2068,11 @@ void ModularSynth::updateColors() {
   int l1, l2;
 
   synthdata->colorModuleBackground = colorModuleBackground;
+  synthdata->colorBackground = colorBackground;
   synthdata->colorModuleBorder = colorModuleBorder;
   synthdata->colorModuleFont = colorModuleFont;
   synthdata->colorPortFont1 = colorModuleFont;
   synthdata->colorPortFont2 = QColor(255, 240, 140);
+  prefWidget->updateColors();
   refreshColors();
 }
