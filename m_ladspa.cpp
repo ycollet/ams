@@ -209,20 +209,20 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
           }
           if (LADSPA_IS_HINT_LOGARITHMIC(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
             if (LADSPA_IS_HINT_DEFAULT_LOW(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
-              if (control_min <=0 ) control_min = 0.01;
-              if (control_max <=0 ) control_max = 0.01;
+              if (control_min <=0 ) control_min = 1e-4;
+              if (control_max <=0 ) control_max = 1e-4;
               control_gui[ctrl_in_index] = exp(log(control_min) * 0.75 + log(control_max) * 0.25) * rate_factor;
               control_data[ctrl_in_index] = exp(log(control_min) * 0.75 + log(control_max) * 0.25) * rate_factor;
             }
             if (LADSPA_IS_HINT_DEFAULT_MIDDLE(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
-              if (control_min <=0 ) control_min = 0.01;
-              if (control_max <=0 ) control_max = 0.01;
+              if (control_min <=0 ) control_min = 1e-4;
+              if (control_max <=0 ) control_max = 1e-4;
               control_gui[ctrl_in_index] = exp(log(control_min) * 0.5 + log(control_max) * 0.5) * rate_factor;
               control_data[ctrl_in_index] = exp(log(control_min) * 0.5 + log(control_max) * 0.5) * rate_factor;
             }
             if (LADSPA_IS_HINT_DEFAULT_HIGH(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
-              if (control_min <=0 ) control_min = 0.01;
-              if (control_max <=0 ) control_max = 0.01;
+              if (control_min <=0 ) control_min = 1e-4;
+              if (control_max <=0 ) control_max = 1e-4;
               control_gui[ctrl_in_index] = exp(log(control_min) * 0.25 + log(control_max) * 0.75) * rate_factor;
               control_data[ctrl_in_index] = exp(log(control_min) * 0.25 + log(control_max) * 0.75) * rate_factor;
             }

@@ -148,6 +148,7 @@ int main(int argc, char *argv[])
   synthesisPopup->insertItem("Stop", modularSynth, SLOT(stopSynth()));
   synthesisPopup->insertItem("All Voices Off", modularSynth, SLOT(allVoicesOff()));
 
+  newModulePopup->insertItem("Amplifier", modularSynth, SLOT(newM_amp()));
   newModulePopup->insertItem("Advanced ENV", modularSynth, SLOT(newM_advenv()));
   newModulePopup->insertItem("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
   newModulePopup->insertItem("Comment", modularSynth, SLOT(new_textEdit()));

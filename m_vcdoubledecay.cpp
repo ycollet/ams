@@ -85,13 +85,13 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name, SynthData *p
   configDialog->addSlider(-8, 8, a0, "Attack Offset", &a0);
   configDialog->addSlider(-8, 8, d0, "Decay Offset", &d0);
   configDialog->addSlider(0, 1, s0, "Sustain Offset", &s0);
-  configDialog->addSlider(-8, 8, rl0, "Release Offset", &rl0);
   configDialog->addSlider(0, 1, r0, "Ratio Offset", &r0);
+  configDialog->addSlider(-8, 8, rl0, "Release Offset", &rl0);
   configDialog->addSlider(-8, 8, aGain, "Attack Gain", &aGain);
   configDialog->addSlider(-8, 8, dGain, "Decay Gain", &dGain);
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
-  configDialog->addSlider(-8, 8, rlGain, "Release Gain", &rlGain);
   configDialog->addSlider(0, 1, rGain, "Ratio Gain", &rGain);
+  configDialog->addSlider(-8, 8, rlGain, "Release Gain", &rlGain);
   configDialog->setCaption(qs);
 }
 

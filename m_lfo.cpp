@@ -77,7 +77,7 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   portList.append(port_sh);
   qs.sprintf("LFO ID %d", moduleID);
   configDialog->setCaption(qs);
-  configDialog->addSlider(0, 100, freq, "Frequency", &freq);
+  configDialog->addSlider(0, 100, freq, "Frequency", &freq, true);
   configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
   tm = time(NULL) % 1000000;
   srand(abs(tm - 10000 * (tm % 100)));

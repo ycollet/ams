@@ -123,9 +123,8 @@ void MidiSlider::setLogMode(bool on) {
   val = *valueRef;
 //  fprintf(stderr, "val: %f\n", val);
   if (isLog) {
-    log_min = (min > 0) ? min : max / 10000.0;
-    log_val = (val > 0 ) ? val : max / 10000.0;
-    if (log_min < 0.001) log_min = 0.001;
+    log_min = (min > 1e-4) ? min : 1e-4;
+    log_val = (val > 1e-4 ) ? val : 1e-4;
     slider->setMinValue(int(SLIDER_SCALE * log(log_min)));
     slider->setMaxValue(int(SLIDER_SCALE * log(max)));
     slider->setValue(int(SLIDER_SCALE * log(log_val)));

@@ -779,9 +779,8 @@ void MidiWidget::setLogMode(bool on) {
   val = value;
   ((MidiSlider *)midiGUIcomponent)->setLogMode(on);
   if (on) {
-    log_min = (minValue > 0) ? minValue : maxValue / 10000.0;
-    log_val = (val > 0 ) ? val : maxValue / 10000.0;
-    if (log_min < 0.001) log_min = 0.001;
+    log_min = (minValue > 1e-4) ? minValue : 1e-4;
+    log_val = (val > 1e-4) ? val : 1e-4;
     slider->setMinValue(int(SLIDER_SCALE * log(log_min)));
     ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * log(log_min)));
     slider->setMaxValue(int(SLIDER_SCALE * log(maxValue)));

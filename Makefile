@@ -53,6 +53,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_advenv.o m_advenv.moc.o \
 	m_ringmod.o m_ringmod.moc.o \
 	m_inv.o m_inv.moc.o \
+	m_amp.o m_amp.moc.o \
 	m_vquant.o m_vquant.moc.o \
 	m_conv.o m_conv.moc.o \
 	m_cvs.o m_cvs.moc.o \
@@ -88,14 +89,14 @@ tarball:	clean
 synthdata.o: synthdata.cpp synthdata.h module.h port.h m_env.h m_advenv.h m_vcenv2.h main.h
 modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
-	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h \
+	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
 	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h main.h
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
-	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h \
+	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
@@ -281,6 +282,10 @@ m_inv.o: m_inv.cpp m_inv.h synthdata.h module.h port.h
 m_inv.moc.o: m_inv.moc.cpp m_inv.h synthdata.h module.h port.h
 m_inv.moc.cpp: m_inv.h m_inv.cpp
 	$(QT_BIN_DIR)/moc m_inv.h -o m_inv.moc.cpp
+m_amp.o: m_amp.cpp m_amp.h synthdata.h module.h port.h
+m_amp.moc.o: m_amp.moc.cpp m_amp.h synthdata.h module.h port.h
+m_amp.moc.cpp: m_amp.h m_amp.cpp
+	$(QT_BIN_DIR)/moc m_amp.h -o m_amp.moc.cpp
 m_vquant.o: m_vquant.cpp m_vquant.h synthdata.h module.h port.h
 m_vquant.moc.o: m_vquant.moc.cpp m_vquant.h synthdata.h module.h port.h
 m_vquant.moc.cpp: m_vquant.h m_vquant.cpp

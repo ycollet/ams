@@ -786,6 +786,12 @@ void ModularSynth::newM_inv() {
   initNewModule((Module *)m);
 }
 
+void ModularSynth::newM_amp() {
+
+  M_amp *m = new M_amp(viewport(), "AMP", synthdata);
+  initNewModule((Module *)m);
+}
+
 void ModularSynth::newM_vquant() {
 
   M_vquant *m = new M_vquant(viewport(), "Quantizer 2", synthdata);
@@ -1396,6 +1402,9 @@ void ModularSynth::load(QString *presetName) {
             break;
           case M_type_inv: 
             newM_inv();
+            break;
+          case M_type_amp: 
+            newM_amp();
             break;
           case M_type_vquant: 
             newM_vquant();
