@@ -28,15 +28,14 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
 
   zoom_dx = dx / zoom;     
   zoom_dy = dy / zoom;  
-  painter.fillRect(clip, QBrush(QColor(20, 20, 80)));
-  painter.setPen(QColor(0, 220, 0));
+  painter.fillRect(clip, QBrush(QColor(CANVAS_COLOR_BG)));
 
   for (l1 = 0; l1 <= w / zoom_dx; l1++) {
     val =  ((float)l1 * zoom_dx - (float)w/2.0) / (float)scale;
     if (floor(val) == ceil(val)) {
-      painter.setPen(QColor(0, 230, 0));
+      painter.setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
     } else {
-      painter.setPen(QColor(60, 140, 60));
+      painter.setPen(QColor(CANVAS_GRID_COLOR_DARK));
     }
     qp_in[0].setX(l1 * zoom_dx);
     qp_in[0].setY(0);
@@ -45,22 +44,18 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
     qp_out[0] = matrix.map(qp_in[0]);
     qp_out[1] = matrix.map(qp_in[1]);    
     painter.drawLine(qp_out[0], qp_out[1]);
-    if (width()/zoom > 700) {
-      qs.sprintf("%6.2f", val);
-    } else if (width()/zoom > 600) {
-      qs.sprintf("%6.1f", val);
-    } else {
+    if (floor(val) == ceil(val)) {
       qs.sprintf("%6.0f", val);
+      painter.setFont(QFont("Helvetica", 10));
+      painter.drawText(qp_out[1].x() - 20, qp_out[1].y() + 15, qs);
     }
-    painter.setFont(QFont("Helvetica", 9));
-    painter.drawText(qp_out[1].x() - 20, qp_out[1].y() + 15, qs);
   }
   for (l1 = 0; l1 <= h / zoom_dy; l1++) {
     val = -((float)l1 * zoom_dy - (float)w/2.0) / (float)scale;
     if (floor(val) == ceil(val)) {
-      painter.setPen(QColor(0, 230, 0));
+      painter.setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
     } else {
-      painter.setPen(QColor(60, 140, 60));
+      painter.setPen(QColor(CANVAS_GRID_COLOR_DARK));
     }
     qp_in[0].setY(l1 * zoom_dy);
     qp_in[0].setX(0);
@@ -69,9 +64,11 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
     qp_out[0] = matrix.map(qp_in[0]);
     qp_out[1] = matrix.map(qp_in[1]);    
     painter.drawLine(qp_out[0], qp_out[1]);
-    qs.sprintf("%7.2f", val);
-    painter.setFont(QFont("Helvetica", 9));
-    painter.drawText(qp_out[0].x() - 44, qp_out[0].y() + 4, qs);
+    if (floor(val) == ceil(val)) {
+      qs.sprintf("%7.0f", val);
+      painter.setFont(QFont("Helvetica", 10));
+      painter.drawText(qp_out[0].x() - 44, qp_out[0].y() + 4, qs);
+    }
   }
 }  
 

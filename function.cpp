@@ -16,7 +16,7 @@
 #include "canvas.h"
 #include "canvasfunction.h"
 
-Function::Function(int p_functionCount, int *p_mode, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent, const char *name) 
+Function::Function(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent, const char *name) 
              : QCanvasView (parent, name)
 {
   int l1;
@@ -29,6 +29,7 @@ Function::Function(int p_functionCount, int *p_mode, QPointArray *p_points[], in
   synthdata = p_synthdata;
   functionCount = p_functionCount;
   mode = p_mode;
+  editIndex = p_editIndex;
   mousePressed = false, 
   activeFunction = -1;
   activePoint = -1;
@@ -41,17 +42,17 @@ Function::Function(int p_functionCount, int *p_mode, QPointArray *p_points[], in
   }
   setMinimumWidth(FUNCTION_MINIMUM_WIDTH);
   setMinimumHeight(FUNCTION_MINIMUM_HEIGHT);
-  setPalette(QPalette(QColor(20, 20, 80), QColor(20, 20, 80)));
-  colorTable[0].setRgb(255, 255, 255);
-  colorTable[1].setRgb(255, 0, 0);
-  colorTable[2].setRgb(0, 255, 0);
-  colorTable[3].setRgb(50, 150, 255); 
-  colorTable[4].setRgb(255, 255, 0);
-  colorTable[5].setRgb(0, 255, 255);
-  colorTable[6].setRgb(255, 100, 255);
-  colorTable[7].setRgb(255, 200, 50);
+  setPalette(QPalette(QColor(FUNCTION_COLOR_FG), QColor(FUNCTION_COLOR_BG)));
+  colorTable[0] = QColor(FUNCTION_COLOR_1);
+  colorTable[1] = QColor(FUNCTION_COLOR_2);
+  colorTable[2] = QColor(FUNCTION_COLOR_3);
+  colorTable[3] = QColor(FUNCTION_COLOR_4);
+//  colorTable[4] = QColor(FUNCTION_COLOR_5);
+//  colorTable[5] = QColor(FUNCTION_COLOR_6);
+//  colorTable[6] = QColor(FUNCTION_COLOR_7);
+//  colorTable[7] = QColor(FUNCTION_COLOR_8);
+  canvas()->setBackgroundColor(QColor(FUNCTION_COLOR_BG));
   canvas()->resize(width(), height());
-  canvas()->setBackgroundColor(QColor(20, 20, 80));
   for (l1 = 0; l1 < functionCount; l1++) {
     CanvasFunction *canvasFunction = new CanvasFunction(canvas(), 1000 + l1, MAX_POINTS, colorTable[l1], this);
     canvasFunctionList.append(canvasFunction);
@@ -63,30 +64,6 @@ Function::Function(int p_functionCount, int *p_mode, QPointArray *p_points[], in
     canvasText->setFont(QFont("Helvetica", 10));
     canvasText->setVisible(TRUE);
     canvasTextList.append(canvasText);
-  }
-  for (l1 = 0; l1 <= FUNCTION_HEIGHT / FUNCTION_GRID; l1++) {
-    QCanvasLine *canvasLineX = new QCanvasLine(canvas());
-    canvasLineX->setPoints(0, 0, 0, 0);
-    canvasLineX->setZ(-10);
-    if (l1 & 1) {
-      canvasLineX->setPen(QPen(QColor(70, 110, 70), 1));
-    } else {
-      canvasLineX->setPen(QPen(QColor(90, 180, 90), 1));
-    }
-    canvasLineX->setVisible(TRUE);
-    gridX.append(canvasLineX);
-  }
-  for (l1 = 0; l1 <= FUNCTION_WIDTH / FUNCTION_GRID; l1++) {
-    QCanvasLine *canvasLineY = new QCanvasLine(canvas());
-    canvasLineY->setPoints(0, 0, 0, 0);            
-    canvasLineY->setZ(-10);
-    if (l1 & 1) {
-      canvasLineY->setPen(QPen(QColor(70, 110, 70), 1));
-    } else {
-      canvasLineY->setPen(QPen(QColor(90, 180, 90), 1));
-    }
-    canvasLineY->setVisible(TRUE);
-    gridY.append(canvasLineY);
   }
 }
 
@@ -205,8 +182,10 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
         for(QCanvasItemList::Iterator it=hitList.begin(); it!=hitList.end(); it++) {
           if (canvasFunctionList.at(l1)->canvasPoints.at(l2) == *it) {
 //            fprintf(stderr, "Hit %d %d\n", l1, l2);
-            activeFunction = l1;
-            activePoint = l2;
+            if (!*editIndex || (l1 == *editIndex - 1)) {
+              activeFunction = l1;
+              activePoint = l2;
+            }
             break;
           }
         }

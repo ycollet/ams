@@ -39,8 +39,8 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
       i[l2][l1] = 1;
     }
     points[l1] = new QPointArray(MAX_POINTS);
-    for (l2 = 0; l2 < MODULE_FUNCTION_DEFAULT_POINTCOUNT; l2++) {
-      points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MODULE_FUNCTION_DEFAULT_POINTCOUNT - 1), 
+    for (l2 = 0; l2 < MAX_POINTS; l2++) {
+      points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MAX_POINTS - 1), 
                                (FUNCTION_HEIGHT >> 1) + (l1 - (functionCount >> 1)) * 1000);
     }
     qs.sprintf("Out %d", l1);
@@ -51,10 +51,11 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
     portList.append(audio_out_port);
   }
   qs.sprintf("Function %d -> 1 ID %d", functionCount, moduleID);
-  configDialog->addFunction(functionCount, &mode, points, MODULE_FUNCTION_DEFAULT_POINTCOUNT, synthdata);
+  configDialog->addFunction(functionCount, &mode, &editIndex, points, MAX_POINTS, synthdata);
   zoomIndex = 0;
   zoom = 1.0;
   mode = 0;
+  editIndex = 0;
   QStrList *zoomNames = new QStrList(true);
   zoomNames->append("   1  ");
   zoomNames->append("   2  ");
@@ -68,15 +69,23 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
   modeNames->append("Scale Y");
   modeNames->append("Reset");
   modeNames->append("Linear");
+  QStrList *editNames = new QStrList(true);
+  editNames->append("All");
+  for (l1 = 0; l1 < functionCount; l1++) {
+    qs.sprintf("%d", l1);
+    editNames->append(qs);
+  }
+  hbox = configDialog->addHBox();
+  configDialog->addLabel("Mouse X: _______", hbox);
+  configDialog->addLabel(" Y: _______", hbox);
   hbox = configDialog->addHBox();
   configDialog->addComboBox(mode, "Mode", &mode, modeNames->count(), modeNames, hbox);
+  configDialog->addComboBox(0, "Edit Function", &editIndex, editNames->count(), editNames, hbox);
   configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames->count(), zoomNames, hbox);
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateZoom(int)));
   QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
                    this, SLOT(updateMouseLabels(int, int)));
-  configDialog->addLabel("Mouse X: _______", hbox);
-  configDialog->addLabel(" Y: _______", hbox);
   configDialog->setCaption(qs);
 }
 

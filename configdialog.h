@@ -76,7 +76,7 @@ class ConfigDialog : public QVBox
     int addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
                     float *decayRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
     int addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QWidget *parent=0);
-    int addFunction(int p_functionCount, int *p_mode, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent=0);
+    int addFunction(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent=0);
     int addLabel(QString label, QWidget *parent=0);
     int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
                        float *triggerThrsRef, float *zoomRef, QWidget *parent=0);

@@ -6,6 +6,10 @@
 #include <qcanvas.h>
 #include <qwmatrix.h>
 
+#define CANVAS_GRID_COLOR_LIGHT 0xC0C0C0
+#define CANVAS_GRID_COLOR_DARK  0x707070
+#define CANVAS_COLOR_BG         0x141450
+
 class Canvas : public QCanvas
 {
   Q_OBJECT

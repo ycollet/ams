@@ -24,7 +24,6 @@
 
 #define MODULE_FUNCTION_WIDTH                 85
 #define MODULE_FUNCTION_HEIGHT                40
-#define MODULE_FUNCTION_DEFAULT_POINTCOUNT     8
        
 class M_function : public Module
 {
@@ -36,7 +35,7 @@ class M_function : public Module
     float zoom;
     QPointArray *points[MAX_FUNCTIONS];
     int i[MAXPOLY][MAX_FUNCTIONS];
-    int zoomIndex;
+    int zoomIndex, editIndex;
     int mode;
         
   public: 

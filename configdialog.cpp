@@ -284,14 +284,14 @@ int ConfigDialog::addSpectrumScreen(QWidget *parent) {
   return(0);
 }
 
-int ConfigDialog::addFunction(int p_functionCount, int *p_mode, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent) {
+int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent) {
 
   Function *function;
 
   if (!parent) {
-    function = new Function(p_functionCount, p_mode, p_points, p_pointCount, p_synthdata, configBox);
+    function = new Function(p_functionCount, p_mode, p_editIndex, p_points, p_pointCount, p_synthdata, configBox);
   } else {
-    function = new Function(p_functionCount, p_mode, p_points, p_pointCount, p_synthdata, parent);
+    function = new Function(p_functionCount, p_mode, p_editIndex, p_points, p_pointCount, p_synthdata, parent);
   }
   functionList.append(function);
   return(0);
