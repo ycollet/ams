@@ -65,6 +65,7 @@
 #include "m_vcdoubledecay.h"
 #include "midiwidget.h"
 #include "guiwidget.h"
+#include "prefwidget.h"
 #include "textedit.h"
 #include "ladspadialog.h"
 
@@ -89,6 +90,7 @@ class ModularSynth : public QScrollView
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
     GuiWidget *guiWidget;
+    PrefWidget *prefWidget;
     QPopupMenu *contextMenu;
     bool loadingPatch;
     const char *pcmname;
@@ -138,6 +140,7 @@ class ModularSynth : public QScrollView
     void displayAbout();
     void displayMidiController();
     void displayParameterView();
+    void displayPreferences();
     void displayLadspaPlugins();
     void midiAction(int fd);
     void startSynth();
@@ -224,6 +227,7 @@ class ModularSynth : public QScrollView
     void colorCableClicked();
     void colorJackClicked();
     void refreshColors();
+    void updateColors();
 };
 
   

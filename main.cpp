@@ -207,6 +207,7 @@ int main(int argc, char *argv[])
   modulePopup->insertItem("&Show Ladspa Browser", modularSynth, SLOT(displayLadspaPlugins()));
   midiMenu->insertItem("Control Center", modularSynth, SLOT(displayMidiController()));
   midiMenu->insertItem("Parameter View", modularSynth, SLOT(displayParameterView()));
+  midiMenu->insertItem("Preferences", modularSynth, SLOT(displayPreferences()));
   aboutMenu->insertItem("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
   top->setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   top->setCentralWidget(modularSynth);

@@ -158,6 +158,7 @@ int Module::save(FILE *f) {
   saveConnections(f);
   saveParameters(f);
   saveBindings(f);
+  return 0;
 }
 
 int Module::saveConnections(FILE *f) {
@@ -174,7 +175,8 @@ int Module::saveConnections(FILE *f) {
               port[0]->jackColor.red(), port[0]->jackColor.green(), port[0]->jackColor.blue(),
               port[0]->cableColor.red(), port[0]->cableColor.green(), port[0]->cableColor.blue());
     }   
-  }     
+  }    
+  return 0; 
 }
 
 int Module::saveParameters(FILE *f) {
@@ -221,6 +223,7 @@ int Module::saveParameters(FILE *f) {
       }
     }                
   }
+  return 0;
 }
 
 int Module::saveBindings(FILE *f) {
@@ -267,8 +270,10 @@ int Module::saveBindings(FILE *f) {
                   configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->param);
     }
   }
+  return 0;
 }
 
 int Module::load(FILE *f) {
 
+  return 0;
 }

@@ -4,7 +4,7 @@ QT_BIN_DIR=$(QT_BASE_DIR)/bin
 QT_INCLUDE_DIR=$(QT_BASE_DIR)/include
 X11_LIB_DIR=/usr/X11R6/lib
 LADSPA_PATH?=/usr/lib/ladspa:/usr/local/lib/ladspa
-VERSION=1.7.2
+VERSION=1.8.3
 
 #CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -DLADSPA_PATH=\"$(LADSPA_PATH)\" -I/usr/X11R6/include -I. -O2 -g -Wall
 CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -DLADSPA_PATH=\"$(LADSPA_PATH)\" -I/usr/X11R6/include -I. -O2 -Wall
@@ -23,6 +23,7 @@ AMS_O = synthdata.o module.o module.moc.o \
 	midicontrollerlist.o midicontrollerlist.moc.o \
 	midiwidget.o midiwidget.moc.o \
 	guiwidget.o guiwidget.moc.o \
+	prefwidget.o prefwidget.moc.o \
 	ladspadialog.o ladspadialog.moc.o \
 	envelope.o envelope.moc.o \
 	multi_envelope.o multi_envelope.moc.o \
@@ -88,14 +89,14 @@ tarball:	clean
 
 synthdata.o: synthdata.cpp synthdata.h module.h port.h m_env.h m_advenv.h m_vcenv2.h main.h
 modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
-	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
+	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
 	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h main.h
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
-	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h m_vcf.h m_sh.h \
+	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
 	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
@@ -206,6 +207,10 @@ guiwidget.moc.o: guiwidget.moc.cpp guiwidget.h midicontroller.h midicontrollerli
 	midislider.h intmidislider.h floatintmidislider.h midicombobox.h midicheckbox.h midipushbutton.h
 guiwidget.moc.cpp: guiwidget.h guiwidget.cpp
 	$(QT_BIN_DIR)/moc guiwidget.h -o guiwidget.moc.cpp
+prefwidget.o: prefwidget.cpp prefwidget.h synthdata.h 
+prefwidget.moc.o: prefwidget.moc.cpp prefwidget.h synthdata.h 
+prefwidget.moc.cpp: prefwidget.h prefwidget.cpp
+	$(QT_BIN_DIR)/moc prefwidget.h -o prefwidget.moc.cpp
 ladspadialog.o: ladspadialog.cpp ladspadialog.h synthdata.h
 ladspadialog.moc.o: ladspadialog.moc.cpp ladspadialog.h synthdata.h
 ladspadialog.moc.cpp: ladspadialog.h ladspadialog.cpp

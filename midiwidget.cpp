@@ -155,6 +155,7 @@ int MidiWidget::addMidiGuiComponent(MidiController *midiController, QObject *mid
   ((MidiGUIcomponent *)midiGuiComponent)->listViewItemList.append(new QListViewItem(midiController->listViewItem, 
                                                                   ((MidiGUIcomponent *)midiGuiComponent)->name(), 
                                                                   ((Module *)((MidiGUIcomponent *)midiGuiComponent)->parentModule)->configDialog->caption()));
+  return 0;                                                                  
 }
 
 int MidiWidget::deleteMidiGuiComponent(MidiController *midiController, QObject *midiGuiComponent) {
@@ -168,6 +169,7 @@ int MidiWidget::deleteMidiGuiComponent(MidiController *midiController, QObject *
       tmp->listViewItemList.at(l1)->parent()->takeItem(tmp->listViewItemList.at(l1));
     }
   }
+  return 0;
 }
 
 void MidiWidget::clearClicked() {
@@ -882,6 +884,7 @@ int MidiWidget::setSelectedController(MidiController *midiController) {
       firstBindingMightHaveChanged = false; 
     }
   }
+  return 0;
 }
 
 int MidiWidget::findFirstBinding(MidiController *midiController) {
@@ -901,6 +904,7 @@ int MidiWidget::findFirstBinding(MidiController *midiController) {
       }
     }
   }
+  return 0;
 }
 
 void MidiWidget::updateGuiComponent() {

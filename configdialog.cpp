@@ -194,6 +194,7 @@ int ConfigDialog::addLabel(QString label, QWidget *parent) {
   configLabel->setAlignment(Qt::WordBreak | Qt::AlignLeft);
   configLabel->setText(label);
   labelList.append(configLabel);
+  return(0);
 }
 
 void ConfigDialog::removeButtonClicked() {
@@ -255,6 +256,7 @@ int ConfigDialog::addLineEdit(QString lineName, QWidget *parent) {
   nameLabel->setText(lineName);
   lineEdit = new QLineEdit(line);
   lineEditList.append(lineEdit);
+  return(0);
 }
 
 int ConfigDialog::addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 

@@ -225,6 +225,7 @@ int GuiWidget::setPresetCount(int count) {
   presetCount = count;
   qs.sprintf("Presets for this configuration: %d", presetCount);
   presetCountLabel->setText(qs);
+  return 0;
 }
 
 int GuiWidget::setCurrentPreset(int presetNum) {
@@ -270,6 +271,7 @@ int GuiWidget::setCurrentPreset(int presetNum) {
     }
   }
   emit updateMIDIController();
+  return 0;
 }
 
 void GuiWidget::presetDec() {

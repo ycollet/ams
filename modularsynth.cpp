@@ -57,10 +57,14 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   guiWidget = new GuiWidget(synthdata, NULL);
   guiWidget->setCaption("AlsaModularSynth Parameter View");
   synthdata->guiWidget = (QObject *)guiWidget;
+  prefWidget = new PrefWidget(synthdata, NULL);
+  prefWidget->setCaption("AlsaModularSynth Preferences");
   presetPath = "";
   ladspaDialog = new LadspaDialog(synthdata, NULL);
   QObject::connect(ladspaDialog, SIGNAL(createLadspaModule(int, int, bool, bool)),
                    this, SLOT(newM_ladspa(int, int, bool, bool)));
+  QObject::connect(prefWidget, SIGNAL(prefChanged()),
+                   this, SLOT(refreshColors()));
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
   contextMenu = new QPopupMenu(this);
@@ -95,7 +99,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   QColor cableColor, jackColor;
   int moduleX[2], moduleY[2];
 
-  pm.fill(colorBackground);
+  pm.fill(synthdata->colorBackground);
   p.setPen(QColor((unsigned int)COLOR_CONNECT_LINE));
   pen = new QPen(QColor(220, 216, 216), 3);
   for (l1 = 0; l1 < listModule.count(); l1++) {
@@ -279,6 +283,12 @@ void ModularSynth::displayParameterView() {
 
   guiWidget->show();
   guiWidget->raise();
+}
+
+void ModularSynth::displayPreferences() {
+
+  prefWidget->show();
+  prefWidget->raise();
 }
 
 void ModularSynth::displayLadspaPlugins() {
@@ -1243,8 +1253,8 @@ void ModularSynth::loadColors() {
         fscanf(f, "%d", &b);   
         synthdata->colorCable = QColor(r, g, b);
       }        
-      refreshColors();
     }      
+    updateColors();
     fclose(f);
   }        
 }
@@ -1260,10 +1270,10 @@ void ModularSynth::saveColors() {
   if (!(f = fopen(config_fn, "w"))) { 
     QMessageBox::information( this, "AlsaModularSynth", "Could not save file.");
   } else {
-    fprintf(f, "ColorBackground %d %d %d\n", colorBackground.red(), colorBackground.green(), colorBackground.blue());
-    fprintf(f, "ColorModuleBackground %d %d %d\n", colorModuleBackground.red(), colorModuleBackground.green(), colorModuleBackground.blue());
-    fprintf(f, "ColorModuleBorder %d %d %d\n", colorModuleBorder.red(), colorModuleBorder.green(), colorModuleBorder.blue());
-    fprintf(f, "ColorModuleFont %d %d %d\n", colorModuleFont.red(), colorModuleFont.green(), colorModuleFont.blue());
+    fprintf(f, "ColorBackground %d %d %d\n", synthdata->colorBackground.red(), synthdata->colorBackground.green(), synthdata->colorBackground.blue());
+    fprintf(f, "ColorModuleBackground %d %d %d\n", synthdata->colorModuleBackground.red(), synthdata->colorModuleBackground.green(), synthdata->colorModuleBackground.blue());
+    fprintf(f, "ColorModuleBorder %d %d %d\n", synthdata->colorModuleBorder.red(), synthdata->colorModuleBorder.green(), synthdata->colorModuleBorder.blue());
+    fprintf(f, "ColorModuleFont %d %d %d\n", synthdata->colorModuleFont.red(), synthdata->colorModuleFont.green(), synthdata->colorModuleFont.blue());
     fprintf(f, "ColorJack %d %d %d\n", synthdata->colorJack.red(), synthdata->colorJack.green(), synthdata->colorJack.blue());
     fprintf(f, "ColorCable %d %d %d\n", synthdata->colorCable.red(), synthdata->colorCable.green(), synthdata->colorCable.blue());
     fclose(f);
@@ -1963,7 +1973,7 @@ void ModularSynth::colorModuleBackgroundClicked() {
   tmp = QColorDialog::getColor(colorModuleBackground);
   if (tmp.isValid()) {
     colorModuleBackground = tmp;
-    refreshColors();
+    updateColors();
   }
 }
 
@@ -1974,7 +1984,7 @@ void ModularSynth::colorModuleBorderClicked() {
   tmp = QColorDialog::getColor(colorModuleBorder);
   if (tmp.isValid()) {       
     colorModuleBorder = tmp;
-    refreshColors();
+    updateColors();
   }
 }
 
@@ -1985,7 +1995,7 @@ void ModularSynth::colorModuleFontClicked() {
   tmp = QColorDialog::getColor(colorModuleFont);
   if (tmp.isValid()) {       
     colorModuleFont = tmp;    
-    refreshColors();
+    updateColors();
   }
 }
 
@@ -2017,7 +2027,7 @@ void ModularSynth::colorDefaultClicked() {
   colorModuleFont = QColor(255, 255, 255);
   synthdata->colorCable = QColor(180, 180, 180);
   synthdata->colorJack = QColor(250, 200, 50);
-  refreshColors();
+  updateColors();
 }
 
 void ModularSynth::showContextMenu(QPoint pos) {
@@ -2029,21 +2039,28 @@ void ModularSynth::refreshColors() {
 
   int l1, l2;
 
-  synthdata->colorModuleBackground = colorModuleBackground;
-  synthdata->colorModuleBorder = colorModuleBorder;
-  synthdata->colorModuleFont = colorModuleFont;
-  synthdata->colorPortFont1 = colorModuleFont;
-  synthdata->colorPortFont2 = QColor(255, 240, 140);
   for (l1 = 0; l1 < listModule.count(); l1++) {
-    listModule.at(l1)->setPalette(QPalette(colorModuleBackground, colorModuleBackground));
-    listModule.at(l1)->colorBorder = colorModuleBorder;
-    listModule.at(l1)->colorFont = colorModuleFont;
+    listModule.at(l1)->setPalette(QPalette(synthdata->colorModuleBackground, synthdata->colorModuleBackground));
+    listModule.at(l1)->colorBorder = synthdata->colorModuleBorder;
+    listModule.at(l1)->colorFont = synthdata->colorModuleFont;
     listModule.at(l1)->repaint(false);
     for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
-      listModule.at(l1)->portList.at(l2)->setPalette(QPalette(colorModuleBackground, colorModuleBackground));
+      listModule.at(l1)->portList.at(l2)->setPalette(QPalette(synthdata->colorModuleBackground, synthdata->colorModuleBackground));
       listModule.at(l1)->portList.at(l2)->colorFont1 = synthdata->colorPortFont1;
       listModule.at(l1)->portList.at(l2)->colorFont2 = synthdata->colorPortFont2;
       listModule.at(l1)->portList.at(l2)->repaint(false);
     }
   }      
+}
+
+void ModularSynth::updateColors() {
+
+  int l1, l2;
+
+  synthdata->colorModuleBackground = colorModuleBackground;
+  synthdata->colorModuleBorder = colorModuleBorder;
+  synthdata->colorModuleFont = colorModuleFont;
+  synthdata->colorPortFont1 = colorModuleFont;
+  synthdata->colorPortFont2 = QColor(255, 240, 140);
+  refreshColors();
 }
