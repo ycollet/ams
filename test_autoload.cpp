@@ -1,4 +1,4 @@
-#include "plugin.h" //this is all we know about plugins.
+#include "plugins/plugin.h" //this is all we know about plugins.
 #include <stdio.h>
 #include <iostream.h>
 #include <qdir.h>
@@ -6,7 +6,7 @@
 #include <dlfcn.h>
 #include <qobject.h>
 #include <boost/weak_ptr.hpp>
-#include "testplugin.h"
+//#include "testplugin.h"
 #include "interfaces/observer.h"
 #include "interfaces/subject.h"
 
@@ -17,7 +17,7 @@ void test_subject_observer(string pluginkey){
   
   Plugin * tp1 = Plugin::create[pluginkey]();
   Plugin * tp2 = Plugin::create[pluginkey]();
-  ((TestPlugin *)tp1)->thatSpecialFunction();
+  //((TestPlugin *)tp1)->thatSpecialFunction();
   cout<<"done!"<<endl;
 
   cout<<"The instance IDs are "<<tp1->upiid()<<" and "<<tp2->upiid()<<endl;
@@ -57,7 +57,7 @@ void test_subject_observer(string pluginkey){
 
 int main(char ** argv,int argc){
   //get a list of all *.so files in the current directory
-  QDir dir;
+  QDir dir("plugins/.libs");
   QPtrList<void> handles;
   QStringList qsl = dir.entryList("*.so");
   void * dlib;

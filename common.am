@@ -1,0 +1,45 @@
+INCLUDES = $(MUSECXXFLAGS)
+
+UIFILES = $(wildcard *.ui)
+
+MOCFILES = $(shell for h in $(filter %.h,$(SOURCES)); do \
+		     if grep -q Q_OBJECT $$h; then \
+		       echo $$h | sed "s/\(.*\)\.h/moc_\1.cpp/"; \
+		     fi; \
+		   done)
+
+BUILT_SOURCES = $(MOCFILES) $(UIFILES:%.ui=%.h)
+
+MOSTLYCLEANFILES = $(MOCFILES) $(UIFILES:%.ui=%.h)
+
+de:
+	@for base in $(MOCFILES); do echo -e "\t$${base}.cpp $${base}.h \\"; done
+
+nde:
+	@for base in $(MOCFILES); do echo -e "\tmoc_$${base}.cpp \\"; done
+
+SUFFIXES = .ui
+
+.ui.o: %.h
+	$(UIC) -o $*.cpp -impl $*.h $*.ui
+	$(MOC) $*.h -o moc_$*.cpp
+	$(CXXCOMPILE) -c $*.cpp -o base_$*.o
+	$(CXXCOMPILE) -c moc_$*.cpp -o moc_$*.o
+	$(CXXLINK) -r base_$*.o moc_$*.o -o $*.o
+	$(RM) $*.cpp moc_$*.cpp base_$*.o moc_$*.o
+
+.ui.lo: %.h
+	$(UIC) -o $*.cpp -impl $*.h $*.ui
+	$(MOC) $*.h -o moc_$*.cpp
+	$(LTCXXCOMPILE) -c $*.cpp -o base_$*.lo
+	$(LTCXXCOMPILE) -c moc_$*.cpp -o moc_$*.lo
+	$(CXXLINK) -r base_$*.lo moc_$*.lo -o $*.lo
+	$(RM) $*.cpp moc_$*.cpp base_$*.lo moc_$*.lo base_$*.o moc_$*.o
+
+
+moc_%.cpp: %.h
+	$(MOC) $< -o $@
+
+%.h: %.ui
+	$(UIC) -o $@ $<
+
