@@ -40,6 +40,7 @@ class Function : public QWidget
   public:
     Function(int p_functionCount, QPointArray *p_points[], SynthData *p_synthdata, QWidget* parent=0, const char *name=0);
     ~Function();
+    void setPointCount(int index, int count);
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
 

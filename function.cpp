@@ -54,9 +54,10 @@ void Function::paintEvent(QPaintEvent *) {
   p.setViewport(0, 0, width(), height());
   p.setWindow(0, 0, width(), height());
   pm.fill(QColor(20, 20, 80));
-  scale[0] = width() / FUNCTION_WIDTH;
-  scale[1] = -height() / FUNCTION_HEIGHT;
+  scale[0] = (double)width() / (double)FUNCTION_WIDTH;
+  scale[1] = -(double)height() / (double)FUNCTION_HEIGHT;
   matrix.scale(scale[0], scale[1]);
+  matrix.translate(0, -FUNCTION_HEIGHT);
   for (l1 = 0; l1 < functionCount; l1++ ) { 
     pen.setColor(colorTable[l1]);
     pen.setWidth(2);
@@ -74,6 +75,11 @@ void Function::paintEvent(QPaintEvent *) {
 void Function::updateFunction(int index) {
 
   repaint(false);
+}
+
+void Function::setPointCount(int index, int count) {
+
+  pointCount[index] = count;
 }
 
 QSize Function::sizeHint() const {

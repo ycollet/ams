@@ -23,7 +23,7 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
               : Module(p_functionCount, parent, name, p_synthdata) {
 
   QString qs;
-  int l1;
+  int l1, l2;
 
   M_type = M_type_function;
   functionCount = p_functionCount;
@@ -49,6 +49,12 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
   configDialog->addSlider(-5, 5, gainIn, "Input Gain (linear)", &gainIn);
   configDialog->addSlider(-5, 5, gainOut, "Output Gain (linear)", &gainOut);
   configDialog->setCaption(qs);
+  for (l1 = 0; l1 < functionCount; l1++) {
+    configDialog->functionList.at(0)->setPointCount(l2, 8);
+    for (l2 = 0; l2 < MAX_POINTS; l2++) {
+      points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MAX_POINTS - 1), (FUNCTION_HEIGHT >> 1) + (l1 - (functionCount >> 1)) * 1000);
+    }
+  }
 }
 
 M_function::~M_function() {
