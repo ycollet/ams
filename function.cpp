@@ -172,7 +172,14 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
 
   int l1, l2;
   QCanvasItemList hitList;
-  
+  QWMatrix invMatrix;
+  QPoint qp;
+
+  if (matrix.isInvertible()) {
+    invMatrix = matrix.invert();
+    qp = invMatrix.map(ev->pos());
+    emit mousePos(qp.x(), qp.y());
+  }
   mousePressPos = ev->pos();
   mousePressed = true;
   hitList = canvas()->collisions(ev->pos());
@@ -185,6 +192,8 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
             if (!*editIndex || (l1 == *editIndex - 1)) {
               activeFunction = l1;
               activePoint = l2;
+            } else {
+              activePoint = -1;
             }
             break;
           }
