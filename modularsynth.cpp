@@ -109,8 +109,8 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   pm.fill(synthdata->colorBackground);
   p.setPen(QColor((unsigned int)COLOR_CONNECT_LINE));
   pen = new QPen(QColor(220, 216, 216), 3);
-  for (l1 = 0; l1 < listModule.count(); l1++) {
-    for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
+  for (l1 = 0; l1 < listModule.count(); ++l1) {
+    for (l2 = 0; l2 < listModule.at(l1)->portList.count(); ++l2) {
       port[0] = listModule.at(l1)->portList.at(l2);
       cableColor = port[0]->cableColor;
       jackColor = port[0]->jackColor;
@@ -257,7 +257,8 @@ void ModularSynth::displayAbout() {
     aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth " AMS_VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
-                     "(c)2003 Fons Adriaensen\n\n" 
+                     "(c)2003 Fons Adriaensen\n\n"  
+		     "(c)2007 Malte Steiner\n\n" 
                      "Documentation and examples can be found in\n"
                      "/usr/share/doc/packages/kalsatools\n\n"
                      "More presets and updates are available from\n"
@@ -334,7 +335,7 @@ snd_seq_t *ModularSynth::open_seq() {
     fprintf(stderr, "Error creating sequencer port.\n");
     exit(1);
   }
-  for (l1 = 0; l1 < 2; l1++) {
+  for (l1 = 0; l1 < 2; ++l1) {
     if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "ams",
             SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ,
             SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
@@ -431,7 +432,7 @@ void ModularSynth::midiAction(int fd) {
         }    
       }
     } else {
-      for(l1 = 0; l1 < midiWidget->midiControllerList.count(); l1++) {
+      for(l1 = 0; l1 < midiWidget->midiControllerList.count(); ++l1) {
         midiController = midiWidget->midiControllerList.at(l1);
         if ((midiController->type == ev->type)
           &&(midiController->ch == ev->data.control.channel)) {
@@ -469,7 +470,7 @@ void ModularSynth::midiAction(int fd) {
           osc = 0;
           noteCount = 0;
           foundOsc = false;
-          for (l2 = 0; l2 < synthdata->poly; l2++) {
+          for (l2 = 0; l2 < synthdata->poly; ++l2) {
             if (synthdata->noteCounter[l2] > noteCount) {
               noteCount = synthdata->noteCounter[l2];
               osc = l2;
@@ -482,7 +483,7 @@ void ModularSynth::midiAction(int fd) {
             synthdata->velocity[osc] = ev->data.note.velocity;
             synthdata->channel[osc] = ev->data.note.channel;
             synthdata->notes[osc] = ev->data.note.note;   
-            for (l1 = 0; l1 < listModule.count(); l1++) {
+            for (l1 = 0; l1 < listModule.count(); ++l1) {
               listModule.at(l1)->noteOnEvent(osc);
             }
           }  
@@ -490,14 +491,14 @@ void ModularSynth::midiAction(int fd) {
       
 // Note Off      
       
-        for (l2 = 0; l2 < synthdata->poly; l2++) {
+        for (l2 = 0; l2 < synthdata->poly; ++l2) {
           if ((synthdata->notes[l2] == ev->data.note.note)
             && (synthdata->channel[l2] == ev->data.note.channel)) {
             if (synthdata->sustainFlag) {
               synthdata->sustainNote[l2] = true;
             } else {
               synthdata->noteCounter[l2] = 1000000; 
-              for (l1 = 0; l1 < listModule.count(); l1++) {
+              for (l1 = 0; l1 < listModule.count(); ++l1) {
                 listModule.at(l1)->noteOffEvent(l2);
               } 
             }  
@@ -508,10 +509,10 @@ void ModularSynth::midiAction(int fd) {
     
     if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
       if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF) {
-        for (l2 = 0; l2 < synthdata->poly; l2++) {
+        for (l2 = 0; l2 < synthdata->poly; ++l2) {
           if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel)) {
             synthdata->noteCounter[l2] = 1000000;
-            for (l1 = 0; l1 < listModule.count(); l1++) {
+            for (l1 = 0; l1 < listModule.count(); ++l1) {
               listModule.at(l1)->noteOffEvent(l2);
             } 
           }   
@@ -520,10 +521,10 @@ void ModularSynth::midiAction(int fd) {
       if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
         synthdata->sustainFlag = ev->data.control.value > 63;
         if (!synthdata->sustainFlag) {
-          for (l2 = 0; l2 < synthdata->poly; l2++) {
+          for (l2 = 0; l2 < synthdata->poly; ++l2) {
             if (synthdata->sustainNote[l2]) {
               synthdata->noteCounter[l2] = 1000000;
-              for (l1 = 0; l1 < listModule.count(); l1++) {
+              for (l1 = 0; l1 < listModule.count(); ++l1) {
                 listModule.at(l1)->noteOffEvent(l2);
               }  
             } 
@@ -534,7 +535,7 @@ void ModularSynth::midiAction(int fd) {
     if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
       guiWidget->setCurrentPreset(ev->data.control.value);
     }
-    for (l1 = 0; l1 < synthdata->listM_advmcv.count(); l1++) {
+    for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1) {
       switch (ev->type) {
         case SND_SEQ_EVENT_CHANPRESS: 
           ((M_advmcv *)synthdata->listM_advmcv.at(l1))->aftertouchEvent(ev->data.note.channel, ev->data.control.value);
@@ -555,7 +556,7 @@ void ModularSynth::initPorts(Module *m) {
 
   int l1;
 
-  for (l1 = 0; l1 < m->portList.count(); l1++) {
+  for (l1 = 0; l1 < m->portList.count(); ++l1) {
     QObject::connect(m->portList.at(l1), SIGNAL(portClicked()), 
                      this, SLOT(portSelected()));
     QObject::connect(m->portList.at(l1), SIGNAL(portDisconnected()), 
@@ -1037,7 +1038,7 @@ void ModularSynth::moveModule(QPoint pos) {
   Module *m;
   int cx, cy;
   
-  for (l1 = 0; l1 < listModule.count(); l1++) {
+  for (l1 = 0; l1 < listModule.count(); ++l1) {
     if ((m=listModule.at(l1)) == sender()) {
       viewportToContents(pos.x() - m->getMousePressPos().x() + m->pos().x(),
                          pos.y() - m->getMousePressPos().y() + m->pos().y(),
@@ -1053,7 +1054,7 @@ void ModularSynth::moveTextEdit(QPoint pos) {
   TextEdit *te;
   int cx, cy;
   
-  for (l1 = 0; l1 < listTextEdit.count(); l1++) {
+  for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
     if ((te=listTextEdit.at(l1)) == sender()) {
       viewportToContents(pos.x() - te->getMousePressPos().x() + te->pos().x(),
                          pos.y() - te->getMousePressPos().y() + te->pos().y(),
@@ -1069,7 +1070,7 @@ void ModularSynth::resizeTextEdit(QPoint pos) {
   TextEdit *te;
   int cx, cy;
   
-  for (l1 = 0; l1 < listTextEdit.count(); l1++) {
+  for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
     if ((te=listTextEdit.at(l1)) == sender()) {
       cx = pos.x();
       cy = pos.y();
@@ -1192,7 +1193,7 @@ void ModularSynth::clearConfig() {
   bool restartSynth;
   QString qs;
 
-  for (l2 = 0; l2 < synthdata->poly; l2++) {
+  for (l2 = 0; l2 < synthdata->poly; ++l2) {
     synthdata->noteCounter[l2] = 1000000;
   }
   qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
@@ -1201,11 +1202,11 @@ void ModularSynth::clearConfig() {
   synthdata->doSynthesis = false;
   sleep (1);
   guiWidget->clearGui();
-  for (l1 = 0; l1 < listModule.count(); l1++) {
+  for (l1 = 0; l1 < listModule.count(); ++l1) {
     deleteModule(listModule.at(l1));
   }
   listModule.clear();
-  for (l1 = 0; l1 < listTextEdit.count(); l1++) {
+  for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
     deleteTextEdit(listTextEdit.at(l1));
   }
   listTextEdit.clear();
@@ -1555,7 +1556,7 @@ void ModularSynth::load(QString *presetName) {
         moduleID_read2 = 0;
         index_read1 = 0;
         index_read2 = 0;
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID1) {
             moduleID_read1 = l1;
           }
@@ -1563,13 +1564,13 @@ void ModularSynth::load(QString *presetName) {
             moduleID_read2 = l1;
           }
         }
-        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); l1++) {
+        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1) {
           if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
             && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
             index_read1 = l1;
           }
         } 
-        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); l1++) {
+        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1) {
           if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
             && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
             index_read2 = l1;
@@ -1601,13 +1602,13 @@ void ModularSynth::load(QString *presetName) {
             moduleID_read2 = l1;
           }
         }
-        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); l1++) {
+        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1) {
           if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
             && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
             index_read1 = l1;
           }
         } 
-        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); l1++) {
+        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1) {
           if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
             && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
             index_read2 = l1;
@@ -1627,7 +1628,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &sliderMax);
         fscanf(f, "%d", &midiSign);
         isLog = isLogInt == 1;
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->updateValue(value);
@@ -1644,7 +1645,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &index);
         fscanf(f, "%d", &value);
         fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
@@ -1658,7 +1659,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &index);
         fscanf(f, "%d", &value);
         fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
@@ -1672,7 +1673,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &index);
         fscanf(f, "%d", &value);
         fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->midiComboBoxList.at(index)->comboBox->setCurrentItem(value);
             listModule.at(l1)->configDialog->midiComboBoxList.at(index)->midiSign = midiSign;
@@ -1685,7 +1686,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &index);
         fscanf(f, "%d", &value);
         fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->checkBox->setChecked(value==1);
             listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->midiSign = midiSign;
@@ -1698,7 +1699,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &index);
         fscanf(f, "%d", &subID1);
         fscanf(f, "%d", &subID2);
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->functionList.at(index)->setPointCount(subID2);
             break;
@@ -1712,7 +1713,7 @@ void ModularSynth::load(QString *presetName) {
         fscanf(f, "%d", &subID2); 
         fscanf(f, "%d", &x); 
         fscanf(f, "%d", &y); 
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->functionList.at(index)->setPoint(subID1, subID2, x, y);
           }
@@ -1806,7 +1807,7 @@ void ModularSynth::load(QString *presetName) {
         qs = qs.mid(1, qs.length()-2);
         fscanf(f, "%d", &moduleID);
         fscanf(f, "%d", &index);
-        for (l1 = 0; l1 < listModule.count(); l1++) {
+        for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             guiWidget->addParameter(listModule.at(l1)->configDialog->midiGUIcomponentList.at(index), qs);
             if (listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider) {
@@ -1871,7 +1872,7 @@ void ModularSynth::save() {
   if (!(f = fopen(config_fn, "w"))) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not save file.");
   } else {
-    for (l1 = 0; l1 < listModule.count(); l1++) {
+    for (l1 = 0; l1 < listModule.count(); ++l1) {
       fprintf(f, "Module %d %d %d %d ", (int)listModule.at(l1)->M_type, listModule.at(l1)->moduleID, 
               listModule.at(l1)->x() + contentsX(),  listModule.at(l1)->y() + contentsY());
 
@@ -1929,13 +1930,13 @@ void ModularSynth::save() {
       }
       listModule.at(l1)->save(f);
     }
-    for (l1 = 0; l1 < listTextEdit.count(); l1++) {
+    for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
       fprintf(f, "Comment %d %d %d %d %d %d\n", listTextEdit.at(l1)->textEditID, l1, 
                   listTextEdit.at(l1)->x() + contentsX(), listTextEdit.at(l1)->y() + contentsY(), 
                   listTextEdit.at(l1)->width(), listTextEdit.at(l1)->height());
     }
-    for (l1 = 0; l1 < listTextEdit.count(); l1++) {
-      for (l2 = 0; l2 < listTextEdit.at(l1)->textEdit->paragraphs(); l2++) {
+    for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
+      for (l2 = 0; l2 < listTextEdit.at(l1)->textEdit->paragraphs(); ++l2) {
         fprintf(f, "#PARA# %d %d %d\n", listTextEdit.at(l1)->textEditID, l1, l2);
         fprintf(f, "%s\n", listTextEdit.at(l1)->textEdit->text(l2).latin1());
         fprintf(f, "#ARAP#\n");
@@ -1943,14 +1944,14 @@ void ModularSynth::save() {
     }
 //    fprintf(stderr, "Saving Tabs\n");
 //    fprintf(stderr, "TabName count: %d Tab count: %d\n", guiWidget->tabNameList.count(), guiWidget->tabList.count());
-    for (l1 = 0; l1 < guiWidget->tabList.count(); l1++) {
+    for (l1 = 0; l1 < guiWidget->tabList.count(); ++l1) {
       fprintf(f, "Tab \"%s\"\n", guiWidget->tabList.at(l1)->name());
     }
 //    fprintf(stderr, "Saving Frames\n");
-    for (l1 = 0; l1 < guiWidget->frameBoxList.count(); l1++) {
+    for (l1 = 0; l1 < guiWidget->frameBoxList.count(); ++l1) {
       fprintf(f, "Frame \"%s\" %d\n", guiWidget->frameBoxList.at(l1)->frameBox->name(),
                                       guiWidget->frameBoxList.at(l1)->tabIndex);
-      for (l2 = 0; l2 < guiWidget->parameterList.count(); l2++) {
+      for (l2 = 0; l2 < guiWidget->parameterList.count(); ++l2) {
         if (guiWidget->parameterList.at(l2)->parent() == guiWidget->frameBoxList.at(l1)->frameBox) {
           fprintf(f, "Parameter \"%s\" %d %d ", guiWidget->parameterList.at(l2)->name(), 
                                          ((Module *)guiWidget->parameterList.at(l2)->parentModule)->moduleID, 
@@ -1966,13 +1967,13 @@ void ModularSynth::save() {
       }
     }
 
-    for (l1 = 0; l1 < guiWidget->presetCount; l1++) {
-      for (it = guiWidget->presetList[l1].begin(); it != guiWidget->presetList[l1].end(); it++) {
+    for (l1 = 0; l1 < guiWidget->presetCount; ++l1) {
+      for (it = guiWidget->presetList[l1].begin(); it != guiWidget->presetList[l1].end(); ++it) {
         value = *it;
         fprintf(f, "Program %d %d\n", l1, value);
       } 
     }
-    for (presetit = guiWidget->presetNameList.begin(); presetit != guiWidget->presetNameList.end(); presetit++) {
+    for (presetit = guiWidget->presetNameList.begin(); presetit != guiWidget->presetNameList.end(); ++presetit) {
       fprintf(f, "PresetName \"%s\"\n", (*presetit).mid(3).latin1());
     } 
     fclose(f);
@@ -1983,10 +1984,10 @@ void ModularSynth::allVoicesOff() {
 
   int l1, l2;
 
-  for (l2 = 0; l2 < synthdata->poly; l2++) {
+  for (l2 = 0; l2 < synthdata->poly; ++l2) {
     if (synthdata->noteCounter[l2] < 1000000) {
       synthdata->noteCounter[l2] = 1000000;
-      for (l1 = 0; l1 < listModule.count(); l1++) {      
+      for (l1 = 0; l1 < listModule.count(); ++l1) {      
         listModule.at(l1)->noteOffEvent(l2);
       } 
     }
@@ -2085,12 +2086,12 @@ void ModularSynth::refreshColors() {
 
   int l1, l2;
 
-  for (l1 = 0; l1 < listModule.count(); l1++) {
+  for (l1 = 0; l1 < listModule.count(); ++l1) {
     listModule.at(l1)->setPalette(QPalette(synthdata->colorModuleBackground, synthdata->colorModuleBackground));
     listModule.at(l1)->colorBorder = synthdata->colorModuleBorder;
     listModule.at(l1)->colorFont = synthdata->colorModuleFont;
     listModule.at(l1)->repaint(false);
-    for (l2 = 0; l2 < listModule.at(l1)->portList.count(); l2++) {
+    for (l2 = 0; l2 < listModule.at(l1)->portList.count(); ++l2) {
       listModule.at(l1)->portList.at(l2)->setPalette(QPalette(synthdata->colorModuleBackground, synthdata->colorModuleBackground));
       listModule.at(l1)->portList.at(l2)->colorFont1 = synthdata->colorPortFont1;
       listModule.at(l1)->portList.at(l2)->colorFont2 = synthdata->colorPortFont2;

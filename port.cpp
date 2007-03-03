@@ -83,7 +83,7 @@ void Port::paintEvent(QPaintEvent *ev) {
   int l1;
 
   p.setPen(synthdata->colorModuleBorder);
-  for (l1 = 0; l1 < 4; l1++) {
+  for (l1 = 0; l1 < 4; ++l1) {
     p.setPen(synthdata->colorModuleBorder.light(100 + 15 * l1));
     if (dir == PORT_IN) {
       p.drawLine(l1, 0, l1, height());
@@ -100,16 +100,16 @@ void Port::paintEvent(QPaintEvent *ev) {
   }
   if (dir == PORT_IN) { 
     if (highlighted) {
-      p.fillRect(0, height()/2-2, 3, 5, QBrush(QColor(240, 0, 0)));
+      p.fillRect(0, height()*0.5-2, 3, 5, QBrush(QColor(240, 0, 0)));
     } else {
-      p.fillRect(0, height()/2-2, 3, 5, QBrush(QColor(10, 10, 10)));
+      p.fillRect(0, height()*0.5-2, 3, 5, QBrush(QColor(10, 10, 10)));
     }
     p.drawText(5, 12, portName);
   } else {
     if (highlighted) {
-      p.fillRect(width() - 3, height()/2-2, 3, 5, QBrush(QColor(240, 0, 0)));
+      p.fillRect(width() - 3, height()*0.5-2, 3, 5, QBrush(QColor(240, 0, 0)));
     } else {
-      p.fillRect(width() - 3, height()/2-2, 3, 5, QBrush(QColor(10, 10, 10)));
+      p.fillRect(width() - 3, height()*0.5-2, 3, 5, QBrush(QColor(10, 10, 10)));
     }
     textRect = p.boundingRect(0, 0, width(), height(), QPainter::AlignLeft, portName);
     p.drawText(width() - textRect.width() - 5, 12, portName);
@@ -176,7 +176,7 @@ void Port::checkConnectionStatus() {
   bool moduleConnected;
 
   moduleConnected = false;
-  for (l1 = 0; l1 < ((Module *)parentModule)->portList.count(); l1++) {
+  for (l1 = 0; l1 < ((Module *)parentModule)->portList.count(); ++l1) {
     if (((Module *)parentModule)->portList.at(l1)->connectedPortList.count()) {
       moduleConnected = true;
     }

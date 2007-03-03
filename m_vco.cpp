@@ -37,7 +37,7 @@ M_vco::M_vco(QWidget* parent, const char *name, SynthData *p_synthdata)
   subharmonic = 1;
   octave = 3;
   edge = 0.95;
-  for (l1 = 0; l1 < MAXPOLY; l1++) {
+  for (l1 = 0; l1 < MAXPOLY; ++l1) {
     phi[l1] = 0;
   }
   pw0 = 0.5;
@@ -134,8 +134,8 @@ void M_vco::generateCycle() {
       pw_high = 0.9 * wave_period;
 
       if (phi0 > 0) {
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             dphi = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) 
                                  + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
@@ -149,7 +149,7 @@ void M_vco::generateCycle() {
                 data[4][l1][l2] = synthdata->wave_saw2[(int)phi1];
                 break;
               case WAVE_SAW2:
-                half_wave = wave_period / 2.0;              
+                half_wave = wave_period * 0.5;// / 2.0;              
                 data[4][l1][l2] = (phi1 < half_wave) 
                                 ? synthdata->wave_saw2[(int)(2.0 * phi1)]
                                 : 0;
@@ -195,8 +195,8 @@ void M_vco::generateCycle() {
           }
         }
       } else {
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             dphi = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) 
                                  + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
@@ -207,7 +207,7 @@ void M_vco::generateCycle() {
                 data[4][l1][l2] = synthdata->wave_saw2[(int)phi[l1]];
                 break;
               case WAVE_SAW2:
-                half_wave = wave_period / 2.0;
+                half_wave = wave_period * 0.5; // / 2.0;
                 data[4][l1][l2] = (phi[l1] < half_wave)
                                 ? synthdata->wave_saw2[(int)(2.0 * phi[l1])]
                                 : 0;

@@ -115,33 +115,33 @@ void M_wavout::generateCycle()
 
   memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
   wavgain = 32767.0 / synthdata->poly;
-  for (l1 = 0; l1 < 2; l1++)
+  for (l1 = 0; l1 < 2; ++l1)
   {
       indata = port_in[l1]->getinputdata ();
       mixgain = gain * mixer_gain[l1];
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+      for (l2 = 0; l2 < synthdata->cyclesize; ++l2)
       {
-        for (l3 = 0; l3 < synthdata->poly; l3++) floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
+        for (l3 = 0; l3 < synthdata->poly; ++l3) floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
       }
       if (agc)
       {
           max = 0;
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2)
           {
               if (max < fabs(floatdata[2 * l2 + l1])) max = fabs(floatdata[2 * l2 + l1]);
           }
           if (max > 0.9)
           {
               max = 0.9 / max;
-              for (l2 = 0; l2 < synthdata->cyclesize; l2++) floatdata[2 * l2 + l1] *= max;
+              for (l2 = 0; l2 < synthdata->cyclesize; ++l2) floatdata[2 * l2 + l1] *= max;
           }
       }
   }
   if (doRecord > 0)
   {
-      for (l2 = 0; l2 < 2; l2++)
+      for (l2 = 0; l2 < 2; ++l2)
       {
-          for (l1 = 0; l1 < synthdata->cyclesize; l1++)
+          for (l1 = 0; l1 < synthdata->cyclesize; ++l1)
           {   
               s = (short)(wavgain * floatdata[2 * l1 + l2]);
               wavdata[4*l1+2*l2] = (unsigned char)s;

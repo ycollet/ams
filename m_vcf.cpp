@@ -83,8 +83,8 @@ void M_vcf::initBuf(int index) {
 
   int l1, l2;
 
-  for (l1 = 0; l1 < MAXPOLY; l1++) {
-    for (l2 = 0; l2 < 5; l2++) {
+  for (l1 = 0; l1 < MAXPOLY; ++l1) {
+    for (l2 = 0; l2 < 5; ++l2) {
       buf[l2][l1] = 0;   
       in[l2][l1] = 0;
     }
@@ -114,8 +114,8 @@ void M_vcf::generateCycle() {
         freq_tune = 5.0313842 + freq;
         freq_const = 2.85 / 20000.0;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                                + gain_linfm * linFMData[l1][l2]);
             if (f < 0) f = 0;
@@ -136,8 +136,8 @@ void M_vcf::generateCycle() {
         q0 = resonance;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                     + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -167,8 +167,8 @@ void M_vcf::generateCycle() {
         q0 = resonance;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                     + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -198,8 +198,8 @@ void M_vcf::generateCycle() {
         q0 = resonance;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                     + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -229,8 +229,8 @@ void M_vcf::generateCycle() {
         q0 = resonance;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                     + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -260,8 +260,8 @@ void M_vcf::generateCycle() {
         q0 = resonance;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                     + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -292,8 +292,8 @@ void M_vcf::generateCycle() {
         inv2_rate = 2.0 / (double)synthdata->rate;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                      + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
@@ -324,8 +324,8 @@ void M_vcf::generateCycle() {
         inv2_rate = 2.0 / (double)synthdata->rate;
         freq_tune = 5.0313842 + freq;
         gain_linfm = 1000.0 * vcfLinFMGain;
-        for (l1 = 0; l1 < synthdata->poly; l1++) {
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+        for (l1 = 0; l1 < synthdata->poly; ++l1) {
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                      + gain_linfm * linFMData[l1][l2];
             if (f < MIN_FREQ) f = MIN_FREQ;
