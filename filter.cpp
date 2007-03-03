@@ -129,18 +129,18 @@ void Filter::paintEvent(QPaintEvent *) {
   p.setWindow(0, 0, width(), height());
   p.setPen(QColor(220, 100, 0));
   p.drawRect(0, 0, width(), height());
-  xscale = (float)width() * log(2.0) / log((float)synthdata->rate / 2.0);
+  xscale = (float)width() * log(2.0) / log((float)synthdata->rate * 0.5);
   yscale = (float)(height()-1);
-  for (l1 = 0; l1 < width()-1; l1++) {
+  for (l1 = 0; l1 < width()-1; ++l1) {
     x1 = (float)l1 / xscale;
     x2 = (float)(l1 + 1) / xscale;
     y1 = yscale * (1.0 - logfilt(x1, *cutoffRef, *resonanceRef, *risingRef, *fallingRef, *hwidthRef, *smoothnessRef));
     y2 = yscale * (1.0 - logfilt(x2, *cutoffRef, *resonanceRef, *risingRef, *fallingRef, *hwidthRef, *smoothnessRef));
     p.drawLine(l1, y1, l1 + 1, y2);
   }
-  xscale = (float)width() / (float)(synthdata->rate / 2.0);
+  xscale = (float)width() / (float)(synthdata->rate * 0.5);
   p.setPen(QColor(0, 200, 100));
-  for (l1 = 0; l1 < width()-1; l1++) {
+  for (l1 = 0; l1 < width()-1; ++l1) {
     x1 = (float)l1 / xscale;
     x2 = (float)(l1 + 1) / xscale;
     y1 = yscale * (1.0 - filt(x1, *cutoffRef, *resonanceRef, *risingRef, *fallingRef, *hwidthRef, *smoothnessRef));
