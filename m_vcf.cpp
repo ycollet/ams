@@ -31,6 +31,13 @@ M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata)
   resonance = 0.8;
   dBgain = 3.0;
   initBuf(0);
+  freq_const = 2.85f / 20000.0f;
+  log2 = log(2.0); 
+  fInvertRandMax= 1.0f/(float)RAND_MAX ;
+
+  pi2_rate = 2.0f * M_PI / synthdata->rate; // how often changes the rate? I guess once on init, or?
+  inv2_rate = 2.0 / (double)synthdata->rate;// this double seems unnecessary
+  
   port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
@@ -94,10 +101,7 @@ void M_vcf::initBuf(int index) {
 void M_vcf::generateCycle() {
 
   int l1, l2;
-  double t1, t2, fa, fb, q0, f, q, p, iv_sin, iv_cos, iv_alpha, a0, a1, a2, b0, b1, b2;
-  float freq_const, freq_tune, gain_linfm, pi2_rate, inv2_rate, qr, moog_f;
-  const float log2 = log(2.0);
-
+  double temp;
   if (!cycleReady) {
     cycleProcessing = true;
 
@@ -107,26 +111,24 @@ void M_vcf::generateCycle() {
     linFMData = port_M_lin->getinputdata();
     resonanceData = port_M_resonance->getinputdata();
 
-    pi2_rate = 2.0 * M_PI / synthdata->rate;
     switch (vcfType) {
       case VCF_LR:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        freq_const = 2.85 / 20000.0;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
                                + gain_linfm * linFMData[l1][l2]);
-            if (f < 0) f = 0;
+            if (f < 0.0) f = 0.0;
             else if (f > 0.99) f = 0.99;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             fa = 1.0 - f;
             fb = q * (1.0 + (1.0 / fa));
             buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1])
-                        + 0.00001 * ((float)rand() / (float)RAND_MAX - 1.0));
+                        + 0.00001 * ((float)rand() * fInvertRandMax - 1.0f));
             buf[1][l1] = fa * buf[1][l1] + f * buf[0][l1];
             data[0][l1][l2] = buf[1][l1];
           }
@@ -134,8 +136,9 @@ void M_vcf::generateCycle() {
         break;
       case VCF_LPF:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+	
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -144,7 +147,7 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ) f = MAX_FREQ;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             iv_sin = sin(pi2_rate * f);
             iv_cos = cos(pi2_rate * f);
             iv_alpha = iv_sin/(64.0 * q);
@@ -154,19 +157,20 @@ void M_vcf::generateCycle() {
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos; 
             a2 = 1.0 - iv_alpha;
-            data[0][l1][l2] = 1.0 / a0 * (b0 * gain * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
+            temp = 1.0 / a0 * (b0 * gain * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
                                        - a1 * buf[2][l1] - a2 * buf[3][l1]);
-            buf[1][l1] = buf[0][l1];                          
+            data[0][l1][l2]=temp;
+	    buf[1][l1] = buf[0][l1];                          
             buf[0][l1] = gain * inData[l1][l2];
             buf[3][l1] = buf[2][l1];
-            buf[2][l1] = data[0][l1][l2];
+            buf[2][l1] = temp;//data[0][l1][l2];
           }
         } 
         break;
       case VCF_HPF:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -175,7 +179,7 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ) f = MAX_FREQ;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             iv_sin = sin(pi2_rate * f);
             iv_cos = cos(pi2_rate * f);
             iv_alpha = iv_sin/(64.0 * q);
@@ -185,19 +189,20 @@ void M_vcf::generateCycle() {
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos; 
             a2 = 1.0 - iv_alpha;
-            data[0][l1][l2] = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
+            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
                                        - a1 * buf[2][l1] - a2 * buf[3][l1]);
-            buf[1][l1] = buf[0][l1];                          
+            data[0][l1][l2]=temp;
+	    buf[1][l1] = buf[0][l1];                          
             buf[0][l1] = gain * inData[l1][l2];
             buf[3][l1] = buf[2][l1];
-            buf[2][l1] = data[0][l1][l2];
+            buf[2][l1] = temp;//data[0][l1][l2];
           }
         } 
         break;
       case VCF_BPF_I:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -206,29 +211,31 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ) f = MAX_FREQ;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             iv_sin = sin(pi2_rate * f);
             iv_cos = cos(pi2_rate * f);
             iv_alpha = iv_sin/(64.0 * q);
             b0 = q * iv_alpha;
-            b1 = 0;
+            b1 = 0.0;
             b2 = -q * iv_alpha;
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
-            data[0][l1][l2] = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
+             
+	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
                                        - a1 * buf[2][l1] - a2 * buf[3][l1]);
-            buf[1][l1] = buf[0][l1];                          
+            data[0][l1][l2]=temp;
+	    buf[1][l1] = buf[0][l1];                          
             buf[0][l1] = gain * inData[l1][l2];
             buf[3][l1] = buf[2][l1];
-            buf[2][l1] = data[0][l1][l2];
+            buf[2][l1] = temp;//data[0][l1][l2];
           }
         } 
         break;
       case VCF_BPF_II:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -237,29 +244,30 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ) f = MAX_FREQ;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             iv_sin = sin(pi2_rate * f);
             iv_cos = cos(pi2_rate * f);
             iv_alpha = iv_sin/(64.0 * q);
             b0 = iv_alpha; 
-            b1 = 0;
+            b1 = 0.0;
             b2 = -iv_alpha;
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
-            data[0][l1][l2] = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
+            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
                                        - a1 * buf[2][l1] - a2 * buf[3][l1]);
-            buf[1][l1] = buf[0][l1];                          
+            data[0][l1][l2] = temp;
+	    buf[1][l1] = buf[0][l1];                          
             buf[0][l1] = gain * inData[l1][l2];
             buf[3][l1] = buf[2][l1];
-            buf[2][l1] = data[0][l1][l2];
+            buf[2][l1] = temp;//data[0][l1][l2];
           }
         } 
         break;
       case VCF_NF:
         q0 = resonance;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -268,30 +276,31 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ) f = MAX_FREQ;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             iv_sin = sin(pi2_rate * f);
             iv_cos = cos(pi2_rate * f);
             iv_alpha = iv_sin/(64.0 * q);
-            b0 = 1;
+            b0 = 1.0;
             b1 = -2.0 * iv_cos;
-            b2 = 1;
+            b2 = 1.0;
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
-            data[0][l1][l2] = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
+            
+	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
                                        - a1 * buf[2][l1] - a2 * buf[3][l1]);
+	    data[0][l1][l2] = temp;// conversion	
             buf[1][l1] = buf[0][l1];                          
             buf[0][l1] = gain * inData[l1][l2];
             buf[3][l1] = buf[2][l1];
-            buf[2][l1] = data[0][l1][l2];
+            buf[2][l1] = temp;//data[0][l1][l2];
           }
         } 
         break;
       case VCF_MOOG1:                   // Timo Tossavainen version
         q0 = resonance;
-        inv2_rate = 2.0 / (double)synthdata->rate;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -300,20 +309,22 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ2) f = MAX_FREQ2;
             q = q0 + resonanceGain * resonanceData[l1][l2];
             if (q < 0.01) q = 0.01;
-            else if (q > 1) q = 1;
+            else if (q > 1.0) q = 1.0;
             fa = inv2_rate * f;
-            moog_f = fa * 1.16;
-            fb = 4.1 * q * (1.0 - 0.15 * moog_f * moog_f);
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() / (float)RAND_MAX - 1.0);
+            moog_f = fa * 1.16f;
+	    revMoog = 1.0f - moog_f;
+	    moog2times= moog_f * moog_f;
+            fb = 4.1 * q * (1.0 - 0.15 * moog2times);
+            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() * fInvertRandMax - 1.0);
             in[0][l1] -= fb * buf[4][l1];
-            in[0][l1] *=0.35013 * (moog_f * moog_f * moog_f * moog_f);
-            buf[1][l1] = in[0][l1] + 0.3 * in[1][l1] + (1.0 - moog_f) * buf[1][l1];
+            in[0][l1] *=0.35013 * (moog2times * moog2times);
+            buf[1][l1] = in[0][l1] + 0.3 * in[1][l1] + revMoog * buf[1][l1];
             in[1][l1] = in[0][l1];
-            buf[2][l1] = buf[1][l1] + 0.3 * in[2][l1] + (1.0 - moog_f) * buf[2][l1];
+            buf[2][l1] = buf[1][l1] + 0.3 * in[2][l1] + revMoog * buf[2][l1];
             in[2][l1] = buf[1][l1]; 
-            buf[3][l1] = buf[2][l1] + 0.3 * in[3][l1] + (1.0 - moog_f) * buf[3][l1];
+            buf[3][l1] = buf[2][l1] + 0.3 * in[3][l1] + revMoog * buf[3][l1];
             in[3][l1] = buf[2][l1];
-            buf[4][l1] = buf[3][l1] + 0.3 * in[4][l1] + (1.0 - moog_f) * buf[4][l1];
+            buf[4][l1] = buf[3][l1] + 0.3 * in[4][l1] + revMoog * buf[4][l1];
             in[4][l1] = buf[3][l1];
             data[0][l1][l2] = buf[4][l1];
           }
@@ -321,9 +332,8 @@ void M_vcf::generateCycle() {
         break;
       case VCF_MOOG2:                       // Paul Kellet version
         q0 = resonance;
-        inv2_rate = 2.0 / (double)synthdata->rate;
-        freq_tune = 5.0313842 + freq;
-        gain_linfm = 1000.0 * vcfLinFMGain;
+        freq_tune = 5.0313842f + freq;
+        gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
             f = synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcfExpFMGain * expFMData[l1][l2]))
@@ -332,13 +342,13 @@ void M_vcf::generateCycle() {
             else if (f > MAX_FREQ2) f = MAX_FREQ2;
             qr = q0 + resonanceGain * resonanceData[l1][l2];
             if (qr < 0.01) qr = 0.01;
-            else if (qr > 1) qr = 1;
+            else if (qr > 1.0) qr = 1.0;
             fb = inv2_rate * f;
             q = 1.0 - fb;                                              
             p = fb + 0.8 * fb * q;
             fa = p + p - 1.0;
             q = qr * (1.0 + 0.5 * q * (1.0 - q + 5.6 * q * q));
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() / (float)RAND_MAX - 1.0);
+            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() * fInvertRandMax - 1.0);
             in[0][l1] -= q * buf[4][l1];
             if (in[0][l1] < -1.0) in[0][l1] = -1.0;
             if (in[0][l1] > 1.0) in[0][l1] = 1.0;        
