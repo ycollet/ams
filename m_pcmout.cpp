@@ -32,6 +32,8 @@ M_pcmout::M_pcmout(QWidget* parent, const char *name, SynthData *p_synthdata, in
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
+  cycleSize=synthdata->cyclesize * sizeof(float);
+  polyroot = sqrt((double)synthdata->poly);
   agc = 0;
   qs.sprintf (" -> Out %2d", port);
   port_in[0] = new Port(qs, PORT_IN, 0, this, synthdata);          
@@ -65,12 +67,12 @@ M_pcmout::~M_pcmout()
 void M_pcmout::generateCycle()
 {
     int l1, l2, l3;
-    float max, mixgain, **indata, polyroot;
-
-    polyroot = sqrt((double)synthdata->poly);
+    float max, mixgain, **indata;
+    
+    
     for (l1 = 0; l1 < 2; l1++)
     {
-        memset(pcmdata[l1], 0, synthdata->cyclesize * sizeof(float));  
+        memset(pcmdata[l1], 0, cycleSize);  
         indata = port_in [l1]->getinputdata ();
 
         if (indata != synthdata->zeroModuleData)
@@ -85,14 +87,14 @@ void M_pcmout::generateCycle()
             }
             if (agc)
             {
-                max = 0;
+                max = 0.0f;
                 for (l2 = 0; l2 < synthdata->cyclesize; l2++)
                 {
                     if (max < fabs(pcmdata[l1][l2])) max = fabs(pcmdata[l1][l2]);
                 }    
-                if (max > 0.9)
+                if (max > 0.9f)
                 {
-                    max = 0.9 / max;
+                    max = 0.9f / max;
                     for (l2 = 0; l2 < synthdata->cyclesize; l2++) pcmdata[l1][l2] *= max;
 		}
 	    }

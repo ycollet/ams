@@ -31,12 +31,15 @@ class M_vco : public Module
 
   private:
     float freq, phi0, pw0;
-    int harmonic, subharmonic, octave;
     float edge;
-    float phi[MAXPOLY];
     float wave_period;
-    auxWaveFormType waveForm;
+    float phi[MAXPOLY];
+   // float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
+   // float freq_const, freq_tune, gain_linfm, log2, pw_low, pw_high,
+    float log2,wave_period_2,Pi2Times;
     float vcoExpFMGain, vcoLinFMGain, pwGain;
+    auxWaveFormType waveForm;
+    int harmonic, subharmonic, octave;
     Port *port_M_freq, *port_M_exp, *port_M_lin, *port_M_pw;
     Port *port_sine, *port_tri, *port_saw, *port_rect, *port_aux;
     
