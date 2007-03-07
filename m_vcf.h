@@ -40,8 +40,10 @@ class M_vcf : public Module
     float log2;
     float pi2_rate,inv2_rate;
     float freq_tune, gain_linfm, qr, moog_f, revMoog, moog2times;
-    double t1, t2, fa, fb, q0, f, q, p, iv_sin, iv_cos, iv_alpha, a0, a1, a2, b0, b1, b2;
-    double in[5][MAXPOLY], buf[5][MAXPOLY];
+    double b_noise;
+     double in[5][MAXPOLY], buf[5][MAXPOLY];
+   
+
     vcfTypeEnum vcfType;
     Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp, *port_M_lin, *port_out;
   public: 

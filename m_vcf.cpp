@@ -34,7 +34,7 @@ M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata)
   freq_const = 2.85f / 20000.0f;
   log2 = log(2.0); 
   fInvertRandMax= 1.0f/(float)RAND_MAX ;
-
+b_noise = 19.1919191919191919191919191919191919191919;
   pi2_rate = 2.0f * M_PI / synthdata->rate; // how often changes the rate? I guess once on init, or?
   inv2_rate = 2.0 / (double)synthdata->rate;// this double seems unnecessary
   
@@ -101,8 +101,9 @@ void M_vcf::initBuf(int index) {
 void M_vcf::generateCycle() {
 
   int l1, l2;
-  double temp;
-  if (!cycleReady) {
+   double t1, t2, fa, fb, q0, f, q, p, iv_sin, iv_cos, iv_alpha, a0, a1, a2, b0, b1, b2;
+
+    if (!cycleReady) {
     cycleProcessing = true;
 
     inData = port_M_in->getinputdata();
@@ -113,6 +114,9 @@ void M_vcf::generateCycle() {
 
     switch (vcfType) {
       case VCF_LR:
+       {
+        double b_noiseout;
+	int i_noise;
         q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
@@ -127,14 +131,24 @@ void M_vcf::generateCycle() {
             else if (q > 1.0) q = 1.0;
             fa = 1.0 - f;
             fb = q * (1.0 + (1.0 / fa));
-            buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1])
-                        + 0.00001 * ((float)rand() * fInvertRandMax - 1.0f));
+		// generate dither (?) noise	
+		b_noise = b_noise * b_noise;
+		i_noise = b_noise;
+		b_noise = b_noise - i_noise;
+		b_noiseout = b_noise - 1.5;// was 0.5
+		b_noise = b_noise + 19.0;
+
+            buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1]) + 0.00001 * b_noiseout);// ((float)rand() * fInvertRandMax - 1.0f));
             buf[1][l1] = fa * buf[1][l1] + f * buf[0][l1];
             data[0][l1][l2] = buf[1][l1];
           }
         }
         break;
+	}
       case VCF_LPF:
+      {
+      double temp;
+
         q0 = resonance;
 	
         freq_tune = 5.0313842f + freq;
@@ -167,7 +181,11 @@ void M_vcf::generateCycle() {
           }
         } 
         break;
+	}
       case VCF_HPF:
+      {
+      double temp;
+
         q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
@@ -199,7 +217,11 @@ void M_vcf::generateCycle() {
           }
         } 
         break;
+	}
       case VCF_BPF_I:
+      	{
+	double temp;
+
         q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
@@ -232,7 +254,10 @@ void M_vcf::generateCycle() {
           }
         } 
         break;
+	}
       case VCF_BPF_II:
+       {
+       double temp;
         q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
@@ -264,7 +289,10 @@ void M_vcf::generateCycle() {
           }
         } 
         break;
+	}
       case VCF_NF:
+       {
+       double temp;
         q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
@@ -297,8 +325,12 @@ void M_vcf::generateCycle() {
           }
         } 
         break;
-      case VCF_MOOG1:                   // Timo Tossavainen version
-        q0 = resonance;
+	}
+      case VCF_MOOG1:
+      {// Timo Tossavainen version
+	double b_noiseout;
+        int i_noise;
+	q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
@@ -315,7 +347,15 @@ void M_vcf::generateCycle() {
 	    revMoog = 1.0f - moog_f;
 	    moog2times= moog_f * moog_f;
             fb = 4.1 * q * (1.0 - 0.15 * moog2times);
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() * fInvertRandMax - 1.0);
+	    // generate dither (?) noise
+	     	b_noise = b_noise * b_noise;
+		i_noise = b_noise;
+		b_noise = b_noise - i_noise;
+
+		b_noiseout = b_noise - 1.5; // was - 0.5 now with - 1.0
+
+		b_noise = b_noise + 19.0;
+            in[0][l1] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//((float)rand() * fInvertRandMax - 1.0);
             in[0][l1] -= fb * buf[4][l1];
             in[0][l1] *=0.35013 * (moog2times * moog2times);
             buf[1][l1] = in[0][l1] + 0.3 * in[1][l1] + revMoog * buf[1][l1];
@@ -330,8 +370,13 @@ void M_vcf::generateCycle() {
           }
         }  
         break;
+	}
       case VCF_MOOG2:                       // Paul Kellet version
-        q0 = resonance;
+       {
+       	double b_noiseout;
+        int i_noise;
+
+       q0 = resonance;
         freq_tune = 5.0313842f + freq;
         gain_linfm = 1000.0f * vcfLinFMGain;
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
@@ -348,7 +393,16 @@ void M_vcf::generateCycle() {
             p = fb + 0.8 * fb * q;
             fa = p + p - 1.0;
             q = qr * (1.0 + 0.5 * q * (1.0 - q + 5.6 * q * q));
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * ((float)rand() * fInvertRandMax - 1.0);
+	     // generate dither (?) noise
+	     	b_noise = b_noise * b_noise;
+		i_noise = b_noise;
+		b_noise = b_noise - i_noise;
+
+		b_noiseout = b_noise - 1.5;// was 0.5
+
+		b_noise = b_noise + 19.0;
+
+            in[0][l1] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//* ((float)rand() * fInvertRandMax - 1.0);
             in[0][l1] -= q * buf[4][l1];
             if (in[0][l1] < -1.0) in[0][l1] = -1.0;
             if (in[0][l1] > 1.0) in[0][l1] = 1.0;        
@@ -365,6 +419,9 @@ void M_vcf::generateCycle() {
           }
         }
         break;
+	}
+	
+
     } 
   }
   cycleProcessing = false;
