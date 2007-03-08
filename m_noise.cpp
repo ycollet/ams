@@ -31,6 +31,9 @@ M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata)
   rate = 5;
   level = 0.5;
   count = 0;
+  
+  randmax = 2.0 / (double)RAND_MAX;
+  
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE_WIDTH, MODULE_NOISE_HEIGHT);
   port_white = new Port("White", PORT_OUT, 0, this, synthdata);          
   port_white->move(width() - port_white->width(), 35);
@@ -49,7 +52,7 @@ M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 10, rate, "Random Rate", &rate);
   configDialog->addSlider(0, 1, level, "Random Level", &level);
   r = 0;
-  for (l2 = 0; l2 < 3; l2++) {
+  for (l2 = 0; l2 < 3; ++l2) {
     buf[l2] = 0;
   }
   t = time(NULL) % 1000000;
@@ -70,15 +73,13 @@ void M_noise::noteOffEvent(int osc) {
 
 void M_noise::generateCycle() {
 
-  int l1, l2, l3, random_rate;
+  unsigned int l1, l2, random_rate;
   double white_noise;
-  double randmax;
 
   if (!cycleReady) {
     cycleProcessing = true;
     random_rate = (int)(5000.0 * (double)rate + 100.0);
-    randmax = 2.0 / (double)RAND_MAX;
-    for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+    for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
       count++; 
       if (count > random_rate) {
         count = 0;
@@ -89,7 +90,7 @@ void M_noise::generateCycle() {
       buf[1] = 0.963 * buf[1] + white_noise * 0.2965164;
       buf[2] = 0.57 * buf[2] + white_noise * 1.0526913;
       data[1][0][l2] = buf[0] + buf[1] + buf[2] + white_noise * 0.1848;
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
+      for (l1 = 0; l1 < synthdata->poly; ++l1) {
         data[0][l1][l2] = white_noise;
         data[1][l1][l2] = data[1][0][l2];
         data[2][l1][l2] = r;

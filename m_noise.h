@@ -32,7 +32,7 @@ class M_noise : public Module
     float rate, level;
     float buf[3], r;
     Port *port_white, *port_pink, *port_random;
-
+    double randmax; 
   public:
     M_noise(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
     ~M_noise();
