@@ -92,12 +92,16 @@ PrefWidget::PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name
   colorLayout->addWidget(colorJackLabel, 11, 0);
   colorLayout->addWidget(changeColorJackButton, 11, 1);
 
+  QPushButton *defaultColorButton = new QPushButton("default colors", colorGridWidget);
+  colorLayout->addWidget(defaultColorButton, 12, 1);
+  
   QObject::connect(changeColorBackgroundButton, SIGNAL(clicked()),this, SLOT(colorBackgroundClicked()));
   QObject::connect(changeColorModuleBackgroundButton, SIGNAL(clicked()),this, SLOT(colorModuleBackgroundClicked()));
   QObject::connect(changeColorModuleBorderButton, SIGNAL(clicked()), this, SLOT(colorModuleBorderClicked()));
   QObject::connect(changeColorModuleFontButton, SIGNAL(clicked()), this, SLOT(colorModuleFontClicked()));
   QObject::connect(changeColorCableButton, SIGNAL(clicked()), this, SLOT(colorCableClicked()));
   QObject::connect(changeColorJackButton, SIGNAL(clicked()), this, SLOT(colorJackClicked()));
+  QObject::connect(defaultColorButton, SIGNAL(clicked()), this, SLOT(defaultcolorClicked()));
 
   QHBox *midiModeSelectorBox = new QHBox(midiBox);
   new QWidget(midiModeSelectorBox);
@@ -306,7 +310,16 @@ void PrefWidget::recallColors() {
   loadPath = synthdata->loadPath;
   savePath = synthdata->savePath;
 }
-
+void PrefWidget::defaultcolorClicked()
+{
+  colorBackground = QColor(COLOR_MAINWIN_BG);
+  colorModuleBackground = QColor(COLOR_MODULE_BG);
+  colorModuleBorder = QColor(195, 195, 195);
+  colorModuleFont = QColor(255, 255, 255);
+  colorCable = QColor(180, 180, 180);
+  colorJack = QColor(250, 200, 50);
+  refreshColors();
+}
 void PrefWidget::storeColors() {
 
   synthdata->colorBackground = colorBackground;

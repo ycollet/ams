@@ -33,7 +33,9 @@
 #include "scopescreen.h"
 #include "spectrumscreen.h"
 #include "function.h"
-
+/** configuration dialog for each module
+ *
+ */ 
 class ConfigDialog : public QVBox
 {
   Q_OBJECT

@@ -27,7 +27,9 @@
 
 #define PREF_DEFAULT_WIDTH  300
 #define PREF_DEFAULT_HEIGHT 300
-
+/** preferences menue of AMS 
+ *
+ */ 
 class PrefWidget : public QVBox
 {
   Q_OBJECT
@@ -64,6 +66,7 @@ class PrefWidget : public QVBox
     void colorModuleBorderClicked();
     void colorModuleFontClicked();
     void colorCableClicked();
+    void defaultcolorClicked();
     void colorJackClicked();
     void browseLoad();
     void browseSave();

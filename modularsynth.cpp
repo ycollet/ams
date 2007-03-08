@@ -67,6 +67,7 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
                    this, SLOT(refreshColors()));
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
+  // default context menue when clicked in empty space
   contextMenu = new QPopupMenu(this);
   contextMenu->insertItem("Set Background Color", this, SLOT(colorBackgroundClicked()));
   contextMenu->insertSeparator();
@@ -99,7 +100,7 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
   QPainter p(&pm);
   QPen *pen;
   QPointArray qpa(4);
-  int l1, l2;
+  unsigned int l1, l2;
   Port *port[2];
   int port_x[2], port_y[2];
   QPoint port_pos[2];
@@ -155,7 +156,16 @@ void ModularSynth::viewportPaintEvent(QPaintEvent *pe) {
           p.drawLine(port_x[1] - 11, port_y[1], port_x[1], port_y[1]);
         }
         if (connectorStyle == CONNECTOR_STRAIGHT) {
+	// draw the cable as straight line, pd mode :)
           p.drawLine(port_x[0], port_y[0], port_x[1], port_y[1]);
+	// draw the jacks  
+	  p.fillRect(port_x[0], port_y[0] - 3, 11, 7, QBrush(jackColor.dark(120)));
+          p.fillRect(port_x[1] - 11, port_y[1] - 3, 11, 7, QBrush(jackColor.dark(120)));
+          p.fillRect(port_x[0], port_y[0] - 2, 11, 5, QBrush(jackColor));
+          p.fillRect(port_x[1] - 11, port_y[1] - 2, 11, 5, QBrush(jackColor));
+          p.fillRect(port_x[0], port_y[0] - 1, 11, 3, QBrush(jackColor.light(120)));
+          p.fillRect(port_x[1] - 11, port_y[1] - 1, 11, 3, QBrush(jackColor.light(120)));
+
         }
         if (port[0]->parentModule->x() < port[1]->parentModule->x()) {
           pen->setWidth(5);
