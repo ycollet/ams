@@ -86,46 +86,51 @@ void M_noise2::generateCycle() {
   if (!cycleReady) {
     cycleProcessing = true;
     if (NoiseType==RAND) random_rate = (int)(5000.0 * (double)rate + 100.0);
-    for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
      switch (NoiseType)
      {
       case WHITE:
       {
       	
-      white_noise = rand() * randmax - 1.0f;
-      for (l1 = 0; l1 < synthdata->poly; ++l1) {
-        data[0][l1][l2] = white_noise;
-      }
-      }
+    	for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+      		white_noise = rand() * randmax - 1.0f;
+      		for (l1 = 0; l1 < synthdata->poly; ++l1) {
+        		data[0][l1][l2] = white_noise;
+      		}
+      	}
+      }		
       break;
       case RAND:
       {
-      count++; 
-      if (count > random_rate) {
-        count = 0;
-        r = level * rand() * randmax - 1.0f;
-      }
-      for (l1 = 0; l1 < synthdata->poly; ++l1) {
-        data[0][l1][l2] = r;
-      }
-      }
+    	for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+      		count++; 
+      		if (count > random_rate) {
+        		count = 0;
+        		r = level * rand() * randmax - 1.0f;
+      		}
+      		for (l1 = 0; l1 < synthdata->poly; ++l1) {
+        		data[0][l1][l2] = r;
+      		}
+      	}
+       }		
       break;
       case PINK:
       {
       	
-      white_noise = rand() * randmax - 1.0f;
+    		for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+      			white_noise = rand() * randmax - 1.0f;
 
-      buf[0] = 0.99765f * buf[0] + white_noise * 0.099046f;
-      buf[1] = 0.963f * buf[1] + white_noise * 0.2965164f;
-      buf[2] = 0.57f * buf[2] + white_noise * 1.0526913f;
-      for (l1 = 0; l1 < synthdata->poly; ++l1) {
-      	data[0][0][l2] = buf[0] + buf[1] + buf[2] + white_noise * 0.1848f;
-        data[0][l1][l2] = data[0][0][l2];
-	}
+		      buf[0] = 0.99765f * buf[0] + white_noise * 0.099046f;
+		      buf[1] = 0.963f * buf[1] + white_noise * 0.2965164f;
+			buf[2] = 0.57f * buf[2] + white_noise * 1.0526913f;
+      			for (l1 = 0; l1 < synthdata->poly; ++l1) {
+      				data[0][0][l2] = buf[0] + buf[1] + buf[2] + white_noise * 0.1848f;
+        			data[0][l1][l2] = data[0][0][l2];
+			}
+      		}
       }
       break;
       }
-    }
+    
   }
   cycleProcessing = false;
   cycleReady = true;
