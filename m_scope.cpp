@@ -52,15 +52,16 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   zoom = 1;
   timeScale = 100;
   QVBox *scopeTab = new QVBox(configDialog->tabWidget);
+  scopeTab->setMinimumHeight(200);
   configDialog->addScopeScreen(&timeScale, &mode, &edge, &triggerMode, 
                                &triggerThrs, &zoom, scopeTab);
   configDialog->addTab(scopeTab, "Scope");
-  QVBox *paramTab = new QVBox(configDialog->tabWidget);
+  //QVBox *paramTab = new QVBox(configDialog->tabWidget);
   QVBox *triggerTab = new QVBox(configDialog->tabWidget);
-  configDialog->addSlider(10, 1000, timeScale, "Time Scale", &timeScale, false, paramTab);
+  configDialog->addSlider(10, 1000, timeScale, "Time Scale", &timeScale, false, scopeTab);
   QObject::connect(configDialog->midiSliderList.at(0), SIGNAL(valueChanged(int)),
                    this, SLOT(updateTimeScale(int)));
-  configDialog->addSlider(0.1, 10, zoom, "Gain", &zoom, false, paramTab);
+  configDialog->addSlider(0.1, 10, zoom, "Gain", &zoom, false, scopeTab);
   QObject::connect(configDialog->midiSliderList.at(1), SIGNAL(valueChanged(int)),
                    this, SLOT(updateZoom(int)));
   hbox = configDialog->addHBox(triggerTab);
@@ -83,7 +84,7 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addPushButton("Trigger", triggerTab);
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
                    configDialog->scopeScreenList.at(0), SLOT(singleShot()));
-  configDialog->addTab(paramTab, "Time Scale / Gain");
+ // configDialog->addTab(paramTab, "Time Scale / Gain");
   configDialog->addTab(triggerTab, "Trigger");
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
@@ -118,35 +119,35 @@ void M_scope::generateCycle()
   wavgain = 32767.0 / synthdata->poly;
   memset(floatdata, 0, 2 * synthdata->cyclesize * sizeof(float));
 
-  for (l1 = 0; l1 < 2; l1++)
+  for (l1 = 0; l1 < 2; ++l1)
   {
       indata = port_in [l1]->getinputdata ();
       mixgain = gain * mixer_gain[l1];
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+      for (l2 = 0; l2 < synthdata->cyclesize; ++l2)
       {
-          for (l3 = 0; l3 < synthdata->poly; l3++)
+          for (l3 = 0; l3 < synthdata->poly; ++l3)
           {
               floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
           }
       }
       if (agc)
       {
-          max = 0;
-          for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+          max = 0.0f;
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2)
           {
             if (max < fabs(floatdata[2 * l2 + l1])) max = fabs(floatdata[2 * l2 + l1]);
           }
-          if (max > 0.9)
+          if (max > 0.9f)
           {
-	      max = 0.9 / max;
-              for (l2 = 0; l2 < synthdata->cyclesize; l2++) floatdata[2 * l2 + l1] *= max;
+	      max = 0.9f / max;
+              for (l2 = 0; l2 < synthdata->cyclesize; ++l2) floatdata[2 * l2 + l1] *= max;
   	  }
       }
   }
 
   scopedata = configDialog->scopeScreenList.at(0)->scopedata;
   ofs = configDialog->scopeScreenList.at(0)->writeofs;
-  for (l1 = 0; l1 < synthdata->cyclesize; l1++) {   
+  for (l1 = 0; l1 < synthdata->cyclesize; ++l1) {   
     scopedata[2 * ofs] = wavgain * floatdata[2 * l1];
     scopedata[2 * ofs + 1] = wavgain * floatdata[2 * l1 + 1];
     ofs++;
