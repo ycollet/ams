@@ -25,6 +25,7 @@
 #include "module.h"
 #include "port.h"
 #include "m_vco.h"
+#include "m_vco2.h"
 #include "m_vca.h"
 #include "m_delay.h"
 #include "m_seq.h"
@@ -43,6 +44,7 @@
 #include "m_wavout.h"
 #include "m_lfo.h"
 #include "m_noise.h"
+#include "m_noise2.h"
 #include "m_ladspa.h"
 #include "m_vcf.h"
 #include "m_inv.h"
@@ -166,12 +168,14 @@ class ModularSynth : public QScrollView
     void newM_scmcv();
     void newM_scmcv(QString *p_scalaName);
     void newM_vco();
+    void newM_vco2();
     void newM_vca_lin();
     void newM_vca_exp();
     void newM_vcf();
     void newM_lfo();
     void newM_mphlfo();
     void newM_noise();
+    void newM_noise2();
     void newM_ringmod();
     void newM_inv();
     void newM_amp();

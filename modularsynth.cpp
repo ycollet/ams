@@ -109,6 +109,7 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   contextMenu->insertItem("Mixer 8 -> 1", this , SLOT(newM_mix_8()));
   contextMenu->insertItem("Multiphase LFO", this , SLOT(newM_mphlfo()));
   contextMenu->insertItem("Noise / Random", this , SLOT(newM_noise()));
+  contextMenu->insertItem("Noise / Random 2", this , SLOT(newM_noise2()));
   contextMenu->insertItem("PCM Out", this , SLOT(newM_pcmout()));
   contextMenu->insertItem("PCM In", this , SLOT(newM_pcmin()));  
   contextMenu->insertItem("Quantizer", this , SLOT(newM_quantizer()));
@@ -140,8 +141,8 @@ ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp,
   contextMenu->insertItem("VCA exp.", this , SLOT(newM_vca_exp()));
   contextMenu->insertItem("VCF", this , SLOT(newM_vcf()));
   contextMenu->insertItem("VCO", this , SLOT(newM_vco()));
+  contextMenu->insertItem("VCO2", this , SLOT(newM_vco2()));
   contextMenu->insertItem("WAV Out", this , SLOT(newM_wavout()));
-  //colorDefaultClicked();
   synthdata->rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
   prefWidget->loadPref(synthdata->rcPath);
   colorModuleBackground = synthdata->colorModuleBackground;
@@ -626,7 +627,7 @@ void ModularSynth::midiAction(int fd) {
 
 void ModularSynth::initPorts(Module *m) {
 
-  int l1;
+  unsigned int l1;
 
   for (l1 = 0; l1 < m->portList.count(); ++l1) {
     QObject::connect(m->portList.at(l1), SIGNAL(portClicked()), 
@@ -690,7 +691,7 @@ void ModularSynth::stopSynth()
 {
   synthdata->doSynthesis = false;
 }
-
+//############################################################# start add new modules
 void ModularSynth::newM_seq(int seqLen) {
 
   M_seq *m = new M_seq(seqLen, viewport(), "Sequencer", synthdata);
@@ -838,6 +839,11 @@ void ModularSynth::newM_vco() {
   M_vco *m = new M_vco(viewport(), "VCO", synthdata);
   initNewModule((Module *)m);
 }
+void ModularSynth::newM_vco2() {
+
+  M_vco2 *m = new M_vco2(viewport(), "VCO2", synthdata);
+  initNewModule((Module *)m);
+}
 
 void ModularSynth::newM_vca_lin() {
 
@@ -868,7 +874,11 @@ void ModularSynth::newM_noise() {
   M_noise *m = new M_noise(viewport(), "Noise", synthdata);
   initNewModule((Module *)m);
 }
+void ModularSynth::newM_noise2() {
 
+  M_noise2 *m = new M_noise2(viewport(), "Noise2", synthdata);
+  initNewModule((Module *)m);
+}
 void ModularSynth::newM_ringmod() {
 
   M_ringmod *m = new M_ringmod(viewport(), "Ringmod", synthdata);
@@ -1103,10 +1113,10 @@ void ModularSynth::newM_vcf() {
   M_vcf *m = new M_vcf(viewport(), "VCF", synthdata);
   initNewModule((Module *)m);
 }
-
+//==================================================== End of adding module functions
 void ModularSynth::moveModule(QPoint pos) {
 
-  int l1;
+  unsigned int l1;
   Module *m;
   int cx, cy;
   
@@ -1122,7 +1132,7 @@ void ModularSynth::moveModule(QPoint pos) {
 
 void ModularSynth::moveTextEdit(QPoint pos) {
 
-  int l1;
+  unsigned int l1;
   TextEdit *te;
   int cx, cy;
   
@@ -1138,7 +1148,7 @@ void ModularSynth::moveTextEdit(QPoint pos) {
 
 void ModularSynth::resizeTextEdit(QPoint pos) {
 
-  int l1;
+  unsigned int l1;
   TextEdit *te;
   int cx, cy;
   
@@ -1152,7 +1162,7 @@ void ModularSynth::resizeTextEdit(QPoint pos) {
     }
   }
 }
-
+// selecting and connecting ports:
 void ModularSynth::portSelected() {
 
   if (firstPort) {
@@ -1165,6 +1175,7 @@ void ModularSynth::portSelected() {
     connectingPort[1] = (Port *)sender();
     connectingPort[0]->highlighted = false;  
     connectingPort[0]->repaint(false);
+    //connectingPort[0]->cableColor = LastCableColor;  
     connectingPort[1]->highlighted = false;
     connectingPort[1]->repaint(false);
     if ((((connectingPort[0]->dir == PORT_IN) && (connectingPort[1]->dir == PORT_OUT))
@@ -1287,6 +1298,7 @@ void ModularSynth::clearConfig() {
   if (restartSynth) synthdata->doSynthesis = true;    
 }
 
+//############################################################################# Start persistence
 void ModularSynth::load() {
 
   QString config_fn;
@@ -1302,7 +1314,6 @@ void ModularSynth::load() {
   }
   load(&config_fn);
 }
-
 void ModularSynth::loadColors() {
 
   QString config_fn, qs;
@@ -1467,7 +1478,11 @@ void ModularSynth::load(QString *presetName) {
           case M_type_vco: 
             newM_vco();
             break;
-          case M_type_vca: 
+          case M_type_vco2: 
+            newM_vco2();
+            break;
+
+	 case M_type_vca: 
             if (subID1) newM_vca_exp();
             else        newM_vca_lin();
             break;
@@ -1483,6 +1498,10 @@ void ModularSynth::load(QString *presetName) {
           case M_type_noise: 
             newM_noise();
             break;
+          case M_type_noise2: 
+            newM_noise2();
+            break;
+
           case M_type_delay: 
             newM_delay();
             break;
@@ -2051,7 +2070,7 @@ void ModularSynth::save() {
     fclose(f);
   }
 }
-
+//==================================================================== End persistence
 void ModularSynth::allVoicesOff() {
 
   int l1, l2;
@@ -2072,7 +2091,7 @@ void ModularSynth::cleanUpSynth()
   fprintf(stderr, "Closing synth...\n");
   delete this;
 }
-
+// ######################################################## start color config
 void ModularSynth::colorBackgroundClicked() {
 
   QColor tmp;

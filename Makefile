@@ -1,13 +1,13 @@
 QT_BASE_DIR=/usr/lib/qt3
 QT_LIB_DIR=$(QT_BASE_DIR)/lib
-QT_BIN_DIR=$(QT_BASE_DIR)/bin
-QT_INCLUDE_DIR=$(QT_BASE_DIR)/include
+QT_BIN_DIR=/usr/share/qt3/bin
+QT_INCLUDE_DIR=/usr/include/qt3
 X11_LIB_DIR=/usr/X11R6/lib
 LADSPA_PATH?=/usr/lib/ladspa:/usr/local/lib/ladspa
-VERSION=1.8.6
+VERSION=1.8.8
 
 #CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -DLADSPA_PATH=\"$(LADSPA_PATH)\" -I/usr/X11R6/include -I. -O2 -g -Wall
-CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -DLADSPA_PATH=\"$(LADSPA_PATH)\" -I/usr/X11R6/include -I. -O2 -Wall
+CXXFLAGS=-DQT_THREAD_SUPPORT -I$(QT_INCLUDE_DIR) -DLADSPA_PATH=\"$(LADSPA_PATH)\" -I/usr/X11R6/include -I. -O3 -march=k8 -mtune=k8 -m64 -Wall
 
 AMS_O = synthdata.o module.o module.moc.o \
 	configdialog.o configdialog.moc.o \
@@ -37,11 +37,13 @@ AMS_O = synthdata.o module.o module.moc.o \
 	m_vcorgan.o m_vcorgan.moc.o \
 	m_dynamicwaves.o m_dynamicwaves.moc.o \
 	m_vco.o m_vco.moc.o \
+	m_vco2.o m_vco2.moc.o \
 	m_vca.o m_vca.moc.o \
 	m_vcf.o m_vcf.moc.o \
 	m_lfo.o m_lfo.moc.o \
 	m_mphlfo.o m_mphlfo.moc.o \
         m_noise.o m_noise.moc.o \
+        m_noise2.o m_noise2.moc.o \
 	m_delay.o m_delay.moc.o \
 	m_seq.o m_seq.moc.o \
 	m_mcv.o m_mcv.moc.o \
@@ -92,14 +94,14 @@ tarball:	clean
 synthdata.o: synthdata.cpp synthdata.h module.h port.h m_env.h m_advenv.h m_vcenv2.h main.h
 modularsynth.o: modularsynth.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
-	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
+	m_vco.h m_vco2.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_mphlfo.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
 	m_scmcv.h m_scquantizer.h m_function.h m_vcenv2.h m_vcpanning.h m_vcdoubledecay.h main.h
 modularsynth.moc.o: modularsynth.moc.cpp modularsynth.h module.h port.h textedit.h \
 	synthdata.h midicontroller.h midicontrollerlist.h midiwidget.h guiwidget.h prefwidget.h m_vcf.h m_sh.h \
-	m_vco.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
+	m_vco.h m_vco2.h m_vca.h m_lfo.h m_delay.h m_ringmod.h m_inv.h m_mix.h m_amp.h m_ad.h \
 	m_stereomix.h m_ladspa.h m_wavout.h m_conv.h m_vquant.h m_mphlfo.h \
 	m_mcv.h m_advmcv.h m_seq.h m_env.h m_slew.h m_quantizer.h ladspadialog.h m_cvs.h m_midiout.h m_vcenv.h \
 	m_vcorgan.h m_dynamicwaves.h m_advenv.h m_scope.h m_spectrum.h m_vcswitch.h m_pcmout.h m_pcmin.h \
@@ -221,6 +223,12 @@ m_vco.o: m_vco.cpp m_vco.h synthdata.h module.h port.h
 m_vco.moc.o: m_vco.moc.cpp m_vco.h synthdata.h module.h port.h
 m_vco.moc.cpp: m_vco.h m_vco.cpp
 	$(QT_BIN_DIR)/moc m_vco.h -o m_vco.moc.cpp
+
+m_vco.o: m_vco2.cpp m_vco2.h synthdata.h module.h port.h
+m_vco.moc.o: m_vco2.moc.cpp m_vco2.h synthdata.h module.h port.h
+m_vco.moc.cpp: m_vco2.h m_vco2.cpp
+	$(QT_BIN_DIR)/moc m_vco2.h -o m_vco2.moc.cpp
+
 m_vca.o: m_vca.cpp m_vca.h synthdata.h module.h port.h
 m_vca.moc.o: m_vca.moc.cpp m_vca.h synthdata.h module.h port.h
 m_vca.moc.cpp: m_vca.h m_vca.cpp
@@ -241,6 +249,10 @@ m_noise.o: m_noise.cpp m_noise.h synthdata.h module.h port.h
 m_noise.moc.o: m_noise.moc.cpp m_noise.h synthdata.h module.h port.h
 m_noise.moc.cpp: m_noise.h m_noise.cpp
 	$(QT_BIN_DIR)/moc m_noise.h -o m_noise.moc.cpp
+m_noise2.o: m_noise2.cpp m_noise2.h synthdata.h module.h port.h
+m_noise2.moc.o: m_noise2.moc.cpp m_noise2.h synthdata.h module.h port.h
+m_noise2.moc.cpp: m_noise2.h m_noise2.cpp
+	$(QT_BIN_DIR)/moc m_noise2.h -o m_noise2.moc.cpp
 m_delay.o: m_delay.cpp m_delay.h synthdata.h module.h port.h
 m_delay.moc.o: m_delay.moc.cpp m_delay.h synthdata.h module.h port.h
 m_delay.moc.cpp: m_delay.h m_delay.cpp

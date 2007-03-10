@@ -19,7 +19,7 @@
 
 SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
 {
-  int l1, l2;
+  unsigned int l1, l2;
   double dphi, phi, dy, dyd;
   int decaytime;
 
@@ -28,7 +28,7 @@ SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
     ladspa_dsc_func_list[l1] = 0;
     ladspa_lib_name[l1] = "***";    
   }
-  for (l1 = 0; l1 < MAXPOLY; l1++) {
+  for (l1 = 0; l1 < MAXPOLY; ++l1) {
     notes[l1] = 0;
     velocity[l1] = 0;
     noteCounter[l1] = 1000000;

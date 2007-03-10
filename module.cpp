@@ -40,9 +40,9 @@ Module::Module(int p_outPortCount, QWidget* parent, const char *name, SynthData 
   configDialog = new ConfigDialog((QObject *)this, NULL, name, p_synthdata);
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
   data = (float ***)malloc(outPortCount * sizeof(float **));
-  for (l1 = 0; l1 < outPortCount; l1++) {
+  for (l1 = 0; l1 < outPortCount; ++l1) {
     data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
-    for (l2 = 0; l2 < synthdata->poly; l2++) {                           // TODO Caution, if poly is changed
+    for (l2 = 0; l2 < synthdata->poly; ++l2) {                           // TODO Caution, if poly is changed
       data[l1][l2] = (float *)malloc(synthdata->periodsize * sizeof(float));
       memset(data[l1][l2], 0, synthdata->periodsize * sizeof(float));
     }
@@ -53,8 +53,8 @@ Module::~Module() {
 
   int l1, l2;
   
-  for (l1 = 0; l1 < portList.count(); l1++) {
-    for (l2 = 0; l2 < portList.at(l1)->connectedPortList.count(); l2++) {
+  for (l1 = 0; l1 < portList.count(); ++l1) {
+    for (l2 = 0; l2 < portList.at(l1)->connectedPortList.count(); ++l2) {
       portList.at(l1)->connectedPortList.at(l2)->connectedPortList.removeRef(portList.at(l1)); 
       portList.at(l1)->connectedPortList.clear();
     }
@@ -62,8 +62,8 @@ Module::~Module() {
   delete(configDialog);  
   synthdata->moduleList.removeRef(this);
   synthdata->decModuleCount();
-  for (l1 = 0; l1 < outPortCount; l1++) {
-    for (l2 = 0; l2 < synthdata->poly; l2++) {
+  for (l1 = 0; l1 < outPortCount; ++l1) {
+    for (l2 = 0; l2 < synthdata->poly; ++l2) {
       free(data[l1][l2]);
     }
     free(data[l1]);
@@ -77,7 +77,7 @@ void Module::paintEvent(QPaintEvent *ev)
   QString  qs;
 
   p.setPen(colorBorder);
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; ++i)
   { 
       p.setPen(colorBorder.light(100 + 15 * i));
       p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
@@ -166,7 +166,7 @@ int Module::saveConnections(FILE *f) {
   Port *port[2];
   int l1;
 
-  for (l1 = 0; l1 < portList.count(); l1++) {
+  for (l1 = 0; l1 < portList.count(); ++l1) {
     port[0] = portList.at(l1);
     if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
       port[1] = port[0]->connectedPortList.at(0);
@@ -183,7 +183,7 @@ int Module::saveParameters(FILE *f) {
 
   int l1, l2, l3;
 
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
     fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,   
                 configDialog->midiSliderList.at(l1)->slider->value(),
                 configDialog->midiSliderList.at(l1)->isLog,
@@ -191,27 +191,27 @@ int Module::saveParameters(FILE *f) {
                 configDialog->midiSliderList.at(l1)->slider->maxValue(),
                 configDialog->midiSliderList.at(l1)->midiSign);
   }  
-  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
     fprintf(f, "ISlider %d %d %d %d\n", moduleID, l1, 
                 configDialog->intMidiSliderList.at(l1)->slider->value(),
                 configDialog->intMidiSliderList.at(l1)->midiSign);
   }  
-  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
     fprintf(f, "LSlider %d %d %d %d\n", moduleID, l1, 
                 configDialog->floatIntMidiSliderList.at(l1)->slider->value(),
                 configDialog->floatIntMidiSliderList.at(l1)->midiSign);
   }  
-  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
     fprintf(f, "ComboBox %d %d %d %d\n", moduleID, l1, 
                 configDialog->midiComboBoxList.at(l1)->comboBox->currentItem(),
                 configDialog->midiComboBoxList.at(l1)->midiSign);
   }  
-  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
     fprintf(f, "CheckBox %d %d %d %d\n", moduleID, l1, 
                 (int)(configDialog->midiCheckBoxList.at(l1)->checkBox->isChecked()),
                 configDialog->midiCheckBoxList.at(l1)->midiSign);
   }
-  for (l1 = 0; l1 < configDialog->functionList.count(); l1++) {
+  for (l1 = 0; l1 < configDialog->functionList.count(); ++l1) {
     fprintf(f, "Function %d %d %d %d\n", moduleID, l1, 
                 configDialog->functionList.at(l1)->functionCount,
                 configDialog->functionList.at(l1)->pointCount);
@@ -230,40 +230,40 @@ int Module::saveBindings(FILE *f) {
 
   int l1, l2;
 
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
-     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->midiControllerList.count(); l2++) {
+  for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
+     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->midiControllerList.count(); ++l2) {
        fprintf(f, "FSMIDI %d %d %d %d %d\n", moduleID, l1,
                   configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->type,
                   configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
                   configDialog->midiSliderList.at(l1)->midiControllerList.at(l2)->param);
      }
   }  
-  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); l1++) {
-    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->midiControllerList.count(); l2++) {
+  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
+    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->midiControllerList.count(); ++l2) {
       fprintf(f, "ISMIDI %d %d %d %d %d\n", moduleID, l1,
                   configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->type,
                   configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
                   configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2)->param);
     }
   }  
-  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); l1++) {
-    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.count(); l2++) {
+  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
+    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.count(); ++l2) {
       fprintf(f, "LSMIDI %d %d %d %d %d\n", moduleID, l1,
                   configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->type,
                   configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->ch,  
                   configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2)->param);
     }
   }  
-  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); l1++) {
-    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->midiControllerList.count(); l2++) {
+  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
+    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->midiControllerList.count(); ++l2) {
       fprintf(f, "CMIDI %d %d %d %d %d\n", moduleID, l1,
                   configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->type,
                   configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->ch,    
                   configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2)->param);
     }
   }  
-  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); l1++) {
-    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->midiControllerList.count(); l2++) {
+  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
+    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->midiControllerList.count(); ++l2) {
       fprintf(f, "TMIDI %d %d %d %d %d\n", moduleID, l1,
                   configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->type,
                   configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2)->ch,    
