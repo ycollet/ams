@@ -224,9 +224,9 @@ m_vco.moc.o: m_vco.moc.cpp m_vco.h synthdata.h module.h port.h
 m_vco.moc.cpp: m_vco.h m_vco.cpp
 	$(QT_BIN_DIR)/moc m_vco.h -o m_vco.moc.cpp
 
-m_vco.o: m_vco2.cpp m_vco2.h synthdata.h module.h port.h
-m_vco.moc.o: m_vco2.moc.cpp m_vco2.h synthdata.h module.h port.h
-m_vco.moc.cpp: m_vco2.h m_vco2.cpp
+m_vco2.o: m_vco2.cpp m_vco2.h synthdata.h module.h port.h
+m_vco2.moc.o: m_vco2.moc.cpp m_vco2.h synthdata.h module.h port.h
+m_vco2.moc.cpp: m_vco2.h m_vco2.cpp
 	$(QT_BIN_DIR)/moc m_vco2.h -o m_vco2.moc.cpp
 
 m_vca.o: m_vca.cpp m_vca.h synthdata.h module.h port.h
