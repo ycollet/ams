@@ -152,7 +152,7 @@ void M_vco2::generateCycle() {
             if (dphi > wave_period_2) dphi = wave_period_2;
             phi1 = phi[l1] + phi_const;
             if (phi1 < 0.0f) phi1 += wave_period;
-            else if (phi1 > wave_period) phi1 -= wave_period;
+            else if (phi1 >= wave_period) phi1 -= wave_period;
             phint=(int)phi1;
 
             switch (waveForm) {
@@ -238,7 +238,7 @@ void M_vco2::generateCycle() {
 	    } // end of case
             phi[l1] += dphi;
             while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
+            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
           }
         }
       } else {
@@ -330,7 +330,7 @@ void M_vco2::generateCycle() {
 	}// end of case
             phi[l1] += dphi;
             while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
+            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
           }
         }
       }

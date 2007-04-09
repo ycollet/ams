@@ -177,7 +177,7 @@ void M_vcorgan::generateCycle() {
             }
             phi[l1][l3] += dphi;
             while (phi[l1][l3] < 0) phi[l1][l3] += wave_period;
-            while (phi[l1][l3] > wave_period) phi[l1][l3] -= wave_period;
+            while (phi[l1][l3] >= wave_period) phi[l1][l3] -= wave_period;
           }
         } else {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
@@ -191,7 +191,7 @@ void M_vcorgan::generateCycle() {
             }
             phi1 = phi[l1][l3] + phi_const[l3];
             if (phi1 < 0) phi1 += wave_period;
-            else if (phi1 > wave_period) phi1 -= wave_period;
+            else if (phi1 >= wave_period) phi1 -= wave_period;
             switch (waveForm[l3]) {
               case ORGAN_SINE: 
                 data[0][l1][l2] += current_gain * synthdata->wave_sine[(int)phi1];
@@ -211,7 +211,7 @@ void M_vcorgan::generateCycle() {
             }
             phi[l1][l3] += dphi;
             while (phi[l1][l3] < 0) phi[l1][l3] += wave_period;
-            while (phi[l1][l3] > wave_period) phi[l1][l3] -= wave_period;
+            while (phi[l1][l3] >= wave_period) phi[l1][l3] -= wave_period;
           }
         }
       }

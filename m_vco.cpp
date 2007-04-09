@@ -145,7 +145,7 @@ void M_vco::generateCycle() {
             if (dphi > wave_period_2) dphi = wave_period_2;
             phi1 = phi[l1] + phi_const;
             if (phi1 < 0.0f) phi1 += wave_period;
-            else if (phi1 > wave_period) phi1 -= wave_period;
+            else if (phi1 >= wave_period) phi1 -= wave_period;
             phint=(int)phi1;
 	    data[0][l1][l2] = synthdata->wave_sine[phint];
             data[1][l1][l2] = synthdata->wave_tri[phint];
@@ -196,7 +196,7 @@ void M_vco::generateCycle() {
             }
             phi[l1] += dphi;
             while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
+            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
           }
         }
       } else {
@@ -254,7 +254,7 @@ void M_vco::generateCycle() {
             }
             phi[l1] += dphi;
             while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] > wave_period) phi[l1] -= wave_period;
+            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
           }
         }
       }
