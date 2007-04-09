@@ -127,13 +127,13 @@ void M_vcenv2::generateCycle() {
         switch (state[l1]) {
           case 0: e[l1] = 0;
                   break;
-          case 1: e[l1] += ((tmp = synthdata->exp_table(M_LN2 * (a0 + aGain * attackData[l1][l2]))) > 0.001) ? tsr / tmp : tsr / 0.001;
+          case 1: e[l1] += ((tmp = synthdata->exp_table_ln2(a0 + aGain * attackData[l1][l2])) > 0.001) ? tsr / tmp : tsr / 0.001;
                   if (e[l1] >= 1.0) {
                     state[l1] = 2;
                     e[l1] = 1.0;
                   }
                   break;
-          case 2: n = tsn * (synthdata->exp_table(M_LN2 * (d0 + dGain * decayData[l1][l2])));
+          case 2: n = tsn * synthdata->exp_table_ln2(d0 + dGain * decayData[l1][l2]);
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);            
@@ -144,7 +144,7 @@ void M_vcenv2::generateCycle() {
                   }
           case 3: e[l1] = s0 + sGain * sustainData[l1][l2];
                   break;
-          case 4: n = tsn * (synthdata->exp_table(M_LN2 * (r0 + rGain * releaseData[l1][l2])));
+          case 4: n = tsn * synthdata->exp_table_ln2(r0 + rGain * releaseData[l1][l2]);
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);      

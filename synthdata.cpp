@@ -219,6 +219,17 @@ float SynthData::exp_table(float x) {
   return(exp_data[index]);
 }     
 
+float SynthData::exp_table_ln2(float x)
+{
+  int index = (int)(x * (float)(M_LN2 * 1000.0) + (float)(16.0 * 1000.0));
+  if (index >= EXP_TABLE_LEN)
+    index = EXP_TABLE_LEN - 1;
+  else
+    if (index < 0)
+      index = 0;
+  return exp_data[index];
+}
+
 void SynthData::create_zero_data (void)
 {
     zeroModuleData = (float **) malloc (poly * sizeof(float *)); 

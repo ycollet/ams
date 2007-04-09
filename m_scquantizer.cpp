@@ -98,7 +98,7 @@ void M_scquantizer::calcScale() {
 
   lastbase = base;
   base_cv = base / 12.0;
-  base_freq = synthdata->exp_table(M_LN2 * (4.0313842 + base_cv));
+  base_freq = synthdata->exp_table_ln2(4.0313842 + base_cv);
   fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);
   scale_notes[0] = base_cv;
   index = 1;
@@ -113,7 +113,7 @@ void M_scquantizer::calcScale() {
       if (index > 127) break;
     }
     base_cv = scale_notes[index - 1];
-    base_freq = synthdata->exp_table(M_LN2 * (4.0313842 + base_cv));
+    base_freq = synthdata->exp_table_ln2(4.0313842 + base_cv);
   }
 }  
 

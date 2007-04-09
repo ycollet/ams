@@ -343,7 +343,7 @@ void M_dynamicwaves::generateCycle() {
           if (oscActive[l1][l3]) {
             allEnvTerminated = false;
           }
-          dphi = freq_const[l3] * (synthdata->exp_table(M_LN2 * (freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])) 
+          dphi = freq_const[l3] * (synthdata->exp_table_ln2(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])
                                                        + gain_linfm * linFMData[l1][l2]);
           if (dphi > wave_period_2) {
             dphi = wave_period_2;

@@ -147,7 +147,7 @@ void M_vco2::generateCycle() {
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
 
-            dphi = freq_const * (synthdata->exp_table(M_LN2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) 
+            dphi = freq_const * (synthdata->exp_table_ln2(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])
                                  + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
             phi1 = phi[l1] + phi_const;
@@ -244,7 +244,7 @@ void M_vco2::generateCycle() {
       } else {
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
-            dphi = freq_const * (synthdata->exp_table(M_LN2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) + gain_linfm * linFMData[l1][l2]);
+            dphi = freq_const * (synthdata->exp_table_ln2(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2]) + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
 	    phint=(int)phi[l1];
             switch (waveForm) {

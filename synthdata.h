@@ -102,6 +102,7 @@ class SynthData : public QObject
     ~SynthData();
 
     float exp_table(float x);
+    float exp_table_ln2(float x);
     int incModuleCount();
     int decModuleCount();
     int getModuleCount();
