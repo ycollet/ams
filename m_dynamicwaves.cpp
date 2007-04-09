@@ -187,7 +187,7 @@ void M_dynamicwaves::generateCycle() {
   int l1, l2, l3, l4, status;
   float dphi, phi1; 
   float freq_const[MODULE_DYNAMICWAVES_MAX_OSC], freq_tune[MODULE_DYNAMICWAVES_MAX_OSC];
-  float gain_linfm, log2, wave_period_2, current_gain;
+  float gain_linfm, wave_period_2, current_gain;
   float gain_const[MODULE_DYNAMICWAVES_MAX_OSC], phi_const[MODULE_DYNAMICWAVES_MAX_OSC];
   float t[8][MODULE_DYNAMICWAVES_MAX_OSC], tscale;
   float de_a[4][MODULE_DYNAMICWAVES_MAX_OSC];
@@ -195,7 +195,6 @@ void M_dynamicwaves::generateCycle() {
 
   if (!cycleReady) {
     cycleProcessing = true; 
-    log2 = log(2.0);
     wave_period_2 = wave_period / 2.0;
 
     freqData = port_M_freq->getinputdata();
@@ -344,7 +343,7 @@ void M_dynamicwaves::generateCycle() {
           if (oscActive[l1][l3]) {
             allEnvTerminated = false;
           }
-          dphi = freq_const[l3] * (synthdata->exp_table(log2 * (freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])) 
+          dphi = freq_const[l3] * (synthdata->exp_table(M_LN2 * (freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])) 
                                                        + gain_linfm * linFMData[l1][l2]);
           if (dphi > wave_period_2) {
             dphi = wave_period_2;

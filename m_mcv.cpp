@@ -79,11 +79,10 @@ void M_mcv::noteOffEvent(int osc) {
 void M_mcv::generateCycle() {
 
   int l1, l2;
-  float gate, velocity, log2;
+  float gate, velocity;
 
   if (!cycleReady) {
     cycleProcessing = true;
-    log2 = log(2.0);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;

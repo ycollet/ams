@@ -115,19 +115,18 @@ void M_scmcv::noteOffEvent(int osc) {
 void M_scmcv::calcScale() {
 
   int l1, index;
-  float log2, base_cv, base_freq;
+  float base_cv, base_freq;
 
-  log2 = log(2.0);
   lastbase = base;
   base_cv = base / 12.0 - 5.0;
-  base_freq = synthdata->exp_table(log2 * (8.0313842 + base_cv));
+  base_freq = synthdata->exp_table(M_LN2 * (8.0313842 + base_cv));
   fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);  
   scale_notes[0] = base_cv;
   index = 1;
   while (index < 128) {
     for (l1 = 0; l1 < scale_lut_length; l1++) {      
       if (scale_lut_isRatio[l1]) {
-        scale_notes[index] = log(base_freq * scale_lut[l1])/log2 - 8.0313842;
+        scale_notes[index] = log(base_freq * scale_lut[l1])/M_LN2 - 8.0313842;
       } else {
         scale_notes[index] = base_cv + scale_lut[l1] / 1200.0;
       }
@@ -135,7 +134,7 @@ void M_scmcv::calcScale() {
       if (index > 127) break;
     }
     base_cv = scale_notes[index - 1];
-    base_freq = synthdata->exp_table(log2 * (8.0313842 + base_cv));
+    base_freq = synthdata->exp_table(M_LN2 * (8.0313842 + base_cv));
   }
 }
 

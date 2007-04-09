@@ -40,10 +40,9 @@ float Filter::logfilt(float logf, float cutoff, float resonance, float rising,
 
   float response;
   float sr, sf, hw, sn, rn;
-  float log2, c1, c2, c3, c4, r1, r2, r3, r4;
+  float c1, c2, c3, c4, r1, r2, r3, r4;
   float logf1, logf2, logf3, logf4, logf5, logf6, logf7;
 
-  log2 = log(2.0);
   sr = rising / 48.0;
   sf = falling / 48.0;
   sn = smoothness;
@@ -73,7 +72,7 @@ float Filter::logfilt(float logf, float cutoff, float resonance, float rising,
     r4 = 0.5;
     c4 = r4 / (sn * sn); 
   }
-  logf4 = log(cutoff) / log2;
+  logf4 = log(cutoff) / M_LN2;
   logf3 = logf4 - hw;
   logf5 = logf4 + hw;
   logf2 = logf3 + (r1 - r2) / sr;
@@ -112,7 +111,7 @@ float Filter::filt(float f, float cutoff, float resonance, float rising,
 
   float response;
 
-  response = logfilt(log(f)/log(2.0), cutoff, resonance, rising, falling, hwidth, smoothness);
+  response = logfilt(log(f)/M_LN2, cutoff, resonance, rising, falling, hwidth, smoothness);
   return((exp(log(10.0)/10.0 * response)-1.0) / (exp(log(10.0)/10.0)-1.0));
 //  return((exp(response)-1.0) / (exp(1.0)-1.0));
 }
@@ -129,7 +128,7 @@ void Filter::paintEvent(QPaintEvent *) {
   p.setWindow(0, 0, width(), height());
   p.setPen(QColor(220, 100, 0));
   p.drawRect(0, 0, width(), height());
-  xscale = (float)width() * log(2.0) / log((float)synthdata->rate * 0.5);
+  xscale = (float)width() * M_LN2 / log((float)synthdata->rate * 0.5);
   yscale = (float)(height()-1);
   for (l1 = 0; l1 < width()-1; ++l1) {
     x1 = (float)l1 / xscale;

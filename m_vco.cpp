@@ -30,7 +30,6 @@ M_vco::M_vco(QWidget* parent, const char *name, SynthData *p_synthdata)
   wave_period = (float)WAVE_PERIOD;
   wave_period_2 = wave_period * 0.5f;
   wave_period_3 = wave_period / 3.0;
-  log2 = log(2.0);
   Pi2Times= (2.0f * M_PI);
   PKonst = wave_period / Pi2Times;
 
@@ -141,7 +140,7 @@ void M_vco::generateCycle() {
       if (phi0 > 0.0f) {
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
-            dphi = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) 
+            dphi = freq_const * (synthdata->exp_table(M_LN2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) 
                                  + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
             phi1 = phi[l1] + phi_const;
@@ -203,7 +202,7 @@ void M_vco::generateCycle() {
       } else {
         for (l1 = 0; l1 < synthdata->poly; ++l1) {
           for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
-            dphi = freq_const * (synthdata->exp_table(log2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) + gain_linfm * linFMData[l1][l2]);
+            dphi = freq_const * (synthdata->exp_table(M_LN2 * (freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])) + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) dphi = wave_period_2;
 	    phint=(int)phi[l1];
             data[0][l1][l2] = synthdata->wave_sine[phint];

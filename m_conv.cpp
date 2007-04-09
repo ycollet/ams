@@ -52,31 +52,30 @@ M_conv::~M_conv() {
 void M_conv::generateCycle() {
 
   int l1, l2;
-  float log2, offset;
+  float offset;
 
   if (!cycleReady) {
     cycleProcessing = true;
 
     inData = port_M_in->getinputdata();
 
-    log2 = log(2.0);
     offset = octave + 5.0313842;
     if (convMode == 0) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = exp(log2 * (offset + inData[l1][l2]));
+          data[0][l1][l2] = exp(M_LN2 * (offset + inData[l1][l2]));
         }
       }
     } else if (convMode == 1) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = 2.0 * exp(log2 * (offset + inData[l1][l2])) / synthdata->rate;
+          data[0][l1][l2] = 2.0 * exp(M_LN2 * (offset + inData[l1][l2])) / synthdata->rate;
         }
       }
     } else if (convMode == 2) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = exp(log2 * (offset + inData[l1][l2])) / 20000.0;
+          data[0][l1][l2] = exp(M_LN2 * (offset + inData[l1][l2])) / 20000.0;
         }
       }
     } 

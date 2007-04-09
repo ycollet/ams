@@ -216,7 +216,7 @@ void M_spectrum::timerProc()
 
 void M_spectrum::updateFFTFrames(int val)
 {
-  configDialog->spectrumScreenList.at(0)->setFFTFrames((int)rint(exp(log(2.0) * (7.0 + (float)fftFrames))));
+  configDialog->spectrumScreenList.at(0)->setFFTFrames((int)rint(exp(M_LN2 * (7.0 + (float)fftFrames))));
 }
 
 void M_spectrum::updateViewMode(int val)

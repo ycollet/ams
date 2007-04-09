@@ -37,7 +37,6 @@ class M_vcf : public Module
     float vcfExpFMGain, vcfLinFMGain, resonanceGain;
     float freq_const;
     float fInvertRandMax ;
-    float log2;
     float pi2_rate,inv2_rate;
     float freq_tune, gain_linfm, qr, moog_f, revMoog, moog2times;
     double b_noise;

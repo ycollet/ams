@@ -101,7 +101,7 @@ M_vcdoubledecay::~M_vcdoubledecay() {
 void M_vcdoubledecay::generateCycle() {
 
   int l1, l2, k, len, l2_out;
-  double ts, tsr, tsn, tmp, c1, c2, n1, n, c, log2, astep, de, de2, ds;
+  double ts, tsr, tsn, tmp, c1, c2, n1, n, c, astep, de, de2, ds;
 
   if (!cycleReady) {
     cycleProcessing = true;
@@ -117,7 +117,6 @@ void M_vcdoubledecay::generateCycle() {
     ts = 1.0;
     tsr = 16.0 * ts / (double)synthdata->rate;
     tsn = ts * (double)synthdata->rate / 16.0;
-    log2 = log(2.0);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
 //      fprintf(stderr, "gate:%d retrigger:%d noteActive:%d state: %d\n", gate[l1], retrigger[l1], noteActive[l1], state[l1]);
       len = synthdata->cyclesize;
@@ -150,7 +149,7 @@ void M_vcdoubledecay::generateCycle() {
           case 0: e[l1] = 0;
                   e2[l1] = 0;
                   break;
-          case 1: astep = ((tmp = synthdata->exp_table(log2 * (a0 + aGain * attackData[l1][l2]))) > 0.001) ? tsr / tmp : tsr / 0.001;
+          case 1: astep = ((tmp = synthdata->exp_table(M_LN2 * (a0 + aGain * attackData[l1][l2]))) > 0.001) ? tsr / tmp : tsr / 0.001;
                   e[l1] += astep;
                   e2[l1] += astep;
                   if (e[l1] >= 1.0) {
@@ -161,7 +160,7 @@ void M_vcdoubledecay::generateCycle() {
                     e2[l1] = 1.0;
                   }
                   break;
-          case 2: n1 = tsn * (synthdata->exp_table(log2 * (d0 + dGain * decayData[l1][l2])));
+          case 2: n1 = tsn * (synthdata->exp_table(M_LN2 * (d0 + dGain * decayData[l1][l2])));
                   if (n1 < 1) n1 = 1;
                   c1 = 2.3 / n1; 
                   c2 = c1 * (r0 + rGain * ratioData[l1][l2]);
@@ -171,7 +170,7 @@ void M_vcdoubledecay::generateCycle() {
                   e2[l1] *= exp(-c2);           
                   if (e2[l1] <= 1e-20) e2[l1] = 0;
                   break;
-          case 3: n = tsn * (synthdata->exp_table(log2 * (rl0 + rlGain * releaseData[l1][l2])));
+          case 3: n = tsn * (synthdata->exp_table(M_LN2 * (rl0 + rlGain * releaseData[l1][l2])));
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);  
