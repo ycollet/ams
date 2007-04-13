@@ -54,7 +54,8 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name, SynthData *p_synth
   configDialog->setCaption(qs);
   configDialog->initTabWidget();
   QVBox *generalTab = new QVBox(configDialog->tabWidget);
-  for (l1 = 0; l1 < seqLen / 8; l1++) {
+  int seqLen_8 = (seqLen + 7) / 8;
+  for (l1 = 0; l1 < seqLen_8; l1++) {
     pitchTab[l1] = new QVBox(configDialog->tabWidget);
     gateTab[l1] = new QVBox(configDialog->tabWidget);
     velocityTab[l1] = new QVBox(configDialog->tabWidget);
@@ -95,15 +96,15 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name, SynthData *p_synth
     configDialog->addIntSlider(0, 127, velocity[l1], str, &velocity[l1], velocityTab[l1 / 8]);
   } 
   configDialog->addTab(generalTab, "Pitch Offset / Tempo / Gate Time");
-  for (l1 = 0; l1 < seqLen / 8; l1++) {
+  for (l1 = 0; l1 < seqLen_8; l1++) {
     qs.sprintf("Pitch %d", l1);
     configDialog->addTab(pitchTab[l1], qs);
   }
-  for (l1 = 0; l1 < seqLen / 8; l1++) {
+  for (l1 = 0; l1 < seqLen_8; l1++) {
     qs.sprintf("Gate %d", l1);
     configDialog->addTab(gateTab[l1], qs);
   }
-  for (l1 = 0; l1 < seqLen / 8; l1++) {
+  for (l1 = 0; l1 < seqLen_8; l1++) {
     qs.sprintf("Velocity %d", l1);
     configDialog->addTab(velocityTab[l1], qs);
   }
