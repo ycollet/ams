@@ -1,9 +1,14 @@
+Type
 
-  On a SuSE system just type
+$ qmake
 
-  make 
+to let qmake generate a Makefile out of "ams.pro".
+Then type
 
-  On a non-SuSE system you will have to modify the makefiles 
-  and adjust the library paths. Sorry, I did not implement 
-  autoconf / automake yet.
+$ make
+
+to build ams.
+
+There is no scons-support nor autoconf / automake nor
+install routine yet.
 
