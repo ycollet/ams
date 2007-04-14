@@ -1,3 +1,35 @@
+#ifndef OUTDATED_CODE
+
+#include "m_spectrum.h"
+
+
+M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata) 
+              : Module(0, parent, name, p_synthdata)
+{
+  QString qs;
+ 
+  M_type = M_type_spectrum;
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
+
+  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0]->move(0, 35);
+  port_in[0]->outTypeAcceptList.append(outType_audio);
+  portList.append(port_in[0]);
+  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1]->move(0, 55);
+  port_in[1]->outTypeAcceptList.append(outType_audio);
+  portList.append(port_in[1]);
+  qs.sprintf("Spectrum ID %d", moduleID);
+  configDialog->setCaption(qs);
+  configDialog->addLabel(
+	"This modules source-code is outdated.\n"
+	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
+	" ports to i.e. JAAA, JAPA, CLAM ... to obtain spectral informations.\n"
+	"See http://apps.linuxaudio.org");
+}
+
+#else  // OUTDATED_CODE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -292,3 +324,5 @@ void M_spectrum::startSpectrum()
 {
   timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
 }
+
+#endif // OUTDATED_CODE

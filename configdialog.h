@@ -31,7 +31,6 @@
 #include "envelope.h"
 #include "multi_envelope.h"
 #include "scopescreen.h"
-#include "spectrumscreen.h"
 #include "function.h"
 /** configuration dialog for each module
  *
@@ -54,7 +53,9 @@ class ConfigDialog : public QVBox
     QList<MidiPushButton> midiPushButtonList;
     QList<Envelope> envelopeList;
     QList<ScopeScreen> scopeScreenList;
+#ifdef OUTDATED_CODE
     QList<SpectrumScreen> spectrumScreenList;
+#endif
     QList<MultiEnvelope> multiEnvelopeList;
     QList<Function> functionList;
     QList<MidiGUIcomponent> midiGUIcomponentList;
@@ -82,7 +83,9 @@ class ConfigDialog : public QVBox
     int addLabel(QString label, QWidget *parent=0);
     int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
                        float *triggerThrsRef, float *zoomRef, QWidget *parent=0);
+#ifdef OUTDATED_CODE
     int addSpectrumScreen(QWidget *parent=0);
+#endif
     int addTab(QWidget *tabPage, QString tabLabel);
     QHBox *addHBox(QWidget *parent=0);
     QVBox *addVBox(QWidget *parent=0);

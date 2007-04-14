@@ -273,6 +273,7 @@ int ConfigDialog::addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef
   return(0);
 }
 
+#ifdef OUTDATED_CODE
 int ConfigDialog::addSpectrumScreen(QWidget *parent) {
 
   SpectrumScreen *spectrumScreen;
@@ -285,6 +286,7 @@ int ConfigDialog::addSpectrumScreen(QWidget *parent) {
   spectrumScreenList.append(spectrumScreen);
   return(0);
 }
+#endif
 
 int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent) {
 
