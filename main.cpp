@@ -36,7 +36,9 @@ int main(int argc, char *argv[])
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
-		     "additional programming 2007 Malte Steiner\n\n");
+		     "additional programming:\n"
+		     "2007 Malte Steiner\n"
+		     "2007 Karsten Wiese\n");
   QApplication *qApp = new QApplication(argc, argv);
   QMainWindow *top = new QMainWindow();
   top->setCaption("AlsaModularSynth");
