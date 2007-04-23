@@ -54,10 +54,10 @@ Module::~Module() {
   int l1, l2;
   
   for (l1 = 0; l1 < portList.count(); ++l1) {
-    for (l2 = 0; l2 < portList.at(l1)->connectedPortList.count(); ++l2) {
-      portList.at(l1)->connectedPortList.at(l2)->connectedPortList.removeRef(portList.at(l1)); 
-      portList.at(l1)->connectedPortList.clear();
-    }
+    for (l2 = 0; l2 < portList.at(l1)->connectedPortList.count(); ++l2)
+      portList.at(l1)->connectedPortList.at(l2)->connectedPortList.removeRef(portList.at(l1));
+
+    portList.at(l1)->connectedPortList.clear();
   }
   delete(configDialog);  
   synthdata->moduleList.removeRef(this);
