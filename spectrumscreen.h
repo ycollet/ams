@@ -1,3 +1,5 @@
+#ifdef OUTDATED_CODE
+
 #ifndef KSPECTRUMSCREEN_H
 #define KSPECTRUMSCREEN_H
 
@@ -111,4 +113,6 @@ class SpectrumScreen : public QWidget
     void singleShot();
 };
   
+#endif
+
 #endif

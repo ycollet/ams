@@ -21,25 +21,6 @@
 #include "module.h"
 #include "port.h"
 
-
-#ifndef OUTDATED_CODE
-
-#define MODULE_SPECTRUM_WIDTH                 90
-#define MODULE_SPECTRUM_HEIGHT                80
-
-class M_spectrum : public Module
-{
-  Q_OBJECT
-
-  Port *port_in[2];
-
-public:
-  M_spectrum(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
-
-};
-
-#else  // OUTDATED_CODE
-/* Have to comment this out Qt knows why
 #define MODULE_SPECTRUM_WIDTH                 90
 #define MODULE_SPECTRUM_HEIGHT                80
 
@@ -84,7 +65,5 @@ class M_spectrum : public Module
     void freqZoomToggled(bool on);
     void startSpectrum();
 };
-*/
-#endif // OUTDATED_CODE
   
 #endif

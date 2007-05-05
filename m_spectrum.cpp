@@ -1,35 +1,3 @@
-#ifndef OUTDATED_CODE
-
-#include "m_spectrum.h"
-
-
-M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(0, parent, name, p_synthdata)
-{
-  QString qs;
- 
-  M_type = M_type_spectrum;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
-
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
-  port_in[0]->move(0, 35);
-  port_in[0]->outTypeAcceptList.append(outType_audio);
-  portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
-  port_in[1]->move(0, 55);
-  port_in[1]->outTypeAcceptList.append(outType_audio);
-  portList.append(port_in[1]);
-  qs.sprintf("Spectrum ID %d", moduleID);
-  configDialog->setCaption(qs);
-  configDialog->addLabel(
-	"This modules source-code is outdated.\n"
-	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
-	" ports to i.e. JAAA, JAPA, CLAM ... to obtain spectral informations.\n"
-	"See http://apps.linuxaudio.org");
-}
-
-#else  // OUTDATED_CODE
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -89,7 +57,15 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   fftMode = 1;
   window = 2;
   QVBox *spectrumTab = new QVBox(configDialog->tabWidget);
+#ifdef OUTDATED_CODE
   configDialog->addSpectrumScreen(spectrumTab);
+#else
+  configDialog->addLabel(
+	"This modules source-code is outdated.\n"
+	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
+	" ports to i.e. JAAA, JAPA, CLAM ... to obtain spectral informations.\n"
+	"See http://apps.linuxaudio.org", spectrumTab);
+#endif
   labelBox = configDialog->addHBox();
   minLabel = new QLabel(labelBox);
   QWidget *dummy = new QWidget(labelBox);
@@ -156,10 +132,12 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   QObject::connect(configDialog->midiComboBoxList.at(4)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateWindow(int)));
   configDialog->addPushButton("Trigger", paramTab);
+#ifdef OUTDATED_CODE
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
                    configDialog->spectrumScreenList.at(0), SLOT(singleShot()));
   QObject::connect(configDialog->spectrumScreenList.at(0),
                    SIGNAL(runSpectrum()), this, SLOT(startSpectrum()));
+#endif
   QStrList *fftFramesNames = new QStrList(true);
   fftFramesNames->append("  128");
   fftFramesNames->append("  256");
@@ -175,6 +153,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
                    this, SLOT(updateFFTFrames(int)));
   configDialog->addTab(zoomTab, "Zoom");
   configDialog->addTab(paramTab, "Mode / Window");
+#ifdef OUTDATED_CODE
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
   configDialog->spectrumScreenList.at(0)->writeofs = 0;
@@ -182,12 +161,15 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name, SynthData *p_synthdata
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
   startSpectrum();
+#endif
 }
 
 M_spectrum::~M_spectrum()
 {
   free(floatdata);
 }
+
+#ifdef OUTDATED_CODE
 
 int M_spectrum::setGain(float p_gain)
 {
@@ -199,9 +181,10 @@ float M_spectrum::getGain()
 {
   return(gain);
 }
-
+#endif
 void M_spectrum::generateCycle()
 {
+#ifdef OUTDATED_CODE
     int l1, l2, l3, ofs;
     float  mixgain, wavgain, lin_gain;
     float *spectrumdata, **indata;
@@ -231,6 +214,7 @@ void M_spectrum::generateCycle()
         if (++ofs >= SPECTRUM_BUFSIZE >> 1) ofs -= SPECTRUM_BUFSIZE >> 1;
     }
     configDialog->spectrumScreenList.at(0)->writeofs = ofs;
+#endif
 }
 
 void M_spectrum::showConfigDialog()
@@ -239,63 +223,82 @@ void M_spectrum::showConfigDialog()
 
 void M_spectrum::timerProc()
 {          
+#ifdef OUTDATED_CODE
  
   if (configDialog->spectrumScreenList.at(0)->getTriggerMode() == SPECTRUM_TRIGGERMODE_CONTINUOUS) {
     startSpectrum();
   }
   configDialog->spectrumScreenList.at(0)->refreshSpectrum();
+#endif
 }
 
 void M_spectrum::updateFFTFrames(int val)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->setFFTFrames((int)rint(exp(M_LN2 * (7.0 + (float)fftFrames))));
+#endif
 }
 
 void M_spectrum::updateViewMode(int val)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->setViewMode((viewModeType)viewMode);
+#endif
 }
 
 void M_spectrum::updateZoom(int val) {
+#ifdef OUTDATED_CODE
 
   configDialog->spectrumScreenList.at(0)->setZoom(zoom);
+#endif
 }
 
 void M_spectrum::update_f_min(int val)
 {
+#ifdef OUTDATED_CODE
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_min(f_min);
   qs.sprintf("%d Hz", (int)rint(f_min));   
   minLabel->setText(qs);
+#endif
 }
 
 void M_spectrum::update_f_max(int val)
 {
+#ifdef OUTDATED_CODE
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_max(f_max);
   qs.sprintf("%d Hz", (int)rint(f_max));
   maxLabel->setText(qs);
+#endif
 }
 
 void M_spectrum::updateNormMode(int val)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->setNormMode((normModeType)normMode);
+#endif
 }
 
 void M_spectrum::updateWindow(int val)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->setWindow((windowType)window);
+#endif
 }
 
 void M_spectrum::updateFFTMode(int val)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->setFFTMode((fftModeType)fftMode);
+#endif
 }
 
 void M_spectrum::updateRefreshMode(int val)
 {
+#ifdef OUTDATED_CODE
   if (refreshMode == 0)
   {
     configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_CONTINUOUS); 
@@ -313,16 +316,20 @@ void M_spectrum::updateRefreshMode(int val)
   {
     configDialog->spectrumScreenList.at(0)->setEnableMouse(false);
   }
+#endif // OUTDATED_CODE
 }
 
 void M_spectrum::freqZoomToggled(bool on)
 {
+#ifdef OUTDATED_CODE
   configDialog->spectrumScreenList.at(0)->toggleFreqZoom(on);
+#endif // OUTDATED_CODE
 }
 
 void M_spectrum::startSpectrum()
 {
+#ifdef OUTDATED_CODE
   timer->start(int((float)configDialog->spectrumScreenList.at(0)->getFFTFrames() / (float)synthdata->rate * 1000.0), true);
+#endif // OUTDATED_CODE
 }
 
-#endif // OUTDATED_CODE
