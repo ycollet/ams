@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,39 +19,39 @@
 #include "m_vcenv2.h"
 #include "port.h"
 
-M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_vcenv2::M_vcenv2(QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_vcenv2;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV2_WIDTH, MODULE_VCENV2_HEIGHT);
-  port_M_gate = new Port("Gate", PORT_IN, 0, this, synthdata); 
+  port_M_gate = new Port("Gate", PORT_IN, 0, this); 
   port_M_gate->move(0, 35);
   port_M_gate->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_gate);
-  port_M_retrigger = new Port("Retrigger", PORT_IN, 1, this, synthdata); 
+  port_M_retrigger = new Port("Retrigger", PORT_IN, 1, this); 
   port_M_retrigger->move(0, 55);
   port_M_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_retrigger);
-  port_M_attack = new Port("Attack", PORT_IN, 2, this, synthdata); 
+  port_M_attack = new Port("Attack", PORT_IN, 2, this); 
   port_M_attack->move(0, 75);
   port_M_attack->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_attack);
-  port_M_decay = new Port("Decay", PORT_IN, 3, this, synthdata); 
+  port_M_decay = new Port("Decay", PORT_IN, 3, this); 
   port_M_decay->move(0, 95);
   port_M_decay->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_decay);
-  port_M_sustain = new Port("Sustain", PORT_IN, 4, this, synthdata); 
+  port_M_sustain = new Port("Sustain", PORT_IN, 4, this); 
   port_M_sustain->move(0, 115);
   port_M_sustain->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_sustain);
-  port_M_release = new Port("Release", PORT_IN, 5, this, synthdata); 
+  port_M_release = new Port("Release", PORT_IN, 5, this); 
   port_M_release->move(0, 135);
   port_M_release->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_release);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 155);
   port_out->outType = outType_audio;
   portList.append(port_out);
@@ -79,10 +79,12 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(-8, 8, dGain, "Decay Gain", &dGain);
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
   configDialog->addSlider(-8, 8, rGain, "Release Gain", &rGain);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
-M_vcenv2::~M_vcenv2() {
+M_vcenv2::~M_vcenv2()
+{
+  synthdata->listM_vcenv2.removeAll(this);
 }
 
 void M_vcenv2::generateCycle() {

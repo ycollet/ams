@@ -9,8 +9,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -37,7 +37,7 @@ class M_sh : public Module
     float **inData, **trigData;       
                             
   public:
-    M_sh(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_sh(QWidget* parent=0, const char *name=0);
     ~M_sh();
 
   public slots:

@@ -9,8 +9,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -29,7 +27,7 @@ class M_stereomix : public Module
   Q_OBJECT
 
   private:
-    QList<Port> in_port_list;
+    QList<Port*> in_port_list;
     Port *port_out[2];
     float gain;
     float mixer_gain[MAX_STEREOMIX_IN], pan[MAX_STEREOMIX_IN];
@@ -42,7 +40,7 @@ class M_stereomix : public Module
     int in_channels;
                             
   public:
-    M_stereomix(int p_in_channels, QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_stereomix(int p_in_channels, QWidget* parent=0, const char *name=0);
     ~M_stereomix();
 
   public slots:

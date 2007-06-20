@@ -9,8 +9,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -20,6 +20,25 @@
 #include "synthdata.h"
 #include "module.h"
 #include "port.h"
+
+
+#ifndef OUTDATED_CODE
+
+#define MODULE_SPECTRUM_WIDTH                 90
+#define MODULE_SPECTRUM_HEIGHT                80
+
+class M_spectrum : public Module
+{
+  Q_OBJECT
+
+  Port *port_in[2];
+
+public:
+  M_spectrum(QWidget* parent=0, const char *name=0);
+
+};
+
+#else  // OUTDATED_CODE
 
 #define MODULE_SPECTRUM_WIDTH                 90
 #define MODULE_SPECTRUM_HEIGHT                80
@@ -44,7 +63,7 @@ class M_spectrum : public Module
     float **inData[2];
                             
   public:
-    M_spectrum(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_spectrum(QWidget* parent=0, const char *name=0);
     ~M_spectrum();
     int setGain(float p_gain);
     float getGain();
@@ -65,5 +84,7 @@ class M_spectrum : public Module
     void freqZoomToggled(bool on);
     void startSpectrum();
 };
+
+#endif // OUTDATED_CODE
   
 #endif

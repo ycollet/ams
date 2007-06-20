@@ -1,22 +1,6 @@
 #ifndef M_VCF_H
 #define M_VCF_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
 #include "port.h"
 
@@ -43,14 +27,13 @@ class M_vcf : public Module
      double in[5][MAXPOLY], buf[5][MAXPOLY];
    
 
-    vcfTypeEnum vcfType;
+    int vcfType;
     Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp, *port_M_lin, *port_out;
   public: 
     float **inData, **resonanceData, **freqData, **linFMData, **expFMData;       
                             
   public:
-    M_vcf(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
-    ~M_vcf();
+    M_vcf(QWidget* parent=0, const char *name=0);
                                       
   public slots:
     void generateCycle();

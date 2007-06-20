@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,31 +19,31 @@
 #include "m_sh.h"
 #include "port.h"
 
-M_sh::M_sh(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_sh::M_sh(QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
 
   M_type = M_type_sh;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SH_WIDTH, MODULE_SH_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_M_trig = new Port("Trigger", PORT_IN, 1, this, synthdata); 
+  port_M_trig = new Port("Trigger", PORT_IN, 1, this); 
   port_M_trig->move(0, 55);
   port_M_trig->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trig);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 35);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  port_gate = new Port("Gate", PORT_OUT, 1, this, synthdata);          
+  port_gate = new Port("Gate", PORT_OUT, 1, this);          
   port_gate->move(width() - port_gate->width(), 55);
   port_gate->outType = outType_audio;
   portList.append(port_gate);
   qs.sprintf("Sample & Hold ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   triggerLevel = 0.5;
   configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel);
   sample = 0;

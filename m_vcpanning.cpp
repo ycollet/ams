@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,8 +19,8 @@
 #include "m_vcpanning.h"
 #include "port.h"
 
-M_vcpanning::M_vcpanning(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_vcpanning::M_vcpanning(QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
   int l1, l2;
@@ -28,17 +28,17 @@ M_vcpanning::M_vcpanning(QWidget* parent, const char *name, SynthData *p_synthda
 
   M_type = M_type_vcpanning;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCPANNING_WIDTH, MODULE_VCPANNING_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_M_pan = new Port("Pan CV", PORT_IN, 1, this, synthdata); 
+  port_M_pan = new Port("Pan CV", PORT_IN, 1, this); 
   port_M_pan->move(0, 55);
   port_M_pan->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_pan);
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);
-    port_out[l1] = new Port(qs, PORT_OUT, l1, this, synthdata);          
+    port_out[l1] = new Port(qs, PORT_OUT, l1, this);          
     port_out[l1]->move(width() - port_out[l1]->width(), 75 + 20 * l1);
     port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
@@ -73,17 +73,18 @@ M_vcpanning::M_vcpanning(QWidget* parent, const char *name, SynthData *p_synthda
   panOffset = 0.0;
   configDialog->addSlider(-1, 1, panOffset, "Pan Offset", &panOffset);
   configDialog->addSlider(0, 2, panGain, "Pan Gain", &panGain);
-  QStrList *panModeNames = new QStrList(true);
-  panModeNames->append("VC control");
-  panModeNames->append("Fixed alternating panorama, full width");
-  panModeNames->append("Fixed alternating panorama, half width");
-  panModeNames->append("Fixed alternating panorama, quarter width");
-  panModeNames->append("Sort by pitch, Low <--> High");
-  panModeNames->append("Sort by pitch, High <--> Low");
-  panModeNames->append("Mono");
-  configDialog->addComboBox(0, "Panning Mode", &panMode, panModeNames->count(), panModeNames);
+  QStringList panModeNames;
+  panModeNames <<
+    "VC control" <<
+    "Fixed alternating panorama, full width" <<
+    "Fixed alternating panorama, half width" <<
+    "Fixed alternating panorama, quarter width" <<
+    "Sort by pitch, Low <--> High" <<
+    "Sort by pitch, High <--> Low" <<
+    "Mono";
+  configDialog->addComboBox(0, "Panning Mode", &panMode, panModeNames.count(), &panModeNames);
   qs.sprintf("VC Panning ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_vcpanning::~M_vcpanning() {

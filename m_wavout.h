@@ -9,13 +9,12 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
 #include <qdialog.h>
+#include <QFile>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "module.h"
@@ -29,7 +28,7 @@ class M_wavout : public Module
   Q_OBJECT
 
   private:
-    FILE *wavfile;
+    QFile wavfile;
     long wavDataSize;
     float gain;
     float mixer_gain[2]; 
@@ -38,15 +37,15 @@ class M_wavout : public Module
     QString wavname;
     QTimer *timer;
     Port *port_in[2];
-    unsigned char outbuf[8];
-    unsigned char *wavdata;
+    char outbuf[8];
+    char *wavdata;
     float *floatdata;
     
   public: 
     float **inData[2];
                             
   public:
-    M_wavout(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_wavout(QWidget* parent=0, const char *name=0);
     ~M_wavout();
     int setGain(float p_gain);
     float getGain();

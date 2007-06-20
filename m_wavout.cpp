@@ -7,26 +7,28 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
 #include <qtimer.h>
-#include <qfiledialog.h>
+#include <QFileDialog>
+
 #include "synthdata.h"
+#include "midipushbutton.h"
 #include "m_wavout.h"
 #include "module.h"
 #include "port.h"
 
 
-M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(0, parent, name, p_synthdata) {
+M_wavout::M_wavout(QWidget* parent, const char *name) 
+              : Module(0, parent, name) {
 
   QString qs;
-  QHBox *hbox1, *hbox2;
+  QHBoxLayout *hbox1, *hbox2;
 
   M_type = M_type_wavout;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_WAVOUT_WIDTH, MODULE_WAVOUT_HEIGHT);
@@ -35,21 +37,20 @@ M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata)
   mixer_gain[1] = 0.5;
   agc = 1;
   doRecord = 0;
-  wavfile = NULL;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   qs.sprintf("WAV Out ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
-  QVBox *fileTab = new QVBox(configDialog->tabWidget);
-  QVBox *recordTab = new QVBox(configDialog->tabWidget);
-  QVBox *gainTab = new QVBox(configDialog->tabWidget);
+  QVBoxLayout *fileTab = configDialog->addVBoxTab("File");
+  QVBoxLayout *recordTab = configDialog->addVBoxTab("Record");
+  QVBoxLayout *gainTab = configDialog->addVBoxTab("Gain");
   configDialog->addLineEdit("File:", fileTab);
   hbox1 = configDialog->addHBox(fileTab);
   configDialog->addLabel("Time: 0:00:00        ", recordTab);
@@ -72,15 +73,12 @@ M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 1, gain, "Gain", &gain, false, gainTab);
   configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false, gainTab);
   configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false, gainTab);
-  QStrList *agcNames = new QStrList(true);
-  agcNames->append("Disbled");
-  agcNames->append("Enabled");
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames, gainTab);
-  configDialog->addTab(fileTab, "File");
-  configDialog->addTab(recordTab, "Record");
-  configDialog->addTab(gainTab, "Gain");
+  QStringList agcNames;
+  agcNames << "Disbled" << "Enabled";
+  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames.count(), &agcNames, gainTab);
+
   wavDataSize = 0;
-  wavdata = (unsigned char *)malloc(synthdata->periodsize * 4);
+  wavdata = (char *)malloc(synthdata->periodsize * 4);
   memset(wavdata, 0, synthdata->periodsize * 4);
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
@@ -89,11 +87,10 @@ M_wavout::M_wavout(QWidget* parent, const char *name, SynthData *p_synthdata)
                    this, SLOT(timerProc()));
 }
 
-M_wavout::~M_wavout() {
+M_wavout::~M_wavout()
+{
+  synthdata->wavoutModuleList.removeAll(this);
 
-  if (wavfile) {
-    fclose(wavfile); 
-  }
   free(wavdata);
   free(floatdata);
 }
@@ -148,8 +145,8 @@ void M_wavout::generateCycle()
               wavdata[4*l1+2*l2+1] = s >> 8;
           }   
       }
-      fwrite(wavdata, 1, synthdata->cyclesize * 4, wavfile);
-       wavDataSize += synthdata->cyclesize * 4;
+      wavfile.write(wavdata, synthdata->cyclesize * 4);
+      wavDataSize += synthdata->cyclesize * 4;
   }
 }
 
@@ -166,19 +163,20 @@ void M_wavout::recordToggled(bool on) {
     outbuf[2] = (tmpint >> 16) - ((tmpint >> 24) << 8);
     outbuf[1] = (tmpint >> 8) - ((tmpint >> 16) << 8);
     outbuf[0] = (unsigned char)tmpint;
-    fseek(wavfile, 4, SEEK_SET);
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.seek(4);
+    wavfile.write(outbuf, 4);
     tmpint = wavDataSize;
     outbuf[3] = tmpint >> 24;  // ByteRate
     outbuf[2] = (tmpint >> 16) - ((tmpint >> 24) << 8);
     outbuf[1] = (tmpint >> 8) - ((tmpint >> 16) << 8);
     outbuf[0] = (unsigned char)tmpint;
-    fseek(wavfile, 40, SEEK_SET);
-    fwrite(outbuf, 1, 4, wavfile);
-    fseek(wavfile, 0, SEEK_END);
-    fflush(wavfile);
+    wavfile.seek(40);
+    wavfile.write(outbuf, 4);
+    wavfile.seek(wavfile.size());
+    wavfile.flush();
   } else {
-    timer->start(200, true);
+    timer->setSingleShot(true);
+    timer->start(200);
   }
 }
 
@@ -200,41 +198,42 @@ void M_wavout::createWav() {
   int tmpint;
 
   wavname = configDialog->lineEditList.at(0)->text();
-  if ((wavfile = fopen(wavname, "w"))) {
+  wavfile.setFileName(wavname);
+  if (wavfile.open(QIODevice::WriteOnly)) {
     wavDataSize = 0;
     outbuf[0] = 0x52; outbuf[1] = 0x49; outbuf[2] = 0x46; outbuf[3] = 0x46; // "RIFF"
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x24; outbuf[1] = 0x00; outbuf[2] = 0xff; outbuf[3] = 0x00; // ChunkSize
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x57; outbuf[1] = 0x41; outbuf[2] = 0x56; outbuf[3] = 0x45; // "WAVE"
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x66; outbuf[1] = 0x6d; outbuf[2] = 0x74; outbuf[3] = 0x20; // "fmt "
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x10; outbuf[1] = 0x00; outbuf[2] = 0x00; outbuf[3] = 0x00; // Subchunk1Size
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x01; outbuf[1] = 0x00; // AudioFormat
-    fwrite(outbuf, 1, 2, wavfile);
+    wavfile.write(outbuf, 2);
     outbuf[0] = 0x02; outbuf[1] = 0x00; // NumChannels
-    fwrite(outbuf, 1, 2, wavfile);
+    wavfile.write(outbuf, 2);
     outbuf[3] = synthdata->rate >> 24;  // SampleRate
     outbuf[2] = (synthdata->rate >> 16) - ((synthdata->rate >> 24) << 8);
     outbuf[1] = (synthdata->rate >> 8) - ((synthdata->rate >> 16) << 8);
     outbuf[0] = (unsigned char)synthdata->rate;
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     tmpint = synthdata->rate * 2 * 2;
     outbuf[3] = tmpint >> 24;  // ByteRate
     outbuf[2] = (tmpint >> 16) - ((tmpint >> 24) << 8);
     outbuf[1] = (tmpint >> 8) - ((tmpint >> 16) << 8);
     outbuf[0] = (unsigned char)tmpint;
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x04; outbuf[1] = 0x00; // BlockAlign
-    fwrite(outbuf, 1, 2, wavfile);
+    wavfile.write(outbuf, 2);
     outbuf[0] = 0x10; outbuf[1] = 0x00; // BitsPerSample
-    fwrite(outbuf, 1, 2, wavfile);
+    wavfile.write(outbuf, 2);
     outbuf[0] = 0x64; outbuf[1] = 0x61; outbuf[2] = 0x74; outbuf[3] = 0x61; // "data"
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     outbuf[0] = 0x00; outbuf[1] = 0x00; outbuf[2] = 0xff; outbuf[3] = 0x00; // Subchunk2Size
-    fwrite(outbuf, 1, 4, wavfile);
+    wavfile.write(outbuf, 4);
     configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(true);
     configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(true);
     configDialog->labelList.at(0)->setText("Time: 0:00:00        ");
@@ -249,7 +248,8 @@ void M_wavout::openBrowser() {
   char buf[2048];
 
   getcwd(buf, 2048);
-  if ((wavname = QString(QFileDialog::getSaveFileName(QString(buf), "WAV files (*.wav)")))) {
+  wavname = QFileDialog::getSaveFileName(this, tr("Choose Wave File"), buf, tr("WAV files (*.wav)"));
+  if (!wavname.isEmpty()) {
     configDialog->lineEditList.at(0)->setText(wavname);    
     createWav();
   }
@@ -261,7 +261,8 @@ void M_wavout::timerProc() {
   int seconds, minutes, displaySeconds;
 
   if (doRecord) {
-    timer->start(200, true);
+    timer->setSingleShot(true);
+    timer->start(200);
     seconds = (wavDataSize >> 2) / synthdata->rate;
     minutes = (seconds % 3600) / 60;
     displaySeconds = seconds % 60;

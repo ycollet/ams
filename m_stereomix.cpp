@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -16,14 +16,15 @@
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midicheckbox.h"
 #include "m_stereomix.h"
 #include "port.h"
 
-M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
-  QHBox *hbox;
+  QHBoxLayout *hbox;
   int l1;
 
   M_type = M_type_stereomix;
@@ -36,7 +37,7 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name, S
   solo_index = -1;
   for (l1 = 0; l1 < in_channels; l1++) {
     qs.sprintf("In %d", l1);
-    Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this, synthdata);
+    Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
     audio_in_port->move(0, 40 + 20 * in_port_list.count());
     audio_in_port->outTypeAcceptList.append(outType_audio);
     in_port_list.append(audio_in_port);
@@ -61,14 +62,14 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name, S
   }
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);
-    port_out[l1] = new Port(qs, PORT_OUT, l1, this, synthdata);
+    port_out[l1] = new Port(qs, PORT_OUT, l1, this);
     port_out[l1]->move(MODULE_STEREOMIX_WIDTH - port_out[l1]->width(),
                        35 + 20 * (in_channels + l1));
     port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
   }
   qs.sprintf("Stereo Mixer %d ID %d", in_channels, moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_stereomix::~M_stereomix() {

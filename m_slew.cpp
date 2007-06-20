@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,19 +19,19 @@
 #include "m_slew.h"
 #include "port.h"
 
-M_slew::M_slew(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_slew::M_slew(QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_slew;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SLEW_WIDTH, MODULE_SLEW_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 55);
   port_out->outType = outType_audio;
   portList.append(port_out);
@@ -40,7 +40,7 @@ M_slew::M_slew(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 10, timeUp, "Time Up", &timeUp);
   configDialog->addSlider(0, 10, timeDown, "Time Down", &timeDown);
   qs.sprintf("Slew Limiter ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     lastData[l1] = 0;
   }

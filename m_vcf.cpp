@@ -1,26 +1,19 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
 #include <qstring.h>
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
-#include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midicombobox.h"
 #include "m_vcf.h"
-#include "port.h"
 
-M_vcf::M_vcf(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_vcf::M_vcf(QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
 
@@ -37,42 +30,42 @@ b_noise = 19.1919191919191919191919191919191919191919;
   pi2_rate = 2.0f * M_PI / synthdata->rate; // how often changes the rate? I guess once on init, or?
   inv2_rate = 2.0 / (double)synthdata->rate;// this double seems unnecessary
   
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_M_freq = new Port("Freq", PORT_IN, 1, this, synthdata); 
+  port_M_freq = new Port("Freq", PORT_IN, 1, this); 
   port_M_freq->move(0, 55);
   port_M_freq->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_freq);
-  port_M_exp = new Port("Exp. FM", PORT_IN, 2, this, synthdata);
+  port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_exp->move(0, 75);    
   port_M_exp->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_exp);
-  port_M_lin = new Port("Lin. FM", PORT_IN, 3, this, synthdata);
+  port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_lin->move(0, 95);
   port_M_lin->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_lin);
-  port_M_resonance = new Port("Resonance", PORT_IN, 4, this, synthdata); 
+  port_M_resonance = new Port("Resonance", PORT_IN, 4, this); 
   port_M_resonance->move(0, 115);
   port_M_resonance->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_resonance);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 130);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("VCF ID %d", moduleID);
-  configDialog->setCaption(qs);
-  QStrList *vcfTypeNames = new QStrList(true);
-  vcfTypeNames->append("Resonant Lowpass");
-  vcfTypeNames->append("Lowpass");
-  vcfTypeNames->append("Highpass");
-  vcfTypeNames->append("Bandpass I");
-  vcfTypeNames->append("Bandpass II");
-  vcfTypeNames->append("Notch");
-  vcfTypeNames->append("24 dB Lowpass I");
-  vcfTypeNames->append("24 dB Lowpass II");
-  configDialog->addComboBox(6, "VCF Type", (int *)&vcfType, vcfTypeNames->count(), vcfTypeNames);
+  configDialog->setWindowTitle(qs);
+  QStringList vcfTypeNames;
+  vcfTypeNames << "Resonant Lowpass";
+  vcfTypeNames << "Lowpass";
+  vcfTypeNames << "Highpass";
+  vcfTypeNames << "Bandpass I";
+  vcfTypeNames << "Bandpass II";
+  vcfTypeNames << "Notch";
+  vcfTypeNames << "24 dB Lowpass I";
+  vcfTypeNames << "24 dB Lowpass II";
+  configDialog->addComboBox(6, "VCF Type", &vcfType, vcfTypeNames.count(), &vcfTypeNames);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)), this, SLOT(initBuf(int)));
   configDialog->addSlider(0, 10, gain, "Input Gain", &gain);
   configDialog->addSlider(0, 10, freq, "Frequency", &freq);
@@ -82,10 +75,7 @@ b_noise = 19.1919191919191919191919191919191919191919;
   configDialog->addSlider(0, 1, resonanceGain, "Resonance Gain", &resonanceGain);
 }
 
-M_vcf::~M_vcf() {
-}
-
-void M_vcf::initBuf(int index) {
+void M_vcf::initBuf(int) {
 
   int l1, l2;
 
@@ -132,7 +122,7 @@ void M_vcf::generateCycle() {
             fb = q * (1.0 + (1.0 / fa));
 		// generate dither (?) noise	
 		b_noise = b_noise * b_noise;
-		i_noise = b_noise;
+		i_noise = (int)b_noise;
 		b_noise = b_noise - i_noise;
 		b_noiseout = b_noise - 1.5;// was 0.5
 		b_noise = b_noise + 19.0;
@@ -348,7 +338,7 @@ void M_vcf::generateCycle() {
             fb = 4.1 * q * (1.0 - 0.15 * moog2times);
 	    // generate dither (?) noise
 	     	b_noise = b_noise * b_noise;
-		i_noise = b_noise;
+		i_noise = (int)b_noise;
 		b_noise = b_noise - i_noise;
 
 		b_noiseout = b_noise - 1.5; // was - 0.5 now with - 1.0
@@ -394,7 +384,7 @@ void M_vcf::generateCycle() {
             q = qr * (1.0 + 0.5 * q * (1.0 - q + 5.6 * q * q));
 	     // generate dither (?) noise
 	     	b_noise = b_noise * b_noise;
-		i_noise = b_noise;
+		i_noise = (int)b_noise;
 		b_noise = b_noise - i_noise;
 
 		b_noiseout = b_noise - 1.5;// was 0.5

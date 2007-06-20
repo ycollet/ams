@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,39 +19,39 @@
 #include "m_vcswitch.h"
 #include "port.h"
 
-M_vcswitch::M_vcswitch(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(3, parent, name, p_synthdata) {
+M_vcswitch::M_vcswitch(QWidget* parent, const char *name) 
+              : Module(3, parent, name) {
 
   QString qs;
 
   M_type = M_type_vcswitch;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCSWITCH_WIDTH, MODULE_VCSWITCH_HEIGHT);
-  port_M_cv = new Port("CV", PORT_IN, 0, this, synthdata); 
+  port_M_cv = new Port("CV", PORT_IN, 0, this); 
   port_M_cv->move(0, 35);
   port_M_cv->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_cv);
-  port_M_in[0] = new Port("In 0", PORT_IN, 1, this, synthdata); 
+  port_M_in[0] = new Port("In 0", PORT_IN, 1, this); 
   port_M_in[0]->move(0, 55);
   port_M_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in[0]);
-  port_M_in[1] = new Port("In 1", PORT_IN, 2, this, synthdata); 
+  port_M_in[1] = new Port("In 1", PORT_IN, 2, this); 
   port_M_in[1]->move(0, 75);
   port_M_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in[1]);
-  port_out[0] = new Port("Out 0", PORT_OUT, 0, this, synthdata);          
+  port_out[0] = new Port("Out 0", PORT_OUT, 0, this);          
   port_out[0]->move(width() - port_out[0]->width(), 35);
   port_out[0]->outType = outType_audio;
   portList.append(port_out[0]);
-  port_out[1] = new Port("Out 1", PORT_OUT, 1, this, synthdata);          
+  port_out[1] = new Port("Out 1", PORT_OUT, 1, this);          
   port_out[1]->move(width() - port_out[1]->width(), 55);
   port_out[1]->outType = outType_audio;
   portList.append(port_out[1]);
-  port_mix = new Port("Mix", PORT_OUT, 2, this, synthdata);          
+  port_mix = new Port("Mix", PORT_OUT, 2, this);          
   port_mix->move(width() - port_mix->width(), 75);
   port_mix->outType = outType_audio;
   portList.append(port_mix);
   qs.sprintf("VC Switch ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   switchLevel = 0.5;
   configDialog->addSlider(0, 10, switchLevel, "Switch Level", &switchLevel);
 }
