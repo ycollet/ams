@@ -32,19 +32,24 @@
 
 SynthData *synthdata;
 
-ModularSynth::ModularSynth (QWidget *parent, const char *p_pcmname, int p_fsamp, int p_frsize, int p_nfrags,
-                            int p_ncapt, int p_nplay, int poly, float edge) 
-  : pcmname (p_pcmname), fsamp (p_fsamp), frsize (p_frsize), nfrags (p_nfrags),
-    ncapt (p_ncapt), nplay (p_nplay),
-    paintFastly(false),
-    _zoomFactor(1.0)
+ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
+			   int p_fsamp, int p_frsize, int p_nfrags,
+			   int p_ncapt, int p_nplay, int poly, float edge) 
+  : mainWindow(mainWindow)
+  , pcmname (p_pcmname)
+  , fsamp (p_fsamp)
+  , frsize (p_frsize)
+  , nfrags (p_nfrags)
+  , ncapt (p_ncapt)
+  , nplay (p_nplay)
+  , paintFastly(false)
+  , _zoomFactor(1.0)
 {
   firstPort = true;
   connectingPort[0] = NULL;
   connectingPort[1] = NULL;
   connectorStyle = CONNECTOR_BEZIER;
   aboutWidget = new QMessageBox(this); 
-  mainWindow = (QMainWindow *)parent;
   clientid = 0;
   portid = 0;
 
@@ -1125,7 +1130,7 @@ void ModularSynth::clearConfig() {
   for (l2 = 0; l2 < synthdata->poly; ++l2) {
     synthdata->noteCounter[l2] = 1000000;
   }
-  qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
+  qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setWindowTitle(qs);
   restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
@@ -1268,7 +1273,7 @@ void ModularSynth::load(QString *presetName) {
   } else {
     clearConfig();
     qs2 = config_fn.mid(config_fn.lastIndexOf('/') + 1);
-    qs.sprintf("AlsaModularSynth" AMS_VERSION " - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.toLatin1().constData());
+    qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.toLatin1().constData());
     mainWindow->setWindowTitle(qs);
     ladspaLoadErr = false;
     commentFlag = false;

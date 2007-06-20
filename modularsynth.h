@@ -121,8 +121,8 @@ class ModularSynth : public QWidget
     void showContextMenu(QPoint pos);
             
   public:
-    ModularSynth (QWidget* parent, const char *pcmname, int fsamp, int frsize, int nfrags, 
-                  int ncapt, int nplay, int poly, float edge);
+    ModularSynth(QMainWindow *, const char *pcmname, int fsamp, int frsize, int nfrags, 
+		 int ncapt, int nplay, int poly, float edge);
     ~ModularSynth();
 /*     virtual QSize sizeHint() const; */
 /*     virtual QSizePolicy sizePolicy() const; */

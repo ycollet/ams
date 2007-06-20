@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
   StdOut << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
 
   ModularSynth *modularSynth =
-    new ModularSynth(scrollArea, pcmname, fsamp, frsize, nfrags,
+    new ModularSynth(&top, pcmname, fsamp, frsize, nfrags,
 		     ncapt, nplay, poly, edge);
   scrollArea->setWidget(modularSynth);
 
