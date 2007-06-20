@@ -1,34 +1,33 @@
-#include <qslider.h>
-#include <qhbox.h>
-#include <qvbox.h>
 #include <qlabel.h>
 #include <stdio.h>
 #include <math.h>
-#include <qstrlist.h>
 #include "midicheckbox.h"
 #include "synthdata.h"
 #include "midiwidget.h"
-#include "midiguicomponent.h"
+//#include <QHBoxLayout>
 
-MidiCheckBox::MidiCheckBox(QObject *parentModule, float value, QWidget * parent, const char * name, SynthData
-                           *p_synthdata, float *p_valueRef)
-                           : MidiGUIcomponent(parentModule, p_synthdata, parent, name) {
+MidiCheckBox::MidiCheckBox(Module *parentModule, float value, QWidget * parent,
+			   const QString &name, float *p_valueRef)
+  : MidiGUIcomponent(parentModule, parent, name) {
 
   componentType = GUIcomponentType_checkbox;
   valueRef = p_valueRef;
-//  setSpacing(5);
-//  setMargin(5);
-  QWidget *dummy1 = new QWidget(this);
-  QHBox *checkFrame = new QHBox(this);
-  QWidget *dummy2 = new QWidget(this);
-  setStretchFactor(dummy1, 3);
-  setStretchFactor(checkFrame, 1);
-  setStretchFactor(dummy2, 3);
-  checkBox = new QCheckBox(checkFrame);  
-  QLabel *nameLabel = new QLabel(checkFrame);
-  if (name) {
-    nameLabel->setText("  "+QString(name));
-  }
+
+  //  QWidget *dummy1 = new QWidget(this);
+  QHBoxLayout *checkFrame = new QHBoxLayout(this);
+  checkFrame->setSpacing(5);
+  checkFrame->setMargin(5);
+
+  //  QWidget *dummy2 = new QWidget(this);
+//FIXME   setStretchFactor(dummy1, 3);
+//   setStretchFactor(checkFrame, 1);
+//   setStretchFactor(dummy2, 3);
+  checkBox = new QCheckBox();
+  checkFrame->addWidget(checkBox);  
+  checkFrame->addStretch();  
+  QLabel *nameLabel = new QLabel(name);
+
+  checkFrame->addWidget(nameLabel);  
   checkBox->setChecked(value > 0);
   QObject::connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(updateValue(bool)));
   updateValue(value > 0);

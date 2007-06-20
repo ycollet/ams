@@ -3,15 +3,20 @@
 #include <getopt.h>  
 #include <string.h>
 #include <unistd.h>
-#include <qapplication.h>
-#include <qmainwindow.h>
-#include <qmenubar.h>   
-#include <qpopupmenu.h>
+#include <QApplication>
+#include <QMenuBar>
+#include <QScrollArea>
 #include <qstring.h>
-#include <qvbox.h>
-#include <qscrollview.h>
 #include "modularsynth.h"
 
+
+class ScrollArea: public QScrollArea {
+  void resizeEvent(QResizeEvent *ev)
+  {
+    QScrollArea::resizeEvent(ev);
+    ((ModularSynth*)widget())->resize();
+  }
+};
 
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},
@@ -28,20 +33,24 @@ static struct option options[] =
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
          {0, 0, 0, 0}};
+#include <iostream>
+using namespace std;
+
+QTextStream StdErr(stderr);
 
 int main(int argc, char *argv[])  
 {
 
-  QString aboutText ("AlsaModularSynth " AMS_VERSION 
+  char aboutText[] = "AlsaModularSynth " AMS_VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
 		     "additional programming:\n"
 		     "2007 Malte Steiner\n"
-		     "2007 Karsten Wiese\n");
-  QApplication *qApp = new QApplication(argc, argv);
+		     "2007 Karsten Wiese\n";
+  new QApplication(argc, argv);
   QMainWindow *top = new QMainWindow();
-  top->setCaption("AlsaModularSynth");
+  top->setWindowTitle("AlsaModularSynth");
   int getopt_return;
   int option_index; 
   int poly = 1;
@@ -57,7 +66,7 @@ int main(int argc, char *argv[])
   bool havePresetPath = false;
   bool noGui = false;
   bool enableJack = false;
-  char buf [2048];
+  //  char buf [2048];
   float edge = 1.0;
 
   while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:", options, &option_index)) >= 0)
@@ -103,7 +112,7 @@ int main(int argc, char *argv[])
         nplay = atoi(optarg);
         break;
     case 'h':
-        printf("\n%s", aboutText.latin1());
+        printf("\n%s", aboutText);
         printf("--jack                       Enable JACK I/O\n");
         printf("--in <num>                   Number of JACK input ports\n");
         printf("--out <num>                  Number of JACK output ports\n");
@@ -120,121 +129,125 @@ int main(int argc, char *argv[])
         break;
     }
   }
+  cout << "ScrollArea *scrollArea = new ScrollArea();" << endl;
+  ScrollArea *scrollArea = new ScrollArea();
+  cout << top << ":" << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
 
-  ModularSynth *modularSynth = new ModularSynth (top, pcmname, fsamp, frsize, nfrags, ncapt, nplay, poly, edge);
-  modularSynth->resizeContents(3000, 4000);
+  ModularSynth *modularSynth =
+    new ModularSynth(scrollArea, pcmname, fsamp, frsize, nfrags,
+		     ncapt, nplay, poly, edge);
+  scrollArea->setWidget(modularSynth);
 
-  QPopupMenu *filePopup = new QPopupMenu(top);
-  QPopupMenu *synthesisPopup = new QPopupMenu(top);
-  QPopupMenu *modulePopup = new QPopupMenu(top);
-  QPopupMenu *newModulePopup = new QPopupMenu(top);
-  QPopupMenu *midiMenu = new QPopupMenu(top);
-  QPopupMenu *aboutMenu = new QPopupMenu(top);
-  top->menuBar()->insertItem("&File", filePopup);
-  top->menuBar()->insertSeparator();
-  top->menuBar()->insertItem("&Synthesis", synthesisPopup);
-  top->menuBar()->insertSeparator();
-  top->menuBar()->insertItem("&Module", modulePopup);
-  top->menuBar()->insertSeparator();
-  top->menuBar()->insertItem("&View", midiMenu);
-  top->menuBar()->insertSeparator();
-  top->menuBar()->insertItem("&About", aboutMenu);
-  filePopup->insertItem("&New", modularSynth, SLOT(clearConfig()));
-  filePopup->insertSeparator();
-  filePopup->insertItem("&Load Patch", modularSynth, SLOT(load()));
-  filePopup->insertItem("&Save Patch", modularSynth, SLOT(save()));
-  filePopup->insertSeparator();
-  filePopup->insertItem("&Load Colors", modularSynth, SLOT(loadColors()));
-  filePopup->insertItem("&Save Colors", modularSynth, SLOT(saveColors()));
-  filePopup->insertSeparator();
-  filePopup->insertItem("&Quit", qApp, SLOT(quit()));
-  synthesisPopup->insertItem("Start", modularSynth, SLOT(startSynth()));
-  synthesisPopup->insertItem("Stop", modularSynth, SLOT(stopSynth()));
-  synthesisPopup->insertItem("All Voices Off", modularSynth, SLOT(allVoicesOff()));
+  //  modularSynth->setBaseSize(3000, 4000);
 
-  newModulePopup->insertItem("Amplifier", modularSynth, SLOT(newM_amp()));
-  newModulePopup->insertItem("Analogue Driver (2 Out)", modularSynth, SLOT(newM_ad_2()));
-  newModulePopup->insertItem("Analogue Driver (4 Out)", modularSynth, SLOT(newM_ad_4()));
-  newModulePopup->insertItem("Analogue Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
-  newModulePopup->insertItem("Advanced ENV", modularSynth, SLOT(newM_advenv()));
-  newModulePopup->insertItem("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
-  newModulePopup->insertItem("Comment", modularSynth, SLOT(new_textEdit()));
-  newModulePopup->insertItem("Converter", modularSynth, SLOT(newM_conv()));
-  newModulePopup->insertItem("CVS", modularSynth, SLOT(newM_cvs()));
-  newModulePopup->insertItem("Delay", modularSynth, SLOT(newM_delay()));
-  newModulePopup->insertItem("Dynamic Waves (4 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_4()));
-  newModulePopup->insertItem("Dynamic Waves (6 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_6()));
-  newModulePopup->insertItem("Dynamic Waves (8 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_8()));
-  newModulePopup->insertItem("ENV", modularSynth, SLOT(newM_env()));
-  newModulePopup->insertItem("Function 1 --> 1", modularSynth, SLOT(newM_function_1()));
-  newModulePopup->insertItem("Function 1 --> 2", modularSynth, SLOT(newM_function_2()));
-  newModulePopup->insertItem("Function 1 --> 4", modularSynth, SLOT(newM_function_4()));
-  newModulePopup->insertItem("INV", modularSynth, SLOT(newM_inv()));
-  newModulePopup->insertItem("LFO", modularSynth, SLOT(newM_lfo()));
-  newModulePopup->insertItem("MCV", modularSynth, SLOT(newM_mcv()));
-  newModulePopup->insertItem("MIDI Out", modularSynth, SLOT(newM_midiout()));
-  newModulePopup->insertItem("Mixer 2 -> 1", modularSynth, SLOT(newM_mix_2()));
-  newModulePopup->insertItem("Mixer 4 -> 1", modularSynth, SLOT(newM_mix_4()));
-  newModulePopup->insertItem("Mixer 8 -> 1", modularSynth, SLOT(newM_mix_8()));
-  newModulePopup->insertItem("Multiphase LFO", modularSynth, SLOT(newM_mphlfo()));
-  newModulePopup->insertItem("Noise / Random", modularSynth, SLOT(newM_noise()));
-  newModulePopup->insertItem("PCM Out", modularSynth, SLOT(newM_pcmout()));
-  newModulePopup->insertItem("PCM In", modularSynth, SLOT(newM_pcmin()));  
-  newModulePopup->insertItem("Quantizer", modularSynth, SLOT(newM_quantizer()));
-  newModulePopup->insertItem("Quantizer 2", modularSynth, SLOT(newM_vquant()));
-  newModulePopup->insertItem("Ring Modulator", modularSynth, SLOT(newM_ringmod()));
-  newModulePopup->insertItem("Sample && Hold", modularSynth, SLOT(newM_sh()));
-  newModulePopup->insertItem("Scala MCV", modularSynth, SLOT(newM_scmcv()));  
-  newModulePopup->insertItem("Scala Quantizer", modularSynth, SLOT(newM_scquantizer()));
-  newModulePopup->insertItem("Scope View", modularSynth, SLOT(newM_scope()));
-  newModulePopup->insertItem("SEQ  8", modularSynth, SLOT(newM_seq_8()));
-  newModulePopup->insertItem("SEQ 12", modularSynth, SLOT(newM_seq_12()));
-  newModulePopup->insertItem("SEQ 16", modularSynth, SLOT(newM_seq_16()));
-  newModulePopup->insertItem("SEQ 24", modularSynth, SLOT(newM_seq_24()));
-  newModulePopup->insertItem("SEQ 32", modularSynth, SLOT(newM_seq_32()));
-  newModulePopup->insertItem("Slew Limiter", modularSynth, SLOT(newM_slew()));
-  newModulePopup->insertItem("Spectrum View", modularSynth, SLOT(newM_spectrum()));
-  newModulePopup->insertItem("Stereo Mixer 2", modularSynth, SLOT(newM_stereomix_2()));
-  newModulePopup->insertItem("Stereo Mixer 4", modularSynth, SLOT(newM_stereomix_4())); 
-  newModulePopup->insertItem("Stereo Mixer 8", modularSynth, SLOT(newM_stereomix_8())); 
-  newModulePopup->insertItem("VC Double Decay", modularSynth, SLOT(newM_vcdoubledecay()));
-  newModulePopup->insertItem("VC Envelope", modularSynth, SLOT(newM_vcenv()));
-  newModulePopup->insertItem("VC Envelope II", modularSynth, SLOT(newM_vcenv2()));
-  newModulePopup->insertItem("VC Organ (4 Oscillators)", modularSynth, SLOT(newM_vcorgan_4()));
-  newModulePopup->insertItem("VC Organ (6 Oscillators)", modularSynth, SLOT(newM_vcorgan_6()));
-  newModulePopup->insertItem("VC Organ (8 Oscillators)", modularSynth, SLOT(newM_vcorgan_8()));
-  newModulePopup->insertItem("VC Panning", modularSynth, SLOT(newM_vcpanning()));
-  newModulePopup->insertItem("VC Switch", modularSynth, SLOT(newM_vcswitch()));
-  newModulePopup->insertItem("VCA lin.", modularSynth, SLOT(newM_vca_lin()));
-  newModulePopup->insertItem("VCA exp.", modularSynth, SLOT(newM_vca_exp()));
-  newModulePopup->insertItem("VCF", modularSynth, SLOT(newM_vcf()));
-  newModulePopup->insertItem("VCO", modularSynth, SLOT(newM_vco()));
-  newModulePopup->insertItem("WAV Out", modularSynth, SLOT(newM_wavout()));
+  
 
-  modulePopup->insertItem("&New", newModulePopup);
-  modulePopup->insertItem("&Show Ladspa Browser", modularSynth, SLOT(displayLadspaPlugins()));
-  midiMenu->insertItem("Control Center", modularSynth, SLOT(displayMidiController()));
-  midiMenu->insertItem("Parameter View", modularSynth, SLOT(displayParameterView()));
-  midiMenu->insertItem("Preferences", modularSynth, SLOT(displayPreferences()));
-  aboutMenu->insertItem("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
+  QMenu *filePopup = top->menuBar()->addMenu("&File");
+  //  top->menuBar()->insertSeparator();
+  QMenu *synthesisPopup = top->menuBar()->addMenu("&Synthesis");
+  //  top->menuBar()->insertSeparator();
+  QMenu *modulePopup = top->menuBar()->addMenu("&Module");
+  QMenu *newModulePopup = modulePopup->addMenu("&New");
+  modularSynth->contextMenu = newModulePopup;
+  //  top->menuBar()->insertSeparator();
+  QMenu *midiMenu = top->menuBar()->addMenu("&View");
+  //  top->menuBar()->insertSeparator();
+  QMenu *aboutMenu = top->menuBar()->addMenu("&About");
+  filePopup->addAction("&New", modularSynth, SLOT(clearConfig()));
+  filePopup->addSeparator();
+  filePopup->addAction("&Load Patch", modularSynth, SLOT(load()));
+  filePopup->addAction("&Save Patch", modularSynth, SLOT(save()));
+  filePopup->addSeparator();
+  filePopup->addAction("&Load Colors", modularSynth, SLOT(loadColors()));
+  filePopup->addAction("&Save Colors", modularSynth, SLOT(saveColors()));
+  filePopup->addSeparator();
+  filePopup->addAction("&Quit", qApp, SLOT(quit()));
+  synthesisPopup->addAction("Start", modularSynth, SLOT(startSynth()));
+  synthesisPopup->addAction("Stop", modularSynth, SLOT(stopSynth()));
+  synthesisPopup->addAction("All Voices Off", modularSynth, SLOT(allVoicesOff()));
+
+  newModulePopup->addAction("Amplifier", modularSynth, SLOT(newM_amp()));
+  newModulePopup->addAction("Analogue Driver (2 Out)", modularSynth, SLOT(newM_ad_2()));
+  newModulePopup->addAction("Analogue Driver (4 Out)", modularSynth, SLOT(newM_ad_4()));
+  newModulePopup->addAction("Analogue Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
+  newModulePopup->addAction("Advanced ENV", modularSynth, SLOT(newM_advenv()));
+  newModulePopup->addAction("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
+  newModulePopup->addAction("Comment", modularSynth, SLOT(new_textEdit()));
+  newModulePopup->addAction("Converter", modularSynth, SLOT(newM_conv()));
+  newModulePopup->addAction("CVS", modularSynth, SLOT(newM_cvs()));
+  newModulePopup->addAction("Delay", modularSynth, SLOT(newM_delay()));
+  newModulePopup->addAction("Dynamic Waves (4 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_4()));
+  newModulePopup->addAction("Dynamic Waves (6 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_6()));
+  newModulePopup->addAction("Dynamic Waves (8 Oscillators)", modularSynth, SLOT(newM_dynamicwaves_8()));
+  newModulePopup->addAction("ENV", modularSynth, SLOT(newM_env()));
+  newModulePopup->addAction("Function 1 --> 1", modularSynth, SLOT(newM_function_1()));
+  newModulePopup->addAction("Function 1 --> 2", modularSynth, SLOT(newM_function_2()));
+  newModulePopup->addAction("Function 1 --> 4", modularSynth, SLOT(newM_function_4()));
+  newModulePopup->addAction("INV", modularSynth, SLOT(newM_inv()));
+  newModulePopup->addAction("LFO", modularSynth, SLOT(newM_lfo()));
+  newModulePopup->addAction("MCV", modularSynth, SLOT(newM_mcv()));
+  newModulePopup->addAction("MIDI Out", modularSynth, SLOT(newM_midiout()));
+  newModulePopup->addAction("Mixer 2 -> 1", modularSynth, SLOT(newM_mix_2()));
+  newModulePopup->addAction("Mixer 4 -> 1", modularSynth, SLOT(newM_mix_4()));
+  newModulePopup->addAction("Mixer 8 -> 1", modularSynth, SLOT(newM_mix_8()));
+  newModulePopup->addAction("Multiphase LFO", modularSynth, SLOT(newM_mphlfo()));
+  newModulePopup->addAction("Noise / Random", modularSynth, SLOT(newM_noise()));
+  newModulePopup->addAction("PCM Out", modularSynth, SLOT(newM_pcmout()));
+  newModulePopup->addAction("PCM In", modularSynth, SLOT(newM_pcmin()));  
+  newModulePopup->addAction("Quantizer", modularSynth, SLOT(newM_quantizer()));
+  newModulePopup->addAction("Quantizer 2", modularSynth, SLOT(newM_vquant()));
+  newModulePopup->addAction("Ring Modulator", modularSynth, SLOT(newM_ringmod()));
+  newModulePopup->addAction("Sample && Hold", modularSynth, SLOT(newM_sh()));
+  newModulePopup->addAction("Scala MCV", modularSynth, SLOT(newM_scmcv()));  
+  newModulePopup->addAction("Scala Quantizer", modularSynth, SLOT(newM_scquantizer()));
+  newModulePopup->addAction("Scope View", modularSynth, SLOT(newM_scope()));
+  newModulePopup->addAction("SEQ  8", modularSynth, SLOT(newM_seq_8()));
+  newModulePopup->addAction("SEQ 12", modularSynth, SLOT(newM_seq_12()));
+  newModulePopup->addAction("SEQ 16", modularSynth, SLOT(newM_seq_16()));
+  newModulePopup->addAction("SEQ 24", modularSynth, SLOT(newM_seq_24()));
+  newModulePopup->addAction("SEQ 32", modularSynth, SLOT(newM_seq_32()));
+  newModulePopup->addAction("Slew Limiter", modularSynth, SLOT(newM_slew()));
+  newModulePopup->addAction("Spectrum View", modularSynth, SLOT(newM_spectrum()));
+  newModulePopup->addAction("Stereo Mixer 2", modularSynth, SLOT(newM_stereomix_2()));
+  newModulePopup->addAction("Stereo Mixer 4", modularSynth, SLOT(newM_stereomix_4())); 
+  newModulePopup->addAction("Stereo Mixer 8", modularSynth, SLOT(newM_stereomix_8())); 
+  newModulePopup->addAction("VC Double Decay", modularSynth, SLOT(newM_vcdoubledecay()));
+  newModulePopup->addAction("VC Envelope", modularSynth, SLOT(newM_vcenv()));
+  newModulePopup->addAction("VC Envelope II", modularSynth, SLOT(newM_vcenv2()));
+  newModulePopup->addAction("VC Organ (4 Oscillators)", modularSynth, SLOT(newM_vcorgan_4()));
+  newModulePopup->addAction("VC Organ (6 Oscillators)", modularSynth, SLOT(newM_vcorgan_6()));
+  newModulePopup->addAction("VC Organ (8 Oscillators)", modularSynth, SLOT(newM_vcorgan_8()));
+  newModulePopup->addAction("VC Panning", modularSynth, SLOT(newM_vcpanning()));
+  newModulePopup->addAction("VC Switch", modularSynth, SLOT(newM_vcswitch()));
+  newModulePopup->addAction("VCA lin.", modularSynth, SLOT(newM_vca_lin()));
+  newModulePopup->addAction("VCA exp.", modularSynth, SLOT(newM_vca_exp()));
+  newModulePopup->addAction("VCF", modularSynth, SLOT(newM_vcf()));
+  newModulePopup->addAction("VCO", modularSynth, SLOT(newM_vco()));
+  newModulePopup->addAction("WAV Out", modularSynth, SLOT(newM_wavout()));
+
+  modulePopup->addAction("&Show Ladspa Browser", modularSynth, SLOT(displayLadspaPlugins()));
+  midiMenu->addAction("Control Center", modularSynth, SLOT(displayMidiController()));
+  midiMenu->addAction("Parameter View", modularSynth, SLOT(displayParameterView()));
+  midiMenu->addAction("Preferences", modularSynth, SLOT(displayPreferences()));
+  aboutMenu->addAction("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
   top->setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-  top->setCentralWidget(modularSynth);
-  if (noGui) top->hide();
-  else       top->show();
-  qApp->setMainWidget(top);
+  top->setCentralWidget(scrollArea);
+  if (noGui)
+    top->hide();
+  else
+    top->show();
+
   QObject::connect(qApp, SIGNAL(aboutToQuit()), modularSynth, SLOT(cleanUpSynth()));
 
-  if (havePresetPath)
-  {
-    fprintf(stderr, "Preset path now %s\n", presetPath.latin1()); 
+  if (havePresetPath) {
+    StdErr << "Preset path now " << presetPath << endl; 
     modularSynth->setPresetPath(presetPath);
   }
 //  getcwd(buf, 2048);
 //  modularSynth->setSavePath(QString(buf));
   modularSynth->go (enableJack);
-  if (havePreset)
-  {
-    fprintf(stderr, "Loading preset %s\n", presetName.latin1()); 
+  if (havePreset) {
+    StdErr << "Loading preset " << presetName << endl; 
     modularSynth->load(&presetName);
   }
 

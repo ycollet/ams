@@ -7,10 +7,7 @@
 #include <qslider.h>   
 #include <qcheckbox.h> 
 #include <qsplitter.h>
-#include <qlistbox.h> 
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,6 +16,7 @@
 #include <qmessagebox.h>
 #include <qstringlist.h>
 #include <qlineedit.h>
+#include <QTreeWidget>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "midiwidget.h"
@@ -34,85 +32,264 @@
 #include "midipushbutton.h"
 #include "guiwidget.h"
 
-MidiWidget::MidiWidget(SynthData *p_synthdata, QWidget* parent, const char *name) 
-                : QVBox(parent, name) {
+#include <iostream>
+//using namespace std;
 
+
+int MidiControllerModel::rowCount(const QModelIndex &parent) const
+{
+  if (!parent.isValid())
+    return midiControllerList.count();
+
+  const MidiController *c = (const MidiController *)parent.internalPointer();
+  if (!c)
+    return midiControllerList.at(parent.row()).
+      context->mgcList.count();
+
+  return 0;
+}
+
+QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
+{
+  if (index.isValid() && role == Qt::DisplayRole) {
+    const MidiController *c = (const MidiController *)index.internalPointer();
+    MidiGUIcomponent *mgc = NULL;
+    if (c)
+      mgc = c->context->mgcList.at(index.row());
+
+    if (mgc) {
+      if (index.column())
+	return mgc->parentModule->configDialog->windowTitle();
+      else
+	return mgc->objectName();
+    } else
+      if (!c && !index.column()) {
+	QString qs;
+	c = &midiControllerList.at(index.row());
+	return qs.sprintf("type: %d channel: %d param: %d",
+			  c->type(), c->ch(), c->param());
+      }
+  }
+  return QVariant();
+}
+
+QVariant MidiControllerModel::headerData(int section, Qt::Orientation orientation,
+					 int role) const
+{
+  if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    return section ? "Module" : "MIDI Controller / Parameter";
+  
+  return QVariant();
+}
+
+QModelIndex MidiControllerModel::index(int row, int column,
+				       const QModelIndex &parent) const
+{
+  if (parent.isValid())
+    return createIndex(row, column,
+		       (void*)&midiControllerList.at(parent.row()));
+  else
+    return createIndex(row, column, (void*)NULL);
+}
+
+QModelIndex MidiControllerModel::parent(const QModelIndex &child) const
+{
+  if (child.isValid() && child.internalPointer()) {
+    const MidiController *c = (const MidiController *)child.internalPointer();
+    int row = c - midiControllerList.data();
+    return index(row, 0);
+  }
+  return QModelIndex();
+}
+
+int MidiControllerModel::columnCount(const QModelIndex &/*parent*/) const
+{
+  return 2;
+}
+
+void MidiControllerModel::insert(QVector<MidiController>::iterator c,
+				 MidiController &mc)
+{
+  int row = &*c - midiControllerList.data();
+  beginInsertRows(QModelIndex(), row, row);
+  QVector<MidiController>::iterator n = midiControllerList.insert(c, mc);
+  n->context = new MidiControllerContext();
+  endInsertRows();
+}
+
+int ModuleModel::rowCount(const QModelIndex &parent) const
+{
+  if (!parent.isValid())
+    return list.count();
+
+  Module *m = dynamic_cast<Module *>((QWidget *)parent.internalPointer());
+  if (m)
+    return m->configDialog->midiGUIcomponentList.count();
+
+  return 0;
+}
+
+QVariant ModuleModel::data(const QModelIndex &index, int role) const
+{
+  if (index.isValid() && role == Qt::DisplayRole) {
+    MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>((QWidget *)index.internalPointer());
+    if (mgc) {
+      if (index.column())
+	return mgc->midiSign == 1 ? "1" : "-1";
+      else
+	return mgc->objectName();
+    }
+    Module *m = dynamic_cast<Module *>((QWidget *)index.internalPointer());
+    if (m && !index.column())
+      return m->configDialog->windowTitle();
+  }
+  return QVariant();
+}
+
+QVariant ModuleModel::headerData(int section, Qt::Orientation orientation,
+				 int role) const
+{
+  if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    return section ? "MIDI Sign" : "Module / Parameter";
+  
+  return QVariant();
+}
+
+QModelIndex ModuleModel::index(int row, int column, const QModelIndex &parent) const
+{
+  if (parent.isValid()) {
+    Module *m = (Module *)parent.internalPointer();
+    return createIndex(row, column, m->configDialog->midiGUIcomponentList.at(row));
+  } else
+    return createIndex(row, column, list.at(row));
+}
+
+QModelIndex ModuleModel::parent(const QModelIndex &child) const
+{
+  if (child.isValid()) {
+    MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>((QWidget *)child.internalPointer());
+    if (mgc) {
+      Module *m = mgc->parentModule;
+      int row = list.indexOf(m);
+      if (row >= 0)
+	return createIndex(row, 0, m);
+    }
+  }
+  return QModelIndex();
+}
+
+int ModuleModel::columnCount(const QModelIndex &/*parent*/) const
+{
+  return 2;
+}
+
+
+MidiWidget::MidiWidget(QWidget* parent, const char *name) 
+  : QWidget(parent)
+  , vbox(this)
+  , midiControllerModel(midiControllerList)
+  , selectedControl(-1)
+  , midiGUIcomponent(NULL)
+{
+  setObjectName(name);
   int l1;
   QString qs;
 
-  setMargin(10);
-  setSpacing(5);
-  synthdata = p_synthdata;
+  vbox.setMargin(10);
+  vbox.setSpacing(5);
+  
   noteControllerEnabled = false;
   followConfig = false;
   followMidi = false;
   firstBindingMightHaveChanged = false;
-  QSplitter *listViewBox = new QSplitter(this);
-  setStretchFactor(listViewBox, 2);
-  midiControllerListView = new QListView(listViewBox);
-  midiControllerListView->setRootIsDecorated(true);
-  midiControllerListView->addColumn("MIDI Controller / Parameter");
-  midiControllerListView->addColumn("Module");
+  QSplitter *listViewBox = new QSplitter();
+  vbox.addWidget(listViewBox, 2);
+  midiControllerListView = new QTreeView(listViewBox);
+  midiControllerListView->setModel(&midiControllerModel);
   midiControllerListView->setAllColumnsShowFocus(true);
-  moduleListView = new QListView(listViewBox);
-  moduleListView->setRootIsDecorated(true);
-  moduleListView->addColumn("Module / Parameter"); 
-  moduleListView->addColumn("MIDI Sign"); 
+  moduleListView = new QTreeView(listViewBox);
+  moduleListView->setModel(&moduleModel);
   moduleListView->setAllColumnsShowFocus(true);
-  QObject::connect(moduleListView, SIGNAL(selectionChanged()), this, SLOT(guiControlChanged()));
-  QObject::connect(midiControllerListView, SIGNAL(selectionChanged()), this, SLOT(midiControlChanged()));
-  QVBox *controlFrame = new QVBox(this);
+  QObject::connect(moduleListView->selectionModel(),
+		   SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+		   this,
+		   SLOT(guiControlChanged(const QItemSelection &, const QItemSelection &)));
+  QObject::connect(midiControllerListView->selectionModel(),
+		   SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+		   this,
+		   SLOT(midiControlChanged(const QItemSelection &, const QItemSelection &)));
+  QVBoxLayout *controlFrame = new QVBoxLayout();
   controlFrame->setSpacing(5);
 //  controlFrame->setMargin(5);
-  setStretchFactor(controlFrame, 1);
-  guiControlParent = new QVBox(controlFrame);
+  vbox.addLayout(controlFrame);
+  guiControlParent = new QFrame(); // QVBoxLayout
+  controlFrame->addWidget(guiControlParent);
   guiControlParent->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  currentGUIcontrol = NULL;
-  QHBox *checkbuttonBox = new QHBox(controlFrame);
+  currentGUIcontrol = new QVBoxLayout(guiControlParent);
+  currentGUIcontrol->setMargin(5);
+  //  currentGUIcontrol = NULL;
+  QHBoxLayout *checkbuttonBox = new QHBoxLayout();
+  controlFrame->addLayout(checkbuttonBox);
   checkbuttonBox->setSpacing(10);
   checkbuttonBox->setMargin(5);
-  QStrList *channelNames = new QStrList(true);
-  channelNames->append("Omni");
+  QStringList channelNames;
+  channelNames << "Omni";
   for (l1 = 1; l1 < 17; l1++) {
     qs.sprintf("%4d", l1);
-    channelNames->append(qs);
+    channelNames << qs;
   }
-  QHBox *midiChannelBox = new QHBox(controlFrame);
-  QLabel *channelText = new QLabel(midiChannelBox);
+  QHBoxLayout *midiChannelBox = new QHBoxLayout();
+  controlFrame->addLayout(midiChannelBox);
+  QLabel *channelText = new QLabel();
+  midiChannelBox->addWidget(channelText);
   channelText->setText("MIDI Channel:");
-  QComboBox *comboBox = new QComboBox(midiChannelBox);
-  new QWidget(midiChannelBox);
-  new QWidget(midiChannelBox);
-  new QWidget(midiChannelBox);
-  comboBox->insertStrList(channelNames);
+  QComboBox *comboBox = new QComboBox();
+  midiChannelBox->addWidget(comboBox);
+  midiChannelBox->addStretch();
+  midiChannelBox->addStretch();
+  midiChannelBox->addStretch();
+  comboBox->addItems(channelNames);
   comboBox->setFixedSize(comboBox->sizeHint());
   QObject::connect(comboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiChannel(int)));
-  new QWidget(midiChannelBox);       
-  QPushButton *addGuiButton = new QPushButton("Add to Parameter View", midiChannelBox);
+  midiChannelBox->addStretch();
+  addGuiButton = new QPushButton("Add to Parameter View");
+  addGuiButton->setEnabled(false);
+  midiChannelBox->addWidget(addGuiButton);
   QObject::connect(addGuiButton, SIGNAL(clicked()), this, SLOT(addToParameterViewClicked()));
-  new QWidget(midiChannelBox);       
-  QHBox *buttonBox = new QHBox(controlFrame);
+  midiChannelBox->addStretch();
+  QHBoxLayout *buttonBox = new QHBoxLayout();
+  controlFrame->addLayout(buttonBox);
   buttonBox->setSpacing(5);
   buttonBox->setMargin(5);
-  new QWidget(buttonBox);
-  noteCheck = new QCheckBox("Enable note events", checkbuttonBox);
+  buttonBox->addStretch();
+  noteCheck = new QCheckBox("Enable note events");
+  checkbuttonBox->addWidget(noteCheck);
   noteCheck->setChecked(noteControllerEnabled);
-  configCheck = new QCheckBox("Follow Configuration Dialog", checkbuttonBox);
+  configCheck = new QCheckBox("Follow Configuration Dialog");
+  checkbuttonBox->addWidget(configCheck);
   configCheck->setChecked(followConfig);
-  midiCheck = new QCheckBox("Follow MIDI", checkbuttonBox);
+  midiCheck = new QCheckBox("Follow MIDI");
+  checkbuttonBox->addWidget(midiCheck);
   midiCheck->setChecked(followMidi);         
   QObject::connect(noteCheck, SIGNAL(clicked()), this, SLOT(noteControllerCheckToggle()));
   QObject::connect(configCheck, SIGNAL(clicked()), this, SLOT(configCheckToggle()));
   QObject::connect(midiCheck, SIGNAL(clicked()), this, SLOT(midiCheckToggle()));
-  new QWidget(buttonBox);       
-  QPushButton *bindButton = new QPushButton("Bind", buttonBox);
-  new QWidget(buttonBox);       
-  QPushButton *clearButton = new QPushButton("Clear Binding", buttonBox);
-  new QWidget(buttonBox);      
-  QPushButton *clearAllButton = new QPushButton("Clear All", buttonBox);
-  new QWidget(buttonBox);
-  QPushButton *midiSignButton = new QPushButton("Toggle MIDI Sign", buttonBox);
-  new QWidget(buttonBox);
+  buttonBox->addStretch();
+  bindButton = new QPushButton("Bind");
+  bindButton->setEnabled(false);
+  buttonBox->addWidget(bindButton);
+  buttonBox->addStretch();
+  clearButton = new QPushButton("Clear Binding");
+  buttonBox->addWidget(clearButton);
+  clearButton->setEnabled(false);
+  buttonBox->addStretch();
+  clearAllButton = new QPushButton("Clear All");
+  buttonBox->addWidget(clearAllButton);
+  buttonBox->addStretch();
+  midiSignButton = new QPushButton("Toggle MIDI Sign");
+  buttonBox->addWidget(midiSignButton);
+  midiSignButton->setEnabled(false);
+  buttonBox->addStretch();
   QObject::connect(bindButton, SIGNAL(clicked()), this, SLOT(bindClicked()));
   QObject::connect(clearButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
   QObject::connect(clearAllButton, SIGNAL(clicked()), this, SLOT(clearAllClicked()));
@@ -128,78 +305,90 @@ void MidiWidget::clearAllClicked() {
   Module *module;
 
   for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-    module = (Module *)synthdata->moduleList.at(l1);
-    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-      module->configDialog->midiGUIcomponentList.at(l2)->listViewItemList.clear();
+    module = synthdata->moduleList.at(l1);
+    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++)
       module->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.clear();
+  }
+  midiControllerList.resize(0);
+  midiControllerListView->reset();
+}
+
+void MidiWidget::addMidiController(MidiControllerKey mck)
+{
+  MidiController mc(mck.getKey());
+  typeof(midiControllerList.end()) c(midiControllerList.end());
+  if (!midiControllerList.empty()) {
+    c = qLowerBound(midiControllerList.begin(), midiControllerList.end(), mck);
+    if (c != midiControllerList.end()) {
+//       std::cout << (int)c->type() << "==" << (int)mc.type() << "&&" << (int)c->ch() << " == " << (int)mc.ch() << " && " << (int)c->param() << "=="<< (int)mc.param() << std::endl;
+      if (*c == mc) {
+// 	std::cout  << &*c - midiControllerList.data() << std::endl;
+	return;
+      }
     }
   }
-  midiControllerList.setAutoDelete(true);
-  midiControllerList.clear();  
-  midiControllerListView->clear();  
+//   std::cout  << (int)mc.type() << " " << (int)mc.ch() << " " << (int)mc.param() << std::endl;
+  midiControllerModel.insert(c, mc);
+  midiControllerListView->resizeColumnToContents(0);
 }
 
-int MidiWidget::addMidiController(MidiController *midiController) {
-
-  QString qs;
-
-  qs.sprintf("type: %d channel: %d param: %d", midiController->type,
-               midiController->ch, midiController->param);
-  midiController->setListViewItem(new QListViewItem(midiControllerListView, qs));
-  midiControllerList.append(midiController);
-  return(0);
-}
-
-int MidiWidget::addMidiGuiComponent(MidiController *midiController, QObject *midiGuiComponent) {
-
-  ((MidiGUIcomponent *)midiGuiComponent)->listViewItemList.append(new QListViewItem(midiController->listViewItem, 
-                                                                  ((MidiGUIcomponent *)midiGuiComponent)->name(), 
-                                                                  ((Module *)((MidiGUIcomponent *)midiGuiComponent)->parentModule)->configDialog->caption()));
-  return 0;                                                                  
-}
-
-int MidiWidget::deleteMidiGuiComponent(MidiController *midiController, QObject *midiGuiComponent) {
-
-  int l1;
-  MidiGUIcomponent *tmp;
-
-  tmp = (MidiGUIcomponent *)midiGuiComponent;
-  for (l1 = 0; l1 <  tmp->listViewItemList.count(); l1++) {
-    if (midiController->listViewItem == tmp->listViewItemList.at(l1)->parent()) {
-      tmp->listViewItemList.at(l1)->parent()->takeItem(tmp->listViewItemList.at(l1));
-    }
-  }
-  return 0;
-}
-
-void MidiWidget::clearClicked() {
-
-  int index, l1, l2, l3;
-  QListViewItem *tmp;
-  Module *module;
-
-  if (!midiControllerListView->selectedItem() 
-      || ((QObject *)midiControllerListView->selectedItem()->parent() == (QObject *)midiControllerListView)) {
+void MidiWidget::addMidiGuiComponent(MidiControllerKey mck,
+				     MidiGUIcomponent *midiGuiComponent)
+{
+  typeof(midiControllerList.constEnd()) c
+    = qBinaryFind(midiControllerList.constBegin(),
+		  midiControllerList.constEnd(), mck);
+  if (c == midiControllerList.end()) {
+    std::cerr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << std::endl;
     return;
-  } else {
-    for (l1 = 0; l1 < midiControllerList.count(); l1++) {
-      if (midiControllerList.at(l1)->listViewItem == midiControllerListView->selectedItem()->parent()) {
-        break;
-      }
+  }
+
+  int row = &*c - midiControllerList.data();
+  int childRow = c->context->mgcList.count();
+  midiControllerModel.beginInsertRows(midiControllerModel.index(row, 0),
+				      childRow, childRow);
+  QObject::connect(c->context, SIGNAL(midiValueChanged(int)),
+		   midiGuiComponent, SLOT(midiValueChanged(int))); 
+  c->context->mgcList.append(midiGuiComponent);
+  midiControllerModel.endInsertRows();  
+  moduleListView->resizeColumnToContents(0);
+}
+
+void MidiWidget::removeMidiGuiComponent(MidiControllerKey mck, MidiGUIcomponent *midiGuiComponent)
+{
+  typeof(midiControllerList.constEnd()) c
+    = qBinaryFind(midiControllerList.constBegin(),
+		  midiControllerList.constEnd(), mck);
+  if (c == midiControllerList.end()) {
+    std::cerr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << std::endl;
+    return;
+  }
+
+  int row = &*c - midiControllerList.data();
+  int childRow = c->context->mgcList.indexOf(midiGuiComponent);
+  if (childRow != -1) {
+    midiControllerModel.beginRemoveRows(midiControllerModel.index(row, 0),
+					childRow, childRow);
+    QObject::disconnect(c->context, SIGNAL(midiValueChanged(int)),
+			midiGuiComponent, SLOT(midiValueChanged(int)));
+    c->context->mgcList.removeAll(midiGuiComponent);
+    midiControllerModel.endRemoveRows();  
+  }
+}
+
+void MidiWidget::clearClicked()
+{
+  if (selectedController.isValid() && selectedControl != -1) {
+    typeof(midiControllerList.constEnd()) c
+      = qBinaryFind(midiControllerList.constBegin(),
+		    midiControllerList.constEnd(), selectedController);
+    if (c == midiControllerList.end()) {
+      std::cerr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << std::endl;
+      return;
     }
-    index = l1;
-    for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-      module = (Module *)synthdata->moduleList.at(l1);
-      for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-        for (l3 = 0; l3 < module->configDialog->midiGUIcomponentList.at(l2)->listViewItemList.count(); l3++) {
-          tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItemList.at(l3);
-          if (tmp == midiControllerListView->selectedItem()) {
-            module->configDialog->midiGUIcomponentList.at(l2)->disconnectController(midiControllerList.at(index));
-            deleteMidiGuiComponent(midiControllerList.at(index), module->configDialog->midiGUIcomponentList.at(l2));
-          }
-        }
-      }
-    }
+
+    MidiGUIcomponent *mgc = c->context->mgcList.at(selectedControl);
+    mgc->disconnectController(selectedController);
   }
   firstBindingMightHaveChanged = true;
 }
@@ -207,12 +396,13 @@ void MidiWidget::clearClicked() {
 void MidiWidget::addToParameterViewClicked() {
 
   QString qs, qs2, qs3;
-  bool ok, success, foundFrameName, foundTabName;
-  int l1, l2, frameIndex, tabIndex;
-  QListViewItem *tmp;
-  Module *module;
+  bool ok, foundFrameName, foundTabName;
+  int l1, frameIndex, tabIndex;
 
-  if (((GuiWidget *)synthdata->guiWidget)->presetCount > 0) {
+  if (!midiGUIcomponent)
+    return;
+
+  if (synthdata->guiWidget->presetCount > 0) {
     qs.sprintf("This will erase all presets for this configuration. Continue ?");
     QMessageBox questionContinue("AlsaModularSynth", qs, QMessageBox::NoIcon,
                                  QMessageBox::Yes | QMessageBox::Default, QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
@@ -220,111 +410,61 @@ void MidiWidget::addToParameterViewClicked() {
       return;
     }
   }
-  qs = QInputDialog::getText("AlsaModularSynth", "Add this parameter to frame:", QLineEdit::Normal, currentFrameName, &ok, this);
+  qs = QInputDialog::getText(this, "AlsaModularSynth", "Add this parameter to frame:", QLineEdit::Normal, currentFrameName, &ok);
   currentFrameName = qs;
   if (qs.isEmpty()) {
     return;
   }
   foundFrameName = false;
   frameIndex = 0;
-  if ((l1 =((GuiWidget *)synthdata->guiWidget)->frameNameList.findIndex(qs.stripWhiteSpace())) >= 0) {
+  if ((l1 =synthdata->guiWidget->frameNameList.indexOf(qs.trimmed())) >= 0) {
     foundFrameName = true;
     frameIndex = l1;
   }
   if (!foundFrameName) {
-    qs2.sprintf("Frame %s does not exist. Create ?", qs.latin1()); 
+    qs2 = "Frame " + qs + " does not exist. Create ?"; 
     QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
                          QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
     if (question.exec() == QMessageBox::Yes) {
-      qs3 = QInputDialog::getText("AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, currentTabName, &ok, this);
+      qs3 = QInputDialog::getText(this, "AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, currentTabName, &ok);
       currentTabName = qs3;
       foundTabName = false;
       tabIndex = 0;
-      if ((l1 =((GuiWidget *)synthdata->guiWidget)->tabNameList.findIndex(qs3.stripWhiteSpace())) >= 0) {
+      if ((l1 =synthdata->guiWidget->tabNameList.indexOf(qs3.trimmed())) >= 0) {
         foundTabName = true;
         tabIndex = l1;
-        ((GuiWidget *)synthdata->guiWidget)->setTab(tabIndex);
+        synthdata->guiWidget->setTab(tabIndex);
       } else {
-        qs2.sprintf("Tab %s does not exist. Create ?", qs3.latin1());
+        qs2 = "Tab " +qs3 + " does not exist. Create ?";
         QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
                              QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
         if (question.exec() == QMessageBox::Yes) {
-        printf("Creating tab %s.\n", qs3.latin1());
-          ((GuiWidget *)synthdata->guiWidget)->addTab(qs3.stripWhiteSpace());
+	  //printf("Creating tab %s.\n", qs3.latin1());
+          synthdata->guiWidget->addTab(qs3.trimmed());
         } else {
           return;
         }
       }
-      printf("Creating frame %s.\n", qs.latin1());
-      ((GuiWidget *)synthdata->guiWidget)->addFrame(qs.stripWhiteSpace());
+      //      printf("Creating frame %s.\n", qs.latin1());
+      synthdata->guiWidget->addFrame(qs.trimmed());
     } else {
       return;
     }
-  } else {
-    ((GuiWidget *)synthdata->guiWidget)->setFrame(frameIndex);
-  }
-  success = false;
-  for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-    module = (Module *)synthdata->moduleList.at(l1);
-    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-      tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItem;
-      if (tmp == moduleListView->selectedItem()) {
-        success = true;
-        break;
-      }
-    }  
-    if (success) {
-      break;
-    }
-  }  
-  if (success) {
-    qs2.sprintf("%s  ID %d", moduleListView->selectedItem()->text(0).latin1(), module->moduleID);
-    qs = QInputDialog::getText("AlsaModularSynth", "Parameter name:", QLineEdit::Normal, qs2, &ok, this);
-    ((GuiWidget *)synthdata->guiWidget)->addParameter(module->configDialog->midiGUIcomponentList.at(l2), qs);
-  } else {
-    return;
-  }  
+  } else
+    synthdata->guiWidget->setFrame(frameIndex);
+
+  //  qs2.sprintf("%s  ID %d", midiGUIcomponent->objectName(), module->moduleID);
+  qs2 = midiGUIcomponent->objectName() + "  ID " +
+    QString().setNum(midiGUIcomponent->parentModule->moduleID);
+  qs = QInputDialog::getText(this, "AlsaModularSynth", "Parameter name:", QLineEdit::Normal, qs2, &ok);
+  synthdata->guiWidget->addParameter(midiGUIcomponent, qs);
 }
 
-void MidiWidget::bindClicked() {
+void MidiWidget::bindClicked()
+{
+  if (midiGUIcomponent && selectedController.isValid() && selectedControl == -1)
+    midiGUIcomponent->connectToController(selectedController);
 
-  int index, l1, l2, l3;
-  QListViewItem *tmp;
-  Module *module;
-  bool success;
-
-  if (!midiControllerListView->selectedItem() || !moduleListView->selectedItem()) {
-    return;
-  } else {
-    success = false;
-    for (l1 = 0; l1 < midiControllerList.count(); l1++) {
-      if (midiControllerList.at(l1)->listViewItem == midiControllerListView->selectedItem()) {
-        success = true;
-        break;
-      }
-    }
-    if (!success) {
-      return;
-    }
-    index = l1;
-    success = false;
-    for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-      module = (Module *)synthdata->moduleList.at(l1);
-      for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-        tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItem;
-        if (tmp == moduleListView->selectedItem()) {
-          success = true;
-          break;
-        }
-      }
-      if (success) {
-        break;
-      }
-    }
-    if (success) {
-      module->configDialog->midiGUIcomponentList.at(l2)->connectToController(midiControllerList.at(index));
-    }
-  }
   firstBindingMightHaveChanged = true;
 }
 
@@ -343,224 +483,92 @@ void MidiWidget::midiCheckToggle() {
   followMidi = midiCheck->isChecked();  
 }
 
-MidiController *MidiWidget::getSelectedController() {
-  
-  int l1, ch, param, type, a, b;
-  QString qs, qsm;
+void MidiWidget::addModule(Module *m)
+{
+  if (!m->configDialog->midiGUIcomponentList.count())
+    return;
 
-  if (!midiControllerListView->selectedItem()) {
-    return(NULL);
-  } else {
-    qs = midiControllerListView->selectedItem()->text(0);
-    a = qs.find(":") + 2;
-    b = qs.find("channel") - 1;
-    qsm = qs.mid(a, b - a);
-    type = qsm.toInt();
-//    fprintf(stderr, "%s\n", qsm.latin1()); 
-    a = qs.find(":", b) + 2;
-    b = qs.find("param") - 1;
-    qsm = qs.mid(a, b - a);
-    ch = qsm.toInt();
-//    fprintf(stderr, "%s\n", qsm.latin1()); 
-    a = qs.find(":", b) + 2;
-    qsm = qs.mid(a);
-    param = qsm.toInt();
-//    fprintf(stderr, "%s\n", qsm.latin1()); 
-    for (l1 = 0; l1 < midiControllerList.count(); l1++) {
-      if ((midiControllerList.at(l1)->type == type)
-       && (midiControllerList.at(l1)->ch == ch)
-       && (midiControllerList.at(l1)->param == param)) {
-        break;
-      }
-    }
-    if (l1 < midiControllerList.count()) {
-      return(midiControllerList.at(l1));
-    } else {
-      return(NULL);
-    }
-  }
+  int row = moduleModel.list.count();
+
+  moduleModel.beginInsertRows(QModelIndex(), row, row);
+  moduleModel.list.append(m);
+  moduleModel.endInsertRows();
+}  
+
+void MidiWidget::removeModule(Module *m)
+{
+  synthdata->moduleList.removeAll(m);
+  synthdata->decModuleCount();
+
+  int row = moduleModel.list.indexOf(m);
+  if (row == -1)
+    return;
+
+  moduleModel.beginRemoveRows(QModelIndex(), row, row);
+  moduleModel.list.removeAll(m);
+  moduleModel.endRemoveRows();
+}  
+
+void MidiWidget::toggleMidiSign()
+{
+  if (midiGUIcomponent == NULL)
+    return;
+  midiGUIcomponent->midiSign = (midiGUIcomponent->midiSign == 1) ? 0 : 1;
+  Module *m = midiGUIcomponent->parentModule;
+  QModelIndex mMi =
+    moduleModel.index(moduleModel.list.indexOf(m), 0);
+  QModelIndex mgcMi =
+    moduleModel.index(m->configDialog->
+		      midiGUIcomponentList.indexOf(midiGUIcomponent), 1, mMi);
+  emit moduleModel.dataChanged(mgcMi, mgcMi);
 }
 
-void MidiWidget::updateModuleList() {
-
-  int l1, l2;
-  Module *module;
-  QListViewItem *listViewItem, *guiItem;
-  QString qs;
-
-  moduleListView->clear();
-  for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-    module = (Module *)synthdata->moduleList.at(l1);
-    listViewItem = new QListViewItem(moduleListView, module->configDialog->caption());
-    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-       qs = (module->configDialog->midiGUIcomponentList.at(l2)->midiSign == 1) ? "1" : "-1";
-       guiItem = new QListViewItem(listViewItem, module->configDialog->midiGUIcomponentList.at(l2)->name(), qs);
-       module->configDialog->midiGUIcomponentList.at(l1)->listViewItem = guiItem;
-    }
-  }
-}
-
-void MidiWidget::addModule(Module *m) {
-
+void MidiWidget::guiControlChanged(const QItemSelection &selected,
+				   const QItemSelection &/*deselected*/)
+{
   int l1;
-  QListViewItem *listViewItem, *guiItem;
-  QString qs;
-
-  if (m->configDialog->midiGUIcomponentList.count()) {
-    listViewItem = new QListViewItem(moduleListView, m->configDialog->caption());
-    m->listViewItem = listViewItem;
-    for (l1 = 0; l1 < m->configDialog->midiGUIcomponentList.count(); l1++) {
-      qs = (m->configDialog->midiGUIcomponentList.at(l1)->midiSign == 1) ? "1" : "-1";
-      guiItem = new QListViewItem(listViewItem, m->configDialog->midiGUIcomponentList.at(l1)->name(), qs);
-      m->configDialog->midiGUIcomponentList.at(l1)->listViewItem = guiItem;
-    }  
-  } else {
-    m->listViewItem = NULL;
-  }
-}  
-
-void MidiWidget::deleteModule(Module *m) {
-
-  int l1, l2;
   Module *module;
-  QListViewItem *listViewItem;
-  QListViewItemIterator it(moduleListView);
-
-  if (!m->listViewItem) {
-    return;
-  }
-  if (moduleListView->selectedItem()) {
-    if (moduleListView->selectedItem() == m->listViewItem) {
-      moduleListView->setSelected(moduleListView->selectedItem(), false);
-    }
-    if (moduleListView->selectedItem()->parent() == m->listViewItem) {
-      moduleListView->setSelected(moduleListView->selectedItem(), false);
-    }
-  }
-  for (l1 = 0; l1 < m->configDialog->midiGUIcomponentList.count(); l1++) {
-    for (l2 = 0; l2 < midiControllerList.count(); l2++) {
-      deleteMidiGuiComponent(midiControllerList.at(l2), m->configDialog->midiGUIcomponentList.at(l1));
-    }
-  }
-  while (it.current()) {
-    if ((it.current()->isSelectable()) && (it.current() == m->listViewItem)) {
-      break;
-    }
-    ++it;
-  }
-  moduleListView->takeItem(it.current());
-  firstBindingMightHaveChanged = true;
-}  
-
-void MidiWidget::toggleMidiSign() {
-
-  int midiSign, l1, l2;
-  QListViewItem *tmp;
-  Module *module;
-  bool success;
+  bool success = false;
   QString qs;
-
-  if (!moduleListView->selectedItem()) {
-    return;
-  } else {
-    success = false;
-    for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-      module = (Module *)synthdata->moduleList.at(l1);
-      for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-        tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItem;
-        if (tmp == moduleListView->selectedItem()) {
-          success = true;
-          break;
-        }
-      }
-      if (success) {
-        break;
-      }
-    }
-    if (success) {
-      midiSign = module->configDialog->midiGUIcomponentList.at(l2)->midiSign;
-      module->configDialog->midiGUIcomponentList.at(l2)->midiSign = (midiSign == 1) ? 0 : 1;
-      qs = (midiSign == 1 ) ? "-1" : "1";
-      moduleListView->selectedItem()->setText(1, qs);
-    }
-  }
-}
-
-void MidiWidget::guiControlChanged() {
-
-  int l1, l2;
-  QListViewItem *tmp;
-  Module *module;
-  bool success;
-  QString qs;
-  float log_val;
   int min, max, val;
 
-  if (currentGUIcontrol) {
-    switch (midiGUIcomponent->componentType) {
-      case GUIcomponentType_slider: 
-        QObject::disconnect(logCheck, SIGNAL(toggled(bool)), 
-                         this, SLOT(setLogMode(bool)));
-        QObject::disconnect(slider, SIGNAL(valueChanged(int)), 
-                        (MidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
-        QObject::disconnect((MidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
-                         this, SLOT(updateSliderValue(int)));
-        break;
-      case GUIcomponentType_intslider:
-        QObject::disconnect(slider, SIGNAL(valueChanged(int)), 
-                            (IntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
-        QObject::disconnect((IntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
-                            this, SLOT(updateIntSliderValue(int)));
-        break;
-      case GUIcomponentType_floatintslider:
-        QObject::disconnect(slider, SIGNAL(valueChanged(int)), 
-                            (FloatIntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
-        QObject::disconnect((FloatIntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
-                            this, SLOT(updateIntSliderValue(int)));
-        break;
-      case GUIcomponentType_checkbox:
-        QObject::disconnect(currentCheck, SIGNAL(toggled(bool)), 
-                            (MidiCheckBox *)midiGUIcomponent, SLOT(updateCheck(bool)));
-        QObject::disconnect(((MidiCheckBox *)midiGUIcomponent)->checkBox, SIGNAL(toggled(bool)),
-                            this, SLOT(updateCheckBox(bool)));
-        break;
-      case GUIcomponentType_pushbutton:
-         QObject::disconnect(currentPushButton, SIGNAL(clicked()), 
-                          (MidiPushButton *)midiGUIcomponent, SLOT(buttonClicked()));
-         break;
-      case GUIcomponentType_combobox:
-        QObject::disconnect(comboBox, SIGNAL(highlighted(int)), 
-                            (MidiComboBox *)midiGUIcomponent, SLOT(updateValue(int)));
-        QObject::disconnect(((MidiComboBox *)midiGUIcomponent)->comboBox, SIGNAL(highlighted(int)),
-                            this, SLOT(updateComboBox(int)));
-        break;
-      default:
-        break;
+  if (midiGUIcomponent) {
+    QObjectList del = currentGUIcontrol->children();
+    QObjectList::const_iterator deli = del.constBegin();
+    while (deli != del.constEnd()) {
+      std::cout << (*deli)->metaObject()->className() << std::endl;
+      delete *deli;
+      ++deli;
     }
-    delete currentGUIcontrol;
-    currentGUIcontrol = NULL;
-  }  
-  success = false;
-  for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-    module = (Module *)synthdata->moduleList.at(l1);
-    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-      tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItem;
-      if (tmp == moduleListView->selectedItem()) {
-        success = true;
-        break;
-      }
-    }  
-    if (success) {
-      break;
+    del = guiControlParent->children();
+    deli = del.constBegin();
+    while (deli != del.constEnd()) {
+      std::cout << (*deli)->metaObject()->className() << std::endl;
+      if (*deli != currentGUIcontrol) 
+	delete *deli;
+      ++deli;
     }
+    midiGUIcomponent = NULL;
   }  
-  if (success) {
-    currentGUIcontrol = new QVBox(guiControlParent);
-    currentGUIcontrol->setMargin(5);
-    midiGUIcomponent = module->configDialog->midiGUIcomponentList.at(l2); 
-  } else {
+
+//   std::cout << __FUNCTION__ << ":" << __LINE__ << std::endl;
+  if (selected.indexes().count() > 0) {
+    const QModelIndex mi = selected.indexes().at(0);
+//     std::cout << __FUNCTION__ << ":" << __LINE__ << ":" << selected.indexes().count() << std::endl;
+    MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>((QWidget *)mi.internalPointer());
+    if (mgc) {
+//   std::cout << __FUNCTION__ << ":" << __LINE__ << std::endl;
+      midiGUIcomponent = mgc;
+      module = mgc->parentModule;
+      success = true;
+    }
+  }
+  midiSignButton->setEnabled(success);
+  addGuiButton->setEnabled(success);
+  if (!success)
     return;
-  }  
+
+  QLabel *nameLabel = new QLabel(midiGUIcomponent->objectName());
   switch (midiGUIcomponent->componentType) {
     case GUIcomponentType_slider: {
         minValue = ((MidiSlider *)midiGUIcomponent)->min;
@@ -568,44 +576,60 @@ void MidiWidget::guiControlChanged() {
         initial_min = ((MidiSlider *)midiGUIcomponent)->initial_min;
         initial_max = ((MidiSlider *)midiGUIcomponent)->initial_max;
         value = ((MidiSlider *)midiGUIcomponent)->getValue();
-        QHBox *sliderNameBox = new QHBox(currentGUIcontrol);
+        QHBoxLayout *sliderNameBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderNameBox);
         sliderNameBox->setMargin(5);
-        new QWidget(sliderNameBox);
-        QHBox *minMaxLogButtonsBox = new QHBox(currentGUIcontrol);
+        sliderNameBox->addStretch();
+        QHBoxLayout *minMaxLogButtonsBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(minMaxLogButtonsBox);
         minMaxLogButtonsBox->setMargin(5);
-        logCheck = new QCheckBox("Log", minMaxLogButtonsBox);
+        logCheck = new QCheckBox("Log");
+	minMaxLogButtonsBox->addWidget(logCheck);
         QObject::connect(logCheck, SIGNAL(toggled(bool)), 
                          this, SLOT(setLogMode(bool)));
-        new QWidget(minMaxLogButtonsBox);
-        QPushButton *newMinButton = new QPushButton("Set Min", minMaxLogButtonsBox);
+        minMaxLogButtonsBox->addStretch();
+        QPushButton *newMinButton = new QPushButton("Set Min");
+	minMaxLogButtonsBox->addWidget(newMinButton);
         QObject::connect(newMinButton, SIGNAL(clicked()), 
                          this, SLOT(setNewMin()));
-        new QWidget(minMaxLogButtonsBox);
-        QPushButton *newMaxButton = new QPushButton("Set Max", minMaxLogButtonsBox);
+        minMaxLogButtonsBox->addStretch();
+        QPushButton *newMaxButton = new QPushButton("Set Max");
+	minMaxLogButtonsBox->addWidget(newMaxButton);
         QObject::connect(newMaxButton, SIGNAL(clicked()), 
                          this, SLOT(setNewMax()));
-        new QWidget(minMaxLogButtonsBox);
-        QPushButton *resetMinMaxButton = new QPushButton("Reset Min/Max", minMaxLogButtonsBox);
+        minMaxLogButtonsBox->addStretch();
+        QPushButton *resetMinMaxButton = new QPushButton("Reset Min/Max");
+	minMaxLogButtonsBox->addWidget(resetMinMaxButton);
         QObject::connect(resetMinMaxButton, SIGNAL(clicked()), 
                          this, SLOT(setInitialMinMax()));
-        QLabel *nameLabel = new QLabel(sliderNameBox);
-        new QWidget(sliderNameBox);
-        QHBox *sliderLabels = new QHBox(currentGUIcontrol);
+
+	sliderNameBox->addWidget(nameLabel);
+        sliderNameBox->addStretch();
+        QHBoxLayout *sliderLabels = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderLabels);
         qs.sprintf("Min: %7.3f", minValue); 
-        minLabel = new QLabel(qs, sliderLabels);
-        new QWidget(sliderLabels);
+        minLabel = new QLabel(qs);
+	sliderLabels->addWidget(minLabel);
+        sliderLabels->addStretch();
         qs.sprintf(" %7.3f ", value);
-        valueLabel = new QLabel(qs, sliderLabels);
-        nameLabel->setText(moduleListView->selectedItem()->text(0));
-        new QWidget(sliderLabels);
+        valueLabel = new QLabel(qs);
+	sliderLabels->addWidget(valueLabel);
+
+        sliderLabels->addStretch();
         qs.sprintf("Max: %7.3f", maxValue);
-        maxLabel = new QLabel(qs, sliderLabels);
+        maxLabel = new QLabel(qs);
+	sliderLabels->addWidget(maxLabel);
         nameLabel->setFixedHeight(nameLabel->sizeHint().height());
         valueLabel->setFixedHeight(valueLabel->sizeHint().height());
         minLabel->setFixedHeight(minLabel->sizeHint().height());
         maxLabel->setFixedHeight(maxLabel->sizeHint().height());
-        slider = new QSlider(int(SLIDER_SCALE * minValue), int(SLIDER_SCALE * maxValue), 0, 
-                             int(SLIDER_SCALE * value), QSlider::Horizontal, currentGUIcontrol);  
+        slider = new QSlider(Qt::Horizontal);
+	slider->setRange(int(SLIDER_SCALE * minValue), int(SLIDER_SCALE * maxValue));
+	slider->setPageStep(0);
+	slider->setValue(int(SLIDER_SCALE * value));
+//         slider = new QSlider(int(SLIDER_SCALE * minValue), int(SLIDER_SCALE * maxValue), 0, 
+//                              int(SLIDER_SCALE * value), Qt::Horizontal);
+	currentGUIcontrol->addWidget(slider);
         slider->setFixedHeight(slider->sizeHint().height());
         QObject::connect(slider, SIGNAL(valueChanged(int)), 
                         (MidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
@@ -615,31 +639,43 @@ void MidiWidget::guiControlChanged() {
         }
       break;
     case GUIcomponentType_intslider: {
-        min = ((IntMidiSlider *)midiGUIcomponent)->slider->minValue();
-        max = ((IntMidiSlider *)midiGUIcomponent)->slider->maxValue();
+        min = ((IntMidiSlider *)midiGUIcomponent)->slider->minimum();
+        max = ((IntMidiSlider *)midiGUIcomponent)->slider->maximum();
         val = ((IntMidiSlider *)midiGUIcomponent)->slider->value();
-        QHBox *sliderNameBox = new QHBox(currentGUIcontrol);
+        QHBoxLayout *sliderNameBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderNameBox);
         sliderNameBox->setMargin(5);
-        new QWidget(sliderNameBox);
-        QLabel *nameLabel = new QLabel(sliderNameBox);
-        new QWidget(sliderNameBox);
-        QHBox *sliderLabels = new QHBox(currentGUIcontrol);
+        sliderNameBox->addStretch();
+
+	sliderNameBox->addWidget(nameLabel);
+        sliderNameBox->addStretch();
+        QHBoxLayout *sliderLabels = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderLabels);
         qs.sprintf("Min: %d", min); 
-        minLabel = new QLabel(qs, sliderLabels);
-        new QWidget(sliderLabels);
+        minLabel = new QLabel(qs);
+	sliderLabels->addWidget(minLabel);
+        sliderLabels->addStretch();
         qs.sprintf(" %d ", val);
-        valueLabel = new QLabel(qs, sliderLabels);
-        nameLabel->setText(moduleListView->selectedItem()->text(0));
-        new QWidget(sliderLabels);
+        valueLabel = new QLabel(qs);
+	sliderLabels->addWidget(valueLabel);
+
+//         nameLabel->setText(moduleListView->selectedItem()->text(0));
+        sliderLabels->addStretch();
         qs.sprintf("Max: %d", max);
-        maxLabel = new QLabel(qs, sliderLabels);
+        maxLabel = new QLabel(qs);
+	sliderLabels->addWidget(maxLabel);
         nameLabel->setFixedHeight(nameLabel->sizeHint().height());
         valueLabel->setFixedHeight(valueLabel->sizeHint().height());
         minLabel->setFixedHeight(minLabel->sizeHint().height());
         maxLabel->setFixedHeight(maxLabel->sizeHint().height());
-        slider = new QSlider(min, max, 0, val, QSlider::Horizontal, currentGUIcontrol);  
+        slider = new QSlider(Qt::Horizontal);
+	slider->setRange(min, max);
+	slider->setPageStep(0);
+	slider->setValue(val);
+
+	currentGUIcontrol->addWidget(slider);
         slider->setTickInterval((abs(max) + abs(min)) / 10);
-        slider->setTickmarks(QSlider::Below);
+        slider->setTickPosition(QSlider::TicksBelow);
         slider->setFixedHeight(slider->sizeHint().height());
         QObject::connect(slider, SIGNAL(valueChanged(int)), 
                          (IntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
@@ -648,31 +684,43 @@ void MidiWidget::guiControlChanged() {
         }
       break;
     case GUIcomponentType_floatintslider: {
-        min = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->minValue();
-        max = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->maxValue();
+        min = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->minimum();
+        max = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->maximum();
         val = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->value();
-        QHBox *sliderNameBox = new QHBox(currentGUIcontrol);
+        QHBoxLayout *sliderNameBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderNameBox);
         sliderNameBox->setMargin(5);
-        new QWidget(sliderNameBox);
-        QLabel *nameLabel = new QLabel(sliderNameBox);
-        new QWidget(sliderNameBox);
-        QHBox *sliderLabels = new QHBox(currentGUIcontrol);
+        sliderNameBox->addStretch();
+
+	sliderNameBox->addWidget(nameLabel);
+        sliderNameBox->addStretch();
+        QHBoxLayout *sliderLabels = new QHBoxLayout();
+	currentGUIcontrol->addLayout(sliderLabels);
         qs.sprintf("Min: %d", min); 
-        minLabel = new QLabel(qs, sliderLabels);
-        new QWidget(sliderLabels);
+        minLabel = new QLabel(qs);
+	sliderLabels->addWidget(minLabel);
+        sliderLabels->addStretch();
         qs.sprintf(" %d ", val);
-        valueLabel = new QLabel(qs, sliderLabels);
-        nameLabel->setText(moduleListView->selectedItem()->text(0));
-        new QWidget(sliderLabels);
+        valueLabel = new QLabel(qs);
+	sliderLabels->addWidget(valueLabel);
+
+//         nameLabel->setText(moduleListView->selectedItem()->text(0));
+        sliderLabels->addStretch();
         qs.sprintf("Max: %d", max);
-        maxLabel = new QLabel(qs, sliderLabels);
+        maxLabel = new QLabel(qs);
+	sliderLabels->addWidget(maxLabel);
         nameLabel->setFixedHeight(nameLabel->sizeHint().height());
         valueLabel->setFixedHeight(valueLabel->sizeHint().height());
         minLabel->setFixedHeight(minLabel->sizeHint().height());
         maxLabel->setFixedHeight(maxLabel->sizeHint().height());
-        slider = new QSlider(min, max, 0, val, QSlider::Horizontal, currentGUIcontrol);  
+        slider = new QSlider(Qt::Horizontal);
+	slider->setRange(min, max);
+	slider->setPageStep(0);
+	slider->setValue(val);
+
+	currentGUIcontrol->addWidget(slider);
         slider->setTickInterval((abs(max) + abs(min)) / 10);
-        slider->setTickmarks(QSlider::Below);
+        slider->setTickPosition(QSlider::TicksBelow);
         slider->setFixedHeight(slider->sizeHint().height());
         QObject::connect(slider, SIGNAL(valueChanged(int)), 
                          (FloatIntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
@@ -681,17 +729,22 @@ void MidiWidget::guiControlChanged() {
         }
       break;
     case GUIcomponentType_checkbox: {
-        QHBox *checkNameBox = new QHBox(currentGUIcontrol);
-        new QWidget(checkNameBox);
+        QHBoxLayout *checkNameBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(checkNameBox);
+        checkNameBox->addStretch();
         checkNameBox->setMargin(5);
-        QLabel *nameLabel = new QLabel(checkNameBox);
-        new QWidget(checkNameBox);
-        nameLabel->setText(moduleListView->selectedItem()->text(0));
+
+	checkNameBox->addWidget(nameLabel);
+        checkNameBox->addStretch();
+
+//         nameLabel->setText(moduleListView->selectedItem()->text(0));
         nameLabel->setFixedHeight(nameLabel->sizeHint().height());
-        QHBox *checkHBox = new QHBox(currentGUIcontrol);
-        new QWidget(checkHBox);
-        currentCheck = new QCheckBox(checkHBox);
-        new QWidget(checkHBox);
+        QHBoxLayout *checkHBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(checkHBox);
+        checkHBox->addStretch();
+        currentCheck = new QCheckBox();
+	checkHBox->addWidget(currentCheck);
+        checkHBox->addStretch();
         currentCheck->setChecked(((MidiCheckBox *)midiGUIcomponent)->checkBox->isChecked());
         currentCheck->setFixedSize(currentCheck->sizeHint());
         QObject::connect(currentCheck, SIGNAL(toggled(bool)), 
@@ -701,30 +754,38 @@ void MidiWidget::guiControlChanged() {
         }
       break;
     case GUIcomponentType_pushbutton: {
-         QHBox *pushbuttonBox = new QHBox(currentGUIcontrol);
-         new QWidget(pushbuttonBox);
-         currentPushButton = new QPushButton(midiGUIcomponent->name(), pushbuttonBox);
-         new QWidget(pushbuttonBox);
+         QHBoxLayout *pushbuttonBox = new QHBoxLayout();
+	 currentGUIcontrol->addLayout(pushbuttonBox);
+         pushbuttonBox->addStretch();
+	 QPushButton *currentPushButton =
+	   new QPushButton(midiGUIcomponent->objectName());
+	 pushbuttonBox->addWidget(currentPushButton);
+         pushbuttonBox->addStretch();
          QObject::connect(currentPushButton, SIGNAL(clicked()), 
                           (MidiPushButton *)midiGUIcomponent, SLOT(buttonClicked()));
         }
       break;
     case GUIcomponentType_combobox: {
-        QHBox *comboNameBox = new QHBox(currentGUIcontrol);
-        new QWidget(comboNameBox);
+        QHBoxLayout *comboNameBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(comboNameBox);
+        comboNameBox->addStretch();
         comboNameBox->setMargin(5);
-        QLabel *nameLabel = new QLabel(comboNameBox);
-        new QWidget(comboNameBox);
-        nameLabel->setText(moduleListView->selectedItem()->text(0));
+
+	comboNameBox->addWidget(nameLabel);
+        comboNameBox->addStretch();
+        nameLabel->setText(midiGUIcomponent->objectName());
+//         nameLabel->setText(moduleListView->selectedItem()->text(0));
         nameLabel->setFixedHeight(nameLabel->sizeHint().height());
-        QHBox *comboHBox = new QHBox(currentGUIcontrol);
-        new QWidget(comboHBox);
-        comboBox = new QComboBox(comboHBox);
-        new QWidget(comboHBox);
-        for (l1 = 0; l1 < ((MidiComboBox *)midiGUIcomponent)->comboBox->count(); l1++) {
-          comboBox->insertItem(((MidiComboBox *)midiGUIcomponent)->comboBox->text(l1));
-        }
-        comboBox->setCurrentItem(((MidiComboBox *)midiGUIcomponent)->comboBox->currentItem());
+        QHBoxLayout *comboHBox = new QHBoxLayout();
+	currentGUIcontrol->addLayout(comboHBox);
+        comboHBox->addStretch();
+        comboBox = new QComboBox();
+	comboHBox->addWidget(comboBox);
+        comboHBox->addStretch();
+        for (l1 = 0; l1 < ((MidiComboBox *)midiGUIcomponent)->comboBox->count(); l1++)
+          comboBox->insertItem(l1, ((MidiComboBox *)midiGUIcomponent)->comboBox->itemText(l1));
+
+        comboBox->setCurrentIndex(((MidiComboBox *)midiGUIcomponent)->comboBox->currentIndex());
         comboBox->setFixedSize(comboBox->sizeHint());
         QObject::connect(comboBox, SIGNAL(highlighted(int)), 
                          (MidiComboBox *)midiGUIcomponent, SLOT(updateValue(int)));
@@ -735,19 +796,39 @@ void MidiWidget::guiControlChanged() {
     default:
       break;
   }
-  currentGUIcontrol->show();
+
   firstBindingMightHaveChanged = true;
 }
 
-void MidiWidget::midiControlChanged() {
-  
+void MidiWidget::midiControlChanged(const QItemSelection &selected,
+				    const QItemSelection &deselected)
+{
+  selectedController = MidiControllerKey();
+  selectedControl = -1;
+  bool bindEnable = false,
+    clearEnable = false;
+
+  if (selected.indexes().count() > 0) {
+    const QModelIndex mi = selected.indexes().at(0);
+    std::cout << __PRETTY_FUNCTION__ << ":" << __LINE__ << ":" << selected.indexes().count() << ":" << deselected.indexes().count() << std::endl;
+    const MidiController *mc = (const MidiController *)mi.internalPointer();
+    if (mc) {
+      selectedController = ((const MidiController *)mi.internalPointer())->getKey();
+      selectedControl = mi.row();
+      clearEnable = true;
+    } else {
+      selectedController = midiControllerList.at(mi.row()).getKey();
+      bindEnable = true;
+    }
+  }
+  bindButton->setEnabled(bindEnable);
+  clearButton->setEnabled(clearEnable);
   firstBindingMightHaveChanged = true;
 }
 
 void MidiWidget::updateSliderValue(int p_value) {
 
   QString qs;
-  float log_val;
   
   if (logCheck->isChecked()) {
     value = exp((float)p_value / SLIDER_SCALE);
@@ -783,16 +864,16 @@ void MidiWidget::setLogMode(bool on) {
   if (on) {
     log_min = (minValue > 1e-4) ? minValue : 1e-4;
     log_val = (val > 1e-4) ? val : 1e-4;
-    slider->setMinValue(int(SLIDER_SCALE * log(log_min)));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * log(log_min)));
-    slider->setMaxValue(int(SLIDER_SCALE * log(maxValue)));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * log(maxValue)));
+    slider->setMinimum(int(SLIDER_SCALE * log(log_min)));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMinimum(int(SLIDER_SCALE * log(log_min)));
+    slider->setMaximum(int(SLIDER_SCALE * log(maxValue)));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMaximum(int(SLIDER_SCALE * log(maxValue)));
     slider->setValue(int(SLIDER_SCALE * log(log_val)));
   } else {
-    slider->setMinValue(int(SLIDER_SCALE * minValue));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * minValue));
-    slider->setMaxValue(int(SLIDER_SCALE * maxValue));  
-    ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * maxValue));
+    slider->setMinimum(int(SLIDER_SCALE * minValue));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMinimum(int(SLIDER_SCALE * minValue));
+    slider->setMaximum(int(SLIDER_SCALE * maxValue));  
+    ((MidiSlider *)midiGUIcomponent)->slider->setMaximum(int(SLIDER_SCALE * maxValue));
     slider->setValue(int(SLIDER_SCALE * val));   
   }
 }
@@ -807,12 +888,12 @@ void MidiWidget::setNewMin() {
   minLabel->setText(qs);
   ((MidiSlider *)midiGUIcomponent)->minLabel->setText(qs);
   if (logCheck->isChecked()) {
-    slider->setMinValue(int(SLIDER_SCALE * log(minValue)));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * log(minValue)));
+    slider->setMinimum(int(SLIDER_SCALE * log(minValue)));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMinimum(int(SLIDER_SCALE * log(minValue)));
     slider->setValue(int(SLIDER_SCALE * log(value)));
   } else {
-    slider->setMinValue(int(SLIDER_SCALE * minValue));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * minValue));
+    slider->setMinimum(int(SLIDER_SCALE * minValue));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMinimum(int(SLIDER_SCALE * minValue));
     slider->setValue(int(SLIDER_SCALE * value));
   }
   midiGUIcomponent->controllerOK = false;
@@ -828,12 +909,12 @@ void MidiWidget::setNewMax() {
   maxLabel->setText(qs);
   ((MidiSlider *)midiGUIcomponent)->maxLabel->setText(qs);
   if (logCheck->isChecked()) {
-    slider->setMaxValue(int(SLIDER_SCALE * log(maxValue)));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * log(maxValue)));
+    slider->setMaximum(int(SLIDER_SCALE * log(maxValue)));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMaximum(int(SLIDER_SCALE * log(maxValue)));
     slider->setValue(int(SLIDER_SCALE * log(value)));
   } else {
-    slider->setMaxValue(int(SLIDER_SCALE * maxValue));
-    ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * maxValue));
+    slider->setMaximum(int(SLIDER_SCALE * maxValue));
+    ((MidiSlider *)midiGUIcomponent)->slider->setMaximum(int(SLIDER_SCALE * maxValue));
     slider->setValue(int(SLIDER_SCALE * value));
   }
   midiGUIcomponent->controllerOK = false;
@@ -851,20 +932,20 @@ void MidiWidget::setInitialMinMax() {
   qs.sprintf("Min: %7.3f", minValue);
   minLabel->setText(qs);
   ((MidiSlider *)midiGUIcomponent)->minLabel->setText(qs);
-  slider->setMinValue(int(SLIDER_SCALE * minValue));
-  ((MidiSlider *)midiGUIcomponent)->slider->setMinValue(int(SLIDER_SCALE * minValue));
+  slider->setMinimum(int(SLIDER_SCALE * minValue));
+  ((MidiSlider *)midiGUIcomponent)->slider->setMinimum(int(SLIDER_SCALE * minValue));
   qs.sprintf("Min: %7.3f", maxValue); 
   maxLabel->setText(qs);
   ((MidiSlider *)midiGUIcomponent)->maxLabel->setText(qs);
-  slider->setMaxValue(int(SLIDER_SCALE * maxValue));
-  ((MidiSlider *)midiGUIcomponent)->slider->setMaxValue(int(SLIDER_SCALE * maxValue));
+  slider->setMaximum(int(SLIDER_SCALE * maxValue));
+  ((MidiSlider *)midiGUIcomponent)->slider->setMaximum(int(SLIDER_SCALE * maxValue));
   slider->setValue(int(SLIDER_SCALE * value));
   midiGUIcomponent->controllerOK = false;
 }  
 
 void MidiWidget::updateComboBox(int p_value) {
 
-  comboBox->setCurrentItem(p_value);  
+  comboBox->setCurrentIndex(p_value);  
 }
 
 void MidiWidget::updateCheckBox(bool on) {
@@ -872,39 +953,21 @@ void MidiWidget::updateCheckBox(bool on) {
   currentCheck->setChecked(on);  
 }
 
-int MidiWidget::setSelectedController(MidiController *midiController) {
-
-  if (midiControllerListView->currentItem() != midiController->listViewItem) {
-    midiControllerListView->setSelected(midiController->listViewItem, true);
-    midiControllerListView->ensureItemVisible(midiController->listViewItem);
-    findFirstBinding(midiController);
-  } else {
-    if (firstBindingMightHaveChanged) {
-      findFirstBinding(midiController);
-      firstBindingMightHaveChanged = false; 
+void MidiWidget::setSelectedController(MidiControllerKey mck)
+{
+  if (!(mck == selectedController)) {
+    typeof(midiControllerList.constEnd()) c
+      = qBinaryFind(midiControllerList.constBegin(),
+		    midiControllerList.constEnd(), mck);
+    if (c == midiControllerList.end()) {
+      std::cerr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << std::endl;
+      return;
     }
+    midiControllerListView->selectionModel()->
+      select(midiControllerModel.
+	     index(&*c - midiControllerList.data(), 0),
+	     QItemSelectionModel::ClearAndSelect);
   }
-  return 0;
-}
-
-int MidiWidget::findFirstBinding(MidiController *midiController) {
-  
-  int l1, l2, l3;
-  QListViewItem *tmp;
-  Module *module;
-
-  for (l1 = 0; l1 < synthdata->moduleList.count(); l1++) {
-    module = (Module *)synthdata->moduleList.at(l1);
-    for (l2 = 0; l2 < module->configDialog->midiGUIcomponentList.count(); l2++) {
-      if (module->configDialog->midiGUIcomponentList.at(l2)->midiControllerList.contains(midiController)) {
-        tmp = module->configDialog->midiGUIcomponentList.at(l2)->listViewItem;
-        moduleListView->setSelected(tmp, true);
-        moduleListView->ensureItemVisible(tmp);
-        return(0);
-      }
-    }
-  }
-  return 0;
 }
 
 void MidiWidget::updateGuiComponent() {
@@ -913,12 +976,12 @@ void MidiWidget::updateGuiComponent() {
 
   if (followConfig) {
     guiComponent = (MidiGUIcomponent *)sender();
-    if (guiComponent->listViewItem) {
-      if (moduleListView->currentItem() != guiComponent->listViewItem) {
-        moduleListView->setSelected(guiComponent->listViewItem, true);
-        moduleListView->ensureItemVisible(guiComponent->listViewItem);
-      }
-    }
+//     if (guiComponent->listViewItem) {
+// //       if (moduleListView->currentItem() != guiComponent->listViewItem) {
+// //         moduleListView->setSelected(guiComponent->listViewItem, true);
+// //         moduleListView->ensureItemVisible(guiComponent->listViewItem);
+// //       }
+//     }
   }
 }
 

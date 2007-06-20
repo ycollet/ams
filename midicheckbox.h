@@ -2,11 +2,8 @@
 #define MIDICHECKBOX_H
 
 #include <qcheckbox.h>
-#include <qhbox.h>
 #include <qlabel.h>
-#include <qstrlist.h>
 #include "synthdata.h"
-#include "midicontroller.h"
 #include "midiguicomponent.h"
 
 /**
@@ -25,7 +22,7 @@ public:
   QCheckBox *checkBox;
     
 public:
-  MidiCheckBox(QObject *parentModule, float value, QWidget * parent, const char * name=0, SynthData *p_synthdata=0, 
+  MidiCheckBox(Module *parentModule, float value, QWidget * parent, const QString &name, 
                float *p_valueRef=0);
   ~MidiCheckBox();
   virtual void setMidiValue(int value);

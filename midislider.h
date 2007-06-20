@@ -1,35 +1,24 @@
 #ifndef MIDISLIDER_H
 #define MIDISLIDER_H
 
-#include <qslider.h>
-#include <qhbox.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include "synthdata.h"
-#include "midicontroller.h"
-#include "midiguicomponent.h"
+#include "midisliderbase.h"
 
 /**
   *@author Matthias Nagorni
   */
 
-#define SLIDER_SCALE 16384.0
-
-class MidiSlider : public MidiGUIcomponent {
-
+class MidiSlider : public MidiSliderBase {
 Q_OBJECT
 
 public:
   bool isLog, isMaster;
-  QSlider *slider;
-  QLabel *minLabel, *maxLabel, *valueLabel;
   float *valueRef;
   float min, max, initial_min, initial_max;
   
 public:
-  MidiSlider(QObject *parentModule, float minValue, float maxValue, float pageStep, float value, QSlider::Orientation orientation,
-             QWidget * parent, const char * name=0, SynthData *p_synthdata=0, float *valueRef=0, bool p_isLog=false);
-  ~MidiSlider();
+  MidiSlider(Module *parentModule, float minValue, float maxValue, float pageStep, float value, Qt::Orientation orientation,
+             QWidget * parent, const QString &name, float *valueRef=0, bool p_isLog=false);
+
   virtual void setMidiValue(int value);
   virtual int getMidiValue();
   float getValue();
@@ -40,7 +29,6 @@ signals:
 	
 public slots:
   void updateValue(int);
-  void updateSlider(int);
   void setLogMode(bool on);
   void setNewMin();
   void setNewMax();

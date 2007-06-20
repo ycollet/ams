@@ -1,38 +1,36 @@
 #include <qslider.h>
-#include <qhbox.h>
-#include <qvbox.h>
 #include <qlabel.h>
 #include <stdio.h>
 #include <math.h>
-#include <qstrlist.h>
 #include "midicombobox.h"
 #include "synthdata.h"
 #include "midiwidget.h"
 #include "midiguicomponent.h"
 
-MidiComboBox::MidiComboBox(QObject *parentModule, int value, QWidget * parent, const char * name, SynthData
-                           *p_synthdata, int *p_valueRef, QStrList *itemNames)
-                           : MidiGUIcomponent(parentModule, p_synthdata, parent, name) {
+MidiComboBox::MidiComboBox(Module *parentModule, int value, QWidget * parent,
+			   const QString &name, int *p_valueRef, QStringList *itemNames)
+  : MidiGUIcomponent(parentModule, parent, name) {
 
   QString qs;
 
   componentType = GUIcomponentType_combobox;
   valueRef = p_valueRef;
-  setSpacing(5);
-  setMargin(5);
-  new QWidget(this);
-  QVBox *comboFrame = new QVBox(this);
-  comboFrame->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed));
-  QLabel *nameLabel = new QLabel(comboFrame);
-  if (name) {
-    nameLabel->setFixedHeight(nameLabel->sizeHint().height());
+
+  QVBoxLayout *comboFrame = new QVBoxLayout(this);
+  comboFrame->setSpacing(5);
+  comboFrame->setMargin(5);
+
+  QLabel *nameLabel = new QLabel();
+  //!!  if (name)
     nameLabel->setText(name);
-  }
+  comboFrame->addWidget(nameLabel);
   nameLabel->setFixedHeight(nameLabel->sizeHint().height());
-  comboBox = new QComboBox(comboFrame);  
-  comboBox->insertStrList(itemNames);
+  comboBox = new QComboBox();  
+  comboBox->addItems(*itemNames);
   comboBox->setFixedSize(comboBox->sizeHint());
-  QObject::connect(comboBox, SIGNAL(highlighted(int)), this, SLOT(updateValue(int)));
+  comboFrame->addWidget(comboBox);
+  QObject::connect(comboBox, SIGNAL(activated(int)),
+		   this, SLOT(updateValue(int)));
   updateValue(value);
 }
 
@@ -41,22 +39,20 @@ MidiComboBox::~MidiComboBox(){
 
 void MidiComboBox::setMidiValue(int value) {
 
-  if (!controllerOK) {
+  if (!controllerOK)
     controllerOK = abs(getMidiValue() - value) < 4;
-  }
-  if (controllerOK) {
-    if (midiSign == 1) {
-      comboBox->setCurrentItem(int((float)(comboBox->count()-1) / 127.0 * (float)value));
-    } else {
-      comboBox->setCurrentItem(int((float)(comboBox->count()-1) / 127.0 * (float)(127-value)));
-    }
-  }
+  else
+    if (controllerOK)
+      if (midiSign == 1)
+	comboBox->setCurrentIndex(int((float)(comboBox->count()-1) / 127.0 * (float)value));
+      else
+	comboBox->setCurrentIndex(int((float)(comboBox->count()-1) / 127.0 * (float)(127-value)));
 }
 
 void MidiComboBox::updateValue(int value) {
 
   *valueRef = value;    
-  comboBox->setCurrentItem(value);
+  comboBox->setCurrentIndex(value);
   emit guiComponentTouched();
 }
 
@@ -64,6 +60,6 @@ int MidiComboBox::getMidiValue() {
 
   int x;  
  
-  x = rint(127.0 * comboBox->currentItem() / (comboBox->count()-1));
+  x = (int)rint(127.0 * comboBox->currentIndex() / (comboBox->count()-1));
   return(x);
 }

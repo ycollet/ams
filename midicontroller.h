@@ -3,31 +3,120 @@
 
 #include <qobject.h>
 #include <qlist.h>
-#include <qlistview.h>
+#include <alsa/asoundlib.h>
+#include <iostream>
 
-/**
-  *@author Matthias Nagorni
-  */
+
+class MidiControllerContext: public QObject  {
+Q_OBJECT
     
-class MidiController : public QObject  {
-    
-  Q_OBJECT
-    
-  public:
-    int type;
-    int ch;
-    int param;
-    QListViewItem *listViewItem;
+public:
+  QList <class MidiGUIcomponent *> mgcList;
           
-  public:
-    MidiController();
-    MidiController(int p_type, int p_ch, int p_param);
-    ~MidiController();
-    void sendMidiValue(int value);
-    void setListViewItem(QListViewItem *p_listViewItem);
+public:
+  MidiControllerContext() {}
 
-  signals:
-    void midiValueChanged(int);
+  void sendMidiValue(int value) {
+    emit midiValueChanged(value);
+  }
+
+signals:
+  void midiValueChanged(int);
 };
                               
+class MidiControllerKey {
+
+public:
+  static int mkKey(unsigned char type, unsigned char ch, unsigned int param) {
+    int key = ((int)type << 28) | (((int)ch & 0xF) << 24) | ((param & 0xFF) << 16) | 0xFFFF;
+    return key;
+  }
+
+protected:
+  int key;
+
+public:
+  bool isValid() {
+    return !(*this == MidiControllerKey());
+  }
+  int getKey() const {
+    return key;
+  }
+  unsigned char type() const {
+    return (key >> 28) & 0xF;
+  }
+  unsigned char ch() const {
+    return (key & 0x0F000000) >> 24;
+  }
+  unsigned int param() const {
+    return (key & 0x00FF0000) >> 16;
+  }
+
+  MidiControllerKey()
+    : key(mkKey(-1, -1, -1))
+  {}
+  MidiControllerKey(unsigned char type, unsigned char ch, unsigned int param)
+    : key(mkKey(type, ch, param))
+  {}
+  MidiControllerKey(snd_seq_event_t *ev)
+    : key(mkKey(ev->type, ev->data.control.channel,
+		ev->type == SND_SEQ_EVENT_PITCHBEND  ?
+		0  :  ev->data.control.param))
+  {}
+  MidiControllerKey(const MidiControllerKey &other)
+    : key(other.key)
+  {} 
+  MidiControllerKey(MidiControllerKey &other)
+    : key(other.key)
+  {} 
+  MidiControllerKey(int key)
+    : key(key | 0xFFFF)
+  {} 
+
+  bool operator == (const MidiControllerKey &other ) const {
+    return key == other.key;
+  }
+  bool operator < (const MidiControllerKey &other ) const {
+    return key < other.key;
+  }
+};
+                              
+class MidiController: public MidiControllerKey {
+
+public:
+  MidiControllerContext *context;
+
+public:
+  MidiController()
+    : context(NULL)
+  {}
+  MidiController(unsigned char type, unsigned char ch, unsigned int param)
+    : MidiControllerKey(type, ch, param)
+    , context(NULL)
+  {}
+  MidiController(snd_seq_event_t *ev)
+    : MidiControllerKey(ev)
+    , context(NULL)
+  {}
+  MidiController(const MidiController &other)
+    : MidiControllerKey(other)
+    , context(other.context)
+  {} 
+  MidiController(MidiController &other)
+    : MidiControllerKey(other)
+    , context(other.context)
+  {
+    //    std::cout << __PRETTY_FUNCTION__ << " " << other.context << " " << context << std::endl;
+    other.context = NULL;
+  } 
+  MidiController(int key)
+    : MidiControllerKey(key)
+    , context(NULL)
+  {} 
+
+  ~MidiController() {
+    delete context;
+  }
+};
+
 #endif

@@ -2,11 +2,8 @@
 #define MIDIPUSHBUTTON_H
 
 #include <qpushbutton.h>
-#include <qhbox.h>
 #include <qlabel.h>
-#include <qstrlist.h>
 #include "synthdata.h"
-#include "midicontroller.h"
 #include "midiguicomponent.h"
 
 /**
@@ -23,7 +20,7 @@ public:
   QPushButton *pushButton;
     
 public:
-  MidiPushButton(QObject *parentModule, QWidget * parent, const char * name=0, SynthData *p_synthdata=0);
+  MidiPushButton(Module *parentModule, const QString &name);
   ~MidiPushButton();
   virtual void setMidiValue(int value);
 
