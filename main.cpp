@@ -18,6 +18,20 @@ class ScrollArea: public QScrollArea {
   }
 };
 
+class MainWindow: public QMainWindow {
+  //  Q_OBJECT
+
+public:
+  MainWindow() {
+    setWindowTitle("AlsaModularSynth");
+  }
+
+protected:
+  void closeEvent(QCloseEvent */*event*/) {
+    qApp->quit();
+  }
+};
+
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},
          {"frag", 1, 0, 'f'},   
@@ -33,14 +47,12 @@ static struct option options[] =
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
          {0, 0, 0, 0}};
-#include <iostream>
-using namespace std;
 
 QTextStream StdErr(stderr);
+QTextStream StdOut(stdout);
 
 int main(int argc, char *argv[])  
 {
-
   char aboutText[] = "AlsaModularSynth " AMS_VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
@@ -48,9 +60,9 @@ int main(int argc, char *argv[])
 		     "additional programming:\n"
 		     "2007 Malte Steiner\n"
 		     "2007 Karsten Wiese\n";
-  new QApplication(argc, argv);
-  QMainWindow *top = new QMainWindow();
-  top->setWindowTitle("AlsaModularSynth");
+  QApplication app(argc, argv);
+  MainWindow top;
+
   int getopt_return;
   int option_index; 
   int poly = 1;
@@ -129,9 +141,9 @@ int main(int argc, char *argv[])
         break;
     }
   }
-  cout << "ScrollArea *scrollArea = new ScrollArea();" << endl;
+  StdOut << "ScrollArea *scrollArea = new ScrollArea();" << endl;
   ScrollArea *scrollArea = new ScrollArea();
-  cout << top << ":" << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
+  StdOut << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
 
   ModularSynth *modularSynth =
     new ModularSynth(scrollArea, pcmname, fsamp, frsize, nfrags,
@@ -142,17 +154,17 @@ int main(int argc, char *argv[])
 
   
 
-  QMenu *filePopup = top->menuBar()->addMenu("&File");
+  QMenu *filePopup = top.menuBar()->addMenu("&File");
   //  top->menuBar()->insertSeparator();
-  QMenu *synthesisPopup = top->menuBar()->addMenu("&Synthesis");
+  QMenu *synthesisPopup = top.menuBar()->addMenu("&Synthesis");
   //  top->menuBar()->insertSeparator();
-  QMenu *modulePopup = top->menuBar()->addMenu("&Module");
+  QMenu *modulePopup = top.menuBar()->addMenu("&Module");
   QMenu *newModulePopup = modulePopup->addMenu("&New");
   modularSynth->contextMenu = newModulePopup;
   //  top->menuBar()->insertSeparator();
-  QMenu *midiMenu = top->menuBar()->addMenu("&View");
+  QMenu *midiMenu = top.menuBar()->addMenu("&View");
   //  top->menuBar()->insertSeparator();
-  QMenu *aboutMenu = top->menuBar()->addMenu("&About");
+  QMenu *aboutMenu = top.menuBar()->addMenu("&About");
   filePopup->addAction("&New", modularSynth, SLOT(clearConfig()));
   filePopup->addSeparator();
   filePopup->addAction("&Load Patch", modularSynth, SLOT(load()));
@@ -230,12 +242,12 @@ int main(int argc, char *argv[])
   midiMenu->addAction("Parameter View", modularSynth, SLOT(displayParameterView()));
   midiMenu->addAction("Preferences", modularSynth, SLOT(displayPreferences()));
   aboutMenu->addAction("About AlsaModularSynth", modularSynth, SLOT(displayAbout()));
-  top->setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-  top->setCentralWidget(scrollArea);
+  top.setGeometry(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+  top.setCentralWidget(scrollArea);
   if (noGui)
-    top->hide();
+    top.hide();
   else
-    top->show();
+    top.show();
 
   QObject::connect(qApp, SIGNAL(aboutToQuit()), modularSynth, SLOT(cleanUpSynth()));
 
