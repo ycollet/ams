@@ -605,7 +605,7 @@ void ModularSynth::stopSynth()
 void ModularSynth::newM_seq(int seqLen) {
 
   M_seq *m = new M_seq(seqLen, this, "Sequencer");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_seq_8() {
@@ -636,7 +636,7 @@ void ModularSynth::newM_seq_32() {
 void ModularSynth::newM_vcorgan(int oscCount) {
  
   M_vcorgan *m = new M_vcorgan(oscCount, this, "VC_Organ");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcorgan_4() {
@@ -658,7 +658,7 @@ void ModularSynth::newM_dynamicwaves(int oscCount) {
  
   M_dynamicwaves *m = new M_dynamicwaves(oscCount, this, "DynamicWaves");
   synthdata->listM_dynamicwaves.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_dynamicwaves_4() {
@@ -680,137 +680,137 @@ void ModularSynth::newM_mcv() {
 
   M_mcv *m = new M_mcv(this, "MCV");
   synthdata->listM_mcv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_advmcv() {
 
   M_advmcv *m = new M_advmcv(this, "Advanced MCV");
   synthdata->listM_advmcv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_scmcv() {
 
   M_scmcv *m = new M_scmcv(this, "Scala MCV");
   synthdata->listM_scmcv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_scmcv(QString *p_scalaName) {
 
   M_scmcv *m = new M_scmcv(this, "Scala MCV", p_scalaName);
   synthdata->listM_scmcv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_env() {
 
   M_env *m = new M_env(this, "ENV");
   synthdata->listM_env.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv() {
 
   M_vcenv *m = new M_vcenv(this, "VC ENV");
   synthdata->listM_vcenv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv2() {
 
   M_vcenv2 *m = new M_vcenv2(this, "VC ENV II");
   synthdata->listM_vcenv2.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcdoubledecay() {
 
   M_vcdoubledecay *m = new M_vcdoubledecay(this, "VC Double Decay");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcpanning() {
 
   M_vcpanning *m = new M_vcpanning(this, "VC Panning");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_advenv() {
 
   M_advenv *m = new M_advenv(this, "Advanced ENV");
   synthdata->listM_advenv.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vco() {
 
   M_vco *m = new M_vco(this, "VCO");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 void ModularSynth::newM_vco2() {
 
   M_vco2 *m = new M_vco2(this, "VCO2");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vca_lin() {
 
   M_vca *m = new M_vca(false, this, "Lin VCA");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vca_exp() {
 
   M_vca *m = new M_vca(true, this, "Exp VCA");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_lfo() {
 
   M_lfo *m = new M_lfo(this, "LFO");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_mphlfo() {
 
   M_mphlfo *m = new M_mphlfo(this, "Multiphase LFO");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_noise() {
 
   M_noise *m = new M_noise(this, "Noise");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 void ModularSynth::newM_noise2() {
 
   M_noise2 *m = new M_noise2(this, "Noise2");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 void ModularSynth::newM_ringmod() {
 
   M_ringmod *m = new M_ringmod(this, "Ringmod");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_inv() {
 
   M_inv *m = new M_inv(this, "INV");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_amp() {
 
   M_amp *m = new M_amp(this, "AMP");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_ad(int outCount) {
 
   M_ad *m = new M_ad(outCount, this, "Analogue Driver");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_ad_2() { 
@@ -831,73 +831,73 @@ void ModularSynth::newM_ad_6() {
 void ModularSynth::newM_vquant() {
 
   M_vquant *m = new M_vquant(this, "Quantizer 2");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_conv() {
 
   M_conv *m = new M_conv(this, "Converter");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_cvs() {
 
   M_cvs *m = new M_cvs(this, "CV Source");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_sh() {
 
   M_sh *m = new M_sh(this, "Sample/Hold");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcswitch() {
 
   M_vcswitch *m = new M_vcswitch(this, "VC_Switch");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_slew() {
 
   M_slew *m = new M_slew(this, "Slew Limiter");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_quantizer() {
 
   M_quantizer *m = new M_quantizer(this, "Quantizer");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_scquantizer(QString *p_scalaName) {
 
   M_scquantizer *m = new M_scquantizer(this, "Scala Quant", p_scalaName);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_scquantizer() {
 
   M_scquantizer *m = new M_scquantizer(this, "Scala Quant");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_delay() {
 
   M_delay *m = new M_delay(this, "Delay");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_mix(int in_channels) {
 
   M_mix *m = new M_mix(in_channels, this, "Mixer");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_function(int functionCount) {
 
   M_function *m = new M_function(functionCount, this, "Function");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_function_1() {
@@ -918,7 +918,7 @@ void ModularSynth::newM_function_4() {
 void ModularSynth::newM_stereomix(int in_channels) {
 
   M_stereomix *m = new M_stereomix(in_channels, this, "Stero Mix");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_mix_2() {
@@ -957,21 +957,21 @@ void ModularSynth::newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspa
 
   qs.sprintf("%s", synthdata->ladspaLib.at(p_ladspaDesFuncIndex).desc.at(n)->Name);
   M_ladspa *m = new M_ladspa(this, "M_ladspa", p_ladspaDesFuncIndex, n, p_newLadspaPoly, p_extCtrlPorts);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_wavout() {
 
   M_wavout *m = new M_wavout(this, "WAV Out");
   synthdata->wavoutModuleList.append(m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_midiout() {
 
   M_midiout *m = new M_midiout(this, "Midi Out");
   synthdata->midioutModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_pcmout()
@@ -983,7 +983,7 @@ void ModularSynth::newM_pcmout()
     if (k >= 0) 
     {
         M = new M_pcmout (this, "PCM Out", 2 * k);
-        initNewModule ((Module *)M);
+        initNewModule (M);
         synthdata->set_play_mod (k, M);
     } 
     else fprintf (stderr, "All available output ports are in use\n");
@@ -998,7 +998,7 @@ void ModularSynth::newM_pcmin()
     if (k >= 0) 
     {
         M = new M_pcmin (this, "PCM In", 2 * k);
-        initNewModule ((Module *)M);
+        initNewModule (M);
         synthdata->set_capt_mod (k, M);
     } 
     else fprintf (stderr, "All available input ports are in use\n");
@@ -1008,7 +1008,7 @@ void ModularSynth::newM_scope() {
 
   M_scope *m = new M_scope(this, "Scope");
   synthdata->scopeModuleList.append((QObject *)m);
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_spectrum() {
@@ -1017,13 +1017,13 @@ void ModularSynth::newM_spectrum() {
 #ifdef OUTDATED_CODE
   synthdata->spectrumModuleList.append((QObject *)m);
 #endif
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 
 void ModularSynth::newM_vcf() {
  
   M_vcf *m = new M_vcf(this, "VCF");
-  initNewModule((Module *)m);
+  initNewModule(m);
 }
 //==================================================== End of adding module functions
 
