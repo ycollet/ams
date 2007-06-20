@@ -8,8 +8,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -20,11 +20,11 @@
 #include "m_noise.h"
 #include "port.h"
 
-M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(3, parent, name, p_synthdata) {
+M_noise::M_noise(QWidget* parent, const char *name) 
+              : Module(3, parent, name) {
 
   QString qs;
-  int l1, l2;
+  int l2;
   long t;
 
   M_type = M_type_noise;
@@ -35,20 +35,20 @@ M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata)
   randmax = 2.0 / (double)RAND_MAX;
   
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE_WIDTH, MODULE_NOISE_HEIGHT);
-  port_white = new Port("White", PORT_OUT, 0, this, synthdata);          
+  port_white = new Port("White", PORT_OUT, 0, this);          
   port_white->move(width() - port_white->width(), 35);
   port_white->outType = outType_audio;
   portList.append(port_white);
-  port_pink = new Port("Pink", PORT_OUT, 1, this, synthdata);          
+  port_pink = new Port("Pink", PORT_OUT, 1, this);          
   port_pink->move(width() - port_pink->width(), 55);
   port_pink->outType = outType_audio;
   portList.append(port_pink);
-  port_random = new Port("Random", PORT_OUT, 2, this, synthdata);          
+  port_random = new Port("Random", PORT_OUT, 2, this);          
   port_random->move(width() - port_random->width(), 75);
   port_random->outType = outType_audio;
   portList.append(port_random);
   qs.sprintf("Noise ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 10, rate, "Random Rate", &rate);
   configDialog->addSlider(0, 1, level, "Random Level", &level);
   r = 0;
@@ -57,18 +57,6 @@ M_noise::M_noise(QWidget* parent, const char *name, SynthData *p_synthdata)
   }
   t = time(NULL) % 1000000;
   srand(abs(t - 10000 * (t % 100)));
-}
-
-M_noise::~M_noise() {
-
-}
-
-void M_noise::noteOnEvent(int osc) {
-
-}
-
-void M_noise::noteOffEvent(int osc) {
-
 }
 
 void M_noise::generateCycle() {

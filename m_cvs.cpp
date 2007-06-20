@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,8 +19,8 @@
 #include "m_cvs.h"
 #include "port.h"
 
-M_cvs::M_cvs(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(MODULE_CVS_CV_COUNT, parent, name, p_synthdata) {
+M_cvs::M_cvs(QWidget* parent, const char *name) 
+              : Module(MODULE_CVS_CV_COUNT, parent, name) {
 
   QString qs;
   int l1;
@@ -29,13 +29,13 @@ M_cvs::M_cvs(QWidget* parent, const char *name, SynthData *p_synthdata)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_CVS_WIDTH, MODULE_CVS_HEIGHT);
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     qs.sprintf("CV %d", l1);
-    port_cv_out[l1] = new Port(qs, PORT_OUT, l1, this, synthdata);          
+    port_cv_out[l1] = new Port(qs, PORT_OUT, l1, this);          
     port_cv_out[l1]->move(width() - port_cv_out[l1]->width(), 35 + 20 * l1);
     port_cv_out[l1]->outType = outType_audio;
     portList.append(port_cv_out[l1]);
   }
   qs.sprintf("CVS ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     cv[l1] = 0;
     cv_fine[l1] = 0;

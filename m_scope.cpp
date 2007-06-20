@@ -7,8 +7,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -17,16 +15,20 @@
 #include <qtimer.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midislider.h"
+#include "midicombobox.h"
+#include "midipushbutton.h"
 #include "m_scope.h"
 #include "module.h"
+#include "scopescreen.h"
 #include "port.h"
 
 
-M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(0, parent, name, p_synthdata) {
+M_scope::M_scope(QWidget* parent, const char *name) 
+              : Module(0, parent, name) {
 
   QString qs;
-  QHBox *hbox;
+  QHBoxLayout *hbox;
 
   M_type = M_type_scope;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCOPE_WIDTH, MODULE_SCOPE_HEIGHT);
@@ -34,16 +36,16 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
   agc = 0;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   qs.sprintf("Scope ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
   mode = 0;
   edge = 0;
@@ -51,53 +53,55 @@ M_scope::M_scope(QWidget* parent, const char *name, SynthData *p_synthdata)
   triggerThrs = 0;
   zoom = 1;
   timeScale = 100;
-  QVBox *scopeTab = new QVBox(configDialog->tabWidget);
-  scopeTab->setMinimumHeight(200);
+  configDialog->setAddStretch(-1);
+  QVBoxLayout *scopeTab = configDialog->addVBoxTab("Scope");
+  configDialog->setAddStretch(-1);
+  //  scopeTab->setMinimumHeight(200);
   configDialog->addScopeScreen(&timeScale, &mode, &edge, &triggerMode, 
                                &triggerThrs, &zoom, scopeTab);
-  configDialog->addTab(scopeTab, "Scope");
-  //QVBox *paramTab = new QVBox(configDialog->tabWidget);
-  QVBox *triggerTab = new QVBox(configDialog->tabWidget);
+
   configDialog->addSlider(10, 1000, timeScale, "Time Scale", &timeScale, false, scopeTab);
   QObject::connect(configDialog->midiSliderList.at(0), SIGNAL(valueChanged(int)),
                    this, SLOT(updateTimeScale(int)));
   configDialog->addSlider(0.1, 10, zoom, "Gain", &zoom, false, scopeTab);
   QObject::connect(configDialog->midiSliderList.at(1), SIGNAL(valueChanged(int)),
                    this, SLOT(updateZoom(int)));
+  QVBoxLayout *triggerTab = configDialog->addVBoxTab("Trigger");
+  configDialog->setAddStretch(1);
   hbox = configDialog->addHBox(triggerTab);
-  QStrList *triggerModeNames = new QStrList(true);
-  triggerModeNames->append("Continuous");
-  triggerModeNames->append("Triggered");
-  triggerModeNames->append("Single");
-  configDialog->addComboBox(triggerMode, "Refresh Mode", &triggerMode, triggerModeNames->count(), triggerModeNames, hbox);
+  configDialog->setAddStretch(0);
+  QStringList triggerModeNames;
+  triggerModeNames << "Continuous" << "Triggered" << "Single";
+  configDialog->addComboBox(triggerMode, "Refresh Mode", &triggerMode, triggerModeNames.count(), &triggerModeNames, hbox);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateTriggerMode(int)));
-  QStrList *edgeNames = new QStrList(true);
-  edgeNames->append("Rising");
-  edgeNames->append("Falling");
-  configDialog->addComboBox(edge, "Trigger Edge", &edge, edgeNames->count(), edgeNames, hbox);
+  QStringList edgeNames;
+  edgeNames << "Rising" << "Falling";
+  configDialog->addComboBox(edge, "Trigger Edge", &edge, edgeNames.count(), &edgeNames, hbox);
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateEdge(int)));
+  configDialog->setAddStretch(1);
   configDialog->addSlider(-1, 1, triggerThrs, "Trigger Level", &triggerThrs, false, triggerTab);
   QObject::connect(configDialog->midiSliderList.at(2), SIGNAL(valueChanged(int)),
                    this, SLOT(updateTriggerThrs(int)));
   configDialog->addPushButton("Trigger", triggerTab);
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
                    configDialog->scopeScreenList.at(0), SLOT(singleShot()));
- // configDialog->addTab(paramTab, "Time Scale / Gain");
-  configDialog->addTab(triggerTab, "Trigger");
+
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
   configDialog->scopeScreenList.at(0)->writeofs = 0;
   timer = new QTimer(this);   
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
-  timer->start((int)(timeScale), true);
+  timer->setSingleShot(true);
+  timer->start((int)(timeScale));
   updateTriggerMode(1);
 }
 
-M_scope::~M_scope() {
-
+M_scope::~M_scope()
+{
+  synthdata->scopeModuleList.removeAll(this);
   free(floatdata);
 }
 
@@ -164,35 +168,37 @@ void M_scope::showConfigDialog() {
 void M_scope::timerProc() {          
  
   if (triggerMode < 2) {
-    timer->start((int)(timeScale), true);
+    timer->setSingleShot(true);
+    timer->start((int)(timeScale));
   }
   configDialog->scopeScreenList.at(0)->refreshScope();
 }
 
-void M_scope::updateTimeScale(int val) {
+void M_scope::updateTimeScale(int) {
 
   configDialog->scopeScreenList.at(0)->setTimeScale(timeScale);
 }
 
-void M_scope::updateZoom(int val) {
+void M_scope::updateZoom(int) {
 
   configDialog->scopeScreenList.at(0)->setZoom(zoom);
 }
 
-void M_scope::updateTriggerThrs(int val) {
+void M_scope::updateTriggerThrs(int) {
 
   configDialog->scopeScreenList.at(0)->setTriggerThrs(triggerThrs);
 }
 
-void M_scope::updateEdge(int val) {
+void M_scope::updateEdge(int) {
 
   configDialog->scopeScreenList.at(0)->setEdge((edgeType)edge);
 }
 
-void M_scope::updateTriggerMode(int val) {
+void M_scope::updateTriggerMode(int) {
 
   configDialog->scopeScreenList.at(0)->setTriggerMode((triggerModeType)triggerMode);
-  if (triggerMode < 2) {   
-    timer->start((int)(timeScale), true);
+  if (triggerMode < 2) {
+    timer->setSingleShot(true);
+    timer->start((int)(timeScale));
   }
 }

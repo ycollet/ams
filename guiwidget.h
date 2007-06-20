@@ -1,51 +1,36 @@
 #ifndef GUIWIDGET_H
 #define GUIWIDGET_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlistview.h>
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
-#include <qgroupbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
-#include <qdialog.h>
-#include <qstringlist.h>
-#include <qlineedit.h>
 #include <qtabwidget.h>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <alsa/asoundlib.h>
-#include "midicontroller.h"
-#include "midicontrollerlist.h"
 #include "synthdata.h"
-#include "module.h"
 #include "midiguicomponent.h"
 
 #define GUI_DEFAULT_WIDTH   300
 #define  GUI_DEFAULT_HEIGHT 200
 #define MAX_PRESETS         128
 
-class GuiWidget : public QVBox
+class GuiWidget : public QWidget
 {
   Q_OBJECT
 
   struct GuiFrame {
     int tabIndex;
-    QVBox *frameBox;
+    QVBoxLayout *frameBox;
   };
   
-  private:
-    SynthData *synthdata;
-//    QHBox *frameContainer;
-    QHBox *currentGroupBox;
+
+    QVBoxLayout vLayout;
+
+    QVBoxLayout *currentGroupBox;
     QTabWidget *tabWidget;
-    QHBox *currentTab;
+    QHBoxLayout *currentTab;
     int currentPreset, currentTabIndex;
     QLabel *presetLabel, *presetCountLabel;
     QLineEdit *presetName;
@@ -53,23 +38,23 @@ class GuiWidget : public QVBox
   public: 
     int presetCount;
     QStringList frameNameList;
-    QList<GuiFrame> frameBoxList;
+    QList<GuiFrame*> frameBoxList;
     QStringList tabNameList;
     QStringList presetNameList;
-    QList<QHBox> tabList;
-    QList<MidiGUIcomponent> parameterList;
-    QValueList<int> presetList[MAX_PRESETS];
+    QList<QHBoxLayout *> tabList;
+    QList<MidiGUIcomponent*> parameterList;
+    QList<int> presetList[MAX_PRESETS];
     
   public:
-    GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name=0);
+    GuiWidget(QWidget* parent, const char *name=0);
     ~GuiWidget();
-    int addFrame(QString frameName);
+    int addFrame(const QString &frameName);
     int setFrame(int index);
-    int addTab(QString tabName);
+    int addTab(const QString &tabName);
     int setTab(int index);
     int setPresetCount(int count);
     int setCurrentPreset(int presetNum);
-    int addParameter(MidiGUIcomponent *midiGUIcomponent, QString parameterName);
+    int addParameter(MidiGUIcomponent *midiGUIcomponent, const QString &parameterName);
 
   signals:
     void updateMIDIController();

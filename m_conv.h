@@ -9,8 +9,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -35,7 +35,7 @@ class M_conv : public Module
     float **inData;       
                             
   public:
-    M_conv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_conv(QWidget* parent=0, const char *name=0);
     ~M_conv();
 
   public slots:

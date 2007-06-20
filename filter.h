@@ -10,6 +10,9 @@
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
 #include "synthdata.h"
 
 #define FILTER_MINIMUM_WIDTH        100
@@ -20,7 +23,6 @@ class Filter : public QWidget
   Q_OBJECT
 
   private:
-    SynthData *synthdata;
     QTimer *qtimer;
     float *cutoffRef, *resonanceRef, *risingRef, *fallingRef, *hwidthRef, *smoothnessRef;
 
@@ -31,7 +33,7 @@ class Filter : public QWidget
   public:
     Filter(float *p_cutoffRef, float *p_resonanceRef, float *p_risingRef, float *p_fallingRef,
            float *p_hwidthRef, float *p_smoothnessRef, 
-           QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+           QWidget* parent=0, const char *name=0);
     ~Filter();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;

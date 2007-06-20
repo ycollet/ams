@@ -1,16 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h> 
-#include <qsplitter.h>
-#include <qlistbox.h> 
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+#include <QGroupBox>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -29,40 +19,53 @@
 #include "midicheckbox.h"
 #include "midipushbutton.h"
 
-GuiWidget::GuiWidget(SynthData *p_synthdata, QWidget* parent, const char *name) 
-                : QVBox(parent, name) {
+GuiWidget::GuiWidget(QWidget* parent, const char *name) 
+  : QWidget(parent)
+  , vLayout(this)
+{
+  setObjectName(name);
 
   setGeometry(0, 0, GUI_DEFAULT_WIDTH, GUI_DEFAULT_HEIGHT);
-  setMargin(10);
-  setSpacing(5);
-  synthdata = p_synthdata;
-  QHBox *presetContainer = new QHBox(this);
-  QHBox *presetNameContainer = new QHBox(this);
-//  frameContainer = new QHBox(this);
-  tabWidget = new QTabWidget(this);
+  
+
+  QWidget *presetContainer = new QWidget();
+  QHBoxLayout *presetContainerLayout = new QHBoxLayout(presetContainer);
+  vLayout.addWidget(presetContainer);
+
+  QWidget *presetNameContainer = new QWidget();
+  QHBoxLayout *presetNameContainerLayout = new QHBoxLayout(presetNameContainer);
+  vLayout.addWidget(presetNameContainer);
+
+  tabWidget = new QTabWidget();
+  vLayout.addWidget(tabWidget);
   currentTab = NULL;
   currentGroupBox = NULL;
   currentTabIndex = 0;
-  new QWidget(presetContainer);
-  QPushButton *addPresetButton = new QPushButton("Add Preset", presetContainer);
-  new QWidget(presetContainer);
+
+  QPushButton *addPresetButton = new QPushButton("Add Preset");
+  presetContainerLayout->addWidget(addPresetButton);
   QObject::connect(addPresetButton, SIGNAL(clicked()), this, SLOT(addPreset()));  
-  QPushButton *overwritePresetButton = new QPushButton("OverwritePreset", presetContainer);
-  new QWidget(presetContainer);
-  QObject::connect(overwritePresetButton, SIGNAL(clicked()), this, SLOT(overwritePreset()));  
-  presetCountLabel = new QLabel(presetContainer);
+  QPushButton *overwritePresetButton =
+    new QPushButton("OverwritePreset");
+  presetContainerLayout->addWidget(overwritePresetButton);
+  QObject::connect(overwritePresetButton, SIGNAL(clicked()),
+		   this, SLOT(overwritePreset()));  
+  presetCountLabel = new QLabel();
   presetCountLabel->setText("Presets for this configuration: 0");
-  new QWidget(presetContainer);
-  QPushButton *decButton = new QPushButton("-1", presetContainer);  
+  presetContainerLayout->addWidget(presetCountLabel);
+  QPushButton *decButton = new QPushButton("-1");
+  presetContainerLayout->addWidget(decButton);
   QObject::connect(decButton, SIGNAL(clicked()), this, SLOT(presetDec()));
-  QPushButton *incButton = new QPushButton("+1", presetContainer);  
+  QPushButton *incButton = new QPushButton("+1");
+  presetContainerLayout->addWidget(incButton);
   QObject::connect(incButton, SIGNAL(clicked()), this, SLOT(presetInc()));
-  new QWidget(presetNameContainer);
-  presetLabel = new QLabel(presetNameContainer);
-  new QWidget(presetNameContainer);
-  presetName = new QLineEdit(presetNameContainer);
-  new QWidget(presetNameContainer);
+
+  presetLabel = new QLabel();
+  presetNameContainerLayout->addWidget(presetLabel);
+  presetName = new QLineEdit();
+  presetNameContainerLayout->addWidget(presetName);
   presetLabel->setText("Preset 0 : ");
+
   setPresetCount(0);
   setCurrentPreset(0);
 }
@@ -71,23 +74,23 @@ GuiWidget::~GuiWidget() {
 
 }
 
-int GuiWidget::addFrame(QString frameName) {
-  
+int GuiWidget::addFrame(const QString &frameName)
+{
 //  printf("Adding frame %s.\n", frameName.latin1());
-  if (!currentTab) {
-    return(-1);
-  }
+  if (!currentTab)
+    return -1;
+
   frameNameList.append(frameName);
-  QGroupBox *gbox = new QGroupBox(1, Qt::Horizontal, frameName, currentTab);
-  QVBox *vbox = new QVBox(gbox, frameName);
-  gbox->show();
+  QGroupBox *gbox = new QGroupBox(frameName);
+  gbox->setObjectName(frameName);
+  currentTab->addWidget(gbox);
+  QVBoxLayout *vbox = new QVBoxLayout(gbox);
+
   GuiFrame *guiFrame = new GuiFrame;
   guiFrame->frameBox = vbox;
   guiFrame->tabIndex = currentTabIndex;
   frameBoxList.append(guiFrame);
   currentGroupBox = vbox;
-  vbox->show();
-  new QWidget(currentGroupBox);
   return(0);  
 }
 
@@ -95,34 +98,33 @@ int GuiWidget::setFrame(int index) {
 
 //  fprintf(stderr, "Setting frame index %d.\n", index);  
   currentGroupBox = frameBoxList.at(index)->frameBox;
-  currentGroupBox->show();
   return(0);  
 }
 
-int GuiWidget::addTab(QString tabName) {
+int GuiWidget::addTab(const QString &tabName) {
   
 //  printf("Adding tab %s.\n", tabName.latin1());
   tabNameList.append(tabName);
-  currentTab = new QHBox(this, tabName);
+  QWidget *tab = new QWidget();
+  setObjectName(tabName);
+  currentTab = new QHBoxLayout(tab);
   currentTabIndex = tabNameList.count() - 1;
-  tabWidget->insertTab(currentTab, tabName);
-  currentTab->show();
+  tabWidget->insertTab(-1, tab, tabName);
   tabList.append(currentTab);
   return(0);  
 }
 
 int GuiWidget::setTab(int index) {
 
-//  fprintf(stderr, "Setting tab index %d.\n", index);  
+//   fprintf(stderr, "Setting tab index %d.\n", index);  
   currentTab = tabList.at(index);
-  currentTab->show();
   currentTabIndex = index;
   return(0);  
 }
 
-int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString parameterName) {
+int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, const QString &parameterName) {
 
-  float minValue, maxValue, value, initial_min, initial_max;
+  float minValue, maxValue, value;
   int l1;
   QString qs;
   bool isLog;
@@ -141,8 +143,9 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
 //        fprintf(stderr, "parameterName %s, isLog: %d\n", parameterName.latin1(), isLog);
         value = ((MidiSlider *)midiGUIcomponent)->getValue();
         MidiSlider *slider = new MidiSlider(midiGUIcomponent->parentModule, minValue, maxValue, 0, value,
-                                            QSlider::Horizontal, currentGroupBox, parameterName,
-                                            midiGUIcomponent->synthdata, ((MidiSlider *)midiGUIcomponent)->valueRef, isLog);
+                                            Qt::Horizontal, NULL, parameterName,
+                                            ((MidiSlider *)midiGUIcomponent)->valueRef, isLog);
+	currentGroupBox->addWidget(slider);
         slider->midiGUIcomponentListIndex = midiGUIcomponent->midiGUIcomponentListIndex;
         slider->isMaster = false;
         parameterList.append((MidiGUIcomponent *)slider);
@@ -153,39 +156,41 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
         QObject::connect((MidiSlider *)midiGUIcomponent, SIGNAL(logModeChanged(bool)),
                          slider, SLOT(setLogMode(bool)));
         QObject::connect(slider, SIGNAL(sigResetController()), (MidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
-        slider->show();
+//         slider->show();
       }
       break;
     case GUIcomponentType_intslider: {
-        min = ((IntMidiSlider *)midiGUIcomponent)->slider->minValue();
-        max = ((IntMidiSlider *)midiGUIcomponent)->slider->maxValue();
+        min = ((IntMidiSlider *)midiGUIcomponent)->slider->minimum();
+        max = ((IntMidiSlider *)midiGUIcomponent)->slider->maximum();
         val = ((IntMidiSlider *)midiGUIcomponent)->slider->value();
         IntMidiSlider *slider = new IntMidiSlider(midiGUIcomponent->parentModule, min, max, 0, val,
-                                            QSlider::Horizontal, currentGroupBox, parameterName,
-                                            midiGUIcomponent->synthdata, ((IntMidiSlider *)midiGUIcomponent)->valueRef);
+                                            Qt::Horizontal, NULL, parameterName,
+                                            ((IntMidiSlider *)midiGUIcomponent)->valueRef);
+	currentGroupBox->addWidget(slider);
         slider->midiGUIcomponentListIndex = midiGUIcomponent->midiGUIcomponentListIndex;
         parameterList.append((MidiGUIcomponent *)slider);
         QObject::connect(slider, SIGNAL(valueChanged(int)), (IntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
         QObject::connect((IntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
                          slider, SLOT(updateSlider(int)));
         QObject::connect(slider, SIGNAL(sigResetController()), (IntMidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
-        slider->show();
+//         slider->show();
       }
       break;
     case GUIcomponentType_floatintslider: {
-        min = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->minValue();
-        max = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->maxValue();
+        min = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->minimum();
+        max = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->maximum();
         val = ((FloatIntMidiSlider *)midiGUIcomponent)->slider->value();
         FloatIntMidiSlider *slider = new FloatIntMidiSlider(midiGUIcomponent->parentModule, min, max, 0, val,
-                                            QSlider::Horizontal, currentGroupBox, parameterName,
-                                            midiGUIcomponent->synthdata, ((FloatIntMidiSlider *)midiGUIcomponent)->valueRef);
+                                            Qt::Horizontal, NULL, parameterName,
+                                            ((FloatIntMidiSlider *)midiGUIcomponent)->valueRef);
+	currentGroupBox->addWidget(slider);
         slider->midiGUIcomponentListIndex = midiGUIcomponent->midiGUIcomponentListIndex;
         parameterList.append((MidiGUIcomponent *)slider);
         QObject::connect(slider, SIGNAL(valueChanged(int)), (FloatIntMidiSlider *)midiGUIcomponent, SLOT(updateSlider(int)));
         QObject::connect((FloatIntMidiSlider *)midiGUIcomponent, SIGNAL(valueChanged(int)),
                          slider, SLOT(updateSlider(int)));
         QObject::connect(slider, SIGNAL(sigResetController()), (FloatIntMidiSlider *)midiGUIcomponent, SLOT(resetControllerOK()));                          
-        slider->show();
+//         slider->show();
       }
       break;
     case GUIcomponentType_checkbox: {
@@ -195,26 +200,27 @@ int GuiWidget::addParameter(MidiGUIcomponent *midiGUIcomponent, QString paramete
       }
       break;
     case GUIcomponentType_combobox: {
-        QStrList *comboNames = new QStrList(true);
+        QStringList *comboNames = new QStringList();
         for (l1 = 0; l1 < ((MidiComboBox *)midiGUIcomponent)->comboBox->count(); l1++) {
-          comboNames->append(((MidiComboBox *)midiGUIcomponent)->comboBox->text(l1));
+          *comboNames << ((MidiComboBox *)midiGUIcomponent)->comboBox->itemText(l1);
         }
-        MidiComboBox *midiComboBox = new MidiComboBox(midiGUIcomponent->parentModule,  ((MidiComboBox *)midiGUIcomponent)->comboBox->currentItem(), 
-                                                      currentGroupBox, parameterName, midiGUIcomponent->synthdata, 
+        MidiComboBox *midiComboBox = new MidiComboBox(midiGUIcomponent->parentModule,  ((MidiComboBox *)midiGUIcomponent)->comboBox->currentIndex(), 
+                                                      NULL, parameterName, 
                                                       ((MidiComboBox *)midiGUIcomponent)->valueRef, comboNames);
+	currentGroupBox->addWidget(midiComboBox);
         midiComboBox->midiGUIcomponentListIndex = midiGUIcomponent->midiGUIcomponentListIndex;
         parameterList.append((MidiGUIcomponent *)midiComboBox);
         QObject::connect(midiComboBox->comboBox, SIGNAL(highlighted(int)), (MidiComboBox *)midiGUIcomponent, SLOT(updateValue(int)));
         QObject::connect(((MidiComboBox *)midiGUIcomponent)->comboBox, SIGNAL(highlighted(int)), midiComboBox, SLOT(updateValue(int)));
         QObject::connect(midiComboBox, SIGNAL(sigResetController()), (MidiComboBox *)midiGUIcomponent, SLOT(resetControllerOK()));                          
-        midiComboBox->show();
+//         midiComboBox->show();
       }
       break;
     default:
       break;
   }
-  new QWidget(currentGroupBox);
-  currentGroupBox->show();
+
+  currentGroupBox->parentWidget()->show();
   return(0);
 }
 
@@ -231,7 +237,6 @@ int GuiWidget::setPresetCount(int count) {
 int GuiWidget::setCurrentPreset(int presetNum) {
 
   QString qs;
-  QValueList<int>::iterator it;
   int index, value;
 
   if (presetCount == 0) {
@@ -244,8 +249,8 @@ int GuiWidget::setCurrentPreset(int presetNum) {
   qs.sprintf("Preset %d : ", currentPreset);
   presetLabel->setText(qs);
   index = 0;
-  for (it = presetList[currentPreset].begin(); it != presetList[currentPreset].end(); it++) {
-    value = *it;
+  for (index = 0; index < presetList[currentPreset].count(); index++) {
+    value = presetList[currentPreset][index];
     parameterList.at(index)->invalidateController();
     switch(parameterList.at(index)->componentType) {  
       case GUIcomponentType_slider:
@@ -259,9 +264,9 @@ int GuiWidget::setCurrentPreset(int presetNum) {
         break;
       case GUIcomponentType_combobox:
         ((MidiComboBox *)parameterList.at(index))->updateValue(value);
+    default:
         break;
     }
-    index++;
   }
   for (QStringList::Iterator it = presetNameList.begin(); it != presetNameList.end(); it++) {
     qs = (*it).mid(0, 3);
@@ -322,7 +327,7 @@ void GuiWidget::overwritePreset() {
         value = ((IntMidiSlider *)parameterList.at(l1))->slider->value();
         break;
       case GUIcomponentType_combobox:
-        value = ((MidiComboBox *)parameterList.at(l1))->comboBox->currentItem();
+        value = ((MidiComboBox *)parameterList.at(l1))->comboBox->currentIndex();
         break;
       default:
         value = 0;
@@ -352,7 +357,7 @@ void GuiWidget::clearPresets() {
 
 void GuiWidget::clearGui() {
 
-  delete(tabWidget);
+  delete tabWidget;
   frameBoxList.clear();
   tabList.clear();
   parameterList.clear();
@@ -360,7 +365,8 @@ void GuiWidget::clearGui() {
   presetName->setText(" ");
   frameNameList.clear();
   tabNameList.clear();
-  tabWidget = new QTabWidget(this);
+  tabWidget = new QTabWidget();
+  vLayout.addWidget(tabWidget);
   tabWidget->show();
   setPresetCount(0);
   setCurrentPreset(0);

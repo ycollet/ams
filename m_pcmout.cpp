@@ -7,23 +7,22 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
 #include <qtimer.h>
-#include <qfiledialog.h>
 #include "synthdata.h"
 #include "m_pcmout.h"
 #include "module.h"
 #include "port.h"
 
 
-M_pcmout::M_pcmout(QWidget* parent, const char *name, SynthData *p_synthdata, int port) 
-              : Module(0, parent, name, p_synthdata)
+M_pcmout::M_pcmout(QWidget* parent, const char *name, int port) 
+              : Module(0, parent, name)
 {
   QString qs;
 
@@ -36,24 +35,23 @@ M_pcmout::M_pcmout(QWidget* parent, const char *name, SynthData *p_synthdata, in
   polyroot = sqrt((double)synthdata->poly);
   agc = 0;
   qs.sprintf (" -> Out %2d", port);
-  port_in[0] = new Port(qs, PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port(qs, PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
   qs.sprintf(" -> Out %2d", port + 1);
-  port_in[1] = new Port(qs, PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port(qs, PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   qs.sprintf("Alsa / Pcm Out  ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
   configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
   configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
-  QStrList *agcNames = new QStrList(true);
-  agcNames->append("Disabled");
-  agcNames->append("Enabled");
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames->count(), agcNames);
+  QStringList agcNames;
+  agcNames << "Disabled" << "Enabled";
+  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames.count(), &agcNames);
   pcmdata[0] = new float[synthdata->periodsize];
   pcmdata[1] = new float[synthdata->periodsize];
 }

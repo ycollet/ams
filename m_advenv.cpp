@@ -7,8 +7,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -16,11 +14,13 @@
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "multi_envelope.h"
+#include "midislider.h"
 #include "m_advenv.h"
 #include "port.h"
 
-M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_advenv::M_advenv(QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
   int l1;
@@ -42,31 +42,31 @@ M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
   release[3] = 0.2;
   release[4] = 0.05;
   timeScale = 1.0;
-  port_gate = new Port("Gate", PORT_IN, 0, this, synthdata);
+  port_gate = new Port("Gate", PORT_IN, 0, this);
   port_gate->move(0, 35);
   port_gate->outTypeAcceptList.append(outType_audio);
   portList.append(port_gate);
-  port_retrigger = new Port("Retrigger", PORT_IN, 1, this, synthdata);
+  port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
   port_retrigger->move(0, 55);
   port_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_retrigger);
-  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_gain_out = new Port("Out", PORT_OUT, 0, this);          
   port_gain_out->move(width() - port_gain_out->width(), 75);
   port_gain_out->outType = outType_audio;
   portList.append(port_gain_out);
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);          
+  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
   qs.sprintf("Advanced ENV ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addMultiEnvelope(1, &timeScale, &attack[0], &sustain, &release[0]);
   configDialog->initTabWidget();
-  QVBox *sustainTab = new QVBox(configDialog->tabWidget);
-  QVBox *attackTimeTab = new QVBox(configDialog->tabWidget);
-  QVBox *attackLevelTab = new QVBox(configDialog->tabWidget);
-  QVBox *releaseTimeTab = new QVBox(configDialog->tabWidget);
-  QVBox *releaseLevelTab = new QVBox(configDialog->tabWidget);
+  QVBoxLayout *sustainTab = configDialog->addVBoxTab("Time Scale / Sustain / Delay");
+  QVBoxLayout *attackTimeTab = configDialog->addVBoxTab("Attack Time");
+  QVBoxLayout *attackLevelTab = configDialog->addVBoxTab("Attack Level");
+  QVBoxLayout *releaseTimeTab = configDialog->addVBoxTab("Release Time");
+  QVBoxLayout *releaseLevelTab = configDialog->addVBoxTab("Release Level");
   qs.sprintf("Time Scale");
   configDialog->addSlider(0.1, 10, timeScale, qs, &timeScale, false, sustainTab);
   qs.sprintf("Sustain");
@@ -87,9 +87,6 @@ M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 1, attack[6], qs, &attack[6], false, attackLevelTab);
   qs.sprintf("Attack Time 3");
   configDialog->addSlider(0, 1, attack[7], qs, &attack[7], false, attackTimeTab);
-  configDialog->addTab(sustainTab, "Time Scale / Sustain / Delay");
-  configDialog->addTab(attackTimeTab, "Attack Time");
-  configDialog->addTab(attackLevelTab, "Attack Level");
   qs.sprintf("Release Time 0");
   configDialog->addSlider(0, 1, release[0], qs, &release[0], false, releaseTimeTab);
   qs.sprintf("Release Level 0");
@@ -100,8 +97,6 @@ M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 1, release[3], qs, &release[3], false, releaseLevelTab);
   qs.sprintf("Release Time 2");
   configDialog->addSlider(0, 1, release[4], qs, &release[4], false, releaseTimeTab);
-  configDialog->addTab(releaseTimeTab, "Release Time");
-  configDialog->addTab(releaseLevelTab, "Release Level");
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
     QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
                      configDialog->multiEnvelopeList.at(0), SLOT(updateMultiEnvelope(int)));
@@ -117,8 +112,9 @@ M_advenv::M_advenv(QWidget* parent, const char *name, SynthData *p_synthdata)
   }
 }
 
-M_advenv::~M_advenv() {
-
+M_advenv::~M_advenv()
+{
+  synthdata->listM_advenv.removeAll(this);
 }
 
 void M_advenv::generateCycle() {

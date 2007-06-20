@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,47 +19,47 @@
 #include "m_advmcv.h"
 #include "port.h"
 
-M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(10, parent, name, p_synthdata) {
+M_advmcv::M_advmcv(QWidget* parent, const char *name) 
+              : Module(10, parent, name) {
 
   QString qs;
   int l1, l2;
 
   M_type = M_type_advmcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVMCV_WIDTH, MODULE_ADVMCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this, synthdata);          
+  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
   port_gate_out->outType = outType_audio;
   portList.append(port_gate_out);
-  port_note_out = new Port("Freq", PORT_OUT, 1, this, synthdata);          
+  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
   port_note_out->move(width() - port_note_out->width(), 55);
   port_note_out->outType = outType_audio;
   portList.append(port_note_out);
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this, synthdata);          
+  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
   port_velocity_out->move(width() - port_velocity_out->width(), 75);
   port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this, synthdata);          
+  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);          
   port_trig_out->move(width() - port_trig_out->width(), 95);
   port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
-  port_aftertouch_out = new Port("Aftertouch", PORT_OUT, 4, this, synthdata);          
+  port_aftertouch_out = new Port("Aftertouch", PORT_OUT, 4, this);          
   port_aftertouch_out->move(width() - port_aftertouch_out->width(), 115);
   port_aftertouch_out->outType = outType_audio;
   portList.append(port_aftertouch_out);
-  port_pitchbend_out = new Port("Pitchbend", PORT_OUT, 5, this, synthdata);          
+  port_pitchbend_out = new Port("Pitchbend", PORT_OUT, 5, this);          
   port_pitchbend_out->move(width() - port_pitchbend_out->width(), 135);
   port_pitchbend_out->outType = outType_audio;
   portList.append(port_pitchbend_out);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
     qs.sprintf("Controller %d", l1);
-    port_controller_out[l1] = new Port(qs, PORT_OUT, 6+l1, this, synthdata);          
+    port_controller_out[l1] = new Port(qs, PORT_OUT, 6+l1, this);          
     port_controller_out[l1]->move(width() - port_controller_out[l1]->width(), 155 + 20 * l1);
     port_controller_out[l1]->outType = outType_audio;
     portList.append(port_controller_out[l1]);
   }
   qs.sprintf("Advanced MCV ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 //  QStrList *channelNames = new QStrList(true);
 //  channelNames->append("RESERVED FOR LATER USE");
 //  for (l1 = 1; l1 < 17; l1++) {
@@ -88,8 +88,9 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name, SynthData *p_synthdata)
   }
 }
 
-M_advmcv::~M_advmcv() {
-
+M_advmcv::~M_advmcv()
+{
+  synthdata->listM_advmcv.removeAll(this);
 }
 
 void M_advmcv::noteOnEvent(int osc) {
@@ -97,8 +98,7 @@ void M_advmcv::noteOnEvent(int osc) {
   trig[osc] = 1;
 }
 
-void M_advmcv::noteOffEvent(int osc) {
-
+void M_advmcv::noteOffEvent(int) {
 }
 
 void M_advmcv::generateCycle() {
@@ -135,7 +135,7 @@ void M_advmcv::generateCycle() {
 void M_advmcv::showConfigDialog() {
 }
 
-void M_advmcv::aftertouchEvent(int channel, int value, int note) {
+void M_advmcv::aftertouchEvent(int, int value, int) {
 
   int l1;
   
@@ -144,7 +144,7 @@ void M_advmcv::aftertouchEvent(int channel, int value, int note) {
   }
 }
 
-void M_advmcv::controllerEvent(int channel, int controlNum, int value, bool is14bit) {
+void M_advmcv::controllerEvent(int, int controlNum, int value, bool) {
 
   int l1, l2;
 
@@ -158,12 +158,12 @@ void M_advmcv::controllerEvent(int channel, int controlNum, int value, bool is14
   }
 }
 
-void M_advmcv::pitchbendEvent(int channel, int value) {
+void M_advmcv::pitchbendEvent(int, int value) {
 
   int l1;
 
 //  fprintf(stderr, "pitchbendEvent %d\n", value);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
-    pitchbend_cv[l1] = (double)value / 8192.0;
+    pitchbend_cv[l1] = (float)value / 8192.0;
   }
 }

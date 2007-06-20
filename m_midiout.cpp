@@ -7,15 +7,12 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
 #include <qtimer.h>
-#include <qfiledialog.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_midiout.h"
@@ -23,8 +20,8 @@
 #include "port.h"
 
 
-M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(0, parent, name, p_synthdata) {
+M_midiout::M_midiout(QWidget* parent, const char *name) 
+              : Module(0, parent, name) {
 
   QString qs;
   int l1, l2;
@@ -39,45 +36,44 @@ M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata)
   controller[0] = 24;
   controller[1] = 25;
   triggerLevel = 0.5;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this, synthdata);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
   port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
-  port_in[1] = new Port("In 1", PORT_IN, 1, this, synthdata);          
+  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
-  port_M_trigger = new Port("Trigger", PORT_IN, 2, this, synthdata);
+  port_M_trigger = new Port("Trigger", PORT_IN, 2, this);
   port_M_trigger->move(0, 75);
   port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);
   qs.sprintf("MIDI Out ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
-  QVBox *gainTab = new QVBox(configDialog->tabWidget);
-  QVBox *midiTab = new QVBox(configDialog->tabWidget);
-  QStrList *channelNames = new QStrList(true);
+  QVBoxLayout *gainTab = configDialog->addVBoxTab("Gain / Offset / Trigger Level");
+  QVBoxLayout *midiTab = configDialog->addVBoxTab("MIDI Settings");
+  QStringList channelNames;
   for (l1 = 0; l1 < 16; l1++) {
     qs.sprintf("%4d", l1);
-    channelNames->append(qs);
+    channelNames << qs;
   }
   channel = 0;
-  configDialog->addComboBox(0, "MIDI Channel", &channel, channelNames->count(), channelNames, midiTab);
+  configDialog->addComboBox(0, "MIDI Channel", &channel, channelNames.count(), &channelNames, midiTab);
   configDialog->addSlider(0, 10, mixer_gain[0], "Gain 0", &mixer_gain[0], false, gainTab);
   configDialog->addSlider(0, 10, mixer_gain[1], "Gain 1", &mixer_gain[1], false, gainTab);
   configDialog->addIntSlider(0, 127, offset[0], "Offset 0", &offset[0], gainTab);
   configDialog->addIntSlider(0, 127, offset[1], "Offset 1", &offset[1], gainTab);
-  QStrList *midiNames = new QStrList(true);
-  midiNames->append("In 0/1: Controller");
-  midiNames->append("In 0: Controller In 1: Pitchbend");
-  midiNames->append("In 0/1: Note");
-  midiNames->append("In 0: Note, In 1: Velocity");
-  configDialog->addComboBox(midiMode, "MIDI Event Type", &midiMode, midiNames->count(), midiNames, midiTab);
+  QStringList midiNames;
+  midiNames <<
+    "In 0/1: Controller" <<
+    "In 0: Controller In 1: Pitchbend" <<
+    "In 0/1: Note" <<
+    "In 0: Note, In 1: Velocity";
+  configDialog->addComboBox(midiMode, "MIDI Event Type", &midiMode, midiNames.count(), &midiNames, midiTab);
   configDialog->addIntSlider(0, 127, controller[0], "Controller 0", &controller[0], midiTab);
   configDialog->addIntSlider(0, 127, controller[1], "Controller 1", &controller[1], midiTab);
   configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel, false, gainTab);
-  configDialog->addTab(gainTab, "Gain / Offset / Trigger Level");
-  configDialog->addTab(midiTab, "MIDI Settings");
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     trigger[l1] = false;
     for (l2 = 0; l2 < 2; l2++) {
@@ -87,8 +83,9 @@ M_midiout::M_midiout(QWidget* parent, const char *name, SynthData *p_synthdata)
   }
 }
 
-M_midiout::~M_midiout() {
-
+M_midiout::~M_midiout()
+{
+  synthdata->midioutModuleList.removeAll(this);
 }
 
 void M_midiout::generateCycle() {

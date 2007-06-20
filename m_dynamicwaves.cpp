@@ -7,8 +7,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -16,16 +14,18 @@
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midislider.h"
+#include "multi_envelope.h"
 #include "m_dynamicwaves.h"
 #include "port.h"
 
-M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
   int l1, l2;
-  QVBox *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
-  QVBox *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
+  QVBoxLayout *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
+  QVBoxLayout *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
 
   M_type = M_type_dynamicwaves;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DYNAMICWAVES_WIDTH, MODULE_DYNAMICWAVES_HEIGHT);
@@ -73,57 +73,54 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
       de[l1][l2] = 0;
     }
   }
-  port_M_freq = new Port("Freq", PORT_IN, 0, this, synthdata);
+  port_M_freq = new Port("Freq", PORT_IN, 0, this);
   port_M_freq->move(0, 35);    
   port_M_freq->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_freq); 
-  port_M_exp = new Port("Exp. FM", PORT_IN, 1, this, synthdata);
+  port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);
   port_M_exp->move(0, 55);    
   port_M_exp->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_exp); 
-  port_M_lin = new Port("Lin. FM", PORT_IN, 2, this, synthdata);
+  port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
   port_M_lin->move(0, 75);
   port_M_lin->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_lin);
-  port_gate = new Port("Gate", PORT_IN, 3, this, synthdata);
+  port_gate = new Port("Gate", PORT_IN, 3, this);
   port_gate->move(0, 95);
   port_gate->outTypeAcceptList.append(outType_audio);
   portList.append(port_gate);
-  port_retrigger = new Port("Retrigger", PORT_IN, 4, this, synthdata);
+  port_retrigger = new Port("Retrigger", PORT_IN, 4, this);
   port_retrigger->move(0, 115);
   port_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_retrigger);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 135);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("Dynamic Waves ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
-  QStrList *waveFormNames = new QStrList(true);
-  waveFormNames->append("Sine");
-  waveFormNames->append("Saw");
-  waveFormNames->append("Tri");
-  waveFormNames->append("Rect");
-  waveFormNames->append("Saw 2");
-  QVBox *generalTab = new QVBox(configDialog->tabWidget);
+  QStringList waveFormNames;
+  waveFormNames << "Sine" << "Saw" << "Tri" << "Rect" << "Saw 2";
+  QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune / Modulation");
   configDialog->addMultiEnvelope(oscCount, &timeScale, &attack[0][0], &sustain[0], &release[0][0], generalTab);
   configDialog->addIntSlider(0, 6, octave, "Octave", &octave, generalTab);
   configDialog->addSlider(0, 1, tune, "Tune", &tune, false, generalTab);
   configDialog->addSlider(0, 10, expFMGain, "Exp. FM Gain", &expFMGain, false, generalTab);
   configDialog->addSlider(0, 10, linFMGain, "Lin. FM Gain", &linFMGain, false, generalTab);
   configDialog->addSlider(0.1, 10, timeScale, "Timescale", &timeScale, false, generalTab);
-  configDialog->addTab(generalTab, "Tune / Modulation");
-  QVBox *mixTab = new QVBox(configDialog->tabWidget);
+
+  QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer");
   for (l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Volume %d", l1);
     configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
   }
-  configDialog->addTab(mixTab, "Mixer");
+
   for (l1 = 0; l1 < oscCount; l1++) {
-    oscTab[l1] = new QVBox(configDialog->tabWidget);
+    qs.sprintf("Osc %d", l1);
+    oscTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Wave Form %d", l1);
-    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames->count(), waveFormNames, oscTab[l1]);
+    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames.count(), &waveFormNames, oscTab[l1]);
     qs.sprintf("Octave %d", l1);
     configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
     qs.sprintf("Tune %d", l1);
@@ -134,11 +131,10 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
     configDialog->addIntSlider(1, 16, subharmonic[l1], qs, &subharmonic[l1], oscTab[l1]);
     qs.sprintf("Phi0 %d", l1);
     configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
-    qs.sprintf("Osc %d", l1);
-    configDialog->addTab(oscTab[l1], qs);
   }
   for (l1 = 0; l1 < oscCount; l1++) {
-    envelopeTab[l1] = new QVBox(configDialog->tabWidget);
+    qs.sprintf("Envelope %d", l1);
+    envelopeTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Delay %d", l1);
     configDialog->addSlider(0, 1, attack[0][l1], qs, &attack[0][l1], false, envelopeTab[l1]);
     qs.sprintf("Attack Time 0 %d", l1);
@@ -167,8 +163,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
     configDialog->addSlider(0, 1, release[3][l1], qs, &release[3][l1], false, envelopeTab[l1]);
     qs.sprintf("Release Time 2 %d", l1);
     configDialog->addSlider(0, 1, release[4][l1], qs, &release[4][l1], false, envelopeTab[l1]);
-    qs.sprintf("Envelope %d", l1);
-    configDialog->addTab(envelopeTab[l1], qs);
   }
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
     QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)),
@@ -176,10 +170,9 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   }
 }
 
-M_dynamicwaves::~M_dynamicwaves() {
-}
-
-void M_dynamicwaves::noteOnEvent(int osc) {
+M_dynamicwaves::~M_dynamicwaves()
+{
+  synthdata->listM_dynamicwaves.removeAll(this);
 }
 
 void M_dynamicwaves::generateCycle() {

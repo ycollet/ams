@@ -9,6 +9,9 @@
 #include <qlabel.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
 #include "synthdata.h"
 
 #define ENVELOPE_MINIMUM_WIDTH        100
@@ -20,7 +23,6 @@ class Envelope : public QWidget
   Q_OBJECT
 
   private:
-    SynthData *synthdata;
     float *delayRef, *attackRef, *holdRef, *decayRef, *sustainRef, *releaseRef;
 
   protected:
@@ -30,7 +32,7 @@ class Envelope : public QWidget
   public:
     Envelope(float *p_delayRef, float *p_attackRef, float *p_holdRef,
              float *p_decayRef, float *p_sustainRef, float *p_releaseRef,
-             QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+             QWidget* parent=0, const char *name=0);
     ~Envelope();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;

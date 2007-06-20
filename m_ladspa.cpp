@@ -7,28 +7,30 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <alsa/asoundlib.h>
 #include <ladspa.h>
 #include "synthdata.h"
 #include "m_ladspa.h"
 #include "port.h"
 
-M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, int p_ladspaDesFuncIndex, int p_n, bool poly, bool extCtrlPorts) 
-              : Module(MAX_OUTPORTS, parent, name, p_synthdata) {
+M_ladspa::M_ladspa(QWidget* parent, const char *name, int p_ladspaDesFuncIndex, int p_n, bool poly, bool extCtrlPorts) 
+              : Module(MAX_OUTPORTS, parent, name) {
 
   QString qs;
   int l1, l2, itmp, port_ofs;
   int audio_in_index, audio_out_index, ctrl_in_index, ctrl_out_index, control_port_count;
   float control_min, control_max;
   bool tabMode;
-  QVBox *ladspaTab;
+  QVBoxLayout *ladspaTab;
   
   M_type = M_type_ladspa;
   ladspaDesFuncIndex = p_ladspaDesFuncIndex;
@@ -38,14 +40,14 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
   hasExtCtrlPorts = extCtrlPorts;
 //  fprintf(stderr, "new LADSPA module, Poly: %d\n", (int)isPoly);
   rate_factor = 1.0;
-  ladspa_dsc = synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n);
+  ladspa_dsc = synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n);
   ladspa_audio_in_count = 0;
   ladspa_audio_out_count = 0;
   ladspa_ctrl_in_count = 0;
   ladspa_ctrl_out_count = 0;
   ctrl_in_index = 0;
   ctrl_out_index = 0;
-  for (l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
+  for (unsigned l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
     if (LADSPA_IS_PORT_AUDIO(ladspa_dsc->PortDescriptors[l1])) {
       if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
         ladspa_audio_in_count++;
@@ -109,10 +111,10 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
   audio_in_index = 0;
   audio_out_index = 0;
   control_port_count = 0;
-  for (l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
+  for (unsigned l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
     if (LADSPA_IS_PORT_AUDIO(ladspa_dsc->PortDescriptors[l1])) {
       if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
-        Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, synthdata, 90);
+        Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 90);
         audio_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
         audio_in_port->outTypeAcceptList.append(outType_audio);
         in_port_list.append(audio_in_port);
@@ -127,7 +129,7 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
         audio_in_index++;
       }
       if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
-        Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, synthdata, 90);
+        Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 90);
         audio_out_port->move(MODULE_LADSPA_WIDTH - audio_out_port->width(), 
                              port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
         audio_out_port->outType = outType_audio;
@@ -149,7 +151,7 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
       controlPortRate[control_port_count] = false;
       if (hasExtCtrlPorts) {
         if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
-          Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, synthdata, 160, 1);
+          Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 160, 1);
           ctrl_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
           ctrl_in_port->outTypeAcceptList.append(outType_audio);
           in_ctrl_port_list.append(ctrl_in_port);
@@ -157,7 +159,7 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
 //          fprintf(stderr, "input: %s\n", ladspa_dsc->PortNames[l1]);
         }
         if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
-          Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, synthdata, 110, 1);
+          Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 110, 1);
           ctrl_out_port->move(MODULE_LADSPA_WIDTH - ctrl_out_port->width(),
                               port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
           ctrl_out_port->outType = outType_audio;
@@ -191,13 +193,12 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
       }
       if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
         if (tabMode && ((ctrl_in_index % MAX_LADPSA_CONTROLS_PER_TAB) == 0)) {
-          ladspaTab = new QVBox(configDialog->tabWidget);
           if (ctrl_in_index + MAX_LADPSA_CONTROLS_PER_TAB < ladspa_ctrl_in_count) {
             qs.sprintf("%d-%d", ctrl_in_index + 1, ctrl_in_index + MAX_LADPSA_CONTROLS_PER_TAB);
           } else {
             qs.sprintf("%d-%d", ctrl_in_index + 1, ladspa_ctrl_in_count);
           }
-          configDialog->addTab(ladspaTab, qs);
+          ladspaTab = configDialog->addVBoxTab(qs);
         }     
         if (LADSPA_IS_HINT_TOGGLED(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
           configDialog->addCheckBox(0, ladspa_dsc->PortNames[l1], &control_gui[ctrl_in_index], ladspaTab);
@@ -319,7 +320,7 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, SynthData *p_synthdata, in
     qs.sprintf("%s ID %d", ladspa_dsc->Label, moduleID);
   }
 //  fprintf(stderr, "m_ladspa setCaption %s\n", qs.latin1());
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_ladspa::~M_ladspa() {
@@ -355,10 +356,9 @@ M_ladspa::~M_ladspa() {
   }
 }
 
-void M_ladspa::paintEvent(QPaintEvent *ev) {
+void M_ladspa::paintEvent(QPaintEvent *) {
   
   QPainter p(this);
-  int i;
   QString qs;
 
   p.setPen(colorBorder);
@@ -367,10 +367,10 @@ void M_ladspa::paintEvent(QPaintEvent *ev) {
     p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
   }
   p.setPen(colorFont);
-  p.setFont(QFont("Helvetica", 10));
-  qs.sprintf("LADSPA %s", synthdata->ladspa_dsc_func_list[ladspaDesFuncIndex](n)->Label);
+  p.setFont(synthdata->bigFont);
+  qs.sprintf("LADSPA %s", ladspa_dsc->Label);
   p.drawText(10, 20, qs);
-  p.setFont(QFont("Helvetica", 8));
+  p.setFont(synthdata->smallFont);
   qs.sprintf("ID %d", moduleID);
   p.drawText(10, 32, qs);
 }

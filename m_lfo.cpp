@@ -8,8 +8,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -20,8 +20,8 @@
 #include "m_lfo.h"
 #include "port.h"
 
-M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(6, parent, name, p_synthdata) {
+M_lfo::M_lfo(QWidget* parent, const char *name) 
+              : Module(6, parent, name) {
 
   QString qs;
   int l1;
@@ -47,36 +47,36 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
     state[l1] = 0;
     dt[l1] = 4.0 / wave_period;
   }
-  port_M_trigger = new Port("Reset", PORT_IN, 0, this, synthdata);          
+  port_M_trigger = new Port("Reset", PORT_IN, 0, this);          
   port_M_trigger->move(0, 35);
   port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);     
-  port_sine = new Port("Sine", PORT_OUT, 0, this, synthdata);          
+  port_sine = new Port("Sine", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 55);
   port_sine->outType = outType_audio;
   portList.append(port_sine);
-  port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);          
+  port_tri = new Port("Triangle", PORT_OUT, 1, this);          
   port_tri->move(width() - port_tri->width(), 75);
   port_tri->outType = outType_audio;
   portList.append(port_tri);
-  port_sawup = new Port("Saw Up", PORT_OUT, 2, this, synthdata);          
+  port_sawup = new Port("Saw Up", PORT_OUT, 2, this);          
   port_sawup->move(width() - port_sawup->width(), 95);
   port_sawup->outType = outType_audio;
   portList.append(port_sawup);
-  port_sawdown = new Port("Saw Down", PORT_OUT, 3, this, synthdata);          
+  port_sawdown = new Port("Saw Down", PORT_OUT, 3, this);          
   port_sawdown->move(width() - port_sawdown->width(), 115);
   port_sawdown->outType = outType_audio;
   portList.append(port_sawdown);
-  port_rect = new Port("Rectangle", PORT_OUT, 4, this, synthdata);          
+  port_rect = new Port("Rectangle", PORT_OUT, 4, this);          
   port_rect->move(width() - port_rect->width(), 135);
   port_rect->outType = outType_audio;
   portList.append(port_rect);
-  port_sh = new Port("S & H", PORT_OUT, 5, this, synthdata);          
+  port_sh = new Port("S & H", PORT_OUT, 5, this);          
   port_sh->move(width() - port_sh->width(), 155);
   port_sh->outType = outType_audio;
   portList.append(port_sh);
   qs.sprintf("LFO ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 100, freq, "Frequency", &freq, true);
   configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
   tm = time(NULL) % 1000000;
@@ -86,10 +86,6 @@ M_lfo::M_lfo(QWidget* parent, const char *name, SynthData *p_synthdata)
 M_lfo::~M_lfo() {
 }
 
-
-void M_lfo::noteOnEvent(int osc) {
-
-}
 
 void M_lfo::generateCycle() {
 
@@ -104,7 +100,7 @@ void M_lfo::generateCycle() {
     wave_period = (double)synthdata->rate / (16.0 * freq); 
     dsa = 2.0 / wave_period;
     dt0 = 4.0 / wave_period;
-    phi0i = phi0 / 6.283 * wave_period;
+    phi0i = (int)(phi0 / 6.283 * wave_period);
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       len = synthdata->cyclesize;
       l2 = -1;

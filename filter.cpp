@@ -9,16 +9,19 @@
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPaintEvent>
 #include <math.h>
 #include "filter.h"
 
 
 Filter::Filter(float *p_cutoffRef, float *p_resonanceRef, float *p_risingRef, float *p_fallingRef,
                float *p_hwidthRef, float *p_smoothnessRef,
-               QWidget* parent, const char *name, SynthData *p_synthdata)
-             : QWidget (parent, name)
+               QWidget* parent, const char *name)
+             : QWidget(parent)
 {
-  synthdata = p_synthdata;
+  setObjectName(name);
   qtimer = new QTimer(this);
   connect(qtimer, SIGNAL(timeout()), this, SLOT(repaintFilter()));
   cutoffRef = p_cutoffRef;
@@ -146,17 +149,17 @@ void Filter::paintEvent(QPaintEvent *) {
     y2 = yscale * (1.0 - filt(x2, *cutoffRef, *resonanceRef, *risingRef, *fallingRef, *hwidthRef, *smoothnessRef));
     p.drawLine(l1, y1, l1 + 1, y2);
   }
-  bitBlt(this, 0, 0, &pm);
+  //!!  bitBlt(this, 0, 0, &pm);
 }
 
 void Filter::repaintFilter() {
 
-  repaint(false);
+  update();
 }
 
 void Filter::updateFilter(int value) {
-
-  qtimer->start(10, true);
+  qtimer->setSingleShot(true);
+  qtimer->start(10);
 }
 
 QSize Filter::sizeHint() const {
@@ -171,5 +174,5 @@ QSizePolicy Filter::sizePolicy() const {
 
 void Filter::resizeEvent (QResizeEvent* )
 {
-  repaint(true);
+  update();
 }

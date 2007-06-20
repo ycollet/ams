@@ -9,8 +9,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -36,7 +34,7 @@ class M_mcv : public Module
     float freq[MAXPOLY], trig[MAXPOLY];
                 
   public:
-    M_mcv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_mcv(QWidget* parent=0, const char *name=0);
     ~M_mcv();
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);

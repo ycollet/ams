@@ -8,14 +8,13 @@
 #include <qstring.h>
 #include <qlabel.h>
 #include <qcolor.h>
-#include <qpointarray.h>
-#include <qptrlist.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
-#include <qcanvas.h>
+#include <QGraphicsView>
 #include <qevent.h>
-#include <qwmatrix.h>
-#include "canvasfunction.h"
+#include <qmatrix.h>
+#include <QResizeEvent>
+#include <QMouseEvent>
 #include "synthdata.h"
 #include "canvas.h"
 
@@ -46,58 +45,69 @@
 #define FUNCTION_COLOR_FG 0x505080
 
 typedef float float_function[2][MAX_FUNCTIONS+2][MAX_POINTS+2];
+struct FunctionPointT {
+  float x, y;
+  operator QPointF () {
+    return QPointF(x * FUNCTION_SCALE, y * FUNCTION_SCALE);
+  }
+};
 
-class Function : public QCanvasView
+typedef FunctionPointT tFunction[MAX_FUNCTIONS][MAX_POINTS];
+
+class Function : public QGraphicsView
 {
   Q_OBJECT
 
-  private:
-    SynthData *synthdata;
-    int *mode, *editIndex;
-    QPointArray *screenPoints[MAX_FUNCTIONS];
-    QPointArray *points[MAX_FUNCTIONS];
-    QColor colorTable[MAX_FUNCTIONS];
-    int deltaArray[MAX_POINTS];
-    QList<QCanvasLine> gridX, gridY;
-    QList<CanvasFunction> canvasFunctionList;
-    QList<QCanvasText> canvasTextList;
-    QWMatrix matrix;
-    float zoom;
-    bool mousePressed;
-    int activeFunction, activePoint;
-    QPoint mousePressPos;
+  friend class CanvasFunction;
+  friend class CanvasPoint;
 
-  public:
-    float_function f;
-    int pointCount;
-    int functionCount;
+private:
+  int *mode, *editIndex;
+  //    QPolygon *screenPoints[MAX_FUNCTIONS];
+  tFunction &point;
+  QColor colorTable[MAX_FUNCTIONS];
+  int deltaArray[MAX_POINTS];
+  QList<QGraphicsLineItem*> gridX, gridY;
+  QList<class CanvasFunction*> canvasFunctionList;
+  QList<class QGraphicsSimpleTextItem*> canvasTextList;
+  QMatrix matrix;
+  float zoom;
+  bool mousePressed;
+  int activeFunction, activePoint;
+  QPoint mousePressPos;
+
+public:
+  float_function f;
+  int pointCount;
+  int functionCount;
     
-  protected:
-    virtual void resizeEvent (QResizeEvent* );            
-    virtual void contentsMousePressEvent (QMouseEvent* );
-    virtual void contentsMouseReleaseEvent (QMouseEvent* );
-    virtual void contentsMouseMoveEvent (QMouseEvent* );
+protected:
+  void drawBackground(QPainter *painter, const QRectF &rect);
+  virtual void resizeEvent (QResizeEvent* );            
+  virtual void contentsMousePressEvent (QMouseEvent* );
+  virtual void contentsMouseReleaseEvent (QMouseEvent* );
+  virtual void contentsMouseMoveEvent (QMouseEvent* );
                 
-  public:
-    Function(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget* parent=0, const char *name=0);
-    ~Function();
-    void setPointCount(int count);
-    void setFunctionCount(int count);
-    void setPoint(int f_index, int p_index, int x, int y);
-    QPoint getPoint(int f_index, int p_index);
-    virtual QSize sizeHint() const;
-    virtual QSizePolicy sizePolicy() const;
-    void redrawFunction();
-    void redrawGrid();
-    void updateScale();
+public:
+  Function(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &point, int p_pointCount, QWidget* parent=0, const char *name=0);
+  ~Function();
+  void setPointCount(int count);
+  void setFunctionCount(int count);
+  void setPoint(int f_index, int p_index, int x, int y);
+  QPoint getPoint(int f_index, int p_index);
+  virtual QSize sizeHint() const;
+  virtual QSizePolicy sizePolicy() const;
+  void redrawFunction();
+  void redrawGrid();
+  void updateScale();
 
-  signals:
-    void mousePos(int, int);
+signals:
+  void mousePos(int, int);
 
-  public slots: 
-    void updateFunction(int index);
-    void setZoom(float p_zoom);
-    void highlightFunction(int index);
+public slots: 
+  void updateFunction(int index);
+  void setZoom(float p_zoom);
+  void highlightFunction(int index);
 };
   
 #endif

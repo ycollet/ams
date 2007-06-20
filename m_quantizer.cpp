@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,50 +19,51 @@
 #include "m_quantizer.h"
 #include "port.h"
 
-M_quantizer::M_quantizer(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_quantizer::M_quantizer(QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_quantizer;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_QUANTIZER_WIDTH, MODULE_QUANTIZER_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_M_trigger = new Port("Trigger", PORT_IN, 1, this, synthdata); 
+  port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
   port_M_trigger->move(0, 55);
   port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);
-  port_M_transpose = new Port("Transpose", PORT_IN, 2, this, synthdata); 
+  port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
   port_M_transpose->move(0, 75);
   port_M_transpose->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_transpose);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this, synthdata);          
+  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
   port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
   quantum = QUANT_12;
-  QStrList *quantumNames = new QStrList(true);
-  quantumNames->append("1/12");
-  quantumNames->append("1/6");
-  quantumNames->append("Major Scale");
-  quantumNames->append("Minor Scale");
-  quantumNames->append("Major Chord");
-  quantumNames->append("Minor Chord");
-  quantumNames->append("Major 7 Chord");
-  quantumNames->append("Minor 7 Chord");
-  quantumNames->append("Major 6 Chord");
-  quantumNames->append("Minor 6 Chord");
-  quantumNames->append("Pentatonic");
-  configDialog->addComboBox(0, "Quantization", (int *)&quantum, quantumNames->count(), quantumNames);
+  QStringList quantumNames ;
+  quantumNames <<
+    "1/12" <<
+    "1/6" <<
+    "Major Scale" <<
+    "Minor Scale" <<
+    "Major Chord" <<
+    "Minor Chord" <<
+    "Major 7 Chord" <<
+    "Minor 7 Chord" <<
+    "Major 6 Chord" <<
+    "Minor 6 Chord" <<
+    "Pentatonic";
+  configDialog->addComboBox(0, "Quantization", (int *)&quantum, quantumNames.count(), &quantumNames);
   qs.sprintf("Quantizer ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
     trigCount[l1] = 0;

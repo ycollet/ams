@@ -9,13 +9,11 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
-#include <qfiledialog.h>
+#include <QFileDialog>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "module.h"
@@ -47,7 +45,7 @@ class M_scmcv : public Module
     float freq[MAXPOLY], lastfreq[MAXPOLY], trig[MAXPOLY];
                 
   public:
-    M_scmcv(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0, QString *p_sclname = 0);
+    M_scmcv(QWidget* parent=0, const char *name=0, QString *p_sclname = 0);
     ~M_scmcv();
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);

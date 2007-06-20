@@ -4,59 +4,60 @@
 #include <glob.h>
 #include <dlfcn.h>
 #include <qregexp.h>
+#include <QTextStream>
+
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
-#include <qfiledialog.h>
 #include <qfile.h>
-#include <qtextstream.h>
 #include <qmessagebox.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midipushbutton.h"
 #include "m_scmcv.h"
 #include "port.h"
 
-M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QString *p_sclname) 
-              : Module(4, parent, name, p_synthdata) {
+M_scmcv::M_scmcv(QWidget* parent, const char *name, QString *p_sclname) 
+              : Module(4, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_scmcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCMCV_WIDTH, MODULE_SCMCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this, synthdata);          
+  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
   port_gate_out->outType = outType_audio;
   portList.append(port_gate_out);
-  port_note_out = new Port("Freq", PORT_OUT, 1, this, synthdata);          
+  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
   port_note_out->move(width() - port_note_out->width(), 55);
   port_note_out->outType = outType_audio;
   portList.append(port_note_out);
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this, synthdata);          
+  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
   port_velocity_out->move(width() - port_velocity_out->width(), 75);
   port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this, synthdata);
+  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);
   port_trig_out->move(width() - port_trig_out->width(), 95);
   port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
   qs.sprintf("Scala MCV ID %d", moduleID);
-  configDialog->setCaption(qs);
-  QStrList *channelNames = new QStrList(true);
-  channelNames->append("RESERVED FOR LATER USE");
+  configDialog->setWindowTitle(qs);
+  QStringList channelNames;
+  channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {
     qs.sprintf("RESERVED FOR LATER USE");
-    channelNames->append(qs);
+    channelNames << qs;
   }
   channel = 0;
   base = 0;
@@ -75,7 +76,7 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
   scale_lut_isRatio[12] = true;
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
-  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
+  configDialog->addComboBox(0, " ", &channel, channelNames.count(), &channelNames);
   configDialog->addIntSlider(-60, 60, base, "Scale Offset", &base);
   configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
@@ -91,9 +92,9 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, SynthData *p_synthdata, QStr
     fprintf(stderr, "\nYou did not set the environment variable SCALA_PATH.\n");
     fprintf(stderr, "Assuming SCALA_PATH=/usr/share/scala\n");
     dirpath = "/usr/share/scala";   
-  } else { 
-    fprintf(stderr, "SCALA_PATH: %s\n", dirpath.latin1());
-  }
+  } else
+    StdErr << "SCALA_PATH: " << dirpath << endl;
+
   if (p_sclname && !p_sclname->contains("No_Scale_loaded")) {
     loadScale(dirpath + "/" + *p_sclname);
   }
@@ -108,7 +109,7 @@ void M_scmcv::noteOnEvent(int osc) {
   trig[osc] = 1;
 }
 
-void M_scmcv::noteOffEvent(int osc) {
+void M_scmcv::noteOffEvent(int) {
 
 }
 
@@ -192,8 +193,8 @@ void M_scmcv::showConfigDialog() {
 void M_scmcv::openBrowser() {
 
   if (!fileDialog) {
-    fileDialog = new QFileDialog(dirpath, "Scala files (*.scl)");
-    QObject::connect(fileDialog, SIGNAL(fileSelected(const QString &)), this, SLOT(loadScale(const QString &)));
+    fileDialog = new QFileDialog(NULL, tr("Load Scala"), dirpath, "Scala files (*.scl)");
+    QObject::connect(fileDialog, SIGNAL(currentChanged(const QString &)), this, SLOT(loadScale(const QString &)));
   }
   fileDialog->show();
 }
@@ -204,35 +205,35 @@ void M_scmcv::loadScale(const QString &p_sclname) {
   int index, n;
 
   sclname = p_sclname;  
-  QFile *qfile = new QFile(sclname);
-  if (!qfile->open(IO_ReadOnly)) {
+  QFile qfile(sclname);
+  if (!qfile.open(QIODevice::ReadOnly)) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not load Scala file "+sclname);
     sclname = "No_Scale_loaded";
     return;
   }
   configDialog->labelList.at(0)->setText("   Scale: " + sclname);
-  QTextStream *stream  = new QTextStream(qfile);
-  while (!stream->eof()) {
-    qs = stream->readLine(); 
+  QTextStream stream(&qfile);
+  while (!stream.atEnd()) {
+    qs = stream.readLine(); 
     if (!qs.contains("!")) 
       break;
   }
   configDialog->labelList.at(0)->setText("   " + qs);
-  fprintf(stderr, "Scale: %s\n", qs.latin1());
-  while (!stream->eof()) {  
-    qs = stream->readLine();
+  StdErr << "Scale: " << qs << endl;
+  while (!stream.atEnd()) {  
+    qs = stream.readLine();
     if (!qs.contains("!"))
       break;
   }
   index = 0;
-  while (!stream->eof() && (index < 128)) {
-    qs = stream->readLine();
+  while (!stream.atEnd() && (index < 128)) {
+    qs = stream.readLine();
     if (qs.contains("!")) {
       continue;
     }
-    qs2 = qs.simplifyWhiteSpace();
+    qs2 = qs.simplified();
     if (qs2.contains(".")) {
-      if ((n = qs2.find(" ")) > 0) {
+      if ((n = qs2.indexOf(" ")) > 0) {
         qs = qs2.left(n); 
       } else {
         qs = qs2;
@@ -243,26 +244,24 @@ void M_scmcv::loadScale(const QString &p_sclname) {
     } else {
       scale_lut_isRatio[index] = true;
       if (qs.contains("/")) {
-        qs = qs2.left(qs2.find("/"));
-        qs3 = qs2.mid(qs2.find("/") + 1);
-        if ((n = qs3.find(" ")) > 0) {
+        qs = qs2.left(qs2.indexOf("/"));
+        qs3 = qs2.mid(qs2.indexOf("/") + 1);
+        if ((n = qs3.indexOf(" ")) > 0) {
           qs2 = qs3.left(n); 
         } else {
           qs2 = qs3;
         }
         scale_lut[index] = qs.toFloat() / qs2.toFloat();
       } else {
-        if ((n = qs2.find(" ")) > 0) {
+        if ((n = qs2.indexOf(" ")) > 0)
           qs = qs2.left(n); 
-        } else {
+        else
           qs = qs2;
-        }
         scale_lut[index] = qs.toFloat();
       }
       index++;
     }
   }
   scale_lut_length = index;
-  qfile->close();
   calcScale();
 }

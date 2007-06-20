@@ -10,12 +10,14 @@
 #include <qcheckbox.h>  
 #include <qlabel.h>
 #include <qlist.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <alsa/asoundlib.h>
 #include <ladspa.h>
 #include "synthdata.h"
@@ -33,8 +35,8 @@ class M_ladspa : public Module
   Q_OBJECT
 
   private:
-    QList<Port> in_port_list, out_port_list;
-    QList<Port> in_ctrl_port_list, out_ctrl_port_list;
+    QList<Port*> in_port_list, out_port_list;
+    QList<Port*> in_ctrl_port_list, out_ctrl_port_list;
     const LADSPA_Descriptor *ladspa_dsc;
     LADSPA_Handle ladspa_handle[MAXPOLY];
     LADSPA_Data *ladspaDataIn[MAX_AUDIOPORTS][MAXPOLY], *ladspaDataOut[MAX_AUDIOPORTS][MAXPOLY];
@@ -54,7 +56,7 @@ class M_ladspa : public Module
     QString pluginName;
     
   public:
-    M_ladspa(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0,
+    M_ladspa(QWidget* parent=0, const char *name=0,
             int p_ladspaDesFuncIndex=0, int p_n=0, bool poly = false, bool extCtrlPorts = false);
     ~M_ladspa();
 

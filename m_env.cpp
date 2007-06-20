@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -16,11 +16,12 @@
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midislider.h"
 #include "m_env.h"
 #include "port.h"
 
-M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(2, parent, name, p_synthdata) {
+M_env::M_env(QWidget* parent, const char *name) 
+              : Module(2, parent, name) {
 
   QString qs;
   int l1;
@@ -34,28 +35,28 @@ M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata)
   sustain = 0.7;
   release = 0.05;
   timeScale = 1.0;
-  port_gate = new Port("Gate", PORT_IN, 0, this, synthdata);
+  port_gate = new Port("Gate", PORT_IN, 0, this);
   port_gate->move(0, 35);
   port_gate->outTypeAcceptList.append(outType_audio);
   portList.append(port_gate);
-  port_retrigger = new Port("Retrigger", PORT_IN, 1, this, synthdata);
+  port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
   port_retrigger->move(0, 55);
   port_retrigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_retrigger);
-  port_gain_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_gain_out = new Port("Out", PORT_OUT, 0, this);          
   port_gain_out->move(width() - port_gain_out->width(), 75);
   port_gain_out->outType = outType_audio;
   portList.append(port_gain_out);
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this, synthdata);          
+  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
   qs.sprintf("ENV ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addEnvelope(&delay, &attack, &hold, &decay, &sustain, &release);
   configDialog->initTabWidget();
-  QVBox *adsrTab = new QVBox(configDialog->tabWidget);
-  QVBox *delayTab = new QVBox(configDialog->tabWidget);
+  QVBoxLayout *adsrTab = configDialog->addVBoxTab("ADSR");
+  QVBoxLayout *delayTab = configDialog->addVBoxTab("Delay / Hold / Time Scale");
   configDialog->addSlider(0, 1, delay, "Delay", &delay, false, delayTab);
   configDialog->addSlider(0, 1, attack, "Attack", &attack, false, adsrTab);
   configDialog->addSlider(0, 1, hold, "Hold", &hold, false, delayTab);
@@ -63,8 +64,7 @@ M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0, 1, sustain, "Sustain", &sustain, false, adsrTab);
   configDialog->addSlider(0, 1, release, "Release", &release, false, adsrTab);
   configDialog->addSlider(0.1, 10, timeScale, "Time Scale", &timeScale, false, delayTab);
-  configDialog->addTab(adsrTab, "ADSR");
-  configDialog->addTab(delayTab, "Delay / Hold / Time Scale");
+
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
     QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
                      configDialog->envelopeList.at(0), SLOT(updateEnvelope(int)));
@@ -80,8 +80,9 @@ M_env::M_env(QWidget* parent, const char *name, SynthData *p_synthdata)
   }
 }
 
-M_env::~M_env() {
-
+M_env::~M_env()
+{
+  synthdata->listM_env.removeAll(this);
 }
 
 void M_env::generateCycle() {

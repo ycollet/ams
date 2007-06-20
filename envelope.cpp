@@ -9,15 +9,19 @@
 #include <qbrush.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPolygon>
+#include <QPaintEvent>
 #include "envelope.h"
 
 
 Envelope::Envelope(float *p_delayRef, float *p_attackRef, float *p_holdRef,
                    float *p_decayRef, float *p_sustainRef, float *p_releaseRef,
-                   QWidget* parent, const char *name, SynthData *p_synthdata) 
-             : QWidget (parent, name)
+                   QWidget* parent, const char *name) 
+  : QWidget (parent)
 {
-  synthdata = p_synthdata;
+  setObjectName(name);
   delayRef = p_delayRef;
   attackRef = p_attackRef;
   holdRef = p_holdRef;
@@ -36,7 +40,7 @@ void Envelope::paintEvent(QPaintEvent *) {
 
   QPixmap pm(width(), height());  
   QPainter p(&pm);
-  QPointArray points(7);
+  QPolygon points(7);
   QPen pen;
   float len, x, y, xscale, yscale;
 
@@ -71,12 +75,12 @@ void Envelope::paintEvent(QPaintEvent *) {
   pen.setWidth(1);
   p.setPen(pen);
   p.drawPolyline(points);
-  bitBlt(this, 0, 0, &pm);
+  //!!  bitBlt(this, 0, 0, &pm);
 }
 
-void Envelope::updateEnvelope(int value) {
-
-  repaint(false);
+void Envelope::updateEnvelope(int)
+{
+  update();
 }
 
 QSize Envelope::sizeHint() const {
@@ -91,5 +95,5 @@ QSizePolicy Envelope::sizePolicy() const {
 
 void Envelope::resizeEvent (QResizeEvent* )
 {
-  repaint(true);
+  update();
 }

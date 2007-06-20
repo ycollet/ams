@@ -7,20 +7,17 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
-#include <qstrlist.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_mphlfo.h"
 #include "port.h"
 
-M_mphlfo::M_mphlfo(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(16, parent, name, p_synthdata) {
+M_mphlfo::M_mphlfo(QWidget* parent, const char *name) 
+              : Module(16, parent, name) {
 
   QString qs;
   int l1, l2;
@@ -34,7 +31,7 @@ M_mphlfo::M_mphlfo(QWidget* parent, const char *name, SynthData *p_synthdata)
     } else {
       qs.sprintf("Tri Out %4d", (l1-8) * 45);
     }  
-    port_out[l1] = new Port(qs, PORT_OUT, l1, this, synthdata);
+    port_out[l1] = new Port(qs, PORT_OUT, l1, this);
     port_out[l1]->move(MODULE_MPHLFO_WIDTH - port_out[l1]->width(), 
                        35 + 20 * l1);
     port_out[l1]->outType = outType_audio;
@@ -52,13 +49,11 @@ M_mphlfo::M_mphlfo(QWidget* parent, const char *name, SynthData *p_synthdata)
   configDialog->addSlider(0.01, 20, freq, "Frequency (Hz)", &freq, true);
   configDialog->addSlider(0.01, 5, gain_saw, "Gain Saw", &gain_saw, true);
   configDialog->addSlider(0.01, 5, gain_tri, "Gain Triangle", &gain_tri, true);
-  QStrList *modeNames = new QStrList(true);
-  modeNames->append("Saw Up");
-  modeNames->append("Saw Down");
-  modeNames->append("Saw Up (0..135) / Saw Down (180..315)");
-  configDialog->addComboBox(mode, "Saw Mode", &mode, modeNames->count(), modeNames);
+  QStringList modeNames;
+  modeNames << "Saw Up" << "Saw Down" << "Saw Up (0..135) / Saw Down (180..315)";
+  configDialog->addComboBox(mode, "Saw Mode", &mode, modeNames.count(), &modeNames);
   qs.sprintf("Multiphase LFO ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_mphlfo::~M_mphlfo() {

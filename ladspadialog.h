@@ -1,50 +1,54 @@
 #ifndef LADSPADIALOG_H
 #define LADSPADIALOG_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlistbox.h>
-#include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qlistview.h>
 #include <ladspa.h>
-#include "synthdata.h"
+#include <qwidget.h>
+#include <QVBoxLayout>
+#include <QAbstractItemModel>
 
-class LadspaDialog : public QVBox
+class LadspaModel: public QAbstractItemModel
 {
-  Q_OBJECT
+Q_OBJECT
+  friend class LadspaDialog;
 
-  private:
-    SynthData *synthdata;
-    QLabel *pluginLabel, *pluginMaker, *pluginCopyright;
-    QLineEdit *searchLine;
-    QCheckBox *extCtrlPortsCheck;
+  int rowCount(const QModelIndex &parent) const;
+  QVariant data(const QModelIndex &index, int role) const;
+  QVariant headerData(int section, Qt::Orientation orientation,
+		      int role = Qt::DisplayRole) const;
+  QModelIndex index(int row, int column,
+		    const QModelIndex &parent = QModelIndex()) const;
+  QModelIndex parent(const QModelIndex &child) const;
+  int columnCount(const QModelIndex &parent = QModelIndex()) const;
+};
+
+class LadspaDialog: public QWidget
+{
+Q_OBJECT
+  LadspaModel ladspaModel;
+  QVBoxLayout vbox;
+  class QLabel *pluginLabel, *pluginMaker, *pluginCopyright;
+  class QLineEdit *searchLine;
+  class QCheckBox *extCtrlPortsCheck;
+  class QPushButton *insertButton;
+  class QPushButton *insertPolyButton;
+  int selectedLib;
+  int selectedDesc;
            
-  public: 
-    QListView *ladspaList;
+public: 
+  class QTreeView *ladspaView;
     
-  public:
-    LadspaDialog(SynthData *p_synthdata, QWidget* parent=0, const char *name=0);
-    ~LadspaDialog();
+public:
+  LadspaDialog();
+  ~LadspaDialog();
     
-  signals:
-    void createLadspaModule(int index, int n, bool poly, bool extCtrlPorts);  
+signals:
+  void createLadspaModule(int index, int n, bool poly, bool extCtrlPorts);  
 
-  private slots:
-    void insertClicked();
-    void insertPolyClicked();
-    void searchClicked();
-    void pluginHighlighted();
+private slots:
+  void insertClicked();
+  void insertPolyClicked();
+  void searchClicked();
+  void pluginHighlighted(const class QItemSelection &, const QItemSelection &);
 };
   
 #endif

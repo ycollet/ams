@@ -9,8 +9,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -42,7 +40,7 @@ class M_env : public Module
     float **gateData, **retriggerData;
                 
   public:
-    M_env(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_env(QWidget* parent=0, const char *name=0);
     ~M_env();
 
   public slots:

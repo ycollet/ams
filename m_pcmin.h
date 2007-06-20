@@ -9,8 +9,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -35,7 +33,7 @@ class M_pcmin : public Module
     float *pcmdata[2];
                             
   public:
-    M_pcmin(QWidget* parent, const char *name, SynthData *p_synthdata, int port);
+    M_pcmin(QWidget* parent, const char *name, int port);
     ~M_pcmin();
 
   public slots:

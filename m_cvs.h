@@ -9,8 +9,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -33,7 +33,7 @@ class M_cvs : public Module
     float cv[MODULE_CVS_CV_COUNT], cv_fine[MODULE_CVS_CV_COUNT];
                 
   public:
-    M_cvs(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_cvs(QWidget* parent=0, const char *name=0);
     ~M_cvs();
 
   public slots:

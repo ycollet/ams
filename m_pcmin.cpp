@@ -7,23 +7,22 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
 #include <qtimer.h>
-#include <qfiledialog.h>
 #include "synthdata.h"
 #include "m_pcmin.h"
 #include "module.h"
 #include "port.h"
 
 
-M_pcmin::M_pcmin(QWidget* parent, const char *name, SynthData *p_synthdata, int port) 
-              : Module(2, parent, name, p_synthdata)
+M_pcmin::M_pcmin(QWidget* parent, const char *name, int port) 
+              : Module(2, parent, name)
  {
   QString qs;
 
@@ -33,17 +32,17 @@ M_pcmin::M_pcmin(QWidget* parent, const char *name, SynthData *p_synthdata, int 
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
   qs.sprintf ("In %2d -> ", port);
-  port_out[0] = new Port(qs, PORT_OUT, 0, this, synthdata);          
+  port_out[0] = new Port(qs, PORT_OUT, 0, this);          
   port_out[0]->move(width() - port_out[0]->width(), 35);
   port_out[0]->outType = outType_audio;
   portList.append(port_out[0]);
   qs.sprintf ("In %2d -> ", port + 1);
-  port_out[1] = new Port(qs, PORT_OUT, 1, this, synthdata);          
+  port_out[1] = new Port(qs, PORT_OUT, 1, this);          
   port_out[1]->move(width() - port_out[1]->width(), 55);
   port_out[1]->outType = outType_audio;
   portList.append(port_out[1]);
   qs.sprintf("Alsa / Jack In  ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
   configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
   configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);

@@ -9,13 +9,13 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
-#include <qpointarray.h>
+//#include <q3pointarray.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "module.h"
@@ -24,17 +24,19 @@
 
 #define MODULE_FUNCTION_WIDTH                 85
 #define MODULE_FUNCTION_HEIGHT                40
-       
+
+
+
 class M_function : public Module
 {
   Q_OBJECT
 
   private:
-    QList<Port> out_port_list;
+    QList<Port*> out_port_list;
     Port *port_in;
     float zoom;
     float y[MAX_FUNCTIONS][MAXPOLY], old_y[MAX_FUNCTIONS][MAXPOLY];
-    QPointArray *points[MAX_FUNCTIONS];
+    tFunction point;
     int i[MAXPOLY][MAX_FUNCTIONS];
     int zoomIndex, editIndex;
     int mode;
@@ -44,7 +46,7 @@ class M_function : public Module
     int functionCount;
                             
   public:
-    M_function(int p_functionCount, SynthData *p_synthdata, QWidget* parent=0, const char *name=0);
+    M_function(int p_functionCount, QWidget* parent=0, const char *name=0);
     ~M_function();
 
   public slots:

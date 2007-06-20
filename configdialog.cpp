@@ -6,14 +6,10 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
-#include <qstrlist.h>
-#include <qscrollview.h>
 #include <qsizepolicy.h>
 #include <qlineedit.h>
 #include <alsa/asoundlib.h>
@@ -22,129 +18,121 @@
 #include "midislider.h"
 #include "intmidislider.h"
 #include "floatintmidislider.h"
+#include "midicheckbox.h"
 #include "midicombobox.h"
+#include "midipushbutton.h"
 #include "envelope.h"
 #include "multi_envelope.h"
 #include "scopescreen.h"
 #include "spectrumscreen.h"
 #include "function.h"
 
-ConfigDialog::ConfigDialog(QObject *p_parentModule, QWidget* parent, const char *name, SynthData *p_synthdata) 
-                : QVBox(parent, name) {
-
-  parentModule = p_parentModule;
-//  scroll = new QScrollView(this);
-  tabWidget = NULL;
-//  configBox = new QVBox(scroll->viewport());
-  configBox = new QVBox(this);
-//  configBox->setMinimumWidth(430);
+ConfigDialog::ConfigDialog(Module *p_parentModule, QWidget* parent, const char *name) 
+  : QWidget(parent)
+  , addStretch(1)
+  , removeButton(new QPushButton("Remove Module"))
+  , removeFrame(new QHBoxLayout())
+{
+  setObjectName(name);
+  QVBoxLayout *vBox = new QVBoxLayout();
+  setLayout(vBox);
+  vBox->setMargin(0);
+  vBox->setSpacing(0);
+  configBox = new QVBoxLayout();
   configBox->setMargin(5);
   configBox->setSpacing(5);
-//  scroll->setMinimumWidth(460);
-//  scroll->addChild(configBox);
-//  scroll->setResizePolicy(QScrollView::AutoOneFit);
-  QHBox *removeFrame = new QHBox(this);
-  removeFrame->setMargin(10);
-  new QWidget(removeFrame);
-  removeButton = new QPushButton("Remove Module", removeFrame);
-  new QWidget(removeFrame);
+  vBox->addLayout(configBox);
+
+  parentModule = p_parentModule;
+
+  tabWidget = NULL;
+  removeFrame->addStretch();
+  removeFrame->addWidget(removeButton);
+  removeFrame->addStretch();
+  vBox->addLayout(removeFrame);
+  removeButtonShow(true);
   QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeButtonClicked()));
-  synthdata = p_synthdata;
 }
 
 ConfigDialog::~ConfigDialog() {
+  MidiGUIcomponent *mgc;
+  for (int i = 0; i < midiGUIcomponentList.count(); ++i)
+    delete midiGUIcomponentList.at(i);
 }
 
-int ConfigDialog::addSlider(float minValue, float maxValue, float value, const char * name, float *valueRef, bool isLog, QWidget *parent) {
+int ConfigDialog::addSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, bool isLog, QBoxLayout *layout) {
 
   MidiSlider *midiSlider;
   
-  if (!parent) {
-    midiSlider = new MidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                          QSlider::Horizontal, configBox, name, synthdata, valueRef, isLog);
-  } else {
-    midiSlider = new MidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                          QSlider::Horizontal, parent, name, synthdata, valueRef, isLog);
-  }
+  midiSlider = new MidiSlider(parentModule, minValue, maxValue, 0, value, 
+                              Qt::Horizontal, NULL, name, valueRef, isLog);
+  insertWidget(layout, midiSlider);
+
   midiSliderList.append(midiSlider);
   midiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)midiSlider);
   return(0);
 }
 
-int ConfigDialog::addFloatIntSlider(float minValue, float maxValue, float value, const char * name, float *valueRef, QWidget *parent) {
+int ConfigDialog::addFloatIntSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, QBoxLayout *layout) {
 
   FloatIntMidiSlider *floatIntMidiSlider;
 
-  if (!parent) {
-    floatIntMidiSlider = new FloatIntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                                QSlider::Horizontal, configBox, name, synthdata, valueRef);
-  } else {
-    floatIntMidiSlider = new FloatIntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                                QSlider::Horizontal, parent, name, synthdata, valueRef);
-  }
+  floatIntMidiSlider = new FloatIntMidiSlider(parentModule, minValue, maxValue, 0, value, 
+					      Qt::Horizontal, NULL, name, valueRef);
+  insertWidget(layout, floatIntMidiSlider);
   floatIntMidiSliderList.append(floatIntMidiSlider);
   floatIntMidiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)floatIntMidiSlider);
   return(0);
 }
 
-int ConfigDialog::addIntSlider(int minValue, int maxValue, int value, const char * name, int *valueRef, QWidget *parent) {
+int ConfigDialog::addIntSlider(int minValue, int maxValue, int value, const QString &name, int *valueRef, QBoxLayout *layout) {
  
   IntMidiSlider *intMidiSlider;
 
-  if (!parent) {
-    intMidiSlider = new IntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                            QSlider::Horizontal, configBox, name, synthdata, valueRef);
-  } else {
-    intMidiSlider = new IntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-                                              QSlider::Horizontal, parent, name, synthdata, valueRef);
-  }
+  intMidiSlider = new IntMidiSlider(parentModule, minValue, maxValue, 0, value, 
+				    Qt::Horizontal, NULL, name, valueRef);
+  insertWidget(layout, intMidiSlider);
   intMidiSliderList.append(intMidiSlider);
   intMidiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)intMidiSlider);
   return(0);
 }
 
-int ConfigDialog::addComboBox(int value, const char * name, int *valueRef, int itemCount, QStrList *itemNames, QWidget *parent) {
+int ConfigDialog::addComboBox(int value, const QString &name, int *valueRef, int /*itemCount*/, QStringList *itemNames, QBoxLayout *layout) {
  
   MidiComboBox *midiComboBox;
 
-  if (!parent) {
-    midiComboBox = new MidiComboBox(parentModule, value, configBox, name, synthdata, valueRef, itemNames);
-  } else {
-    midiComboBox = new MidiComboBox(parentModule, value, parent, name, synthdata, valueRef, itemNames);
-  }
+  midiComboBox = new MidiComboBox(parentModule, value, NULL, name, valueRef, itemNames);
+  insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
+
   midiComboBoxList.append(midiComboBox);
   midiComboBox->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)midiComboBox);
   return(0);
 }
 
-int ConfigDialog::addCheckBox(float value, const char * name, float *valueRef, QWidget *parent) {
+int ConfigDialog::addCheckBox(float value, const QString &name, float *valueRef, QBoxLayout *layout) {
   
   MidiCheckBox *midiCheckBox;
 
-  if (!parent) {
-    midiCheckBox = new MidiCheckBox(parentModule, value, configBox, name, synthdata, valueRef);
-  } else {
-    midiCheckBox = new MidiCheckBox(parentModule, value, parent, name, synthdata, valueRef);
-  }
+  midiCheckBox = new MidiCheckBox(parentModule, value, NULL, name, valueRef);
+  insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
+
   midiCheckBoxList.append(midiCheckBox);
   midiCheckBox->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)midiCheckBox);
   return(0);
 }
 
-int ConfigDialog::addPushButton(const char * name, QWidget *parent) {
+int ConfigDialog::addPushButton(const QString &name, QBoxLayout *layout) {
   
   MidiPushButton *midiPushButton;
 
-  if (!parent) {
-    midiPushButton = new MidiPushButton(parentModule, configBox, name, synthdata);
-  } else {
-    midiPushButton = new MidiPushButton(parentModule, parent, name, synthdata);
-  }
+  midiPushButton = new MidiPushButton(parentModule, name);
+  insertWidget(layout, midiPushButton, 0, Qt::AlignCenter);
+
   midiPushButtonList.append(midiPushButton);
   midiPushButton->midiGUIcomponentListIndex = midiGUIcomponentList.count();
   midiGUIcomponentList.append((MidiGUIcomponent *)midiPushButton);
@@ -152,46 +140,38 @@ int ConfigDialog::addPushButton(const char * name, QWidget *parent) {
 }
 
 int ConfigDialog::addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
-                               float *decayRef, float *sustainRef, float *releaseRef, QWidget *parent) {
+			      float *decayRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
 
   Envelope *envelope;
 
-  if (!parent) {
-    envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef, 
-                                    configBox, "Envelope", synthdata);
-  } else {
-    envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef, 
-                                    parent, "Envelope", synthdata);
-  }
+  envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef, 
+			  NULL, "Envelope");
+  insertWidget(layout, envelope);
+
   envelopeList.append(envelope);
   return(0);
 }
 
-int ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QWidget *parent) {
+int ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
 
   MultiEnvelope *envelope;
 
-  if (!parent) {
-    envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef, 
-                                    configBox, "Multi Envelope", synthdata);
-  } else {
-    envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef, 
-                                    parent, "Multi Envelope", synthdata);
-  }
+  envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef, 
+			       NULL, "Multi Envelope");
+  insertWidget(layout, envelope);
+
   multiEnvelopeList.append(envelope);
   return(0);
 }
 
-int ConfigDialog::addLabel(QString label, QWidget *parent) {
+int ConfigDialog::addLabel(QString label, QBoxLayout *layout) {
 
   QLabel *configLabel;
 
-  if (!parent) {
-    configLabel = new QLabel(configBox);
-  } else {
-    configLabel = new QLabel(parent); 
-  }
-  configLabel->setAlignment(Qt::WordBreak | Qt::AlignLeft);
+  configLabel = new QLabel();
+  insertWidget(layout, configLabel);
+
+  configLabel->setAlignment(/*Qt::WordBreak |*/ Qt::AlignLeft);
   configLabel->setText(label);
   labelList.append(configLabel);
   return(0);
@@ -202,101 +182,126 @@ void ConfigDialog::removeButtonClicked() {
   emit removeModuleClicked();
 }
 
-int ConfigDialog::addTab(QWidget *tabPage, QString tabLabel) {
-
-  tabWidget->insertTab(tabPage, tabLabel);
-  return 0;
-}
-
 int ConfigDialog::initTabWidget() {
 
-  tabWidget = new QTabWidget(configBox);
+  tabWidget = new QTabWidget();
+  configBox->insertWidget(configBox->count() - 1, tabWidget);
   return 0;
 }
 
-QHBox *ConfigDialog::addHBox(QWidget *parent) {
+QHBoxLayout *ConfigDialog::addHBox(QBoxLayout *layout)
+{
+  QHBoxLayout *hbox;
 
-  QHBox *hbox;
+  if (!layout)
+    layout = configBox;
 
-  if (!parent) {
-    hbox = new QHBox(configBox);
-  } else {  
-    hbox = new QHBox(parent);
-  }
-  hboxList.append(hbox);   
-  return(hbox);
+  hbox = new QHBoxLayout();
+  layout->addLayout(hbox);
+  if (addStretch > 0)
+    layout->addStretch(addStretch);
+
+  return hbox;
 }
 
-QVBox *ConfigDialog::addVBox(QWidget *parent) {
+QVBoxLayout *ConfigDialog::addVBox(QBoxLayout *layout)
+{
+  QVBoxLayout *vbox;
 
-  QVBox *vbox;
+  if (!layout)
+    layout = configBox;
 
-  if (!parent) {
-    vbox = new QVBox(configBox);
-  } else {  
-    vbox = new QVBox(parent);
-  }
-  vboxList.append(vbox);   
-  return(vbox);
+  vbox = new QVBoxLayout();
+  layout->addLayout(vbox);
+  if (addStretch > 0)
+    layout->addStretch(addStretch);
+
+  return vbox;
 }
 
-int ConfigDialog::addLineEdit(QString lineName, QWidget *parent) {
+QVBoxLayout *ConfigDialog::addVBoxTab(const char *tabLabel)
+{
+  return addVBoxTab(QString(tabLabel));
+}
+
+
+QVBoxLayout *ConfigDialog::addVBoxTab(const QString &tabLabel)
+{
+  QWidget *w = new QWidget();
+  tabWidget->addTab(w, tabLabel);
+  return new QVBoxLayout(w);
+}
+
+int ConfigDialog::addLineEdit(const char *Name, QBoxLayout *layout) {
 
   QLineEdit *lineEdit;
-  QHBox *line;
 
-  if (!parent) {
-    line = new QHBox(configBox);
-  } else {
-    line = new QHBox(parent);
-  }
-  line->setSpacing(5);
-  line->setMargin(10);
-  QLabel *nameLabel = new QLabel(line);
-  nameLabel->setText(lineName);
-  lineEdit = new QLineEdit(line);
+  QHBoxLayout *line = addHBox(layout);
+
+//   line->setSpacing(5);
+//   line->setMargin(10);
+  QLabel *nameLabel = new QLabel();
+  nameLabel->setText(Name);
+  line->addWidget(nameLabel);
+  lineEdit = new QLineEdit();
   lineEditList.append(lineEdit);
-  return(0);
+  line->addWidget(lineEdit);
+
+  return 0;
 }
 
 int ConfigDialog::addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
-                                 float *triggerThrsRef, float *zoomRef, QWidget *parent) {
+                                 float *triggerThrsRef, float *zoomRef, QBoxLayout *layout) {
 
   ScopeScreen *scopeScreen;
 
-  if (!parent) {
-    scopeScreen = new ScopeScreen(configBox, "Scope", synthdata);
-  } else {
-    scopeScreen = new ScopeScreen(parent, "Scope", synthdata);
-  }
+  scopeScreen = new ScopeScreen();
+  insertWidget(layout, scopeScreen, 1);
+
   scopeScreenList.append(scopeScreen);
   return(0);
 }
 
 #ifdef OUTDATED_CODE
-int ConfigDialog::addSpectrumScreen(QWidget *parent) {
+int ConfigDialog::addSpectrumScreen(QBoxLayout *layout) {
 
   SpectrumScreen *spectrumScreen;
 
   if (!parent) {
-    spectrumScreen = new SpectrumScreen(configBox, "Spectrum", synthdata);
+    spectrumScreen = new SpectrumScreen(NULL, "Spectrum");
   } else {
-    spectrumScreen = new SpectrumScreen(parent, "Spectrum", synthdata);
+    spectrumScreen = new SpectrumScreen(parent, "Spectrum");
   }
   spectrumScreenList.append(spectrumScreen);
   return(0);
 }
 #endif
 
-int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex, QPointArray *p_points[], int p_pointCount, SynthData *p_synthdata, QWidget *parent) {
+int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &point, int p_pointCount, QBoxLayout *layout) {
 
   Function *function;
 
-  if (!parent) {
-    function = new Function(p_functionCount, p_mode, p_editIndex, p_points, p_pointCount, p_synthdata, configBox);
-  } else {
-    function = new Function(p_functionCount, p_mode, p_editIndex, p_points, p_pointCount, p_synthdata, parent);
-  }
+  function = new Function(p_functionCount, p_mode, p_editIndex, point, p_pointCount, NULL);
+  insertWidget(layout, function, 1);
+
   functionList.append(function);
   return(0);
+}
+
+void ConfigDialog::insertWidget(QBoxLayout *layout, QWidget *widget,
+				int stretch, Qt::Alignment alignment)
+{
+  if (!layout)
+    layout = configBox;
+
+  layout->addWidget(widget, stretch, alignment);
+  if (addStretch > 0)
+    layout->addStretch(addStretch);
+}
+
+void ConfigDialog::removeButtonShow(bool show)
+{
+  removeFrame->setEnabled(show);
+  removeFrame->setMargin(show ? 5 : 0);
+  removeButton->setVisible(show);
 }

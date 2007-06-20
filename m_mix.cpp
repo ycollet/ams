@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,8 +19,8 @@
 #include "m_mix.h"
 #include "port.h"
 
-M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
   int l1;
@@ -33,7 +33,7 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_
   configDialog->addSlider(0, 2, gain, "Gain", &gain);
   for (l1 = 0; l1 < in_channels; l1++) {
     qs.sprintf("In %d", l1);
-    Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this, synthdata);
+    Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
     audio_in_port->move(0, 40 + 20 * in_port_list.count());
     audio_in_port->outTypeAcceptList.append(outType_audio);
     in_port_list.append(audio_in_port);
@@ -42,13 +42,13 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name, SynthData *p_
     qs.sprintf("Volume %d", l1);
     configDialog->addSlider(0, 2, mixer_gain[l1], qs, &mixer_gain[l1]);
   }
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);
+  port_out = new Port("Out", PORT_OUT, 0, this);
   port_out->move(MODULE_MIX_WIDTH - port_out->width(),
                  35 + 20 * in_channels);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("Mixer %d -> 1 ID %d", in_channels, moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_mix::~M_mix() {

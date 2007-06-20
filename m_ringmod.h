@@ -9,8 +9,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -35,7 +33,7 @@ class M_ringmod : public Module
     float **vcoData1, **vcoData2;       
                             
   public:
-    M_ringmod(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    M_ringmod(QWidget* parent=0, const char *name=0);
     ~M_ringmod();
     int setGain(float p_gain);
     float getGain();

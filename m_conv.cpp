@@ -7,20 +7,22 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
+//Added by qt3to4:
+
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_conv.h"
 #include "port.h"
 
-M_conv::M_conv(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_conv::M_conv(QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
 
@@ -28,20 +30,20 @@ M_conv::M_conv(QWidget* parent, const char *name, SynthData *p_synthdata)
   convMode = 0;
   octave = 0;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_CONV_WIDTH, MODULE_CONV_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 55);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("Converter ID %d", moduleID);
-  configDialog->setCaption(qs);
-  QStrList *convModeNames = new QStrList(true);
-  convModeNames->append("V/Octave --> Hz");
-  convModeNames->append("V/Octave --> 0..1, 1=rate/2");
-  convModeNames->append("V/Octave --> 0..1, 1=20000 Hz");
+  configDialog->setWindowTitle(qs);
+  QStringList *convModeNames = new QStringList();
+  *convModeNames << "V/Octave --> Hz";
+  *convModeNames << "V/Octave --> 0..1, 1=rate/2";
+  *convModeNames << "V/Octave --> 0..1, 1=20000 Hz";
   configDialog->addComboBox(0, "Conversion Mode ", &convMode, convModeNames->count(), convModeNames);
   configDialog->addIntSlider(-3, 3, octave, "Octave Offset", &octave);
 }

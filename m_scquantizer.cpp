@@ -10,44 +10,46 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+#include <QTextStream>
 #include <alsa/asoundlib.h>
+#include "midipushbutton.h"
 #include "synthdata.h"
 #include "m_scquantizer.h"
 #include "port.h"
 
-M_scquantizer::M_scquantizer(QWidget* parent, const char *name, SynthData *p_synthdata, QString *p_sclname) 
-              : Module(2, parent, name, p_synthdata) {
+M_scquantizer::M_scquantizer(QWidget* parent, const char *name, QString *p_sclname) 
+              : Module(2, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_scquantizer;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCQUANTIZER_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this, synthdata); 
+  port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
   port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
-  port_M_trigger = new Port("Trigger", PORT_IN, 1, this, synthdata); 
+  port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
   port_M_trigger->move(0, 55);
   port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);
-  port_M_transpose = new Port("Transpose", PORT_IN, 2, this, synthdata); 
+  port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
   port_M_transpose->move(0, 75);
   port_M_transpose->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_transpose);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this, synthdata);          
+  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
   port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
@@ -55,7 +57,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, const char *name, SynthData *p_syn
   lastbase = 12;
   configDialog->addIntSlider(-36, 36, base, "Note Offset", &base);
   qs.sprintf("Scala Quantizer ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
     trigCount[l1] = 0;
@@ -80,9 +82,9 @@ M_scquantizer::M_scquantizer(QWidget* parent, const char *name, SynthData *p_syn
     fprintf(stderr, "\nYou did not set the environment variable SCALA_PATH.\n");
     fprintf(stderr, "Assuming SCALA_PATH=/usr/share/scala\n");
     dirpath = "/usr/share/scala";
-  } else {
-    fprintf(stderr, "SCALA_PATH: %s\n", dirpath.latin1());
-  }
+  } else
+    StdErr << "SCALA_PATH: " << dirpath << endl;
+
   if (p_sclname && !p_sclname->contains("No_Scale_loaded")) {
     loadScale(dirpath + "/" + *p_sclname);
   }
@@ -206,8 +208,8 @@ void M_scquantizer::showConfigDialog() {
 void M_scquantizer::openBrowser() {
 
   if (!fileDialog) {
-    fileDialog = new QFileDialog(dirpath, "Scala files (*.scl)");
-    QObject::connect(fileDialog, SIGNAL(fileSelected(const QString &)), this, SLOT(loadScale(const QString &)));
+    fileDialog = new QFileDialog(NULL, tr("Load Scala"), dirpath, "Scala files (*.scl)");
+    QObject::connect(fileDialog, SIGNAL(currentChanged(const QString &)), this, SLOT(loadScale(const QString &)));
   }
   fileDialog->show();
 }
@@ -218,35 +220,35 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
   int index, n;
 
   sclname = p_sclname;  
-  QFile *qfile = new QFile(sclname);
-  if (!qfile->open(IO_ReadOnly)) {
+  QFile qfile(sclname);
+  if (!qfile.open(QIODevice::ReadOnly)) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not load Scala file "+sclname);
     sclname = "No_Scale_loaded";
     return; 
   }
   configDialog->labelList.at(0)->setText("   Scale: " + sclname);
-  QTextStream *stream  = new QTextStream(qfile);
-  while (!stream->eof()) {
-    qs = stream->readLine(); 
+  QTextStream stream(&qfile);
+  while (!stream.atEnd()) {
+    qs = stream.readLine(); 
     if (!qs.contains("!")) 
       break;
   }
   configDialog->labelList.at(1)->setText("   " + qs);
-  fprintf(stderr, "Scale: %s\n", qs.latin1());
-  while (!stream->eof()) { 
-    qs = stream->readLine();
+  StdErr << "Scale: " << qs << endl;
+  while (!stream.atEnd()) { 
+    qs = stream.readLine();
     if (!qs.contains("!"))
       break;
   }
   index = 0;
-  while (!stream->eof() && (index < 128)) {
-    qs = stream->readLine();
+  while (!stream.atEnd() && (index < 128)) {
+    qs = stream.readLine();
     if (qs.contains("!")) {
       continue;
     }
-    qs2 = qs.simplifyWhiteSpace();
+    qs2 = qs.simplified();
     if (qs2.contains(".")) {
-      if ((n = qs2.find(" ")) > 0) {
+      if ((n = qs2.indexOf(" ")) > 0) {
         qs = qs2.left(n); 
       } else {
         qs = qs2;
@@ -257,16 +259,16 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
     } else {  
       scale_lut_isRatio[index] = true;
       if (qs.contains("/")) {
-        qs = qs2.left(qs2.find("/"));
-        qs3 = qs2.mid(qs2.find("/") + 1);
-        if ((n = qs3.find(" ")) > 0) {   
+        qs = qs2.left(qs2.indexOf("/"));
+        qs3 = qs2.mid(qs2.indexOf("/") + 1);
+        if ((n = qs3.indexOf(" ")) > 0) {   
           qs2 = qs3.left(n); 
         } else {
           qs2 = qs3;
         }
         scale_lut[index] = qs.toFloat() / qs2.toFloat(); 
       } else {
-        if ((n = qs2.find(" ")) > 0) {
+        if ((n = qs2.indexOf(" ")) > 0) {
           qs = qs2.left(n);
         } else {
           qs = qs2;
@@ -277,6 +279,5 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
     }
   }  
   scale_lut_length = index;
-  qfile->close();
   calcScale();
 }

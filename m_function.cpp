@@ -7,30 +7,30 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
 #include <qpainter.h>
+#include <QPolygon>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midicombobox.h"
 #include "m_function.h"
 #include "port.h"
 
-M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* parent, const char *name) 
-              : Module(p_functionCount, parent, name, p_synthdata) {
+M_function::M_function(int p_functionCount, QWidget* parent, const char *name) 
+              : Module(p_functionCount, parent, name) {
 
   QString qs;
-  QHBox *hbox;
+  QHBoxLayout *hbox;
   int l1, l2;
 
   M_type = M_type_function;
   functionCount = p_functionCount;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_FUNCTION_WIDTH, 
               MODULE_FUNCTION_HEIGHT + 20 + 20 * functionCount);
-  port_in = new Port("In", PORT_IN, 0, this, synthdata);
+  port_in = new Port("In", PORT_IN, 0, this);
   port_in->move(0, 40);
   port_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_in);
@@ -40,57 +40,56 @@ M_function::M_function(int p_functionCount, SynthData *p_synthdata, QWidget* par
       y[l1][l2] = 0;
       old_y[l1][l2] = 0;
     }
-    points[l1] = new QPointArray(MAX_POINTS);
+
     for (l2 = 0; l2 < MAX_POINTS; l2++) {
-      points[l1]->setPoint(l2, l2 * FUNCTION_WIDTH / (MAX_POINTS - 1), 
-                               (FUNCTION_HEIGHT >> 1) + (l1 - (functionCount >> 1)) * 1000);
+      point[l1][l2].x = l2 - 5;
+      point[l1][l2].y = (float)l1 / 10;
     }
     qs.sprintf("Out %d", l1);
-    Port *audio_out_port = new Port(qs, PORT_OUT, out_port_list.count(), this, synthdata);
+    Port *audio_out_port = new Port(qs, PORT_OUT, out_port_list.count(), this);
     audio_out_port->move(MODULE_FUNCTION_WIDTH - audio_out_port->width(), 55 + 20 * l1);
     audio_out_port->outType = outType_audio;
     out_port_list.append(audio_out_port);
     portList.append(audio_out_port);
   }
   qs.sprintf("Function %d -> 1 ID %d", functionCount, moduleID);
-  configDialog->addFunction(functionCount, &mode, &editIndex, points, MAX_POINTS, synthdata);
+  configDialog->setAddStretch(-1);
+  configDialog->addFunction(functionCount, &mode, &editIndex, point, MAX_POINTS);
   zoomIndex = 0;
   zoom = 1.0;
   mode = 0;
   editIndex = 0;
-  QStrList *zoomNames = new QStrList(true);
-  zoomNames->append("   1  ");
-  zoomNames->append("   2  ");
-  zoomNames->append("   4  ");
-  zoomNames->append("   8  ");
-  QStrList *modeNames = new QStrList(true);
-  modeNames->append("Move Point");
-  modeNames->append("Shift X");
-  modeNames->append("Shift Y");
-  modeNames->append("Scale X");
-  modeNames->append("Scale Y");
-  modeNames->append("Reset");
-  modeNames->append("Linear");
-  QStrList *editNames = new QStrList(true);
-  editNames->append("All");
+  QStringList zoomNames;
+  zoomNames << "   1  " << "   2  " << "   4  " << "   8  ";
+  QStringList modeNames;
+  modeNames <<
+    "Move Point" <<
+    "Shift X" <<
+    "Shift Y" <<
+    "Scale X" <<
+    "Scale Y" <<
+    "Reset" <<
+    "Linear";
+  QStringList editNames;
+  editNames << "All";
   for (l1 = 0; l1 < functionCount; l1++) {
     qs.sprintf("%d", l1);
-    editNames->append(qs);
+    editNames << qs;
   }
   hbox = configDialog->addHBox();
   configDialog->addLabel("                       Mouse X: _____ Y: _____", hbox);
   hbox = configDialog->addHBox();
-  configDialog->addComboBox(mode, "Mode", &mode, modeNames->count(), modeNames, hbox);
-  configDialog->addComboBox(0, "Edit Function", &editIndex, editNames->count(), editNames, hbox);
-  configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames->count(), zoomNames, hbox);
-  QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(highlighted(int)),
+  configDialog->addComboBox(mode, "Mode", &mode, modeNames.count(), &modeNames, hbox);
+  configDialog->addComboBox(0, "Edit Function", &editIndex, editNames.count(), &editNames, hbox);
+  configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames.count(), &zoomNames, hbox);
+  QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(currentIndexChanged(int)),
                    this, SLOT(updateZoom(int)));
-  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
+  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(currentIndexChanged(int)),
                    configDialog->functionList.at(0), SLOT(highlightFunction(int)));
   QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
                    this, SLOT(updateMouseLabels(int, int)));
   qs.sprintf("Function ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
 }
 
 M_function::~M_function() {
@@ -146,9 +145,9 @@ void M_function::generateCycle() {
 void M_function::showConfigDialog() {
 }
 
-void M_function::updateZoom(int p_zoomIndex) {
+void M_function::updateZoom(int zoomIndex) {
 
-  zoom = pow(2.0, (double)zoomIndex); // zoomIndex is already set in MidiComboBox event handler
+  zoom = pow(2.0, zoomIndex); // zoomIndex is may _not_ be already set in MidiComboBox event handler
   configDialog->functionList.at(0)->setZoom(zoom);
 }
 

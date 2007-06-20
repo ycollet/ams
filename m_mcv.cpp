@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,37 +19,37 @@
 #include "m_mcv.h"
 #include "port.h"
 
-M_mcv::M_mcv(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(4, parent, name, p_synthdata) {
+M_mcv::M_mcv(QWidget* parent, const char *name) 
+              : Module(4, parent, name) {
 
   QString qs;
   int l1;
 
   M_type = M_type_mcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MCV_WIDTH, MODULE_MCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this, synthdata);          
+  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
   port_gate_out->outType = outType_audio;
   portList.append(port_gate_out);
-  port_note_out = new Port("Freq", PORT_OUT, 1, this, synthdata);          
+  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
   port_note_out->move(width() - port_note_out->width(), 55);
   port_note_out->outType = outType_audio;
   portList.append(port_note_out);
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this, synthdata);          
+  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
   port_velocity_out->move(width() - port_velocity_out->width(), 75);
   port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this, synthdata);          
+  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);          
   port_trig_out->move(width() - port_trig_out->width(), 95);
   port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
   qs.sprintf("MCV ID %d", moduleID);
-  configDialog->setCaption(qs);
-  QStrList *channelNames = new QStrList(true);
-  channelNames->append("RESERVED FOR LATER USE");
+  configDialog->setWindowTitle(qs);
+  QStringList channelNames;
+  channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {
     qs.sprintf("RESERVED FOR LATER USE");
-    channelNames->append(qs);
+    channelNames << qs;
   }
   channel = 0;
   pitch = 0;
@@ -58,13 +58,14 @@ M_mcv::M_mcv(QWidget* parent, const char *name, SynthData *p_synthdata)
     freq[l1] = 0;
     trig[l1] = 0;
   }
-  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
+  configDialog->addComboBox(0, " ", &channel, channelNames.count(), &channelNames);
   configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
 }
 
-M_mcv::~M_mcv() {
-
+M_mcv::~M_mcv()
+{
+  synthdata->listM_mcv.removeAll(this);
 }
 
 void M_mcv::noteOnEvent(int osc) {
@@ -72,7 +73,7 @@ void M_mcv::noteOnEvent(int osc) {
   trig[osc] = 1;
 }
 
-void M_mcv::noteOffEvent(int osc) {
+void M_mcv::noteOffEvent(int) {
 
 }
 

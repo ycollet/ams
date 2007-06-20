@@ -7,8 +7,8 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
+
+
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,28 +19,28 @@
 #include "m_ringmod.h"
 #include "port.h"
 
-M_ringmod::M_ringmod(QWidget* parent, const char *name, SynthData *p_synthdata) 
-              : Module(1, parent, name, p_synthdata) {
+M_ringmod::M_ringmod(QWidget* parent, const char *name) 
+              : Module(1, parent, name) {
 
   QString qs;
 
   M_type = M_type_ringmod;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_RINGMOD_WIDTH, MODULE_RINGMOD_HEIGHT);
   gain = 0.5;
-  port_M_vco1 = new Port("In 0", PORT_IN, 0, this, synthdata); 
+  port_M_vco1 = new Port("In 0", PORT_IN, 0, this); 
   port_M_vco1->move(0, 35);
   port_M_vco1->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_vco1);
-  port_M_vco2 = new Port("In 1", PORT_IN, 1, this, synthdata); 
+  port_M_vco2 = new Port("In 1", PORT_IN, 1, this); 
   port_M_vco2->move(0, 55);
   port_M_vco2->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_vco2);
-  port_out = new Port("Out", PORT_OUT, 0, this, synthdata);          
+  port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 70);
   port_out->outType = outType_audio;
   portList.append(port_out);
   qs.sprintf("Ring Modulator ID %d", moduleID);
-  configDialog->setCaption(qs);
+  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 5, gain, "Gain", &gain);
 }
 
