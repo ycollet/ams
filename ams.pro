@@ -1,21 +1,49 @@
+message(Qt version: $$[QT_VERSION])
+message(Qt is installed in $$[QT_INSTALL_PREFIX])
+message(Qt resources can be found in the following locations:)
+message(Documentation: $$[QT_INSTALL_DOCS])
+message(Header files: $$[QT_INSTALL_HEADERS])
+message(Libraries: $$[QT_INSTALL_LIBS])
+message(Binary files (executables): $$[QT_INSTALL_BINS])
+message(Plugins: $$[QT_INSTALL_PLUGINS])
+message(Data files: $$[QT_INSTALL_DATA])
+message(Translation files: $$[QT_INSTALL_TRANSLATIONS])
+message(Settings: $$[QT_INSTALL_SETTINGS])
+message(Examples: $$[QT_INSTALL_EXAMPLES])
+message(Demonstrations: $$[QT_INSTALL_DEMOS])
 ######################################################################
-# 
+#
 ######################################################################
 
 TEMPLATE = app
+TARGET = 
 
+CONFIG += link_pkgconfig
+PKGCONFIG += alsa
+
+DEPENDPATH += .
 INCLUDEPATH += .
-LIBS += -lclalsadrv -ljack -lasound
+LIBS += -lclalsadrv -ljack
 
 LADSPA_PATH = $$(LADSPA_PATH)
 isEmpty( LADSPA_PATH ) {
-LADSPA_PATH = /usr/lib/ladspa:/usr/local/lib/ladspa
+LADSPA_PATH = "/usr/lib/ladspa:/usr/local/lib/ladspa"
 }
 
-QMAKE_CXXFLAGS += -DLADSPA_PATH=\"$$LADSPA_PATH\"
+PLATFORM = $$system(uname -i)
+OBJECTS_DIR = BUILD_$${PLATFORM}
+DESTDIR = $$OBJECTS_DIR
+
+message($$PLATFORM)
+message($$OBJECTS_DIR)
+
+QMAKE_CXXFLAGS += -DLADSPA_PATH=\\\"$$LADSPA_PATH\\\"
+
+QT += opengl
 
 # Input
-HEADERS += canvas.h \
+HEADERS += box.h \
+           canvas.h \
            canvasfunction.h \
            configdialog.h \
            envelope.h \
@@ -75,17 +103,20 @@ HEADERS += canvas.h \
            midicontrollerlist.h \
            midiguicomponent.h \
            midipushbutton.h \
+           midisliderbase.h \
            midislider.h \
            midiwidget.h \
            modularsynth.h \
            module.h \
            multi_envelope.h \
            port.h \
+           port_popup.h \
            prefwidget.h \
            scopescreen.h \
            synthdata.h \
            textedit.h
-SOURCES += canvas.cpp \
+SOURCES += box.cpp \
+           canvas.cpp \
            canvasfunction.cpp \
            configdialog.cpp \
            envelope.cpp \
@@ -146,6 +177,7 @@ SOURCES += canvas.cpp \
            midiguicomponent.cpp \
            midipushbutton.cpp \
            midislider.cpp \
+           midisliderbase.cpp \
            midiwidget.cpp \
            modularsynth.cpp \
            module.cpp \
