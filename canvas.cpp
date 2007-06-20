@@ -2,40 +2,42 @@
 #include <stdlib.h>
 #include <math.h>
 #include <qpainter.h>
-#include <qcanvas.h>
 #include <qstring.h>
 #include <qfont.h>
 #include "canvas.h"
+#include "synthdata.h"
 
-
-Canvas::Canvas(QObject* parent, const char *name)
-           : QCanvas(parent, name) {
-
+Canvas::Canvas(QObject* parent, const char *)
+  : QGraphicsScene(parent)
+{
   zoom = 1.0;
-  setDoubleBuffering(TRUE);
 }
 
 Canvas::~Canvas() {
-
 }
-
-void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
-
+void debugCatch()
+{
+}
+#include <iostream>
+void Canvas::drawBackground(QPainter *painter, const QRectF &clip)
+{
   int l1;
-  QPoint qp_in[2], qp_out[2];
+  QPointF qp_in[2], qp_out[2];
   float zoom_dx, zoom_dy, val;
   QString qs;
-
+  static int countt;
+  std::cout << __FUNCTION__ << countt++ << std::endl;
+  debugCatch();
   zoom_dx = dx / zoom;     
   zoom_dy = dy / zoom;  
-  painter.fillRect(clip, QBrush(QColor(CANVAS_COLOR_BG)));
+  painter->fillRect(clip, QBrush(QColor(CANVAS_COLOR_BG)));
 
   for (l1 = 0; l1 <= w / zoom_dx; l1++) {
     val =  ((float)l1 * zoom_dx - (float)w/2.0) / (float)scale;
     if (floor(val) == ceil(val)) {
-      painter.setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
+      painter->setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
     } else {
-      painter.setPen(QColor(CANVAS_GRID_COLOR_DARK));
+      painter->setPen(QColor(CANVAS_GRID_COLOR_DARK));
     }
     qp_in[0].setX(l1 * zoom_dx);
     qp_in[0].setY(0);
@@ -43,19 +45,19 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
     qp_in[1].setY(h);
     qp_out[0] = matrix.map(qp_in[0]);
     qp_out[1] = matrix.map(qp_in[1]);    
-    painter.drawLine(qp_out[0], qp_out[1]);
+    painter->drawLine(qp_out[0], qp_out[1]);
     if (floor(val) == ceil(val)) {
       qs.sprintf("%6.0f", val);
-      painter.setFont(QFont("Helvetica", 10));
-      painter.drawText(qp_out[1].x() - 20, qp_out[1].y() + 15, qs);
+      painter->setFont(synthdata->bigFont);
+      painter->drawText(qp_out[1].x() - 20, qp_out[1].y() + 15, qs);
     }
   }
   for (l1 = 0; l1 <= h / zoom_dy; l1++) {
     val = -((float)l1 * zoom_dy - (float)w/2.0) / (float)scale;
     if (floor(val) == ceil(val)) {
-      painter.setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
+      painter->setPen(QColor(CANVAS_GRID_COLOR_LIGHT));
     } else {
-      painter.setPen(QColor(CANVAS_GRID_COLOR_DARK));
+      painter->setPen(QColor(CANVAS_GRID_COLOR_DARK));
     }
     qp_in[0].setY(l1 * zoom_dy);
     qp_in[0].setX(0);
@@ -63,11 +65,11 @@ void Canvas::drawBackground(QPainter & painter, const QRect & clip) {
     qp_in[1].setX(w);
     qp_out[0] = matrix.map(qp_in[0]);
     qp_out[1] = matrix.map(qp_in[1]);    
-    painter.drawLine(qp_out[0], qp_out[1]);
+    painter->drawLine(qp_out[0], qp_out[1]);
     if (floor(val) == ceil(val)) {
       qs.sprintf("%7.0f", val);
-      painter.setFont(QFont("Helvetica", 10));
-      painter.drawText(qp_out[0].x() - 44, qp_out[0].y() + 4, qs);
+      painter->setFont(synthdata->bigFont);
+      painter->drawText(qp_out[0].x() - 44, qp_out[0].y() + 4, qs);
     }
   }
 }  
@@ -77,7 +79,7 @@ void Canvas::setZoom(float p_zoom) {
   zoom = p_zoom;
 }
 
-void Canvas::setMatrix(QWMatrix p_matrix) {
+void Canvas::setMatrix(QMatrix p_matrix) {
 
   matrix = p_matrix;
 }

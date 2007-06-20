@@ -3,31 +3,48 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <qcanvas.h>
-#include <qpainter.h>
 #include <qcolor.h>
-#include <qpointarray.h>
-#include <qptrlist.h>
+#include <QVector>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsLineItem>
+#include "function.h"
 
-class CanvasFunction : public QObject
+class CanvasPoint: public QGraphicsEllipseItem {
+  class CanvasFunction &canvasFunction;
+  int p;
+
+  void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+  void mousePressEvent(QGraphicsSceneMouseEvent * event);
+
+public:
+  CanvasPoint(CanvasFunction &, int p);
+
+};
+
+class CanvasFunction
 {
-  Q_OBJECT
+  friend class CanvasPoint;
+  Function &function;
+  const int index;
 
-  private:
-    int rtti_id, pointCount;
-    QPointArray *points;
-    QColor color;
+  QColor color() {
+    return function.colorTable[index];
+  }
+  void mouseMoveEvent(int p, QGraphicsSceneMouseEvent * event);
+  void mousePressEvent(int p, QGraphicsSceneMouseEvent * event);
+  QVector<QPointF> pos0;
     
-  public:  
-    QPtrList<QCanvasEllipse> canvasPoints;
-    QPtrList<QCanvasLine> canvasLines;
+public:  
+  QList<CanvasPoint*> canvasPoints;
+  QList<QGraphicsLineItem*> canvasLines;
 
-  public:
-    CanvasFunction(QCanvas *canvas, int p_rtti_id, int p_pointCount, QColor p_color, QObject * parent = 0, const char * name = 0);
-    ~CanvasFunction();
-    int rtti();
-    void setColor(QColor p_color);
-    void setPoint(int index, int x, int y, int z);
+public:
+  CanvasFunction(Function &function, int index);
+  ~CanvasFunction();
+
+  void setPoint(int p);
+  void setPoint(int p, QPointF &pos);
+  void setZ(int z);
 
 };
   
