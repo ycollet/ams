@@ -10,15 +10,16 @@
 #include <qcheckbox.h>  
 #include <qlabel.h>
 #include <qlist.h>
-#include <qframe.h>
+//#include <q3frame.h>
 #include <qmessagebox.h>
-#include <qmainwindow.h>
+#include <QMainWindow>
 #include <qsocketnotifier.h>
-#include <qpopupmenu.h>
-#include <qscrollview.h>
-#include <qlistview.h>
 #include <qpoint.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QMouseEvent>
+#include <QTextStream>
 #include <alsa/asoundlib.h>
 #include "main.h"
 #include "synthdata.h"
@@ -59,7 +60,6 @@
 #include "m_vcpanning.h"
 #include "m_midiout.h"
 #include "m_scope.h"
-#include "m_spectrum.h"
 #include "m_vcorgan.h"
 #include "m_dynamicwaves.h"
 #include "m_quantizer.h"
@@ -68,24 +68,21 @@
 #include "m_vcdoubledecay.h"
 #include "m_mphlfo.h"
 #include "midiwidget.h"
-#include "guiwidget.h"
-#include "prefwidget.h"
-#include "textedit.h"
 #include "ladspadialog.h"
 
+extern QTextStream StdErr;
 
 enum connectorStyleType {CONNECTOR_STRAIGHT, CONNECTOR_BEZIER};
 
 
-class ModularSynth : public QScrollView
+class ModularSynth : public QWidget
 {
   Q_OBJECT
 
-  private:
     QMessageBox *aboutWidget;
     QMainWindow *mainWindow;
-    QList<Module> listModule;
-    QList<TextEdit> listTextEdit;
+    QList<Module*> listModule;
+    QList<class TextEdit*> listTextEdit;
     QString presetPath, savePath, rcPath;
     connectorStyleType connectorStyle;    
     bool firstPort;
@@ -93,12 +90,10 @@ class ModularSynth : public QScrollView
     QSocketNotifier *seqNotifier;
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
-    GuiWidget *guiWidget;
-    PrefWidget *prefWidget;
-    QPopupMenu *contextMenu;
+    class GuiWidget *guiWidget;
+    class PrefWidget *prefWidget;
     bool loadingPatch;
     const char *pcmname;
-    QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont;
     int   fsamp;
     int   frsize;
     int   nfrags;
@@ -106,11 +101,10 @@ class ModularSynth : public QScrollView
     int   nplay;
     int   portid;
     int   clientid;
+    bool paintFastly;
+    double _zoomFactor;
+    QPoint newBoxPos;
 
-  public:
-    SynthData *synthdata;
-    
-  private:
     void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
@@ -123,21 +117,30 @@ class ModularSynth : public QScrollView
     void newM_vcorgan(int oscCount);
     void newM_dynamicwaves(int oscCount);
     void newM_ad(int outCount);
-    void new_textEdit(int x, int y, int w, int h);
+    void new_textEdit(int w, int h);
     void showContextMenu(QPoint pos);
             
   public:
     ModularSynth (QWidget* parent, const char *pcmname, int fsamp, int frsize, int nfrags, 
                   int ncapt, int nplay, int poly, float edge);
     ~ModularSynth();
-    virtual QSize sizeHint() const;
-    virtual QSizePolicy sizePolicy() const;
+/*     virtual QSize sizeHint() const; */
+/*     virtual QSizePolicy sizePolicy() const; */
+    QMenu *contextMenu;
+    void resize(void);
     int go(bool withJack);
     int setPresetPath(QString name);
     int setSavePath(QString name);
-    
+    void setPaintFastly(bool v) {
+      paintFastly = v;
+    }
+    void moveAllBoxes(QPoint const &delta);
+
   protected:
-    void viewportPaintEvent(QPaintEvent *pe);
+    class QAbstractScrollArea *scrollArea() {
+      return (QAbstractScrollArea *)parent();
+    }
+    void paintEvent(QPaintEvent *pe);
     virtual void mousePressEvent (QMouseEvent* );
     virtual void mouseReleaseEvent (QMouseEvent* );
     
@@ -213,8 +216,6 @@ class ModularSynth : public QScrollView
     void newM_dynamicwaves_4();
     void newM_dynamicwaves_6();
     void newM_dynamicwaves_8();
-    void moveModule(QPoint pos);
-    void moveTextEdit(QPoint pos);
     void resizeTextEdit(QPoint pos);
     void portSelected();
     void updatePortConnections();
@@ -230,13 +231,6 @@ class ModularSynth : public QScrollView
     void saveColors();
     void allVoicesOff();
     void cleanUpSynth();
-    void colorBackgroundClicked();
-    void colorModuleBackgroundClicked();
-    void colorModuleBorderClicked();
-    void colorModuleFontClicked();
-    void colorDefaultClicked();
-    void colorCableClicked();
-    void colorJackClicked();
     void refreshColors();
     void updateColors();
 };

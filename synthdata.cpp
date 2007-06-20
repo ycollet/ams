@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <qobject.h>
 #include <qstring.h>
+#include <QFont>
 #include <math.h>
+#include "guiwidget.h"
+#include "midiwidget.h"
 #include "synthdata.h"
 #include "m_env.h"
 #include "m_vcenv.h"
@@ -14,20 +17,18 @@
 #include "m_wavout.h"
 #include "m_midiout.h"
 #include "m_scope.h"
-#include "m_spectrum.h"
 
 
-SynthData::SynthData (int p_poly, float p_edge) : port_sem(1)
+SynthData::SynthData (int p_poly, float p_edge)
+  : port_sem(1)
+  , bigFont("Helvetica", 10)
+  , smallFont("Helvetica", 8)
 {
-  unsigned int l1, l2;
+  int l1, l2;
   double dphi, phi, dy, dyd;
   int decaytime;
 
   decaytime = (int)((float)WAVE_PERIOD / 16.0);
-  for (l1 = 0; l1 < MAX_SO; l1++) {
-    ladspa_dsc_func_list[l1] = 0;
-    ladspa_lib_name[l1] = "***";    
-  }
   for (l1 = 0; l1 < MAXPOLY; ++l1) {
     notes[l1] = 0;
     velocity[l1] = 0;
@@ -173,37 +174,36 @@ int SynthData::getModuleID() {
   return(moduleID);
 }
 
-int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int *n) {
-     
-  int l1, l2, subID1, subID2Name, subID2Label;
+int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int *n)
+{
+  int subID1, subID2Name = -1, subID2Label = -1;
   QString qsn, qsl;
 
-  setName = setName.stripWhiteSpace();
-  pluginName = pluginName.stripWhiteSpace();
-  l1 = 0;
+  setName = setName.trimmed();
+  pluginName = pluginName.trimmed();
   subID1 = -1;
-  while (ladspa_dsc_func_list[l1]) {
-    if (setName == ladspa_lib_name[l1].stripWhiteSpace()) {
+  QList<LadspaLib>::const_iterator li = ladspaLib.constBegin();
+  for (int l1 = 0;
+       li < ladspaLib.constEnd(); ++li, ++l1)
+    if (setName == li->name.trimmed()) {
       subID1 = l1;
-      l2 = 0;
-      subID2Label = -1;
-      subID2Name = -1;
-      while(ladspa_dsc_func_list[l1](l2) != NULL) {
-        qsl.sprintf("%s", ladspa_dsc_func_list[l1](l2)->Label);
-        qsn.sprintf("%s", ladspa_dsc_func_list[l1](l2)->Name);
-        if (pluginName == qsl.stripWhiteSpace()) {
+      
+      QList<const LADSPA_Descriptor *>::const_iterator di =
+	li->desc.constBegin();
+      for (int l2 = 0; di < li->desc.constEnd(); ++di, ++l2) {
+        qsl.sprintf("%s", (*di)->Label);
+        qsn.sprintf("%s", (*di)->Name);
+        if (pluginName == qsl.trimmed()) {
           subID2Label = l2;
           break;
         } 
-        if (pluginName == qsn.stripWhiteSpace()) {
+        if (pluginName == qsn.trimmed()) {
           subID2Name = l2;                            // No break to give the priority to "Label"
         }
-        l2++;
       }  
       break;
-    } 
-    l1++;
-  }
+    }
+
   *index = subID1;
   *n = (subID2Label < 0) ? subID2Name : subID2Label; // Use "Name" only if no match for "Label"
   return( (subID1 >= 0) && ( (subID2Name >= 0) || (subID2Label >= 0) ) );
@@ -213,7 +213,7 @@ float SynthData::exp_table(float x) {
 
   int index;
 
-  index = (x + 16.0) * 1000.0;
+  index = (int)((x + 16.0) * 1000.0);
   if (index >= EXP_TABLE_LEN) index = EXP_TABLE_LEN - 1;
   else if (index < 0) index = 0;
   return(exp_data[index]);
@@ -323,8 +323,7 @@ void *SynthData::alsa_static_thr_main (void *arg)
 
 void *SynthData::alsa_thr_main (void)
 {
-    int           i;
-    unsigned long k;
+    int		i, k;
     M_pcmin     *C;
     M_pcmout    *P;
 
@@ -396,7 +395,7 @@ int SynthData::initJack (int ncapt, int nplay)
     if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
     if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
 
-    if ((jack_handle = jack_client_new (jackName.latin1())) == 0)
+    if ((jack_handle = jack_client_new (jackName.toLatin1().constData())) == 0)
     {
         fprintf (stderr, "Can't connect to JACK\n");
         exit (1);
@@ -411,12 +410,12 @@ int SynthData::initJack (int ncapt, int nplay)
     for (int i = 0; i < play_ports; i++)
     {
         qs.sprintf("ams_out_%d", i);
-        jack_out [i] = jack_port_register (jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+        jack_out [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
     }
     for (int i = 0; i < capt_ports; i++)
     {
         qs.sprintf("ams_in_%d", i);
-        jack_in [i] = jack_port_register (jack_handle, qs.latin1(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+        jack_in [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
     }
 
     if (jack_activate (jack_handle))
@@ -497,7 +496,9 @@ void SynthData::call_modules (void)
      
     for (i = 0; i < wavoutModuleList.count();   i++) ((M_wavout *)wavoutModuleList.at(i))->generateCycle();
     for (i = 0; i < scopeModuleList.count();    i++) ((M_scope *)scopeModuleList.at(i))->generateCycle();
-    for (i = 0; i < spectrumModuleList.count(); i++) ((M_spectrum *)spectrumModuleList.at(i))->generateCycle(); 
+#ifdef OUTDATED_CODE
+    for (i = 0; i < spectrumModuleList.count(); i++) ((M_spectrum *)spectrumModuleList.at(i))->generateCycle();
+#endif
     for (i = 0; i < midioutModuleList.count();  i++) ((M_midiout *)midioutModuleList.at(i))->generateCycle();
     for (i = 0; i < moduleList.count();         i++) ((Module *)moduleList.at(i))->cycleReady = false;
     for (i = 0; i < poly; i++) {

@@ -6,11 +6,14 @@
 #include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qscrollview.h>
 #include <qlabel.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <qevent.h>
+#include <QResizeEvent>
+#include <QPaintEvent>
+#include <QtOpenGL/QGLWidget>
+
 #include "synthdata.h"
 
 #define MINIMUM_WIDTH                 100
@@ -22,34 +25,36 @@ enum modeType { MODE_NORMAL, MODE_SUM, MODE_DIFF };
 enum edgeType { EDGE_RISING, EDGE_FALLING };
 enum triggerModeType { TRIGGERMODE_CONTINUOUS, TRIGGERMODE_TRIGGERED, TRIGGERMODE_SINGLE, TRIGGERMODE_MIDI };
 
-class ScopeScreen : public QWidget
+class ScopeScreen : public QGLWidget
 {
   Q_OBJECT
 
-  private:
-    SynthData *synthdata;
-    modeType mode;
-    edgeType edge;
-    triggerModeType triggerMode;
-    int ch1, ch2;
-    float zoom;
-    float triggerThrs;
-    bool triggered;
-    float timeScale, timeScaleLastTrigger;
-    int timeScaleFrames;
-    float *scopebuf;
-    int scopebufValidFrames;
+  modeType mode;
+  edgeType edge;
+  triggerModeType triggerMode;
+  int ch1, ch2;
+  float zoom;
+  float triggerThrs;
+  bool triggered;
+  float timeScale, timeScaleLastTrigger;
+  int timeScaleFrames;
+  float *scopebuf;
+  int scopebufValidFrames;
+  float xscale, yscale;
+  int x1, x2, y1ch1, y1ch2, y2ch1, y2ch2;
+  float s1, s2;
 
-  public:
-    float *scopedata;
-    int readofs, writeofs;
+public:
+  float *scopedata;
+  int readofs, writeofs;
 
-  protected:
-    virtual void paintEvent(QPaintEvent *);
-    virtual void viewportResizeEvent (QResizeEvent *ev); 
+protected:
+  virtual void paintEvent(QPaintEvent *);
+
+  void calcY(int offset);
     
   public:
-    ScopeScreen(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    ScopeScreen(QWidget* parent=0);
     ~ScopeScreen();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;

@@ -13,6 +13,10 @@
 #include <qsize.h>
 #include <qpixmap.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QMouseEvent>
 #include "synthdata.h"
 #include <rfftw.h>
 
@@ -30,7 +34,7 @@ enum fftModeType { FFT_MODE_POW, FFT_MODE_ABS, FFT_MODE_LOG };
 enum viewModeType { VIEW_MODE_FIF, VIEW_MODE_FIFT };
 enum normModeType { NORM_MODE_EACH, NORM_MODE_GLOBAL, NORM_MODE_FIXED };
 enum spectrumTriggerModeType { SPECTRUM_TRIGGERMODE_CONTINUOUS, SPECTRUM_TRIGGERMODE_SINGLE };
-enum windowType { WINDOW_HAMMING, WINDOW_BARTLETT, WINDOW_HANNING, WINDOW_WELCH };
+enum fftWindowType { WINDOW_HAMMING, WINDOW_BARTLETT, WINDOW_HANNING, WINDOW_WELCH };
 
 class SpectrumScreen : public QWidget
 {
@@ -48,7 +52,7 @@ class SpectrumScreen : public QWidget
     viewModeType viewMode;
     spectrumTriggerModeType triggerMode;
     normModeType normMode;
-    windowType window;
+    fftWindowType window;
     int ch1, ch2;
     double zoom, f_min, f_max, f;
     int fftFrames;
@@ -76,7 +80,7 @@ class SpectrumScreen : public QWidget
 //    virtual void mouseMoveEvent (QMouseEvent* );    
     
   public:
-    SpectrumScreen(QWidget* parent=0, const char *name=0, SynthData *p_synthdata=0);
+    SpectrumScreen(QWidget* parent=0, const char *name=0);
     ~SpectrumScreen();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
@@ -91,7 +95,7 @@ class SpectrumScreen : public QWidget
     bool setEnableMouse(bool p_enableMouse);
     float set_f_min(float p_f_min);
     float set_f_max(float p_f_max);
-    windowType setWindow(windowType p_window);
+    fftWindowType setWindow(fftWindowType p_window);
     double setZoom(double p_zoom);
     int setFFTFrames(int p_fftFrames);
     spectrumModeType getMode();
@@ -101,7 +105,7 @@ class SpectrumScreen : public QWidget
     spectrumTriggerModeType getTriggerMode();
     int getCh1();
     int getCh2();
-    windowType getWindow();
+    fftWindowType getWindow();
     double get_f_min();
     double get_f_max();
     double get_f();

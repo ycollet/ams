@@ -7,14 +7,19 @@
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QMouseEvent>
 #include "synthdata.h"
 #include "spectrumscreen.h"
 #include <rfftw.h>
 #include <math.h>
 
-SpectrumScreen::SpectrumScreen(QWidget* parent, const char *name, SynthData *p_synthdata) : QWidget (parent, name)
+SpectrumScreen::SpectrumScreen(QWidget* parent, const char *name) : QWidget (parent, name)
 {
-  synthdata = p_synthdata;
+  
   spectrumdata= (float *)malloc(SPECTRUM_BUFSIZE * sizeof(float));
   spectrumbuf_ch1 = (fftw_real *)malloc((SPECTRUM_BUFSIZE >> 1) * sizeof(fftw_real));
   spectrumbuf_ch2 = (fftw_real *)malloc((SPECTRUM_BUFSIZE >> 1) * sizeof(fftw_real));
@@ -420,7 +425,7 @@ void SpectrumScreen::refreshSpectrum() {
 
   free(tmpbuf_ch1);
   free(tmpbuf_ch2);
-  repaint(false);
+  update();
 }
 
 void SpectrumScreen::singleShot() {
@@ -441,7 +446,7 @@ QSizePolicy SpectrumScreen::sizePolicy() const {
 spectrumModeType SpectrumScreen::setMode(spectrumModeType p_mode) {
 
   mode = p_mode;
-  repaint(false);
+  update();
   return(mode);
 }
 
@@ -474,18 +479,18 @@ spectrumTriggerModeType SpectrumScreen::setTriggerMode(spectrumTriggerModeType p
 int SpectrumScreen::setCh1(int p_ch1) {
 
   ch1 = p_ch1;
-  repaint(false);
+  update();
   return(ch1);
 }
 
 int SpectrumScreen::setCh2(int p_ch2) {       
 
   ch2 = p_ch2;  
-  repaint(false);
+  update();
   return(ch2); 
 }              
 
-windowType SpectrumScreen::setWindow(windowType p_window) {
+fftWindowType SpectrumScreen::setWindow(fftWindowType p_window) {
  
   window = p_window;
   return(window); 
@@ -494,7 +499,7 @@ windowType SpectrumScreen::setWindow(windowType p_window) {
 double SpectrumScreen::setZoom(double p_zoom) {
 
   zoom = p_zoom;
-  repaint(false);
+  update();
   return(zoom);
 }
 
@@ -566,7 +571,7 @@ int SpectrumScreen::getCh2() {
   return(ch2);
 }               
 
-windowType SpectrumScreen::getWindow() {
+fftWindowType SpectrumScreen::getWindow() {
  
   return(window);   
 }
@@ -608,7 +613,7 @@ void SpectrumScreen::resizeEvent (QResizeEvent* )
   QPainter p(fftPixmap1); 
   p.setWindow(0, 0, fftPixmap2->width(), fftPixmap2->height());
   p.drawPixmap(0, 0, *fftPixmap2);
-  repaint(false);
+  update();
 }
 
 void SpectrumScreen::initPalette (int index) {             

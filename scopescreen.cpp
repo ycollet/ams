@@ -6,16 +6,20 @@
 #include <qpainter.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
-#include <qscrollview.h>
 #include <qevent.h>
 #include <qpixmap.h>
+#include <QPaintEvent>
+#include <QResizeEvent>
 #include "synthdata.h"
 #include "scopescreen.h"
 
-ScopeScreen::ScopeScreen(QWidget* parent, const char *name, SynthData *p_synthdata) 
-                   : QWidget(parent, name)
+#include <iostream>
+
+
+ScopeScreen::ScopeScreen(QWidget* parent) 
+  : QGLWidget(parent)
 {
-  synthdata = p_synthdata;
+  
   scopebuf = (float *)malloc(SCOPE_BUFSIZE * sizeof(float));
   scopedata= (float *)malloc(SCOPE_BUFSIZE * sizeof(float));
   scopebufValidFrames = 0;
@@ -41,95 +45,97 @@ ScopeScreen::~ScopeScreen()
   free(scopedata);
 }
 
-void ScopeScreen::paintEvent(QPaintEvent *) {
-  
-  int l1;
-  float xscale, yscale;
-  int x1, x2, y1ch1, y1ch2, y2ch1, y2ch2, thrs, vx, vy, vw, vh;
-  float s1, s2;
-  QPixmap pm(width(), height());
-  QPainter p(&pm);
 
-  pm.fill(QColor(0, 80, 0));
-  vx = 0; vy = 0; vw = width(); vh = height();
+void ScopeScreen::calcY(int offset)
+{
+    x2 = int((float)offset * xscale);
+    if (ch1 < 0) {
+      s1 = 0;
+    } else {
+      s1 = scopebuf[2 * offset + ch1];
+    }
+    if (ch2 < 0) {
+      s2 = 0;
+    } else {
+      s2 = scopebuf[2 * offset + ch2]; 
+    }
+    switch (mode) {
+    case MODE_NORMAL:
+      y2ch1 = int(yscale * s1);
+      y2ch2 = int(yscale * s2);
+      break;    
+    case MODE_SUM:
+      y2ch1 = int(yscale * (s1+s2));
+      break;
+    case MODE_DIFF:
+      y2ch1 = int(yscale * (s1-s2));
+      break;
+    }
+}
+
+void ScopeScreen::paintEvent(QPaintEvent *) {
+  //  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  //  return;
+  int l1, thrs, vw, vh, vh_2;
+
+  QPainter p(this);
+
+  vw = width();
+  vh = height();
+  vh_2 = vh >> 1;
   xscale = (float)vw / (float)timeScaleFrames;
   yscale = zoom * (float)height() / 65536.0;
   thrs = int(yscale * triggerThrs * 32767.0);
   if (triggerMode == TRIGGERMODE_TRIGGERED) {
     p.setPen(QColor(0, 255, 255));
-    p.drawLine(vx, height() - (vy + (vh >> 1) + thrs), vx + 10, height() - (vy + (vh >> 1) + thrs));
+    p.drawLine(0, vh_2 - thrs, 10, vh_2 - thrs);
     p.setPen(QColor(0, 220, 0));
   }
-  for (l1 = 0; l1 < timeScaleFrames - 1; l1++) {
-    x1 = int((float)l1 * xscale);
-    x2 = int((float)(l1+1) * xscale);
-    if (ch1 < 0) {
-      s1 = 0;
-    } else {
-      s1 = scopebuf[2 * l1 + ch1];
-    }
-    if (ch2 < 0) {
-      s2 = 0;
-    } else {
-      s2 = scopebuf[2 * l1 +ch2]; 
-    }
-    switch (mode) {
-    case MODE_NORMAL:
-      y1ch1 = int(yscale * float(s1));
-      y1ch2 = int(yscale * float(s2));
-      break;    
-    case MODE_SUM:
-      y1ch1 = int(yscale * float(s1+s2));
-      break;
-    case MODE_DIFF:
-      y1ch1 = int(yscale * float(s1-s2));
-      break;
-    }
-    if (ch1 < 0) {
-      s1 = 0;
-    } else { 
-      s1 = scopebuf[2 * (l1+1) + ch1];
-    }
-    if (ch2 < 0) {
-      s2 = 0;
-    } else {
-      s2 = scopebuf[2 * (l1+1) + ch2];
-    }
+
+  calcY(0);
+  x1 = x2;
+  y1ch1 = y2ch1;
+  y1ch2 = y2ch2;
+
+  for (l1 = 1; l1 < timeScaleFrames; l1++) {
+    calcY(l1);
+    if (x2 == x1)
+      continue;
+
     switch (mode) {  
     case MODE_NORMAL:
-      y2ch1 = int(yscale * float(s1));
-      y2ch2 = int(yscale * float(s2));
       if (ch1 >= 0) {
         p.setPen(QColor(0, 220, 0));
-        p.drawLine(vx + x1, height() - ((vh >> 1) + y1ch1), vx + x2, height() - ((vh >> 1) + y2ch1));
+        p.drawLine(x1, vh_2 - y1ch1, x2, vh_2 - y2ch1);
       }
       if (ch2 >= 0) {
         p.setPen(QColor(255, 255, 0));
-        p.drawLine(vx + x1, height() - ((vh >> 1) + y1ch2), vx + x2, height() - ((vh >> 1) + y2ch2));
+        p.drawLine(x1, vh_2 - y1ch2, x2, vh_2 - y2ch2);
       }
       break;      
     case MODE_SUM:
-      y2ch1 = int(yscale * float(s1+s2));
       if ((ch1 >= 0) && (ch2 >= 0)) {
         p.setPen(QColor(0, 220, 0));
-        p.drawLine(vx + x1, height() - ((vh >> 1) + y1ch1), vx + x2, height() - ((vh >> 1) + y2ch1));
+        p.drawLine(x1, vh_2 - y1ch1, x2, vh_2 - y2ch1);
       }
       break;
     case MODE_DIFF:
-      y2ch1 = int(yscale * float(s1-s2));
       if ((ch1 >= 0) && (ch2 >= 0)) {
         p.setPen(QColor(0, 220, 0));
-        p.drawLine(vx + x1, height() - ((vh >> 1) + y1ch1), vx + x2, height() - ((vh >> 1) + y2ch1));
+        p.drawLine(x1, vh_2 - y1ch1, x2, vh_2 - y2ch1);
       }
       break;
     }
+
+    x1 = x2;
+    y1ch1 = y2ch1;
+    y1ch2 = y2ch2;
   }
   p.setPen(QColor(0, 220, 0));
-  p.drawRect(vx, vy, vx + vw, vy + vh);
-  p.drawLine(vx, vy + (vh >> 1), vx + vw - 1, vy + (vh >> 1));
-  p.drawLine(vx + (vw >> 1), vx, vx + (vw >> 1), vy + vh);
-  p.drawText(vx + 5, vy + 20, QString::number((int)timeScale)+" ms");
-  bitBlt(this, 0, 0, &pm);
+  //  p.drawRect(0, 1, vw-1, vh-1);
+  p.drawLine(0, vh_2, vw - 1, vh_2);
+  p.drawLine(vw >> 1, 0, vw >> 1, vh);
+  p.drawText(5, 20, QString::number((int)timeScale)+" ms");
 }
 
 void ScopeScreen::refreshScope() {
@@ -186,7 +192,7 @@ void ScopeScreen::refreshScope() {
     scopebufValidFrames = timeScaleFrames;
 //    fprintf(stderr, "M2\n");
   }
-  repaint(false);
+  update();	//  repaint();
 }
 
 void ScopeScreen::singleShot() {
@@ -208,7 +214,7 @@ QSizePolicy ScopeScreen::sizePolicy() const {
 modeType ScopeScreen::setMode(modeType p_mode) {
 
   mode = p_mode;
-  repaint(false);
+  update();
   return(mode);
 }
 
@@ -231,21 +237,21 @@ triggerModeType ScopeScreen::setTriggerMode(triggerModeType p_triggerMode) {
 int ScopeScreen::setCh1(int p_ch1) {
 
   ch1 = p_ch1;
-  repaint(false);
+  update();
   return(ch1);
 }
 
 int ScopeScreen::setCh2(int p_ch2) {       
 
   ch2 = p_ch2;  
-  repaint(false);
+  update();
   return(ch2); 
 }              
 
 float ScopeScreen::setZoom(float p_zoom) {
 
   zoom = p_zoom;
-  repaint(false);
+  update();
   return(zoom);
 }
 
@@ -260,7 +266,7 @@ float ScopeScreen::setTimeScale(float p_timeScale) {
   timeScale = p_timeScale;
   timeScaleFrames = (int)((float)synthdata->rate * timeScale / 1000.0);
   if (timeScaleFrames <= scopebufValidFrames) {
-    repaint(false);
+    update();
   }
   return(timeScale);
 }
@@ -305,7 +311,3 @@ float ScopeScreen::getTimeScale() {
   return(timeScale);
 }
 
-void ScopeScreen::viewportResizeEvent(QResizeEvent *ev)
-{
-  repaint(false);
-}

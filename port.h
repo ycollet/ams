@@ -8,8 +8,10 @@
 #include <qlist.h>
 #include <qstring.h>
 #include <qcolor.h>
-#include <qpopupmenu.h>
 #include <qpoint.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QPaintEvent>
 #include "synthdata.h"
 
 #define PORT_DEFAULT_WIDTH  80
@@ -22,14 +24,12 @@ class Port : public QWidget
 {
   Q_OBJECT
 
-  private:
     QString portName;
-    QPopupMenu *contextMenu;
-    SynthData *synthdata;
+    static class PopupMenu *contextMenu;
     int portWidth;
 
   public:
-    Port(const QString &p_portName, dirType p_dir, int p_index, QWidget* parent=0, SynthData *p_synthdata=0,
+    Port(const QString &p_portName, dirType p_dir, int p_index, class Module *parent,
          int p_portWidth = PORT_DEFAULT_WIDTH, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
@@ -39,14 +39,14 @@ class Port : public QWidget
     void showContextMenu(QPoint pos);
 
   public:
-    QWidget *parentModule;
-    QList<Port> connectedPortList;
+    class Module *module;
+    QList<Port*> connectedPortList;
     dirType dir;
     int index, fontColor;
-    QColor jackColor, cableColor, colorBackground, colorFont1, colorFont2;
+    QColor jackColor, cableColor, colorFont1, colorFont2;
     outTypeEnum outType;
     bool highlighted;
-    QValueList<outTypeEnum> outTypeAcceptList;
+    QList<outTypeEnum> outTypeAcceptList;
 
   signals:
     void portClicked();
@@ -58,7 +58,7 @@ class Port : public QWidget
     virtual void mouseReleaseEvent (QMouseEvent* );
     virtual void mouseMoveEvent (QMouseEvent* );
     
-  public slots:
+  public:
     void disconnectClicked();  
     void cableGrayClicked();
     void cableRedClicked();

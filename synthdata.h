@@ -7,17 +7,22 @@
 #include <qstring.h>
 #include <qcolor.h>
 #include <qlist.h>
+#include <QSemaphore>
+#include <QTextStream>
 #include <ladspa.h>
 #include <clalsadrv.h>
 #include <jack/jack.h>
 #include "main.h"
 
+extern QTextStream StdErr;
 
+struct LadspaLib {
+  QString name;
+  QList<const LADSPA_Descriptor *> desc;
+};
  
-class SynthData : public QObject
+class SynthData
 {
-  private:
-
     int  play_ports;
     int  capt_ports;
     void *play_mods [MAX_PLAY_PORTS / 2];
@@ -33,7 +38,6 @@ class SynthData : public QObject
     jack_port_t *jack_out [MAX_PLAY_PORTS];
 
   public:
-
     float *wave_sine;
     float *wave_saw;
     float *wave_saw2;
@@ -59,33 +63,38 @@ class SynthData : public QObject
     int moduleCount;
     int moduleID;
 
-    QList<QObject> outModuleList;
-    QList<QObject> wavoutModuleList;
-    QList<QObject> midioutModuleList;
-    QList<QObject> scopeModuleList;
-    QList<QObject> spectrumModuleList;
-    QList<QObject> moduleList;
-    QList<QObject> listM_env;
-    QList<QObject> listM_vcenv;
-    QList<QObject> listM_vcenv2;
-    QList<QObject> listM_advenv;
-    QList<QObject> listM_dynamicwaves;
-    QList<QObject> listM_mcv;
-    QList<QObject> listM_advmcv;
-    QList<QObject> listM_scmcv;
+    QList<QObject*> outModuleList;
+    QList<class M_wavout *> wavoutModuleList;
+    QList<QObject*> midioutModuleList;
+    QList<QObject*> scopeModuleList;
+#ifdef OUTDATED_CODE
+    QList<QObject*> spectrumModuleList;
+#endif
+    QList<class Module *> moduleList;
+    QList<QObject*> listM_env;
+    QList<QObject*> listM_vcenv;
+    QList<QObject*> listM_vcenv2;
+    QList<QObject*> listM_advenv;
+    QList<QObject*> listM_dynamicwaves;
+    QList<QObject*> listM_mcv;
+    QList<QObject*> listM_advmcv;
+    QList<QObject*> listM_scmcv;
 
     snd_seq_t *seq_handle;
     bool doSynthesis;
-    QSemaphore port_sem;          
-    LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
-    QString ladspa_lib_name[MAX_SO];
+    QSemaphore port_sem;
+  QList<LadspaLib> ladspaLib;
+  //    LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
+  //    QString ladspa_lib_name[MAX_SO];
     QString loadPath, savePath, rcPath;
-    QObject *midiWidget, *guiWidget;
+    class MidiWidget *midiWidget;
+    class GuiWidget *guiWidget;
     QString jackName;
     int midi_out_port[2];
     int midiChannel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
+    QFont bigFont, smallFont;
 
   private:
 
@@ -121,6 +130,8 @@ class SynthData : public QObject
     int closeJack();
 
 };
-  
+
+extern SynthData *synthdata;
+ 
 #endif
       

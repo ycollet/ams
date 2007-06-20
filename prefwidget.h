@@ -8,11 +8,7 @@
 #include <qstring.h>
 #include <qslider.h>   
 #include <qcheckbox.h>  
-#include <qlistview.h>
 #include <qlabel.h>
-#include <qvbox.h>
-#include <qhbox.h>
-#include <qgroupbox.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -22,6 +18,7 @@
 #include <qlineedit.h>
 #include <qfile.h>
 #include <qtabwidget.h>
+#include <QVBoxLayout>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 
@@ -30,16 +27,15 @@
 /** preferences menue of AMS 
  *
  */ 
-class PrefWidget : public QVBox
+class PrefWidget : public QWidget
 {
   Q_OBJECT
 
-  private:
-    SynthData *synthdata;
+  QVBoxLayout vBox;
     QTabWidget *tabWidget;
     QString loadPath, savePath;
-    QLabel *colorBackgroundLabel, *colorModuleBackgroundLabel, *colorModuleBorderLabel, *colorModuleFontLabel;
-    QLabel *colorCableLabel, *colorJackLabel;
+    QWidget *colorBackgroundLabel, *colorModuleBackgroundLabel, *colorModuleBorderLabel, *colorModuleFontLabel,
+	    *colorCableLabel, *colorJackLabel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
     QComboBox *midiModeComboBox;
@@ -47,8 +43,7 @@ class PrefWidget : public QVBox
     int midiControllerMode;
    
   public:
-    PrefWidget(SynthData *p_synthdata, QWidget* parent, const char *name=0);
-    ~PrefWidget();
+    PrefWidget();
 
   signals:
     void prefChanged();

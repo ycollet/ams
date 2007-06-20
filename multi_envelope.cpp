@@ -10,15 +10,20 @@
 #include <qbrush.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPolygon>
+#include <QPaintEvent>
 #include "multi_envelope.h"
 
 
 MultiEnvelope::MultiEnvelope(int p_envCount, float *p_timeScaleRef, float *p_attackRef, float *p_sustainRef, float *p_releaseRef,
-                   QWidget* parent, const char *name, SynthData *p_synthdata) 
-             : QWidget (parent, name)
+                   QWidget* parent, const char *name) 
+  : QWidget (parent)
 {
+  setObjectName(name);
   envCount = p_envCount;
-  synthdata = p_synthdata;
+  
   timeScaleRef = p_timeScaleRef;
   attackRef = p_attackRef;
   sustainRef = p_sustainRef;
@@ -43,7 +48,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
 
   QPixmap pm(width(), height());  
   QPainter p(&pm);
-  QPointArray points(10);
+  QPolygon points(10);
   QPen pen;
   QString qs;
   int l1;
@@ -138,12 +143,12 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
     p.setPen(pen);
     p.drawPolyline(points); 
   }
-  bitBlt(this, 0, 0, &pm);
+  //!!  bitBlt(this, 0, 0, &pm);
 }
 
-void MultiEnvelope::updateMultiEnvelope(int value) {
-
-  repaint(false);
+void MultiEnvelope::updateMultiEnvelope(int)
+{
+  update();
 }
 
 QSize MultiEnvelope::sizeHint() const {
@@ -158,6 +163,6 @@ QSizePolicy MultiEnvelope::sizePolicy() const {
 
 void MultiEnvelope::resizeEvent (QResizeEvent* )
 {
-  repaint(true);
+  update();
 }
 
