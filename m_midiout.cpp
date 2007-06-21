@@ -88,7 +88,10 @@ M_midiout::~M_midiout()
   synthdata->midioutModuleList.removeAll(this);
 }
 
-void M_midiout::generateCycle() {
+void M_midiout::generateCycle()
+{
+  if (!synthdata->seq_handle)
+    return;
 
   int l1, l2, l3, mididata, velocitydata;
   snd_seq_event_t ev;

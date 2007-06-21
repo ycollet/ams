@@ -261,31 +261,19 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev) {
     break;
   }
 }  
-   
-// QSize ModularSynth::sizeHint() const {
 
-//   return QSize(SYNTH_MINIMUM_WIDTH, SYNTH_MINIMUM_HEIGHT);
-// }
-
-// QSizePolicy ModularSynth::sizePolicy() const {
-
-//   return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-// }
-
-
-int ModularSynth::go (bool withJack) {
-
-  synthdata->seq_handle = open_seq();
-  initSeqNotifier();
-
-  if (withJack)
-  {
-    synthdata->initJack (ncapt, nplay);
-    synthdata->doSynthesis = true;
-  }
+int ModularSynth::go(bool withJack)
+{
+  if ((synthdata->seq_handle = open_seq()))
+    initSeqNotifier();
   else
-  {
-    synthdata->initAlsa (pcmname, fsamp, frsize, nfrags, ncapt, nplay);
+    fprintf(stderr, " MIDI wont work!\n");
+
+  if (withJack) {
+    synthdata->initJack(ncapt, nplay);
+    synthdata->doSynthesis = true;
+  } else {
+    synthdata->initAlsa(pcmname, fsamp, frsize, nfrags, ncapt, nplay);
     synthdata->doSynthesis = true;
   }
   return 0;
@@ -365,29 +353,31 @@ snd_seq_t *ModularSynth::open_seq() {
   QString qs;
 
   if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, 0) < 0) {
-    fprintf(stderr, "Error opening ALSA sequencer.\n");
-    exit(1);
+    fprintf(stderr, "Error opening ALSA sequencer.");
+    return NULL;
   }
   snd_seq_set_client_name(seq_handle, "AlsaModularSynth");
   clientid = snd_seq_client_id(seq_handle);
   if ((portid = snd_seq_create_simple_port(seq_handle, "ams",
             SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
             SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
-    fprintf(stderr, "Error creating sequencer port.\n");
-    exit(1);
+    fprintf(stderr, "Error creating sequencer write port.");
+    snd_seq_close(seq_handle);
+    return NULL;
   }
-  for (l1 = 0; l1 < 2; ++l1) {
+  for (l1 = 0; l1 < 2; ++l1)
     if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "ams",
             SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ,
             SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
-      fprintf(stderr, "Error creating sequencer port.\n");
-      exit(1);
+      fprintf(stderr, "Error creating sequencer read port.");
+      snd_seq_close(seq_handle);
+      return NULL;
     }
-  }
+
   qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
   mainWindow->setWindowTitle(qs);
   synthdata->jackName.sprintf("ams_%d_%d", clientid, portid);
-  return(seq_handle);
+  return seq_handle;
 }
 
 int ModularSynth::initSeqNotifier() {
