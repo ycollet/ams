@@ -71,6 +71,7 @@
 #include "ladspadialog.h"
 
 extern QTextStream StdErr;
+extern QTextStream StdOut;
 
 enum connectorStyleType {CONNECTOR_STRAIGHT, CONNECTOR_BEZIER};
 

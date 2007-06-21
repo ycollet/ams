@@ -146,7 +146,7 @@ int ConfigDialog::addEnvelope(float *delayRef, float *attackRef, float *holdRef,
 
   envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef, 
 			  NULL, "Envelope");
-  insertWidget(layout, envelope);
+  insertWidget(layout, envelope, 100);
 
   envelopeList.append(envelope);
   return(0);
@@ -158,7 +158,7 @@ int ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *att
 
   envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef, 
 			       NULL, "Multi Envelope");
-  insertWidget(layout, envelope);
+  insertWidget(layout, envelope, 100);
 
   multiEnvelopeList.append(envelope);
   return(0);

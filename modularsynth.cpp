@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <algorithm>
 #include <qwidget.h>
 #include <qstring.h>
 #include <qpainter.h>
@@ -14,6 +15,7 @@
 #include <QMouseEvent>
 #include <QMenu>
 #include <QPaintEvent>
+#include <QTextBlock>
 #include <QTextEdit>
 #include "midislider.h"
 #include "intmidislider.h"
@@ -53,7 +55,7 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
   clientid = 0;
   portid = 0;
 
-  ::synthdata = new SynthData (poly, edge);
+  synthdata = new SynthData (poly, edge);
 
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle("AlsaModularSynth Control Center");
@@ -154,17 +156,14 @@ ModularSynth::~ModularSynth()
   delete synthdata;
 }
 
-#include <iostream>
-using namespace std;
 void ModularSynth::resize()
 {
 //   cout << childrenRect().right() << childrenRect().bottom() << endl;
-  int width = max(childrenRect().right() + 30, ((QWidget*)parent())->width());
-  int height = max(childrenRect().bottom() + 10, ((QWidget*)parent())->height());
+  int width = std::max(childrenRect().right() + 30, ((QWidget*)parent())->width());
+  int height = std::max(childrenRect().bottom() + 10, ((QWidget*)parent())->height());
   QWidget::resize(width, height);
 }
 
-#include <QBrush>
 void ModularSynth::paintEvent(QPaintEvent *) {
   
   QPainter p(this);
@@ -1880,16 +1879,19 @@ void ModularSynth::save()
       }
       listModule.at(l1)->save(f);
     }
-    for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
+    for (l1 = 0; l1 < listTextEdit.count(); ++l1)
       fprintf(f, "Comment %d %d %d %d %d %d\n", listTextEdit.at(l1)->textEditID, l1, 
 	      listTextEdit.at(l1)->x() - offX,
 	      listTextEdit.at(l1)->y() - offY, 
 	      listTextEdit.at(l1)->width(), listTextEdit.at(l1)->height());
-    }
+
     for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
-      for (l2 = 0; l2 < listTextEdit.at(l1)->textEdit->document()->blockCount(); ++l2) {
-        fprintf(f, "#PARA# %d %d %d\n", listTextEdit.at(l1)->textEditID, l1, l2);
-	//!!        fprintf(f, "%s\n", listTextEdit.at(l1)->textEdit->text(l2).latin1());
+      TextEdit *tE = listTextEdit.at(l1);
+      QTextDocument *tD = tE->textEdit->document();
+      QTextBlock tB = tD->begin();
+      for (l2 = 0; l2 < tD->blockCount(); ++l2, tB = tB.next()) {
+        fprintf(f, "#PARA# %d %d %d\n", tE->textEditID, l1, l2);
+	fprintf(f, "%s\n", tB.text().toLatin1().constData());
         fprintf(f, "#ARAP#\n");
       }
     }

@@ -19,7 +19,6 @@
 #include <QPointF>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
-#include "envelope.h"
 #include "function.h"
 
 /** configuration dialog for each module

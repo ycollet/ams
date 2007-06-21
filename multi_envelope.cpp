@@ -28,7 +28,9 @@ MultiEnvelope::MultiEnvelope(int p_envCount, float *p_timeScaleRef, float *p_att
   attackRef = p_attackRef;
   sustainRef = p_sustainRef;
   releaseRef = p_releaseRef;
-  setPalette(QPalette(QColor(20, 20, 80), QColor(20, 20, 80)));
+  setAutoFillBackground(true);
+  setPalette(QPalette(QColor(20, 20, 80),
+		      envCount > 1 ? QColor(20, 20, 80) : QColor(10, 50, 10)));
   setMinimumHeight(125);
   colorTable[1].setRgb(255, 0, 0);
   colorTable[2].setRgb(0, 255, 0);
@@ -44,10 +46,9 @@ MultiEnvelope::~MultiEnvelope()
 {
 }
 
-void MultiEnvelope::paintEvent(QPaintEvent *) {
-
-  QPixmap pm(width(), height());  
-  QPainter p(&pm);
+void MultiEnvelope::paintEvent(QPaintEvent *)
+{
+  QPainter p(this);
   QPolygon points(10);
   QPen pen;
   QString qs;
@@ -57,7 +58,6 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
   p.setViewport(0, 0, width(), height());
   p.setWindow(0, 0, width(), height());
   if (envCount > 1) {
-    pm.fill(QColor(20, 20, 80));
     maxlen = 0;
     for (l1 = 0; l1 < envCount; l1++ ) { 
       len = attackRef[l1] + attackRef[8+l1] + attackRef[24+l1] + attackRef[40+l1] + attackRef[56+l1]  
@@ -101,7 +101,6 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
       p.drawText(40 * l1 + 5, 15, qs);   
     }
   } else {
-    pm.fill(QColor(10, 50, 10));
     len = attackRef[0] + attackRef[1] + attackRef[3] + attackRef[5] + attackRef[7]  
         + releaseRef[0] + releaseRef[2] + releaseRef[4] + SUSTAIN_LEN;
     xscale = (float)width() / len;
@@ -143,7 +142,6 @@ void MultiEnvelope::paintEvent(QPaintEvent *) {
     p.setPen(pen);
     p.drawPolyline(points); 
   }
-  //!!  bitBlt(this, 0, 0, &pm);
 }
 
 void MultiEnvelope::updateMultiEnvelope(int)
@@ -159,10 +157,5 @@ QSize MultiEnvelope::sizeHint() const {
 QSizePolicy MultiEnvelope::sizePolicy() const {
 
   return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-}
-
-void MultiEnvelope::resizeEvent (QResizeEvent* )
-{
-  update();
 }
 

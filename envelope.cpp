@@ -1,18 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
 #include <qpainter.h>
 #include <qpen.h>
-#include <qpixmap.h>
 #include <qbrush.h>
-#include <qsizepolicy.h>
-#include <qsize.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 #include <QPolygon>
-#include <QPaintEvent>
 #include "envelope.h"
 
 
@@ -28,23 +17,19 @@ Envelope::Envelope(float *p_delayRef, float *p_attackRef, float *p_holdRef,
   decayRef = p_decayRef;
   sustainRef = p_sustainRef;
   releaseRef = p_releaseRef;
-  setPalette(QPalette(QColor(0, 20, 100), QColor(0, 20, 100)));
+  setAutoFillBackground(true);
+  setPalette(QPalette(QColor(0, 20, 100), QColor(10, 50, 10)));
   setMinimumHeight(140);
 }
 
-Envelope::~Envelope()
+
+void Envelope::paintEvent(QPaintEvent *)
 {
-}
-
-void Envelope::paintEvent(QPaintEvent *) {
-
-  QPixmap pm(width(), height());  
-  QPainter p(&pm);
+  QPainter p(this);
   QPolygon points(7);
   QPen pen;
   float len, x, y, xscale, yscale;
 
-  pm.fill(QColor(10, 50, 10));
   p.setViewport(0, 0, width(), height());
   p.setWindow(0, 0, width(), height());
   len = *delayRef + *attackRef + *holdRef + *decayRef + SUSTAIN_LEN + *releaseRef;
@@ -75,7 +60,6 @@ void Envelope::paintEvent(QPaintEvent *) {
   pen.setWidth(1);
   p.setPen(pen);
   p.drawPolyline(points);
-  //!!  bitBlt(this, 0, 0, &pm);
 }
 
 void Envelope::updateEnvelope(int)
@@ -93,7 +77,3 @@ QSizePolicy Envelope::sizePolicy() const {
   return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
 
-void Envelope::resizeEvent (QResizeEvent* )
-{
-  update();
-}

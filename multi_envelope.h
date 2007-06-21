@@ -29,7 +29,6 @@ class MultiEnvelope : public QWidget
     
   protected:
     virtual void paintEvent(QPaintEvent *);
-    virtual void resizeEvent (QResizeEvent* );            
     
   public:
     MultiEnvelope(int p_envCount, float *p_timeScaleRef, float *p_attackRef, float *p_sustainRef, float *p_releaseRef,

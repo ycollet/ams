@@ -119,14 +119,14 @@ float Filter::filt(float f, float cutoff, float resonance, float rising,
 //  return((exp(response)-1.0) / (exp(1.0)-1.0));
 }
 
-void Filter::paintEvent(QPaintEvent *) {
-
-  QPixmap pm(width(), height());  
-  QPainter p(&pm);
+void Filter::paintEvent(QPaintEvent *)
+{
+  //  QPixmap pm(width(), height());  
+  QPainter p(this);
   int l1;
   float x1, y1, x2, y2, xscale, yscale;
 
-  pm.fill(QColor(0, 20, 100));
+  //  pm.fill(QColor(0, 20, 100));
   p.setViewport(0, 0, width(), height());
   p.setWindow(0, 0, width(), height());
   p.setPen(QColor(220, 100, 0));

@@ -4,17 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qpainter.h>
 #include <alsa/asoundlib.h>
+#include "envelope.h"
 #include "synthdata.h"
 #include "midislider.h"
 #include "m_env.h"

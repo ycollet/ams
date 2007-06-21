@@ -1,17 +1,10 @@
 #ifndef ENVELOPE_H
 #define ENVELOPE_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <qwidget.h>
-#include <qstring.h>
-#include <qlabel.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
-//Added by qt3to4:
 #include <QPaintEvent>
-#include <QResizeEvent>
 #include "synthdata.h"
 
 #define ENVELOPE_MINIMUM_WIDTH        100
@@ -27,13 +20,12 @@ class Envelope : public QWidget
 
   protected:
     virtual void paintEvent(QPaintEvent *);
-    virtual void resizeEvent (QResizeEvent* );            
     
   public:
     Envelope(float *p_delayRef, float *p_attackRef, float *p_holdRef,
              float *p_decayRef, float *p_sustainRef, float *p_releaseRef,
              QWidget* parent=0, const char *name=0);
-    ~Envelope();
+    ~Envelope() {};
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
     int setDelay(float p_delay);
