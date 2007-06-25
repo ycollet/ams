@@ -3,12 +3,11 @@
 #include "m_spectrum.h"
 
 
-M_spectrum::M_spectrum(QWidget* parent, const char *name) 
-              : Module(0, parent, name)
+M_spectrum::M_spectrum(QWidget* parent) 
+  : Module(M_type_spectrum, 0, parent, "Spectrum")
 {
   QString qs;
  
-  M_type = M_type_spectrum;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
 
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
@@ -19,8 +18,6 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
-  qs.sprintf("Spectrum ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
   configDialog->addLabel(
 	"This modules source-code is outdated.\n"
 	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"

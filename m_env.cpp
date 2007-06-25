@@ -11,13 +11,12 @@
 #include "m_env.h"
 #include "port.h"
 
-M_env::M_env(QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_env::M_env(QWidget* parent) 
+  : Module(M_type_env, 2, parent, "ENV")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_env;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ENV_WIDTH, MODULE_ENV_HEIGHT);
   delay = 0;
   attack = 0.05;
@@ -42,8 +41,7 @@ M_env::M_env(QWidget* parent, const char *name)
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
-  qs.sprintf("ENV ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addEnvelope(&delay, &attack, &hold, &decay, &sustain, &release);
   configDialog->initTabWidget();
   QVBoxLayout *adsrTab = configDialog->addVBoxTab("ADSR");

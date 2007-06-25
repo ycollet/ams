@@ -24,13 +24,12 @@
 #include "port.h"
 
 
-M_scope::M_scope(QWidget* parent, const char *name) 
-              : Module(0, parent, name) {
-
+M_scope::M_scope(QWidget* parent) 
+  : Module(M_type_scope, 0, parent, "Scope")
+{
   QString qs;
   QHBoxLayout *hbox;
 
-  M_type = M_type_scope;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCOPE_WIDTH, MODULE_SCOPE_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
@@ -44,8 +43,7 @@ M_scope::M_scope(QWidget* parent, const char *name)
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
-  qs.sprintf("Scope ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   mode = 0;
   edge = 0;

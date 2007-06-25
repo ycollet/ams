@@ -19,9 +19,9 @@
 #include "m_inv.h"
 #include "port.h"
 
-M_inv::M_inv(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_inv::M_inv(QWidget* parent) 
+  : Module(M_type_inv, 1, parent, "Inverter")
+{
   QString qs;
 
   M_type = M_type_inv;
@@ -34,11 +34,6 @@ M_inv::M_inv(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 55);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Inverter ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_inv::~M_inv() {
 }
 
 void M_inv::generateCycle() {

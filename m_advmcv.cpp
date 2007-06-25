@@ -19,13 +19,12 @@
 #include "m_advmcv.h"
 #include "port.h"
 
-M_advmcv::M_advmcv(QWidget* parent, const char *name) 
-              : Module(10, parent, name) {
-
+M_advmcv::M_advmcv(QWidget* parent) 
+  : Module(M_type_advmcv, 10, parent, "Advanced MCV")
+{
   QString qs;
   int l1, l2;
 
-  M_type = M_type_advmcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVMCV_WIDTH, MODULE_ADVMCV_HEIGHT);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
@@ -58,8 +57,7 @@ M_advmcv::M_advmcv(QWidget* parent, const char *name)
     port_controller_out[l1]->outType = outType_audio;
     portList.append(port_controller_out[l1]);
   }
-  qs.sprintf("Advanced MCV ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
 //  QStrList *channelNames = new QStrList(true);
 //  channelNames->append("RESERVED FOR LATER USE");
 //  for (l1 = 1; l1 < 17; l1++) {

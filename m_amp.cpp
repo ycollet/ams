@@ -19,12 +19,11 @@
 #include "m_amp.h"
 #include "port.h"
 
-M_amp::M_amp(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_amp::M_amp(QWidget* parent) 
+  : Module(M_type_amp, 1, parent, "Amplifier")
+{
   QString qs;
 
-  M_type = M_type_amp;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_AMP_WIDTH, MODULE_AMP_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -36,11 +35,6 @@ M_amp::M_amp(QWidget* parent, const char *name)
   portList.append(port_out);
   gain = 1;
   configDialog->addSlider(-10, 10, gain, "Gain", &gain);
-  qs.sprintf("Amplifier ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_amp::~M_amp() {
 }
 
 void M_amp::generateCycle() {

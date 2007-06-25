@@ -25,13 +25,12 @@
 #include "m_scquantizer.h"
 #include "port.h"
 
-M_scquantizer::M_scquantizer(QWidget* parent, const char *name, QString *p_sclname) 
-              : Module(2, parent, name) {
-
+M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname) 
+  : Module(M_type_scquantizer, 2, parent, "Scala Quantizer")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_scquantizer;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCQUANTIZER_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -56,8 +55,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, const char *name, QString *p_sclna
   base = 0;
   lastbase = 12;
   configDialog->addIntSlider(-36, 36, base, "Note Offset", &base);
-  qs.sprintf("Scala Quantizer ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
     trigCount[l1] = 0;
@@ -88,9 +86,6 @@ M_scquantizer::M_scquantizer(QWidget* parent, const char *name, QString *p_sclna
   if (p_sclname && !p_sclname->contains("No_Scale_loaded")) {
     loadScale(dirpath + "/" + *p_sclname);
   }
-}
-
-M_scquantizer::~M_scquantizer() {
 }
 
 void M_scquantizer::calcScale() {

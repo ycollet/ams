@@ -21,12 +21,11 @@
 #include "m_conv.h"
 #include "port.h"
 
-M_conv::M_conv(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_conv::M_conv(QWidget* parent) 
+  : Module(M_type_conv, 1, parent, "Converter")
+{
   QString qs;
 
-  M_type = M_type_conv;
   convMode = 0;
   octave = 0;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_CONV_WIDTH, MODULE_CONV_HEIGHT);
@@ -38,17 +37,13 @@ M_conv::M_conv(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 55);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Converter ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   QStringList *convModeNames = new QStringList();
   *convModeNames << "V/Octave --> Hz";
   *convModeNames << "V/Octave --> 0..1, 1=rate/2";
   *convModeNames << "V/Octave --> 0..1, 1=20000 Hz";
   configDialog->addComboBox(0, "Conversion Mode ", &convMode, convModeNames->count(), convModeNames);
   configDialog->addIntSlider(-3, 3, octave, "Octave Offset", &octave);
-}
-
-M_conv::~M_conv() {
 }
 
 void M_conv::generateCycle() {

@@ -41,8 +41,7 @@ class M_quantizer : public Module
     float **inData, **triggerData, **transposeData;       
                             
   public:
-    M_quantizer(QWidget* parent=0, const char *name=0);
-    ~M_quantizer();
+    M_quantizer(QWidget* parent=0);
 
   public slots:
     void generateCycle();

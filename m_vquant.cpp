@@ -19,12 +19,11 @@
 #include "m_vquant.h"
 #include "port.h"
 
-M_vquant::M_vquant(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vquant::M_vquant(QWidget* parent) 
+  : Module(M_type_vquant, 1, parent, "Quantizer 2")
+{
   QString qs;
 
-  M_type = M_type_vquant;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VQUANT_WIDTH, MODULE_VQUANT_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -36,11 +35,6 @@ M_vquant::M_vquant(QWidget* parent, const char *name)
   portList.append(port_quant);
   gain = 1.0;
   configDialog->addSlider(0, 10, gain, "Gain", &gain);
-  qs.sprintf("Quantizer 2 ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_vquant::~M_vquant() {
 }
 
 void M_vquant::generateCycle() {

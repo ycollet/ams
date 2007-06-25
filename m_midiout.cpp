@@ -20,13 +20,12 @@
 #include "port.h"
 
 
-M_midiout::M_midiout(QWidget* parent, const char *name) 
-              : Module(0, parent, name) {
-
+M_midiout::M_midiout(QWidget* parent) 
+  : Module(M_type_midiout, 0, parent, "Midi Out")
+{
   QString qs;
   int l1, l2;
 
-  M_type = M_type_midiout;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIDIOUT_WIDTH, MODULE_MIDIOUT_HEIGHT);
   mixer_gain[0] = 1.0;
   mixer_gain[1] = 1.0;
@@ -48,8 +47,7 @@ M_midiout::M_midiout(QWidget* parent, const char *name)
   port_M_trigger->move(0, 75);
   port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);
-  qs.sprintf("MIDI Out ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QVBoxLayout *gainTab = configDialog->addVBoxTab("Gain / Offset / Trigger Level");
   QVBoxLayout *midiTab = configDialog->addVBoxTab("MIDI Settings");

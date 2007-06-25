@@ -19,22 +19,20 @@
 #include "m_function.h"
 #include "port.h"
 
-M_function::M_function(int p_functionCount, QWidget* parent, const char *name) 
-              : Module(p_functionCount, parent, name) {
-
+M_function::M_function(int p_functionCount, QWidget* parent)
+  : Module(M_type_function, p_functionCount, parent, "Function")
+{
   QString qs;
   QHBoxLayout *hbox;
   int l1, l2;
 
-  M_type = M_type_function;
-  functionCount = p_functionCount;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_FUNCTION_WIDTH, 
-              MODULE_FUNCTION_HEIGHT + 20 + 20 * functionCount);
+              MODULE_FUNCTION_HEIGHT + 20 + 20 * outPortCount);
   port_in = new Port("In", PORT_IN, 0, this);
   port_in->move(0, 40);
   port_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_in);
-  for (l1 = 0; l1 < functionCount; l1++) {
+  for (l1 = 0; l1 < outPortCount; l1++) {
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       i[l2][l1] = 1;
       y[l1][l2] = 0;
@@ -52,9 +50,9 @@ M_function::M_function(int p_functionCount, QWidget* parent, const char *name)
     out_port_list.append(audio_out_port);
     portList.append(audio_out_port);
   }
-  qs.sprintf("Function %d -> 1 ID %d", functionCount, moduleID);
+  qs.sprintf("Function %d -> 1 ID %d", outPortCount, moduleID);
   configDialog->setAddStretch(-1);
-  configDialog->addFunction(functionCount, &mode, &editIndex, point, MAX_POINTS);
+  configDialog->addFunction(outPortCount, &mode, &editIndex, point, MAX_POINTS);
   zoomIndex = 0;
   zoom = 1.0;
   mode = 0;
@@ -72,7 +70,7 @@ M_function::M_function(int p_functionCount, QWidget* parent, const char *name)
     "Linear";
   QStringList editNames;
   editNames << "All";
-  for (l1 = 0; l1 < functionCount; l1++) {
+  for (l1 = 0; l1 < outPortCount; l1++) {
     qs.sprintf("%d", l1);
     editNames << qs;
   }
@@ -88,11 +86,6 @@ M_function::M_function(int p_functionCount, QWidget* parent, const char *name)
                    configDialog->functionList.at(0), SLOT(highlightFunction(int)));
   QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
                    this, SLOT(updateMouseLabels(int, int)));
-  qs.sprintf("Function ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_function::~M_function() {
 }
 
 void M_function::generateCycle() {
@@ -108,7 +101,7 @@ void M_function::generateCycle() {
     inData = port_in->getinputdata();
     cf = configDialog->functionList.at(0);
     pointCount = configDialog->functionList.at(0)->pointCount;
-    for (l3 = 0; l3 < functionCount; l3++) {
+    for (l3 = 0; l3 < outPortCount; l3++) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         len = synthdata->cyclesize;
         l2 = -1;

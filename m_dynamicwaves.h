@@ -64,7 +64,7 @@ class M_dynamicwaves : public Module
     float **linFMData;        // Frequency modulation lin characteristic
                             
   public:
-    M_dynamicwaves(int p_oscCount, QWidget* parent=0, const char *name=0);
+    M_dynamicwaves(int p_oscCount, QWidget* parent=0);
     ~M_dynamicwaves();
 
   public slots:

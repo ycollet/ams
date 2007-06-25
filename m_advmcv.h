@@ -37,7 +37,7 @@ class M_advmcv : public Module
     float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY];
                 
   public:
-    M_advmcv(QWidget* parent=0, const char *name=0);
+    M_advmcv(QWidget* parent=0);
     ~M_advmcv();
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);

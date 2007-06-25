@@ -19,13 +19,12 @@
 #include "m_cvs.h"
 #include "port.h"
 
-M_cvs::M_cvs(QWidget* parent, const char *name) 
-              : Module(MODULE_CVS_CV_COUNT, parent, name) {
-
+M_cvs::M_cvs(QWidget* parent)
+  : Module(M_type_cvs, MODULE_CVS_CV_COUNT, parent, "CV Source")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_cvs;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_CVS_WIDTH, MODULE_CVS_HEIGHT);
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     qs.sprintf("CV %d", l1);
@@ -34,8 +33,7 @@ M_cvs::M_cvs(QWidget* parent, const char *name)
     port_cv_out[l1]->outType = outType_audio;
     portList.append(port_cv_out[l1]);
   }
-  qs.sprintf("CVS ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     cv[l1] = 0;
     cv_fine[l1] = 0;
@@ -44,10 +42,6 @@ M_cvs::M_cvs(QWidget* parent, const char *name)
     qs.sprintf("CV %d Fine", l1); 
     configDialog->addSlider(-0.5, 0.5, cv_fine[l1], qs, &cv_fine[l1]);
   }
-}
-
-M_cvs::~M_cvs() {
-
 }
 
 void M_cvs::generateCycle() {

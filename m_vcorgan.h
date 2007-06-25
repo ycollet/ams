@@ -49,8 +49,7 @@ class M_vcorgan : public Module
     float **linFMData;        // Frequency modulation lin characteristic
                             
   public:
-    M_vcorgan(int p_oscCount, QWidget* parent=0, const char *name=0);
-    ~M_vcorgan();
+    M_vcorgan(int p_oscCount, QWidget* parent=0);
 
   public slots:
     void generateCycle();

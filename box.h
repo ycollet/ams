@@ -15,7 +15,7 @@ protected:
   static QPoint pressPos, mousePressPos;
   
 public:
-  Box(QWidget* parent, const char *name);
+  Box(QWidget* parent, const QString &name);
   virtual  ~Box() {}
   class ModularSynth *modularSynth() {
     return (ModularSynth*)parent();

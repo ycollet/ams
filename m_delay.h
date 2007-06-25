@@ -35,7 +35,7 @@ class M_delay : public Module
     float **inData, **buf;       
                             
   public:
-    M_delay(QWidget* parent=0, const char *name=0);
+    M_delay(QWidget* parent=0);
     ~M_delay();
 
   public slots:

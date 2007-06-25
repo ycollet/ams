@@ -21,12 +21,11 @@
 #include "port.h"
 
 
-M_pcmin::M_pcmin(QWidget* parent, const char *name, int port) 
-              : Module(2, parent, name)
+M_pcmin::M_pcmin(QWidget* parent, int port) 
+  : Module(M_type_pcmin, 2, parent, "PCM In")
  {
   QString qs;
 
-  M_type = M_type_pcmin;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_PCMIN_WIDTH, MODULE_PCMIN_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
@@ -41,8 +40,6 @@ M_pcmin::M_pcmin(QWidget* parent, const char *name, int port)
   port_out[1]->move(width() - port_out[1]->width(), 55);
   port_out[1]->outType = outType_audio;
   portList.append(port_out[1]);
-  qs.sprintf("Alsa / Jack In  ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
   configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
   configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);

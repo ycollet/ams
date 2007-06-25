@@ -36,8 +36,7 @@ class M_mphlfo : public Module
     int mode;
         
   public:
-    M_mphlfo(QWidget* parent=0, const char *name=0);
-    ~M_mphlfo();
+    M_mphlfo(QWidget* parent=0);
 
   public slots:
     void generateCycle();

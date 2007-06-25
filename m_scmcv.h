@@ -45,10 +45,9 @@ class M_scmcv : public Module
     float freq[MAXPOLY], lastfreq[MAXPOLY], trig[MAXPOLY];
                 
   public:
-    M_scmcv(QWidget* parent=0, const char *name=0, QString *p_sclname = 0);
-    ~M_scmcv();
+    M_scmcv(QWidget* parent=0, QString *p_sclname = 0);
+
     virtual void noteOnEvent(int osc);
-    virtual void noteOffEvent(int osc);
 
   public slots:
     void generateCycle();

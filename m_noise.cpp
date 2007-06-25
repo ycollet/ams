@@ -20,14 +20,13 @@
 #include "m_noise.h"
 #include "port.h"
 
-M_noise::M_noise(QWidget* parent, const char *name) 
-              : Module(3, parent, name) {
-
+M_noise::M_noise(QWidget* parent) 
+  : Module(M_type_noise, 3, parent, "Noise")
+{
   QString qs;
   int l2;
   long t;
 
-  M_type = M_type_noise;
   rate = 5;
   level = 0.5;
   count = 0;
@@ -47,8 +46,7 @@ M_noise::M_noise(QWidget* parent, const char *name)
   port_random->move(width() - port_random->width(), 75);
   port_random->outType = outType_audio;
   portList.append(port_random);
-  qs.sprintf("Noise ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addSlider(0, 10, rate, "Random Rate", &rate);
   configDialog->addSlider(0, 1, level, "Random Level", &level);
   r = 0;

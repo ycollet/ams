@@ -35,8 +35,7 @@ class M_conv : public Module
     float **inData;       
                             
   public:
-    M_conv(QWidget* parent=0, const char *name=0);
-    ~M_conv();
+    M_conv(QWidget* parent=0);
 
   public slots:
     void generateCycle();

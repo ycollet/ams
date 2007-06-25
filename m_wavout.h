@@ -45,7 +45,7 @@ class M_wavout : public Module
     float **inData[2];
                             
   public:
-    M_wavout(QWidget* parent=0, const char *name=0);
+    M_wavout(QWidget* parent=0);
     ~M_wavout();
     int setGain(float p_gain);
     float getGain();

@@ -37,8 +37,7 @@ class M_sh : public Module
     float **inData, **trigData;       
                             
   public:
-    M_sh(QWidget* parent=0, const char *name=0);
-    ~M_sh();
+    M_sh(QWidget* parent=0);
 
   public slots:
     void generateCycle();

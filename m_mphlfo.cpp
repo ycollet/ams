@@ -16,13 +16,12 @@
 #include "m_mphlfo.h"
 #include "port.h"
 
-M_mphlfo::M_mphlfo(QWidget* parent, const char *name) 
-              : Module(16, parent, name) {
+M_mphlfo::M_mphlfo(QWidget* parent) 
+  : Module(M_type_mphlfo, 16, parent, "Multiphase LFO") {
 
   QString qs;
   int l1, l2;
 
-  M_type = M_type_mphlfo;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MPHLFO_WIDTH, 
               MODULE_MPHLFO_HEIGHT);
   for (l1 = 0; l1 < 16; l1++) {
@@ -52,11 +51,6 @@ M_mphlfo::M_mphlfo(QWidget* parent, const char *name)
   QStringList modeNames;
   modeNames << "Saw Up" << "Saw Down" << "Saw Up (0..135) / Saw Down (180..315)";
   configDialog->addComboBox(mode, "Saw Mode", &mode, modeNames.count(), &modeNames);
-  qs.sprintf("Multiphase LFO ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_mphlfo::~M_mphlfo() {
 }
 
 void M_mphlfo::generateCycle() {

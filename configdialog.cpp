@@ -27,13 +27,11 @@
 #include "spectrumscreen.h"
 #include "function.h"
 
-ConfigDialog::ConfigDialog(Module *p_parentModule, QWidget* parent, const char *name) 
-  : QWidget(parent)
-  , addStretch(1)
+ConfigDialog::ConfigDialog(Module *p_parentModule) 
+  : addStretch(1)
   , removeButton(new QPushButton("Remove Module"))
   , removeFrame(new QHBoxLayout())
 {
-  setObjectName(name);
   QVBoxLayout *vBox = new QVBoxLayout();
   setLayout(vBox);
   vBox->setMargin(0);

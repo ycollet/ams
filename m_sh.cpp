@@ -19,12 +19,11 @@
 #include "m_sh.h"
 #include "port.h"
 
-M_sh::M_sh(QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_sh::M_sh(QWidget* parent)
+  : Module(M_type_sh, 2, parent, "Sample & Hold")
+{
   QString qs;
 
-  M_type = M_type_sh;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SH_WIDTH, MODULE_SH_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -42,15 +41,10 @@ M_sh::M_sh(QWidget* parent, const char *name)
   port_gate->move(width() - port_gate->width(), 55);
   port_gate->outType = outType_audio;
   portList.append(port_gate);
-  qs.sprintf("Sample & Hold ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
   triggerLevel = 0.5;
   configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel);
   sample = 0;
   gate = false;
-}
-
-M_sh::~M_sh() {
 }
 
 void M_sh::generateCycle() {

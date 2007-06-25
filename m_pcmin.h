@@ -33,7 +33,7 @@ class M_pcmin : public Module
     float *pcmdata[2];
                             
   public:
-    M_pcmin(QWidget* parent, const char *name, int port);
+    M_pcmin(QWidget* parent, int port);
     ~M_pcmin();
 
   public slots:

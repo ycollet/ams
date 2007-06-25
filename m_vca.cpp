@@ -19,12 +19,11 @@
 #include "m_vca.h"
 #include "port.h"
 
-M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vca::M_vca(bool p_expMode, QWidget* parent) 
+  : Module(M_type_vca, 1, parent, p_expMode ? "Exp. VCA" : "Lin. VCA")
+{
   QString qs;
 
-  M_type = M_type_vca;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCA_WIDTH, MODULE_VCA_HEIGHT);
   gain1 = 0;
   gain2 = 0;
@@ -52,17 +51,13 @@ M_vca::M_vca(bool p_expMode, QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 115);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  if (expMode) qs.sprintf("Exp. VCA ID %d", moduleID);
-  else         qs.sprintf("Lin. VCA ID %d", moduleID);
+
   configDialog->setWindowTitle(qs);
   configDialog->addSlider(0, 1, gain1, "Gain", &gain1);
   configDialog->addSlider(0, 1, gain2, "Gain 1", &gain2);
   configDialog->addSlider(0, 2, in1, "In 0", &in1);
   configDialog->addSlider(0, 2, in2, "In 1", &in2);
   configDialog->addSlider(0, 2, out, "Output level", &out);
-}
-
-M_vca::~M_vca() {
 }
 
 void M_vca::generateCycle() {

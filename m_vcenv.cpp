@@ -19,13 +19,12 @@
 #include "m_vcenv.h"
 #include "port.h"
 
-M_vcenv::M_vcenv(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vcenv::M_vcenv(QWidget* parent)
+  : Module(M_type_vcenv, 1, parent, "VC Envelope")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_vcenv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV_WIDTH, MODULE_VCENV_HEIGHT);
   port_M_gate = new Port("Gate", PORT_IN, 0, this); 
   port_M_gate->move(0, 35);
@@ -55,7 +54,6 @@ M_vcenv::M_vcenv(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 155);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VC Envelope ID %d", moduleID);
   a0 = 0.01;
   d0 = 0.3;
   s0 = 0.7;
@@ -91,7 +89,6 @@ M_vcenv::M_vcenv(QWidget* parent, const char *name)
   decayReleaseModeNames << "Linear";
   decayReleaseModeNames << "Exponential";
   configDialog->addComboBox(1, "Decay/Release Mode", &decayReleaseMode, decayReleaseModeNames.count(), &decayReleaseModeNames);
-  configDialog->setWindowTitle(qs);
 }
 
 M_vcenv::~M_vcenv()

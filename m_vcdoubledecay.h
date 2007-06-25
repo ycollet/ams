@@ -38,8 +38,7 @@ class M_vcdoubledecay : public Module
     bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
                                     
   public:
-    M_vcdoubledecay(QWidget* parent=0, const char *name=0);
-    ~M_vcdoubledecay();
+    M_vcdoubledecay(QWidget* parent=0);
 
   public slots:
     void generateCycle();

@@ -19,13 +19,12 @@
 #include "m_advenv.h"
 #include "port.h"
 
-M_advenv::M_advenv(QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_advenv::M_advenv(QWidget* parent) 
+  : Module(M_type_advenv, 2, parent, "Advanced ENV")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_advenv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVENV_WIDTH, MODULE_ADVENV_HEIGHT);
   attack[0] = 0;
   attack[1] = 0.05;
@@ -58,8 +57,7 @@ M_advenv::M_advenv(QWidget* parent, const char *name)
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
-  qs.sprintf("Advanced ENV ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addMultiEnvelope(1, &timeScale, &attack[0], &sustain, &release[0]);
   configDialog->initTabWidget();
   QVBoxLayout *sustainTab = configDialog->addVBoxTab("Time Scale / Sustain / Delay");

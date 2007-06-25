@@ -57,7 +57,7 @@ class Module : public Box
     QColor colorBackground, colorBorder, colorFont;
 
   public:
-    Module(int p_outPortCount, QWidget* parent=0, const char *name=0);
+    Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
     virtual  ~Module();
 
     virtual void noteOnEvent(int) {}

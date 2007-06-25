@@ -19,12 +19,11 @@
 #include "m_ringmod.h"
 #include "port.h"
 
-M_ringmod::M_ringmod(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_ringmod::M_ringmod(QWidget* parent) 
+  : Module(M_type_ringmod, 1, parent, "Ring Modulator")
+{
   QString qs;
 
-  M_type = M_type_ringmod;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_RINGMOD_WIDTH, MODULE_RINGMOD_HEIGHT);
   gain = 0.5;
   port_M_vco1 = new Port("In 0", PORT_IN, 0, this); 
@@ -39,14 +38,9 @@ M_ringmod::M_ringmod(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 70);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Ring Modulator ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addSlider(0, 5, gain, "Gain", &gain);
 }
-
-M_ringmod::~M_ringmod() {
-}
-
 
 int M_ringmod::setGain(float p_gain) {
   gain = p_gain;

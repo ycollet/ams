@@ -18,7 +18,7 @@ class M_noise : public Module
     Port *port_white, *port_pink, *port_random;
     double randmax; 
   public:
-    M_noise(QWidget* parent=0, const char *name=0);
+    M_noise(QWidget* parent=0);
 
   public slots:
     void generateCycle();

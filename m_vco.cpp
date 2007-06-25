@@ -4,30 +4,16 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qpainter.h>
-//Added by qt3to4:
-
-#include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "m_vco.h"
 #include "port.h"
 
-M_vco::M_vco(QWidget* parent, const char *name) 
-              : Module(5, parent, name) {
-
+M_vco::M_vco(QWidget* parent) 
+  : Module(M_type_vco, 5, parent, "VCO")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_vco;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCO_WIDTH, MODULE_VCO_HEIGHT);
   wave_period = (float)WAVE_PERIOD;
   wave_period_2 = wave_period * 0.5f;
@@ -85,8 +71,7 @@ M_vco::M_vco(QWidget* parent, const char *name)
   port_aux->move(width() - port_aux->width(), 195);
   port_aux->outType = outType_audio;
   portList.append(port_aux);
-  qs.sprintf("VCO ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QVBoxLayout *freqTab = configDialog->addVBoxTab("Frequency");
   configDialog->addIntSlider(0, 6, octave, "Octave", &octave, freqTab);
@@ -107,9 +92,6 @@ M_vco::M_vco(QWidget* parent, const char *name)
   configDialog->addComboBox(0, "Aux Wave Form", (int *)&waveForm, waveFormNames.count(), &waveFormNames, modulationTab);
   configDialog->addSlider(0, 10, vcoExpFMGain, "Exp. FM Gain", &vcoExpFMGain, false, modulationTab);
   configDialog->addSlider(0, 10, vcoLinFMGain, "Lin. FM Gain", &vcoLinFMGain, false, modulationTab);
-}
-
-M_vco::~M_vco() {
 }
 
 void M_vco::generateCycle() {

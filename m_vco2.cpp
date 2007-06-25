@@ -2,30 +2,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qpainter.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "m_vco2.h"
 #include "port.h"
 
-M_vco2::M_vco2(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vco2::M_vco2(QWidget* parent) 
+  : Module(M_type_vco2, 1, parent, "VCO2")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_vco2;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCO2_WIDTH, MODULE_VCO2_HEIGHT);
   wave_period = (float)WAVE_PERIOD;
   wave_period_2 = wave_period * 0.5f;
@@ -85,8 +70,7 @@ M_vco2::M_vco2(QWidget* parent, const char *name)
   port_aux->outType = outType_audio;
   portList.append(port_aux);
   */
-  qs.sprintf("VCO2 ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QVBoxLayout *freqTab = configDialog->addVBoxTab("Frequency");
   QStringList waveFormNames;
@@ -112,10 +96,6 @@ M_vco2::M_vco2(QWidget* parent, const char *name)
   configDialog->addSlider(0, 10, vcoExpFMGain, "Exp. FM Gain", &vcoExpFMGain, false, modulationTab);
   configDialog->addSlider(0, 10, vcoLinFMGain, "Lin. FM Gain", &vcoLinFMGain, false, modulationTab);
 }
-
-M_vco2::~M_vco2() {
-}
-
 
 void M_vco2::generateCycle() {
 

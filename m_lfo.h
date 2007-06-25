@@ -41,8 +41,7 @@ class M_lfo : public Module
     float **triggerData;  
                                 
   public:
-    M_lfo(QWidget* parent=0, const char *name=0);
-    ~M_lfo();
+    M_lfo(QWidget* parent=0);
 
   public slots:
     void generateCycle();

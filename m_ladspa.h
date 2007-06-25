@@ -56,8 +56,8 @@ class M_ladspa : public Module
     QString pluginName;
     
   public:
-    M_ladspa(QWidget* parent=0, const char *name=0,
-            int p_ladspaDesFuncIndex=0, int p_n=0, bool poly = false, bool extCtrlPorts = false);
+    M_ladspa(QWidget* parent, int ladspaDesFuncIndex,
+	     int p_n=0, bool poly = false, bool extCtrlPorts = false);
     ~M_ladspa();
 
   protected:

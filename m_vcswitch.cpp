@@ -19,12 +19,11 @@
 #include "m_vcswitch.h"
 #include "port.h"
 
-M_vcswitch::M_vcswitch(QWidget* parent, const char *name) 
-              : Module(3, parent, name) {
-
+M_vcswitch::M_vcswitch(QWidget* parent) 
+  : Module(M_type_vcswitch, 3, parent, "VC Switch")
+{
   QString qs;
 
-  M_type = M_type_vcswitch;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCSWITCH_WIDTH, MODULE_VCSWITCH_HEIGHT);
   port_M_cv = new Port("CV", PORT_IN, 0, this); 
   port_M_cv->move(0, 35);
@@ -50,13 +49,9 @@ M_vcswitch::M_vcswitch(QWidget* parent, const char *name)
   port_mix->move(width() - port_mix->width(), 75);
   port_mix->outType = outType_audio;
   portList.append(port_mix);
-  qs.sprintf("VC Switch ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   switchLevel = 0.5;
   configDialog->addSlider(0, 10, switchLevel, "Switch Level", &switchLevel);
-}
-
-M_vcswitch::~M_vcswitch() {
 }
 
 void M_vcswitch::generateCycle() {

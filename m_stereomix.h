@@ -40,8 +40,7 @@ class M_stereomix : public Module
     int in_channels;
                             
   public:
-    M_stereomix(int p_in_channels, QWidget* parent=0, const char *name=0);
-    ~M_stereomix();
+    M_stereomix(int p_in_channels, QWidget* parent=0);
 
   public slots:
     void generateCycle();

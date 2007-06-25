@@ -20,14 +20,13 @@
 #include "m_lfo.h"
 #include "port.h"
 
-M_lfo::M_lfo(QWidget* parent, const char *name) 
-              : Module(6, parent, name) {
-
+M_lfo::M_lfo(QWidget* parent) 
+  : Module(M_type_lfo, 6, parent, "LFO")
+{
   QString qs;
   int l1;
   long tm;
 
-  M_type = M_type_lfo;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LFO_WIDTH, MODULE_LFO_HEIGHT);
   freq = 5;
   phi0 = 0;
@@ -75,17 +74,12 @@ M_lfo::M_lfo(QWidget* parent, const char *name)
   port_sh->move(width() - port_sh->width(), 155);
   port_sh->outType = outType_audio;
   portList.append(port_sh);
-  qs.sprintf("LFO ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addSlider(0, 100, freq, "Frequency", &freq, true);
   configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0);
   tm = time(NULL) % 1000000;
   srand(abs(tm - 10000 * (tm % 100)));
 }
-
-M_lfo::~M_lfo() {
-}
-
 
 void M_lfo::generateCycle() {
 

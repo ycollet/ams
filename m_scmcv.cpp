@@ -27,13 +27,12 @@
 #include "m_scmcv.h"
 #include "port.h"
 
-M_scmcv::M_scmcv(QWidget* parent, const char *name, QString *p_sclname) 
-              : Module(4, parent, name) {
-
+M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname) 
+  : Module(M_type_scmcv, 4, parent, "Scala MCV")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_scmcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCMCV_WIDTH, MODULE_SCMCV_HEIGHT);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
@@ -51,8 +50,7 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, QString *p_sclname)
   port_trig_out->move(width() - port_trig_out->width(), 95);
   port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
-  qs.sprintf("Scala MCV ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {
@@ -95,22 +93,13 @@ M_scmcv::M_scmcv(QWidget* parent, const char *name, QString *p_sclname)
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;
 
-  if (p_sclname && !p_sclname->contains("No_Scale_loaded")) {
+  if (p_sclname && !p_sclname->contains("No_Scale_loaded"))
     loadScale(dirpath + "/" + *p_sclname);
-  }
-}
-
-M_scmcv::~M_scmcv() {
-
 }
 
 void M_scmcv::noteOnEvent(int osc) {
 
   trig[osc] = 1;
-}
-
-void M_scmcv::noteOffEvent(int) {
-
 }
 
 void M_scmcv::calcScale() {

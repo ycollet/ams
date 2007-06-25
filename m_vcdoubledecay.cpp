@@ -19,13 +19,12 @@
 #include "m_vcdoubledecay.h"
 #include "port.h"
 
-M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vcdoubledecay::M_vcdoubledecay(QWidget* parent) 
+  : Module(M_type_vcdoubledecay, 1, parent, "VC Double Decay")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_vcdoubledecay;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCDOUBLEDECAY_WIDTH, MODULE_VCDOUBLEDECAY_HEIGHT);
   port_M_gate = new Port("Gate", PORT_IN, 0, this); 
   port_M_gate->move(0, 35);
@@ -59,7 +58,6 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 175);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VC Double Decay ID %d", moduleID);
   a0 = 0;
   d0 = 0;
   s0 = 0;
@@ -92,10 +90,6 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, const char *name)
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
   configDialog->addSlider(0, 1, rGain, "Ratio Gain", &rGain);
   configDialog->addSlider(-8, 8, rlGain, "Release Gain", &rlGain);
-  configDialog->setWindowTitle(qs);
-}
-
-M_vcdoubledecay::~M_vcdoubledecay() {
 }
 
 void M_vcdoubledecay::generateCycle() {

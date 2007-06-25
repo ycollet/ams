@@ -19,14 +19,13 @@
 #include "m_vcpanning.h"
 #include "port.h"
 
-M_vcpanning::M_vcpanning(QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_vcpanning::M_vcpanning(QWidget* parent) 
+  : Module(M_type_vcpanning, 2, parent, "VC Panning")
+{
   QString qs;
   int l1, l2;
   float pos, q;
 
-  M_type = M_type_vcpanning;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCPANNING_WIDTH, MODULE_VCPANNING_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -83,11 +82,6 @@ M_vcpanning::M_vcpanning(QWidget* parent, const char *name)
     "Sort by pitch, High <--> Low" <<
     "Mono";
   configDialog->addComboBox(0, "Panning Mode", &panMode, panModeNames.count(), &panModeNames);
-  qs.sprintf("VC Panning ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_vcpanning::~M_vcpanning() {
 }
 
 void M_vcpanning::generateCycle() {

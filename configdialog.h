@@ -57,7 +57,7 @@ protected:
   void insertWidget(QBoxLayout *layout, QWidget *widget, int stretch = 0, Qt::Alignment alignment = 0);
      
 public:
-  ConfigDialog(Module *p_parentModule, QWidget* parent=0, const char *name=0);
+  ConfigDialog(Module *p_parentModule);
   ~ConfigDialog();
   void setAddStretch(int v) {
     addStretch = v;

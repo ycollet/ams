@@ -40,7 +40,7 @@ class M_advenv : public Module
     float **gateData, **retriggerData;
                 
   public:
-    M_advenv(QWidget* parent=0, const char *name=0);
+    M_advenv(QWidget* parent=0);
     ~M_advenv();
 
   public slots:

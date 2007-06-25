@@ -36,7 +36,7 @@ class M_vcenv : public Module
     bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
                                     
   public:
-    M_vcenv(QWidget* parent=0, const char *name=0);
+    M_vcenv(QWidget* parent=0);
     ~M_vcenv();
 
   public slots:

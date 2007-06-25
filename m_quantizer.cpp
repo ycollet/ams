@@ -19,13 +19,12 @@
 #include "m_quantizer.h"
 #include "port.h"
 
-M_quantizer::M_quantizer(QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_quantizer::M_quantizer(QWidget* parent) 
+  : Module(M_type_quantizer, 2, parent, "Quantizer")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_quantizer;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_QUANTIZER_WIDTH, MODULE_QUANTIZER_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -62,8 +61,7 @@ M_quantizer::M_quantizer(QWidget* parent, const char *name)
     "Minor 6 Chord" <<
     "Pentatonic";
   configDialog->addComboBox(0, "Quantization", (int *)&quantum, quantumNames.count(), &quantumNames);
-  qs.sprintf("Quantizer ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
     trigCount[l1] = 0;
@@ -181,9 +179,6 @@ M_quantizer::M_quantizer(QWidget* parent, const char *name)
   lut[10][9] = 9;
   lut[10][10] = 9;
   lut[10][11] = 9;
-}
-
-M_quantizer::~M_quantizer() {
 }
 
 void M_quantizer::generateCycle() {

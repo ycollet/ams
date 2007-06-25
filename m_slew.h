@@ -36,8 +36,7 @@ class M_slew : public Module
     float **inData;       
                             
   public:
-    M_slew(QWidget* parent=0, const char *name=0);
-    ~M_slew();
+    M_slew(QWidget* parent=0);
 
   public slots:
     void generateCycle();

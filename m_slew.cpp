@@ -19,13 +19,12 @@
 #include "m_slew.h"
 #include "port.h"
 
-M_slew::M_slew(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_slew::M_slew(QWidget* parent)
+  : Module(M_type_slew, 1, parent, "Slew Limiter")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_slew;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SLEW_WIDTH, MODULE_SLEW_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -39,14 +38,9 @@ M_slew::M_slew(QWidget* parent, const char *name)
   timeDown = 0.5;
   configDialog->addSlider(0, 10, timeUp, "Time Up", &timeUp);
   configDialog->addSlider(0, 10, timeDown, "Time Down", &timeDown);
-  qs.sprintf("Slew Limiter ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     lastData[l1] = 0;
   }
-}
-
-M_slew::~M_slew() {
 }
 
 void M_slew::generateCycle() {

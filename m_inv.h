@@ -34,8 +34,7 @@ class M_inv : public Module
     float **inData;       
                             
   public:
-    M_inv(QWidget* parent=0, const char *name=0);
-    ~M_inv();
+    M_inv(QWidget* parent=0);
 
   public slots:
     void generateCycle();

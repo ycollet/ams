@@ -51,8 +51,7 @@ class M_scquantizer : public Module
     float **inData, **triggerData, **transposeData;       
                             
   public:
-    M_scquantizer(QWidget* parent=0, const char *name=0, QString *p_sclname = 0);
-    ~M_scquantizer();
+    M_scquantizer(QWidget* parent=0, QString *p_sclname = 0);
 
   public slots:
     void generateCycle();

@@ -5,7 +5,7 @@
 
 QPoint Box::pressPos, Box::mousePressPos;
 
-Box::Box(QWidget *parent, char const *name)
+Box::Box(QWidget *parent, const QString &name)
   : QWidget(parent)
 {
   setObjectName(name);

@@ -19,13 +19,12 @@
 #include "m_mix.h"
 #include "port.h"
 
-M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_mix::M_mix(int p_in_channels, QWidget* parent) 
+  : Module(M_type_mix, 1, parent, QString("Mixer ") + QString::number(p_in_channels))
+{
   QString qs;
   int l1;
 
-  M_type = M_type_mix;
   in_channels = p_in_channels;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIX_WIDTH, 
               MODULE_MIX_HEIGHT + 20 + 20 * in_channels);
@@ -47,11 +46,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent, const char *name)
                  35 + 20 * in_channels);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Mixer %d -> 1 ID %d", in_channels, moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_mix::~M_mix() {
 }
 
 void M_mix::generateCycle() {

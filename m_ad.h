@@ -39,11 +39,9 @@ class M_ad : public Module
         
   public: 
     float **inData;
-    int outCount;
                             
   public:
-    M_ad(int p_outCount, QWidget* parent=0, const char *name=0);
-    ~M_ad();
+    M_ad(int p_outCount, QWidget* parent=0);
 
   public slots:
     void generateCycle();

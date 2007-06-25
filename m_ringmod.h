@@ -33,8 +33,8 @@ class M_ringmod : public Module
     float **vcoData1, **vcoData2;       
                             
   public:
-    M_ringmod(QWidget* parent=0, const char *name=0);
-    ~M_ringmod();
+    M_ringmod(QWidget* parent=0);
+
     int setGain(float p_gain);
     float getGain();
 

@@ -37,8 +37,7 @@ class M_mix : public Module
     int in_channels;
                             
   public:
-    M_mix(int p_in_channels, QWidget* parent=0, const char *name=0);
-    ~M_mix();
+    M_mix(int p_in_channels, QWidget* parent=0);
 
   public slots:
     void generateCycle();

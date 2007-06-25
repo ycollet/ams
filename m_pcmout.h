@@ -39,7 +39,7 @@ class M_pcmout : public Module
     float *pcmdata[2];
                             
   public:
-    M_pcmout(QWidget* parent, const char *name, int port);
+    M_pcmout(QWidget* parent, int port);
     ~M_pcmout();
 
   public slots:

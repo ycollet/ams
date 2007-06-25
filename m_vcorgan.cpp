@@ -2,33 +2,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qpainter.h>
-//Added by qt3to4:
-
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "m_vcorgan.h"
 #include "port.h"
 
-M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent) 
+  : Module(M_type_vcorgan, 1, parent, "VC Organ")
+{
   QString qs;
   int l1, l2;
   QVBoxLayout *oscTab[MODULE_VCORGAN_MAX_OSC];
 
-  M_type = M_type_vcorgan;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCORGAN_WIDTH, MODULE_VCORGAN_HEIGHT);
   wave_period = (float)WAVE_PERIOD;
   tune = 0;
@@ -66,8 +49,7 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 95);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VC Organ ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QStringList waveFormNames;
   waveFormNames <<
@@ -114,9 +96,6 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, const char *name)
     qs.sprintf("Phi0 %d", l1);
     configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
   }
-}
-
-M_vcorgan::~M_vcorgan() {
 }
 
 void M_vcorgan::generateCycle() {

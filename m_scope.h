@@ -43,7 +43,7 @@ class M_scope : public Module
     float **inData[2];
                             
   public:
-    M_scope(QWidget* parent=0, const char *name=0);
+    M_scope(QWidget* parent=0);
     ~M_scope();
     int setGain(float p_gain);
     float getGain();

@@ -21,14 +21,15 @@
 #include "main.h"
 
 
-Module::Module(int p_outPortCount, QWidget* parent, const char *name)
+Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
   : Box(parent, name)
+  , M_type(M_type)
+  , outPortCount(outPortCount)
 {
   int l1, l2;
 
   cycleReady = false;
   cycleProcessing = false;
-  outPortCount = p_outPortCount;
   
   synthdata->incModuleCount();
   moduleID = synthdata->getModuleID();
@@ -40,7 +41,8 @@ Module::Module(int p_outPortCount, QWidget* parent, const char *name)
 //   setPalette(QPalette(colorBackground, colorBackground));
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DEFAULT_HEIGHT);
 
-  configDialog = new ConfigDialog(this, NULL, name);
+  configDialog = new ConfigDialog(this);
+  configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
   data = (float ***)malloc(outPortCount * sizeof(float **));
   for (l1 = 0; l1 < outPortCount; ++l1) {

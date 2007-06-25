@@ -35,8 +35,7 @@ class M_vcswitch : public Module
     float **inData[2], **cvData;       
                             
   public:
-    M_vcswitch(QWidget* parent=0, const char *name=0);
-    ~M_vcswitch();
+    M_vcswitch(QWidget* parent=0);
 
   public slots:
     void generateCycle();

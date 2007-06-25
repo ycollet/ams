@@ -19,13 +19,12 @@
 #include "m_vcenv2.h"
 #include "port.h"
 
-M_vcenv2::M_vcenv2(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vcenv2::M_vcenv2(QWidget* parent) 
+  : Module(M_type_vcenv2, 1, parent, "VC Envelope II")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_vcenv2;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV2_WIDTH, MODULE_VCENV2_HEIGHT);
   port_M_gate = new Port("Gate", PORT_IN, 0, this); 
   port_M_gate->move(0, 35);
@@ -55,7 +54,7 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 155);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VC Envelope II ID %d", moduleID);
+
   a0 = 0.0;
   d0 = 0.0;
   s0 = 0.7;
@@ -79,7 +78,6 @@ M_vcenv2::M_vcenv2(QWidget* parent, const char *name)
   configDialog->addSlider(-8, 8, dGain, "Decay Gain", &dGain);
   configDialog->addSlider(0, 1, sGain, "Sustain Gain", &sGain);
   configDialog->addSlider(-8, 8, rGain, "Release Gain", &rGain);
-  configDialog->setWindowTitle(qs);
 }
 
 M_vcenv2::~M_vcenv2()

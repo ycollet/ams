@@ -21,12 +21,11 @@
 #include "port.h"
 
 
-M_pcmout::M_pcmout(QWidget* parent, const char *name, int port) 
-              : Module(0, parent, name)
+M_pcmout::M_pcmout(QWidget* parent, int port) 
+  : Module(M_type_pcmout, 0, parent, "PCM Out")
 {
   QString qs;
 
-  M_type = M_type_pcmout;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_PCMOUT_WIDTH, MODULE_PCMOUT_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
@@ -44,8 +43,7 @@ M_pcmout::M_pcmout(QWidget* parent, const char *name, int port)
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
-  qs.sprintf("Alsa / Pcm Out  ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
   configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
   configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);

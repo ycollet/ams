@@ -37,8 +37,7 @@ class M_vcpanning : public Module
     int panMode;
                                     
   public:
-    M_vcpanning(QWidget* parent=0, const char *name=0);
-    ~M_vcpanning();
+    M_vcpanning(QWidget* parent=0);
 
   public slots:
     void generateCycle();

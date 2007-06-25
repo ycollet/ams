@@ -19,13 +19,12 @@
 #include "m_mcv.h"
 #include "port.h"
 
-M_mcv::M_mcv(QWidget* parent, const char *name) 
-              : Module(4, parent, name) {
-
+M_mcv::M_mcv(QWidget* parent) 
+  : Module(M_type_mcv, 4, parent, "MCV")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_mcv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MCV_WIDTH, MODULE_MCV_HEIGHT);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
@@ -43,8 +42,7 @@ M_mcv::M_mcv(QWidget* parent, const char *name)
   port_trig_out->move(width() - port_trig_out->width(), 95);
   port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
-  qs.sprintf("MCV ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {

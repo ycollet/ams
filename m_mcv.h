@@ -34,7 +34,7 @@ class M_mcv : public Module
     float freq[MAXPOLY], trig[MAXPOLY];
                 
   public:
-    M_mcv(QWidget* parent=0, const char *name=0);
+    M_mcv(QWidget* parent=0);
     ~M_mcv();
     virtual void noteOnEvent(int osc);
     virtual void noteOffEvent(int osc);

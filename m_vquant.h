@@ -35,8 +35,7 @@ class M_vquant : public Module
     float gain;
                                 
   public:
-    M_vquant(QWidget* parent=0, const char *name=0);
-    ~M_vquant();
+    M_vquant(QWidget* parent=0);
 
   public slots:
     void generateCycle();

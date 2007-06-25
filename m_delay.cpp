@@ -19,13 +19,12 @@
 #include "m_delay.h"
 #include "port.h"
 
-M_delay::M_delay(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_delay::M_delay(QWidget* parent) 
+  : Module(M_type_delay, 1, parent, "Delay")
+{
   QString qs;
   int l1;
 
-  M_type = M_type_delay;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DELAY_WIDTH, MODULE_DELAY_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
@@ -35,8 +34,7 @@ M_delay::M_delay(QWidget* parent, const char *name)
   port_out->move(width() - port_out->width(), 55);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Delay ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->addSlider(0, 10, delay, "Delay", &delay);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {

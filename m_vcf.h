@@ -33,7 +33,7 @@ class M_vcf : public Module
     float **inData, **resonanceData, **freqData, **linFMData, **expFMData;       
                             
   public:
-    M_vcf(QWidget* parent=0, const char *name=0);
+    M_vcf(QWidget* parent=0);
                                       
   public slots:
     void generateCycle();

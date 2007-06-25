@@ -18,15 +18,14 @@
 #include "m_seq.h"
 #include "port.h"
 
-M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name) 
-              : Module(4, parent, name) {
-
+M_seq::M_seq(int p_seqLen, QWidget* parent)
+  : Module(M_type_seq, 4, parent, "SEQ")
+{
   QString qs;
   char str[1024];
   int l1;
   QVBoxLayout *pitchTab[4], *gateTab[4], *velocityTab[4];
 
-  M_type = M_type_seq;
   seqLen = p_seqLen;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SEQ_WIDTH, MODULE_SEQ_HEIGHT);
   port_trigger = new Port("Trigger", PORT_IN, 0, this);
@@ -49,8 +48,7 @@ M_seq::M_seq(int p_seqLen, QWidget* parent, const char *name)
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
   port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
-  qs.sprintf("SEQ ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QVBoxLayout *generalTab = configDialog->addVBoxTab("Pitch Offset / Tempo / Gate Time");
   int seqLen_8 = (seqLen + 7) / 8;

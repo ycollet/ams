@@ -179,9 +179,9 @@ int main(int argc, char *argv[])
   synthesisPopup->addAction("All Voices Off", modularSynth, SLOT(allVoicesOff()));
 
   newModulePopup->addAction("Amplifier", modularSynth, SLOT(newM_amp()));
-  newModulePopup->addAction("Analogue Driver (2 Out)", modularSynth, SLOT(newM_ad_2()));
-  newModulePopup->addAction("Analogue Driver (4 Out)", modularSynth, SLOT(newM_ad_4()));
-  newModulePopup->addAction("Analogue Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
+  newModulePopup->addAction("Analog Driver (2 Out)", modularSynth, SLOT(newM_ad_2()));
+  newModulePopup->addAction("Analog Driver (4 Out)", modularSynth, SLOT(newM_ad_4()));
+  newModulePopup->addAction("Analog Driver (6 Out)", modularSynth, SLOT(newM_ad_6()));
   newModulePopup->addAction("Advanced ENV", modularSynth, SLOT(newM_advenv()));
   newModulePopup->addAction("Advanced MCV", modularSynth, SLOT(newM_advmcv()));
   newModulePopup->addAction("Comment", modularSynth, SLOT(new_textEdit()));

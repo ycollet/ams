@@ -36,8 +36,7 @@ class M_vca : public Module
     bool expMode;
                             
   public:
-    M_vca(bool p_expMode, QWidget* parent=0, const char *name=0);
-    ~M_vca();
+    M_vca(bool p_expMode, QWidget* parent=0);
 
   public slots:
     void generateCycle();

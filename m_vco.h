@@ -50,8 +50,7 @@ class M_vco : public Module
     float **linFMData;        // Frequency modulation lin characteristic
                             
   public:
-    M_vco(QWidget* parent=0, const char *name=0);
-    ~M_vco();
+    M_vco(QWidget* parent=0);
 
   public slots:
     void generateCycle();

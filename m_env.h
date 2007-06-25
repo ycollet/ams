@@ -40,7 +40,7 @@ class M_env : public Module
     float **gateData, **retriggerData;
                 
   public:
-    M_env(QWidget* parent=0, const char *name=0);
+    M_env(QWidget* parent=0);
     ~M_env();
 
   public slots:

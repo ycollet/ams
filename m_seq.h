@@ -41,7 +41,7 @@ class M_seq : public Module
     float **triggerData;
                 
   public:
-    M_seq(int p_seqLen, QWidget* parent=0, const char *name=0);
+    M_seq(int p_seqLen, QWidget* parent=0);
     ~M_seq();
 
   public slots:

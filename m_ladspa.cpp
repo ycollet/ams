@@ -22,9 +22,12 @@
 #include "m_ladspa.h"
 #include "port.h"
 
-M_ladspa::M_ladspa(QWidget* parent, const char *name, int p_ladspaDesFuncIndex, int p_n, bool poly, bool extCtrlPorts) 
-              : Module(MAX_OUTPORTS, parent, name) {
-
+M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bool extCtrlPorts) 
+  : Module(M_type_ladspa, MAX_OUTPORTS, parent, QString(poly ? "Poly " : "") + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
+  , ladspa_dsc(synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n))
+  , ladspaDesFuncIndex(ladspaDesFuncIndex)
+  , n(n)
+{
   QString qs;
   int l1, l2, itmp, port_ofs;
   int audio_in_index, audio_out_index, ctrl_in_index, ctrl_out_index, control_port_count;
@@ -32,15 +35,13 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, int p_ladspaDesFuncIndex, 
   bool tabMode;
   QVBoxLayout *ladspaTab;
   
-  M_type = M_type_ladspa;
-  ladspaDesFuncIndex = p_ladspaDesFuncIndex;
-  n = p_n;
+  
   isPoly = poly;
   ladspaTab = 0;
   hasExtCtrlPorts = extCtrlPorts;
 //  fprintf(stderr, "new LADSPA module, Poly: %d\n", (int)isPoly);
   rate_factor = 1.0;
-  ladspa_dsc = synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n);
+  
   ladspa_audio_in_count = 0;
   ladspa_audio_out_count = 0;
   ladspa_ctrl_in_count = 0;
@@ -314,13 +315,6 @@ M_ladspa::M_ladspa(QWidget* parent, const char *name, int p_ladspaDesFuncIndex, 
               MODULE_LADSPA_HEIGHT + 20 * itmp);
   pluginName.sprintf("%s", ladspa_dsc->Label);
 //  fprintf(stderr, "--> isPoly: %d  ladspa_dsc->Label: %s  moduleID: %d\n", isPoly, ladspa_dsc->Label, moduleID);
-  if (isPoly) {
-    qs.sprintf("Poly %s ID %d", ladspa_dsc->Label, moduleID);
-  } else {
-    qs.sprintf("%s ID %d", ladspa_dsc->Label, moduleID);
-  }
-//  fprintf(stderr, "m_ladspa setCaption %s\n", qs.latin1());
-  configDialog->setWindowTitle(qs);
 }
 
 M_ladspa::~M_ladspa() {

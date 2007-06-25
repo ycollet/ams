@@ -19,15 +19,14 @@
 #include "m_dynamicwaves.h"
 #include "port.h"
 
-M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent) 
+  : Module(M_type_dynamicwaves, 1, parent, QString("DynamicWaves ") + QString::number(p_oscCount))
+{
   QString qs;
   int l1, l2;
   QVBoxLayout *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
   QVBoxLayout *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
 
-  M_type = M_type_dynamicwaves;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DYNAMICWAVES_WIDTH, MODULE_DYNAMICWAVES_HEIGHT);
   wave_period = (float)WAVE_PERIOD;
   tune = 0;
@@ -97,8 +96,7 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, const char *name
   port_out->move(width() - port_out->width(), 135);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("Dynamic Waves ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QStringList waveFormNames;
   waveFormNames << "Sine" << "Saw" << "Tri" << "Rect" << "Saw 2";

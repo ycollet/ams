@@ -20,14 +20,13 @@
 #include "m_stereomix.h"
 #include "port.h"
 
-M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name) 
-              : Module(2, parent, name) {
-
+M_stereomix::M_stereomix(int p_in_channels, QWidget* parent) 
+  : Module(M_type_stereomix,2, parent, QString("Stereo Mixer ") + QString::number(p_in_channels))
+{
   QString qs;
   QHBoxLayout *hbox;
   int l1;
 
-  M_type = M_type_stereomix;
   in_channels = p_in_channels;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_STEREOMIX_WIDTH, 
               MODULE_STEREOMIX_HEIGHT + 40 + 20 * in_channels);
@@ -68,11 +67,6 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, const char *name)
     port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
   }
-  qs.sprintf("Stereo Mixer %d ID %d", in_channels, moduleID);
-  configDialog->setWindowTitle(qs);
-}
-
-M_stereomix::~M_stereomix() {
 }
 
 void M_stereomix::generateCycle() {

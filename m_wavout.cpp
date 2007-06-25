@@ -24,13 +24,12 @@
 #include "port.h"
 
 
-M_wavout::M_wavout(QWidget* parent, const char *name) 
-              : Module(0, parent, name) {
-
+M_wavout::M_wavout(QWidget* parent) 
+  : Module(M_type_wavout, 0, parent, "WAV Out")
+{
   QString qs;
   QHBoxLayout *hbox1, *hbox2;
 
-  M_type = M_type_wavout;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_WAVOUT_WIDTH, MODULE_WAVOUT_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
@@ -45,8 +44,7 @@ M_wavout::M_wavout(QWidget* parent, const char *name)
   port_in[1]->move(0, 55);
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
-  qs.sprintf("WAV Out ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   configDialog->initTabWidget();
   QVBoxLayout *fileTab = configDialog->addVBoxTab("File");
   QVBoxLayout *recordTab = configDialog->addVBoxTab("Record");

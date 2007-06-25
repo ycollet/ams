@@ -43,11 +43,9 @@ class M_function : public Module
         
   public: 
     float **inData;
-    int functionCount;
                             
   public:
-    M_function(int p_functionCount, QWidget* parent=0, const char *name=0);
-    ~M_function();
+    M_function(int p_functionCount, QWidget* parent=0);
 
   public slots:
     void generateCycle();

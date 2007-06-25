@@ -12,12 +12,11 @@
 #include "midicombobox.h"
 #include "m_vcf.h"
 
-M_vcf::M_vcf(QWidget* parent, const char *name) 
-              : Module(1, parent, name) {
-
+M_vcf::M_vcf(QWidget* parent) 
+  : Module(M_type_vcf, 1, parent, "VCF")
+{
   QString qs;
 
-  M_type = M_type_vcf;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCF_WIDTH, MODULE_VCF_HEIGHT);
   gain = 1.0;
   freq = 5;
@@ -54,8 +53,7 @@ b_noise = 19.1919191919191919191919191919191919191919;
   port_out->move(width() - port_out->width(), 130);
   port_out->outType = outType_audio;
   portList.append(port_out);
-  qs.sprintf("VCF ID %d", moduleID);
-  configDialog->setWindowTitle(qs);
+
   QStringList vcfTypeNames;
   vcfTypeNames << "Resonant Lowpass";
   vcfTypeNames << "Lowpass";
