@@ -254,5 +254,3 @@ void M_mphlfo::generateCycle() {
   }
 }
 
-void M_mphlfo::showConfigDialog() {
-}

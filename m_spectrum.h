@@ -29,13 +29,12 @@
 
 class M_spectrum : public Module
 {
-  Q_OBJECT
-
   Port *port_in[2];
 
 public:
   M_spectrum(QWidget* parent=0);
 
+  void generateCycle() {}
 };
 
 #else  // OUTDATED_CODE

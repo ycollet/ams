@@ -197,9 +197,6 @@ void M_scquantizer::generateCycle() {
   cycleReady = true;
 }
 
-void M_scquantizer::showConfigDialog() {
-}
-
 void M_scquantizer::openBrowser() {
 
   if (!fileDialog) {

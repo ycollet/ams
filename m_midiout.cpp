@@ -393,5 +393,3 @@ void M_midiout::generateCycle()
   }
 }
 
-void M_midiout::showConfigDialog() {
-}

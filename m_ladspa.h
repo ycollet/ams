@@ -1,28 +1,9 @@
 #ifndef M_LADSPA_H
 #define M_LADSPA_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qlist.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <alsa/asoundlib.h>
 #include <ladspa.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_LADSPA_WIDTH                220
 #define MODULE_LADSPA_HEIGHT                40
@@ -32,9 +13,6 @@
 
 class M_ladspa : public Module
 {
-  Q_OBJECT
-
-  private:
     QList<Port*> in_port_list, out_port_list;
     QList<Port*> in_ctrl_port_list, out_ctrl_port_list;
     const LADSPA_Descriptor *ladspa_dsc;
@@ -60,12 +38,11 @@ class M_ladspa : public Module
 	     int p_n=0, bool poly = false, bool extCtrlPorts = false);
     ~M_ladspa();
 
+    void generateCycle();
+
   protected:
     virtual void paintEvent(QPaintEvent *ev);
   
-  public slots:
-    void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

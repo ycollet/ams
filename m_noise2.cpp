@@ -120,5 +120,3 @@ void M_noise2::generateCycle() {
   cycleReady = true;
 }
 
-void M_noise2::showConfigDialog() {
-}

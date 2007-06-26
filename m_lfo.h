@@ -1,33 +1,14 @@
 #ifndef M_LFO_H
 #define M_LFO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_LFO_WIDTH                 85
 #define MODULE_LFO_HEIGHT               180
 
 class M_lfo : public Module
 {
-  Q_OBJECT
-
-  private:
     float freq, phi0;
     double si[MAXPOLY], old_si[MAXPOLY];
     double sa[MAXPOLY], old_sa[MAXPOLY];
@@ -38,14 +19,11 @@ class M_lfo : public Module
     double dt[MAXPOLY], wave_period;
     bool trigger[MAXPOLY];
     Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect, *port_sh;
-    float **triggerData;  
                                 
   public:
     M_lfo(QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

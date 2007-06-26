@@ -243,5 +243,3 @@ void M_quantizer::generateCycle() {
   cycleReady = true;
 }
 
-void M_quantizer::showConfigDialog() {
-}

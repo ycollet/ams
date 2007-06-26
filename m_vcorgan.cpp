@@ -197,6 +197,3 @@ void M_vcorgan::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcorgan::showConfigDialog() {
-}
-

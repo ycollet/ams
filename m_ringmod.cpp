@@ -72,5 +72,3 @@ void M_ringmod::generateCycle() {
   cycleReady = true;
 }
 
-void M_ringmod::showConfigDialog() {
-}

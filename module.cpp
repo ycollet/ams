@@ -110,12 +110,6 @@ void Module::mousePressEvent(QMouseEvent *ev)
   }
 }  
             
-void Module::generateCycle() {
-}
-
-void Module::showConfigDialog() {
-}
-
 void Module::removeThisModule() {
 
   emit removeModule();

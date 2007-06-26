@@ -55,6 +55,3 @@ void M_vquant::generateCycle() {
   cycleProcessing = false;
   cycleReady = true;
 }
-
-void M_vquant::showConfigDialog() {
-}

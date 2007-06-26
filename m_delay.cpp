@@ -79,5 +79,3 @@ void M_delay::generateCycle() {
   cycleReady = true;
 }
 
-void M_delay::showConfigDialog() {
-}

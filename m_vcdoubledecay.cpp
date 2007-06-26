@@ -197,5 +197,3 @@ void M_vcdoubledecay::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcdoubledecay::showConfigDialog() {
-}

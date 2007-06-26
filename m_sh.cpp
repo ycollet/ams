@@ -74,5 +74,3 @@ void M_sh::generateCycle() {
   cycleReady = true;
 }
 
-void M_sh::showConfigDialog() {
-}

@@ -190,9 +190,6 @@ void M_seq::nextStep() {
   }
 }
 
-void M_seq::showConfigDialog() {
-}
-
 void M_seq::updateTimer(int p_bpm) {
 
   bpm = p_bpm;

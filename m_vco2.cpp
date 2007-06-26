@@ -316,5 +316,3 @@ void M_vco2::generateCycle() {
   cycleReady = true;
 }
 
-void M_vco2::showConfigDialog() {
-}

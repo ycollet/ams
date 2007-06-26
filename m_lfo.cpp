@@ -89,7 +89,7 @@ void M_lfo::generateCycle() {
   if (!cycleReady)
   {
     cycleProcessing = true; 
-    triggerData = port_M_trigger->getinputdata();
+    float **triggerData = port_M_trigger->getinputdata();
     
     wave_period = (double)synthdata->rate / (16.0 * freq); 
     dsa = 2.0 / wave_period;
@@ -159,5 +159,3 @@ void M_lfo::generateCycle() {
   cycleReady = true;
 }
 
-void M_lfo::showConfigDialog() {
-}

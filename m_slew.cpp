@@ -80,5 +80,3 @@ void M_slew::generateCycle() {
   cycleReady = true;
 }
 
-void M_slew::showConfigDialog() {
-}

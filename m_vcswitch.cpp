@@ -60,6 +60,8 @@ void M_vcswitch::generateCycle() {
   float mix1, mix2;
 
   if (!cycleReady) {
+    float **inData[2], **cvData;       
+                            
     cycleProcessing = true;
 
     inData[0] = port_M_in[0]->getinputdata ();
@@ -89,5 +91,3 @@ void M_vcswitch::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcswitch::showConfigDialog() {
-}

@@ -73,5 +73,3 @@ void M_pcmin::generateCycle() {
   cycleReady = true;
 }
 
-void M_pcmin::showConfigDialog() {
-}

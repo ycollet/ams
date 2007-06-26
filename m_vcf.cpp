@@ -415,5 +415,3 @@ void M_vcf::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcf::showConfigDialog() {
-}

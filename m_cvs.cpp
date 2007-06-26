@@ -62,5 +62,3 @@ void M_cvs::generateCycle() {
   cycleReady = true;
 }
 
-void M_cvs::showConfigDialog() {
-}

@@ -148,9 +148,6 @@ void M_wavout::generateCycle()
   }
 }
 
-void M_wavout::showConfigDialog() {
-}
-
 void M_wavout::recordToggled(bool on) {
 
   int tmpint;

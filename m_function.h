@@ -47,9 +47,9 @@ class M_function : public Module
   public:
     M_function(int p_functionCount, QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
+
+  public slots:
     void updateZoom(int p_zoomIndex);
     void updateMouseLabels(int x, int y);
 };

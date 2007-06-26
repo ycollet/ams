@@ -55,5 +55,3 @@ void M_inv::generateCycle() {
   cycleReady = true;
 }
 
-void M_inv::showConfigDialog() {
-}

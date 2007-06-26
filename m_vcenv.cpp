@@ -202,5 +202,3 @@ void M_vcenv::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcenv::showConfigDialog() {
-}

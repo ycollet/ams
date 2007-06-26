@@ -60,6 +60,7 @@ class Module : public Box
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
     virtual  ~Module();
 
+    virtual void generateCycle() = 0;
     virtual void noteOnEvent(int) {}
     virtual void noteOffEvent(int) {}
     int save(FILE *f);
@@ -78,8 +79,6 @@ class Module : public Box
     void removeModule();
                         
   public slots: 
-    virtual void generateCycle();
-    virtual void showConfigDialog();
     virtual void removeThisModule();
 };
   

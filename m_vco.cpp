@@ -243,5 +243,3 @@ void M_vco::generateCycle() {
   cycleReady = true;
 }
 
-void M_vco::showConfigDialog() {
-}

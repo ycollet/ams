@@ -1,25 +1,9 @@
 #ifndef M_AD_H
 #define M_AD_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qtimer.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
+#include <QTimer>
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_AD_WIDTH                140
 #define MODULE_AD_HEIGHT                40
@@ -43,9 +27,9 @@ class M_ad : public Module
   public:
     M_ad(int p_outCount, QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
+
+  public slots:
     void updateVoices(int n);
     void timerProc();
     void autoTune();

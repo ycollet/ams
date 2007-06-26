@@ -135,9 +135,6 @@ void M_function::generateCycle() {
   }
 }
 
-void M_function::showConfigDialog() {
-}
-
 void M_function::updateZoom(int zoomIndex) {
 
   zoom = pow(2.0, zoomIndex); // zoomIndex is may _not_ be already set in MidiComboBox event handler

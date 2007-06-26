@@ -164,5 +164,3 @@ void M_vcpanning::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcpanning::showConfigDialog() {
-}

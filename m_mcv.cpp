@@ -102,5 +102,3 @@ void M_mcv::generateCycle() {
   cycleReady = true;
 }
 
-void M_mcv::showConfigDialog() {
-}

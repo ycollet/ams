@@ -178,9 +178,6 @@ void M_ad::generateCycle() {
   }
 }
 
-void M_ad::showConfigDialog() {
-}
-
 void M_ad::updateVoices(int) {
   
   QString qs;

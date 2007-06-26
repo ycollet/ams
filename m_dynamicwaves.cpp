@@ -375,5 +375,3 @@ void M_dynamicwaves::generateCycle() {
   cycleReady = true;
 }
 
-void M_dynamicwaves::showConfigDialog() {
-}

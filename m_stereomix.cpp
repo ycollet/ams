@@ -113,9 +113,6 @@ void M_stereomix::generateCycle() {
   }
 }
 
-void M_stereomix::showConfigDialog() {
-}
-
 void M_stereomix::soloToggled(bool) {
 
   int l1;

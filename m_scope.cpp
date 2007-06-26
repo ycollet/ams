@@ -160,9 +160,6 @@ void M_scope::generateCycle()
   configDialog->scopeScreenList.at(0)->writeofs = ofs;
 }
 
-void M_scope::showConfigDialog() {
-}
-
 void M_scope::timerProc() {          
  
   if (triggerMode < 2) {

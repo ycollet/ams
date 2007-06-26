@@ -1,24 +1,8 @@
 #ifndef M_DYNAMICWAVES_H
 #define M_DYNAMICWAVES_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_DYNAMICWAVES_WIDTH                125
 #define MODULE_DYNAMICWAVES_HEIGHT               160
@@ -30,9 +14,6 @@ enum dynamicWaveFormType { DYNAMICWAVE_SINE, DYNAMICWAVE_SAW, DYNAMICWAVE_TRI, D
 
 class M_dynamicwaves : public Module
 {
-  Q_OBJECT
-
-  private:
     float attack[8][MODULE_DYNAMICWAVES_MAX_OSC], sustain[MODULE_DYNAMICWAVES_MAX_OSC];
     float release[5][MODULE_DYNAMICWAVES_MAX_OSC];
     float timeScale;
@@ -67,9 +48,7 @@ class M_dynamicwaves : public Module
     M_dynamicwaves(int p_oscCount, QWidget* parent=0);
     ~M_dynamicwaves();
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

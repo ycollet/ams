@@ -77,5 +77,3 @@ void M_mix::generateCycle() {
   }
 }
 
-void M_mix::showConfigDialog() {
-}

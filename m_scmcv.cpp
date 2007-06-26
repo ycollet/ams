@@ -175,10 +175,6 @@ void M_scmcv::generateCycle() {
   cycleReady = true;
 }
 
-void M_scmcv::showConfigDialog() {
-}
-
-
 void M_scmcv::openBrowser() {
 
   if (!fileDialog) {

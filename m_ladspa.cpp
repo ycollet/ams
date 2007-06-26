@@ -450,5 +450,3 @@ void M_ladspa::generateCycle() {
   cycleReady = true;
 }
 
-void M_ladspa::showConfigDialog() {
-}

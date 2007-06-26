@@ -171,5 +171,3 @@ void M_env::generateCycle() {
   cycleReady = true;
 }
 
-void M_env::showConfigDialog() {
-}

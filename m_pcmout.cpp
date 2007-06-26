@@ -98,5 +98,3 @@ void M_pcmout::generateCycle()
     }
 }
 
-void M_pcmout::showConfigDialog() {
-}

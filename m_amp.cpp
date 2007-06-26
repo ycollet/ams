@@ -56,5 +56,3 @@ void M_amp::generateCycle() {
   cycleReady = true;
 }
 
-void M_amp::showConfigDialog() {
-}

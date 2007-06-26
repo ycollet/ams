@@ -130,9 +130,6 @@ void M_advmcv::generateCycle() {
   cycleReady = true;
 }
 
-void M_advmcv::showConfigDialog() {
-}
-
 void M_advmcv::aftertouchEvent(int, int value, int) {
 
   int l1;

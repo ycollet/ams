@@ -1,22 +1,8 @@
 #ifndef M_MIX_H
 #define M_MIX_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_MIX_WIDTH                 85
 #define MODULE_MIX_HEIGHT                40
@@ -24,9 +10,6 @@
        
 class M_mix : public Module
 {
-  Q_OBJECT
-
-  private:
     QList<Port*> in_port_list;
     Port *port_out;
     float gain;
@@ -39,9 +22,7 @@ class M_mix : public Module
   public:
     M_mix(int p_in_channels, QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

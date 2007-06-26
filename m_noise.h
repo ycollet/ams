@@ -2,27 +2,23 @@
 #define M_NOISE_H
 
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_NOISE_WIDTH                100
 #define MODULE_NOISE_HEIGHT               100
 
 class M_noise : public Module
 {
-  Q_OBJECT
-
-  private:
     int count;
     float rate, level;
     float buf[3], r;
     Port *port_white, *port_pink, *port_random;
-    double randmax; 
+    double randmax;
+
   public:
     M_noise(QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

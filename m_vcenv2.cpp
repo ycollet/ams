@@ -163,5 +163,3 @@ void M_vcenv2::generateCycle() {
   cycleReady = true;
 }
 
-void M_vcenv2::showConfigDialog() {
-}

@@ -1,24 +1,8 @@
 #ifndef M_VCO2_H
 #define M_VCO2_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-//
-//
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_VCO2_WIDTH                 85
 #define MODULE_VCO2_HEIGHT               170
@@ -29,9 +13,6 @@ enum WaveFormType {SINUS,TRIANGLE,SAWTOOTH,RECTANGLE, AWAVE_SAW, AWAVE_SAW2, AWA
 
 class M_vco2 : public Module
 {
-  Q_OBJECT
-
-  private:
     float freq, phi0, pw0;
     float edge;
     float wave_period;
@@ -54,9 +35,7 @@ class M_vco2 : public Module
   public:
     M_vco2(QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

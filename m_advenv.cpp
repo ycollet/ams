@@ -245,5 +245,3 @@ void M_advenv::generateCycle() {
   cycleReady = true;
 }
 
-void M_advenv::showConfigDialog() {
-}

@@ -1,23 +1,9 @@
 #ifndef M_SEQ_H
 #define M_SEQ_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
 #include <qtimer.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_SEQ_WIDTH                 90
 #define MODULE_SEQ_HEIGHT               140
@@ -44,9 +30,9 @@ class M_seq : public Module
     M_seq(int p_seqLen, QWidget* parent=0);
     ~M_seq();
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
+
+  public slots:
     void nextStep();
     void updateTimer(int p_bpm);
 };

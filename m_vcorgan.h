@@ -1,24 +1,8 @@
 #ifndef M_VCORGAN_H
 #define M_VCORGAN_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <alsa/asoundlib.h>
-#include "synthdata.h"
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_VCORGAN_WIDTH                 85
 #define MODULE_VCORGAN_HEIGHT               120
@@ -29,9 +13,6 @@ enum waveFormType { ORGAN_SINE, ORGAN_SAW, ORGAN_TRI, ORGAN_RECT, ORGAN_SAW2 };
 
 class M_vcorgan : public Module
 {
-  Q_OBJECT
-
-  private:
     float tune, osc_tune[MODULE_VCORGAN_MAX_OSC], gain[MODULE_VCORGAN_MAX_OSC];
     int octave, osc_octave[MODULE_VCORGAN_MAX_OSC];
     int harmonic[MODULE_VCORGAN_MAX_OSC], subharmonic[MODULE_VCORGAN_MAX_OSC];
@@ -51,9 +32,7 @@ class M_vcorgan : public Module
   public:
     M_vcorgan(int p_oscCount, QWidget* parent=0);
 
-  public slots:
     void generateCycle();
-    void showConfigDialog();
 };
   
 #endif

@@ -81,5 +81,3 @@ void M_conv::generateCycle() {
   cycleReady = true;
 }
 
-void M_conv::showConfigDialog() {
-}

@@ -2,7 +2,7 @@
 #define M_VCF_H
 
 #include "module.h"
-#include "port.h"
+
 
 #define MODULE_VCF_WIDTH                 90
 #define MODULE_VCF_HEIGHT               155
@@ -35,9 +35,9 @@ class M_vcf : public Module
   public:
     M_vcf(QWidget* parent=0);
                                       
-  public slots:
     void generateCycle();
-    void showConfigDialog();
+
+  public slots:
     void initBuf(int index);
 };
   

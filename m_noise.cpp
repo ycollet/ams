@@ -87,5 +87,3 @@ void M_noise::generateCycle() {
   cycleReady = true;
 }
 
-void M_noise::showConfigDialog() {
-}
