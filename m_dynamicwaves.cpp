@@ -168,11 +168,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   }
 }
 
-M_dynamicwaves::~M_dynamicwaves()
-{
-  synthdata->listM_dynamicwaves.removeAll(this);
-}
-
 void M_dynamicwaves::generateCycle() {
 
   int l1, l2, l3, l4, status;

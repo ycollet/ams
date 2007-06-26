@@ -69,11 +69,6 @@ M_env::M_env(QWidget* parent)
   }
 }
 
-M_env::~M_env()
-{
-  synthdata->listM_env.removeAll(this);
-}
-
 void M_env::generateCycle() {
 
   int l1, l2, status;

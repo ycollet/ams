@@ -20,7 +20,6 @@ class M_vcenv2 : public Module
                                     
   public:
     M_vcenv2(QWidget* parent=0);
-    ~M_vcenv2();
 
     void generateCycle();
 };

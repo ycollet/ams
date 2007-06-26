@@ -61,18 +61,9 @@ M_mcv::M_mcv(QWidget* parent)
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
 }
 
-M_mcv::~M_mcv()
-{
-  synthdata->listM_mcv.removeAll(this);
-}
-
 void M_mcv::noteOnEvent(int osc) {
 
   trig[osc] = 1;
-}
-
-void M_mcv::noteOffEvent(int) {
-
 }
 
 void M_mcv::generateCycle() {

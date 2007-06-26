@@ -18,9 +18,8 @@ class M_mcv : public Module
                 
   public:
     M_mcv(QWidget* parent=0);
-    ~M_mcv();
+
     virtual void noteOnEvent(int osc);
-    virtual void noteOffEvent(int osc);
 
     void generateCycle();
 };

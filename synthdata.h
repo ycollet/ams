@@ -63,7 +63,6 @@ class SynthData
     int moduleCount;
     int moduleID;
 
-    QList<QObject*> outModuleList;
     QList<class M_wavout *> wavoutModuleList;
     QList<QObject*> midioutModuleList;
     QList<QObject*> scopeModuleList;
@@ -71,19 +70,12 @@ class SynthData
     QList<QObject*> spectrumModuleList;
 #endif
     QList<class Module *> moduleList;
-    QList<QObject*> listM_env;
-    QList<QObject*> listM_vcenv;
-    QList<QObject*> listM_vcenv2;
-    QList<QObject*> listM_advenv;
-    QList<QObject*> listM_dynamicwaves;
-    QList<QObject*> listM_mcv;
     QList<QObject*> listM_advmcv;
-    QList<QObject*> listM_scmcv;
 
     snd_seq_t *seq_handle;
     bool doSynthesis;
     QSemaphore port_sem;
-  QList<LadspaLib> ladspaLib;
+    QList<LadspaLib> ladspaLib;
   //    LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
   //    QString ladspa_lib_name[MAX_SO];
     QString loadPath, savePath, rcPath;

@@ -624,7 +624,6 @@ void ModularSynth::newM_vcorgan_8() {
 void ModularSynth::newM_dynamicwaves(int oscCount) {
  
   M_dynamicwaves *m = new M_dynamicwaves(oscCount, this);
-  synthdata->listM_dynamicwaves.append(m);
   initNewModule(m);
 }
 
@@ -646,7 +645,6 @@ void ModularSynth::newM_dynamicwaves_8() {
 void ModularSynth::newM_mcv() {
 
   M_mcv *m = new M_mcv(this);
-  synthdata->listM_mcv.append(m);
   initNewModule(m);
 }
 
@@ -660,35 +658,30 @@ void ModularSynth::newM_advmcv() {
 void ModularSynth::newM_scmcv() {
 
   M_scmcv *m = new M_scmcv(this);
-  synthdata->listM_scmcv.append(m);
   initNewModule(m);
 }
 
 void ModularSynth::newM_scmcv(QString *p_scalaName) {
 
   M_scmcv *m = new M_scmcv(this, p_scalaName);
-  synthdata->listM_scmcv.append(m);
   initNewModule(m);
 }
 
 void ModularSynth::newM_env() {
 
   M_env *m = new M_env(this);
-  synthdata->listM_env.append(m);
   initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv() {
 
   M_vcenv *m = new M_vcenv(this);
-  synthdata->listM_vcenv.append(m);
   initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv2() {
 
   M_vcenv2 *m = new M_vcenv2(this);
-  synthdata->listM_vcenv2.append(m);
   initNewModule(m);
 }
 
@@ -707,7 +700,6 @@ void ModularSynth::newM_vcpanning() {
 void ModularSynth::newM_advenv() {
 
   M_advenv *m = new M_advenv(this);
-  synthdata->listM_advenv.append(m);
   initNewModule(m);
 }
 

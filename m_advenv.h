@@ -24,7 +24,6 @@ class M_advenv : public Module
                 
   public:
     M_advenv(QWidget* parent=0);
-    ~M_advenv();
 
     void generateCycle();
 };

@@ -91,11 +91,6 @@ M_vcenv::M_vcenv(QWidget* parent)
   configDialog->addComboBox(1, "Decay/Release Mode", &decayReleaseMode, decayReleaseModeNames.count(), &decayReleaseModeNames);
 }
 
-M_vcenv::~M_vcenv()
-{
-  synthdata->listM_vcenv.removeAll(this);
-}
-
 void M_vcenv::generateCycle() {
 
   int l1, l2, l2_out;

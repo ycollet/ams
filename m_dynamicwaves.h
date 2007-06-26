@@ -46,7 +46,6 @@ class M_dynamicwaves : public Module
                             
   public:
     M_dynamicwaves(int p_oscCount, QWidget* parent=0);
-    ~M_dynamicwaves();
 
     void generateCycle();
 };

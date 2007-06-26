@@ -80,11 +80,6 @@ M_vcenv2::M_vcenv2(QWidget* parent)
   configDialog->addSlider(-8, 8, rGain, "Release Gain", &rGain);
 }
 
-M_vcenv2::~M_vcenv2()
-{
-  synthdata->listM_vcenv2.removeAll(this);
-}
-
 void M_vcenv2::generateCycle() {
 
   int l1, l2;

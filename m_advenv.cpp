@@ -110,11 +110,6 @@ M_advenv::M_advenv(QWidget* parent)
   }
 }
 
-M_advenv::~M_advenv()
-{
-  synthdata->listM_advenv.removeAll(this);
-}
-
 void M_advenv::generateCycle() {
 
   int l1, l2, status;

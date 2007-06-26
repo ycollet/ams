@@ -24,7 +24,6 @@ class M_env : public Module
                 
   public:
     M_env(QWidget* parent=0);
-    ~M_env();
 
     void generateCycle();
 };
