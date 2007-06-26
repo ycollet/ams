@@ -116,72 +116,7 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
                    this, SLOT(refreshColors()));
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
-  // default context menue when clicked in empty space
-  
-  /* !!
-  contextMenu = new Q3PopupMenu(this);
-  
-  contextMenu->insertItem("Amplifier",this , SLOT(newM_amp()));
-  contextMenu->insertItem("Analogue Driver (2 Out)", this , SLOT(newM_ad_2()));
-  contextMenu->insertItem("Analogue Driver (4 Out)", this , SLOT(newM_ad_4()));
-  contextMenu->insertItem("Analogue Driver (6 Out)", this , SLOT(newM_ad_6()));
-  contextMenu->insertItem("Advanced ENV", this , SLOT(newM_advenv()));
-  contextMenu->insertItem("Advanced MCV", this , SLOT(newM_advmcv()));
-  contextMenu->insertItem("Comment", this , SLOT(new_textEdit()));
- contextMenu->insertItem("Converter", this , SLOT(newM_conv()));
-    contextMenu->insertItem("CVS", this , SLOT(newM_cvs()));
-  contextMenu->insertItem("Delay", this , SLOT(newM_delay()));
-  contextMenu->insertItem("Dynamic Waves (4 Oscillators)", this , SLOT(newM_dynamicwaves_4()));
-  contextMenu->insertItem("Dynamic Waves (6 Oscillators)", this , SLOT(newM_dynamicwaves_6()));
-  contextMenu->insertItem("Dynamic Waves (8 Oscillators)", this , SLOT(newM_dynamicwaves_8()));
-  contextMenu->insertItem("ENV", this , SLOT(newM_env()));
-  contextMenu->insertItem("Function 1 --> 1", this , SLOT(newM_function_1()));
-  contextMenu->insertItem("Function 1 --> 2", this , SLOT(newM_function_2()));
-  contextMenu->insertItem("Function 1 --> 4", this , SLOT(newM_function_4()));
-  contextMenu->insertItem("INV", this , SLOT(newM_inv()));
-  contextMenu->insertItem("LFO", this , SLOT(newM_lfo()));
-  contextMenu->insertItem("MCV", this , SLOT(newM_mcv()));
-  contextMenu->insertItem("MIDI Out", this , SLOT(newM_midiout()));
-  contextMenu->insertItem("Mixer 2 -> 1", this , SLOT(newM_mix_2()));
-  contextMenu->insertItem("Mixer 4 -> 1", this , SLOT(newM_mix_4()));
-  contextMenu->insertItem("Mixer 8 -> 1", this , SLOT(newM_mix_8()));
-  contextMenu->insertItem("Multiphase LFO", this , SLOT(newM_mphlfo()));
-  contextMenu->insertItem("Noise / Random", this , SLOT(newM_noise()));
-  contextMenu->insertItem("Noise / Random 2", this , SLOT(newM_noise2()));
-  contextMenu->insertItem("PCM Out", this , SLOT(newM_pcmout()));
-  contextMenu->insertItem("PCM In", this , SLOT(newM_pcmin()));  
-  contextMenu->insertItem("Quantizer", this , SLOT(newM_quantizer()));
-  contextMenu->insertItem("Quantizer 2", this , SLOT(newM_vquant()));
-  contextMenu->insertItem("Ring Modulator", this , SLOT(newM_ringmod()));
-  contextMenu->insertItem("Sample && Hold", this , SLOT(newM_sh()));
-  contextMenu->insertItem("Scala MCV", this , SLOT(newM_scmcv()));  
-  contextMenu->insertItem("Scala Quantizer", this , SLOT(newM_scquantizer()));
-  contextMenu->insertItem("Scope View", this , SLOT(newM_scope()));
-  contextMenu->insertItem("SEQ  8", this , SLOT(newM_seq_8()));
-  contextMenu->insertItem("SEQ 12", this , SLOT(newM_seq_12()));
-  contextMenu->insertItem("SEQ 16", this , SLOT(newM_seq_16()));
-  contextMenu->insertItem("SEQ 24", this , SLOT(newM_seq_24()));
-  contextMenu->insertItem("SEQ 32", this , SLOT(newM_seq_32()));
-  contextMenu->insertItem("Slew Limiter", this , SLOT(newM_slew()));
-  contextMenu->insertItem("Spectrum View", this , SLOT(newM_spectrum()));
-  contextMenu->insertItem("Stereo Mixer 2", this , SLOT(newM_stereomix_2()));
-  contextMenu->insertItem("Stereo Mixer 4", this , SLOT(newM_stereomix_4())); 
-  contextMenu->insertItem("Stereo Mixer 8", this , SLOT(newM_stereomix_8())); 
-  contextMenu->insertItem("VC Double Decay", this , SLOT(newM_vcdoubledecay()));
-  contextMenu->insertItem("VC Envelope", this , SLOT(newM_vcenv()));
-  contextMenu->insertItem("VC Envelope II", this , SLOT(newM_vcenv2()));
-  contextMenu->insertItem("VC Organ (4 Oscillators)", this , SLOT(newM_vcorgan_4()));
-  contextMenu->insertItem("VC Organ (6 Oscillators)", this , SLOT(newM_vcorgan_6()));
-  contextMenu->insertItem("VC Organ (8 Oscillators)", this , SLOT(newM_vcorgan_8()));
-  contextMenu->insertItem("VC Panning", this , SLOT(newM_vcpanning()));
-  contextMenu->insertItem("VC Switch", this , SLOT(newM_vcswitch()));
-  contextMenu->insertItem("VCA lin.", this , SLOT(newM_vca_lin()));
-  contextMenu->insertItem("VCA exp.", this , SLOT(newM_vca_exp()));
-  contextMenu->insertItem("VCF", this , SLOT(newM_vcf()));
-  contextMenu->insertItem("VCO", this , SLOT(newM_vco()));
-  contextMenu->insertItem("VCO2", this , SLOT(newM_vco2()));
-  contextMenu->insertItem("WAV Out", this , SLOT(newM_wavout()));
-  */
+
   synthdata->rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
   prefWidget->loadPref(synthdata->rcPath);
   refreshColors();
@@ -189,10 +124,11 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
 
 ModularSynth::~ModularSynth()
 {
+  synthdata->stopPCM();
   synthdata->midiWidget->clearAllClicked();
-  for (int l1 = 0; l1 < listModule.count(); ++l1) {
+  for (int l1 = 0; l1 < listModule.count(); ++l1)
     deleteModule(listModule.at(l1));
-  }
+
   listModule.clear();
 
   delete synthdata;

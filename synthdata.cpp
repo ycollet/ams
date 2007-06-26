@@ -135,10 +135,16 @@ SynthData::SynthData (int p_poly, float p_edge)
   colorJack = QColor(250, 200, 50);
 }
 
+void SynthData::stopPCM()
+{
+    if (withJack)
+      closeJack();
+    if (withAlsa)
+      closeAlsa();
+}
+
 SynthData::~SynthData()
 {
-    if (withJack) closeJack ();
-    if (withAlsa) closeAlsa ();
     free (exp_data);
     free (wave_sine);
     free (wave_saw);

@@ -108,6 +108,7 @@ class SynthData
   public:
 
     SynthData(int p_poly, float p_edge);
+    void stopPCM();
     ~SynthData();
 
     float exp_table(float x);
