@@ -99,7 +99,7 @@ class SynthData
 
   public:
 
-    SynthData(int p_poly, float p_edge);
+    SynthData(QString *nameSuffix, int p_poly, float p_edge);
     void stopPCM();
     ~SynthData();
 

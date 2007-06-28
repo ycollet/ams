@@ -58,7 +58,6 @@ class ModularSynth : public QWidget
     int   nfrags;
     int   ncapt;
     int   nplay;
-    int   portid;
     int   clientid;
     bool paintFastly;
     double _zoomFactor;
@@ -80,11 +79,11 @@ class ModularSynth : public QWidget
     void showContextMenu(QPoint pos);
             
   public:
-    ModularSynth(QMainWindow *, const char *pcmname, int fsamp, int frsize, int nfrags, 
+    ModularSynth(QMainWindow *, QString *nameSuffix,
+		 const char *pcmname, int fsamp, int frsize, int nfrags, 
 		 int ncapt, int nplay, int poly, float edge);
     ~ModularSynth();
-/*     virtual QSize sizeHint() const; */
-/*     virtual QSizePolicy sizePolicy() const; */
+
     QMenu *contextMenu;
     void resize(void);
     int go(bool withJack);
@@ -96,6 +95,7 @@ class ModularSynth : public QWidget
     void moveAllBoxes(QPoint const &delta);
 
   protected:
+    void setMainWindowTitle(const QString *presetName = NULL);
     class QAbstractScrollArea *scrollArea() {
       return (QAbstractScrollArea *)parent();
     }

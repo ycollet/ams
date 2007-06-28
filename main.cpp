@@ -46,6 +46,7 @@ static struct option options[] =
          {"jack", 0, 0, 'j'},
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
+         {"name", 1, 0, 'N'},
          {0, 0, 0, 0}};
 
 QTextStream StdErr(stderr);
@@ -53,7 +54,7 @@ QTextStream StdOut(stdout);
 
 int main(int argc, char *argv[])  
 {
-  char aboutText[] = "AlsaModularSynth " AMS_VERSION 
+  char aboutText[] = AMS_LONGNAME " " AMS_VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
   int nfrags = DEFAULT_PERIODS;
   char pcmname [256];
   strcpy (pcmname, DEFAULT_PCMNAME);
-  QString presetName, presetPath;
+  QString presetName, presetPath, *nameSuffix = NULL;
   bool havePreset = false;
   bool havePresetPath = false;
   bool noGui = false;
@@ -81,10 +82,9 @@ int main(int argc, char *argv[])
   //  char buf [2048];
   float edge = 1.0;
 
-  while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:", options, &option_index)) >= 0)
-  {
-    switch(getopt_return)
-    {
+  while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:N:",
+				     options, &option_index)) >= 0) {
+    switch(getopt_return) {
     case 'p': 
         poly = atoi(optarg);
         break;
@@ -123,6 +123,9 @@ int main(int argc, char *argv[])
     case 'o': 
         nplay = atoi(optarg);
         break;
+    case 'N':
+      nameSuffix = new QString(optarg);
+      break;
     case 'h':
         printf("\n%s", aboutText);
         printf("--jack                       Enable JACK I/O\n");
@@ -136,7 +139,8 @@ int main(int argc, char *argv[])
         printf("--soundcard <plug>           Soundcard [hw:0,0]\n");
         printf("--preset <file>              Preset file\n");
         printf("--presetpath <path>          Preset path\n");
-        printf("--nogui                      Start without GUI\n\n");
+        printf("--nogui                      Start without GUI\n");
+        printf("--name                       ALSASEQ/JACK clientname, windowtitle [ams_ALSASEQ-ID]\n\n");
         exit(EXIT_SUCCESS);
         break;
     }
@@ -146,7 +150,7 @@ int main(int argc, char *argv[])
   StdOut << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
 
   ModularSynth *modularSynth =
-    new ModularSynth(&top, pcmname, fsamp, frsize, nfrags,
+    new ModularSynth(&top, nameSuffix, pcmname, fsamp, frsize, nfrags,
 		     ncapt, nplay, poly, edge);
   scrollArea->setWidget(modularSynth);
 

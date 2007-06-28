@@ -1,7 +1,10 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-#define AMS_VERSION "1.9.0 beta 0"
+#define AMS_LONGNAME "AlsaModularSynth"
+#define AMS_SHORTNAME "AMS"
+
+#define AMS_VERSION "1.9.0 beta 1"
 
 // Compile time options for AlsaModularSynth
 

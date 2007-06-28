@@ -76,8 +76,8 @@
 
 SynthData *synthdata;
 
-ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
-			   int p_fsamp, int p_frsize, int p_nfrags,
+ModularSynth::ModularSynth(QMainWindow *mainWindow, QString *nameSuffix,
+			   const char *p_pcmname, int p_fsamp, int p_frsize, int p_nfrags,
 			   int p_ncapt, int p_nplay, int poly, float edge) 
   : mainWindow(mainWindow)
   , pcmname (p_pcmname)
@@ -95,9 +95,8 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, const char *p_pcmname,
   connectorStyle = CONNECTOR_BEZIER;
   aboutWidget = new QMessageBox(this); 
   clientid = 0;
-  portid = 0;
 
-  synthdata = new SynthData (poly, edge);
+  synthdata = new SynthData(nameSuffix, poly, edge);
 
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle("AlsaModularSynth Control Center");
@@ -259,7 +258,7 @@ int ModularSynth::go(bool withJack)
 
 void ModularSynth::displayAbout() {
  
-    aboutWidget->about(this, "About AlsaModularSynth", "AlsaModularSynth " AMS_VERSION 
+    aboutWidget->about(this, "About " AMS_LONGNAME, AMS_LONGNAME " " AMS_VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n\n"
@@ -324,21 +323,36 @@ int ModularSynth::setSavePath(QString name) {
   return(0);
 }
 
+void ModularSynth::setMainWindowTitle(const QString *presetName)
+{
+  QString qs;
+  if (presetName)
+    qs = *presetName + " - ";
+
+  qs += synthdata->jackName + " - (" + QString::number(synthdata->poly) + ")";
+  mainWindow->setWindowTitle(qs);
+}
+
 snd_seq_t *ModularSynth::open_seq() {
 
   snd_seq_t *seq_handle;
   int l1;
   QString qs;
 
+  setMainWindowTitle();
   if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, 0) < 0) {
     fprintf(stderr, "Error opening ALSA sequencer.");
     return NULL;
   }
-  snd_seq_set_client_name(seq_handle, "AlsaModularSynth");
   clientid = snd_seq_client_id(seq_handle);
-  if ((portid = snd_seq_create_simple_port(seq_handle, "ams",
-            SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
-            SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
+  if (synthdata->jackName == AMS_SHORTNAME) {
+    synthdata->jackName.sprintf("ams_%d", clientid);
+    setMainWindowTitle();
+  }
+  snd_seq_set_client_name(seq_handle, synthdata->jackName.toLatin1().constData());
+  if (snd_seq_create_simple_port(seq_handle, "ams",
+				 SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
+				 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
     fprintf(stderr, "Error creating sequencer write port.");
     snd_seq_close(seq_handle);
     return NULL;
@@ -352,9 +366,6 @@ snd_seq_t *ModularSynth::open_seq() {
       return NULL;
     }
 
-  qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
-  mainWindow->setWindowTitle(qs);
-  synthdata->jackName.sprintf("ams_%d_%d", clientid, portid);
   return seq_handle;
 }
 
@@ -1086,11 +1097,10 @@ void ModularSynth::clearConfig() {
   bool restartSynth;
   QString qs;
 
-  for (l2 = 0; l2 < synthdata->poly; ++l2) {
+  for (l2 = 0; l2 < synthdata->poly; ++l2)
     synthdata->noteCounter[l2] = 1000000;
-  }
-  qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d)", clientid, portid, synthdata->poly);
-  mainWindow->setWindowTitle(qs);
+
+  setMainWindowTitle();
   restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
   sleep (1);
@@ -1232,8 +1242,7 @@ void ModularSynth::load(QString *presetName) {
   } else {
     clearConfig();
     qs2 = config_fn.mid(config_fn.lastIndexOf('/') + 1);
-    qs.sprintf("AlsaModularSynth " AMS_VERSION " - %d:%d - (%d) - %s", clientid, portid, synthdata->poly, qs2.toLatin1().constData());
-    mainWindow->setWindowTitle(qs);
+    setMainWindowTitle(&qs2);
     ladspaLoadErr = false;
     commentFlag = false;
     loadingPatch = true;

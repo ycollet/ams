@@ -19,7 +19,7 @@
 #include "m_scope.h"
 
 
-SynthData::SynthData (int p_poly, float p_edge)
+SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   : port_sem(1)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
@@ -111,14 +111,18 @@ SynthData::SynthData (int p_poly, float p_edge)
   for (l1 = 0; l1 < (WAVE_PERIOD>>2); l1++) {
     wave_tri[l1] = (float)l1 * dy; 
   }
-  for (l1 = (WAVE_PERIOD>>2); l1 < (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1++) {
-    wave_tri[l1] = 1.0 - (float)(l1 - (WAVE_PERIOD>>2)) * dy;                                                          
-  }
-  for (l1 = (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1 < WAVE_PERIOD; l1++) {
-    wave_tri[l1] = -1.0 + (float)(l1 - (WAVE_PERIOD >> 1) - (WAVE_PERIOD>>2)) * dy;                              
-  }
+  for (l1 = (WAVE_PERIOD>>2); l1 < (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1++)
+    wave_tri[l1] = 1.0 - (float)(l1 - (WAVE_PERIOD>>2)) * dy;
 
-  jackName = "AMS";
+  for (l1 = (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1 < WAVE_PERIOD; l1++)
+    wave_tri[l1] = -1.0 + (float)(l1 - (WAVE_PERIOD >> 1) - (WAVE_PERIOD>>2)) * dy;
+
+  if (nameSuffix) {
+    jackName = "ams_" + *nameSuffix;
+    delete nameSuffix;
+  } else
+    jackName = AMS_SHORTNAME;
+
   play_ports = 0;
   capt_ports = 0;
   withJack = false;
