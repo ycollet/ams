@@ -431,8 +431,8 @@ void ModularSynth::midiAction(int) {
 
 // Voice assignment
 
-    if (((ev->type == SND_SEQ_EVENT_NOTEON) || (ev->type == SND_SEQ_EVENT_NOTEOFF)) 
-         && ((synthdata->midiChannel < 0) || (synthdata->midiChannel == ev->data.control.channel))) {
+    if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
+	(synthdata->midiChannel < 0 || synthdata->midiChannel == ev->data.control.channel))
       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
 
 // Note On: Search for oldest voice to allocate new note.          
@@ -440,72 +440,56 @@ void ModularSynth::midiAction(int) {
           osc = 0;
           noteCount = 0;
           foundOsc = false;
-          for (l2 = 0; l2 < synthdata->poly; ++l2) {
+          for (l2 = 0; l2 < synthdata->poly; ++l2)
             if (synthdata->noteCounter[l2] > noteCount) {
               noteCount = synthdata->noteCounter[l2];
               osc = l2;
               foundOsc = true;
             }
-          }
+
           if (foundOsc) {
             synthdata->noteCounter[osc] = 0;
             synthdata->sustainNote[osc] = false;
             synthdata->velocity[osc] = ev->data.note.velocity;
             synthdata->channel[osc] = ev->data.note.channel;
             synthdata->notes[osc] = ev->data.note.note;   
-            for (l1 = 0; l1 < listModule.count(); ++l1) {
+            for (l1 = 0; l1 < listModule.count(); ++l1)
               listModule.at(l1)->noteOnEvent(osc);
-            }
+
           }  
       } else {
       
 // Note Off      
       
-        for (l2 = 0; l2 < synthdata->poly; ++l2) {
+        for (l2 = 0; l2 < synthdata->poly; ++l2)
           if ((synthdata->notes[l2] == ev->data.note.note)
-            && (synthdata->channel[l2] == ev->data.note.channel)) {
-            if (synthdata->sustainFlag) {
+            && (synthdata->channel[l2] == ev->data.note.channel))
+            if (synthdata->sustainFlag)
               synthdata->sustainNote[l2] = true;
-            } else {
+            else
               synthdata->noteCounter[l2] = 1000000; 
-              for (l1 = 0; l1 < listModule.count(); ++l1) {
-                listModule.at(l1)->noteOffEvent(l2);
-              } 
-            }  
-          }   
-        }     
+
       }       
-    }
+
     
     if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
-      if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF) {
-        for (l2 = 0; l2 < synthdata->poly; ++l2) {
-          if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel)) {
+      if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
+        for (l2 = 0; l2 < synthdata->poly; ++l2)
+          if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel))
             synthdata->noteCounter[l2] = 1000000;
-            for (l1 = 0; l1 < listModule.count(); ++l1) {
-              listModule.at(l1)->noteOffEvent(l2);
-            } 
-          }   
-        }     
-      }  
+
       if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
         synthdata->sustainFlag = ev->data.control.value > 63;
-        if (!synthdata->sustainFlag) {
-          for (l2 = 0; l2 < synthdata->poly; ++l2) {
-            if (synthdata->sustainNote[l2]) {
+        if (!synthdata->sustainFlag)
+          for (l2 = 0; l2 < synthdata->poly; ++l2)
+            if (synthdata->sustainNote[l2])
               synthdata->noteCounter[l2] = 1000000;
-              for (l1 = 0; l1 < listModule.count(); ++l1) {
-                listModule.at(l1)->noteOffEvent(l2);
-              }  
-            } 
-          }   
-        }     
       }  
     }
-    if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
+    if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
       guiWidget->setCurrentPreset(ev->data.control.value);
-    }
-    for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1) {
+
+    for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
       switch (ev->type) {
         case SND_SEQ_EVENT_CHANPRESS: 
           ((M_advmcv *)synthdata->listM_advmcv.at(l1))->aftertouchEvent(ev->data.note.channel, ev->data.control.value);
@@ -517,7 +501,7 @@ void ModularSynth::midiAction(int) {
           ((M_advmcv *)synthdata->listM_advmcv.at(l1))->controllerEvent(ev->data.note.channel, ev->data.control.param, ev->data.control.value);
           break;
       }
-    }
+
     snd_seq_free_event(ev);
   } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
 }
@@ -1900,18 +1884,14 @@ void ModularSynth::save()
   }
 }
 //==================================================================== End persistence
-void ModularSynth::allVoicesOff() {
-
+void ModularSynth::allVoicesOff()
+{
   int l1, l2;
 
-  for (l2 = 0; l2 < synthdata->poly; ++l2) {
-    if (synthdata->noteCounter[l2] < 1000000) {
+  for (l2 = 0; l2 < synthdata->poly; ++l2)
+    if (synthdata->noteCounter[l2] < 1000000)
       synthdata->noteCounter[l2] = 1000000;
-      for (l1 = 0; l1 < listModule.count(); ++l1) {      
-        listModule.at(l1)->noteOffEvent(l2);
-      } 
-    }
-  } 
+
 }
 
 void ModularSynth::cleanUpSynth()

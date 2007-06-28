@@ -62,7 +62,7 @@ class Module : public Box
 
     virtual void generateCycle() = 0;
     virtual void noteOnEvent(int) {}
-    virtual void noteOffEvent(int) {}
+
     int save(FILE *f);
     virtual int saveConnections(FILE *f); 
     virtual int saveParameters(FILE *f);

@@ -23,7 +23,7 @@ class M_advmcv : public Module
     M_advmcv(QWidget* parent=0);
     ~M_advmcv();
     virtual void noteOnEvent(int osc);
-    virtual void noteOffEvent(int osc);
+
     void aftertouchEvent(int channel, int value, int note = 0);
     void controllerEvent(int channel, int controlNum, int value, bool is14bit =false);
     void pitchbendEvent(int channel, int value);

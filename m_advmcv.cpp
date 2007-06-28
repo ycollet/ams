@@ -96,9 +96,6 @@ void M_advmcv::noteOnEvent(int osc) {
   trig[osc] = 1;
 }
 
-void M_advmcv::noteOffEvent(int) {
-}
-
 void M_advmcv::generateCycle() {
 
   int l1, l2, l3;
