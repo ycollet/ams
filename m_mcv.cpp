@@ -54,16 +54,10 @@ M_mcv::M_mcv(QWidget* parent)
   pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     freq[l1] = 0;
-    trig[l1] = 0;
   }
   configDialog->addComboBox(0, " ", &channel, channelNames.count(), &channelNames);
   configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
   configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
-}
-
-void M_mcv::noteOnEvent(int osc) {
-
-  trig[osc] = 1;
 }
 
 void M_mcv::generateCycle() {
@@ -85,8 +79,7 @@ void M_mcv::generateCycle() {
       } 
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
 //      data[3][l1][0] = trig[l1];
-      data[3][l1][15] = trig[l1]; // Added for interpolated input ports (e.g. m_vcenv.cpp)
-      trig[l1] = 0;
+      data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
     }
   }
   cycleProcessing = false;

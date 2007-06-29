@@ -28,13 +28,12 @@ class M_scmcv : public Module
   public: 
     int base, lastbase, channel;
     QString sclname, dirpath;
-    float freq[MAXPOLY], lastfreq[MAXPOLY], trig[MAXPOLY];
+    float freq[MAXPOLY], lastfreq[MAXPOLY];
                 
   public:
     M_scmcv(QWidget* parent=0, QString *p_sclname = 0);
 
     void generateCycle();
-    virtual void noteOnEvent(int osc);
 
   public slots:
     void loadScale(const QString &p_sclname);

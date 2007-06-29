@@ -69,7 +69,6 @@ M_advmcv::M_advmcv(QWidget* parent)
   pitchbend = 0;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     freq[l1] = 0;
-    trig[l1] = 0;
     aftertouch_cv[l1] = 0;
     pitchbend_cv[l1] = 0;
     for(l2 = 0; l2 < MODULE_ADVMCV_CONTROLLER_PORTS; l2++) {
@@ -89,11 +88,6 @@ M_advmcv::M_advmcv(QWidget* parent)
 M_advmcv::~M_advmcv()
 {
   synthdata->listM_advmcv.removeAll(this);
-}
-
-void M_advmcv::noteOnEvent(int osc) {
-
-  trig[osc] = 1;
 }
 
 void M_advmcv::generateCycle() {
@@ -119,8 +113,7 @@ void M_advmcv::generateCycle() {
       } 
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
 //      data[3][l1][0] = trig[l1];
-      data[3][l1][15] = trig[l1]; // Added for interpolated input ports (e.g. m_vcenv.cpp)
-      trig[l1] = 0;
+      data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
     }
   }
   cycleProcessing = false;

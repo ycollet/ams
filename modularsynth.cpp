@@ -452,10 +452,7 @@ void ModularSynth::midiAction(int) {
             synthdata->sustainNote[osc] = false;
             synthdata->velocity[osc] = ev->data.note.velocity;
             synthdata->channel[osc] = ev->data.note.channel;
-            synthdata->notes[osc] = ev->data.note.note;   
-            for (l1 = 0; l1 < listModule.count(); ++l1)
-              listModule.at(l1)->noteOnEvent(osc);
-
+            synthdata->notes[osc] = ev->data.note.note;
           }  
       } else {
       

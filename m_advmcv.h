@@ -16,13 +16,12 @@ class M_advmcv : public Module
 
   public: 
     int  pitch, channel, controller_num[MODULE_ADVMCV_CONTROLLER_PORTS];
-    float freq[MAXPOLY], trig[MAXPOLY], aftertouch_cv[MAXPOLY], pitchbend_cv[MAXPOLY];
+    float freq[MAXPOLY], aftertouch_cv[MAXPOLY], pitchbend_cv[MAXPOLY];
     float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS][MAXPOLY];
                 
   public:
     M_advmcv(QWidget* parent=0);
     ~M_advmcv();
-    virtual void noteOnEvent(int osc);
 
     void aftertouchEvent(int channel, int value, int note = 0);
     void controllerEvent(int channel, int controlNum, int value, bool is14bit =false);

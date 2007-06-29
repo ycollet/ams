@@ -14,12 +14,10 @@ class M_mcv : public Module
 
   public: 
     int  pitch, channel;
-    float freq[MAXPOLY], trig[MAXPOLY];
+    float freq[MAXPOLY];
                 
   public:
     M_mcv(QWidget* parent=0);
-
-    virtual void noteOnEvent(int osc);
 
     void generateCycle();
 };

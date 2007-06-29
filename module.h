@@ -61,7 +61,6 @@ class Module : public Box
     virtual  ~Module();
 
     virtual void generateCycle() = 0;
-    virtual void noteOnEvent(int) {}
 
     int save(FILE *f);
     virtual int saveConnections(FILE *f); 
