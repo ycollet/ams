@@ -208,6 +208,7 @@ int main(int argc, char *argv[])
   newModulePopup->addAction("Mixer 8 -> 1", modularSynth, SLOT(newM_mix_8()));
   newModulePopup->addAction("Multiphase LFO", modularSynth, SLOT(newM_mphlfo()));
   newModulePopup->addAction("Noise / Random", modularSynth, SLOT(newM_noise()));
+  newModulePopup->addAction("Noise / Random 2", modularSynth, SLOT(newM_noise2()));
   newModulePopup->addAction("PCM Out", modularSynth, SLOT(newM_pcmout()));
   newModulePopup->addAction("PCM In", modularSynth, SLOT(newM_pcmin()));  
   newModulePopup->addAction("Quantizer", modularSynth, SLOT(newM_quantizer()));
@@ -239,6 +240,7 @@ int main(int argc, char *argv[])
   newModulePopup->addAction("VCA exp.", modularSynth, SLOT(newM_vca_exp()));
   newModulePopup->addAction("VCF", modularSynth, SLOT(newM_vcf()));
   newModulePopup->addAction("VCO", modularSynth, SLOT(newM_vco()));
+  newModulePopup->addAction("VCO2", modularSynth, SLOT(newM_vco2()));
   newModulePopup->addAction("WAV Out", modularSynth, SLOT(newM_wavout()));
 
   modulePopup->addAction("&Show Ladspa Browser", modularSynth, SLOT(displayLadspaPlugins()));
