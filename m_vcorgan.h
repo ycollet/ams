@@ -16,7 +16,7 @@ class M_vcorgan : public Module
     float tune, osc_tune[MODULE_VCORGAN_MAX_OSC], gain[MODULE_VCORGAN_MAX_OSC];
     int octave, osc_octave[MODULE_VCORGAN_MAX_OSC];
     int harmonic[MODULE_VCORGAN_MAX_OSC], subharmonic[MODULE_VCORGAN_MAX_OSC];
-    waveFormType waveForm[MODULE_VCORGAN_MAX_OSC];
+    int waveForm[MODULE_VCORGAN_MAX_OSC];
     float expFMGain, linFMGain;
     float phi0[MODULE_VCORGAN_MAX_OSC], phi[MAXPOLY][MODULE_VCORGAN_MAX_OSC];
     float wave_period;

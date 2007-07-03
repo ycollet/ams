@@ -84,7 +84,7 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
     qs.sprintf("Osc %d", l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Wave Form %d", l1);
-    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames.count(), &waveFormNames, oscTab[l1]);
+    configDialog->addComboBox(0, qs, waveForm + l1, waveFormNames.count(), &waveFormNames, oscTab[l1]);
     qs.sprintf("Octave %d", l1);
     configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
     qs.sprintf("Tune %d", l1);
