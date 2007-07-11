@@ -43,13 +43,14 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent
 Port::~Port() {
 }
 
-int Port::connectTo(Port *port) {
-
+int Port::connectTo(Port *port)
+{
   synthdata->port_sem.acquire();
-  module->configDialog->removeButtonShow(false);
+
   if (dir == PORT_OUT) {
     if (port->outTypeAcceptList.contains(outType)) {
       connectedPortList.append(port);
+      module->incConnections();
       port->jackColor = synthdata->colorJack;
       port->cableColor = synthdata->colorCable;
     }
@@ -57,9 +58,11 @@ int Port::connectTo(Port *port) {
     if (outTypeAcceptList.contains(port->outType)) {
       if (connectedPortList.count()) {
         connectedPortList.at(0)->connectedPortList.removeAll(this);
-        connectedPortList.at(0)->checkConnectionStatus();
+        connectedPortList.at(0)->module->decConnections();
         connectedPortList.clear();
-      }
+      } else
+	module->incConnections();
+
       connectedPortList.append(port);
     }
   }
@@ -156,30 +159,13 @@ void Port::disconnectClicked() {
   synthdata->port_sem.acquire();
   if (connectedPortList.count()) {
     connectedPortList.at(0)->connectedPortList.removeAll(this);
-    connectedPortList.at(0)->checkConnectionStatus();
+    connectedPortList.at(0)->module->decConnections();
     connectedPortList.clear();
+    module->decConnections();
   }
-  checkConnectionStatus();
   synthdata->port_sem.release();
   emit portDisconnected();
 }
-
-void Port::checkConnectionStatus() {
-
-  int l1;
-  bool moduleConnected;
-
-  moduleConnected = false;
-  for (l1 = 0; l1 < module->portList.count(); ++l1) {
-    if (module->portList.at(l1)->connectedPortList.count()) {
-      moduleConnected = true;
-    }
-  }
-  if (!moduleConnected) {
-    module->configDialog->removeButtonShow(true);
-  }
-}
-
 
 float **Port::getinputdata (void)
 {

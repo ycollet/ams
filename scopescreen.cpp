@@ -16,8 +16,14 @@
 #include <iostream>
 
 
-ScopeScreen::ScopeScreen(QWidget* parent) 
-  : QGLWidget(parent)
+ScopeScreen::ScopeScreen(float &timeScale, int &mode, int &edge,
+			 int &triggerMode, float &triggerThrs, float &zoom) 
+  : timeScale(timeScale)
+  , mode(mode)
+  , edge(edge)
+  , triggerMode(triggerMode)
+  , triggerThrs(triggerThrs)
+  , zoom(zoom)
 {
   
   scopebuf = (float *)malloc(SCOPE_BUFSIZE * sizeof(float));
@@ -31,9 +37,7 @@ ScopeScreen::ScopeScreen(QWidget* parent)
   ch1 = 0;
   ch2 = 1;
   zoom = 1;
-  timeScale = 100;
-  timeScaleLastTrigger = timeScale;
-  timeScaleFrames = (int)((float)synthdata->rate * timeScale / 1000.0);
+
   readofs = 0;
   writeofs = 0;
   setPalette(QPalette(QColor(0, 80, 0), QColor(0, 80, 0)));
@@ -83,7 +87,7 @@ void ScopeScreen::paintEvent(QPaintEvent *) {
   vw = width();
   vh = height();
   vh_2 = vh >> 1;
-  xscale = (float)vw / (float)timeScaleFrames;
+  xscale = (float)vw / (float)timeScaleFrames();
   yscale = zoom * (float)height() / 65536.0;
   thrs = int(yscale * triggerThrs * 32767.0);
   if (triggerMode == TRIGGERMODE_TRIGGERED) {
@@ -97,7 +101,7 @@ void ScopeScreen::paintEvent(QPaintEvent *) {
   y1ch1 = y2ch1;
   y1ch2 = y2ch2;
 
-  for (l1 = 1; l1 < timeScaleFrames; l1++) {
+  for (l1 = 1; l1 < timeScaleFrames(); l1++) {
     calcY(l1);
     if (x2 == x1)
       continue;
@@ -143,7 +147,7 @@ void ScopeScreen::refreshScope() {
   int l1, ofs;
   float s1, s2;
 
-  readofs = writeofs - synthdata->cyclesize - timeScaleFrames;
+  readofs = writeofs - synthdata->cyclesize - timeScaleFrames();
   if (readofs < 0 ) {  
     readofs+=SCOPE_BUFSIZE >> 1;
   }
@@ -180,7 +184,7 @@ void ScopeScreen::refreshScope() {
   }
   if ((triggerMode != TRIGGERMODE_TRIGGERED) || triggered) {
 //    fprintf(stderr, "M1\n");
-    for (l1 = 0; l1 < timeScaleFrames; l1++) {
+    for (l1 = 0; l1 < timeScaleFrames(); l1++) {
 //      fprintf(stderr, "l1: %d ofs: %d\n", l1, ofs);
       scopebuf[2 * l1] = scopedata[2 * ofs];
       scopebuf[2 * l1 + 1] = scopedata[2 * ofs + 1];
@@ -189,7 +193,7 @@ void ScopeScreen::refreshScope() {
         ofs -= SCOPE_BUFSIZE >> 1;
       }
     }
-    scopebufValidFrames = timeScaleFrames;
+    scopebufValidFrames = timeScaleFrames();
 //    fprintf(stderr, "M2\n");
   }
   update();	//  repaint();
@@ -197,7 +201,6 @@ void ScopeScreen::refreshScope() {
 
 void ScopeScreen::singleShot() {
 
-  timeScaleLastTrigger = timeScale;
   refreshScope();
 }
 
@@ -209,29 +212,6 @@ QSize ScopeScreen::sizeHint() const {
 QSizePolicy ScopeScreen::sizePolicy() const {
 
   return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-}
-
-modeType ScopeScreen::setMode(modeType p_mode) {
-
-  mode = p_mode;
-  update();
-  return(mode);
-}
-
-edgeType ScopeScreen::setEdge(edgeType p_edge) {
-
-  edge = p_edge;
-  return(edge);
-}
-
-triggerModeType ScopeScreen::setTriggerMode(triggerModeType p_triggerMode) {
-
-  triggerMode = p_triggerMode;
-
-  if ((triggerMode == TRIGGERMODE_SINGLE) || (triggerMode == TRIGGERMODE_MIDI)) {  
-    timeScaleLastTrigger = timeScale;
-  }
-  return(triggerMode);
 }
 
 int ScopeScreen::setCh1(int p_ch1) {
@@ -248,66 +228,7 @@ int ScopeScreen::setCh2(int p_ch2) {
   return(ch2); 
 }              
 
-float ScopeScreen::setZoom(float p_zoom) {
-
-  zoom = p_zoom;
-  update();
-  return(zoom);
-}
-
-float ScopeScreen::setTriggerThrs(float p_triggerThrs) {
-
-  triggerThrs = p_triggerThrs;
-  return(triggerThrs);
-}
- 
-float ScopeScreen::setTimeScale(float p_timeScale) {
-
-  timeScale = p_timeScale;
-  timeScaleFrames = (int)((float)synthdata->rate * timeScale / 1000.0);
-  if (timeScaleFrames <= scopebufValidFrames) {
+void ScopeScreen::mcAbleChanged()
+{
     update();
-  }
-  return(timeScale);
 }
-
-modeType ScopeScreen::getMode() {
-
-  return(mode); 
-}
- 
-edgeType ScopeScreen::getEdge() {
-
-  return(edge); 
-}
- 
-triggerModeType ScopeScreen::getTriggerMode() {
-
-  return(triggerMode);
-}
- 
-int ScopeScreen::getCh1() {
-
-  return(ch1);
-}
- 
-int ScopeScreen::getCh2() {
-
-  return(ch2);
-}             
-              
-float ScopeScreen::getZoom() {
-
-  return(zoom); 
-}
-
-float ScopeScreen::getTriggerThrs() {
-
-  return(triggerThrs);
-}
-
-float ScopeScreen::getTimeScale() {
- 
-  return(timeScale);
-}
-

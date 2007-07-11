@@ -13,8 +13,11 @@
 #include <clalsadrv.h>
 #include <jack/jack.h>
 #include "main.h"
+#include "midicontroller.h"
+#include "ringbuffer.h"
 
 extern QTextStream StdErr;
+extern QTextStream StdOut;
 
 struct LadspaLib {
   QString name;
@@ -70,7 +73,7 @@ class SynthData
     QList<QObject*> spectrumModuleList;
 #endif
     QList<class Module *> moduleList;
-    QList<QObject*> listM_advmcv;
+    QList<class M_advmcv *> listM_advmcv;
 
     snd_seq_t *seq_handle;
     bool doSynthesis;
@@ -88,6 +91,12 @@ class SynthData
     QColor colorCable, colorJack;
     QFont bigFont, smallFont;
 
+    pthread_mutex_t rtMutex;
+    QList<MidiController> *activeMidiControllers;
+    RingBuffer<MidiControllerKey> mckRed;
+    RingBuffer<MidiControllableBase *> mcSet;
+    int pipeFd[2];
+
   private:
 
     void create_zero_data (void);
@@ -96,6 +105,7 @@ class SynthData
     void  *alsa_thr_main (void);
     int    jack_callback (jack_nframes_t nframes);
     void   call_modules (void);
+    void readMIDI(void);
 
   public:
 

@@ -68,7 +68,6 @@ class Port : public QWidget
     void cableDefaultClicked();
     void jackColorClicked();
     void cableColorClicked();
-    void checkConnectionStatus();
 };
   
 #endif

@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
 #include <qstring.h>
 #include <qpainter.h>
 #include <qpen.h>
@@ -10,24 +6,23 @@
 #include <qbrush.h>
 #include <qsizepolicy.h>
 #include <qsize.h>
-//Added by qt3to4:
 #include <QResizeEvent>
 #include <QPolygon>
 #include <QPaintEvent>
 #include "multi_envelope.h"
+#include "module.h"
+#include "midicontrollable.h"
 
 
-MultiEnvelope::MultiEnvelope(int p_envCount, float *p_timeScaleRef, float *p_attackRef, float *p_sustainRef, float *p_releaseRef,
-                   QWidget* parent, const char *name) 
-  : QWidget (parent)
+MultiEnvelope::MultiEnvelope(int p_envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef)
+  : timeScaleRef(timeScaleRef)
+  , attackRef(attackRef)
+  , sustainRef(sustainRef)
+  , releaseRef(releaseRef)
 {
-  setObjectName(name);
+  setObjectName("Multi Envelope");
   envCount = p_envCount;
   
-  timeScaleRef = p_timeScaleRef;
-  attackRef = p_attackRef;
-  sustainRef = p_sustainRef;
-  releaseRef = p_releaseRef;
   setAutoFillBackground(true);
   setPalette(QPalette(QColor(20, 20, 80),
 		      envCount > 1 ? QColor(20, 20, 80) : QColor(10, 50, 10)));
@@ -40,10 +35,6 @@ MultiEnvelope::MultiEnvelope(int p_envCount, float *p_timeScaleRef, float *p_att
   colorTable[5].setRgb(0, 255, 255);
   colorTable[6].setRgb(255, 100, 255);
   colorTable[7].setRgb(255, 200, 50);
-}
-
-MultiEnvelope::~MultiEnvelope()
-{
 }
 
 void MultiEnvelope::paintEvent(QPaintEvent *)
@@ -144,7 +135,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *)
   }
 }
 
-void MultiEnvelope::updateMultiEnvelope(int)
+void MultiEnvelope::mcAbleChanged()
 {
   update();
 }

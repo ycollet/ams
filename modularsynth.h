@@ -177,7 +177,6 @@ class ModularSynth : public QWidget
     void newM_dynamicwaves_8();
     void resizeTextEdit(QPoint pos);
     void portSelected();
-    void updatePortConnections();
     void deleteModule();
     void deleteModule(Module *m);
     void deleteTextEdit();

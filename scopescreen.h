@@ -13,7 +13,7 @@
 #include <QResizeEvent>
 #include <QPaintEvent>
 #include <QtOpenGL/QGLWidget>
-
+#include "mced.h"
 #include "synthdata.h"
 
 #define MINIMUM_WIDTH                 100
@@ -25,19 +25,18 @@ enum modeType { MODE_NORMAL, MODE_SUM, MODE_DIFF };
 enum edgeType { EDGE_RISING, EDGE_FALLING };
 enum triggerModeType { TRIGGERMODE_CONTINUOUS, TRIGGERMODE_TRIGGERED, TRIGGERMODE_SINGLE, TRIGGERMODE_MIDI };
 
-class ScopeScreen : public QGLWidget
+class ScopeScreen : public QGLWidget, public MCedThing
 {
   Q_OBJECT
 
-  modeType mode;
-  edgeType edge;
-  triggerModeType triggerMode;
   int ch1, ch2;
-  float zoom;
-  float triggerThrs;
   bool triggered;
-  float timeScale, timeScaleLastTrigger;
-  int timeScaleFrames;
+  float &timeScale;
+  int &mode;
+  int &edge;
+  int &triggerMode;
+  float &triggerThrs;
+  float &zoom;
   float *scopebuf;
   int scopebufValidFrames;
   float xscale, yscale;
@@ -45,6 +44,9 @@ class ScopeScreen : public QGLWidget
   float s1, s2;
 
 public:
+  int timeScaleFrames() {
+    return (int )((float )synthdata->rate * timeScale * 0.001);
+  }
   float *scopedata;
   int readofs, writeofs;
 
@@ -54,26 +56,14 @@ protected:
   void calcY(int offset);
     
   public:
-    ScopeScreen(QWidget* parent=0);
+  ScopeScreen(float &timeScale, int &mode, int &edge, int &triggerMode, float &, float &);
     ~ScopeScreen();
+  void mcAbleChanged();
     virtual QSize sizeHint() const;
     virtual QSizePolicy sizePolicy() const;
-    modeType setMode(modeType p_mode);
-    edgeType setEdge(edgeType p_edge);
-    triggerModeType setTriggerMode(triggerModeType p_triggerMode);
+
     int setCh1(int p_ch1);
     int setCh2(int p_ch2);
-    float setZoom(float p_zoom);
-    float setTriggerThrs(float p_triggerThrs);
-    float setTimeScale(float p_timeScale);
-    modeType getMode();
-    edgeType getEdge();
-    triggerModeType getTriggerMode();
-    int getCh1();
-    int getCh2();
-    float getZoom();
-    float getTriggerThrs();
-    float getTimeScale();
 
   public slots: 
     void refreshScope();

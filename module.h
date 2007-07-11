@@ -45,6 +45,7 @@ class Module : public Box
 {
   Q_OBJECT
 
+  int connections;
     
   public: 
     ConfigDialog *configDialog;
@@ -52,6 +53,7 @@ class Module : public Box
     bool cycleReady, cycleProcessing;
     M_typeEnum M_type;  
     QList<Port*> portList;
+    QList<class MidiControllableBase *> midiControllables;
     int moduleID, outPortCount;
 //    class QTreeWidgetItem *listViewItem;
     QColor colorBackground, colorBorder, colorFont;
@@ -59,7 +61,11 @@ class Module : public Box
   public:
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
     virtual  ~Module();
-
+  int connected() {
+    return connections;
+  }
+  void incConnections();
+  void decConnections();
     virtual void generateCycle() = 0;
 
     int save(FILE *f);

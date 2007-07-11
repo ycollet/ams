@@ -4,6 +4,7 @@
 #include <qstring.h>
 #include <QFont>
 #include <math.h>
+#include <pthread.h>
 #include "guiwidget.h"
 #include "midiwidget.h"
 #include "synthdata.h"
@@ -23,7 +24,17 @@ SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   : port_sem(1)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
+  , activeMidiControllers(NULL)
 {
+  if (pthread_mutex_init(&rtMutex, NULL) < 0) {
+    StdErr << __PRETTY_FUNCTION__ << ": pthread_mutex_init() failed" << endl;
+    exit(-1);
+  }
+  if (pipe(pipeFd) < 0) {
+    StdErr << __PRETTY_FUNCTION__ << ": pipe() failed" << endl;
+    exit(-1);
+  }
+
   int l1, l2;
   double dphi, phi, dy, dyd;
   int decaytime;
@@ -463,11 +474,12 @@ int SynthData::jack_callback (jack_nframes_t nframes)
     M_pcmout   *P;
     jack_default_audio_sample_t *p;
 
-    if (nframes > MAXIMUM_PERIODSIZE)
-    { 
+    if (nframes > MAXIMUM_PERIODSIZE) { 
         fprintf(stderr, "nframes exceeds allowed value %d\n", MAXIMUM_PERIODSIZE);
         return 0;
     }
+
+    readMIDI();
 
     cyclesize = nframes;
 
@@ -498,8 +510,6 @@ int SynthData::jack_callback (jack_nframes_t nframes)
     return 0;
 }
 
-
-
 void SynthData::call_modules (void)
 {
     int i;
@@ -517,3 +527,88 @@ void SynthData::call_modules (void)
     }
 }
 
+void SynthData::readMIDI(void)
+{
+  char pipeMessage = 0;
+
+  pthread_mutex_lock(&rtMutex);
+
+  for (int pending = snd_seq_event_input_pending(seq_handle, 1);
+       pending > 0; --pending) {
+    int l2;
+    snd_seq_event_t *ev;
+    snd_seq_event_input(seq_handle, &ev);
+    //    MidiController midiController(ev); 
+    MidiControllerKey mcK(ev); 
+// Voice assignment
+    if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
+	(midiChannel < 0 || midiChannel == ev->data.control.channel))
+      if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
+
+// Note On: Search for oldest voice to allocate new note.          
+	int osc = 0;
+	int noteCount = 0;
+	bool foundOsc = false;
+	for (l2 = 0; l2 < poly; ++l2)
+	  if (noteCounter[l2] > noteCount) {
+	    noteCount = noteCounter[l2];
+	    osc = l2;
+	    foundOsc = true;
+	  }
+
+	if (foundOsc) {
+	  noteCounter[osc] = 0;
+	  sustainNote[osc] = false;
+	  velocity[osc] = ev->data.note.velocity;
+	  channel[osc] = ev->data.note.channel;
+	  notes[osc] = ev->data.note.note;
+	}  
+      } else {
+
+// Note Off      
+        for (l2 = 0; l2 < poly; ++l2)
+          if (notes[l2] == ev->data.note.note &&
+	      channel[l2] == ev->data.note.channel)
+            if (sustainFlag)
+              sustainNote[l2] = true;
+            else
+              noteCounter[l2] = 1000000; 
+      }
+
+    typeof(activeMidiControllers->constBegin()) mc =
+      qBinaryFind(activeMidiControllers->constBegin(), activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+      int value;
+      switch (ev->type) {
+      case SND_SEQ_EVENT_PITCHBEND:
+	value = (ev->data.control.value + 8192) >> 7;
+	break;
+      case SND_SEQ_EVENT_CONTROL14:
+	value = ev->data.control.value >> 7;
+	break;
+      case SND_SEQ_EVENT_CONTROLLER:
+	value = ev->data.control.value;
+	break;
+      case SND_SEQ_EVENT_NOTEON:
+	value = ev->data.note.velocity;
+	break;
+      default:
+      case SND_SEQ_EVENT_NOTEOFF:
+	value = 0;
+	break;
+      }
+      mc->context->setMidiValueRT(value);
+      pipeMessage |= 1;
+      //      StdOut << "did " << ev->data.control.value << endl;
+    } else {
+      mckRed.put(mcK);
+      pipeMessage |= 2;
+      //      StdOut << "not " << ev->data.control.value << endl;
+    }
+  }
+
+  pthread_mutex_unlock(&rtMutex);
+
+  if (pipeMessage)
+    write(pipeFd[1], &pipeMessage, 1);
+}
