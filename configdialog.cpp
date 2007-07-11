@@ -20,6 +20,7 @@
 #include "floatintmidislider.h"
 #include "midicheckbox.h"
 #include "midicombobox.h"
+#include "midicontrollable.h"
 #include "midipushbutton.h"
 #include "envelope.h"
 #include "multi_envelope.h"
@@ -27,10 +28,11 @@
 #include "spectrumscreen.h"
 #include "function.h"
 
-ConfigDialog::ConfigDialog(Module *p_parentModule) 
+ConfigDialog::ConfigDialog(Module &module) 
   : addStretch(1)
   , removeButton(new QPushButton("Remove Module"))
   , removeFrame(new QHBoxLayout())
+  , module(module)
 {
   QVBoxLayout *vBox = new QVBoxLayout();
   setLayout(vBox);
@@ -41,8 +43,6 @@ ConfigDialog::ConfigDialog(Module *p_parentModule)
   configBox->setSpacing(5);
   vBox->addLayout(configBox);
 
-  parentModule = p_parentModule;
-
   tabWidget = NULL;
   removeFrame->addStretch();
   removeFrame->addWidget(removeButton);
@@ -52,114 +52,109 @@ ConfigDialog::ConfigDialog(Module *p_parentModule)
   QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeButtonClicked()));
 }
 
-ConfigDialog::~ConfigDialog() {
-  MidiGUIcomponent *mgc;
-  for (int i = 0; i < midiGUIcomponentList.count(); ++i)
-    delete midiGUIcomponentList.at(i);
-}
+ConfigDialog::~ConfigDialog()
+{}
 
-int ConfigDialog::addSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, bool isLog, QBoxLayout *layout) {
+int ConfigDialog::addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog, QBoxLayout *layout)
+{
+  MidiControllableFloat * mcAble =
+    new MidiControllableFloat(module, name, valueRef, minValue, maxValue, isLog);
 
-  MidiSlider *midiSlider;
-  
-  midiSlider = new MidiSlider(parentModule, minValue, maxValue, 0, value, 
-                              Qt::Horizontal, NULL, name, valueRef, isLog);
+  MidiSlider *midiSlider = new MidiSlider(*mcAble);
   insertWidget(layout, midiSlider);
 
   midiSliderList.append(midiSlider);
-  midiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)midiSlider);
-  return(0);
+
+  return 0;
 }
 
-int ConfigDialog::addFloatIntSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, QBoxLayout *layout) {
+int ConfigDialog::addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout)
+{
+  MidiControllable<float> *mcAble =
+    new MidiControllable<float>(module, name, valueRef, minValue, maxValue);
 
-  FloatIntMidiSlider *floatIntMidiSlider;
-
-  floatIntMidiSlider = new FloatIntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-					      Qt::Horizontal, NULL, name, valueRef);
-  insertWidget(layout, floatIntMidiSlider);
-  floatIntMidiSliderList.append(floatIntMidiSlider);
-  floatIntMidiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)floatIntMidiSlider);
-  return(0);
-}
-
-int ConfigDialog::addIntSlider(int minValue, int maxValue, int value, const QString &name, int *valueRef, QBoxLayout *layout) {
- 
-  IntMidiSlider *intMidiSlider;
-
-  intMidiSlider = new IntMidiSlider(parentModule, minValue, maxValue, 0, value, 
-				    Qt::Horizontal, NULL, name, valueRef);
+  IntMidiSlider *intMidiSlider = new IntMidiSlider(GUIcomponentType_floatintslider, *mcAble);
   insertWidget(layout, intMidiSlider);
-  intMidiSliderList.append(intMidiSlider);
-  intMidiSlider->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)intMidiSlider);
-  return(0);
+
+  floatIntMidiSliderList.append(intMidiSlider);
+
+  return 0;
 }
 
-int ConfigDialog::addComboBox(int value, const QString &name, int *valueRef, int /*itemCount*/, QStringList *itemNames, QBoxLayout *layout) {
- 
-  MidiComboBox *midiComboBox;
+IntMidiSlider *ConfigDialog::addIntSlider(const QString &name, int &valueRef, int minValue, int maxValue, QBoxLayout *layout)
+{
+  MidiControllable<int> * mcAble =
+    new MidiControllable<int>(module, name, valueRef, minValue, maxValue);
 
-  midiComboBox = new MidiComboBox(parentModule, value, NULL, name, valueRef, itemNames);
+  IntMidiSlider *intMidiSlider = new IntMidiSlider(GUIcomponentType_intslider, *mcAble);
+  insertWidget(layout, intMidiSlider);
+
+  intMidiSliderList.append(intMidiSlider);
+
+  return intMidiSlider;
+}
+
+MidiComboBox *ConfigDialog::addComboBox(const QString &name, int &valueRef, const QStringList &itemNames, QBoxLayout *layout) {
+  MidiControllableNames * mcAble =
+    new MidiControllableNames(module, name, valueRef, itemNames);
+ 
+  MidiComboBox *midiComboBox =
+    new MidiComboBox(*mcAble);
   insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
 
   midiComboBoxList.append(midiComboBox);
-  midiComboBox->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)midiComboBox);
-  return(0);
+
+  return midiComboBox;
 }
 
-int ConfigDialog::addCheckBox(float value, const QString &name, float *valueRef, QBoxLayout *layout) {
-  
+int ConfigDialog::addCheckBox(const QString &name, float &valueRef, QBoxLayout *layout)
+{
+  MidiControllable<float> *mcAble =
+    new MidiControllable<float>(module, name, valueRef, 0, 1);
+
   MidiCheckBox *midiCheckBox;
 
-  midiCheckBox = new MidiCheckBox(parentModule, value, NULL, name, valueRef);
+  midiCheckBox = new MidiCheckBox(*mcAble);
   insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
 
   midiCheckBoxList.append(midiCheckBox);
-  midiCheckBox->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)midiCheckBox);
+
   return(0);
 }
 
-int ConfigDialog::addPushButton(const QString &name, QBoxLayout *layout) {
+int ConfigDialog::addPushButton(const QString &name, void (Module::*doOnce)(void), QBoxLayout *layout)
+{
+  MidiControllableDoOnce *mcAble =
+    new MidiControllableDoOnce(module, name, doOnce);
   
   MidiPushButton *midiPushButton;
 
-  midiPushButton = new MidiPushButton(parentModule, name);
+  midiPushButton = new MidiPushButton(*mcAble);
   insertWidget(layout, midiPushButton, 0, Qt::AlignCenter);
 
   midiPushButtonList.append(midiPushButton);
-  midiPushButton->midiGUIcomponentListIndex = midiGUIcomponentList.count();
-  midiGUIcomponentList.append((MidiGUIcomponent *)midiPushButton);
+
   return(0);
 }
 
-int ConfigDialog::addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
-			      float *decayRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
-
-  Envelope *envelope;
-
-  envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef, 
-			  NULL, "Envelope");
-  insertWidget(layout, envelope, 100);
+int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
+			      MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout)
+{
+  Envelope *envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef);
+  insertWidget(layout, envelope, 100, 0, 0);
 
   envelopeList.append(envelope);
   return(0);
 }
 
-int ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
+MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
 
   MultiEnvelope *envelope;
 
-  envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef, 
-			       NULL, "Multi Envelope");
+  envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef);
   insertWidget(layout, envelope, 100);
 
-  multiEnvelopeList.append(envelope);
-  return(0);
+  return envelope;
 }
 
 int ConfigDialog::addLabel(QString label, QBoxLayout *layout) {
@@ -248,12 +243,12 @@ int ConfigDialog::addLineEdit(const char *Name, QBoxLayout *layout) {
   return 0;
 }
 
-int ConfigDialog::addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
-                                 float *triggerThrsRef, float *zoomRef, QBoxLayout *layout) {
+int ConfigDialog::addScopeScreen(float &timeScaleRef, int &modeRef, int &edgeRef, int &triggerModeRef, 
+                                 float &triggerThrsRef, float &zoomRef, QBoxLayout *layout) {
 
   ScopeScreen *scopeScreen;
 
-  scopeScreen = new ScopeScreen();
+  scopeScreen = new ScopeScreen(timeScaleRef, modeRef, edgeRef, triggerModeRef, triggerThrsRef, zoomRef);
   insertWidget(layout, scopeScreen, 1);
 
   scopeScreenList.append(scopeScreen);
@@ -287,12 +282,12 @@ int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex
 }
 
 void ConfigDialog::insertWidget(QBoxLayout *layout, QWidget *widget,
-				int stretch, Qt::Alignment alignment)
+				int stretch, Qt::Alignment alignment, int pos)
 {
   if (!layout)
     layout = configBox;
 
-  layout->addWidget(widget, stretch, alignment);
+  layout->insertWidget(pos, widget, stretch, alignment);
   if (addStretch > 0)
     layout->addStretch(addStretch);
 }

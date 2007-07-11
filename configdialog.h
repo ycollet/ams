@@ -36,7 +36,7 @@ class ConfigDialog : public QWidget
 public: 
   QList<class MidiSlider*> midiSliderList; 
   QList<class IntMidiSlider*> intMidiSliderList; 
-  QList<class FloatIntMidiSlider*> floatIntMidiSliderList; 
+  QList<class IntMidiSlider*> floatIntMidiSliderList; 
   QList<class MidiComboBox*> midiComboBoxList;
   QList<class MidiCheckBox*> midiCheckBoxList;
   QList<class MidiPushButton*> midiPushButtonList;
@@ -45,37 +45,35 @@ public:
 #ifdef OUTDATED_CODE
   QList<class SpectrumScreen*> spectrumScreenList;
 #endif
-  QList<class MultiEnvelope*> multiEnvelopeList;
   QList<class Function*> functionList;
-  QList<class MidiGUIcomponent*> midiGUIcomponentList;
   QList<class QLineEdit*> lineEditList;
   QList<class QLabel*> labelList;
-  Module *parentModule;
+  Module &module;
   QTabWidget *tabWidget;
 
 protected:
-  void insertWidget(QBoxLayout *layout, QWidget *widget, int stretch = 0, Qt::Alignment alignment = 0);
+  void insertWidget(QBoxLayout *layout, QWidget *widget, int stretch = 0, Qt::Alignment alignment = 0, int pos = -1);
      
 public:
-  ConfigDialog(Module *p_parentModule);
+  ConfigDialog(Module &module);
   ~ConfigDialog();
   void setAddStretch(int v) {
     addStretch = v;
   }
   void removeButtonShow(bool show);
-  int addSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, bool isLog=false, QBoxLayout *layout = 0);
-  int addIntSlider(int minValue, int maxValue, int value, const QString &name, int *valueRef, QBoxLayout *layout = NULL);
-  int addFloatIntSlider(float minValue, float maxValue, float value, const QString &name, float *valueRef, QBoxLayout *layout = NULL);
-  int addComboBox(int value, const QString &name, int *valueRef, int itemCount, QStringList *itemNames, QBoxLayout *layout = NULL);
-  int addCheckBox(float value, const QString &name, float *valueRef, QBoxLayout *layout = NULL);
-  int addPushButton(const QString &name, QBoxLayout *layout = NULL);
-  int addEnvelope(float *delayRef, float *attackRef, float *holdRef, 
-		  float *decayRef, float *sustainRef, float *releaseRef, QBoxLayout *layout = NULL);
-  int addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout = NULL);
+  int addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog = false, QBoxLayout *layout = NULL);
+  IntMidiSlider *addIntSlider(const QString &name, int &valueRef, int minValue, int maxValue, QBoxLayout *layout = NULL);
+  int addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout = NULL);
+  MidiComboBox *addComboBox(const QString &name, int &valueRef, const QStringList &itemNames, QBoxLayout *layout = NULL);
+  int addCheckBox(const QString &name, float &valueRef, QBoxLayout *layout = NULL);
+  int addPushButton(const QString &name, void (Module::*doOnce)(void), QBoxLayout *layout = NULL);
+  int addEnvelope(class MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
+		  MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout = NULL);
+  class MultiEnvelope *addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout = NULL);
   int addFunction(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &, int p_pointCount, QBoxLayout *layout = NULL);
   int addLabel(QString label, QBoxLayout *layout = NULL);
-  int addScopeScreen(float *timeScaleRef, int *modeRef, int *edgeRef, int *triggerModeRef, 
-		     float *triggerThrsRef, float *zoomRef, QBoxLayout *layout = NULL);
+  int addScopeScreen(float &timeScaleRef, int &modeRef, int &edgeRef, int &triggerModeRef, 
+		     float &triggerThrsRef, float &zoomRef, QBoxLayout *layout = NULL);
 #ifdef OUTDATED_CODE
   int addSpectrumScreen(QWidget *parent=0);
 #endif

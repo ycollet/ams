@@ -1,38 +1,61 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include "midisliderbase.h"
+#include "midicontrollable.h"
 
 /**
   *@author Karsten Wiese
   */
 
-MidiSliderBase::MidiSliderBase(Module *parentModule,
-			       Qt::Orientation orientation,
-			       QWidget *parent, const QString &name,
-			       int min, int max, int step, int value,
-			       const QString &sMin,
-			       const QString &sMax
-			       )
-  : MidiGUIcomponent(parentModule, parent, name)
+MidiSliderBase::MidiSliderBase(MidiControllableBase &mcAble, Qt::Orientation orientation)
+  : MidiGUIcomponent(mcAble)
+  , slider(orientation)
 {
   QVBoxLayout *sliderBox = new QVBoxLayout(this);
   sliderBox->setSpacing(0);
   sliderBox->setMargin(0);
-  QLabel *nameLabel = new QLabel(name);
+  QLabel *nameLabel = new QLabel(mcAble.name);
   sliderBox->addWidget(nameLabel, 0, Qt::AlignHCenter);
   QHBoxLayout *sliderLabels = new QHBoxLayout();
   sliderBox->addLayout(sliderLabels);
-  minLabel = new QLabel(sMin);
-  sliderLabels->addWidget(minLabel, 0);
-  valueLabel = new QLabel();
-  sliderLabels->addWidget(valueLabel, 0, Qt::AlignHCenter);
-  maxLabel = new QLabel(sMax);
-  sliderLabels->addWidget(maxLabel, 0, Qt::AlignRight);
+  sliderLabels->addWidget(&minLabel, 0);
+  sliderLabels->addWidget(&valueLabel, 0, Qt::AlignHCenter);
+  sliderLabels->addWidget(&maxLabel, 0, Qt::AlignRight);
 
-  slider = new QSlider(orientation);
-  slider->setMinimum(min);
-  slider->setMaximum(max);
-  slider->setPageStep(step);
-  slider->setValue(value);
-  sliderBox->addWidget(slider);
+  updateMin();
+  updateMax();
+  slider.setPageStep(mcAble.sliderStep());
+  mcAbleChanged();
+  QObject::connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
+  sliderBox->addWidget(&slider);
+}
+
+void MidiSliderBase::valueChanged(int value)
+{
+  mcAble.setSliderVal(value, this);
+  valueLabel.setText(mcAble.valString());
+}
+
+void MidiSliderBase::updateMin()
+{
+  minLabel.setText(mcAble.minString());
+  slider.blockSignals(true);
+  slider.setMinimum(mcAble.sliderMin());
+  slider.blockSignals(false);
+}
+
+void MidiSliderBase::updateMax()
+{
+  maxLabel.setText(mcAble.maxString());
+  slider.blockSignals(true);
+  slider.setMaximum(mcAble.sliderMax());
+  slider.blockSignals(false);
+}
+
+void MidiSliderBase::mcAbleChanged()
+{
+  slider.blockSignals(true);
+  slider.setValue(mcAble.sliderVal());
+  slider.blockSignals(false);
+  valueLabel.setText(mcAble.valString());
 }

@@ -48,7 +48,6 @@ HEADERS += box.h \
            configdialog.h \
            envelope.h \
            filter.h \
-           floatintmidislider.h \
            function.h \
            guiwidget.h \
            intmidislider.h \
@@ -97,8 +96,10 @@ HEADERS += box.h \
            m_vquant.h \
            m_wavout.h \
            main.h \
+           mced.h \
            midicheckbox.h \
            midicombobox.h \
+           midicontrollable.h \
            midicontroller.h \
            midicontrollerlist.h \
            midiguicomponent.h \
@@ -112,6 +113,7 @@ HEADERS += box.h \
            port.h \
            port_popup.h \
            prefwidget.h \
+           ringbuffer.h \
            scopescreen.h \
            synthdata.h \
            textedit.h
@@ -121,7 +123,6 @@ SOURCES += box.cpp \
            configdialog.cpp \
            envelope.cpp \
            filter.cpp \
-           floatintmidislider.cpp \
            function.cpp \
            guiwidget.cpp \
            intmidislider.cpp \
@@ -170,8 +171,10 @@ SOURCES += box.cpp \
            m_vquant.cpp \
            m_wavout.cpp \
            main.cpp \
+           mced.cpp \
            midicheckbox.cpp \
            midicombobox.cpp \
+           midicontrollable.cpp \
            midicontroller.cpp \
            midicontrollerlist.cpp \
            midiguicomponent.cpp \
