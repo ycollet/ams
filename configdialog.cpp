@@ -17,7 +17,6 @@
 #include "configdialog.h"
 #include "midislider.h"
 #include "intmidislider.h"
-#include "floatintmidislider.h"
 #include "midicheckbox.h"
 #include "midicombobox.h"
 #include "midicontrollable.h"

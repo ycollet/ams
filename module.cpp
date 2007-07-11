@@ -12,17 +12,14 @@
 #include "modularsynth.h"
 #include "synthdata.h"
 #include "configdialog.h"
-#include "midislider.h"
-#include "intmidislider.h"
-#include "floatintmidislider.h"
-#include "midicombobox.h"
-#include "midicheckbox.h"
+#include "midicontrollable.h"
 #include "module.h"
 #include "main.h"
 
 
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
   : Box(parent, name)
+  , connections(0)
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
@@ -41,7 +38,7 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
 //   setPalette(QPalette(colorBackground, colorBackground));
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DEFAULT_HEIGHT);
 
-  configDialog = new ConfigDialog(this);
+  configDialog = new ConfigDialog(*this);
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
   data = (float ***)malloc(outPortCount * sizeof(float **));
@@ -58,7 +55,11 @@ Module::~Module()
 {
   int l1, l2;
 
+  delete configDialog;  
+
   synthdata->midiWidget->removeModule(this);
+
+  qDeleteAll(midiControllables.begin(), midiControllables.end());
 
   for (l1 = 0; l1 < portList.count(); ++l1) {
     Port *port = portList.at(l1);
@@ -68,7 +69,6 @@ Module::~Module()
 
     connected.clear();
   }
-  delete(configDialog);  
 
   for (l1 = 0; l1 < outPortCount; ++l1) {
     for (l2 = 0; l2 < synthdata->poly; ++l2) {
@@ -142,7 +142,7 @@ int Module::saveConnections(FILE *f) {
 }
 
 int Module::saveParameters(FILE *f) {
-
+  /*!!
   int l1, l2, l3;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
@@ -184,12 +184,12 @@ int Module::saveParameters(FILE *f) {
                     configDialog->functionList.at(l1)->getPoint(l2, l3).y());
       }
     }                
-  }
+    }*/
   return 0;
 }
 
 int Module::saveBindings(FILE *f) {
-
+  /*
   int l1, l2;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
@@ -231,7 +231,7 @@ int Module::saveBindings(FILE *f) {
 	      configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2).ch(),    
 	      configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2).param());
     }
-  }
+    }*/
   return 0;
 }
 
@@ -240,11 +240,27 @@ int Module::load(FILE *)
   return 0;
 }
 
-void  Module::getColors(void)
+void Module::getColors(void)
 {
   QColor alphaBack(synthdata->colorModuleBackground);
   alphaBack.setAlpha(203);
   setPalette(QPalette(alphaBack, alphaBack));
   colorBorder = synthdata->colorModuleBorder;
   colorFont = synthdata->colorModuleFont;
+}
+
+void Module::incConnections()
+{
+  if (connections++ == 0) {
+    configDialog->removeButtonShow(false);
+    synthdata->midiWidget->setActiveMidiControllers();
+  }
+}
+
+void Module::decConnections()
+{
+  if (--connections == 0) {
+    synthdata->midiWidget->setActiveMidiControllers();
+    configDialog->removeButtonShow(true);
+  }
 }

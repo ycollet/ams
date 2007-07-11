@@ -19,7 +19,6 @@
 #include <QTextEdit>
 #include "midislider.h"
 #include "intmidislider.h"
-#include "floatintmidislider.h"
 #include "midicombobox.h"
 #include "midicheckbox.h"
 #include "modularsynth.h"
@@ -246,6 +245,8 @@ int ModularSynth::go(bool withJack)
   else
     fprintf(stderr, " MIDI wont work!\n");
 
+  midiWidget->setActiveMidiControllers();
+
   if (withJack) {
     synthdata->initJack(ncapt, nplay);
     synthdata->doSynthesis = true;
@@ -287,10 +288,14 @@ void ModularSynth::displayAbout() {
     aboutWidget->raise();
 }
 
-void ModularSynth::displayMidiController() {
-   
-  midiWidget->show();  
-  midiWidget->raise();
+void ModularSynth::displayMidiController()
+{
+  if (!midiWidget->isVisible())
+    midiWidget->show();
+  else {
+    midiWidget->raise();
+    midiWidget->activateWindow();
+  }
 }
 
 void ModularSynth::displayParameterView() {
@@ -340,7 +345,7 @@ snd_seq_t *ModularSynth::open_seq() {
   QString qs;
 
   setMainWindowTitle();
-  if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, 0) < 0) {
+  if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK) < 0) {
     fprintf(stderr, "Error opening ALSA sequencer.");
     return NULL;
   }
@@ -369,20 +374,60 @@ snd_seq_t *ModularSynth::open_seq() {
   return seq_handle;
 }
 
-int ModularSynth::initSeqNotifier() {
+int ModularSynth::initSeqNotifier()
+{
 
-  int alsaEventFd = 0;
+//   int alsaEventFd = 0;
 
-  struct pollfd pfd[1];
-  snd_seq_poll_descriptors(synthdata->seq_handle, pfd, 1, POLLIN);
-  alsaEventFd = pfd[0].fd;
-  seqNotifier = new QSocketNotifier(alsaEventFd, QSocketNotifier::Read);
+//   struct pollfd pfd[1];
+//   snd_seq_poll_descriptors(synthdata->seq_handle, pfd, 1, POLLIN);
+//   alsaEventFd = pfd[0].fd;
+  seqNotifier = new QSocketNotifier(synthdata->pipeFd[0], QSocketNotifier::Read);
   QObject::connect(seqNotifier, SIGNAL(activated(int)),
-                   this, SLOT(midiAction(int)));
+		   this, SLOT(midiAction(int)));
   return(0);
 }
 
-void ModularSynth::midiAction(int) {
+void ModularSynth::midiAction(int fd)
+{
+  char pipeIn[16];
+
+  int pipeRed = read(fd, pipeIn, sizeof(pipeIn));
+
+  if (pipeRed < 0) {
+    StdErr << __PRETTY_FUNCTION__ << ": read() " << endl;
+    perror(NULL);
+    exit(-1);
+  }
+  if (pipeRed < 1 || pipeRed >= sizeof(pipeIn))
+    StdOut << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
+  if (pipeRed == 0)
+    return;
+
+  while (pipeRed > 1)
+    pipeIn[0] |= pipeIn[--pipeRed];
+
+  for (int mCs = synthdata->mcSet.count();
+       mCs; --mCs) {
+    MidiControllableBase *mc = synthdata->mcSet.get();
+    mc->updateMGCs(NULL);
+  }
+
+  for (int mcKs = synthdata->mckRed.count();
+       mcKs; --mcKs) {
+    MidiControllerKey mcK = synthdata->mckRed.get();
+    if (midiWidget->isVisible()) {
+      if (mcK.type() == SND_SEQ_EVENT_CONTROLLER ||
+	  mcK.type() == SND_SEQ_EVENT_CONTROL14 ||
+	  mcK.type() == SND_SEQ_EVENT_PITCHBEND ||
+	  (midiWidget->noteControllerEnabled &&
+	   (mcK.type() == SND_SEQ_EVENT_NOTEON ||
+	    mcK.type() == SND_SEQ_EVENT_NOTEOFF)))
+	midiWidget->addMidiController(mcK);
+    }
+  }
+
+  return;
 
   snd_seq_event_t *ev;
   QString qs;
@@ -424,7 +469,7 @@ void ModularSynth::midiAction(int) {
 	value = 0;
 	break;
       }
-      emit c->context->sendMidiValue(value);
+      //!!      emit c->context->sendMidiValue(value);
       if (midiWidget->followMidi)
 	midiWidget->setSelectedController(*c);
     }
@@ -481,7 +526,7 @@ void ModularSynth::midiAction(int) {
           for (l2 = 0; l2 < synthdata->poly; ++l2)
             if (synthdata->sustainNote[l2])
               synthdata->noteCounter[l2] = 1000000;
-      }  
+      }
     }
     if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
       guiWidget->setCurrentPreset(ev->data.control.value);
@@ -489,13 +534,13 @@ void ModularSynth::midiAction(int) {
     for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
       switch (ev->type) {
         case SND_SEQ_EVENT_CHANPRESS: 
-          ((M_advmcv *)synthdata->listM_advmcv.at(l1))->aftertouchEvent(ev->data.note.channel, ev->data.control.value);
+          synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
           break;
         case SND_SEQ_EVENT_PITCHBEND:
-          ((M_advmcv *)synthdata->listM_advmcv.at(l1))->pitchbendEvent(ev->data.note.channel, ev->data.control.value); 
+          synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
           break;
         case SND_SEQ_EVENT_CONTROLLER: 
-          ((M_advmcv *)synthdata->listM_advmcv.at(l1))->controllerEvent(ev->data.note.channel, ev->data.control.param, ev->data.control.value);
+          synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
           break;
       }
 
@@ -511,7 +556,7 @@ void ModularSynth::initPorts(Module *m) {
     QObject::connect(m->portList.at(l1), SIGNAL(portClicked()), 
                      this, SLOT(portSelected()));
     QObject::connect(m->portList.at(l1), SIGNAL(portDisconnected()), 
-                     this, SLOT(updatePortConnections()));
+                     this, SLOT(update()));
   }
 }
 
@@ -1024,11 +1069,6 @@ void ModularSynth::portSelected() {
   } 
 }
 
-void ModularSynth::updatePortConnections()
-{
-  update();  //  repaintContents(false);
-}
-
 void ModularSynth::deleteModule() {
 
   Module *m;
@@ -1196,8 +1236,8 @@ void ModularSynth::saveColors() {
   }
 }                             
 
-void ModularSynth::load(QString *presetName) {
-
+void ModularSynth::load(QString *presetName)
+{
   int l1;
   int M_type, moduleID, index, value, x, y, w, h, subID1, subID2;
   int index1, index2, moduleID1, moduleID2, midiSign;
@@ -1518,12 +1558,19 @@ void ModularSynth::load(QString *presetName) {
         isLog = isLogInt == 1;
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
+	    MidiControllableFloat &mcAbleF =
+	      dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
+	    mcAbleF.isLog = isLog;
+	    mcAbleF.setSliderVal(value, NULL);
+	    mcAbleF.setNewMin(sliderMin);
+	    mcAbleF.setNewMax(sliderMax);
+	    mcAbleF.midiSign = midiSign;
+            /*listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->updateValue(value);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMin(sliderMin);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMax(sliderMax);
-            listModule.at(l1)->configDialog->midiSliderList.at(index)->midiSign = midiSign;
+            listModule.at(l1)->configDialog->midiSliderList.at(index)->midiSign = midiSign;*/
             break;
           }
         }
@@ -1535,9 +1582,13 @@ void ModularSynth::load(QString *presetName) {
         Fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
+	    MidiControllableBase &mcAble =
+	      listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble;
+	    mcAble.midiSign = midiSign;
+	    mcAble.setSliderVal(value, NULL);
+	    /*            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);
+            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);*/
             break;
           }
         }
@@ -1549,9 +1600,13 @@ void ModularSynth::load(QString *presetName) {
         Fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
+	    MidiControllableBase &mcAble =
+	      listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble;
+	    mcAble.midiSign = midiSign;
+	    mcAble.setSliderVal(value, NULL);
+            /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
-            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);
+            listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);*/
             break;
           }
         }
@@ -1563,8 +1618,10 @@ void ModularSynth::load(QString *presetName) {
         Fscanf(f, "%d", &midiSign); 
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->midiComboBoxList.at(index)->comboBox->setCurrentIndex(value);
-            listModule.at(l1)->configDialog->midiComboBoxList.at(index)->midiSign = midiSign;
+	    MidiControllableNames &mcAble =
+	      dynamic_cast<MidiControllableNames &>(listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble);
+	    mcAble.midiSign = midiSign;
+	    mcAble.setVal(value, NULL);
             break;
           }
         }
@@ -1577,7 +1634,7 @@ void ModularSynth::load(QString *presetName) {
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
             listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->checkBox->setChecked(value==1);
-            listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->midiSign = midiSign;
+            listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.midiSign = midiSign;
             break;
           }
         }
@@ -1624,19 +1681,19 @@ void ModularSynth::load(QString *presetName) {
 // //           midiController = *midiIndex;
 // //         }
         if (qs.contains("FSMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiSliderList.at(index)->connectToController(mck);
+          listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble.connectToController(mck);
         }
         if (qs.contains("ISMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->intMidiSliderList.at(index)->connectToController(mck);
+          listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble.connectToController(mck);
         }
         if (qs.contains("LSMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->connectToController(mck);
+          listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble.connectToController(mck);
         }
         if (qs.contains("CMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiComboBoxList.at(index)->connectToController(mck);
+          listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble.connectToController(mck);
         }
         if (qs.contains("TMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->connectToController(mck);
+          listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.connectToController(mck);
         }
       }
       if (qs.contains("#PARA#", Qt::CaseInsensitive)) {
@@ -1700,14 +1757,18 @@ void ModularSynth::load(QString *presetName) {
         Fscanf(f, "%d", &index);
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
-            guiWidget->addParameter(listModule.at(l1)->configDialog->midiGUIcomponentList.at(index), qs);
-            if (listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider) {
+            guiWidget->addParameter(listModule.at(l1)->midiControllables.at(index), qs);
+	    MidiControllableFloat *mcAbleF =
+	      dynamic_cast<MidiControllableFloat *>(listModule.at(l1)->midiControllables.at(index));
+
+            if (mcAbleF)
+	      /*listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider)*/ {
               Fscanf(f, "%d", &sliderMin);
               Fscanf(f, "%d", &sliderMax);
               Fscanf(f, "%d", &isLogInt);
-              ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
-              ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
-              ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLogInt == 1);
+//!!               ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
+//               ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
+//               ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLogInt == 1);
             }
             break;
           }
@@ -1744,13 +1805,14 @@ void ModularSynth::load(QString *presetName) {
   }
   resize();
   update();
+  midiWidget->setActiveMidiControllers();
   synthdata->doSynthesis = true;
   midiWidget->followConfig = followConfig;
   guiWidget->refreshGui();
 }
 
 void ModularSynth::save()
-{
+{/*
   int l1, l2, value;
   FILE *f;
   QString config_fn, qs;
@@ -1878,7 +1940,7 @@ void ModularSynth::save()
       fprintf(f, "PresetName \"%s\"\n", (*presetit).mid(3).toLatin1().constData());
     } 
     fclose(f);
-  }
+    }*/
 }
 //==================================================================== End persistence
 void ModularSynth::allVoicesOff()

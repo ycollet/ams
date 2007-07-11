@@ -26,7 +26,6 @@
 #include "module.h"
 #include "midislider.h"
 #include "intmidislider.h"
-#include "floatintmidislider.h"
 #include "midicombobox.h"
 #include "midicheckbox.h"
 #include "midipushbutton.h"
