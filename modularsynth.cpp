@@ -382,7 +382,7 @@ int ModularSynth::initSeqNotifier()
 //   struct pollfd pfd[1];
 //   snd_seq_poll_descriptors(synthdata->seq_handle, pfd, 1, POLLIN);
 //   alsaEventFd = pfd[0].fd;
-  seqNotifier = new QSocketNotifier(synthdata->pipeFd[0], QSocketNotifier::Read);
+  seqNotifier = new QSocketNotifier(synthdata->pipeFd[0], QSocketNotifier::Read, this);
   QObject::connect(seqNotifier, SIGNAL(activated(int)),
 		   this, SLOT(midiAction(int)));
   return(0);

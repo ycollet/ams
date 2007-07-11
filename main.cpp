@@ -8,6 +8,7 @@
 #include <QScrollArea>
 #include <qstring.h>
 #include "modularsynth.h"
+#include "mainwindow.h"
 
 
 class ScrollArea: public QScrollArea {
@@ -18,19 +19,6 @@ class ScrollArea: public QScrollArea {
   }
 };
 
-class MainWindow: public QMainWindow {
-  //  Q_OBJECT
-
-public:
-  MainWindow() {
-    setWindowTitle("AlsaModularSynth");
-  }
-
-protected:
-  void closeEvent(QCloseEvent */*event*/) {
-    qApp->quit();
-  }
-};
 
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},

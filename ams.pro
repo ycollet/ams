@@ -97,6 +97,7 @@ HEADERS += box.h \
            m_vquant.h \
            m_wavout.h \
            main.h \
+           mainwindow.h \
            mced.h \
            midicheckbox.h \
            midicombobox.h \
@@ -172,6 +173,7 @@ SOURCES += box.cpp \
            m_vquant.cpp \
            m_wavout.cpp \
            main.cpp \
+           mainwindow.cpp \
            mced.cpp \
            midicheckbox.cpp \
            midicombobox.cpp \
