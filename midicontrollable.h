@@ -35,14 +35,13 @@ public:
       disconnectController(midiControllerList.at(0));
   }
 
-  void updateMGCs(MidiGUIcomponent *sender);
+  virtual void updateMGCs(MidiGUIcomponent *sender);
 
   virtual int getValue() { return *(int*)0; }
   virtual int getMin() { return *(int*)0; }
   virtual int getMax() { return *(int*)0; }
 
-  virtual void setMidiValueRT(int ) = 0;
-  virtual void setValue(int value) = 0;
+  virtual bool setMidiValueRT(int ) = 0;
   virtual int getMidiValue() = 0;
 
   virtual int sliderMin() { return 0;}
@@ -69,18 +68,28 @@ public:
 };
 
 
-class MidiControllableDoOnce: public MidiControllableBase {
-public:
-  void (Module::*doOnce)(void);
+class MidiControllableDoOnce: public QObject, public MidiControllableBase {
+  Q_OBJECT
 
-  MidiControllableDoOnce(Module &module, const QString &name, void (Module::*doOnce)(void))
+  int lastVal;
+
+public:
+  MidiControllableDoOnce(Module &module, const QString &name)
     : MidiControllableBase(module, name)
-    , doOnce(doOnce)
+    , lastVal(64)
   {}
 
-  virtual void setMidiValueRT(int );
-  virtual void setValue(int value);
+  virtual void updateMGCs(MidiGUIcomponent *sender);
+
+  virtual bool setMidiValueRT(int );
   virtual int getMidiValue();
+
+  void trigger() {
+    emit triggered();
+  }
+
+signals:
+  void triggered();
 };
 
 
@@ -111,13 +120,15 @@ public:
   virtual int getMin() { return toInt(min); }
   virtual int getMax() { return toInt(max); }
 
-  virtual void setMidiValueRT(int val0to127) {
+  virtual bool setMidiValueRT(int val0to127) {
     float tick = (float)(max - min) / 127;
     if (!midiSign)
       val0to127 = 127 - val0to127;
     value = min + round(tick * val0to127);
+
+    return true;
   }
-  virtual void setValue(int /*value*/) {}
+
   virtual int getMidiValue() { return 0;}
 
   virtual int sliderMin() { return getMin(); }
@@ -165,8 +176,7 @@ public:
   void resetMinMax();
   void updateFloatMGCs();
 
-  virtual void setMidiValueRT(int );
-  virtual void setValue(int value);
+  virtual bool setMidiValueRT(int );
   virtual int getMidiValue();
 
   virtual int sliderMin();

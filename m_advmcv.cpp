@@ -7,8 +7,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-
-
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -18,6 +16,7 @@
 #include "synthdata.h"
 #include "m_advmcv.h"
 #include "port.h"
+
 
 M_advmcv::M_advmcv(QWidget* parent) 
   : Module(M_type_advmcv, 10, parent, "Advanced MCV")
@@ -67,14 +66,14 @@ M_advmcv::M_advmcv(QWidget* parent)
   channel = 0;
   pitch = 0;
   pitchbend = 0;
+  aftertouch_cv = 0;
+  pitchbend_cv = 0;
+  for(l2 = 0; l2 < MODULE_ADVMCV_CONTROLLER_PORTS; l2++) {
+    controller_cv[l2] = 0;
+    controller_num[l2] = 0;
+  }
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     freq[l1] = 0;
-    aftertouch_cv[l1] = 0;
-    pitchbend_cv[l1] = 0;
-    for(l2 = 0; l2 < MODULE_ADVMCV_CONTROLLER_PORTS; l2++) {
-      controller_cv[l2][l1] = 0;
-      controller_num[l2] = 0;
-    }
   }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
   configDialog->addIntSlider("Note Offset", pitch, -36, 36);
@@ -105,10 +104,10 @@ void M_advmcv::generateCycle() {
         data[0][l1][l2] = gate;
         data[1][l1][l2] = freq[l1];
         data[2][l1][l2] = velocity;
-        data[4][l1][l2] = aftertouch_cv[l1];
-        data[5][l1][l2] = pitchbend_cv[l1];
+        data[4][l1][l2] = aftertouch_cv;
+        data[5][l1][l2] = pitchbend_cv;
         for (l3 = 0; l3 < MODULE_ADVMCV_CONTROLLER_PORTS; l3++) {
-          data[6+l3][l1][l2] = controller_cv[l3][l1];
+          data[6+l3][l1][l2] = controller_cv[l3];
         }
       } 
       memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
@@ -122,33 +121,17 @@ void M_advmcv::generateCycle() {
 
 void M_advmcv::aftertouchEvent(int value)
 {
-  int l1;
-  
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    aftertouch_cv[l1] = (double)value / 127.0;
-  }
+  aftertouch_cv = (float)value / 127.0;
 }
 
 void M_advmcv::controllerEvent(int controlNum, int value)
 {
-  int l1, l2;
-
-//  fprintf(stderr, "controllerEvent %d %d\n", controlNum, value);
-  for(l2 = 0; l2 < MODULE_ADVMCV_CONTROLLER_PORTS; l2++) {
-    if (controlNum == controller_num[l2]) {
-      for (l1 = 0; l1 < synthdata->poly; l1++) {
-        controller_cv[l2][l1] = (double)value / 127.0;
-      }
-    }
-  }
+  for(int l2 = 0; l2 < MODULE_ADVMCV_CONTROLLER_PORTS; l2++)
+    if (controlNum == controller_num[l2])
+        controller_cv[l2] = (float)value / 127.0;
 }
 
 void M_advmcv::pitchbendEvent(int value)
 {
-  int l1;
-
-//  fprintf(stderr, "pitchbendEvent %d\n", value);
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    pitchbend_cv[l1] = (float)value / 8192.0;
-  }
+    pitchbend_cv = (float)value / 8192.0;
 }

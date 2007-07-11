@@ -23,8 +23,8 @@ public:
     
 public:
   MidiPushButton(class MidiControllableDoOnce &mcAble);
+
   virtual MidiGUIcomponent *createTwin();
-  ~MidiPushButton();
 
   void mcAbleChanged() {};
 

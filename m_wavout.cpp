@@ -18,6 +18,7 @@
 #include <QFileDialog>
 
 #include "synthdata.h"
+#include "midicontrollable.h"
 #include "midipushbutton.h"
 #include "m_wavout.h"
 #include "module.h"
@@ -53,19 +54,15 @@ M_wavout::M_wavout(QWidget* parent)
   hbox1 = configDialog->addHBox(fileTab);
   configDialog->addLabel("Time: 0:00:00        ", recordTab);
   configDialog->labelList.at(0)->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-  //!!  configDialog->addPushButton("New File", hbox1);
-  //!!    configDialog->addPushButton("Overwrite Current File", hbox1);
+  MidiControllableDoOnce *do0 = configDialog->addPushButton("New File", hbox1);
+  MidiControllableDoOnce *do1 = configDialog->addPushButton("Overwrite Current File", hbox1);
   hbox2 = configDialog->addHBox(recordTab);
-  //!!    configDialog->addPushButton("Record", hbox2);
-  //!!    configDialog->addPushButton("Stop", hbox2);  
-  QObject::connect(configDialog->midiPushButtonList.at(1), SIGNAL(clicked()), 
-                   this, SLOT(createWav())); 
-  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()), 
-                   this, SLOT(openBrowser())); 
-  QObject::connect(configDialog->midiPushButtonList.at(2), SIGNAL(clicked()), 
-                   this, SLOT(recordClicked())); 
-  QObject::connect(configDialog->midiPushButtonList.at(3), SIGNAL(clicked()), 
-                   this, SLOT(stopClicked())); 
+  MidiControllableDoOnce *do2 = configDialog->addPushButton("Record", hbox2);
+  MidiControllableDoOnce *do3 = configDialog->addPushButton("Stop", hbox2);  
+  QObject::connect(do0, SIGNAL(triggered()), this, SLOT(openBrowser())); 
+  QObject::connect(do1, SIGNAL(triggered()), this, SLOT(createWav())); 
+  QObject::connect(do2, SIGNAL(triggered()), this, SLOT(recordClicked())); 
+  QObject::connect(do3, SIGNAL(triggered()), this, SLOT(stopClicked())); 
   configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
   configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
   configDialog->addSlider("Gain", gain, 0, 1, false, gainTab);

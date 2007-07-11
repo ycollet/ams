@@ -121,10 +121,10 @@ int ConfigDialog::addCheckBox(const QString &name, float &valueRef, QBoxLayout *
   return(0);
 }
 
-int ConfigDialog::addPushButton(const QString &name, void (Module::*doOnce)(void), QBoxLayout *layout)
+MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLayout *layout)
 {
   MidiControllableDoOnce *mcAble =
-    new MidiControllableDoOnce(module, name, doOnce);
+    new MidiControllableDoOnce(module, name);
   
   MidiPushButton *midiPushButton;
 
@@ -133,7 +133,7 @@ int ConfigDialog::addPushButton(const QString &name, void (Module::*doOnce)(void
 
   midiPushButtonList.append(midiPushButton);
 
-  return(0);
+  return mcAble;
 }
 
 int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 

@@ -20,28 +20,10 @@ MidiPushButton::MidiPushButton(MidiControllableDoOnce &mcAble)
 
 MidiGUIcomponent *MidiPushButton::createTwin()
 {
-  return new MidiPushButton(*dynamic_cast<MidiControllableDoOnce *>(&mcAble));
+  return new MidiPushButton(dynamic_cast<MidiControllableDoOnce &>(mcAble));
 }
 
-MidiPushButton::~MidiPushButton() {
-}
-/*
-void MidiPushButton::setMidiValueRT(int value)
-{
-}
-
-void MidiPushButton::setMidiValue(int value) {
-
-  if (midiSign == 1) {
-    if (value > 124) emit clicked();
-  } else {
-    if (value <= 124) emit clicked();
-  }
-}
-*/
 void MidiPushButton::clicked()
 {
-
-  //  emit clicked();
-  //  emit guiComponentTouched();
+  static_cast<MidiControllableDoOnce &>(mcAble).trigger();
 }

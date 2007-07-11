@@ -400,7 +400,7 @@ void ModularSynth::midiAction(int fd)
     exit(-1);
   }
   if (pipeRed < 1 || pipeRed >= sizeof(pipeIn))
-    StdOut << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
+    StdErr << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
   if (pipeRed == 0)
     return;
 
@@ -1583,7 +1583,7 @@ void ModularSynth::load(QString *presetName)
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
 	    MidiControllableBase &mcAble =
-	      listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble;
+	      listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble;
 	    mcAble.midiSign = midiSign;
 	    mcAble.setSliderVal(value, NULL);
 	    /*            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
@@ -1601,7 +1601,7 @@ void ModularSynth::load(QString *presetName)
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
 	    MidiControllableBase &mcAble =
-	      listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble;
+	      listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble;
 	    mcAble.midiSign = midiSign;
 	    mcAble.setSliderVal(value, NULL);
             /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;

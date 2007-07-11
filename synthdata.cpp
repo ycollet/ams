@@ -8,6 +8,7 @@
 #include "guiwidget.h"
 #include "midiwidget.h"
 #include "synthdata.h"
+#include "m_advmcv.h"
 #include "m_env.h"
 #include "m_vcenv.h"
 #include "m_vcenv2.h"
@@ -605,6 +606,22 @@ void SynthData::readMIDI(void)
       pipeMessage |= 2;
       //      StdOut << "not " << ev->data.control.value << endl;
     }
+    if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
+      guiWidget->setCurrentPreset(ev->data.control.value);
+
+    for (int l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
+      switch (ev->type) {
+        case SND_SEQ_EVENT_CHANPRESS: 
+          synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
+          break;
+        case SND_SEQ_EVENT_PITCHBEND:
+          synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
+          break;
+        case SND_SEQ_EVENT_CONTROLLER: 
+          synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
+          break;
+      }
+
   }
 
   pthread_mutex_unlock(&rtMutex);

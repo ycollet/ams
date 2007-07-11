@@ -5,15 +5,12 @@
 #include <dlfcn.h>
 #include <qregexp.h>
 #include <QTextStream>
-
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-
-
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -25,6 +22,7 @@
 #include "synthdata.h"
 #include "midipushbutton.h"
 #include "m_scmcv.h"
+#include "midicontrollable.h"
 #include "port.h"
 
 M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname) 
@@ -80,9 +78,8 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   sclname = "No_Scale_loaded";
   configDialog->addLabel("   Scale: " + sclname);
   configDialog->addLabel("   ");
-  configDialog->addPushButton("Load Scale", (void (Module::*)())&M_scmcv::openBrowser);
-//   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
-//                    this, SLOT(openBrowser())); 
+  MidiControllableDoOnce * doO = configDialog->addPushButton("Load Scale");
+  QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser())); 
   fileDialog = NULL;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {

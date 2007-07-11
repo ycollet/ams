@@ -66,7 +66,7 @@ public:
   int addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout = NULL);
   MidiComboBox *addComboBox(const QString &name, int &valueRef, const QStringList &itemNames, QBoxLayout *layout = NULL);
   int addCheckBox(const QString &name, float &valueRef, QBoxLayout *layout = NULL);
-  int addPushButton(const QString &name, void (Module::*doOnce)(void), QBoxLayout *layout = NULL);
+  class MidiControllableDoOnce *addPushButton(const QString &name, QBoxLayout *layout = NULL);
   int addEnvelope(class MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
 		  MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout = NULL);
   class MultiEnvelope *addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout = NULL);

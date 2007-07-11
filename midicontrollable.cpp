@@ -34,12 +34,25 @@ void MidiControllableBase::disconnectController(MidiControllerKey midiController
 }
 
 
-void MidiControllableDoOnce::setMidiValueRT(int )
+void MidiControllableDoOnce::updateMGCs(MidiGUIcomponent */*sender*/)
 {
+  trigger();
 }
 
-void MidiControllableDoOnce::setValue(int value)
+bool MidiControllableDoOnce::setMidiValueRT(int val0to127)
 {
+  if (!midiSign)
+    val0to127 = 127 - val0to127;
+
+  if (val0to127 > std::max(95, lastVal)) {
+    lastVal = 127;
+    return true;
+  }
+
+  if (val0to127 < std::min(32, lastVal))
+    lastVal = val0to127;
+
+  return false;
 }
 
 int MidiControllableDoOnce::getMidiValue()
@@ -137,16 +150,14 @@ void MidiControllableFloat::updateFloatMGCs()
     dynamic_cast<MidiSlider &>(**mcw).minMaxChanged();
 }
 
-void MidiControllableFloat::setMidiValueRT(int val0to127)
+bool MidiControllableFloat::setMidiValueRT(int val0to127)
 {
   float tick = (varMax - varMin) / 127;
   if (!midiSign)
     val0to127 = 127 - val0to127;
   value = varMin + tick * val0to127;
-}
 
-void MidiControllableFloat::setValue(int value)
-{
+  return true;
 }
 
 int MidiControllableFloat::getMidiValue()

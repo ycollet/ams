@@ -29,15 +29,54 @@
 #define MODULE_NEW_X                         50
 #define MODULE_NEW_Y                         50
 
-enum M_typeEnum { M_type_custom, M_type_vco, M_type_vca, M_type_lfo, M_type_delay, M_type_ringmod, 
-                  M_type_ladspa, M_type_pcmout, M_type_mix, M_type_vcf, M_type_mcv, M_type_env, M_type_seq, 
-                  M_type_inv, M_type_noise, M_type_slew, M_type_quantizer, M_type_pcmin, M_type_cvs, 
-                  M_type_sh, M_type_vcorgan, M_type_dynamicwaves, M_type_advenv, M_type_wavout, 
-                  M_type_scope, M_type_spectrum, M_type_vcswitch, M_type_jackin, M_type_jackout,
-                  M_type_midiout, M_type_scmcv, M_type_scquantizer, M_type_stereomix, M_type_conv, 
-                  M_type_vcenv, M_type_advmcv, M_type_function, M_type_vcpanning, M_type_vcenv2, 
-                  M_type_vcdoubledecay, M_type_vquant, M_type_amp, M_type_ad, M_type_mphlfo,
-		  M_type_noise2,M_type_vco2};
+enum M_typeEnum {
+  M_type_custom,
+  M_type_vco,
+  M_type_vca,
+  M_type_lfo,
+  M_type_delay,
+  M_type_ringmod,
+  M_type_ladspa,
+  M_type_pcmout,
+  M_type_mix,
+  M_type_vcf,
+  M_type_mcv,		// 10
+  M_type_env,
+  M_type_seq,
+  M_type_inv,
+  M_type_noise,
+  M_type_slew,
+  M_type_quantizer,
+  M_type_pcmin,
+  M_type_cvs, 
+  M_type_sh,
+  M_type_vcorgan,	// 20
+  M_type_dynamicwaves,
+  M_type_advenv,
+  M_type_wavout, 
+  M_type_scope,
+  M_type_spectrum,
+  M_type_vcswitch,
+  M_type_jackin,
+  M_type_jackout,
+  M_type_midiout,
+  M_type_scmcv,		// 30
+  M_type_scquantizer,
+  M_type_stereomix,
+  M_type_conv, 
+  M_type_vcenv,
+  M_type_advmcv,
+  M_type_function,
+  M_type_vcpanning,
+  M_type_vcenv2,
+  M_type_vcdoubledecay,
+  M_type_vquant,
+  M_type_amp,
+  M_type_ad,
+  M_type_mphlfo,
+  M_type_noise2,
+  M_type_vco2
+};
 
 // types jackin and jackout kept to ensure existing patches will load. FA
 
