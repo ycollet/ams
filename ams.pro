@@ -33,6 +33,7 @@ LADSPA_PATH = "/usr/lib/ladspa:/usr/local/lib/ladspa"
 PLATFORM = $$system(uname -i)
 OBJECTS_DIR = BUILD_$${PLATFORM}
 DESTDIR = $$OBJECTS_DIR
+MOC_DIR = MOC
 
 message($$PLATFORM)
 message($$OBJECTS_DIR)
