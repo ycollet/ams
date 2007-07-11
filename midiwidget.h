@@ -77,23 +77,28 @@ Q_OBJECT
   friend class MidiControllerModel;
 
 private:
+  MidiGUIcomponent *mgc;
   QCheckBox *noteCheck, *configCheck, *midiCheck;
   class QTreeView *midiControllerListView, *moduleListView;
   QVBoxLayout vbox;
   MidiControllerModel midiControllerModel;
   ModuleModel moduleModel;
   MidiControllerKey selectedController;
-  int selectedControl;
+  int selectedControlMcAble;
   QVBoxLayout *currentGUIcontrol;
+  QHBoxLayout *floatHelperLayout;
   QFrame *guiControlParent;
   QLabel *valueLabel, *minLabel, *maxLabel;
   QSlider *slider;
   QCheckBox *logCheck, *currentCheck;
+  QPushButton *newMinButton;
+  QPushButton *newMaxButton;
+  QPushButton *resetMinMaxButton;
   QString currentFrameName, currentTabName;
   class QComboBox *comboBox;
-  float minValue, maxValue, value, initial_min, initial_max;
-  MidiGUIcomponent *midiGUIcomponent;
-  bool firstBindingMightHaveChanged; 
+
+  MidiControllableBase *midiControllable;
+
   QVector<MidiController> midiControllerList;
   QPushButton *addGuiButton;
   QPushButton *bindButton;
@@ -101,7 +106,8 @@ private:
   QPushButton *clearAllButton;
   QPushButton *midiSignButton;
 
-  void deleteMidiGuiComponent();
+  void selectMcAble(MidiControllableBase &mcAble);
+  void showFloatHelpers(bool show);
 
 public: 
    bool noteControllerEnabled, followConfig, followMidi;
@@ -115,8 +121,9 @@ public:
       qBinaryFind(midiControllerList.constBegin(), midiControllerList.constEnd(), midiController);
     return c == midiControllerList.constEnd() ? NULL : &*c;
   }
-    void addMidiGuiComponent(MidiControllerKey midiController, MidiGUIcomponent *midiGuiComponent);
-    void removeMidiGuiComponent(MidiControllerKey midiController, MidiGUIcomponent *midiGuiComponent);
+  void setActiveMidiControllers();
+  void addMidiControllable(MidiControllerKey mck, MidiControllableBase *midiGuiComponent);
+  void removeMidiControllable(MidiControllerKey midiController, MidiControllableBase *midiGuiComponent);
     const MidiControllerKey getSelectedController() {
 	    return selectedController;
     }
@@ -124,6 +131,10 @@ public:
 
     void addModule(Module *m);
     void removeModule(Module *m);
+  void guiComponentTouched(MidiControllableBase &mcAble) {
+    if (followConfig)
+      selectMcAble(mcAble);
+  }
 
   public slots: 
     void clearAllClicked();
@@ -138,16 +149,10 @@ public:
 			   const QItemSelection &deselected);
     void midiControlChanged(const QItemSelection &selected,
 			    const QItemSelection &deselected);
-    void updateSliderValue(int p_value);
-    void updateIntSliderValue(int p_value);
-    void updateComboBox(int p_value);
-    void updateCheckBox(bool on);
-    void setLogCheck(bool);
     void setLogMode(bool on);
     void setNewMin();
     void setNewMax();
     void setInitialMinMax();
-    void updateGuiComponent();
     void updateMidiChannel(int index);
 };
   
