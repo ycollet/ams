@@ -15,6 +15,7 @@
 #include <qdialog.h>
 #include <qpainter.h>
 #include <alsa/asoundlib.h>
+#include "midicombobox.h"
 #include "synthdata.h"
 #include "m_mcv.h"
 #include "port.h"
@@ -55,9 +56,9 @@ M_mcv::M_mcv(QWidget* parent)
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     freq[l1] = 0;
   }
-  configDialog->addComboBox(0, " ", &channel, channelNames.count(), &channelNames);
-  configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
-  configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
+  configDialog->addComboBox(" ", channel, channelNames)->hide();
+  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
+  configDialog->addSlider("Pitch", pitchbend, -1, 1);
 }
 
 void M_mcv::generateCycle() {

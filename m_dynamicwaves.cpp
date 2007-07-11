@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
 #include <qstring.h>
 #include <qslider.h>   
 #include <qcheckbox.h>  
@@ -18,6 +14,8 @@
 #include "multi_envelope.h"
 #include "m_dynamicwaves.h"
 #include "port.h"
+#include "midicontrollable.h"
+
 
 M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent) 
   : Module(M_type_dynamicwaves, 1, parent, QString("DynamicWaves ") + QString::number(p_oscCount))
@@ -101,71 +99,69 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   QStringList waveFormNames;
   waveFormNames << "Sine" << "Saw" << "Tri" << "Rect" << "Saw 2";
   QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune / Modulation");
-  configDialog->addMultiEnvelope(oscCount, &timeScale, &attack[0][0], &sustain[0], &release[0][0], generalTab);
-  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, generalTab);
-  configDialog->addSlider(0, 1, tune, "Tune", &tune, false, generalTab);
-  configDialog->addSlider(0, 10, expFMGain, "Exp. FM Gain", &expFMGain, false, generalTab);
-  configDialog->addSlider(0, 10, linFMGain, "Lin. FM Gain", &linFMGain, false, generalTab);
-  configDialog->addSlider(0.1, 10, timeScale, "Timescale", &timeScale, false, generalTab);
+  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(oscCount, &timeScale, attack[0], sustain, release[0], generalTab);
+  configDialog->addIntSlider("Octave", octave, 0, 6, generalTab);
+  configDialog->addSlider("Tune", tune, 0, 1, false, generalTab);
+  configDialog->addSlider("Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider("Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider("Timescale", timeScale, 0.1, 10, false, generalTab);
 
   QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer");
   for (l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Volume %d", l1);
-    configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
+    configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
   }
 
   for (l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Osc %d", l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Wave Form %d", l1);
-    configDialog->addComboBox(0, qs, (int *)&waveForm[l1], waveFormNames.count(), &waveFormNames, oscTab[l1]);
+    configDialog->addComboBox(qs, waveForm[l1], waveFormNames, oscTab[l1]);
     qs.sprintf("Octave %d", l1);
-    configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, osc_octave[l1], 0, 3, oscTab[l1]);
     qs.sprintf("Tune %d", l1);
-    configDialog->addSlider(0, 1, osc_tune[l1], qs, &osc_tune[l1], false, oscTab[l1]);
+    configDialog->addSlider(qs, osc_tune[l1], 0, 1, false, oscTab[l1]);
     qs.sprintf("Harmonic %d", l1);
-    configDialog->addIntSlider(1, 16, harmonic[l1], qs, &harmonic[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, harmonic[l1], 1, 16, oscTab[l1]);
     qs.sprintf("Subharmonic %d", l1);
-    configDialog->addIntSlider(1, 16, subharmonic[l1], qs, &subharmonic[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, subharmonic[l1], 1, 16, oscTab[l1]);
     qs.sprintf("Phi0 %d", l1);
-    configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
+    configDialog->addSlider(qs, phi0[l1], 0, 6.283, false, oscTab[l1]);
   }
+  int multiEnvFromListen = midiControllables.count();
   for (l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Envelope %d", l1);
     envelopeTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Delay %d", l1);
-    configDialog->addSlider(0, 1, attack[0][l1], qs, &attack[0][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[0][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Time 0 %d", l1);
-    configDialog->addSlider(0, 1, attack[1][l1], qs, &attack[1][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[1][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Level 0 %d", l1);
-    configDialog->addSlider(0, 1, attack[2][l1], qs, &attack[2][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[2][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Time 1 %d", l1);
-    configDialog->addSlider(0, 1, attack[3][l1], qs, &attack[3][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[3][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Level 1 %d", l1);
-    configDialog->addSlider(0, 1, attack[4][l1], qs, &attack[4][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[4][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Time 2 %d", l1);
-    configDialog->addSlider(0, 1, attack[5][l1], qs, &attack[5][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[5][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Level 2 %d", l1);
-    configDialog->addSlider(0, 1, attack[6][l1], qs, &attack[6][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[6][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack Time 3 %d", l1);
-    configDialog->addSlider(0, 1, attack[7][l1], qs, &attack[7][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, attack[7][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Sustain %d", l1);
-    configDialog->addSlider(0, 1, sustain[l1], qs, &sustain[l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, sustain[l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Release Time 0 %d", l1);
-    configDialog->addSlider(0, 1, release[0][l1], qs, &release[0][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, release[0][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Release Level 0 %d", l1);
-    configDialog->addSlider(0, 1, release[1][l1], qs, &release[1][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, release[1][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Release Time 1 %d", l1);
-    configDialog->addSlider(0, 1, release[2][l1], qs, &release[2][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, release[2][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Release Level 1 %d", l1);
-    configDialog->addSlider(0, 1, release[3][l1], qs, &release[3][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, release[3][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Release Time 2 %d", l1);
-    configDialog->addSlider(0, 1, release[4][l1], qs, &release[4][l1], false, envelopeTab[l1]);
+    configDialog->addSlider(qs, release[4][l1], 0, 1, false, envelopeTab[l1]);
   }
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
-    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)),
-                     configDialog->multiEnvelopeList.at(0), SLOT(updateMultiEnvelope(int)));  
-  }
+  multiEnv->listenTo(this, multiEnvFromListen);
 }
 
 void M_dynamicwaves::generateCycle() {

@@ -10,6 +10,7 @@
 #include "midislider.h"
 #include "m_env.h"
 #include "port.h"
+#include "midicontrollable.h"
 
 M_env::M_env(QWidget* parent) 
   : Module(M_type_env, 2, parent, "ENV")
@@ -42,22 +43,24 @@ M_env::M_env(QWidget* parent)
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
 
-  configDialog->addEnvelope(&delay, &attack, &hold, &decay, &sustain, &release);
   configDialog->initTabWidget();
   QVBoxLayout *adsrTab = configDialog->addVBoxTab("ADSR");
   QVBoxLayout *delayTab = configDialog->addVBoxTab("Delay / Hold / Time Scale");
-  configDialog->addSlider(0, 1, delay, "Delay", &delay, false, delayTab);
-  configDialog->addSlider(0, 1, attack, "Attack", &attack, false, adsrTab);
-  configDialog->addSlider(0, 1, hold, "Hold", &hold, false, delayTab);
-  configDialog->addSlider(0, 1, decay, "Decay", &decay, false, adsrTab);
-  configDialog->addSlider(0, 1, sustain, "Sustain", &sustain, false, adsrTab);
-  configDialog->addSlider(0, 1, release, "Release", &release, false, adsrTab);
-  configDialog->addSlider(0.1, 10, timeScale, "Time Scale", &timeScale, false, delayTab);
+  configDialog->addSlider("Delay", delay, 0, 1, false, delayTab);
+  configDialog->addSlider("Attack", attack, 0, 1, false, adsrTab);
+  configDialog->addSlider("Hold", hold, 0, 1, false, delayTab);
+  configDialog->addSlider("Decay", decay, 0, 1, false, adsrTab);
+  configDialog->addSlider("Sustain", sustain, 0, 1, false, adsrTab);
+  configDialog->addSlider("Release", release, 0, 1, false, adsrTab);
+  configDialog->addSlider("Time Scale", timeScale, 0.1, 10, false, delayTab);
 
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
-    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
-                     configDialog->envelopeList.at(0), SLOT(updateEnvelope(int)));
-  }
+  configDialog->addEnvelope(*dynamic_cast<MidiControllableFloat *>(midiControllables.at(0)),
+			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(1)),
+			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(2)),
+			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(3)),
+			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(4)),
+			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(5)));
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     noteActive[l1] = false;
     gate[l1] = false;
@@ -111,7 +114,7 @@ void M_env::generateCycle() {
         if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
           retrigger[l1] = true;
           if (e[l1] > 0) {
-            noteOnOfs[l1] = (de_attack > 0) ? e[l1] / de_attack : 0;
+            noteOnOfs[l1] = (de_attack > 0) ? (int)(e[l1] / de_attack) : 0;
           } else {
             noteOnOfs[l1] = 0;
           }

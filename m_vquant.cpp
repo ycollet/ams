@@ -34,7 +34,7 @@ M_vquant::M_vquant(QWidget* parent)
   port_quant->outType = outType_audio;
   portList.append(port_quant);
   gain = 1.0;
-  configDialog->addSlider(0, 10, gain, "Gain", &gain);
+  configDialog->addSlider("Gain", gain, 0, 10);
 }
 
 void M_vquant::generateCycle() {

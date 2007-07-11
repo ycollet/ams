@@ -15,7 +15,7 @@ class M_quantizer : public Module
     Port *port_M_in, *port_M_trigger, *port_M_transpose, *port_out, *port_trigger_out;
     int qsig[MAXPOLY], trigCount[MAXPOLY];
     bool trigger[MAXPOLY];
-    quantumType quantum;
+    int quantum;
     int lut[MAX_LUT][12];
     
   public: 

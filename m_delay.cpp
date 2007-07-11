@@ -35,7 +35,7 @@ M_delay::M_delay(QWidget* parent)
   port_out->outType = outType_audio;
   portList.append(port_out);
 
-  configDialog->addSlider(0, 10, delay, "Delay", &delay);
+  configDialog->addSlider("Delay", delay, 0, 10);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     buf[l1] = (float *)malloc(MAX_DELAY_FRAMES * sizeof(float));

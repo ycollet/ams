@@ -14,20 +14,20 @@ class MidiComboBox : public MidiGUIcomponent {
 
 Q_OBJECT
 
+private slots:
+  void valueChanged(int value);
+
 public:
   QComboBox *comboBox;
   QLabel *valueLabel;
-  int *valueRef;
       
 public:
-  MidiComboBox(Module *parentModule, int value, QWidget * parent, const QString &, 
-               int *p_valueRef=0, QStringList *itemNames = NULL);
+  MidiComboBox(class MidiControllableNames &mcAble);
+  virtual MidiGUIcomponent *createTwin();
   ~MidiComboBox();
-  virtual void setMidiValue(int value);
-  virtual int getMidiValue();
-      
-public slots:
-  void updateValue(int);
+
+  void mcAbleChanged();
+     
 };
 
 #endif

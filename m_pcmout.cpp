@@ -44,12 +44,12 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
 
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
+  configDialog->addSlider("Gain", gain, 0, 1, false);
+  configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false);
+  configDialog->addSlider("Volume 2", mixer_gain[1], 0, 1, false);
   QStringList agcNames;
   agcNames << "Disabled" << "Enabled";
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames.count(), &agcNames);
+  configDialog->addComboBox("Automatic Gain Control", agc, agcNames);
   pcmdata[0] = new float[synthdata->periodsize];
   pcmdata[1] = new float[synthdata->periodsize];
 }

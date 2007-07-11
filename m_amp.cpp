@@ -34,7 +34,7 @@ M_amp::M_amp(QWidget* parent)
   port_out->outType = outType_audio;
   portList.append(port_out);
   gain = 1;
-  configDialog->addSlider(-10, 10, gain, "Gain", &gain);
+  configDialog->addSlider("Gain", gain, -10, 10);
 }
 
 void M_amp::generateCycle() {

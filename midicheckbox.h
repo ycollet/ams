@@ -5,6 +5,7 @@
 #include <qlabel.h>
 #include "synthdata.h"
 #include "midiguicomponent.h"
+#include "midicontrollable.h"
 
 /**
   *@author Matthias Nagorni
@@ -14,23 +15,28 @@ class MidiCheckBox : public MidiGUIcomponent {
 
 Q_OBJECT
 
+private slots:
+  void toggled(bool);
+
 private:
   QLabel *valueLabel;
-  float *valueRef;
 
 public:
   QCheckBox *checkBox;
     
 public:
-  MidiCheckBox(Module *parentModule, float value, QWidget * parent, const QString &name, 
-               float *p_valueRef=0);
+  MidiCheckBox(MidiControllable<float> &mcAble);
+  virtual MidiGUIcomponent *createTwin();
   ~MidiCheckBox();
-  virtual void setMidiValue(int value);
-  virtual int getMidiValue();
+
+  void mcAbleChanged();
+/*   virtual void setMidiValueRT(int value); */
+/*   virtual void setMidiValue(int value); */
+/*   virtual int getMidiValue(); */
       
-public slots:
-  void updateValue(bool on);
-  void updateCheck(bool on);
+/* public slots: */
+/*   void updateValue(bool on); */
+/*   void updateCheck(bool on); */
 };
 
 #endif

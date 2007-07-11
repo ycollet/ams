@@ -5,7 +5,7 @@
 #include <qlist.h>
 #include "synthdata.h"
 #include "midicontroller.h"
-#include "midicontrollerlist.h"
+#include "mced.h"
 
 /**
   *@author Matthias Nagorni
@@ -15,32 +15,29 @@ enum GUIcomponentType { GUIcomponentType_slider, GUIcomponentType_intslider,
                         GUIcomponentType_checkbox, GUIcomponentType_combobox, 
                         GUIcomponentType_pushbutton, GUIcomponentType_floatintslider };
 
-class MidiGUIcomponent : public QWidget {
+class MidiGUIcomponent : public QWidget, public MCed {
 Q_OBJECT
 
 public:
-  Module *parentModule; 
-  int midiGUIcomponentListIndex;
-  int midiSign; 
+  class MidiControllableBase &mcAble; 
   GUIcomponentType componentType;
   bool controllerOK;
         
 public:
-  MidiGUIcomponent(Module *p_parentModule, QWidget * parent, const QString &name);
+  MidiGUIcomponent(MidiControllableBase &mcAble);
   ~MidiGUIcomponent();
-  QList<MidiControllerKey> midiControllerList;
-  void connectToController(MidiControllerKey midiController);
-  void disconnectController(MidiControllerKey midiController);
-  virtual void setMidiValue(int value);
-  virtual int getMidiValue();
+
+  virtual MidiGUIcomponent *createTwin() = 0;
+
   void invalidateController();
 
+  virtual void updateMin() {}
+  virtual void updateMax() {}
+
 signals:
-  void guiComponentTouched();
   void sigResetController();
   
 public slots:
-  void midiValueChanged(int);
   void resetControllerOK();
 };
   

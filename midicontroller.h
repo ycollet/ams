@@ -4,24 +4,15 @@
 #include <qobject.h>
 #include <qlist.h>
 #include <alsa/asoundlib.h>
-#include <iostream>
 
-
-class MidiControllerContext: public QObject  {
-Q_OBJECT
-    
+class MidiControllerContext  {
 public:
-  QList <class MidiGUIcomponent *> mgcList;
+  QList <class MidiControllableBase *> mcAbles;
           
 public:
   MidiControllerContext() {}
 
-  void sendMidiValue(int value) {
-    emit midiValueChanged(value);
-  }
-
-signals:
-  void midiValueChanged(int);
+  void setMidiValueRT(int value);
 };
                               
 class MidiControllerKey {
@@ -61,7 +52,8 @@ public:
   MidiControllerKey(snd_seq_event_t *ev)
     : key(mkKey(ev->type, ev->data.control.channel,
 		ev->type == SND_SEQ_EVENT_PITCHBEND  ?
-		0  :  ev->data.control.param))
+		0  :  (ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) ?
+		ev->data.note.note  :  ev->data.control.param))
   {}
   MidiControllerKey(const MidiControllerKey &other)
     : key(other.key)

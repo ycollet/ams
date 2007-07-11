@@ -23,7 +23,7 @@ class M_dynamicwaves : public Module
     float tune, osc_tune[MODULE_DYNAMICWAVES_MAX_OSC], gain[MODULE_DYNAMICWAVES_MAX_OSC];
     int octave, osc_octave[MODULE_DYNAMICWAVES_MAX_OSC];
     int harmonic[MODULE_DYNAMICWAVES_MAX_OSC], subharmonic[MODULE_DYNAMICWAVES_MAX_OSC];
-    dynamicWaveFormType waveForm[MODULE_DYNAMICWAVES_MAX_OSC];
+    int waveForm[MODULE_DYNAMICWAVES_MAX_OSC];
     float expFMGain, linFMGain;
     float phi0[MODULE_DYNAMICWAVES_MAX_OSC], phi[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
     float wave_period;

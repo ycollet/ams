@@ -100,13 +100,13 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   configDialog->addTab(spectrumTab, "Spectrum");
   Q3VBox *paramTab = new Q3VBox(configDialog->tabWidget);
   Q3VBox *zoomTab = new Q3VBox(configDialog->tabWidget);
-  configDialog->addSlider(-20, 20, gain, "Gain (dB)", &gain, false, zoomTab);
+  configDialog->addSlider("Gain (dB)", gain, -20, 20, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(0), SIGNAL(valueChanged(int)),
                    this, SLOT(updateZoom(int)));
-  configDialog->addSlider(0, f_max, f_min, "f_min", &f_min, false, zoomTab);
+  configDialog->addSlider("f_min", f_min, 0, f_max, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(1), SIGNAL(valueChanged(int)),
                    this, SLOT(update_f_min(int)));
-  configDialog->addSlider(0, f_max, f_max, "f_max", &f_max, false, zoomTab);
+  configDialog->addSlider("f_max", f_max, 0, f_max, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(2), SIGNAL(valueChanged(int)),
                    this, SLOT(update_f_max(int)));
   configDialog->addCheckBox(freqZoom, "Frequency Zoom", &freqZoom, zoomTab);
@@ -119,28 +119,28 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   QStringList viewModeNames;
   viewModeNames << "Normal Spectrum";
   viewModeNames << "Spectrum over Time";
-  configDialog->addComboBox(viewMode, "Display Mode", &viewMode, viewModeNames.count(), &viewModeNames, vbox1);
+  configDialog->addComboBox("Display Mode", viewMode, &viewModeNames, vbox1);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateViewMode(int)));
   QStringList refreshModeNames;
   refreshModeNames << "Continuous";
   refreshModeNames << "Single";
   refreshModeNames << "Mouse";
-  configDialog->addComboBox(refreshMode, "Refresh Mode", &refreshMode, refreshModeNames.count(), &refreshModeNames, vbox2);
+  configDialog->addComboBox("Refresh Mode", refreshMode, &refreshModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateRefreshMode(int)));
   QStringList normModeNames;
   normModeNames << "Each Line";
   normModeNames << "Global";
   normModeNames << "Fixed";
-  configDialog->addComboBox(normMode, "Normalization Mode", &normMode, normModeNames.count(), &normModeNames, vbox1);
+  configDialog->addComboBox("Normalization Mode", normMode, &normModeNames, vbox1);
   QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateNormMode(int)));
   QStringList fftModeNames;
   fftModeNames << "Power Spectrum";
   fftModeNames << "Abs";
   fftModeNames << "dB";
-  configDialog->addComboBox(fftMode, "Spectrum Mode", &fftMode, fftModeNames.count(), &fftModeNames, vbox2);
+  configDialog->addComboBox("Spectrum Mode", fftMode, &fftModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(3)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateFFTMode(int)));
   QStringList windowNames;
@@ -148,7 +148,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   windowNames << "Bartlett";
   windowNames << "Hanning";
   windowNames << "Welch";
-  configDialog->addComboBox(window, "Window Function", &window, windowNames.count(), &windowNames, vbox2);
+  configDialog->addComboBox("Window Function", window, &windowNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(4)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateWindow(int)));
   configDialog->addPushButton("Trigger", paramTab);
@@ -166,7 +166,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   fftFramesNames << " 8192";
   fftFramesNames << "16384";
   fftFramesNames << "32768";
-  configDialog->addComboBox(fftFrames, "Window Size", &fftFrames, fftFramesNames.count(), &fftFramesNames, vbox1);
+  configDialog->addComboBox("Window Size", fftFrames, &fftFramesNames, vbox1);
   QObject::connect(configDialog->midiComboBoxList.at(5)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateFFTFrames(int)));
   configDialog->addTab(zoomTab, "Zoom");

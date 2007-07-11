@@ -77,11 +77,11 @@ M_advmcv::M_advmcv(QWidget* parent)
     }
   }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
-  configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
+  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
+  configDialog->addSlider("Pitch", pitchbend, -1, 1);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
     qs.sprintf("Controller %d", l1);
-    configDialog->addIntSlider(0, 127, controller_num[l1], qs, &controller_num[l1]);
+    configDialog->addIntSlider(qs, controller_num[l1], 0, 127);
   }
 }
 
@@ -120,8 +120,8 @@ void M_advmcv::generateCycle() {
   cycleReady = true;
 }
 
-void M_advmcv::aftertouchEvent(int, int value, int) {
-
+void M_advmcv::aftertouchEvent(int value)
+{
   int l1;
   
   for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -129,8 +129,8 @@ void M_advmcv::aftertouchEvent(int, int value, int) {
   }
 }
 
-void M_advmcv::controllerEvent(int, int controlNum, int value, bool) {
-
+void M_advmcv::controllerEvent(int controlNum, int value)
+{
   int l1, l2;
 
 //  fprintf(stderr, "controllerEvent %d %d\n", controlNum, value);
@@ -143,8 +143,8 @@ void M_advmcv::controllerEvent(int, int controlNum, int value, bool) {
   }
 }
 
-void M_advmcv::pitchbendEvent(int, int value) {
-
+void M_advmcv::pitchbendEvent(int value)
+{
   int l1;
 
 //  fprintf(stderr, "pitchbendEvent %d\n", value);

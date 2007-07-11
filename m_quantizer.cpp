@@ -60,7 +60,7 @@ M_quantizer::M_quantizer(QWidget* parent)
     "Major 6 Chord" <<
     "Minor 6 Chord" <<
     "Pentatonic";
-  configDialog->addComboBox(0, "Quantization", (int *)&quantum, quantumNames.count(), &quantumNames);
+  configDialog->addComboBox("Quantization", quantum, quantumNames);
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;

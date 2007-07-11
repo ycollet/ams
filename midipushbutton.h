@@ -14,21 +14,19 @@ class MidiPushButton : public MidiGUIcomponent {
 
 Q_OBJECT
 
-private:
+private slots:
+  void clicked();
+
 
 public:
   QPushButton *pushButton;
     
 public:
-  MidiPushButton(Module *parentModule, const QString &name);
+  MidiPushButton(class MidiControllableDoOnce &mcAble);
+  virtual MidiGUIcomponent *createTwin();
   ~MidiPushButton();
-  virtual void setMidiValue(int value);
 
-signals: 
-  void clicked();
-
-public slots:
-  void buttonClicked();
+  void mcAbleChanged() {};
 
 };  
 #endif

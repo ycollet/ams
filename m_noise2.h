@@ -10,7 +10,7 @@
 enum Noises {WHITE,RAND,PINK};
 class M_noise2 : public Module
 {
-    Noises NoiseType;
+    int NoiseType;
     int count;
     float rate, level;
     float buf[3], r;

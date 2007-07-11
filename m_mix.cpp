@@ -29,7 +29,7 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIX_WIDTH, 
               MODULE_MIX_HEIGHT + 20 + 20 * in_channels);
   gain = 1.0;
-  configDialog->addSlider(0, 2, gain, "Gain", &gain);
+  configDialog->addSlider("Gain", gain, 0, 2);
   for (l1 = 0; l1 < in_channels; l1++) {
     qs.sprintf("In %d", l1);
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
@@ -39,7 +39,7 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
     portList.append(audio_in_port);
     mixer_gain[l1] = 1.0;    
     qs.sprintf("Volume %d", l1);
-    configDialog->addSlider(0, 2, mixer_gain[l1], qs, &mixer_gain[l1]);
+    configDialog->addSlider(qs, mixer_gain[l1], 0, 2);
   }
   port_out = new Port("Out", PORT_OUT, 0, this);
   port_out->move(MODULE_MIX_WIDTH - port_out->width(),

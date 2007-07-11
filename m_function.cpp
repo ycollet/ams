@@ -77,9 +77,9 @@ M_function::M_function(int p_functionCount, QWidget* parent)
   hbox = configDialog->addHBox();
   configDialog->addLabel("                       Mouse X: _____ Y: _____", hbox);
   hbox = configDialog->addHBox();
-  configDialog->addComboBox(mode, "Mode", &mode, modeNames.count(), &modeNames, hbox);
-  configDialog->addComboBox(0, "Edit Function", &editIndex, editNames.count(), &editNames, hbox);
-  configDialog->addComboBox(0, "Zoom", &zoomIndex, zoomNames.count(), &zoomNames, hbox);
+  configDialog->addComboBox("Mode", mode, modeNames, hbox);
+  configDialog->addComboBox("Edit Function", editIndex, editNames, hbox);
+  configDialog->addComboBox("Zoom", zoomIndex, zoomNames, hbox);
   QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(currentIndexChanged(int)),
                    this, SLOT(updateZoom(int)));
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(currentIndexChanged(int)),

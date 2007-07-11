@@ -4,37 +4,56 @@
 #include <math.h>
 #include "midicombobox.h"
 #include "synthdata.h"
-#include "midiwidget.h"
 #include "midiguicomponent.h"
+#include "midicontrollable.h"
 
-MidiComboBox::MidiComboBox(Module *parentModule, int value, QWidget * parent,
-			   const QString &name, int *p_valueRef, QStringList *itemNames)
-  : MidiGUIcomponent(parentModule, parent, name) {
 
+MidiComboBox::MidiComboBox(MidiControllableNames &mcAble)
+  : MidiGUIcomponent(mcAble)
+{
   QString qs;
 
   componentType = GUIcomponentType_combobox;
-  valueRef = p_valueRef;
 
   QVBoxLayout *comboFrame = new QVBoxLayout(this);
   comboFrame->setSpacing(5);
   comboFrame->setMargin(5);
 
   QLabel *nameLabel = new QLabel();
-  //!!  if (name)
-    nameLabel->setText(name);
+  nameLabel->setText(mcAble.name);
   comboFrame->addWidget(nameLabel);
   nameLabel->setFixedHeight(nameLabel->sizeHint().height());
   comboBox = new QComboBox();  
-  comboBox->addItems(*itemNames);
+  comboBox->addItems(mcAble.itemNames);
   comboBox->setFixedSize(comboBox->sizeHint());
   comboFrame->addWidget(comboBox);
-  QObject::connect(comboBox, SIGNAL(activated(int)),
-		   this, SLOT(updateValue(int)));
-  updateValue(value);
+  mcAbleChanged();
+  QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)),
+		   this, SLOT(valueChanged(int)));
+}
+
+MidiGUIcomponent *MidiComboBox::createTwin()
+{
+  return new MidiComboBox(*dynamic_cast<MidiControllableNames *>(&mcAble));
 }
 
 MidiComboBox::~MidiComboBox(){
+}
+
+void MidiComboBox::mcAbleChanged()
+{
+  comboBox->blockSignals(true);
+  comboBox->setCurrentIndex(mcAble.getValue());
+  comboBox->blockSignals(false);
+}
+
+void MidiComboBox::valueChanged(int val)
+{
+  ((MidiControllableNames &)mcAble).setVal(val, this);
+}
+/*
+void MidiComboBox::setMidiValueRT(int value)
+{
 }
 
 void MidiComboBox::setMidiValue(int value) {
@@ -63,3 +82,4 @@ int MidiComboBox::getMidiValue() {
   x = (int)rint(127.0 * comboBox->currentIndex() / (comboBox->count()-1));
   return(x);
 }
+*/

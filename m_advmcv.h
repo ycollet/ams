@@ -23,9 +23,9 @@ class M_advmcv : public Module
     M_advmcv(QWidget* parent=0);
     ~M_advmcv();
 
-    void aftertouchEvent(int channel, int value, int note = 0);
-    void controllerEvent(int channel, int controlNum, int value, bool is14bit =false);
-    void pitchbendEvent(int channel, int value);
+    void aftertouchEvent(int value);
+    void controllerEvent(int controlNum, int value);
+    void pitchbendEvent(int value);
     
     void generateCycle();
 };

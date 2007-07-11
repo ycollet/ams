@@ -202,7 +202,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
           ladspaTab = configDialog->addVBoxTab(qs);
         }     
         if (LADSPA_IS_HINT_TOGGLED(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
-          configDialog->addCheckBox(0, ladspa_dsc->PortNames[l1], &control_gui[ctrl_in_index], ladspaTab);
+          configDialog->addCheckBox(ladspa_dsc->PortNames[l1], control_gui[ctrl_in_index], ladspaTab);
           control_data[ctrl_in_index] = 0;
           if (isPoly) {
             for (l2 = 0; l2 < synthdata->poly; l2++) {
@@ -285,16 +285,18 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
             control_data[ctrl_in_index] = 440.0 * rate_factor;
           }
           if (LADSPA_IS_HINT_LOGARITHMIC(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) { 
-            configDialog->addSlider(control_min * rate_factor, control_max * rate_factor, control_min * rate_factor, 
-                                    ladspa_dsc->PortNames[l1], &control_gui[ctrl_in_index], true, ladspaTab);
+            configDialog->addSlider(ladspa_dsc->PortNames[l1], control_gui[ctrl_in_index],
+				    control_min * rate_factor, control_max * rate_factor, true, ladspaTab);
           } else {
             if (LADSPA_IS_HINT_INTEGER(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
 //              fprintf(stderr, "LADSPA_IS_HINT_INTEGER %s\n", ladspa_dsc->PortNames[l1]);
-                configDialog->addFloatIntSlider(control_min * rate_factor, control_max * rate_factor, control_min * rate_factor,
-                                                ladspa_dsc->PortNames[l1], &control_gui[ctrl_in_index], ladspaTab);
+                configDialog->addFloatIntSlider(ladspa_dsc->PortNames[l1], control_gui[ctrl_in_index],
+						control_min * rate_factor, control_max * rate_factor,
+                                                ladspaTab);
             } else {
-                configDialog->addSlider(control_min * rate_factor, control_max * rate_factor, control_min * rate_factor,
-                                        ladspa_dsc->PortNames[l1], &control_gui[ctrl_in_index], false, ladspaTab);
+                configDialog->addSlider(ladspa_dsc->PortNames[l1], control_gui[ctrl_in_index],
+					control_min * rate_factor, control_max * rate_factor,
+                                        false, ladspaTab);
             }
           }
           if (isPoly) {

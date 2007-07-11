@@ -60,23 +60,22 @@ M_ad::M_ad(int outCount, QWidget* parent)
   configDialog->initTabWidget();
   QVBoxLayout *paramTab = configDialog->addVBoxTab("Parameter");
 
-  configDialog->addSlider(0, 0.084, detune_amp, "Detune Amplitude", &detune_amp, true, paramTab);
-  configDialog->addSlider(0.01, 1, detune_mod, "Detune Modulation", &detune_mod, true, paramTab);
-  configDialog->addSlider(0.01, 10, detune_rate, "Detune Rate", &detune_rate, true, paramTab);
-  configDialog->addSlider(0, 0.084, drift_amp, "Drift Amplitude", &drift_amp, true, paramTab);
-  configDialog->addSlider(0.01, 1, drift_mod, "Drift Modulation", &drift_mod, true, paramTab);
-  configDialog->addSlider(0.01, 10, drift_rate, "Drift Rate", &drift_rate, true, paramTab);  
+  configDialog->addSlider("Detune Amplitude", detune_amp, 0, 0.084, true, paramTab);
+  configDialog->addSlider("Detune Modulation", detune_mod, 0.01, 1, true, paramTab);
+  configDialog->addSlider("Detune Rate", detune_rate, 0.01, 10, true, paramTab);
+  configDialog->addSlider("Drift Amplitude", drift_amp, 0, 0.084, true, paramTab);
+  configDialog->addSlider("Drift Modulation", drift_mod, 0.01, 1, true, paramTab);
+  configDialog->addSlider("Drift Rate", drift_rate, 0.01, 10, true, paramTab);  
 
   QVBoxLayout *displayTab = configDialog->addVBoxTab("Display");
   for (l1 = 0 ; l1 < 2; l1++) {
     voice[l1] = (synthdata->poly > 1) ? l1 : 0;
-    QStringList *voiceNames = new QStringList();
+    QStringList voiceNames;
     for (l2 = 0; l2 < synthdata->poly; l2++) {
       qs.sprintf("%d", l2);
-      *voiceNames << qs;
-    }  
-    configDialog->addComboBox(voice[l1], "Voice", &voice[l1], 
-                              voiceNames->count(), voiceNames, displayTab);
+      voiceNames << qs;
+    }
+    configDialog->addComboBox("Voice", voice[l1], voiceNames, displayTab);
     QObject::connect(configDialog->midiComboBoxList.at(l1)->comboBox, 
                      SIGNAL(highlighted(int)), this, SLOT(updateVoices(int)));
     qs.sprintf("Detune %d", l1);
@@ -92,10 +91,10 @@ M_ad::M_ad(int outCount, QWidget* parent)
   }  
 
   tuneBox = configDialog->addHBox();  
-  configDialog->addPushButton("Autotune", tuneBox);
+  configDialog->addPushButton("Autotune", (void (Module::*)())&M_ad::autoTune, tuneBox);
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
                    this, SLOT(autoTune()));
-  configDialog->addCheckBox(bypass, "Bypass", &bypass, tuneBox);                       
+  configDialog->addCheckBox("Bypass", bypass, tuneBox);                       
 
   timer = new QTimer(this);   
   QObject::connect(timer, SIGNAL(timeout()),
@@ -120,7 +119,7 @@ void M_ad::generateCycle() {
     rdr = drift_mod / (float)synthdata->rate;
     qdt = (double)outPortCount * (double)synthdata->poly * (double)synthdata->rate / (detune_rate + 1e-3);
     qdr = (double)outPortCount * (double)synthdata->poly * (double)synthdata->rate / (detune_rate + 1e-3);
-    if (bypass > 0) {
+    if (bypass) {
       for (l3 = 0; l3 < outPortCount; l3++) {   
         for (l1 = 0; l1 < synthdata->poly; l1++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {

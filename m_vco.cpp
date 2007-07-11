@@ -74,24 +74,24 @@ M_vco::M_vco(QWidget* parent)
 
   configDialog->initTabWidget();
   QVBoxLayout *freqTab = configDialog->addVBoxTab("Frequency");
-  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, freqTab);
-  configDialog->addSlider(0, 1, freq, "Tune", &freq, false, freqTab);
-  configDialog->addIntSlider(1, 16, harmonic, "Harmonic", &harmonic, freqTab);
-  configDialog->addIntSlider(1, 16, subharmonic, "Subharmonic", &subharmonic, freqTab);
+  configDialog->addIntSlider("Octave", octave, 0, 6, freqTab);
+  configDialog->addSlider("Tune", freq, 0, 1, false, freqTab);
+  configDialog->addIntSlider("Harmonic", harmonic, 1, 16, freqTab);
+  configDialog->addIntSlider("Subharmonic", subharmonic, 1, 16, freqTab);
 
   QVBoxLayout *pulseTab = configDialog->addVBoxTab("Pulse Width / Phase");
-  configDialog->addSlider(0.1, 0.9, pw0, "PW", &pw0, false, pulseTab);
-  configDialog->addSlider(0, 1, pwGain, "PW Gain", &pwGain, false, pulseTab);
-  configDialog->addSlider(0, 6.283, phi0, "Phi0", &phi0, false, pulseTab);
+  configDialog->addSlider("PW", pw0, 0.1, 0.9, false, pulseTab);
+  configDialog->addSlider("PW Gain", pwGain, 0, 1, false, pulseTab);
+  configDialog->addSlider("Phi0", phi0, 0, 6.283, false, pulseTab);
 
   QVBoxLayout *modulationTab = configDialog->addVBoxTab("Modulation / Aux Waveform");
   QStringList waveFormNames;
   waveFormNames << "Saw";
   waveFormNames << "Saw 1";
   waveFormNames << "Saw 2";
-  configDialog->addComboBox(0, "Aux Wave Form", (int *)&waveForm, waveFormNames.count(), &waveFormNames, modulationTab);
-  configDialog->addSlider(0, 10, vcoExpFMGain, "Exp. FM Gain", &vcoExpFMGain, false, modulationTab);
-  configDialog->addSlider(0, 10, vcoLinFMGain, "Lin. FM Gain", &vcoLinFMGain, false, modulationTab);
+  configDialog->addComboBox("Aux Wave Form", waveForm, waveFormNames, modulationTab);
+  configDialog->addSlider("Exp. FM Gain", vcoExpFMGain, 0, 10, false, modulationTab);
+  configDialog->addSlider("Lin. FM Gain", vcoLinFMGain, 0, 10, false, modulationTab);
 }
 
 void M_vco::generateCycle() {

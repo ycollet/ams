@@ -40,9 +40,9 @@ M_pcmin::M_pcmin(QWidget* parent, int port)
   port_out[1]->move(width() - port_out[1]->width(), 55);
   port_out[1]->outType = outType_audio;
   portList.append(port_out[1]);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false);
+  configDialog->addSlider("Gain", gain, 0, 1, false);
+  configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false);
+  configDialog->addSlider("Volume 2", mixer_gain[1], 0, 1, false);
   pcmdata[0] = new float [synthdata->periodsize];
   pcmdata[1] = new float [synthdata->periodsize];
 }

@@ -42,7 +42,7 @@ M_sh::M_sh(QWidget* parent)
   port_gate->outType = outType_audio;
   portList.append(port_gate);
   triggerLevel = 0.5;
-  configDialog->addSlider(0, 10, triggerLevel, "Trigger Level", &triggerLevel);
+  configDialog->addSlider("Trigger Level", triggerLevel, 0, 10);
   sample = 0;
   gate = false;
 }

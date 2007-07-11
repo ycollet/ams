@@ -63,14 +63,14 @@ b_noise = 19.1919191919191919191919191919191919191919;
   vcfTypeNames << "Notch";
   vcfTypeNames << "24 dB Lowpass I";
   vcfTypeNames << "24 dB Lowpass II";
-  configDialog->addComboBox(6, "VCF Type", &vcfType, vcfTypeNames.count(), &vcfTypeNames);
+  configDialog->addComboBox("VCF Type", vcfType, vcfTypeNames);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)), this, SLOT(initBuf(int)));
-  configDialog->addSlider(0, 10, gain, "Input Gain", &gain);
-  configDialog->addSlider(0, 10, freq, "Frequency", &freq);
-  configDialog->addSlider(0, 10, vcfExpFMGain, "Exp. FM Gain", &vcfExpFMGain);
-  configDialog->addSlider(0, 10, vcfLinFMGain, "Lin. FM Gain", &vcfLinFMGain);
-  configDialog->addSlider(0.01, 1, resonance, "Resonance", &resonance);
-  configDialog->addSlider(0, 1, resonanceGain, "Resonance Gain", &resonanceGain);
+  configDialog->addSlider("Input Gain", gain, 0, 10);
+  configDialog->addSlider("Frequency", freq, 0, 10);
+  configDialog->addSlider("Exp. FM Gain", vcfExpFMGain, 0, 10);
+  configDialog->addSlider("Lin. FM Gain", vcfLinFMGain, 0, 10);
+  configDialog->addSlider("Resonance", resonance, 0.01, 1);
+  configDialog->addSlider("Resonance Gain", resonanceGain, 0, 1);
 }
 
 void M_vcf::initBuf(int) {

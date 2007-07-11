@@ -73,16 +73,16 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   scale_lut_isRatio[12] = true;
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
-  configDialog->addComboBox(0, " ", &channel, channelNames.count(), &channelNames);
-  configDialog->addIntSlider(-60, 60, base, "Scale Offset", &base);
-  configDialog->addIntSlider(-36, 36, pitch, "Note Offset", &pitch);
-  configDialog->addSlider(-1, 1, pitchbend, "Pitch", &pitchbend);
+  configDialog->addComboBox(" ", channel, channelNames);
+  configDialog->addIntSlider("Scale Offset", base, -60, 60);
+  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
+  configDialog->addSlider("Pitch", pitchbend, -1, 1);
   sclname = "No_Scale_loaded";
   configDialog->addLabel("   Scale: " + sclname);
   configDialog->addLabel("   ");
-  configDialog->addPushButton("Load Scale");
-  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
-                   this, SLOT(openBrowser())); 
+  configDialog->addPushButton("Load Scale", (void (Module::*)())&M_scmcv::openBrowser);
+//   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
+//                    this, SLOT(openBrowser())); 
   fileDialog = NULL;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {

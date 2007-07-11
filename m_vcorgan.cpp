@@ -59,42 +59,42 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
     "Rect" <<
     "Saw 2";
   QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune / Modulation");
-  configDialog->addIntSlider(0, 6, octave, "Octave", &octave, generalTab);
-  configDialog->addSlider(0, 1, tune, "Tune", &tune, false, generalTab);
-  configDialog->addSlider(0, 10, expFMGain, "Exp. FM Gain", &expFMGain, false, generalTab);
-  configDialog->addSlider(0, 10, linFMGain, "Lin. FM Gain", &linFMGain, false, generalTab);
+  configDialog->addIntSlider("Octave", octave, 0, 6, generalTab);
+  configDialog->addSlider("Tune", tune, 0, 1, false, generalTab);
+  configDialog->addSlider("Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider("Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
 
   if (oscCount < 8) {
     QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer");
     for (l1 = 0; l1 < oscCount; l1++) {
       qs.sprintf("Volume %d", l1);
-      configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
+      configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
     }
   } else {
     QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer 0-3");
     QVBoxLayout *mixTab2 = configDialog->addVBoxTab("Mixer 4-7");
     for (l1 = 0; l1 < 4; l1++) {
       qs.sprintf("Volume %d", l1);
-      configDialog->addSlider(0, 1, gain[l1], qs, &gain[l1], false, mixTab);
+      configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
       qs.sprintf("Volume %d", l1 + 4);
-      configDialog->addSlider(0, 1, gain[l1+4], qs, &gain[l1+4], false, mixTab2);
+      configDialog->addSlider(qs, gain[l1+4], 0, 1, false, mixTab2);
     }
   }
   for (l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Osc %d", l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Wave Form %d", l1);
-    configDialog->addComboBox(0, qs, waveForm + l1, waveFormNames.count(), &waveFormNames, oscTab[l1]);
+    configDialog->addComboBox(qs, waveForm[l1], waveFormNames, oscTab[l1]);
     qs.sprintf("Octave %d", l1);
-    configDialog->addIntSlider(0, 3, osc_octave[l1], qs, &osc_octave[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, osc_octave[l1], 0, 3, oscTab[l1]);
     qs.sprintf("Tune %d", l1);
-    configDialog->addSlider(0, 1, osc_tune[l1], qs, &osc_tune[l1], false, oscTab[l1]);
+    configDialog->addSlider(qs, osc_tune[l1], 0, 1, false, oscTab[l1]);
     qs.sprintf("Harmonic %d", l1);
-    configDialog->addIntSlider(1, 16, harmonic[l1], qs, &harmonic[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, harmonic[l1], 1, 16, oscTab[l1]);
     qs.sprintf("Subharmonic %d", l1);
-    configDialog->addIntSlider(1, 16, subharmonic[l1], qs, &subharmonic[l1], oscTab[l1]);
+    configDialog->addIntSlider(qs, subharmonic[l1], 1, 16, oscTab[l1]);
     qs.sprintf("Phi0 %d", l1);
-    configDialog->addSlider(0, 6.283, phi0[l1], qs, &phi0[l1], false, oscTab[l1]);
+    configDialog->addSlider(qs, phi0[l1], 0, 6.283, false, oscTab[l1]);
   }
 }
 

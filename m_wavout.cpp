@@ -53,11 +53,11 @@ M_wavout::M_wavout(QWidget* parent)
   hbox1 = configDialog->addHBox(fileTab);
   configDialog->addLabel("Time: 0:00:00        ", recordTab);
   configDialog->labelList.at(0)->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-  configDialog->addPushButton("New File", hbox1);
-  configDialog->addPushButton("Overwrite Current File", hbox1);
+  //!!  configDialog->addPushButton("New File", hbox1);
+  //!!    configDialog->addPushButton("Overwrite Current File", hbox1);
   hbox2 = configDialog->addHBox(recordTab);
-  configDialog->addPushButton("Record", hbox2);
-  configDialog->addPushButton("Stop", hbox2);  
+  //!!    configDialog->addPushButton("Record", hbox2);
+  //!!    configDialog->addPushButton("Stop", hbox2);  
   QObject::connect(configDialog->midiPushButtonList.at(1), SIGNAL(clicked()), 
                    this, SLOT(createWav())); 
   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()), 
@@ -68,12 +68,12 @@ M_wavout::M_wavout(QWidget* parent)
                    this, SLOT(stopClicked())); 
   configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
   configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
-  configDialog->addSlider(0, 1, gain, "Gain", &gain, false, gainTab);
-  configDialog->addSlider(0, 1, mixer_gain[0], "Volume 1", &mixer_gain[0], false, gainTab);
-  configDialog->addSlider(0, 1, mixer_gain[1], "Volume 2", &mixer_gain[1], false, gainTab);
+  configDialog->addSlider("Gain", gain, 0, 1, false, gainTab);
+  configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false, gainTab);
+  configDialog->addSlider("Volume 2", mixer_gain[1], 0, 1, false, gainTab);
   QStringList agcNames;
   agcNames << "Disbled" << "Enabled";
-  configDialog->addComboBox(agc, "Automatic Gain Control", &agc, agcNames.count(), &agcNames, gainTab);
+  configDialog->addComboBox("Automatic Gain Control", agc, agcNames, gainTab);
 
   wavDataSize = 0;
   wavdata = (char *)malloc(synthdata->periodsize * 4);

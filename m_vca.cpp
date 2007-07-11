@@ -22,8 +22,6 @@
 M_vca::M_vca(bool p_expMode, QWidget* parent) 
   : Module(M_type_vca, 1, parent, p_expMode ? "Exp. VCA" : "Lin. VCA")
 {
-  QString qs;
-
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCA_WIDTH, MODULE_VCA_HEIGHT);
   gain1 = 0;
   gain2 = 0;
@@ -52,12 +50,11 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
   port_out->outType = outType_audio;
   portList.append(port_out);
 
-  configDialog->setWindowTitle(qs);
-  configDialog->addSlider(0, 1, gain1, "Gain", &gain1);
-  configDialog->addSlider(0, 1, gain2, "Gain 1", &gain2);
-  configDialog->addSlider(0, 2, in1, "In 0", &in1);
-  configDialog->addSlider(0, 2, in2, "In 1", &in2);
-  configDialog->addSlider(0, 2, out, "Output level", &out);
+  configDialog->addSlider("Gain", gain1, 0, 1);
+  configDialog->addSlider("Gain 1", gain2, 0, 1);
+  configDialog->addSlider("In 0", in1, 0, 2);
+  configDialog->addSlider("In 1", in2, 0, 2);
+  configDialog->addSlider("Output level", out, 0, 2);
 }
 
 void M_vca::generateCycle() {

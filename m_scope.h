@@ -18,7 +18,7 @@ class M_scope : public Module
     long wavDataSize;
     float gain;
     float mixer_gain[2]; 
-    int agc;
+
     Port *port_in[2];
     float *floatdata;
     QTimer *timer;
@@ -36,11 +36,7 @@ class M_scope : public Module
 
   public slots:
     void timerProc();
-    void updateTimeScale(int val);
-    void updateZoom(int val);
-    void updateTriggerThrs(int val);
     void updateTriggerMode(int val);
-    void updateEdge(int val);
 };
   
 #endif

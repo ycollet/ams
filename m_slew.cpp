@@ -36,8 +36,8 @@ M_slew::M_slew(QWidget* parent)
   portList.append(port_out);
   timeUp = 0.5;
   timeDown = 0.5;
-  configDialog->addSlider(0, 10, timeUp, "Time Up", &timeUp);
-  configDialog->addSlider(0, 10, timeDown, "Time Down", &timeDown);
+  configDialog->addSlider("Time Up", timeUp, 0, 10);
+  configDialog->addSlider("Time Down", timeDown, 0, 10);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     lastData[l1] = 0;
   }

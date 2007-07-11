@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
@@ -18,6 +15,8 @@
 #include "midislider.h"
 #include "m_advenv.h"
 #include "port.h"
+#include "midicontrollable.h"
+
 
 M_advenv::M_advenv(QWidget* parent) 
   : Module(M_type_advenv, 2, parent, "Advanced ENV")
@@ -58,7 +57,7 @@ M_advenv::M_advenv(QWidget* parent)
   port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
 
-  configDialog->addMultiEnvelope(1, &timeScale, &attack[0], &sustain, &release[0]);
+  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(1, &timeScale, attack, &sustain, release);
   configDialog->initTabWidget();
   QVBoxLayout *sustainTab = configDialog->addVBoxTab("Time Scale / Sustain / Delay");
   QVBoxLayout *attackTimeTab = configDialog->addVBoxTab("Attack Time");
@@ -66,39 +65,37 @@ M_advenv::M_advenv(QWidget* parent)
   QVBoxLayout *releaseTimeTab = configDialog->addVBoxTab("Release Time");
   QVBoxLayout *releaseLevelTab = configDialog->addVBoxTab("Release Level");
   qs.sprintf("Time Scale");
-  configDialog->addSlider(0.1, 10, timeScale, qs, &timeScale, false, sustainTab);
+  configDialog->addSlider(qs, timeScale, 0.1, 10, false, sustainTab);
   qs.sprintf("Sustain");
-  configDialog->addSlider(0, 1, sustain, qs, &sustain, false, sustainTab);
+  configDialog->addSlider(qs, sustain, 0, 1, false, sustainTab);
   qs.sprintf("Delay");
-  configDialog->addSlider(0, 1, attack[0], qs, &attack[0], false, sustainTab);
+  configDialog->addSlider(qs, attack[0], 0, 1, false, sustainTab);
   qs.sprintf("Attack Time 0");
-  configDialog->addSlider(0, 1, attack[1], qs, &attack[1], false, attackTimeTab);
+  configDialog->addSlider(qs, attack[1], 0, 1, false, attackTimeTab);
   qs.sprintf("Attack Level 0");
-  configDialog->addSlider(0, 1, attack[2], qs, &attack[2], false, attackLevelTab);
+  configDialog->addSlider(qs, attack[2], 0, 1, false, attackLevelTab);
   qs.sprintf("Attack Time 1");
-  configDialog->addSlider(0, 1, attack[3], qs, &attack[3], false, attackTimeTab);
+  configDialog->addSlider(qs, attack[3], 0, 1, false, attackTimeTab);
   qs.sprintf("Attack Level 1");
-  configDialog->addSlider(0, 1, attack[4], qs, &attack[4], false, attackLevelTab);
+  configDialog->addSlider(qs, attack[4], 0, 1, false, attackLevelTab);
   qs.sprintf("Attack Time 2");
-  configDialog->addSlider(0, 1, attack[5], qs, &attack[5], false, attackTimeTab);
+  configDialog->addSlider(qs, attack[5], 0, 1, false, attackTimeTab);
   qs.sprintf("Attack Level 2");
-  configDialog->addSlider(0, 1, attack[6], qs, &attack[6], false, attackLevelTab);
+  configDialog->addSlider(qs, attack[6], 0, 1, false, attackLevelTab);
   qs.sprintf("Attack Time 3");
-  configDialog->addSlider(0, 1, attack[7], qs, &attack[7], false, attackTimeTab);
+  configDialog->addSlider(qs, attack[7], 0, 1, false, attackTimeTab);
   qs.sprintf("Release Time 0");
-  configDialog->addSlider(0, 1, release[0], qs, &release[0], false, releaseTimeTab);
+  configDialog->addSlider(qs, release[0], 0, 1, false, releaseTimeTab);
   qs.sprintf("Release Level 0");
-  configDialog->addSlider(0, 1, release[1], qs, &release[1], false, releaseLevelTab);
+  configDialog->addSlider(qs, release[1], 0, 1, false, releaseLevelTab);
   qs.sprintf("Release Time 1");
-  configDialog->addSlider(0, 1, release[2], qs, &release[2], false, releaseTimeTab);
+  configDialog->addSlider(qs, release[2], 0, 1, false, releaseTimeTab);
   qs.sprintf("Release Level 1");
-  configDialog->addSlider(0, 1, release[3], qs, &release[3], false, releaseLevelTab);
+  configDialog->addSlider(qs, release[3], 0, 1, false, releaseLevelTab);
   qs.sprintf("Release Time 2");
-  configDialog->addSlider(0, 1, release[4], qs, &release[4], false, releaseTimeTab);
-  for (l1 = 0; l1 < configDialog->midiSliderList.count(); l1++) {
-    QObject::connect(configDialog->midiSliderList.at(l1), SIGNAL(valueChanged(int)), 
-                     configDialog->multiEnvelopeList.at(0), SLOT(updateMultiEnvelope(int)));
-  }
+  configDialog->addSlider(qs, release[4], 0, 1, false, releaseTimeTab);
+  multiEnv->listenTo(this);
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     noteActive[l1] = false;
     gate[l1] = false;

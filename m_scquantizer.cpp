@@ -54,7 +54,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   portList.append(port_trigger_out);
   base = 0;
   lastbase = 12;
-  configDialog->addIntSlider(-36, 36, base, "Note Offset", &base);
+  configDialog->addIntSlider("Note Offset", base, -36, 36);
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
@@ -64,9 +64,9 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   sclname = "No_Scale_loaded";
   configDialog->addLabel("   Scale: " + sclname);
   configDialog->addLabel("   ");
-  configDialog->addPushButton("Load Scale");
-  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
-                   this, SLOT(openBrowser()));
+//!!   configDialog->addPushButton("Load Scale");
+//   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
+//                    this, SLOT(openBrowser()));
   fileDialog = NULL;
   for (l1 = 0; l1 < 12; l1++) {
     scale_lut_isRatio[l1] = false;

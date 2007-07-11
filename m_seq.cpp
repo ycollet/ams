@@ -74,11 +74,11 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   updateTimerFlag = false;
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(nextStep()));
-  configDialog->addIntSlider(0, 63, pitch_ofs, "Pitch Offset", &pitch_ofs, generalTab);
-  configDialog->addIntSlider(3, 300, bpm, "Beats per minute", &bpm, generalTab);
+  configDialog->addIntSlider("Pitch Offset", pitch_ofs, 0, 63, generalTab);
+  configDialog->addIntSlider("Beats per minute", bpm, 3, 300, generalTab);
   QStringList noteLenNames;
   noteLenNames << "1" << "3/4" << "1/2" << "1/4";
-  configDialog->addComboBox(1, "Gate time", (int *)&note_len, noteLenNames.count(), &noteLenNames, generalTab);
+  configDialog->addComboBox("Gate time", note_len, noteLenNames, generalTab);
   for (l1 = 0; l1 < seqLen; l1++) {
     pitch[l1] = 31;
     velocity[l1] = 63;
@@ -86,11 +86,11 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   }
   for (l1 = 0; l1 < seqLen; l1++) {
     sprintf(str, "Gate %d", l1);
-    configDialog->addCheckBox(gate[l1], str, &gate[l1], gateTab[l1 / 8]);
+    configDialog->addCheckBox(str, gate[l1], gateTab[l1 / 8]);
     sprintf(str, "Pitch %d", l1);
-    configDialog->addIntSlider(0, 64, pitch[l1], str, &pitch[l1], pitchTab[l1 / 8]);
+    configDialog->addIntSlider(str, pitch[l1], 0, 64, pitchTab[l1 / 8]);
     sprintf(str, "Velocity %d", l1);
-    configDialog->addIntSlider(0, 127, velocity[l1], str, &velocity[l1], velocityTab[l1 / 8]);
+    configDialog->addIntSlider(str, velocity[l1], 0, 127, velocityTab[l1 / 8]);
   } 
 
   QObject::connect(configDialog->intMidiSliderList.at(1), SIGNAL(valueChanged(int)),

@@ -18,7 +18,7 @@ class M_vco : public Module
    // float freq_const, freq_tune, gain_linfm, log2, pw_low, pw_high,
     float wave_period_2,wave_period_3,Pi2Times,PKonst;
     float vcoExpFMGain, vcoLinFMGain, pwGain;
-    auxWaveFormType waveForm;
+    int waveForm;
     int harmonic, subharmonic, octave;
     Port *port_M_freq, *port_M_exp, *port_M_lin, *port_M_pw;
     Port *port_sine, *port_tri, *port_saw, *port_rect, *port_aux;

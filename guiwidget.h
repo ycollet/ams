@@ -54,7 +54,7 @@ class GuiWidget : public QWidget
     int setTab(int index);
     int setPresetCount(int count);
     int setCurrentPreset(int presetNum);
-    int addParameter(MidiGUIcomponent *midiGUIcomponent, const QString &parameterName);
+    int addParameter(MidiControllableBase *mc, const QString &parameterName);
 
   signals:
     void updateMIDIController();

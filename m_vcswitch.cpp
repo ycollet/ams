@@ -51,7 +51,7 @@ M_vcswitch::M_vcswitch(QWidget* parent)
   portList.append(port_mix);
 
   switchLevel = 0.5;
-  configDialog->addSlider(0, 10, switchLevel, "Switch Level", &switchLevel);
+  configDialog->addSlider("Switch Level", switchLevel, 0, 10);
 }
 
 void M_vcswitch::generateCycle() {

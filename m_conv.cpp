@@ -38,12 +38,12 @@ M_conv::M_conv(QWidget* parent)
   port_out->outType = outType_audio;
   portList.append(port_out);
 
-  QStringList *convModeNames = new QStringList();
-  *convModeNames << "V/Octave --> Hz";
-  *convModeNames << "V/Octave --> 0..1, 1=rate/2";
-  *convModeNames << "V/Octave --> 0..1, 1=20000 Hz";
-  configDialog->addComboBox(0, "Conversion Mode ", &convMode, convModeNames->count(), convModeNames);
-  configDialog->addIntSlider(-3, 3, octave, "Octave Offset", &octave);
+  QStringList convModeNames;
+  convModeNames << "V/Octave --> Hz";
+  convModeNames << "V/Octave --> 0..1, 1=rate/2";
+  convModeNames << "V/Octave --> 0..1, 1=20000 Hz";
+  configDialog->addComboBox("Conversion Mode ", convMode, convModeNames);
+  configDialog->addIntSlider("Octave Offset", octave, -3, 3);
 }
 
 void M_conv::generateCycle() {
