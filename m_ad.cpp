@@ -13,6 +13,7 @@
 #include <qdialog.h>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
+#include "midicontrollable.h"
 #include "midicombobox.h"
 #include "m_ad.h"
 #include "midipushbutton.h"
@@ -91,7 +92,7 @@ M_ad::M_ad(int outCount, QWidget* parent)
   }  
 
   tuneBox = configDialog->addHBox();  
-  MidiControllableDoOnce * doO = configDialog->addPushButton("Autotune", tuneBox);
+  MidiControllableDoOnce * do0 = configDialog->addPushButton("Autotune", tuneBox);
   QObject::connect(do0, SIGNAL(triggered()), this, SLOT(autoTune()));
   configDialog->addCheckBox("Bypass", bypass, tuneBox);                       
 
