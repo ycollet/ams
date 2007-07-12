@@ -1558,6 +1558,7 @@ void ModularSynth::load(QString *presetName)
         isLog = isLogInt == 1;
         for (l1 = 0; l1 < listModule.count(); ++l1) {
           if (listModule.at(l1)->moduleID == moduleID) {
+	    //	    StdOut << __PRETTY_FUNCTION__ << " moduleID " << moduleID << " index " << index << endl;
 	    MidiControllableFloat &mcAbleF =
 	      dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
 	    mcAbleF.isLog = isLog;

@@ -151,8 +151,11 @@ void MidiControllableFloat::resetMinMax()
 void MidiControllableFloat::updateFloatMGCs()
 {
   for (typeof(mcws.constBegin()) mcw = mcws.constBegin();
-       mcw != mcws.constEnd();  mcw++)
-    dynamic_cast<MidiSlider &>(**mcw).minMaxChanged();
+       mcw != mcws.constEnd();  mcw++) {
+    MidiSlider * s = dynamic_cast<MidiSlider *>(*mcw);
+    if (s)
+      s->minMaxChanged();
+  }
 }
 
 bool MidiControllableFloat::setMidiValueRT(int val0to127)
