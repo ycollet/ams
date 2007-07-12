@@ -57,6 +57,7 @@ bool MidiControllableDoOnce::setMidiValueRT(int val0to127)
 
 int MidiControllableDoOnce::getMidiValue()
 {
+  return 0;
 }
 
 float MidiControllableFloat::maybeLog(float v)
@@ -162,6 +163,7 @@ bool MidiControllableFloat::setMidiValueRT(int val0to127)
 
 int MidiControllableFloat::getMidiValue()
 {
+  return 0;
 }
 
 const QString &MidiControllableFloat::minString()

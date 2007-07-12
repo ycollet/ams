@@ -12,7 +12,6 @@ public:
   MidiSlider(class MidiControllableFloat &mcAble, Qt::Orientation orientation = Qt::Horizontal);
   virtual MidiGUIcomponent *createTwin();
 
-  float getValue();
   void minMaxChanged();
 };
 

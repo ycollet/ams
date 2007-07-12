@@ -91,9 +91,8 @@ M_ad::M_ad(int outCount, QWidget* parent)
   }  
 
   tuneBox = configDialog->addHBox();  
-  configDialog->addPushButton("Autotune", tuneBox);
-  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
-                   this, SLOT(autoTune()));
+  MidiControllableDoOnce * doO = configDialog->addPushButton("Autotune", tuneBox);
+  QObject::connect(do0, SIGNAL(triggered()), this, SLOT(autoTune()));
   configDialog->addCheckBox("Bypass", bypass, tuneBox);                       
 
   timer = new QTimer(this);   

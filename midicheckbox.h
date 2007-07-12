@@ -26,17 +26,10 @@ public:
     
 public:
   MidiCheckBox(MidiControllable<float> &mcAble);
+
   virtual MidiGUIcomponent *createTwin();
-  ~MidiCheckBox();
 
   void mcAbleChanged();
-/*   virtual void setMidiValueRT(int value); */
-/*   virtual void setMidiValue(int value); */
-/*   virtual int getMidiValue(); */
-      
-/* public slots: */
-/*   void updateValue(bool on); */
-/*   void updateCheck(bool on); */
 };
 
 #endif
