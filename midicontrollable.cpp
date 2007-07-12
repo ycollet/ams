@@ -115,6 +115,9 @@ void MidiControllableFloat::setLog(bool log)
 void MidiControllableFloat::setNewMin(int min)
 {
   varMin = (float)min / SLIDER_SCALE;
+  if (isLog)
+    varMin = expf(varMin);
+
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -122,6 +125,9 @@ void MidiControllableFloat::setNewMin(int min)
 void MidiControllableFloat::setNewMax(int max)
 {
   varMax = (float)max / SLIDER_SCALE;
+  if (isLog)
+    varMax = expf(varMax);
+
   updateFloatMGCs();
   updateMGCs(NULL);
 }
