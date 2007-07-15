@@ -9,10 +9,14 @@
 #include <qlabel.h>
 #include <QPaintEvent>
 #include <QMouseEvent>
+#include "midicombobox.h"
+#include "midicheckbox.h"
 #include "modularsynth.h"
 #include "synthdata.h"
 #include "configdialog.h"
+#include "intmidislider.h"
 #include "midicontrollable.h"
+#include "midislider.h"
 #include "module.h"
 #include "main.h"
 
@@ -141,97 +145,98 @@ int Module::saveConnections(FILE *f) {
   return 0; 
 }
 
-int Module::saveParameters(FILE *f) {
-  /*!!
+int Module::saveParameters(FILE *f)
+{
   int l1, l2, l3;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
-    fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,   
-                configDialog->midiSliderList.at(l1)->slider->value(),
-                configDialog->midiSliderList.at(l1)->isLog,
-                configDialog->midiSliderList.at(l1)->slider->minimum(),
-                configDialog->midiSliderList.at(l1)->slider->maximum(),
-                configDialog->midiSliderList.at(l1)->midiSign);
+    MidiControllableFloat &mcAbleF = dynamic_cast<MidiControllableFloat &>(configDialog->midiSliderList.at(l1)->mcAble);
+    fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,
+	    mcAbleF.sliderVal(),
+	    mcAbleF.isLog,
+	    mcAbleF.sliderMin(),
+	    mcAbleF.sliderMax(),
+	    mcAbleF.midiSign);
   }  
-  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
+  for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1)
     fprintf(f, "ISlider %d %d %d %d\n", moduleID, l1, 
-                configDialog->intMidiSliderList.at(l1)->slider->value(),
-                configDialog->intMidiSliderList.at(l1)->midiSign);
-  }  
-  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
+	    configDialog->intMidiSliderList.at(l1)->mcAble.sliderVal(),
+	    configDialog->intMidiSliderList.at(l1)->mcAble.midiSign);
+
+  for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1)
     fprintf(f, "LSlider %d %d %d %d\n", moduleID, l1, 
-                configDialog->floatIntMidiSliderList.at(l1)->slider->value(),
-                configDialog->floatIntMidiSliderList.at(l1)->midiSign);
-  }  
-  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
+	    configDialog->floatIntMidiSliderList.at(l1)->mcAble.sliderVal(),
+	    configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiSign);
+
+  for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1)
     fprintf(f, "ComboBox %d %d %d %d\n", moduleID, l1, 
-                configDialog->midiComboBoxList.at(l1)->comboBox->currentIndex(),
-                configDialog->midiComboBoxList.at(l1)->midiSign);
-  }  
-  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
+	    configDialog->midiComboBoxList.at(l1)->mcAble.getValue(),
+	    configDialog->midiComboBoxList.at(l1)->mcAble.midiSign);
+
+  for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1)
     fprintf(f, "CheckBox %d %d %d %d\n", moduleID, l1, 
-                (int)(configDialog->midiCheckBoxList.at(l1)->checkBox->isChecked()),
-                configDialog->midiCheckBoxList.at(l1)->midiSign);
-  }
+	    configDialog->midiCheckBoxList.at(l1)->mcAble.getValue(),
+	    configDialog->midiCheckBoxList.at(l1)->mcAble.midiSign);
+
   for (l1 = 0; l1 < configDialog->functionList.count(); ++l1) {
     fprintf(f, "Function %d %d %d %d\n", moduleID, l1, 
-                configDialog->functionList.at(l1)->functionCount,
-                configDialog->functionList.at(l1)->pointCount);
-    for (l2 = 0; l2 < configDialog->functionList.at(l1)->functionCount; l2++) {
+	    configDialog->functionList.at(l1)->functionCount,
+	    configDialog->functionList.at(l1)->pointCount);
+    for (l2 = 0; l2 < configDialog->functionList.at(l1)->functionCount; l2++)
       for (l3 = 0; l3 < configDialog->functionList.at(l1)->pointCount; l3++) {
         fprintf(f, "Point %d %d %d %d %d %d\n", moduleID, l1, l2, l3,
-                    configDialog->functionList.at(l1)->getPoint(l2, l3).x(),
-                    configDialog->functionList.at(l1)->getPoint(l2, l3).y());
+		configDialog->functionList.at(l1)->getPoint(l2, l3).x(),
+		configDialog->functionList.at(l1)->getPoint(l2, l3).y());
       }
-    }                
-    }*/
+       
+  }
   return 0;
 }
 
-int Module::saveBindings(FILE *f) {
-  /*
+int Module::saveBindings(FILE *f)
+{
   int l1, l2;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
-     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->midiControllerList.count(); ++l2) {
+     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
        fprintf(f, "FSMIDI %d %d %d %d %d\n", moduleID, l1,
-	       configDialog->midiSliderList.at(l1)->midiControllerList.at(l2).type(),
-	       configDialog->midiSliderList.at(l1)->midiControllerList.at(l2).ch(),  
-	       configDialog->midiSliderList.at(l1)->midiControllerList.at(l2).param());
+	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
+	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
+	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
      }
   }  
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->midiControllerList.count(); ++l2) {
+    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
       fprintf(f, "ISMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2).type(),
-	      configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2).ch(),  
-	      configDialog->intMidiSliderList.at(l1)->midiControllerList.at(l2).param());
+	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
+	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
+	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
     }
   }  
   for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.count(); ++l2) {
+    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
       fprintf(f, "LSMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2).type(),
-	      configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2).ch(),  
-	      configDialog->floatIntMidiSliderList.at(l1)->midiControllerList.at(l2).param());
+	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
+	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
+	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
     }
   }  
   for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->midiControllerList.count(); ++l2) {
+    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
       fprintf(f, "CMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2).type(),
-	      configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2).ch(),    
-	      configDialog->midiComboBoxList.at(l1)->midiControllerList.at(l2).param());
+	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).type(),
+	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).ch(),    
+	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).param());
     }
   }  
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->midiControllerList.count(); ++l2) {
+    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
       fprintf(f, "TMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2).type(),
-	      configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2).ch(),    
-	      configDialog->midiCheckBoxList.at(l1)->midiControllerList.at(l2).param());
+	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).type(),
+	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).ch(),    
+	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).param());
     }
-    }*/
+  }
   return 0;
 }
 

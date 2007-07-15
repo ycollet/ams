@@ -34,7 +34,6 @@ class GuiWidget : public QWidget
   int currentPreset, currentTabIndex;
   QLabel *presetLabel, *presetCountLabel;
   QLineEdit *presetName;
-  QList<MidiGUIcomponent *> mgcs;
    
 public: 
   int presetCount;
@@ -44,6 +43,7 @@ public:
   QStringList presetNameList;
   QList<QHBoxLayout *> tabList;
   QList<MidiControllableBase*> parameterList;
+  QList<MidiGUIcomponent *> mgcs;
   QList<int> presetList[MAX_PRESETS];
     
 public:

@@ -1816,7 +1816,7 @@ void ModularSynth::load(QString *presetName)
 }
 
 void ModularSynth::save()
-{/*
+{
   int l1, l2, value;
   FILE *f;
   QString config_fn, qs;
@@ -1912,26 +1912,24 @@ void ModularSynth::save()
 //    fprintf(stderr, "Saving Tabs\n");
 //    fprintf(stderr, "TabName count: %d Tab count: %d\n", guiWidget->tabNameList.count(), guiWidget->tabList.count());
     for (l1 = 0; l1 < guiWidget->tabList.count(); ++l1)
-      fprintf(f, "Tab \"%s\"\n", guiWidget->tabList.at(l1)->parentWidget()->objectName().toAscii().constData());
+      fprintf(f, "Tab \"%s\"\n", guiWidget->tabNameList.at(l1).toAscii().constData());
 
 //    fprintf(stderr, "Saving Frames\n");
     for (l1 = 0; l1 < guiWidget->frameBoxList.count(); ++l1) {
       fprintf(f, "Frame \"%s\" %d\n", guiWidget->frameBoxList.at(l1)->frameBox->parentWidget()->objectName().toAscii().constData(),
                                       guiWidget->frameBoxList.at(l1)->tabIndex);
-      for (l2 = 0; l2 < guiWidget->parameterList.count(); ++l2) {
-        if (guiWidget->parameterList.at(l2)->parent() == guiWidget->frameBoxList.at(l1)->frameBox->parentWidget()) {
-          fprintf(f, "Parameter \"%s\" %d %d ", guiWidget->parameterList.at(l2)->objectName().toAscii().constData(), 
-                                         ((Module *)guiWidget->parameterList.at(l2)->parentModule)->moduleID, 
-                                         guiWidget->parameterList.at(l2)->midiGUIcomponentListIndex);
-          if (guiWidget->parameterList.at(l2)->componentType == GUIcomponentType_slider) {
-            fprintf(f, "%d %d %d\n", ((MidiSlider *)guiWidget->parameterList.at(l2))->slider->minimum(), 
-                                   ((MidiSlider *)guiWidget->parameterList.at(l2))->slider->maximum(), 
-                                   ((MidiSlider *)guiWidget->parameterList.at(l2))->isLog);
-          } else {
+      for (l2 = 0; l2 < guiWidget->parameterList.count(); ++l2)
+        if (guiWidget->mgcs.at(l2)->parent() == guiWidget->frameBoxList.at(l1)->frameBox->parentWidget()) {
+          fprintf(f, "Parameter \"%s\" %d %d ",
+		  guiWidget->mgcs.at(l2)->nameLabel.text().toAscii().constData(), 
+		  guiWidget->parameterList.at(l2)->module.moduleID, 
+		  guiWidget->parameterList.at(l2)->midiControllableListIndex);
+	  MidiControllableFloat *mcAbleF = dynamic_cast<MidiControllableFloat *>(guiWidget->parameterList.at(l2));
+          if (mcAbleF)
+            fprintf(f, "%d %d %d\n", mcAbleF->sliderMin(), mcAbleF->sliderMax(), mcAbleF->isLog);
+          else
             fprintf(f, "\n");
-          }
         }
-      }
     }
 
     for (l1 = 0; l1 < guiWidget->presetCount; ++l1) {
@@ -1944,7 +1942,7 @@ void ModularSynth::save()
       fprintf(f, "PresetName \"%s\"\n", (*presetit).mid(3).toLatin1().constData());
     } 
     fclose(f);
-    }*/
+    }
 }
 //==================================================================== End persistence
 void ModularSynth::allVoicesOff()

@@ -126,6 +126,7 @@ int GuiWidget::addParameter(MidiControllableBase *mcAble, const QString &paramet
 
   MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>(mcAble->mcws.at(0))->createTwin();
   currentGroupBox->addWidget(mgc);
+  currentGroupBox->addStretch(100);
   parameterList.append(mcAble);
   mgcs.append(mgc);
   mgc->nameLabel.setText(parameterName);
