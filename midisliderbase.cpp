@@ -14,8 +14,8 @@ MidiSliderBase::MidiSliderBase(MidiControllableBase &mcAble, Qt::Orientation ori
   QVBoxLayout *sliderBox = new QVBoxLayout(this);
   sliderBox->setSpacing(0);
   sliderBox->setMargin(0);
-  QLabel *nameLabel = new QLabel(mcAble.name);
-  sliderBox->addWidget(nameLabel, 0, Qt::AlignHCenter);
+
+  sliderBox->addWidget(&nameLabel, 0, Qt::AlignHCenter);
   QHBoxLayout *sliderLabels = new QHBoxLayout();
   sliderBox->addLayout(sliderLabels);
   sliderLabels->addWidget(&minLabel, 0);
@@ -32,7 +32,7 @@ MidiSliderBase::MidiSliderBase(MidiControllableBase &mcAble, Qt::Orientation ori
 
 void MidiSliderBase::valueChanged(int value)
 {
-  mcAble.setSliderVal(value, this);
+  mcAble.setVal(value, this);
   valueLabel.setText(mcAble.valString());
 }
 

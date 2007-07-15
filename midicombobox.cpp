@@ -19,10 +19,8 @@ MidiComboBox::MidiComboBox(MidiControllableNames &mcAble)
   comboFrame->setSpacing(5);
   comboFrame->setMargin(5);
 
-  QLabel *nameLabel = new QLabel();
-  nameLabel->setText(mcAble.name);
-  comboFrame->addWidget(nameLabel);
-  nameLabel->setFixedHeight(nameLabel->sizeHint().height());
+  comboFrame->addWidget(&nameLabel);
+  //  nameLabel->setFixedHeight(nameLabel->sizeHint().height());
   comboBox = new QComboBox();  
   comboBox->addItems(mcAble.itemNames);
   comboBox->setFixedSize(comboBox->sizeHint());

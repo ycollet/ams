@@ -606,9 +606,10 @@ void SynthData::readMIDI(void)
       pipeMessage |= 2;
       //      StdOut << "not " << ev->data.control.value << endl;
     }
-    if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
-      guiWidget->setCurrentPreset(ev->data.control.value);
-
+    if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
+      guiWidget->setCurrentPreset(ev->data.control.value, true);
+      pipeMessage |= 4;
+    }
     for (int l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
       switch (ev->type) {
         case SND_SEQ_EVENT_CHANPRESS: 

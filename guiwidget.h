@@ -26,47 +26,47 @@ class GuiWidget : public QWidget
   };
   
 
-    QVBoxLayout vLayout;
+  QVBoxLayout vLayout;
 
-    QVBoxLayout *currentGroupBox;
-    QTabWidget *tabWidget;
-    QHBoxLayout *currentTab;
-    int currentPreset, currentTabIndex;
-    QLabel *presetLabel, *presetCountLabel;
-    QLineEdit *presetName;
+  QVBoxLayout *currentGroupBox;
+  QTabWidget *tabWidget;
+  QHBoxLayout *currentTab;
+  int currentPreset, currentTabIndex;
+  QLabel *presetLabel, *presetCountLabel;
+  QLineEdit *presetName;
+  QList<MidiGUIcomponent *> mgcs;
    
-  public: 
-    int presetCount;
-    QStringList frameNameList;
-    QList<GuiFrame*> frameBoxList;
-    QStringList tabNameList;
-    QStringList presetNameList;
-    QList<QHBoxLayout *> tabList;
-    QList<MidiGUIcomponent*> parameterList;
-    QList<int> presetList[MAX_PRESETS];
+public: 
+  int presetCount;
+  QStringList frameNameList;
+  QList<GuiFrame*> frameBoxList;
+  QStringList tabNameList;
+  QStringList presetNameList;
+  QList<QHBoxLayout *> tabList;
+  QList<MidiControllableBase*> parameterList;
+  QList<int> presetList[MAX_PRESETS];
     
-  public:
-    GuiWidget(QWidget* parent, const char *name=0);
-    ~GuiWidget();
-    int addFrame(const QString &frameName);
-    int setFrame(int index);
-    int addTab(const QString &tabName);
-    int setTab(int index);
-    int setPresetCount(int count);
-    int setCurrentPreset(int presetNum);
-    int addParameter(MidiControllableBase *mc, const QString &parameterName);
+public:
+  GuiWidget(QWidget* parent, const char *name=0);
 
-  signals:
-    void updateMIDIController();
-    
-  public slots:
-    void presetDec();
-    void presetInc();  
-    void addPreset();
-    void overwritePreset();
-    void clearPresets();
-    void clearGui();
-    void refreshGui();
+  int addFrame(const QString &frameName);
+  int setFrame(int index);
+  int addTab(const QString &tabName);
+  int setTab(int index);
+  int setPresetCount(int count);
+  int setCurrentPreset(int presetNum, bool rt = false);
+  void setCurrentPresetText();
+  int addParameter(MidiControllableBase *, const QString &parameterName);
+  void remove(MidiControllableBase *);
+
+public slots:
+  void presetDec();
+  void presetInc();  
+  void addPreset();
+  void overwritePreset();
+  void clearPresets();
+  void clearGui();
+  void refreshGui();
 };
   
 #endif

@@ -1,3 +1,4 @@
+#include "guiwidget.h"
 #include "midicontrollable.h"
 #include "midiwidget.h"
 #include "midislider.h"
@@ -6,6 +7,12 @@
 
 QString MidiControllableBase::temp;
 
+MidiControllableBase:: ~MidiControllableBase()
+{
+  synthdata->guiWidget->remove(this);
+  while (midiControllerList.count())
+    disconnectController(midiControllerList.at(0));
+}
 
 void MidiControllableBase::updateMGCs(MidiGUIcomponent *sender)
 {
@@ -94,7 +101,7 @@ int MidiControllableFloat::sliderStep()
   return 0;
 }
 
-void MidiControllableFloat::setSliderVal(int val, MidiSliderBase *sender)
+void MidiControllableFloat::setValRT(int val)
 {
   float v = (float)val / SLIDER_SCALE;
 
@@ -102,6 +109,11 @@ void MidiControllableFloat::setSliderVal(int val, MidiSliderBase *sender)
     v = expf(v);
 
   value = v;
+}
+
+void MidiControllableFloat::setVal(int val, MidiGUIcomponent *sender)
+{
+  setValRT(val);
   updateMGCs(sender);
 }
 

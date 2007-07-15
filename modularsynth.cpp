@@ -427,125 +427,128 @@ void ModularSynth::midiAction(int fd)
     }
   }
 
+  if (pipeIn[0] & 4)
+    guiWidget->setCurrentPresetText();
+
   return;
 
-  snd_seq_event_t *ev;
-  QString qs;
-  int l1, l2, osc, noteCount;
-  bool foundOsc;
+//   snd_seq_event_t *ev;
+//   QString qs;
+//   int l1, l2, osc, noteCount;
+//   bool foundOsc;
 
-  do {
-    snd_seq_event_input(synthdata->seq_handle, &ev);
-    MidiController midiController(ev); 
-    if (midiWidget->isVisible()) {
-      if (ev->type == SND_SEQ_EVENT_CONTROLLER ||
-	  ev->type == SND_SEQ_EVENT_CONTROL14 ||
-	  ev->type == SND_SEQ_EVENT_PITCHBEND)
-	midiWidget->addMidiController(midiController);
+//   do {
+//     snd_seq_event_input(synthdata->seq_handle, &ev);
+//     MidiController midiController(ev); 
+//     if (midiWidget->isVisible()) {
+//       if (ev->type == SND_SEQ_EVENT_CONTROLLER ||
+// 	  ev->type == SND_SEQ_EVENT_CONTROL14 ||
+// 	  ev->type == SND_SEQ_EVENT_PITCHBEND)
+// 	midiWidget->addMidiController(midiController);
 
-      if (midiWidget->noteControllerEnabled &&
-	  (ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF))
-	midiWidget->addMidiController(midiController);
-    }
+//       if (midiWidget->noteControllerEnabled &&
+// 	  (ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF))
+// 	midiWidget->addMidiController(midiController);
+//     }
 
-    const MidiController *c = midiWidget->midiController(midiController);
-    if (c) {
-      int value;
-      switch (c->type()) {
-      case SND_SEQ_EVENT_PITCHBEND:
-	value = (ev->data.control.value + 8192) >> 7;
-	break;
-      case SND_SEQ_EVENT_CONTROL14:
-	value = ev->data.control.value >> 7;
-	break;
-      case SND_SEQ_EVENT_CONTROLLER:
-	value = ev->data.control.value;
-	break;
-      case SND_SEQ_EVENT_NOTEON:
-	value = ev->data.note.velocity;
-	break;
-      default:
-      case SND_SEQ_EVENT_NOTEOFF:
-	value = 0;
-	break;
-      }
-      //!!      emit c->context->sendMidiValue(value);
-      if (midiWidget->followMidi)
-	midiWidget->setSelectedController(*c);
-    }
+//     const MidiController *c = midiWidget->midiController(midiController);
+//     if (c) {
+//       int value;
+//       switch (c->type()) {
+//       case SND_SEQ_EVENT_PITCHBEND:
+// 	value = (ev->data.control.value + 8192) >> 7;
+// 	break;
+//       case SND_SEQ_EVENT_CONTROL14:
+// 	value = ev->data.control.value >> 7;
+// 	break;
+//       case SND_SEQ_EVENT_CONTROLLER:
+// 	value = ev->data.control.value;
+// 	break;
+//       case SND_SEQ_EVENT_NOTEON:
+// 	value = ev->data.note.velocity;
+// 	break;
+//       default:
+//       case SND_SEQ_EVENT_NOTEOFF:
+// 	value = 0;
+// 	break;
+//       }
+//       //!!      emit c->context->sendMidiValue(value);
+//       if (midiWidget->followMidi)
+// 	midiWidget->setSelectedController(*c);
+//     }
 
-// Voice assignment
+// // Voice assignment
 
-    if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
-	(synthdata->midiChannel < 0 || synthdata->midiChannel == ev->data.control.channel))
-      if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
+//     if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
+// 	(synthdata->midiChannel < 0 || synthdata->midiChannel == ev->data.control.channel))
+//       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
 
-// Note On: Search for oldest voice to allocate new note.          
+// // Note On: Search for oldest voice to allocate new note.          
           
-          osc = 0;
-          noteCount = 0;
-          foundOsc = false;
-          for (l2 = 0; l2 < synthdata->poly; ++l2)
-            if (synthdata->noteCounter[l2] > noteCount) {
-              noteCount = synthdata->noteCounter[l2];
-              osc = l2;
-              foundOsc = true;
-            }
+//           osc = 0;
+//           noteCount = 0;
+//           foundOsc = false;
+//           for (l2 = 0; l2 < synthdata->poly; ++l2)
+//             if (synthdata->noteCounter[l2] > noteCount) {
+//               noteCount = synthdata->noteCounter[l2];
+//               osc = l2;
+//               foundOsc = true;
+//             }
 
-          if (foundOsc) {
-            synthdata->noteCounter[osc] = 0;
-            synthdata->sustainNote[osc] = false;
-            synthdata->velocity[osc] = ev->data.note.velocity;
-            synthdata->channel[osc] = ev->data.note.channel;
-            synthdata->notes[osc] = ev->data.note.note;
-          }  
-      } else {
+//           if (foundOsc) {
+//             synthdata->noteCounter[osc] = 0;
+//             synthdata->sustainNote[osc] = false;
+//             synthdata->velocity[osc] = ev->data.note.velocity;
+//             synthdata->channel[osc] = ev->data.note.channel;
+//             synthdata->notes[osc] = ev->data.note.note;
+//           }  
+//       } else {
       
-// Note Off      
+// // Note Off      
       
-        for (l2 = 0; l2 < synthdata->poly; ++l2)
-          if ((synthdata->notes[l2] == ev->data.note.note)
-            && (synthdata->channel[l2] == ev->data.note.channel))
-            if (synthdata->sustainFlag)
-              synthdata->sustainNote[l2] = true;
-            else
-              synthdata->noteCounter[l2] = 1000000; 
+//         for (l2 = 0; l2 < synthdata->poly; ++l2)
+//           if ((synthdata->notes[l2] == ev->data.note.note)
+//             && (synthdata->channel[l2] == ev->data.note.channel))
+//             if (synthdata->sustainFlag)
+//               synthdata->sustainNote[l2] = true;
+//             else
+//               synthdata->noteCounter[l2] = 1000000; 
 
-      }       
+//       }       
 
     
-    if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
-      if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
-        for (l2 = 0; l2 < synthdata->poly; ++l2)
-          if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel))
-            synthdata->noteCounter[l2] = 1000000;
+//     if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
+//       if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
+//         for (l2 = 0; l2 < synthdata->poly; ++l2)
+//           if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel))
+//             synthdata->noteCounter[l2] = 1000000;
 
-      if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
-        synthdata->sustainFlag = ev->data.control.value > 63;
-        if (!synthdata->sustainFlag)
-          for (l2 = 0; l2 < synthdata->poly; ++l2)
-            if (synthdata->sustainNote[l2])
-              synthdata->noteCounter[l2] = 1000000;
-      }
-    }
-    if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
-      guiWidget->setCurrentPreset(ev->data.control.value);
+//       if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
+//         synthdata->sustainFlag = ev->data.control.value > 63;
+//         if (!synthdata->sustainFlag)
+//           for (l2 = 0; l2 < synthdata->poly; ++l2)
+//             if (synthdata->sustainNote[l2])
+//               synthdata->noteCounter[l2] = 1000000;
+//       }
+//     }
+//     if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
+//       guiWidget->setCurrentPreset(ev->data.control.value);
 
-    for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
-      switch (ev->type) {
-        case SND_SEQ_EVENT_CHANPRESS: 
-          synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
-          break;
-        case SND_SEQ_EVENT_PITCHBEND:
-          synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
-          break;
-        case SND_SEQ_EVENT_CONTROLLER: 
-          synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
-          break;
-      }
+//     for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
+//       switch (ev->type) {
+//         case SND_SEQ_EVENT_CHANPRESS: 
+//           synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
+//           break;
+//         case SND_SEQ_EVENT_PITCHBEND:
+//           synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
+//           break;
+//         case SND_SEQ_EVENT_CONTROLLER: 
+//           synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
+//           break;
+//       }
 
-    snd_seq_free_event(ev);
-  } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
+//     snd_seq_free_event(ev);
+//   } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
 }
 
 void ModularSynth::initPorts(Module *m) {
@@ -1562,7 +1565,7 @@ void ModularSynth::load(QString *presetName)
 	    MidiControllableFloat &mcAbleF =
 	      dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
 	    mcAbleF.isLog = isLog;
-	    mcAbleF.setSliderVal(value, NULL);
+	    mcAbleF.setVal(value, NULL);
 	    mcAbleF.setNewMin(sliderMin);
 	    mcAbleF.setNewMax(sliderMax);
 	    mcAbleF.midiSign = midiSign;
@@ -1586,7 +1589,7 @@ void ModularSynth::load(QString *presetName)
 	    MidiControllableBase &mcAble =
 	      listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble;
 	    mcAble.midiSign = midiSign;
-	    mcAble.setSliderVal(value, NULL);
+	    mcAble.setVal(value, NULL);
 	    /*            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);*/
@@ -1604,7 +1607,7 @@ void ModularSynth::load(QString *presetName)
 	    MidiControllableBase &mcAble =
 	      listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble;
 	    mcAble.midiSign = midiSign;
-	    mcAble.setSliderVal(value, NULL);
+	    mcAble.setVal(value, NULL);
             /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);*/

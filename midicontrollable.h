@@ -30,10 +30,7 @@ public:
       module.midiControllables.append(this);
     }
 
-  virtual ~MidiControllableBase() {
-    while (midiControllerList.count())
-      disconnectController(midiControllerList.at(0));
-  }
+  virtual ~MidiControllableBase();
 
   virtual void updateMGCs(MidiGUIcomponent *sender);
 
@@ -49,7 +46,8 @@ public:
   virtual int sliderVal() { return 0;}
   virtual int sliderStep() { return 0;}
 
-  virtual void setSliderVal(int , MidiSliderBase *) {};
+  virtual void setValRT(int ) {};
+  virtual void setVal(int , MidiGUIcomponent *) {};
 
   virtual const QString &minString() { return *(QString*)NULL;}
   virtual const QString &maxString() { return *(QString*)NULL;}
@@ -108,8 +106,11 @@ public:
     , max(max)
   {}
 
-  void setVal(int val, MidiGUIcomponent *sender) {
+  void setValRT(int val) {
     value = val;
+  };
+  void setVal(int val, MidiGUIcomponent *sender) {
+    setValRT(val);
     updateMGCs(sender);
   }
 
@@ -135,10 +136,6 @@ public:
   virtual int sliderMax() { return getMax(); }
   virtual int sliderVal() { return getValue(); }
   virtual int sliderStep() { return 1; }
-
-  virtual void setSliderVal(int val, MidiSliderBase *sender) {
-    setVal(val, sender);
- }
 
   virtual const QString &minString() { return temp.setNum(toInt(min)); }
   virtual const QString &maxString() { return temp.setNum(toInt(max)); }
@@ -184,7 +181,8 @@ public:
   virtual int sliderVal();
   virtual int sliderStep();
 
-  virtual void setSliderVal(int , MidiSliderBase *);
+  virtual void setValRT(int );
+  virtual void setVal(int , MidiGUIcomponent *);
 
   virtual const QString &minString();
   virtual const QString &maxString();

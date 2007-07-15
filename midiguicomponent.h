@@ -1,6 +1,7 @@
 #ifndef MIDIGUICOMPONENT_H
 #define MIDIGUICOMPONENT_H
 
+#include <QLabel>
 #include <QWidget>
 #include <qlist.h>
 #include "synthdata.h"
@@ -22,6 +23,7 @@ public:
   class MidiControllableBase &mcAble; 
   GUIcomponentType componentType;
   bool controllerOK;
+  QLabel nameLabel;
         
 public:
   MidiGUIcomponent(MidiControllableBase &mcAble);
