@@ -77,52 +77,52 @@ SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
     wave_sine[l1] = sin(phi);
     phi += dphi;
   }
-  for (l1 = 0; l1 < EXP_TABLE_LEN; l1++) {
+  for (l1 = 0; l1 < EXP_TABLE_LEN; l1++)
     exp_data[l1] = exp(l1 / 1000.0 - 16.0);
-  }
+
   dy = 2.0 / (float)(WAVE_PERIOD - decaytime);  
   dyd = 2.0 / decaytime;
   l2 = 0;
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {
-    wave_saw[l2++] = (float)l1 * dy; 
-  }
-  for (l1 = 0; l1 < decaytime; l1++) {
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
+    wave_saw[l2++] = (float)l1 * dy;
+
+  for (l1 = 0; l1 < decaytime; l1++)
     wave_saw[l2++] = 1.0 - (float)l1 * dyd;
-  }
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {      
-    wave_saw[l2++] = -1.0 + (float)l1 * dy;                                                              
-  }
+
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
+    wave_saw[l2++] = -1.0 + (float)l1 * dy;
+
   l2 = WAVE_PERIOD - 1;
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {
-    wave_saw2[l2--] = (float)l1 * dy; 
-  }
-  for (l1 = 0; l1 < decaytime; l1++) {
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
+    wave_saw2[l2--] = (float)l1 * dy;
+
+  for (l1 = 0; l1 < decaytime; l1++)
     wave_saw2[l2--] = 1.0 - (float)l1 * dyd;
-  }
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {      
-    wave_saw2[l2--] = -1.0 + (float)l1 * dy;                                                              
-  }
+
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
+    wave_saw2[l2--] = -1.0 + (float)l1 * dy;
+
   l2 = 0;
   dyd = 4.0 / decaytime;
-  for (l1 = 0; l1 < decaytime>>2; l1++) {
+  for (l1 = 0; l1 < decaytime>>2; l1++)
     wave_rect[l2++] = (float)l1 * dyd;
-  }
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {
+
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
     wave_rect[l2++] = 1.0; 
-  }
-  for (l1 = 0; l1 < decaytime>>1; l1++) {
+
+  for (l1 = 0; l1 < decaytime>>1; l1++)
     wave_rect[l2++] = 1.0 - (float)l1 * dyd;
-  }
-  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++) {
+
+  for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
     wave_rect[l2++] = -1.0; 
-  }
-  for (l1 = 0; l1 < decaytime>>2; l1++) {
-    wave_rect[l2++] = -1.0 + (float)l1 * dyd;      
-  }
+
+  for (l1 = 0; l1 < decaytime>>2; l1++)
+    wave_rect[l2++] = -1.0 + (float)l1 * dyd;
+
   dy = 4.0 / (float)WAVE_PERIOD;  
-  for (l1 = 0; l1 < (WAVE_PERIOD>>2); l1++) {
-    wave_tri[l1] = (float)l1 * dy; 
-  }
+  for (l1 = 0; l1 < (WAVE_PERIOD>>2); l1++)
+    wave_tri[l1] = (float)l1 * dy;
+
   for (l1 = (WAVE_PERIOD>>2); l1 < (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1++)
     wave_tri[l1] = 1.0 - (float)(l1 - (WAVE_PERIOD>>2)) * dy;
 
