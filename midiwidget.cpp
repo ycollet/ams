@@ -280,9 +280,9 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   midiCheck = new QCheckBox("Follow MIDI");
   checkbuttonBox->addWidget(midiCheck);
   midiCheck->setChecked(followMidi);         
-  QObject::connect(noteCheck, SIGNAL(clicked()), this, SLOT(noteControllerCheckToggle()));
-  QObject::connect(configCheck, SIGNAL(clicked()), this, SLOT(configCheckToggle()));
-  QObject::connect(midiCheck, SIGNAL(clicked()), this, SLOT(midiCheckToggle()));
+  QObject::connect(noteCheck, SIGNAL(stateChanged(int)), this, SLOT(noteControllerCheckToggle(int)));
+  QObject::connect(configCheck, SIGNAL(stateChanged(int)), this, SLOT(configCheckToggle(int)));
+  QObject::connect(midiCheck, SIGNAL(stateChanged(int)), this, SLOT(midiCheckToggle(int)));
   buttonBox->addStretch();
   bindButton = new QPushButton("Bind");
   bindButton->setEnabled(false);
@@ -474,19 +474,19 @@ void MidiWidget::bindClicked()
   }
 }
 
-void MidiWidget::noteControllerCheckToggle() {
-
-  noteControllerEnabled = noteCheck->isChecked();  
+void MidiWidget::noteControllerCheckToggle(int state)
+{
+  noteControllerEnabled = state;  
 }
 
-void MidiWidget::configCheckToggle() {
-
-  followConfig = configCheck->isChecked();  
+void MidiWidget::configCheckToggle(int state)
+{
+  followConfig = state;  
 }
 
-void MidiWidget::midiCheckToggle() {
-
-  followMidi = midiCheck->isChecked();  
+void MidiWidget::midiCheckToggle(int state)
+{
+  followMidi = state;  
 }
 
 void MidiWidget::addModule(Module *m)

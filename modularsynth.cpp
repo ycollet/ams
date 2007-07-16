@@ -407,11 +407,13 @@ void ModularSynth::midiAction(int fd)
   while (pipeRed > 1)
     pipeIn[0] |= pipeIn[--pipeRed];
 
-  for (int mCs = synthdata->mcSet.count();
-       mCs; --mCs) {
-    MidiControllableBase *mc = synthdata->mcSet.get();
-    mc->updateMGCs(NULL);
+  MidiControllableBase *mcAble = NULL;
+  for (int mCs = synthdata->mcSet.count(); mCs; --mCs) {
+    mcAble = synthdata->mcSet.get();
+    mcAble->updateMGCs(NULL);
   }
+  if (mcAble)
+    midiWidget->midiTouched(*mcAble);
 
   for (int mcKs = synthdata->mckRed.count();
        mcKs; --mcKs) {

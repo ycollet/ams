@@ -124,36 +124,40 @@ public:
   void setActiveMidiControllers();
   void addMidiControllable(MidiControllerKey mck, MidiControllableBase *midiGuiComponent);
   void removeMidiControllable(MidiControllerKey midiController, MidiControllableBase *midiGuiComponent);
-    const MidiControllerKey getSelectedController() {
-	    return selectedController;
-    }
-    void setSelectedController(MidiControllerKey midiController);
+  const MidiControllerKey getSelectedController() {
+    return selectedController;
+  }
+  void setSelectedController(MidiControllerKey midiController);
 
-    void addModule(Module *m);
-    void removeModule(Module *m);
+  void addModule(Module *m);
+  void removeModule(Module *m);
   void guiComponentTouched(MidiControllableBase &mcAble) {
     if (followConfig)
       selectMcAble(mcAble);
   }
+  void midiTouched(MidiControllableBase &mcAble) {
+    if (followMidi)
+      selectMcAble(mcAble);
+  }
 
-  public slots: 
-    void clearAllClicked();
-    void clearClicked();
-    void bindClicked();
-    void addToParameterViewClicked();
-    void noteControllerCheckToggle();
-    void configCheckToggle();
-    void midiCheckToggle();
-    void toggleMidiSign();
-    void guiControlChanged(const QItemSelection &selected,
-			   const QItemSelection &deselected);
-    void midiControlChanged(const QItemSelection &selected,
-			    const QItemSelection &deselected);
-    void setLogMode(bool on);
-    void setNewMin();
-    void setNewMax();
-    void setInitialMinMax();
-    void updateMidiChannel(int index);
+public slots: 
+  void clearAllClicked();
+  void clearClicked();
+  void bindClicked();
+  void addToParameterViewClicked();
+  void noteControllerCheckToggle(int);
+  void configCheckToggle(int);
+  void midiCheckToggle(int);
+  void toggleMidiSign();
+  void guiControlChanged(const QItemSelection &selected,
+			 const QItemSelection &deselected);
+  void midiControlChanged(const QItemSelection &selected,
+			  const QItemSelection &deselected);
+  void setLogMode(bool on);
+  void setNewMin();
+  void setNewMax();
+  void setInitialMinMax();
+  void updateMidiChannel(int index);
 };
   
 #endif
