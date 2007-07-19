@@ -353,7 +353,8 @@ void *SynthData::alsa_thr_main (void)
 
     while (withAlsa)
     {
-	k = alsa_handle->pcm_wait ();  
+	k = alsa_handle->pcm_wait();
+	readMIDI();
 
         while (k >= cyclesize)
        	{
@@ -530,6 +531,9 @@ void SynthData::call_modules (void)
 
 void SynthData::readMIDI(void)
 {
+  if (!seq_handle)
+    return;
+
   char pipeMessage = 0;
 
   pthread_mutex_lock(&rtMutex);
