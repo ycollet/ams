@@ -48,7 +48,6 @@ HEADERS += box.h \
            canvasfunction.h \
            configdialog.h \
            envelope.h \
-           filter.h \
            function.h \
            guiwidget.h \
            intmidislider.h \
@@ -124,7 +123,6 @@ SOURCES += box.cpp \
            canvasfunction.cpp \
            configdialog.cpp \
            envelope.cpp \
-           filter.cpp \
            function.cpp \
            guiwidget.cpp \
            intmidislider.cpp \
