@@ -20,6 +20,8 @@
 
 M_seq::M_seq(int p_seqLen, QWidget* parent)
   : Module(M_type_seq, 4, parent, "SEQ")
+  , tickFrames(0)
+  , tickFramesRemain(0)
 {
   QString qs;
   char str[1024];
@@ -71,9 +73,6 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   triggerOut = false;
   bpm = 120;
   pitch_ofs = 32;
-  updateTimerFlag = false;
-  timer = new QTimer(this);
-  connect(timer, SIGNAL(timeout()), this, SLOT(nextStep()));
   configDialog->addIntSlider("Pitch Offset", pitch_ofs, 0, 63, generalTab);
   configDialog->addIntSlider("Beats per minute", bpm, 3, 300, generalTab);
   QStringList noteLenNames;
@@ -92,15 +91,8 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
     sprintf(str, "Velocity %d", l1);
     configDialog->addIntSlider(str, velocity[l1], 0, 127, velocityTab[l1 / 8]);
   } 
-
-  QObject::connect(configDialog->intMidiSliderList.at(1), SIGNAL(valueChanged(int)),
-                   this, SLOT(updateTimer(int)));
-  timer->start(int(3750.0 / (float)bpm));
 }
 
-M_seq::~M_seq() {
-
-}
 
 void M_seq::generateCycle() {
 
@@ -121,6 +113,11 @@ void M_seq::generateCycle() {
         }
       }
     }
+
+    tickFrames -= synthdata->cyclesize;
+    if (tickFrames <= 0)
+      nextStep();
+
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       data[3][0][l2] = (triggerOut) ? 1.0 : 0;
     }
@@ -140,26 +137,24 @@ void M_seq::generateCycle() {
   cycleReady = true;
 }
 
-void M_seq::nextStep() {
-
+void M_seq::nextStep()
+{
   int len, l2;
   long noteCount;
+  int minuteFrames = synthdata->rate * 60 + tickFramesRemain;
+  tickFrames += minuteFrames / (bpm << 4);
+  tickFramesRemain = minuteFrames % (bpm << 4);
 
-  if (updateTimerFlag) {
-    timer->stop();
-    timer->start(int(3750.0 / (float)bpm));
-    updateTimerFlag = false;
-  }
   if (trigger) {
     tick = 0;
     seq_pos = 0;
     trigger = false;
   }
-  if (seq_pos == 0) {
+  if (seq_pos == 0)
     triggerOut = true;
-  } else {
+  else
     triggerOut = false;
-  }
+
   len = 4 - note_len;
   if (tick == 0) {
     seq_freq = float(pitch[seq_pos] + pitch_ofs) / 12.0;
@@ -177,21 +172,15 @@ void M_seq::nextStep() {
     seq_gate = (osc < 0) ? 0 : (float)gate[seq_pos];
     seq_velocity = float(velocity[seq_pos]) / 127.0;
     seq_pos++;
-    if (seq_pos >= seqLen) {
+    if (seq_pos >= seqLen)
       seq_pos = 0;
-    }
+
   } 
-  if (tick == len) {
+  if (tick == len)
     seq_gate = 0;
-  }
+
   tick++;
-  if (tick >= 4) {
+  if (tick >= 4)
     tick = 0;
-  }
-}
 
-void M_seq::updateTimer(int p_bpm) {
-
-  bpm = p_bpm;
-  updateTimerFlag = true;
 }
