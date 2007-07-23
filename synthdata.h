@@ -53,7 +53,7 @@ class SynthData
     int notes[MAXPOLY];               // Midi notes
     int velocity[MAXPOLY];            // Velocity
     int channel[MAXPOLY];
-    long noteCounter[MAXPOLY];
+    int noteCounter[MAXPOLY];
     int sustainNote[MAXPOLY]; // Sustain Pedal Buffer
     bool sustainFlag;
     int midiControllerMode;
