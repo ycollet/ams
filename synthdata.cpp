@@ -167,7 +167,8 @@ SynthData::~SynthData()
     free (wave_saw2);
     free (wave_rect);
     free (wave_tri);
-    for (int i = 0; i < poly; i++) free (zeroModuleData [i]);
+    if (poly > 0)
+      free(zeroModuleData[0]);
     free (zeroModuleData);
     delete (midiWidget);
     delete (guiWidget);
@@ -254,12 +255,13 @@ float SynthData::exp_table_ln2(float x)
 
 void SynthData::create_zero_data (void)
 {
-    zeroModuleData = (float **) malloc (poly * sizeof(float *)); 
-    for (int i = 0; i < poly; i++)
-    {
-        zeroModuleData [i] = (float *) malloc (periodsize * sizeof(float));
-        memset (zeroModuleData [i], 0, periodsize * sizeof(float));
-    }
+  zeroModuleData = (float **) malloc (poly * sizeof(float *));
+  for (int i = 0; i < poly; i++)
+    if (i == 0) {
+      zeroModuleData[0] = (float *) malloc (periodsize * sizeof(float));
+      memset (zeroModuleData[0], 0, periodsize * sizeof(float));
+    } else
+      zeroModuleData[i] = zeroModuleData[0];
 }
 
 
