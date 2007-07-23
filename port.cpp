@@ -1,16 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <qstring.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-
 #include <qpainter.h>
 #include <qrect.h>
 #include <qpoint.h>
 #include <qcolor.h>
 #include <qcolordialog.h> 
-//Added by qt3to4:
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include "modularsynth.h"
