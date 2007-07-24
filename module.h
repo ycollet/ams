@@ -96,6 +96,7 @@ class Module : public Box
     int moduleID, outPortCount;
 //    class QTreeWidgetItem *listViewItem;
     QColor colorBackground, colorBorder, colorFont;
+  static int portmemAllocated;
 
   public:
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
@@ -114,9 +115,10 @@ class Module : public Box
     virtual int load(FILE *f);
     void getColors(void);
 
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-    virtual void mousePressEvent (QMouseEvent* );
+protected:
+  void portMemAlloc(int outPortCount);
+  virtual void paintEvent(QPaintEvent *ev);
+  virtual void mousePressEvent (QMouseEvent* );
 
   signals:
     void dragged(QPoint pos);

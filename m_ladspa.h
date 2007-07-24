@@ -25,12 +25,13 @@ class M_ladspa : public Module
     int ladspa_ctrl_in_count, ladspa_ctrl_out_count;
     int ctrl_index[MAX_CONTROLPORTS], audio_index[MAX_CONTROLPORTS];
     float rate_factor;
+  int ladspaPoly;
     
   public: 
     float **inData[MAX_AUDIOPORTS];
     float **inData_ctrl[MAX_CONTROLPORTS];
     int ladspaDesFuncIndex, n;
-    bool isPoly, hasExtCtrlPorts;
+  bool isPoly, hasExtCtrlPorts;
     QString pluginName;
     
   public:

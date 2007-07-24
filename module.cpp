@@ -20,6 +20,7 @@
 #include "module.h"
 #include "main.h"
 
+int Module::portmemAllocated;
 
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
   : Box(parent, name)
@@ -27,8 +28,6 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
-  int l1, l2;
-
   cycleReady = false;
   cycleProcessing = false;
   
@@ -45,11 +44,18 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
   configDialog = new ConfigDialog(*this);
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
+  portMemAlloc(outPortCount);
+}
+
+void Module::portMemAlloc(int outPortCount)
+{
+  this->outPortCount = outPortCount;
   data = (float ***)malloc(outPortCount * sizeof(float **));
-  for (l1 = 0; l1 < outPortCount; ++l1) {
+  for (int l1 = 0; l1 < outPortCount; ++l1) {
     data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
-    for (l2 = 0; l2 < synthdata->poly; ++l2) {                           // TODO Caution, if poly is changed
+    for (int l2 = 0; l2 < synthdata->poly; ++l2) {                           // TODO Caution, if poly is changed
       data[l1][l2] = (float *)malloc(synthdata->periodsize * sizeof(float));
+      portmemAllocated += synthdata->periodsize * sizeof(float);
       memset(data[l1][l2], 0, synthdata->periodsize * sizeof(float));
     }
   }
@@ -77,6 +83,7 @@ Module::~Module()
   for (l1 = 0; l1 < outPortCount; ++l1) {
     for (l2 = 0; l2 < synthdata->poly; ++l2) {
       free(data[l1][l2]);
+      portmemAllocated -= synthdata->periodsize * sizeof(float);
     }
     free(data[l1]);
   }

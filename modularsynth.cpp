@@ -1813,6 +1813,9 @@ void ModularSynth::load(QString *presetName)
   update();
   midiWidget->setActiveMidiControllers();
   synthdata->doSynthesis = true;
+  StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
+  StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
+  StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
   midiWidget->followConfig = followConfig;
   guiWidget->refreshGui();
 }
