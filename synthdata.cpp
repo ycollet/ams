@@ -516,19 +516,25 @@ int SynthData::jack_callback (jack_nframes_t nframes)
 
 void SynthData::call_modules (void)
 {
-    int i;
+  int i;
      
-    for (i = 0; i < wavoutModuleList.count();   i++) ((M_wavout *)wavoutModuleList.at(i))->generateCycle();
-    for (i = 0; i < scopeModuleList.count();    i++) ((M_scope *)scopeModuleList.at(i))->generateCycle();
+  for (i = 0; i < wavoutModuleList.count(); i++)
+    wavoutModuleList.at(i)->generateCycle();
+  for (i = 0; i < scopeModuleList.count(); i++)
+    scopeModuleList.at(i)->generateCycle();
 #ifdef OUTDATED_CODE
-    for (i = 0; i < spectrumModuleList.count(); i++) ((M_spectrum *)spectrumModuleList.at(i))->generateCycle();
+  for (i = 0; i < spectrumModuleList.count(); i++)
+    spectrumModuleList.at(i)->generateCycle();
 #endif
-    for (i = 0; i < midioutModuleList.count();  i++) ((M_midiout *)midioutModuleList.at(i))->generateCycle();
-    for (i = 0; i < moduleList.count();         i++) ((Module *)moduleList.at(i))->cycleReady = false;
-    for (i = 0; i < poly; i++) {
-      noteCounter[i]++;
-      if (noteCounter[i] > 1000000000) noteCounter[i] = 1000000000;
-    }
+  for (i = 0; i < midioutModuleList.count(); i++)
+    midioutModuleList.at(i)->generateCycle();
+  for (i = 0; i < moduleList.count(); i++)
+    moduleList.at(i)->cycleReady = false;
+  for (i = 0; i < poly; i++) {
+    noteCounter[i]++;
+    if (noteCounter[i] > 1000000000)
+      noteCounter[i] = 1000000000;
+  }
 }
 
 void SynthData::readMIDI(void)

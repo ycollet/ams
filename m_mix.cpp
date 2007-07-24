@@ -53,9 +53,6 @@ void M_mix::generateCycle() {
   int l1, l2, l3;
   float mixgain;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();
     
     mixgain = gain * mixer_gain[0];
@@ -72,8 +69,5 @@ void M_mix::generateCycle() {
         }
       }
     }
-    cycleProcessing = false;
-    cycleReady = true;
-  }
 }
 

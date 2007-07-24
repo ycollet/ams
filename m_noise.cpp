@@ -62,8 +62,6 @@ void M_noise::generateCycle() {
   unsigned int l1, l2, random_rate;
   double white_noise;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     random_rate = (int)(5000.0 * (double)rate + 100.0);
     for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
       count++; 
@@ -82,8 +80,5 @@ void M_noise::generateCycle() {
         data[2][l1][l2] = r;
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

@@ -124,8 +124,6 @@ void M_scmcv::generateCycle() {
   int l1, l2, index;
   float df, gate, velocity;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     if (base != lastbase) {
       calcScale();
     }
@@ -160,9 +158,6 @@ void M_scmcv::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 
 void M_scmcv::openBrowser() {

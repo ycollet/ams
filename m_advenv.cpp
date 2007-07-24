@@ -113,9 +113,6 @@ void M_advenv::generateCycle() {
   float tscale, de_a[4], de_d[3];
   float t[8];
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     gateData = port_gate->getinputdata();
     retriggerData = port_retrigger->getinputdata();
 
@@ -232,8 +229,5 @@ void M_advenv::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

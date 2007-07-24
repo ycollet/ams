@@ -56,9 +56,6 @@ void M_ringmod::generateCycle() {
 
   int l1, l2;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     vcoData1 = port_M_vco1->getinputdata ();
     vcoData2 = port_M_vco2->getinputdata ();
 
@@ -67,8 +64,5 @@ void M_ringmod::generateCycle() {
         data[0][l1][l2] = gain * vcoData1[l1][l2] * vcoData2[l1][l2];
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

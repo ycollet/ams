@@ -89,9 +89,6 @@ void M_vcpanning::generateCycle() {
   int l1, l2, k, len;
   double dpan[2], x, y, x_2, widthConst;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata ();
     panData = port_M_pan->getinputdata ();
     widthConst = 2.0 / 88.0;
@@ -159,8 +156,5 @@ void M_vcpanning::generateCycle() {
         }                                   
       } while(len);  
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

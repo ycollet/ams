@@ -971,7 +971,7 @@ void ModularSynth::newM_wavout() {
 void ModularSynth::newM_midiout() {
 
   M_midiout *m = new M_midiout(this);
-  synthdata->midioutModuleList.append((QObject *)m);
+  synthdata->midioutModuleList.append(m);
   initNewModule(m);
 }
 
@@ -1008,7 +1008,7 @@ void ModularSynth::newM_pcmin()
 void ModularSynth::newM_scope() {
 
   M_scope *m = new M_scope(this);
-  synthdata->scopeModuleList.append((QObject *)m);
+  synthdata->scopeModuleList.append(m);
   initNewModule(m);
 }
 
@@ -1016,7 +1016,7 @@ void ModularSynth::newM_spectrum() {
 
   M_spectrum *m = new M_spectrum(this);
 #ifdef OUTDATED_CODE
-  synthdata->spectrumModuleList.append((QObject *)m);
+  synthdata->spectrumModuleList.append(m);
 #endif
   initNewModule(m);
 }

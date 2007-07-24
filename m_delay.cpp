@@ -58,9 +58,6 @@ void M_delay::generateCycle() {
 
   int l1, l2, ofs, delay_frames;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata();
 
     delay_frames = (int)((float)(MAX_DELAY_FRAMES - 3) * delay / 10.0);
@@ -74,8 +71,5 @@ void M_delay::generateCycle() {
       read_ofs++;
       if (read_ofs >= MAX_DELAY_FRAMES) read_ofs = 0;
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

@@ -78,8 +78,6 @@ void M_env::generateCycle() {
   float tscale, de_attack, de_decay, de_release;
   float a, dl, dc, h, dla, dlah, dlahdc;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
 
     gateData = port_gate->getinputdata();
     retriggerData = port_retrigger->getinputdata();
@@ -164,8 +162,5 @@ void M_env::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

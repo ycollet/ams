@@ -104,8 +104,6 @@ void M_vco2::generateCycle() {
   float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
  
 
-  if (!cycleReady) {
-    cycleProcessing = true; 
     edge = 0.01f + 1.8f * synthdata->edge;
 
     freqData = port_M_freq->getinputdata();
@@ -311,8 +309,5 @@ void M_vco2::generateCycle() {
           }
         }
       }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

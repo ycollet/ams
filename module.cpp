@@ -29,7 +29,6 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
   , outPortCount(outPortCount)
 {
   cycleReady = false;
-  cycleProcessing = false;
   
   synthdata->incModuleCount();
   moduleID = synthdata->getModuleID();

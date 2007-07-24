@@ -97,9 +97,6 @@ void M_vcdoubledecay::generateCycle() {
   int l1, l2, k, len, l2_out;
   double ts, tsr, tsn, tmp, c1, c2, n1, n, c, astep, de, de2, ds;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     gateData = port_M_gate->getinputdata ();
     retriggerData = port_M_retrigger->getinputdata ();
     attackData = port_M_attack->getinputdata ();
@@ -192,8 +189,5 @@ void M_vcdoubledecay::generateCycle() {
         }  
       } while (len);
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

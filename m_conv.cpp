@@ -51,9 +51,6 @@ void M_conv::generateCycle() {
   int l1, l2;
   float offset;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata();
 
     offset = octave + 5.0313842;
@@ -76,8 +73,5 @@ void M_conv::generateCycle() {
         }
       }
     } 
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

@@ -58,8 +58,6 @@ void M_pcmin::generateCycle() {
   int l1, l2, l3;
   float mixgain;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     for (l1 = 0; l1 < 2; l1++) {
       mixgain = gain * mixer_gain[l1];
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
@@ -68,8 +66,5 @@ void M_pcmin::generateCycle() {
         }
       }
     }  
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

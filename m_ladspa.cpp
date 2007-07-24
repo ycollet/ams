@@ -326,9 +326,6 @@ void M_ladspa::generateCycle() {
   int l1, l2, l3;
   float ctrlVal;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();
     if (hasExtCtrlPorts)
     {
@@ -397,8 +394,5 @@ void M_ladspa::generateCycle() {
         }
       }
     }
-  }  
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

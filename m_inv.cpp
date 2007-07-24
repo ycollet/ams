@@ -40,9 +40,6 @@ void M_inv::generateCycle() {
 
   int l1, l2;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata();
 
     for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -50,8 +47,5 @@ void M_inv::generateCycle() {
         data[0][l1][l2] = -inData[l1][l2];
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

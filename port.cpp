@@ -166,9 +166,7 @@ float **Port::getinputdata (void)
 
   if (connectedPortList.count()) {
     M = connectedPortList.at(0)->module;
-    if (! M->cycleReady && ! M->cycleProcessing)
-      M->generateCycle();
-    return M->data[connectedPortList.at(0)->index];
+    return M->getData(connectedPortList.at(0)->index);
   } else
     return synthdata->zeroModuleData;
 }

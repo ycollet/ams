@@ -48,8 +48,6 @@ void M_cvs::generateCycle() {
 
   int l1, l2, l3;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     for (l3 = 0; l3 < MODULE_CVS_CV_COUNT; l3++) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {
         for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
@@ -57,8 +55,5 @@ void M_cvs::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

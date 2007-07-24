@@ -41,9 +41,6 @@ void M_amp::generateCycle() {
 
   int l1, l2;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata();
 
     for (l1 = 0; l1 < synthdata->poly; l1++) {
@@ -51,8 +48,5 @@ void M_amp::generateCycle() {
         data[0][l1][l2] = gain * inData[l1][l2];
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

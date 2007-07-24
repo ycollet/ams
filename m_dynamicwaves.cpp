@@ -175,8 +175,6 @@ void M_dynamicwaves::generateCycle() {
   float de_a[4][MODULE_DYNAMICWAVES_MAX_OSC];
   float de_d[3][MODULE_DYNAMICWAVES_MAX_OSC];
 
-  if (!cycleReady) {
-    cycleProcessing = true; 
     wave_period_2 = wave_period / 2.0;
 
     freqData = port_M_freq->getinputdata();
@@ -361,8 +359,5 @@ void M_dynamicwaves::generateCycle() {
         }
       } 
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

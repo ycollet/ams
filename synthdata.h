@@ -67,10 +67,10 @@ class SynthData
     int moduleID;
 
     QList<class M_wavout *> wavoutModuleList;
-    QList<QObject*> midioutModuleList;
-    QList<QObject*> scopeModuleList;
+    QList<class M_midiout *> midioutModuleList;
+    QList<class M_scope *> scopeModuleList;
 #ifdef OUTDATED_CODE
-    QList<QObject*> spectrumModuleList;
+    QList<class M_spectrum *> spectrumModuleList;
 #endif
     QList<class Module *> moduleList;
     QList<class M_advmcv *> listM_advmcv;

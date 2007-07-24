@@ -185,9 +185,6 @@ void M_quantizer::generateCycle() {
 
   int l1, l2, quant, lutquant, transpose;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata ();
     triggerData = port_M_trigger->getinputdata ();
     transposeData = port_M_transpose->getinputdata ();
@@ -238,8 +235,5 @@ void M_quantizer::generateCycle() {
           }   
         }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

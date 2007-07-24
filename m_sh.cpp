@@ -51,9 +51,6 @@ void M_sh::generateCycle() {
 
   int l1, l2;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata ();
     trigData = port_M_trig->getinputdata ();
 
@@ -69,8 +66,5 @@ void M_sh::generateCycle() {
         data[1][l1][l2] = (gate) ? 1 : 0;
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

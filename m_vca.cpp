@@ -62,9 +62,7 @@ void M_vca::generateCycle() {
   int l1, l2;
   float  v, g;
 
-  if (!cycleReady) {
     float **gainData1, **gainData2, **inData1, **inData2;       
-    cycleProcessing = true;
 
     gainData1 = port_M_gain1->getinputdata ();
     gainData2 = port_M_gain2->getinputdata ();
@@ -87,8 +85,5 @@ void M_vca::generateCycle() {
         }
       }   
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

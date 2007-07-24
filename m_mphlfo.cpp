@@ -59,9 +59,6 @@ void M_mphlfo::generateCycle() {
   double tri45, tri90, tri135, saw45, saw90, saw135, saw180, saw225, saw270, saw315;
   double sign_saw1, sign_saw2;
   
-  if (!cycleReady) {
-    cycleProcessing = true;
-    
     d_saw = 0;
     d_tri = ((state > 1) && (state < 6)) ? -4.0 * freq / (double)synthdata->rate 
                                          :  4.0 * freq / (double)synthdata->rate;
@@ -249,8 +246,5 @@ void M_mphlfo::generateCycle() {
         data[15][l1][l2] = o[15];
       }
     }
-    cycleProcessing = false;
-    cycleReady = true;
-  }
 }
 

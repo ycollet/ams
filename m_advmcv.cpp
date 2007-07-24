@@ -94,8 +94,6 @@ void M_advmcv::generateCycle() {
   int l1, l2, l3;
   float gate, velocity;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
       freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
@@ -114,9 +112,6 @@ void M_advmcv::generateCycle() {
 //      data[3][l1][0] = trig[l1];
       data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 
 void M_advmcv::aftertouchEvent(int value)

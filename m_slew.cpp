@@ -48,9 +48,6 @@ void M_slew::generateCycle() {
   int l1, l2;
   float ds, slewUp, slewDown;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_M_in->getinputdata ();
 
     if (timeUp > 0.0001) {
@@ -75,8 +72,5 @@ void M_slew::generateCycle() {
         lastData[l1] = data[0][l1][l2];
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

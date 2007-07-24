@@ -95,9 +95,6 @@ void M_function::generateCycle() {
   Function *cf;  
   float xg, dy;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     inData = port_in->getinputdata();
     cf = configDialog->functionList.at(0);
     pointCount = configDialog->functionList.at(0)->pointCount;
@@ -130,9 +127,6 @@ void M_function::generateCycle() {
         } while (len); 
       }  
     }  
-    cycleProcessing = false;
-    cycleReady = true;
-  }
 }
 
 void M_function::updateZoom(int zoomIndex) {

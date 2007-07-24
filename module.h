@@ -89,7 +89,7 @@ class Module : public Box
   public: 
     ConfigDialog *configDialog;
     float ***data; 
-    bool cycleReady, cycleProcessing;
+    bool cycleReady;
     M_typeEnum M_type;  
     QList<Port*> portList;
     QList<class MidiControllableBase *> midiControllables;
@@ -106,7 +106,6 @@ class Module : public Box
   }
   void incConnections();
   void decConnections();
-    virtual void generateCycle() = 0;
 
     int save(FILE *f);
     virtual int saveConnections(FILE *f); 
@@ -115,7 +114,18 @@ class Module : public Box
     virtual int load(FILE *f);
     void getColors(void);
 
+  float **getData(int index) {
+    if (!cycleReady) {
+      generateCycle();
+      cycleReady = true;
+    }
+    return data[index];
+  }
+
+
 protected:
+  virtual void generateCycle() = 0;
+
   void portMemAlloc(int outPortCount);
   virtual void paintEvent(QPaintEvent *ev);
   virtual void mousePressEvent (QMouseEvent* );

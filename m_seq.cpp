@@ -98,9 +98,6 @@ void M_seq::generateCycle() {
 
   int l1, l2;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     triggerData = port_trigger->getinputdata ();
 
     if (triggerCount) {
@@ -132,9 +129,6 @@ void M_seq::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 
 void M_seq::nextStep()

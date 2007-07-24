@@ -67,8 +67,6 @@ void M_noise2::generateCycle() {
   unsigned int l1, l2, random_rate;
   float white_noise;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     if (NoiseType==RAND) random_rate = (int)(5000.0 * (double)rate + 100.0);
      switch (NoiseType)
      {
@@ -115,8 +113,5 @@ void M_noise2::generateCycle() {
       break;
       }
     
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

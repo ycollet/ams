@@ -59,11 +59,8 @@ void M_vcswitch::generateCycle() {
   int l1, l2;
   float mix1, mix2;
 
-  if (!cycleReady) {
     float **inData[2], **cvData;       
                             
-    cycleProcessing = true;
-
     inData[0] = port_M_in[0]->getinputdata ();
     inData[1] = port_M_in[1]->getinputdata ();
     cvData = port_M_cv->getinputdata ();
@@ -86,8 +83,5 @@ void M_vcswitch::generateCycle() {
         data[2][l1][l2] = (mix1 * inData[0][l1][l2] + mix2 * inData[1][l1][l2]) / (mix1 + mix2);
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

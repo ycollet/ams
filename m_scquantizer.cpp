@@ -119,8 +119,6 @@ void M_scquantizer::generateCycle() {
   int l1, l2, l3, quant, transpose;
   float lutquant;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
     if (base != lastbase) {
       calcScale();
     }
@@ -192,9 +190,6 @@ void M_scquantizer::generateCycle() {
           }   
         }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 
 void M_scquantizer::openBrowser() {

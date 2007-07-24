@@ -106,8 +106,6 @@ void M_vcorgan::generateCycle() {
   float gain_linfm, wave_period_2, current_gain;
   float gain_const[MODULE_VCORGAN_MAX_OSC], phi_const[MODULE_VCORGAN_MAX_OSC];
 
-  if (!cycleReady) {
-    cycleProcessing = true; 
     wave_period_2 = wave_period / 2.0;
 
     freqData = port_M_freq->getinputdata();
@@ -192,8 +190,5 @@ void M_vcorgan::generateCycle() {
         }
       }
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

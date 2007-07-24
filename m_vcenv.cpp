@@ -97,9 +97,6 @@ void M_vcenv::generateCycle() {
   double ts, tsr, tsn, tmp, c, n, de;
   int k, len;
 
-  if (!cycleReady) {
-    cycleProcessing = true;
-
     gateData = port_M_gate->getinputdata ();
     retriggerData = port_M_retrigger->getinputdata ();
     attackData = port_M_attack->getinputdata ();
@@ -192,8 +189,5 @@ void M_vcenv::generateCycle() {
         }   
       } while(len);
     }
-  }
-  cycleProcessing = false;
-  cycleReady = true;
 }
 

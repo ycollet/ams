@@ -108,8 +108,6 @@ void M_ad::generateCycle() {
   float dta, dra, rdt, rdr;
   double qdt, qdr;
   
-  if (!cycleReady) {
-    cycleProcessing = true;
 
     inData = port_in->getinputdata();
  
@@ -171,10 +169,6 @@ void M_ad::generateCycle() {
         }
       }
     }
-        
-    cycleProcessing = false;
-    cycleReady = true;
-  }
 }
 
 void M_ad::updateVoices(int) {
