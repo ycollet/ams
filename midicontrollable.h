@@ -151,9 +151,11 @@ inline int MidiControllable<int>::round(float f) {
 }
 
 class MidiControllableFloat: public MidiControllable<float> {
-public:
   bool isLog;
   float varMin, varMax;
+  int scaledMin, scaledMax;
+
+public:
   MidiControllableFloat(Module &module, const QString &name, float &value, float min, float max, bool isLog = false)
     : MidiControllable<float>(module, name, value, min, max)
     , isLog(isLog)
@@ -163,8 +165,11 @@ public:
 
   operator float() {return value;}
 
-  float maybeLog(float );
+  int scale(float );
 
+  bool getLog() {
+    return isLog;
+  }
   void setLog(bool );
   void setNewMin(int min);
   void setNewMax(int max);

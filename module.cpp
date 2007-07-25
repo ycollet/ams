@@ -159,7 +159,7 @@ int Module::saveParameters(FILE *f)
     MidiControllableFloat &mcAbleF = dynamic_cast<MidiControllableFloat &>(configDialog->midiSliderList.at(l1)->mcAble);
     fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,
 	    mcAbleF.sliderVal(),
-	    mcAbleF.isLog,
+	    mcAbleF.getLog(),
 	    mcAbleF.sliderMin(),
 	    mcAbleF.sliderMax(),
 	    mcAbleF.midiSign);

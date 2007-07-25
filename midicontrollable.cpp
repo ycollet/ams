@@ -67,7 +67,7 @@ int MidiControllableDoOnce::getMidiValue()
   return 0;
 }
 
-float MidiControllableFloat::maybeLog(float v)
+int MidiControllableFloat::scale(float v)
 {
   float r;
 
@@ -78,22 +78,22 @@ float MidiControllableFloat::maybeLog(float v)
   } else
     r = v;
 
-  return r;
+  return (int)(r * SLIDER_SCALE);
 }
 
 int MidiControllableFloat::sliderMin()
 {
-  return (int)(SLIDER_SCALE * maybeLog(varMin));
+  return scaledMin;
 }
 
 int MidiControllableFloat::sliderMax()
 {
-  return (int)(SLIDER_SCALE * maybeLog(varMax));
+  return scaledMax;
 }
 
 int MidiControllableFloat::sliderVal()
 {
-  return (int)(SLIDER_SCALE * maybeLog(value));
+  return scale(value);
 }
 
 int MidiControllableFloat::sliderStep()
@@ -120,6 +120,8 @@ void MidiControllableFloat::setVal(int val, MidiGUIcomponent *sender)
 void MidiControllableFloat::setLog(bool log)
 {
   isLog = log;
+  scaledMin = scale(varMin);
+  scaledMax = scale(varMax);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -129,7 +131,7 @@ void MidiControllableFloat::setNewMin(int min)
   varMin = (float)min / SLIDER_SCALE;
   if (isLog)
     varMin = expf(varMin);
-
+  scaledMin = scale(varMin);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -139,7 +141,7 @@ void MidiControllableFloat::setNewMax(int max)
   varMax = (float)max / SLIDER_SCALE;
   if (isLog)
     varMax = expf(varMax);
-
+  scaledMax = scale(varMax);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -147,6 +149,7 @@ void MidiControllableFloat::setNewMax(int max)
 void MidiControllableFloat::setNewMin()
 {
   varMin = value;
+  scaledMin = scale(varMin);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -154,6 +157,7 @@ void MidiControllableFloat::setNewMin()
 void MidiControllableFloat::setNewMax()
 {
   varMax = value;
+  scaledMax = scale(varMax);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -161,7 +165,9 @@ void MidiControllableFloat::setNewMax()
 void MidiControllableFloat::resetMinMax()
 {
   varMin = min;
+  scaledMin = scale(varMin);
   varMax = max;
+  scaledMax = scale(varMax);
   updateFloatMGCs();
   updateMGCs(NULL);
 }
@@ -178,10 +184,11 @@ void MidiControllableFloat::updateFloatMGCs()
 
 bool MidiControllableFloat::setMidiValueRT(int val0to127)
 {
-  float tick = (varMax - varMin) / 127;
   if (!midiSign)
     val0to127 = 127 - val0to127;
-  value = varMin + tick * val0to127;
+
+  int scaledVal = scaledMin + ((scaledMax - scaledMin) * val0to127) / 127;
+  setValRT(scaledVal);
 
   return true;
 }

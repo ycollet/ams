@@ -1566,7 +1566,7 @@ void ModularSynth::load(QString *presetName)
 	    //	    StdOut << __PRETTY_FUNCTION__ << " moduleID " << moduleID << " index " << index << endl;
 	    MidiControllableFloat &mcAbleF =
 	      dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
-	    mcAbleF.isLog = isLog;
+	    mcAbleF.setLog(isLog);
 	    mcAbleF.setVal(value, NULL);
 	    mcAbleF.setNewMin(sliderMin);
 	    mcAbleF.setNewMax(sliderMax);
@@ -1931,7 +1931,7 @@ void ModularSynth::save()
 		  guiWidget->parameterList.at(l2)->midiControllableListIndex);
 	  MidiControllableFloat *mcAbleF = dynamic_cast<MidiControllableFloat *>(guiWidget->parameterList.at(l2));
           if (mcAbleF)
-            fprintf(f, "%d %d %d\n", mcAbleF->sliderMin(), mcAbleF->sliderMax(), mcAbleF->isLog);
+            fprintf(f, "%d %d %d\n", mcAbleF->sliderMin(), mcAbleF->sliderMax(), mcAbleF->getLog());
           else
             fprintf(f, "\n");
         }

@@ -638,7 +638,7 @@ void MidiWidget::showFloatHelpers(bool show)
 {
   if (show) {
     logCheck->blockSignals(true);
-    logCheck->setChecked(static_cast<MidiControllableFloat *>(midiControllable)->isLog);
+    logCheck->setChecked(static_cast<MidiControllableFloat *>(midiControllable)->getLog());
     logCheck->blockSignals(false);
   }
   logCheck->setVisible(show);
