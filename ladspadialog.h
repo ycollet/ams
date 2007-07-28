@@ -33,6 +33,8 @@ Q_OBJECT
   class QPushButton *insertPolyButton;
   int selectedLib;
   int selectedDesc;
+
+  void search(bool select);
            
 public: 
   class QTreeView *ladspaView;
@@ -48,6 +50,7 @@ private slots:
   void insertClicked();
   void insertPolyClicked();
   void searchClicked();
+  void searchLineEdited(const QString &);
   void pluginHighlighted(const class QItemSelection &, const QItemSelection &);
 };
   

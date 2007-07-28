@@ -143,6 +143,8 @@ LadspaDialog::LadspaDialog()
   vbox.addLayout(searchBox);
   searchBox->setSpacing(10);
   searchLine = new QLineEdit();
+  QObject::connect(searchLine, SIGNAL(textEdited(const QString &)),
+		   this, SLOT(searchLineEdited(const QString &)));
   searchBox->addWidget(searchLine);
   QPushButton *searchButton = new QPushButton("Search");
   searchBox->addWidget(searchButton);
@@ -222,12 +224,12 @@ void LadspaDialog::pluginHighlighted(const QItemSelection &selected, const QItem
   }
 }
 
-void LadspaDialog::searchClicked()
+void LadspaDialog::search(bool select)
 {
   if (!synthdata->ladspaLib.count())
     return;
   
-  int lib = 0, desc = -1;
+  int lib = 0, desc = 0;
   int _lib, _desc;
 
   if (selectedDesc != -1) {
@@ -237,24 +239,40 @@ void LadspaDialog::searchClicked()
   _lib = lib;
   _desc = desc;
 
-  do {
-    ++desc;
-    if (_desc == desc && _lib == lib)
-      return;
+  QModelIndex parent = ladspaModel.index(lib, 0);
 
-    if (desc < synthdata->ladspaLib.at(lib).desc.count()) {
-      if (QString(synthdata->ladspaLib.at(lib).desc.at(desc)->Name).
-	  contains(searchLine->text(), Qt::CaseInsensitive)) {
-	QModelIndex mi = ladspaModel.index(desc, 0, ladspaModel.index(lib, 0));
-	ladspaView->scrollTo(mi);
-	ladspaView->selectionModel()->
-	  select(mi, QItemSelectionModel::ClearAndSelect);
-	return;
-      }
-    } else {
+  do {
+    if (++desc >= synthdata->ladspaLib.at(lib).desc.count()) {
+      desc = 0;
       if (++lib >= synthdata->ladspaLib.count())
 	lib = 0;
-      desc = -1;
+      parent = ladspaModel.index(lib, 0);
     }
-  } while(1);
+    const LadspaLib &libr = synthdata->ladspaLib.at(lib);
+    if (QString(libr.desc.at(desc)->Name).contains(searchLine->text(), Qt::CaseInsensitive)) {
+      if (select) {
+	QModelIndex mi = ladspaModel.index(desc, 0, parent);
+	ladspaView->scrollTo(mi);
+	ladspaView->selectionModel()->select(mi, QItemSelectionModel::ClearAndSelect);
+	return;
+      }
+      ladspaView->setRowHidden(lib, QModelIndex(), false);
+      ladspaView->setRowHidden(desc, parent, false);
+      ladspaView->expand(parent);
+    } else
+      if (!select)
+	ladspaView->setRowHidden(desc, parent, true);
+  } while(_lib != lib  ||  _desc != desc);
+}
+
+void LadspaDialog::searchClicked()
+{
+  search(true);
+}
+
+void LadspaDialog::searchLineEdited(const QString &)
+{
+  for (int lib = 0; lib < synthdata->ladspaLib.count(); ++lib)
+    ladspaView->setRowHidden(lib, QModelIndex(), true);
+  search(false);
 }
