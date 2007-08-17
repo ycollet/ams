@@ -126,7 +126,7 @@ class Module : public Box
 protected:
   virtual void generateCycle() = 0;
 
-  void portMemAlloc(int outPortCount);
+  void portMemAlloc(int outPortCount, bool poly);
   virtual void paintEvent(QPaintEvent *ev);
   virtual void mousePressEvent (QMouseEvent* );
 

@@ -25,6 +25,7 @@ int Module::portmemAllocated;
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
   : Box(parent, name)
   , connections(0)
+  , data(NULL)
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
@@ -43,20 +44,24 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
   configDialog = new ConfigDialog(*this);
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
-  portMemAlloc(outPortCount);
+  if (outPortCount)
+    portMemAlloc(outPortCount, true);
 }
 
-void Module::portMemAlloc(int outPortCount)
+void Module::portMemAlloc(int outPortCount, bool poly)
 {
+                           // TODO Caution, if poly is changed
   this->outPortCount = outPortCount;
   data = (float ***)malloc(outPortCount * sizeof(float **));
+  int voices = poly ? synthdata->poly : 1;
   for (int l1 = 0; l1 < outPortCount; ++l1) {
     data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
-    for (int l2 = 0; l2 < synthdata->poly; ++l2) {                           // TODO Caution, if poly is changed
-      data[l1][l2] = (float *)malloc(synthdata->periodsize * sizeof(float));
-      portmemAllocated += synthdata->periodsize * sizeof(float);
-      memset(data[l1][l2], 0, synthdata->periodsize * sizeof(float));
-    }
+    int size = voices * synthdata->periodsize * sizeof(float);
+    data[l1][0] = (float *)malloc(size);
+    memset(data[l1][0], 0, size);
+    portmemAllocated += size;
+    for (int l2 = 1; l2 < synthdata->poly; ++l2)
+      data[l1][l2] = data[l1][l2 - 1] + (poly ? synthdata->periodsize : 0);
   }
 }
 
@@ -80,12 +85,11 @@ Module::~Module()
   }
 
   for (l1 = 0; l1 < outPortCount; ++l1) {
-    for (l2 = 0; l2 < synthdata->poly; ++l2) {
-      free(data[l1][l2]);
-      portmemAllocated -= synthdata->periodsize * sizeof(float);
-    }
+    free(data[l1][0]);
+    portmemAllocated -= synthdata->poly * synthdata->periodsize * sizeof(float);
     free(data[l1]);
   }
+
   free(data);
 }
 
