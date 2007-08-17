@@ -13,7 +13,7 @@ class M_pcmout : public Module
     float gain,polyroot;
     float mixer_gain[2]; 
     int agc;
-    long cycleSize;	
+
     Module *module_in[2];
     Port *port_in[2];
     

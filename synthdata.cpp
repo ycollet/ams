@@ -497,19 +497,21 @@ int SynthData::jack_callback (jack_nframes_t nframes)
 	}
     }
 
-    for (i = 0; i < play_ports; i += 2)
-    {
-        P = doSynthesis ? (M_pcmout *)(play_mods [i / 2]) : 0;    
-        if (P) P->generateCycle ();
-        for (j = 0; j < 2; j++)
-        {
-            p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_out [i + j], nframes));
-            if (P) memcpy (p, P->pcmdata [j], sizeof(jack_default_audio_sample_t) * nframes);
-            else   memset (p, 0, sizeof(jack_default_audio_sample_t) * nframes);
+    for (i = 0; i < play_ports; i += 2) {
+      P = doSynthesis ? (M_pcmout *)(play_mods [i >> 1]) : 0;    
+      if (P) {
+	P->pcmdata[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[i], nframes);
+	P->pcmdata[1] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[i + 1], nframes);
+	P->generateCycle();
+      } else
+	for (j = 0; j < 2; j++) {
+	  p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_out [i + j], nframes));
+	  memset (p, 0, sizeof(jack_default_audio_sample_t) * nframes);
 	}
     }
 
-    if (doSynthesis) call_modules ();
+    if (doSynthesis)
+      call_modules();
  
     return 0;
 }

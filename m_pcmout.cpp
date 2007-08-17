@@ -1,24 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-
-
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
-#include <qpainter.h>
-#include <qtimer.h>
 #include "synthdata.h"
 #include "m_pcmout.h"
-#include "module.h"
-#include "port.h"
 
 
 M_pcmout::M_pcmout(QWidget* parent, int port) 
@@ -30,7 +12,7 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
-  cycleSize=synthdata->cyclesize * sizeof(float);
+
   polyroot = sqrt((double)synthdata->poly);
   agc = 0;
   qs.sprintf (" -> Out %2d", port);
@@ -50,51 +32,51 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   QStringList agcNames;
   agcNames << "Disabled" << "Enabled";
   configDialog->addComboBox("Automatic Gain Control", agc, agcNames);
-  pcmdata[0] = new float[synthdata->periodsize];
-  pcmdata[1] = new float[synthdata->periodsize];
+  if (synthdata->withAlsa) {
+    pcmdata[0] = new float[2 * synthdata->periodsize];
+    pcmdata[1] = pcmdata[0] + synthdata->periodsize;
+  }
 }
 
 M_pcmout::~M_pcmout()
 {
-  delete[] pcmdata[0];
-  delete[] pcmdata[1];
+  if (synthdata->withAlsa)
+    delete[] pcmdata[0];
 }
 
 void M_pcmout::generateCycle()
 {
-    int l1, l2, l3;
-    float max, mixgain, **indata;
-    
-    
-    for (l1 = 0; l1 < 2; l1++)
-    {
-        memset(pcmdata[l1], 0, cycleSize);  
-        indata = port_in [l1]->getinputdata ();
+  int l1, l2, l3;
+  float max, **indata;
 
-        if (indata != synthdata->zeroModuleData)
-        {
-            mixgain = gain * mixer_gain[l1] / polyroot;
-            for (l2 = 0; l2 < synthdata->cyclesize; l2++)
-            {
-                for (l3 = 0; l3 < synthdata->poly; l3++)
-                {
-                    pcmdata[l1][l2] += mixgain * indata [l3][l2]; 
-                }
-            }
-            if (agc)
-            {
-                max = 0.0f;
-                for (l2 = 0; l2 < synthdata->cyclesize; l2++)
-                {
-                    if (max < fabs(pcmdata[l1][l2])) max = fabs(pcmdata[l1][l2]);
-                }    
-                if (max > 0.9f)
-                {
-                    max = 0.9f / max;
-                    for (l2 = 0; l2 < synthdata->cyclesize; l2++) pcmdata[l1][l2] *= max;
-		}
+  for (l1 = 0; l1 < 2; l1++) {
+    indata = port_in [l1]->getinputdata ();
+
+    if (indata != synthdata->zeroModuleData) {
+      int poly = synthdata->poly;
+      if (poly > 1 && indata[1] == indata[0])
+	poly = 1;
+      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+	pcmdata[l1][l2] = indata[0][l2];
+	for (l3 = 1; l3 < poly; l3++)
+	  pcmdata[l1][l2] += indata[l3][l2];
+	float mixgain = gain * mixer_gain[l1];
+	pcmdata[l1][l2] *= mixgain;
+      }
+      if (agc)
+	{
+	  max = 0.0f;
+	  for (l2 = 0; l2 < synthdata->cyclesize; l2++)
+	    {
+	      if (max < fabs(pcmdata[l1][l2])) max = fabs(pcmdata[l1][l2]);
+	    }    
+	  if (max > 0.9f)
+	    {
+	      max = 0.9f / max;
+	      for (l2 = 0; l2 < synthdata->cyclesize; l2++) pcmdata[l1][l2] *= max;
 	    }
 	}
     }
+  }
 }
 
