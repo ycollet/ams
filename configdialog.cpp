@@ -54,17 +54,17 @@ ConfigDialog::ConfigDialog(Module &module)
 ConfigDialog::~ConfigDialog()
 {}
 
-int ConfigDialog::addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog, QBoxLayout *layout)
+MidiSlider *ConfigDialog::addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog, QBoxLayout *layout)
 {
   MidiControllableFloat * mcAble =
     new MidiControllableFloat(module, name, valueRef, minValue, maxValue, isLog);
 
   MidiSlider *midiSlider = new MidiSlider(*mcAble);
-  insertWidget(layout, midiSlider);
+  insertWidget(layout, midiSlider, 100);
 
   midiSliderList.append(midiSlider);
 
-  return 0;
+  return midiSlider;
 }
 
 int ConfigDialog::addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout)
@@ -111,14 +111,19 @@ int ConfigDialog::addCheckBox(const QString &name, float &valueRef, QBoxLayout *
   MidiControllable<float> *mcAble =
     new MidiControllable<float>(module, name, valueRef, 0, 1);
 
+  return addCheckBox(*mcAble, layout);
+}
+
+int ConfigDialog::addCheckBox(MidiControllable<float> &mcAble, QBoxLayout *layout)
+{
   MidiCheckBox *midiCheckBox;
 
-  midiCheckBox = new MidiCheckBox(*mcAble);
+  midiCheckBox = new MidiCheckBox(mcAble);
   insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
 
   midiCheckBoxList.append(midiCheckBox);
 
-  return(0);
+  return 0;
 }
 
 MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLayout *layout)

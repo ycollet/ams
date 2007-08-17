@@ -10,29 +10,29 @@
        
 class M_stereomix : public Module
 {
-  Q_OBJECT
+  class MCableMute;
+  class MCableSolo;
 
-  private:
     QList<Port*> in_port_list;
     Port *port_out[2];
     float gain;
     float mixer_gain[MAX_STEREOMIX_IN], pan[MAX_STEREOMIX_IN];
     float mute[MAX_STEREOMIX_IN], solo[MAX_STEREOMIX_IN];
     bool ignore_check;
-    int solo_index;
-        
-  public: 
+  unsigned solo_index;
+
+  void soloed(float &s);
+  void updateSolos(MidiGUIcomponent *sender);
+
+public: 
     float **inData[MAX_STEREOMIX_IN];
-    int in_channels;
+    unsigned in_channels;
                             
   public:
     M_stereomix(int p_in_channels, QWidget* parent=0);
 
     void generateCycle();
 
-  public slots:
-    void soloToggled(bool);
-    void muteToggled(bool);
 };
   
 #endif

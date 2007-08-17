@@ -125,9 +125,10 @@ public:
     float tick = (float)(max - min) / 127;
     if (!midiSign)
       val0to127 = 127 - val0to127;
-    value = min + round(tick * val0to127);
+    t old = value;
+    value = min + (int)(0.5 + tick * val0to127);
 
-    return true;
+    return old != value;
   }
 
   virtual int getMidiValue() { return 0;}

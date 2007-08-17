@@ -21,6 +21,8 @@
 #include "synthdata.h"
 #include "function.h"
 
+template <typename t> class MidiControllable;
+
 /** configuration dialog for each module
  *
  */ 
@@ -61,11 +63,12 @@ public:
     addStretch = v;
   }
   void removeButtonShow(bool show);
-  int addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog = false, QBoxLayout *layout = NULL);
+  MidiSlider *addSlider(const QString &name, float &valueRef, float minValue, float maxValue, bool isLog = false, QBoxLayout *layout = NULL);
   IntMidiSlider *addIntSlider(const QString &name, int &valueRef, int minValue, int maxValue, QBoxLayout *layout = NULL);
   int addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout = NULL);
   MidiComboBox *addComboBox(const QString &name, int &valueRef, const QStringList &itemNames, QBoxLayout *layout = NULL);
   int addCheckBox(const QString &name, float &valueRef, QBoxLayout *layout = NULL);
+  int addCheckBox(MidiControllable<float> &mcAble, QBoxLayout *layout = NULL);
   class MidiControllableDoOnce *addPushButton(const QString &name, QBoxLayout *layout = NULL);
   int addEnvelope(class MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
 		  MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout = NULL);
