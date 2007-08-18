@@ -97,68 +97,63 @@ M_vco2::M_vco2(QWidget* parent)
   configDialog->addSlider("Lin. FM Gain", vcoLinFMGain, 0, 10, false, modulationTab);
 }
 
-void M_vco2::generateCycle() {
-
+void M_vco2::generateCycle()
+{
   unsigned int l1, l2,phint;
   float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
   float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
- 
 
-    edge = 0.01f + 1.8f * synthdata->edge;
+  edge = 0.01f + 1.8f * synthdata->edge;
 
-    freqData = port_M_freq->getinputdata();
-    expFMData = port_M_exp->getinputdata();
-    linFMData = port_M_lin->getinputdata();
-    pwData = port_M_pw->getinputdata();
+  freqData = port_M_freq->getinputdata();
+  expFMData = port_M_exp->getinputdata();
+  linFMData = port_M_lin->getinputdata();
+  pwData = port_M_pw->getinputdata();
 
-      freq_const = wave_period / (float)synthdata->rate * (float)harmonic / (float)subharmonic;
-      freq_tune = 4.0313842f + octave + freq;
-      gain_linfm = 1000.0f * vcoLinFMGain;
-      phi_const = phi0 * PKonst;
-      pw_low = 0.1f * wave_period;
-      pw_high = 0.9f * wave_period;
+  freq_const = wave_period / (float)synthdata->rate * (float)harmonic / (float)subharmonic;
+  freq_tune = 4.0313842f + octave + freq;
+  gain_linfm = 1000.0f * vcoLinFMGain;
+  phi_const = phi0 * PKonst;
+  pw_low = 0.1f * wave_period;
+  pw_high = 0.9f * wave_period;
 
-      if (phi0 > 0.0f) {
-        for (l1 = 0; l1 < synthdata->poly; ++l1) {
-          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+  if (phi0 > 0.0f) {
+    for (l1 = 0; l1 < synthdata->poly; ++l1) {
+      for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
 
-            dphi = freq_const * (synthdata->exp2_table(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])
-                                 + gain_linfm * linFMData[l1][l2]);
-            if (dphi > wave_period_2) dphi = wave_period_2;
-            phi1 = phi[l1] + phi_const;
-            if (phi1 < 0.0f) phi1 += wave_period;
-            else if (phi1 >= wave_period) phi1 -= wave_period;
-            phint=(int)phi1;
+	dphi = freq_const * (synthdata->exp2_table(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2])
+			     + gain_linfm * linFMData[l1][l2]);
+	if (dphi > wave_period_2) dphi = wave_period_2;
+	phi1 = phi[l1] + phi_const;
+	if (phi1 < 0.0f) phi1 += wave_period;
+	else if (phi1 >= wave_period) phi1 -= wave_period;
+	phint=(int)phi1;
 
-            switch (waveForm) {
-		case SINUS:
-		{
-	    		data[0][l1][l2] = synthdata->wave_sine[phint];
-		}
-		break;
-		case TRIANGLE:
-		{
-            		data[0][l1][l2] = synthdata->wave_tri[phint];
-		}
-		break;
-              case AWAVE_SAW: 
-                data[0][l1][l2] = synthdata->wave_saw2[phint];
-                break;
-              case AWAVE_SAW2:
-                half_wave = wave_period_2;// * 0.5f;// / 2.0;              
-                data[0][l1][l2] = (phi1 < half_wave) 
-                                ? synthdata->wave_saw2[(int)(2.0f * phi1)]
-                                : 0.0f;
-                break;
-              case AWAVE_SAW3: 
-                third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
-                data[0][l1][l2] = (phi1 < third_wave)
-                                ? synthdata->wave_saw2[(int)(3.0f * phi1)]
-                                : 0.0f;
-                break;
+	switch (waveForm) {
+	case SINUS:
+	  data[0][l1][l2] = synthdata->wave_sine[phint];
+	  break;
+	case TRIANGLE:
+	  data[0][l1][l2] = synthdata->wave_tri[phint];
+	  break;
+	case AWAVE_SAW: 
+	  data[0][l1][l2] = synthdata->wave_saw2[phint];
+	  break;
+	case AWAVE_SAW2:
+	  half_wave = wave_period_2;// * 0.5f;// / 2.0;              
+	  data[0][l1][l2] = (phi1 < half_wave) 
+	    ? synthdata->wave_saw2[(int)(2.0f * phi1)]
+	    : 0.0f;
+	  break;
+	case AWAVE_SAW3: 
+	  third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
+	  data[0][l1][l2] = (phi1 < third_wave)
+	    ? synthdata->wave_saw2[(int)(3.0f * phi1)]
+	    : 0.0f;
+	  break;
             
-	    case SAWTOOTH:
-	    {
+	case SAWTOOTH:
+	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
             if (pw < pw_low) pw = pw_low;
             else if (pw > pw_high) pw = pw_high;
@@ -182,10 +177,10 @@ void M_vco2::generateCycle() {
                 }
               }
             }
-	    }
-	    break;
-	    case RECTANGLE:
-	    {
+	  }
+	  break;
+	case RECTANGLE:
+	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
             if (pw < pw_low) pw = pw_low;
             else if (pw > pw_high) pw = pw_high;
@@ -208,49 +203,45 @@ void M_vco2::generateCycle() {
                 }
               }
             }
-	    }
-	    break;
-	    } // end of case
-            phi[l1] += dphi;
-            while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
-          }
-        }
-      } else {
-        for (l1 = 0; l1 < synthdata->poly; ++l1) {
-          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
-            dphi = freq_const * (synthdata->exp2_table(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2]) + gain_linfm * linFMData[l1][l2]);
-            if (dphi > wave_period_2) dphi = wave_period_2;
-	    phint=(int)phi[l1];
-            switch (waveForm) {
-	    case SINUS:
-	    {
-            	data[0][l1][l2] = synthdata->wave_sine[phint];
-	    }
-	    break;
-	    case TRIANGLE:
-	    {
-            	data[0][l1][l2] = synthdata->wave_tri[phint];
-            }
-	    break;
-	    case AWAVE_SAW: 
-                data[0][l1][l2] = synthdata->wave_saw2[phint];
-                break;
-              case AWAVE_SAW2:
-                half_wave = wave_period_2;// * 0.5f; // / 2.0;
-                data[0][l1][l2] = (phi[l1] < half_wave)
-                                ? synthdata->wave_saw2[(int)(2.0f * phi[l1])]
-                                : 0.0f;
-                break;
-              case AWAVE_SAW3:
-                third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
-                data[0][l1][l2] = (phi[l1] < third_wave)
-                                ? synthdata->wave_saw2[(int)(3.0f * phi[l1])]
-                                : 0.0f;
-                break;
+	  }
+	  break;
+	} // end of case
+	phi[l1] += dphi;
+	while (phi[l1] < 0.0f) phi[l1] += wave_period;
+	while (phi[l1] >= wave_period) phi[l1] -= wave_period;
+      }
+    }
+  } else {
+    for (l1 = 0; l1 < synthdata->poly; ++l1) {
+      for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+	dphi = freq_const * (synthdata->exp2_table(freq_tune + freqData[l1][l2] + vcoExpFMGain * expFMData[l1][l2]) + gain_linfm * linFMData[l1][l2]);
+	if (dphi > wave_period_2) dphi = wave_period_2;
+	phint=(int)phi[l1];
+	switch (waveForm) {
+	case SINUS:
+	  data[0][l1][l2] = synthdata->wave_sine[phint];
+	  break;
+	case TRIANGLE:
+	  data[0][l1][l2] = synthdata->wave_tri[phint];
+	  break;
+	case AWAVE_SAW: 
+	  data[0][l1][l2] = synthdata->wave_saw2[phint];
+	  break;
+	case AWAVE_SAW2:
+	  half_wave = wave_period_2;// * 0.5f; // / 2.0;
+	  data[0][l1][l2] = (phi[l1] < half_wave)
+	    ? synthdata->wave_saw2[(int)(2.0f * phi[l1])]
+	    : 0.0f;
+	  break;
+	case AWAVE_SAW3:
+	  third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
+	  data[0][l1][l2] = (phi[l1] < third_wave)
+	    ? synthdata->wave_saw2[(int)(3.0f * phi[l1])]
+	    : 0.0f;
+	  break;
             
-	    case SAWTOOTH:
-	    {
+	case SAWTOOTH:
+	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
             if (pw < pw_low) pw = pw_low;  
             else if (pw > pw_high) pw = pw_high;
@@ -274,10 +265,10 @@ void M_vco2::generateCycle() {
                 }
               }
             }
-	    }
-	    break;
-	     case RECTANGLE:
-	    {
+	  }
+	  break;
+	case RECTANGLE:
+	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
             if (pw < pw_low) pw = pw_low;  
             else if (pw > pw_high) pw = pw_high;
@@ -300,14 +291,14 @@ void M_vco2::generateCycle() {
                 }
               }
             }
-	    }
-	    break;
+	  }
+	  break;
 	}// end of case
-            phi[l1] += dphi;
-            while (phi[l1] < 0.0f) phi[l1] += wave_period;
-            while (phi[l1] >= wave_period) phi[l1] -= wave_period;
-          }
-        }
+	phi[l1] += dphi;
+	while (phi[l1] < 0.0f) phi[l1] += wave_period;
+	while (phi[l1] >= wave_period) phi[l1] -= wave_period;
       }
+    }
+  }
 }
 
