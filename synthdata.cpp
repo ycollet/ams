@@ -21,6 +21,17 @@
 #include "m_scope.h"
 
 
+union uf {
+  struct {
+    unsigned int mant:	23;
+    unsigned int exp:	8;
+    unsigned int sign:	1;
+  } p;
+  float f;
+  unsigned u;
+};
+float SynthData::exp2_data[EXP2_BUF_LEN];
+
 SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   : port_sem(1)
   , bigFont("Helvetica", 10)
@@ -79,7 +90,19 @@ SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   }
   for (l1 = 0; l1 < EXP_TABLE_LEN; l1++)
     exp_data[l1] = exp(l1 / 1000.0 - 16.0);
-
+  {
+    unsigned u = 0;
+    for (float f = 0; f < 1; f += 1.0/EXP2_BUF_LEN) {
+      union uf e;
+      e.f = exp2f(f);
+      e.p.exp = 0;
+      exp2_data[u++] = e.f;
+    }
+    if (u != EXP2_BUF_LEN) {
+      StdErr << __PRETTY_FUNCTION__ << ": exp2_data initialisation failed" << endl;
+      exit(-1);
+    }
+  }
   dy = 2.0 / (float)(WAVE_PERIOD - decaytime);  
   dyd = 2.0 / decaytime;
   l2 = 0;
@@ -242,15 +265,42 @@ float SynthData::exp_table(float x) {
   return(exp_data[index]);
 }     
 
-float SynthData::exp_table_ln2(float x)
+// float SynthData::exp_table_ln2(float x)
+// { older version, less precise
+//   int index = (int)(x * (float)(M_LN2 * 1000.0) + (float)(16.0 * 1000.0));
+//   if (index >= EXP_TABLE_LEN)
+//     index = EXP_TABLE_LEN - 1;
+//   else
+//     if (index < 0)
+//       index = 0;
+//   return exp_data[index];
+// }
+float SynthData::exp2_table(float f)
+// { ultimate precision, slower
+//   return __builtin_exp2f(f);
+// }
 {
-  int index = (int)(x * (float)(M_LN2 * 1000.0) + (float)(16.0 * 1000.0));
-  if (index >= EXP_TABLE_LEN)
-    index = EXP_TABLE_LEN - 1;
-  else
-    if (index < 0)
-      index = 0;
-  return exp_data[index];
+  if (f < -16)
+    return 0;
+
+  union uf uf, uexp2;
+  uf.f = f + 17;
+
+  unsigned exp = (uf.u >> 23) - 0x7f;
+  unsigned mant = uf.p.mant;
+
+  unsigned e = exp;
+  exp = 1 << e;
+  exp += mant >> (23 - e);
+
+  mant <<= e;
+  mant &= (1<<23) - 1;
+  mant >>= 23 - EXP2_DEPTH;
+
+  uexp2.f = exp2_data[mant];
+  uexp2.u |= (exp + 0x7F - 17) << 23;
+
+  return uexp2.f;
 }
 
 void SynthData::create_zero_data (void)

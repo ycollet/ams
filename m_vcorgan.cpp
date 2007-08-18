@@ -124,7 +124,7 @@ void M_vcorgan::generateCycle() {
       for (l3 = 0; l3 < oscCount; l3++) {
         if (phi0[l3] == 0) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            dphi = freq_const[l3] * (synthdata->exp_table_ln2(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2]) 
+            dphi = freq_const[l3] * (synthdata->exp2_table(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2]) 
                                                          + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) {
               dphi = wave_period_2;
@@ -155,7 +155,7 @@ void M_vcorgan::generateCycle() {
           }
         } else {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            dphi = freq_const[l3] * (synthdata->exp_table_ln2(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])
+            dphi = freq_const[l3] * (synthdata->exp2_table(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])
                                                          + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) {
               dphi = wave_period_2;

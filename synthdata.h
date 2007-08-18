@@ -6,12 +6,14 @@
 #include <qthread.h>
 #include <qstring.h>
 #include <qcolor.h>
+#include <QFont>
 #include <qlist.h>
 #include <QSemaphore>
 #include <QTextStream>
 #include <ladspa.h>
 #include <clalsadrv.h>
 #include <jack/jack.h>
+#include "macros.h"
 #include "main.h"
 #include "midicontroller.h"
 #include "ringbuffer.h"
@@ -23,6 +25,9 @@ struct LadspaLib {
   QString name;
   QList<const LADSPA_Descriptor *> desc;
 };
+
+#define EXP2_DEPTH 15
+#define EXP2_BUF_LEN (1<<EXP2_DEPTH)
  
 class SynthData
 {
@@ -31,22 +36,23 @@ class SynthData
     void *play_mods [MAX_PLAY_PORTS / 2];
     void *capt_mods [MAX_CAPT_PORTS / 2];
 
-    bool withAlsa;
     Alsa_driver *alsa_handle;
     pthread_t    alsa_thread;
  
-    bool withJack;
     jack_client_t *jack_handle;
     jack_port_t *jack_in  [MAX_CAPT_PORTS];
     jack_port_t *jack_out [MAX_PLAY_PORTS];
 
   public:
+    bool withAlsa;
+    bool withJack;
     float *wave_sine;
     float *wave_saw;
     float *wave_saw2;
     float *wave_rect;
     float *wave_tri;
     float *exp_data;
+    static float exp2_data[EXP2_BUF_LEN];
     float **zeroModuleData;
     float edge;
 
@@ -114,7 +120,7 @@ class SynthData
     ~SynthData();
 
     float exp_table(float x);
-    float exp_table_ln2(float x);
+  float exp2_table(float ) FATTR_FLOAT_ARG;
     int incModuleCount();
     int decModuleCount();
     int getModuleCount();

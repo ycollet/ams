@@ -140,7 +140,7 @@ void M_vcdoubledecay::generateCycle() {
           case 0: e[l1] = 0;
                   e2[l1] = 0;
                   break;
-          case 1: astep = ((tmp = synthdata->exp_table_ln2(a0 + aGain * attackData[l1][l2])) > 0.001) ? tsr / tmp : tsr / 0.001;
+          case 1: astep = ((tmp = synthdata->exp2_table(a0 + aGain * attackData[l1][l2])) > 0.001) ? tsr / tmp : tsr / 0.001;
                   e[l1] += astep;
                   e2[l1] += astep;
                   if (e[l1] >= 1.0) {
@@ -151,7 +151,7 @@ void M_vcdoubledecay::generateCycle() {
                     e2[l1] = 1.0;
                   }
                   break;
-          case 2: n1 = tsn * synthdata->exp_table_ln2(d0 + dGain * decayData[l1][l2]);
+          case 2: n1 = tsn * synthdata->exp2_table(d0 + dGain * decayData[l1][l2]);
                   if (n1 < 1) n1 = 1;
                   c1 = 2.3 / n1; 
                   c2 = c1 * (r0 + rGain * ratioData[l1][l2]);
@@ -161,7 +161,7 @@ void M_vcdoubledecay::generateCycle() {
                   e2[l1] *= exp(-c2);           
                   if (e2[l1] <= 1e-20) e2[l1] = 0;
                   break;
-          case 3: n = tsn * synthdata->exp_table_ln2(rl0 + rlGain * releaseData[l1][l2]);
+          case 3: n = tsn * synthdata->exp2_table(rl0 + rlGain * releaseData[l1][l2]);
                   if (n < 1) n = 1;
                   c = 2.3 / n; 
                   e[l1] *= exp(-c);  

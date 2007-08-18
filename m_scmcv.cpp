@@ -100,7 +100,7 @@ void M_scmcv::calcScale() {
 
   lastbase = base;
   base_cv = base / 12.0 - 5.0;
-  base_freq = synthdata->exp_table_ln2(8.0313842 + base_cv);
+  base_freq = synthdata->exp2_table(8.0313842 + base_cv);
   fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);  
   scale_notes[0] = base_cv;
   index = 1;
@@ -115,7 +115,7 @@ void M_scmcv::calcScale() {
       if (index > 127) break;
     }
     base_cv = scale_notes[index - 1];
-    base_freq = synthdata->exp_table_ln2(8.0313842 + base_cv);
+    base_freq = synthdata->exp2_table(8.0313842 + base_cv);
   }
 }
 
