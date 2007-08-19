@@ -76,7 +76,8 @@ void M_env::generateCycle() {
 
   int l1, l2, status;
   float tscale, de_attack, de_decay, de_release;
-  float a, dl, dc, h, dla, dlah, dlahdc;
+  float a, dl, dc, h;
+  int idl, idla, idlah, idlahdc;
 
 
     gateData = port_gate->getinputdata();
@@ -86,12 +87,15 @@ void M_env::generateCycle() {
     de_attack = (attack > 0) ? 1.0 / (attack * tscale) : 0;
     de_decay = (decay > 0) ? (1.0 - sustain) / (decay * tscale) : 0;
     a = tscale * attack;    
-    dl = tscale * delay;    
+    dl = tscale * delay;
+    idl = (int)dl;
     h = tscale * hold;         
     dc = tscale * decay;    
-    dla = dl + a;    
-    dlah = dla + h;    
-    dlahdc = dlah + dc;    
+    idla = (int)(dl + a);
+    idlah = idla + (int)h;
+    if (idlah == idla)
+      ++idlah;
+    idlahdc = idlah + (int)dc;    
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
@@ -122,11 +126,16 @@ void M_env::generateCycle() {
         }
         if (gate[l1]) {
             status = 1;
-            if (noteOnOfs[l1] < 0) status = 0;
-            if (noteOnOfs[l1] >= int(dl)) status = 2; 
-            if (noteOnOfs[l1] >= int(dla)) status = 3;
-            if (noteOnOfs[l1] >= int(dlah)) status = 4;
-            if (noteOnOfs[l1] >= int(dlahdc)) status = 5; 
+            if (noteOnOfs[l1] < 0)
+	      status = 0;
+            if (noteOnOfs[l1] >= idl)
+	      status = 2;
+            if (noteOnOfs[l1] >= idla)
+	      status = 3;
+            if (noteOnOfs[l1] >= idlah)
+	      status = 4;
+            if (noteOnOfs[l1] >= idlahdc)
+	      status = 5; 
             switch (status) {
               case 0: e[l1] -= de[l1];
                       break;
