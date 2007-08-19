@@ -72,104 +72,103 @@ M_env::M_env(QWidget* parent)
   }
 }
 
-void M_env::generateCycle() {
-
+void M_env::generateCycle()
+{
   int l1, l2, status;
   float tscale, de_attack, de_decay, de_release;
   float a, dl, dc, h;
   int idl, idla, idlah, idlahdc;
 
 
-    gateData = port_gate->getinputdata();
-    retriggerData = port_retrigger->getinputdata();
+  gateData = port_gate->getinputdata();
+  retriggerData = port_retrigger->getinputdata();
 
-    tscale = timeScale * (float)synthdata->rate;
-    de_attack = (attack > 0) ? 1.0 / (attack * tscale) : 0;
-    de_decay = (decay > 0) ? (1.0 - sustain) / (decay * tscale) : 0;
-    a = tscale * attack;    
-    dl = tscale * delay;
-    idl = (int)dl;
-    h = tscale * hold;         
-    dc = tscale * decay;    
-    idla = (int)(dl + a);
-    idlah = idla + (int)h;
-    if (idlah == idla)
-      ++idlah;
-    idlahdc = idlah + (int)dc;    
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
-          gate[l1] = true;
-          noteActive[l1] = true;
-          if (e[l1] > 0) {
-            noteOnOfs[l1] = -ENVELOPE_RESPONSE;
-            de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
-          } else {
-            noteOnOfs[l1] = 0;
-          }
-        }
-        if (gate[l1] && (gateData[l1][l2] < 0.5)) {
-          gate[l1] = false;
-          noteOffOfs[l1] = 0;
-          e_noteOff[l1] = e[l1];
-        }
-        if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
-          retrigger[l1] = true;
-          if (e[l1] > 0) {
-            noteOnOfs[l1] = (de_attack > 0) ? (int)(e[l1] / de_attack) : 0;
-          } else {
-            noteOnOfs[l1] = 0;
-          }
-        }
-        if (retrigger[l1] && (retriggerData[l1][l2] < 0.5)) {
-          retrigger[l1] = false;
-        }
-        if (gate[l1]) {
-            status = 1;
-            if (noteOnOfs[l1] < 0)
-	      status = 0;
-            if (noteOnOfs[l1] >= idl)
-	      status = 2;
-            if (noteOnOfs[l1] >= idla)
-	      status = 3;
-            if (noteOnOfs[l1] >= idlah)
-	      status = 4;
-            if (noteOnOfs[l1] >= idlahdc)
-	      status = 5; 
-            switch (status) {
-              case 0: e[l1] -= de[l1];
-                      break;
-              case 1: e[l1] = 0;
-                      break;
-              case 2: e[l1] += de_attack;
-                      break;
-              case 3: e[l1] = 1.0;
-                      break;
-              case 4: e[l1] -= de_decay;
-                      break;
-              case 5: e[l1] = sustain;
-                      break;
-              default: e[l1] = 0;
-                       break;
-            }
-            if (e[l1] < 0) e[l1] = 0;
-            data[0][l1][l2] = e[l1];
-            data[1][l1][l2] = -e[l1];
-            noteOnOfs[l1]++;
-        } else {                          // Release      
-          de_release = (release > 0) ? e_noteOff[l1] / (release * tscale) : 0;
-          e[l1] -= de_release;
-          noteOffOfs[l1]++;
-          if (noteOffOfs[l1] >= int(tscale * release)) {
-            noteActive[l1] = false;
-          }
-          if ((release == 0) || (e[l1] < 0)) {
-            e[l1] = 0;
-          }
-          data[0][l1][l2] = e[l1];
-          data[1][l1][l2] = -e[l1];
-        }
+  tscale = timeScale * (float)synthdata->rate;
+  de_attack = (attack > 0) ? 1.0 / (attack * tscale) : 0;
+  de_decay = (decay > 0) ? (1.0 - sustain) / (decay * tscale) : 0;
+  a = tscale * attack;    
+  dl = tscale * delay;
+  idl = (int)dl;
+  h = tscale * hold;         
+  dc = tscale * decay;    
+  idla = (int)(dl + a);
+  idlah = idla + (int)h;
+  if (idlah == idla)
+    ++idlah;
+  idlahdc = idlah + (int)dc;    
+  for (l1 = 0; l1 < synthdata->poly; l1++) {
+    for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
+	gate[l1] = true;
+	noteActive[l1] = true;
+	if (e[l1] > 0) {
+	  noteOnOfs[l1] = -ENVELOPE_RESPONSE;
+	  de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
+	} else
+	  noteOnOfs[l1] = 0;
+      }
+      if (gate[l1] && (gateData[l1][l2] < 0.5)) {
+	gate[l1] = false;
+	noteOffOfs[l1] = 0;
+	e_noteOff[l1] = e[l1];
+      }
+      if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
+	retrigger[l1] = true;
+	if (e[l1] > 0)
+	  noteOnOfs[l1] = (de_attack > 0) ? (int)(e[l1] / de_attack) : 0;
+	else
+	  noteOnOfs[l1] = 0;
+      }
+      if (retrigger[l1] && (retriggerData[l1][l2] < 0.5))
+	retrigger[l1] = false;
+
+      if (gate[l1]) {
+	status = 1;
+	if (noteOnOfs[l1] < 0)
+	  status = 0;
+	if (noteOnOfs[l1] >= idl)
+	  status = 2;
+	if (noteOnOfs[l1] >= idla)
+	  status = 3;
+	if (noteOnOfs[l1] >= idlah)
+	  status = 4;
+	if (noteOnOfs[l1] >= idlahdc)
+	  status = 5; 
+	switch (status) {
+	case 0: e[l1] -= de[l1];
+	  break;
+	case 1: e[l1] = 0;
+	  break;
+	case 2: e[l1] += de_attack;
+	  break;
+	case 3: e[l1] = 1.0;
+	  break;
+	case 4: e[l1] -= de_decay;
+	  break;
+	case 5: e[l1] = sustain;
+	  break;
+	default: e[l1] = 0;
+	  break;
+	}
+	if (e[l1] < 0)
+	  e[l1] = 0;
+	data[0][l1][l2] = e[l1];
+	data[1][l1][l2] = -e[l1];
+	noteOnOfs[l1]++;
+      } else {                          // Release      
+	de_release = (release > 0) ? e_noteOff[l1] / (release * tscale) : 0;
+	e[l1] -= de_release;
+	noteOffOfs[l1]++;
+	if (noteOffOfs[l1] >= int(tscale * release))
+	  noteActive[l1] = false;
+
+	if ((release == 0) || (e[l1] < 0))
+	  e[l1] = 0;
+
+	data[0][l1][l2] = e[l1];
+	data[1][l1][l2] = -e[l1];
       }
     }
+  }
 }
 
