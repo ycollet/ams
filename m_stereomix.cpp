@@ -133,10 +133,12 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
     qs.sprintf("Volume %d", l1);
     MidiSlider *slider = configDialog->addSlider(qs, mixer_gain[l1], 0, 2, true, hbox);
     slider->setMinimumWidth(200);
+    hbox->setStretchFactor(slider, 100);
     pan[l1] = 0.0;    
     qs.sprintf("Pan %d", l1);
     slider = configDialog->addSlider(qs, pan[l1], -1, 1, false, hbox);
     slider->setMinimumWidth(150);
+    hbox->setStretchFactor(slider, 100);
   }
   for (unsigned l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);

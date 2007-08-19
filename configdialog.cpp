@@ -60,7 +60,7 @@ MidiSlider *ConfigDialog::addSlider(const QString &name, float &valueRef, float 
     new MidiControllableFloat(module, name, valueRef, minValue, maxValue, isLog);
 
   MidiSlider *midiSlider = new MidiSlider(*mcAble);
-  insertWidget(layout, midiSlider, 100);
+  insertWidget(layout, midiSlider);
 
   midiSliderList.append(midiSlider);
 
