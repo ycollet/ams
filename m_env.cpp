@@ -62,11 +62,9 @@ M_env::M_env(QWidget* parent)
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(5)));
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
-    noteActive[l1] = false;
     gate[l1] = false;
     retrigger[l1] = false;
     noteOnOfs[l1] = 0;
-    noteOffOfs[l1] = 0;
     e[l1] = 0;
     de[l1] = 0;
   }
@@ -100,7 +98,6 @@ void M_env::generateCycle()
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
 	gate[l1] = true;
-	noteActive[l1] = true;
 	if (e[l1] > 0) {
 	  noteOnOfs[l1] = -ENVELOPE_RESPONSE;
 	  de[l1] = e[l1] / (float)ENVELOPE_RESPONSE;
@@ -109,7 +106,6 @@ void M_env::generateCycle()
       }
       if (gate[l1] && (gateData[l1][l2] < 0.5)) {
 	gate[l1] = false;
-	noteOffOfs[l1] = 0;
 	e_noteOff[l1] = e[l1];
       }
       if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
@@ -158,9 +154,6 @@ void M_env::generateCycle()
       } else {                          // Release      
 	de_release = (release > 0) ? e_noteOff[l1] / (release * tscale) : 0;
 	e[l1] -= de_release;
-	noteOffOfs[l1]++;
-	if (noteOffOfs[l1] >= int(tscale * release))
-	  noteActive[l1] = false;
 
 	if ((release == 0) || (e[l1] < 0))
 	  e[l1] = 0;

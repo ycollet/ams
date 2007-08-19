@@ -17,9 +17,8 @@ class M_env : public Module
   public: 
     float e[MAXPOLY];
     float timeScale;
-    bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
+    bool gate[MAXPOLY], retrigger[MAXPOLY];
     int noteOnOfs[MAXPOLY];
-    int noteOffOfs[MAXPOLY];
     float **gateData, **retriggerData;
                 
   public:
