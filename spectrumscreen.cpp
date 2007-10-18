@@ -496,13 +496,6 @@ fftWindowType SpectrumScreen::setWindow(fftWindowType p_window) {
   return(window); 
 }
 
-double SpectrumScreen::setZoom(double p_zoom) {
-
-  zoom = p_zoom;
-  update();
-  return(zoom);
-}
-
 bool SpectrumScreen::toggleFreqZoom(bool p_freqZoom) {
 
   freqZoom = p_freqZoom;
