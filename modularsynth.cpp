@@ -1270,548 +1270,548 @@ void ModularSynth::load(const QString &presetName)
   midiWidget->followConfig = false;
   currentProgram = -1;
 
-    bool restartSynth = clearConfig(false);
-    qs2 = presetName.mid(presetName.lastIndexOf('/') + 1);
-    setMainWindowTitle(&qs2);
-    ladspaLoadErr = false;
-    commentFlag = false;
-    loadingPatch = true;
-    while(Fscanf(f, "%s", sc) != EOF) {
-      qs = QString(sc);
-      if (qs.contains("#PARA#", Qt::CaseInsensitive)) {
-        commentFlag = true;
+  bool restartSynth = clearConfig(false);
+  qs2 = presetName.mid(presetName.lastIndexOf('/') + 1);
+  setMainWindowTitle(&qs2);
+  ladspaLoadErr = false;
+  commentFlag = false;
+  loadingPatch = true;
+  while(Fscanf(f, "%s", sc) != EOF) {
+    qs = QString(sc);
+    if (qs.contains("#PARA#", Qt::CaseInsensitive))
+      commentFlag = true;
+
+    if (qs.contains("#ARAP#", Qt::CaseInsensitive))
+      commentFlag = false;
+
+    if (qs.contains("Module", Qt::CaseInsensitive) && !commentFlag) {
+      Fscanf(f, "%d", &M_type);
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &newBoxPos.rx());
+      Fscanf(f, "%d", &newBoxPos.ry());
+
+      switch ((M_typeEnum)M_type) {
+      case M_type_ladspa: 
+	Fscanf(f, "%d", &newLadspaPolyFlag);
+	Fscanf(f, "%s", sc);
+	ladspaLibName = QString(sc);
+	fgets(sc, 2048, f);
+	sc[strlen(sc)-1] = '\0';
+	pluginName = QString(sc+1);
+	StdErr << "Loading LADSPA plugin \"" << pluginName <<
+	  "\" from library \"" << ladspaLibName << "\"." << endl;
+	if (!synthdata->getLadspaIDs(ladspaLibName, pluginName, &subID1, &subID2)) {
+	  QMessageBox::information(this, "AlsaModularSynth",
+				   "Could not find LADSPA plugin \"" +
+				   pluginName + "\" from library \"" +
+				   ladspaLibName + "\".");
+	  ladspaLoadErr = true;
+	}
+	break;
+      case M_type_scquantizer: 
+      case M_type_scmcv: 
+	Fscanf(f, "%s", sc);
+	scalaName = QString(sc);
+	break;
+      default: 
+	Fscanf(f, "%d", &subID1);
+	Fscanf(f, "%d", &subID2);
+	break;
       }
-      if (qs.contains("#ARAP#", Qt::CaseInsensitive)) {
-        commentFlag = false;
+
+      switch((M_typeEnum)M_type) {
+      case M_type_custom: 
+	break;
+      case M_type_vco: 
+	newM_vco();
+	break;
+      case M_type_vco2: 
+	newM_vco2();
+	break;
+
+      case M_type_vca: 
+	if (subID1) newM_vca_exp();
+	else        newM_vca_lin();
+	break;
+      case M_type_vcf: 
+	newM_vcf();
+	break;
+      case M_type_lfo: 
+	newM_lfo();
+	break;
+      case M_type_mphlfo: 
+	newM_mphlfo();
+	break;
+      case M_type_noise: 
+	newM_noise();
+	break;
+      case M_type_noise2: 
+	newM_noise2();
+	break;
+
+      case M_type_delay: 
+	newM_delay();
+	break;
+      case M_type_seq: 
+	newM_seq(subID1);
+	break;
+      case M_type_env: 
+	newM_env();
+	break;
+      case M_type_vcenv: 
+	newM_vcenv();
+	break;
+      case M_type_vcenv2: 
+	newM_vcenv2();
+	break;
+      case M_type_vcdoubledecay: 
+	newM_vcdoubledecay();
+	break;
+      case M_type_vcpanning: 
+	newM_vcpanning();
+	break;
+      case M_type_advenv: 
+	newM_advenv();
+	break;
+      case M_type_mcv: 
+	newM_mcv();
+	break;
+      case M_type_advmcv: 
+	newM_advmcv();
+	break;
+      case M_type_scmcv: 
+	newM_scmcv(&scalaName);
+	break;
+      case M_type_ringmod: 
+	newM_ringmod();
+	break;
+      case M_type_inv: 
+	newM_inv();
+	break;
+      case M_type_amp: 
+	newM_amp();
+	break;
+      case M_type_vquant: 
+	newM_vquant();
+	break;
+      case M_type_conv: 
+	newM_conv();
+	break;
+      case M_type_sh: 
+	newM_sh();
+	break;
+      case M_type_vcswitch: 
+	newM_vcswitch();
+	break;
+      case M_type_cvs: 
+	newM_cvs();
+	break;
+      case M_type_slew: 
+	newM_slew();
+	break;
+      case M_type_quantizer: 
+	newM_quantizer();
+	break;
+      case M_type_scquantizer: 
+	newM_scquantizer(&scalaName);
+	break;
+      case M_type_ad: 
+	newM_ad(subID1);
+	break;
+      case M_type_mix: 
+	newM_mix(subID1);
+	break;
+      case M_type_function: 
+	newM_function(subID1);
+	break;
+      case M_type_stereomix: 
+	newM_stereomix(subID1);
+	break;
+      case M_type_vcorgan: 
+	newM_vcorgan(subID1);
+	break;
+      case M_type_dynamicwaves: 
+	newM_dynamicwaves(subID1);
+	break;
+      case M_type_ladspa: 
+	if (!ladspaLoadErr) {
+	  newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2, newLadspaPolyFlag & 1);
+	} 
+	break;
+      case M_type_pcmout:
+      case M_type_jackout:
+	newM_pcmout();
+	break;
+      case M_type_pcmin:
+      case M_type_jackin:
+	newM_pcmin();
+	break;
+      case M_type_wavout:
+	newM_wavout(); 
+	break;
+      case M_type_midiout:
+	newM_midiout(); 
+	break;
+      case M_type_scope:
+	newM_scope(); 
+	break;
+      case M_type_spectrum:
+	newM_spectrum(); 
+	break;
       }
-      if (qs.contains("Module", Qt::CaseInsensitive) && !commentFlag) {
-        Fscanf(f, "%d", &M_type);
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &newBoxPos.rx());
-        Fscanf(f, "%d", &newBoxPos.ry());
-
-        switch ((M_typeEnum)M_type) {
-          case M_type_ladspa: 
-            Fscanf(f, "%d", &newLadspaPolyFlag);
-            Fscanf(f, "%s", sc);
-            ladspaLibName = QString(sc);
-            fgets(sc, 2048, f);
-            sc[strlen(sc)-1] = '\0';
-            pluginName = QString(sc+1);
-            StdErr << "Loading LADSPA plugin \"" << pluginName <<
-	      "\" from library \"" << ladspaLibName << "\"." << endl;
-            if (!synthdata->getLadspaIDs(ladspaLibName, pluginName, &subID1, &subID2)) {
-              QMessageBox::information(this, "AlsaModularSynth",
-				       "Could not find LADSPA plugin \"" +
-				       pluginName + "\" from library \"" +
-				       ladspaLibName + "\".");
-              ladspaLoadErr = true;
-            }
-            break;
-          case M_type_scquantizer: 
-          case M_type_scmcv: 
-            Fscanf(f, "%s", sc);
-            scalaName = QString(sc);
-            break;
-          default: 
-            Fscanf(f, "%d", &subID1);
-            Fscanf(f, "%d", &subID2);
-            break;
-        }
-
-        switch((M_typeEnum)M_type) {
-          case M_type_custom: 
-            break;
-          case M_type_vco: 
-            newM_vco();
-            break;
-          case M_type_vco2: 
-            newM_vco2();
-            break;
-
-	 case M_type_vca: 
-            if (subID1) newM_vca_exp();
-            else        newM_vca_lin();
-            break;
-          case M_type_vcf: 
-            newM_vcf();
-            break;
-          case M_type_lfo: 
-            newM_lfo();
-            break;
-          case M_type_mphlfo: 
-            newM_mphlfo();
-            break;
-          case M_type_noise: 
-            newM_noise();
-            break;
-          case M_type_noise2: 
-            newM_noise2();
-            break;
-
-          case M_type_delay: 
-            newM_delay();
-            break;
-          case M_type_seq: 
-            newM_seq(subID1);
-            break;
-          case M_type_env: 
-            newM_env();
-            break;
-          case M_type_vcenv: 
-            newM_vcenv();
-            break;
-          case M_type_vcenv2: 
-            newM_vcenv2();
-            break;
-          case M_type_vcdoubledecay: 
-            newM_vcdoubledecay();
-            break;
-          case M_type_vcpanning: 
-            newM_vcpanning();
-            break;
-          case M_type_advenv: 
-            newM_advenv();
-            break;
-          case M_type_mcv: 
-            newM_mcv();
-            break;
-          case M_type_advmcv: 
-            newM_advmcv();
-            break;
-          case M_type_scmcv: 
-            newM_scmcv(&scalaName);
-            break;
-          case M_type_ringmod: 
-            newM_ringmod();
-            break;
-          case M_type_inv: 
-            newM_inv();
-            break;
-          case M_type_amp: 
-            newM_amp();
-            break;
-          case M_type_vquant: 
-            newM_vquant();
-            break;
-          case M_type_conv: 
-            newM_conv();
-            break;
-          case M_type_sh: 
-            newM_sh();
-            break;
-          case M_type_vcswitch: 
-            newM_vcswitch();
-            break;
-          case M_type_cvs: 
-            newM_cvs();
-            break;
-          case M_type_slew: 
-            newM_slew();
-            break;
-          case M_type_quantizer: 
-            newM_quantizer();
-            break;
-          case M_type_scquantizer: 
-            newM_scquantizer(&scalaName);
-            break;
-          case M_type_ad: 
-            newM_ad(subID1);
-            break;
-          case M_type_mix: 
-            newM_mix(subID1);
-            break;
-          case M_type_function: 
-            newM_function(subID1);
-            break;
-          case M_type_stereomix: 
-            newM_stereomix(subID1);
-            break;
-          case M_type_vcorgan: 
-            newM_vcorgan(subID1);
-            break;
-          case M_type_dynamicwaves: 
-            newM_dynamicwaves(subID1);
-            break;
-          case M_type_ladspa: 
-            if (!ladspaLoadErr) {
-              newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2, newLadspaPolyFlag & 1);
-            } 
-            break;
-          case M_type_pcmout:
-          case M_type_jackout:
-            newM_pcmout();
-            break;
-          case M_type_pcmin:
-          case M_type_jackin:
-            newM_pcmin();
-            break;
-          case M_type_wavout:
-            newM_wavout(); 
-            break;
-          case M_type_midiout:
-            newM_midiout(); 
-            break;
-          case M_type_scope:
-            newM_scope(); 
-            break;
-          case M_type_spectrum:
-            newM_spectrum(); 
-            break;
-        }
-        m = listModule.at(listModule.count()-1);
-        m->moduleID=moduleID;
-        qs = m->configDialog->windowTitle();
-        qs2 = qs.left(qs.lastIndexOf(" "));
-        qs.sprintf(" %d", moduleID);
-//        fprintf(stderr, "load() setCaption %s%s\n", qs2.latin1(), qs.latin1());
-        m->configDialog->setWindowTitle(qs2+qs);
-        midiWidget->addModule(m);
-        if (synthdata->moduleID <= moduleID) {
-          synthdata->moduleID = moduleID+1;
-        }
-      }
-      if (qs.contains("Comment", Qt::CaseInsensitive) && !commentFlag) {
-        Fscanf(f, "%d", &textEditID);
-        Fscanf(f, "%d", &textEditID); // TODO textEditID is not needed yet
-        Fscanf(f, "%d", &newBoxPos.rx());
-        Fscanf(f, "%d", &newBoxPos.ry());
-        Fscanf(f, "%d", &w);
-        Fscanf(f, "%d", &h);
-        new_textEdit(w, h);
+      m = listModule.at(listModule.count()-1);
+      m->moduleID=moduleID;
+      qs = m->configDialog->windowTitle();
+      qs2 = qs.left(qs.lastIndexOf(" "));
+      qs.sprintf(" %d", moduleID);
+      //        fprintf(stderr, "load() setCaption %s%s\n", qs2.latin1(), qs.latin1());
+      m->configDialog->setWindowTitle(qs2+qs);
+      midiWidget->addModule(m);
+      if (synthdata->moduleID <= moduleID) {
+	synthdata->moduleID = moduleID+1;
       }
     }
-    rewind(f);
-    while((Fscanf(f, "%s", sc) != EOF) && !ladspaLoadErr) {
-      qs = QString(sc);
-      if (qs.contains("Port", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &index1); 
-        Fscanf(f, "%d", &index2);
-        Fscanf(f, "%d", &moduleID1);
-        Fscanf(f, "%d", &moduleID2); 
-        moduleID_read1 = 0;
-        moduleID_read2 = 0;
-        index_read1 = 0;
-        index_read2 = 0;
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID1) {
-            moduleID_read1 = l1;
-          }
-          if (listModule.at(l1)->moduleID == moduleID2) {
-            moduleID_read2 = l1;
-          }
-        }
-        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1) {
-          if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
-            && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
-            index_read1 = l1;
-          }
-        } 
-        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1) {
-          if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
-            && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
-            index_read2 = l1;
-          } 
-        }   
-        listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
-        listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
+    if (qs.contains("Comment", Qt::CaseInsensitive) && !commentFlag) {
+      Fscanf(f, "%d", &textEditID);
+      Fscanf(f, "%d", &textEditID); // TODO textEditID is not needed yet
+      Fscanf(f, "%d", &newBoxPos.rx());
+      Fscanf(f, "%d", &newBoxPos.ry());
+      Fscanf(f, "%d", &w);
+      Fscanf(f, "%d", &h);
+      new_textEdit(w, h);
+    }
+  }
+  rewind(f);
+  while((Fscanf(f, "%s", sc) != EOF) && !ladspaLoadErr) {
+    qs = QString(sc);
+    if (qs.contains("Port", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &index1); 
+      Fscanf(f, "%d", &index2);
+      Fscanf(f, "%d", &moduleID1);
+      Fscanf(f, "%d", &moduleID2); 
+      moduleID_read1 = 0;
+      moduleID_read2 = 0;
+      index_read1 = 0;
+      index_read2 = 0;
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID1)
+	  moduleID_read1 = l1;
+
+	if (listModule.at(l1)->moduleID == moduleID2)
+	  moduleID_read2 = l1;
+
       }
-      if (qs.contains("ColorP", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &index1); 
-        Fscanf(f, "%d", &index2);
-        Fscanf(f, "%d", &moduleID1);
-        Fscanf(f, "%d", &moduleID2); 
-        Fscanf(f, "%d", &red1); 
-        Fscanf(f, "%d", &green1); 
-        Fscanf(f, "%d", &blue1); 
-        Fscanf(f, "%d", &red2); 
-        Fscanf(f, "%d", &green2); 
-        Fscanf(f, "%d", &blue2); 
-        moduleID_read1 = 0;
-        moduleID_read2 = 0;
-        index_read1 = 0;
-        index_read2 = 0;
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID1) {
-            moduleID_read1 = l1;
-          }
-          if (listModule.at(l1)->moduleID == moduleID2) {
-            moduleID_read2 = l1;
-          }
-        }
-        for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1) {
-          if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
+      for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1)
+	if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
             && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
-            index_read1 = l1;
-          }
-        } 
-        for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1) {
-          if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
+	  index_read1 = l1;
+	}
+
+      for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1)
+	if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
             && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
-            index_read2 = l1;
-          } 
-        }   
-        listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
-        listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
-        listModule.at(moduleID_read1)->portList.at(index_read1)->jackColor = QColor(red1, green1, blue1);
-        listModule.at(moduleID_read1)->portList.at(index_read1)->cableColor = QColor(red2, green2, blue2);
+	  index_read2 = l1;
+	} 
+
+      listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
+      listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
+    }
+    if (qs.contains("ColorP", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &index1); 
+      Fscanf(f, "%d", &index2);
+      Fscanf(f, "%d", &moduleID1);
+      Fscanf(f, "%d", &moduleID2); 
+      Fscanf(f, "%d", &red1); 
+      Fscanf(f, "%d", &green1); 
+      Fscanf(f, "%d", &blue1); 
+      Fscanf(f, "%d", &red2); 
+      Fscanf(f, "%d", &green2); 
+      Fscanf(f, "%d", &blue2); 
+      moduleID_read1 = 0;
+      moduleID_read2 = 0;
+      index_read1 = 0;
+      index_read2 = 0;
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID1) {
+	  moduleID_read1 = l1;
+	}
+	if (listModule.at(l1)->moduleID == moduleID2) {
+	  moduleID_read2 = l1;
+	}
       }
-      if (qs.contains("FSlider", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        Fscanf(f, "%d", &isLogInt);
-        Fscanf(f, "%d", &sliderMin);
-        Fscanf(f, "%d", &sliderMax);
-        Fscanf(f, "%d", &midiSign);
-        isLog = isLogInt == 1;
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-	    //	    StdOut << __PRETTY_FUNCTION__ << " moduleID " << moduleID << " index " << index << endl;
-	    MidiControllableFloat &mcAbleF =
-	      dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
-	    mcAbleF.setLog(isLog);
-	    mcAbleF.setVal(value, NULL);
-	    mcAbleF.setNewMin(sliderMin);
-	    mcAbleF.setNewMax(sliderMax);
-	    mcAbleF.midiSign = midiSign;
-            /*listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
+      for (l1 = 0; l1 < listModule.at(moduleID_read1)->portList.count(); ++l1) {
+	if ((listModule.at(moduleID_read1)->portList.at(l1)->index == index1) 
+            && (listModule.at(moduleID_read1)->portList.at(l1)->dir == PORT_IN)) {
+	  index_read1 = l1;
+	}
+      } 
+      for (l1 = 0; l1 < listModule.at(moduleID_read2)->portList.count(); ++l1) {
+	if ((listModule.at(moduleID_read2)->portList.at(l1)->index == index2)
+            && (listModule.at(moduleID_read2)->portList.at(l1)->dir == PORT_OUT)) {
+	  index_read2 = l1;
+	} 
+      }   
+      listModule.at(moduleID_read1)->portList.at(index_read1)->connectTo(listModule.at(moduleID_read2)->portList.at(index_read2));
+      listModule.at(moduleID_read2)->portList.at(index_read2)->connectTo(listModule.at(moduleID_read1)->portList.at(index_read1));
+      listModule.at(moduleID_read1)->portList.at(index_read1)->jackColor = QColor(red1, green1, blue1);
+      listModule.at(moduleID_read1)->portList.at(index_read1)->cableColor = QColor(red2, green2, blue2);
+    }
+    if (qs.contains("FSlider", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      Fscanf(f, "%d", &isLogInt);
+      Fscanf(f, "%d", &sliderMin);
+      Fscanf(f, "%d", &sliderMax);
+      Fscanf(f, "%d", &midiSign);
+      isLog = isLogInt == 1;
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  //	    StdOut << __PRETTY_FUNCTION__ << " moduleID " << moduleID << " index " << index << endl;
+	  MidiControllableFloat &mcAbleF =
+	    dynamic_cast<MidiControllableFloat &>(listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble);
+	  mcAbleF.setLog(isLog);
+	  mcAbleF.setVal(value, NULL);
+	  mcAbleF.setNewMin(sliderMin);
+	  mcAbleF.setNewMax(sliderMax);
+	  mcAbleF.midiSign = midiSign;
+	  /*listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->updateValue(value);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMin(sliderMin);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMax(sliderMax);
             listModule.at(l1)->configDialog->midiSliderList.at(index)->midiSign = midiSign;*/
-            break;
-          }
-        }
+	  break;
+	}
       }
-      if (qs.contains("ISlider", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        Fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-	    MidiControllableBase &mcAble =
-	      listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble;
-	    mcAble.midiSign = midiSign;
-	    mcAble.setVal(value, NULL);
-	    /*            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
-            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);*/
-            break;
-          }
-        }
+    }
+    if (qs.contains("ISlider", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      Fscanf(f, "%d", &midiSign); 
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  MidiControllableBase &mcAble =
+	    listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble;
+	  mcAble.midiSign = midiSign;
+	  mcAble.setVal(value, NULL);
+	  /*            listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
+			listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
+			listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);*/
+	  break;
+	}
       }
-      if (qs.contains("LSlider", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        Fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-	    MidiControllableBase &mcAble =
-	      listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble;
-	    mcAble.midiSign = midiSign;
-	    mcAble.setVal(value, NULL);
-            /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
+    }
+    if (qs.contains("LSlider", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      Fscanf(f, "%d", &midiSign); 
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  MidiControllableBase &mcAble =
+	    listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble;
+	  mcAble.midiSign = midiSign;
+	  mcAble.setVal(value, NULL);
+	  /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
             listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);*/
-            break;
-          }
-        }
+	  break;
+	}
       }
-      if (qs.contains("ComboBox", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        Fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-	    MidiControllableNames &mcAble =
-	      dynamic_cast<MidiControllableNames &>(listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble);
-	    mcAble.midiSign = midiSign;
-	    mcAble.setVal(value, NULL);
-            break;
-          }
-        }
+    }
+    if (qs.contains("ComboBox", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      Fscanf(f, "%d", &midiSign); 
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  MidiControllableNames &mcAble =
+	    dynamic_cast<MidiControllableNames &>(listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble);
+	  mcAble.midiSign = midiSign;
+	  mcAble.setVal(value, NULL);
+	  break;
+	}
       }
-      if (qs.contains("CheckBox", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        Fscanf(f, "%d", &midiSign); 
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->checkBox->setChecked(value==1);
-            listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.midiSign = midiSign;
-            break;
-          }
-        }
+    }
+    if (qs.contains("CheckBox", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      Fscanf(f, "%d", &midiSign); 
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->checkBox->setChecked(value==1);
+	  listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.midiSign = midiSign;
+	  break;
+	}
       }
-      if (qs.contains("Function", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &subID1);
-        Fscanf(f, "%d", &subID2);
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->functionList.at(index)->setPointCount(subID2);
-            break;
-          }
-        }
+    }
+    if (qs.contains("Function", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &subID1);
+      Fscanf(f, "%d", &subID2);
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  listModule.at(l1)->configDialog->functionList.at(index)->setPointCount(subID2);
+	  break;
+	}
       }
-      if (qs.contains("Point", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &subID1);
-        Fscanf(f, "%d", &subID2); 
-        Fscanf(f, "%d", &x); 
-        Fscanf(f, "%d", &y); 
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-            listModule.at(l1)->configDialog->functionList.at(index)->setPoint(subID1, subID2, x, y);
-          }
-        }
+    }
+    if (qs.contains("Point", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &subID1);
+      Fscanf(f, "%d", &subID2); 
+      Fscanf(f, "%d", &x); 
+      Fscanf(f, "%d", &y); 
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  listModule.at(l1)->configDialog->functionList.at(index)->setPoint(subID1, subID2, x, y);
+	}
       }
-      if (qs.contains("MIDI", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);   
-        Fscanf(f, "%d", &type);   
-        Fscanf(f, "%d", &ch);
-        Fscanf(f, "%d", &param);
-	MidiControllerKey mck(type, ch, param);
-	midiWidget->addMidiController(mck);
-//         MidiControllerKey const midiController = //new MidiController(type, ch, param);
-// 	  //        if (!midiWidget->midiControllerList.contains(midiController)) {
-//           *midiWidget->midiController(MidiController(type, ch, param));
-// //         } else {
-// //           QList<MidiController*>::iterator midiIndex = midiWidget->midiControllerList.find(midiController);
-// //           delete(midiController);
-// //           midiController = *midiIndex;
-// //         }
-        if (qs.contains("FSMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble.connectToController(mck);
-        }
-        if (qs.contains("ISMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble.connectToController(mck);
-        }
-        if (qs.contains("LSMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble.connectToController(mck);
-        }
-        if (qs.contains("CMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble.connectToController(mck);
-        }
-        if (qs.contains("TMIDI", Qt::CaseInsensitive)) {
-          listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.connectToController(mck);
-        }
+    }
+    if (qs.contains("MIDI", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);   
+      Fscanf(f, "%d", &type);   
+      Fscanf(f, "%d", &ch);
+      Fscanf(f, "%d", &param);
+      MidiControllerKey mck(type, ch, param);
+      midiWidget->addMidiController(mck);
+      //         MidiControllerKey const midiController = //new MidiController(type, ch, param);
+      // 	  //        if (!midiWidget->midiControllerList.contains(midiController)) {
+      //           *midiWidget->midiController(MidiController(type, ch, param));
+      // //         } else {
+      // //           QList<MidiController*>::iterator midiIndex = midiWidget->midiControllerList.find(midiController);
+      // //           delete(midiController);
+      // //           midiController = *midiIndex;
+      // //         }
+      if (qs.contains("FSMIDI", Qt::CaseInsensitive)) {
+	listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.contains("#PARA#", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &textEditID);
-        Fscanf(f, "%d", &textEditID);
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%s", sc);
-        qs = QString(sc);
-        if (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
-           para = QString(sc) + " ";
-        } else {
-          para = " ";
-        }
-        while (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
-          Fscanf(f, "%s", sc);
-          qs = QString(sc);
-          if (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
-            para.append(qs+" "); 
-          }
-        }
-	//	printf("%i:%s:\n", index, para.toLatin1().data());
-        listTextEdit.at(textEditID)->textEdit->append(para);
+      if (qs.contains("ISMIDI", Qt::CaseInsensitive)) {
+	listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.contains("Tab", Qt::CaseInsensitive)) {
-        qs.truncate(0);
-        do {
-          Fscanf(f, "%s", sc);
-          qs += QString(sc);
-          if (qs.right(1) != "\"") {
-            qs += " ";
-          }
-        } while (qs.right(1) != "\"");
-        qs = qs.mid(1, qs.length()-2);
-        guiWidget->addTab(qs);
+      if (qs.contains("LSMIDI", Qt::CaseInsensitive)) {
+	listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.contains("Frame", Qt::CaseInsensitive)) {
-        qs.truncate(0);
-        do {
-          Fscanf(f, "%s", sc);
-          qs += QString(sc);
-          if (qs.right(1) != "\"") {
-            qs += " ";
-          }
-        } while (qs.right(1) != "\"");
-        qs = qs.mid(1, qs.length()-2);
-        Fscanf(f, "%d", &index);
-        guiWidget->setTab(index);
-        guiWidget->addFrame(qs);
+      if (qs.contains("CMIDI", Qt::CaseInsensitive)) {
+	listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.contains("Parameter", Qt::CaseInsensitive)) {
-        qs.truncate(0);
-        do {
-          Fscanf(f, "%s", sc);
-          qs += QString(sc);
-          if (qs.right(1) != "\"") {
-            qs += " ";
-          }
-        } while (qs.right(1) != "\"");
-        qs = qs.mid(1, qs.length()-2);
-        Fscanf(f, "%d", &moduleID);
-        Fscanf(f, "%d", &index);
-        for (l1 = 0; l1 < listModule.count(); ++l1) {
-          if (listModule.at(l1)->moduleID == moduleID) {
-            guiWidget->addParameter(listModule.at(l1)->midiControllables.at(index), qs);
-	    MidiControllableFloat *mcAbleF =
-	      dynamic_cast<MidiControllableFloat *>(listModule.at(l1)->midiControllables.at(index));
+      if (qs.contains("TMIDI", Qt::CaseInsensitive)) {
+	listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.connectToController(mck);
+      }
+    }
+    if (qs.contains("#PARA#", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &textEditID);
+      Fscanf(f, "%d", &textEditID);
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%s", sc);
+      qs = QString(sc);
+      if (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
+	para = QString(sc) + " ";
+      } else {
+	para = " ";
+      }
+      while (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
+	Fscanf(f, "%s", sc);
+	qs = QString(sc);
+	if (!qs.contains("#ARAP#", Qt::CaseInsensitive)) {
+	  para.append(qs+" "); 
+	}
+      }
+      //	printf("%i:%s:\n", index, para.toLatin1().data());
+      listTextEdit.at(textEditID)->textEdit->append(para);
+    }
+    if (qs.contains("Tab", Qt::CaseInsensitive)) {
+      qs.truncate(0);
+      do {
+	Fscanf(f, "%s", sc);
+	qs += QString(sc);
+	if (qs.right(1) != "\"") {
+	  qs += " ";
+	}
+      } while (qs.right(1) != "\"");
+      qs = qs.mid(1, qs.length()-2);
+      guiWidget->addTab(qs);
+    }
+    if (qs.contains("Frame", Qt::CaseInsensitive)) {
+      qs.truncate(0);
+      do {
+	Fscanf(f, "%s", sc);
+	qs += QString(sc);
+	if (qs.right(1) != "\"") {
+	  qs += " ";
+	}
+      } while (qs.right(1) != "\"");
+      qs = qs.mid(1, qs.length()-2);
+      Fscanf(f, "%d", &index);
+      guiWidget->setTab(index);
+      guiWidget->addFrame(qs);
+    }
+    if (qs.contains("Parameter", Qt::CaseInsensitive)) {
+      qs.truncate(0);
+      do {
+	Fscanf(f, "%s", sc);
+	qs += QString(sc);
+	if (qs.right(1) != "\"") {
+	  qs += " ";
+	}
+      } while (qs.right(1) != "\"");
+      qs = qs.mid(1, qs.length()-2);
+      Fscanf(f, "%d", &moduleID);
+      Fscanf(f, "%d", &index);
+      for (l1 = 0; l1 < listModule.count(); ++l1) {
+	if (listModule.at(l1)->moduleID == moduleID) {
+	  guiWidget->addParameter(listModule.at(l1)->midiControllables.at(index), qs);
+	  MidiControllableFloat *mcAbleF =
+	    dynamic_cast<MidiControllableFloat *>(listModule.at(l1)->midiControllables.at(index));
 
-            if (mcAbleF)
-	      /*listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider)*/ {
-              Fscanf(f, "%d", &sliderMin);
-              Fscanf(f, "%d", &sliderMax);
-              Fscanf(f, "%d", &isLogInt);
-//!!               ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
-//               ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
-//               ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLogInt == 1);
-            }
-            break;
-          }
-        }
-      }  
-      if (qs.contains("Program", Qt::CaseInsensitive)) {
-        Fscanf(f, "%d", &index);
-        Fscanf(f, "%d", &value);
-        if (index != currentProgram) {
-          currentProgram = index;
-          guiWidget->setPresetCount(currentProgram + 1);
-        }
-        guiWidget->presetList[currentProgram].append(value);
+	  if (mcAbleF)
+	    /*listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider)*/ {
+	    Fscanf(f, "%d", &sliderMin);
+	    Fscanf(f, "%d", &sliderMax);
+	    Fscanf(f, "%d", &isLogInt);
+	    //!!               ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
+	    //               ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
+	    //               ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLogInt == 1);
+	  }
+	  break;
+	}
       }
-      if (qs.contains("PresetName", Qt::CaseInsensitive)) {
-        qs.truncate(0);
-        do {
-          Fscanf(f, "%s", sc);
-          qs += QString(sc);
-          if (qs.right(1) != "\"") {
-            qs += " ";
-          }
-        } while (qs.right(1) != "\"");
-        qs = qs.mid(1, qs.length()-2);
-        qs2.sprintf("%3d", guiWidget->presetNameList.count());
-        guiWidget->presetNameList.append(qs2+qs);
+    }  
+    if (qs.contains("Program", Qt::CaseInsensitive)) {
+      Fscanf(f, "%d", &index);
+      Fscanf(f, "%d", &value);
+      if (index != currentProgram) {
+	currentProgram = index;
+	guiWidget->setPresetCount(currentProgram + 1);
       }
+      guiWidget->presetList[currentProgram].append(value);
     }
-    if (guiWidget->presetCount) {
-      guiWidget->setCurrentPreset(0);
+    if (qs.contains("PresetName", Qt::CaseInsensitive)) {
+      qs.truncate(0);
+      do {
+	Fscanf(f, "%s", sc);
+	qs += QString(sc);
+	if (qs.right(1) != "\"") {
+	  qs += " ";
+	}
+      } while (qs.right(1) != "\"");
+      qs = qs.mid(1, qs.length()-2);
+      qs2.sprintf("%3d", guiWidget->presetNameList.count());
+      guiWidget->presetNameList.append(qs2+qs);
     }
-    fclose(f);
-    loadingPatch = false;
+  }
+  if (guiWidget->presetCount)
+    guiWidget->setCurrentPreset(0);
+
+  fclose(f);
+  loadingPatch = false;
 
   resize();
   update();
