@@ -1117,7 +1117,7 @@ void ModularSynth::deleteModule(Module *m)
   delete(m);
 }
 
-void ModularSynth::clearConfig()
+bool ModularSynth::clearConfig(bool restart)
 {
   int l1;
 
@@ -1139,12 +1139,17 @@ void ModularSynth::clearConfig()
   listTextEdit.clear();
   synthdata->moduleID = 0;
   synthdata->moduleCount = 0;
-  if (restartSynth)
+  if (restartSynth && restart)
     synthdata->doSynthesis = true;
 
   update();
+  return restartSynth;
 }
 
+void ModularSynth::clearConfig()
+{
+  clearConfig(true);
+}
 //############################################################################# Start persistence
 void ModularSynth::load()
 {
@@ -1242,31 +1247,31 @@ void ModularSynth::saveColors() {
 
 void ModularSynth::load(const QString &presetName)
 {
+  FILE *f;
+  if (!(f = fopen(presetName.toLatin1().constData(), "r"))) {
+    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
+    return;
+  }
+
   int l1;
   int M_type, moduleID, index, value, x, y, w, h, subID1, subID2;
   int index1, index2, moduleID1, moduleID2, midiSign;
   int index_read1, index_read2, moduleID_read1, moduleID_read2;
   int type, ch, param, isLogInt, sliderMin, sliderMax;
   int red1, green1, blue1, red2, green2, blue2;
-  FILE *f;
-  QString config_fn, qs, qs2, ladspaLibName, pluginName, para, scalaName;
+  QString qs, qs2, ladspaLibName, pluginName, para, scalaName;
   char sc[2048];
-  bool restartSynth, isLog, ladspaLoadErr, commentFlag, followConfig;
+  bool isLog, ladspaLoadErr, commentFlag, followConfig;
   int newLadspaPolyFlag, textEditID;
   Module *m;
   int currentProgram;
 
-  restartSynth = synthdata->doSynthesis; 
-  synthdata->doSynthesis = false;
   followConfig = midiWidget->followConfig;
   midiWidget->followConfig = false;
-  config_fn = presetName;
   currentProgram = -1;
-  if (!(f = fopen(config_fn.toLatin1().constData(), "r"))) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");  
-  } else {
-    clearConfig();
-    qs2 = config_fn.mid(config_fn.lastIndexOf('/') + 1);
+
+    bool restartSynth = clearConfig(false);
+    qs2 = presetName.mid(presetName.lastIndexOf('/') + 1);
     setMainWindowTitle(&qs2);
     ladspaLoadErr = false;
     commentFlag = false;
@@ -1807,11 +1812,11 @@ void ModularSynth::load(const QString &presetName)
     }
     fclose(f);
     loadingPatch = false;
-  }
+
   resize();
   update();
   midiWidget->setActiveMidiControllers();
-  synthdata->doSynthesis = true;
+  synthdata->doSynthesis = restartSynth;
   StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
   StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
   StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;

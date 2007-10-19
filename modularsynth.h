@@ -77,6 +77,7 @@ class ModularSynth : public QWidget
     void newM_ad(int outCount);
     void new_textEdit(int w, int h);
     void showContextMenu(QPoint pos);
+    bool clearConfig(bool restart);
             
   public:
     ModularSynth(QMainWindow *, QString *nameSuffix,
