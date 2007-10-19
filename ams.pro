@@ -20,6 +20,8 @@ TARGET =
 
 CONFIG += link_pkgconfig
 PKGCONFIG += alsa
+# lash not yet used
+# PKGCONFIG += lash-1.0
 
 DEPENDPATH += .
 INCLUDEPATH += .
@@ -38,7 +40,21 @@ MOC_DIR = MOC
 message($$PLATFORM)
 message($$OBJECTS_DIR)
 
-QMAKE_CXXFLAGS += -DLADSPA_PATH=\\\"$$LADSPA_PATH\\\"
+# QMAKE_CXXFLAGS tweeks. uncomment, tweak, post your favorite :-)
+#
+# base
+# QMAKE_CXXFLAGS += -DLADSPA_PATH=\\\"$$LADSPA_PATH\\\"
+#
+# x86_64 fedora
+QMAKE_CXXFLAGS += -DLADSPA_PATH=\\\"/usr/lib64/ladspa\\\"
+#
+# i386 best bet
+# QMAKE_CXXFLAGS += -msse2 -mfpmath=sse -ffast-math -DLADSPA_PATH=\\\"$$LADSPA_PATH\\\"
+#
+# bad code ?
+# QMAKE_CXXFLAGS += -mtune=k8 -ffast-math -DLADSPA_PATH=\\\"$$LADSPA_PATH\\\"
+#
+# end QMAKE_CXXFLAGS tweeks
 
 QT += opengl
 
