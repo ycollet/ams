@@ -113,13 +113,15 @@ class SynthData
     void   call_modules (void);
     void readMIDI(void);
 
-  public:
+public:
 
-    SynthData(QString *nameSuffix, int p_poly, float p_edge);
-    void stopPCM();
-    ~SynthData();
+  SynthData(QString *nameSuffix, int p_poly, float p_edge);
+  void stopPCM();
+  ~SynthData();
 
-    float exp_table(float x);
+  void initVoices();
+
+  float exp_table(float x);
   float exp2_table(float ) FATTR_FLOAT_ARG;
     int incModuleCount();
     int decModuleCount();

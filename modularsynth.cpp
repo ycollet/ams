@@ -1117,19 +1117,17 @@ void ModularSynth::deleteModule(Module *m)
   delete(m);
 }
 
-void ModularSynth::clearConfig() {
+void ModularSynth::clearConfig()
+{
+  int l1;
 
-  int l1, l2;
-  bool restartSynth;
-  QString qs;
-
-  for (l2 = 0; l2 < synthdata->poly; ++l2)
-    synthdata->noteCounter[l2] = 1000000;
-
-  setMainWindowTitle();
-  restartSynth = synthdata->doSynthesis;
+  bool restartSynth = synthdata->doSynthesis;
   synthdata->doSynthesis = false;
-  sleep (1);
+  if (restartSynth)
+    sleep(1);
+
+  synthdata->initVoices();
+  setMainWindowTitle();
   guiWidget->clearGui();
   for (l1 = 0; l1 < listModule.count(); ++l1) {
     deleteModule(listModule.at(l1));

@@ -32,8 +32,10 @@ union uf {
 };
 float SynthData::exp2_data[EXP2_BUF_LEN];
 
-SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
-  : port_sem(1)
+SynthData::SynthData(QString *nameSuffix, int poly, float edge)
+  : edge(edge)
+  , poly(poly)
+  , port_sem(1)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
   , activeMidiControllers(NULL)
@@ -52,15 +54,7 @@ SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   int decaytime;
 
   decaytime = (int)((float)WAVE_PERIOD / 16.0);
-  for (l1 = 0; l1 < MAXPOLY; ++l1) {
-    notes[l1] = 0;
-    velocity[l1] = 0;
-    noteCounter[l1] = 1000000;
-    sustainNote[l1] = false;
-  }
-
-  poly = p_poly;
-  edge = p_edge;
+  initVoices();
   rate = 0;
   periods = 0;
   periodsize = 0;
@@ -172,6 +166,16 @@ SynthData::SynthData(QString *nameSuffix, int p_poly, float p_edge)
   colorPortFont2 = QColor(255, 240, 140);
   colorCable = QColor(180, 180, 180);
   colorJack = QColor(250, 200, 50);
+}
+
+void SynthData::initVoices()
+{
+  for (int l1 = 0; l1 < poly; ++l1) {
+    notes[l1] = 0;
+    velocity[l1] = 0;
+    noteCounter[l1] = 1000000;
+    sustainNote[l1] = false;
+  }
 }
 
 void SynthData::stopPCM()
