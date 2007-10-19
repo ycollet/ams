@@ -182,7 +182,7 @@ class ModularSynth : public QWidget
     void deleteTextEdit();
     void deleteTextEdit(TextEdit *te);
     void clearConfig();
-    void load(QString *presetName);
+    void load(const QString &);
     void load();
     void save();
     void loadColors();

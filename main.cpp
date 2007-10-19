@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
   modularSynth->go (enableJack);
   if (havePreset) {
     StdErr << "Loading preset " << presetName << endl; 
-    modularSynth->load(&presetName);
+    modularSynth->load(presetName);
   }
 
   return qApp->exec();

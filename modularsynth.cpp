@@ -1148,16 +1148,17 @@ void ModularSynth::clearConfig() {
 }
 
 //############################################################################# Start persistence
-void ModularSynth::load() {
-
-  QString config_fn;
-
-  config_fn = QFileDialog::getOpenFileName(this, tr("Load Patch"),
-					   synthdata->loadPath, tr("AlsaModularSynth files (*.ams)"));
-  if (config_fn.isEmpty())
+void ModularSynth::load()
+{
+  QFileDialog dialog(this, tr("Load Patch"),
+		     synthdata->loadPath, tr("AlsaModularSynth files (*.ams);;All (*)"));
+  dialog.setFileMode(QFileDialog::ExistingFile);
+  dialog.exec();
+  QStringList sf = dialog.selectedFiles();
+  if (sf.isEmpty())
     return;
 
-  load(&config_fn);
+  load(sf.at(0));
 }
 
 
@@ -1241,7 +1242,7 @@ void ModularSynth::saveColors() {
   }
 }                             
 
-void ModularSynth::load(QString *presetName)
+void ModularSynth::load(const QString &presetName)
 {
   int l1;
   int M_type, moduleID, index, value, x, y, w, h, subID1, subID2;
@@ -1261,7 +1262,7 @@ void ModularSynth::load(QString *presetName)
   synthdata->doSynthesis = false;
   followConfig = midiWidget->followConfig;
   midiWidget->followConfig = false;
-  config_fn = *presetName;
+  config_fn = presetName;
   currentProgram = -1;
   if (!(f = fopen(config_fn.toLatin1().constData(), "r"))) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");  
@@ -1824,16 +1825,21 @@ void ModularSynth::save()
 {
   int l1, l2, value;
   FILE *f;
-  QString config_fn, qs;
+  QString qs;
   QStringList::iterator presetit;
    
   StdErr << "synthdata->savePath: " << synthdata->savePath << endl;
-  config_fn = QFileDialog::getSaveFileName(this, tr("Save Patch"),
-					   synthdata->savePath, tr("AlsaModularSynth files (*.ams)"));
-  if (config_fn.isEmpty())
+  QFileDialog dialog(this, tr("Save Patch"),
+		     synthdata->savePath, tr("AlsaModularSynth files (*.ams)"));
+  dialog.setAcceptMode(QFileDialog::AcceptSave);
+  dialog.setFileMode(QFileDialog::AnyFile);
+  dialog.setDefaultSuffix("ams");
+  dialog.exec();
+  QStringList sf = dialog.selectedFiles();
+  if (sf.isEmpty())
     return;
 
-  if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) {
+  if (!(f = fopen(sf.at(0).toLatin1().constData(), "w"))) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not save file.");
   } else {
     int offX = 0, offY = 0;
@@ -1947,7 +1953,10 @@ void ModularSynth::save()
       fprintf(f, "PresetName \"%s\"\n", (*presetit).mid(3).toLatin1().constData());
     } 
     fclose(f);
-    }
+
+    QString t = sf.at(0).mid(sf.at(0).lastIndexOf('/') + 1);
+    setMainWindowTitle(&t);
+  }
 }
 //==================================================================== End persistence
 void ModularSynth::allVoicesOff()
