@@ -633,7 +633,8 @@ void SynthData::readMIDI(void)
 // Note Off      
         for (l2 = 0; l2 < poly; ++l2)
           if (notes[l2] == ev->data.note.note &&
-	      channel[l2] == ev->data.note.channel)
+	      channel[l2] == ev->data.note.channel &&
+	      noteCounter[l2] < 1000000)
             if (sustainFlag)
               sustainNote[l2] = true;
             else
@@ -669,6 +670,21 @@ void SynthData::readMIDI(void)
       mckRed.put(mcK);
       pipeMessage |= 2;
       //      StdOut << "not " << ev->data.control.value << endl;
+    }
+    if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
+      if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
+        for (l2 = 0; l2 < poly; ++l2)
+          if (noteCounter[l2] < 1000000 && channel[l2] == ev->data.note.channel)
+            noteCounter[l2] = 1000000;
+
+      if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
+	//	StdOut << ev->data.control.value << endl;
+        sustainFlag = ev->data.control.value > 63;
+        if (!sustainFlag)
+          for (l2 = 0; l2 < poly; ++l2)
+            if (sustainNote[l2])
+              noteCounter[l2] = 1000000;
+      }
     }
     if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
       guiWidget->setCurrentPreset(ev->data.control.value, true);
