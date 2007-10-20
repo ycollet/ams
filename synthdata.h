@@ -90,7 +90,7 @@ class SynthData
     QString loadPath, savePath, rcPath;
     class MidiWidget *midiWidget;
     class GuiWidget *guiWidget;
-    QString jackName;
+    QString name;
     int midi_out_port[2];
     int midiChannel;
     QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
@@ -115,7 +115,7 @@ class SynthData
 
 public:
 
-  SynthData(QString *nameSuffix, int p_poly, float p_edge);
+  SynthData(const QString &name, int p_poly, float p_edge);
   void stopPCM();
   ~SynthData();
 

@@ -42,7 +42,6 @@ class ModularSynth : public QWidget
     QMainWindow *mainWindow;
     QList<Module*> listModule;
     QList<class TextEdit*> listTextEdit;
-    QString presetPath, savePath, rcPath;
     connectorStyleType connectorStyle;    
     bool firstPort;
     Port *connectingPort[2];
@@ -58,11 +57,10 @@ class ModularSynth : public QWidget
     int   nfrags;
     int   ncapt;
     int   nplay;
-    int   clientid;
     bool paintFastly;
     double _zoomFactor;
     QPoint newBoxPos;
-
+  int rcFd;
     void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
@@ -79,11 +77,11 @@ class ModularSynth : public QWidget
     void showContextMenu(QPoint pos);
     bool clearConfig(bool restart);
             
-  public:
-    ModularSynth(QMainWindow *, QString *nameSuffix,
+public:
+  ModularSynth(QMainWindow *, const QString &, int,
 		 const char *pcmname, int fsamp, int frsize, int nfrags, 
 		 int ncapt, int nplay, int poly, float edge);
-    ~ModularSynth();
+  ~ModularSynth();
 
     QMenu *contextMenu;
     void resize(void);

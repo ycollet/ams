@@ -44,13 +44,14 @@ class PrefWidget : public QWidget
    
   public:
     PrefWidget();
+    bool loadPref(QString config_fn);
+    bool loadPref(int rcFd);
 
   signals:
     void prefChanged();
 
   public slots:
-    void loadPref(QString config_fn);
-    void savePref(QString config_fn);
+    void savePref(int rcFd);
     void submitPref();
     void applyPref();
     void refreshColors();

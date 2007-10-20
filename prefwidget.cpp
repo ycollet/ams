@@ -158,16 +158,23 @@ PrefWidget::PrefWidget()
   QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
 }
 
-void PrefWidget::loadPref(QString config_fn) {
-
-  QString qs, qs2;
-  int r,g,b;
-
+bool PrefWidget::loadPref(QString config_fn)
+{
   QFile f(config_fn);
   if (!f.open( QIODevice::ReadOnly )) {
     QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
-  } else {
-    QTextStream rctext(&f);
+    return false;
+  }
+
+  return loadPref(f.handle());
+}
+
+bool PrefWidget::loadPref(int rcFd)
+{
+  QString qs, qs2;
+  int r,g,b;
+
+  QTextStream rctext(fdopen(rcFd, "r"));
     QRegExp sep(" ");
     while (!rctext.atEnd()) {
       qs = rctext.readLine(); 
@@ -242,23 +249,28 @@ void PrefWidget::loadPref(QString config_fn) {
         synthdata->savePath = savePath;
       }       
     }   
-    f.close();
-  }        
+    //  }        
   StdErr << "loadPath: " << synthdata->loadPath << ", savePath: " <<
     synthdata->savePath <<  endl;
   recallColors();
   refreshColors();
+  return true;
 }
 
-void PrefWidget::savePref(QString config_fn) {
-
+void PrefWidget::savePref(int rcFd)
+{
   QString qs;
 
-  QFile f(config_fn);
-  if (!f.open( QIODevice::WriteOnly )) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
-  } else {
-    QTextStream rctext(&f);
+//   QFile f(config_fn);
+//   if (!f.open( QIODevice::WriteOnly )) {
+//     QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
+//   } else {
+  if (ftruncate(rcFd, 0)) {
+    StdErr << "Ooops in " << __FUNCTION__ << " at " << __LINE__ << endl;
+    exit(-1);
+  }
+  lseek(rcFd, 0, SEEK_SET);
+  QTextStream rctext(fdopen(rcFd, "w"));
     rctext << "ColorBackground " << synthdata->colorBackground.red() << " " << synthdata->colorBackground.green() << " " << synthdata->colorBackground.blue() << "\n";
     rctext << "ColorModuleBackground " << synthdata->colorModuleBackground.red() << " " << synthdata->colorModuleBackground.green() << " " << synthdata->colorModuleBackground.blue() << "\n";
     rctext << "ColorModuleBorder " << synthdata->colorModuleBorder.red() << " " << synthdata->colorModuleBorder.green() << " " << synthdata->colorModuleBorder.blue() << "\n";
@@ -268,8 +280,8 @@ void PrefWidget::savePref(QString config_fn) {
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     rctext << "LoadPath " << synthdata->loadPath << "\n";
     rctext << "SavePath " << synthdata->savePath << "\n";
-    f.close();
-  }       
+    //    f.close();
+    //  }       
 }                             
 
 void PrefWidget::submitPref()

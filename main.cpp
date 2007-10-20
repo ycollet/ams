@@ -40,6 +40,61 @@ static struct option options[] =
 QTextStream StdErr(stderr);
 QTextStream StdOut(stdout);
 
+QString amsHOME()
+{
+  return QString(getenv("HOME")) + "/.alsamodular/";
+}
+QString amsRcPath(const QString &synthName)
+{
+  QString string;
+  QTextStream rcPath(&string);
+  rcPath << amsHOME() << synthName;
+  rcPath << ".cfg";
+  return string;
+}
+QString amsSynthName(const QString &name, int index)
+{
+  QString string;
+  QTextStream synthName(&string);
+  synthName << name;
+  if (index)
+    synthName << "_" << index;
+  return string; 
+}
+int makeSynthName(QString &name)
+{
+  int fd;
+  mkdir(amsHOME().toLatin1().data(), 0777);
+
+  for (int index = 0; index < 9; index++) {
+    QString rcPath = amsRcPath(amsSynthName(name, index));
+      StdOut << rcPath << endl;
+    fd = open(rcPath.toLatin1().data(), O_CREAT|O_RDWR, 0666);
+    if (fd == -1) {
+      StdErr << "Failed to open file " << rcPath << endl;
+      exit(-1);
+    }
+
+    struct flock lock = {F_WRLCK, SEEK_SET, 0, 0, 0};
+    if (fcntl(fd, F_SETLK, &lock) == -1) {
+      close(fd);
+      StdOut << "occupied" << rcPath << endl;
+    } else {
+      lock.l_type = F_RDLCK;
+      if (fcntl(fd, F_SETLK, &lock) == -1) {
+	StdErr << "Ooops in " << __FUNCTION__ << " at " << __LINE__ << endl;
+	exit(-1);
+      }
+      name = amsSynthName(name, index);
+      return fd;
+    }
+  }
+  StdErr << name << " occupied." << endl;
+  exit(-1);
+  return -1;
+}
+
+
 int main(int argc, char *argv[])  
 {
   char aboutText[] = AMS_LONGNAME " " AMS_VERSION 
@@ -62,7 +117,7 @@ int main(int argc, char *argv[])
   int nfrags = DEFAULT_PERIODS;
   char pcmname [256];
   strcpy (pcmname, DEFAULT_PCMNAME);
-  QString presetName, presetPath, *nameSuffix = NULL;
+  QString presetName, presetPath, synthName("ams");
   bool havePreset = false;
   bool havePresetPath = false;
   bool noGui = false;
@@ -112,7 +167,7 @@ int main(int argc, char *argv[])
         nplay = atoi(optarg);
         break;
     case 'N':
-      nameSuffix = new QString(optarg);
+      synthName += optarg;
       break;
     case 'h':
         printf("\n%s", aboutText);
@@ -137,8 +192,9 @@ int main(int argc, char *argv[])
   ScrollArea *scrollArea = new ScrollArea();
   StdOut << scrollArea << ":" << scrollArea->maximumViewportSize().width() << ":" <<endl;
 
+  int rcFd = makeSynthName(synthName);
   ModularSynth *modularSynth =
-    new ModularSynth(&top, nameSuffix, pcmname, fsamp, frsize, nfrags,
+    new ModularSynth(&top, synthName, rcFd, pcmname, fsamp, frsize, nfrags,
 		     ncapt, nplay, poly, edge);
   scrollArea->setWidget(modularSynth);
 

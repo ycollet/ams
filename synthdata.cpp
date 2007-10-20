@@ -32,10 +32,11 @@ union uf {
 };
 float SynthData::exp2_data[EXP2_BUF_LEN];
 
-SynthData::SynthData(QString *nameSuffix, int poly, float edge)
+SynthData::SynthData(const QString &synthName, int poly, float edge)
   : edge(edge)
   , poly(poly)
   , port_sem(1)
+  , name(synthName)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
   , activeMidiControllers(NULL)
@@ -145,12 +146,6 @@ SynthData::SynthData(QString *nameSuffix, int poly, float edge)
 
   for (l1 = (WAVE_PERIOD >> 1) + (WAVE_PERIOD>>2); l1 < WAVE_PERIOD; l1++)
     wave_tri[l1] = -1.0 + (float)(l1 - (WAVE_PERIOD >> 1) - (WAVE_PERIOD>>2)) * dy;
-
-  if (nameSuffix) {
-    jackName = "ams_" + *nameSuffix;
-    delete nameSuffix;
-  } else
-    jackName = AMS_SHORTNAME;
 
   play_ports = 0;
   capt_ports = 0;
@@ -474,8 +469,7 @@ int SynthData::initJack (int ncapt, int nplay)
     if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
     if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
 
-    if ((jack_handle = jack_client_new (jackName.toLatin1().constData())) == 0)
-    {
+    if ((jack_handle = jack_client_new(name.toLatin1().constData())) == 0) {
         fprintf (stderr, "Can't connect to JACK\n");
         exit (1);
     }
@@ -488,12 +482,12 @@ int SynthData::initJack (int ncapt, int nplay)
 
     for (int i = 0; i < play_ports; i++)
     {
-        qs.sprintf("ams_out_%d", i);
+        qs.sprintf("out_%d", i);
         jack_out [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
     }
     for (int i = 0; i < capt_ports; i++)
     {
-        qs.sprintf("ams_in_%d", i);
+        qs.sprintf("in_%d", i);
         jack_in [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
     }
 

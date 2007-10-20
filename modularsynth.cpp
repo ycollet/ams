@@ -75,7 +75,7 @@
 
 SynthData *synthdata;
 
-ModularSynth::ModularSynth(QMainWindow *mainWindow, QString *nameSuffix,
+ModularSynth::ModularSynth(QMainWindow *mainWindow, const QString &synthName, int rcFd,
 			   const char *p_pcmname, int p_fsamp, int p_frsize, int p_nfrags,
 			   int p_ncapt, int p_nplay, int poly, float edge) 
   : mainWindow(mainWindow)
@@ -87,15 +87,15 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, QString *nameSuffix,
   , nplay (p_nplay)
   , paintFastly(false)
   , _zoomFactor(1.0)
+  , rcFd(rcFd)
 {
   firstPort = true;
   connectingPort[0] = NULL;
   connectingPort[1] = NULL;
   connectorStyle = CONNECTOR_BEZIER;
   aboutWidget = new QMessageBox(this); 
-  clientid = 0;
 
-  synthdata = new SynthData(nameSuffix, poly, edge);
+  synthdata = new SynthData(synthName, poly, edge);
 
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle("AlsaModularSynth Control Center");
@@ -115,8 +115,7 @@ ModularSynth::ModularSynth(QMainWindow *mainWindow, QString *nameSuffix,
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
 
-  synthdata->rcPath = QString(getenv("HOME")) + "/.alsamodular.cfg";
-  prefWidget->loadPref(synthdata->rcPath);
+  prefWidget->loadPref(rcFd);
   refreshColors();
 }
 
@@ -334,7 +333,7 @@ void ModularSynth::setMainWindowTitle(const QString *presetName)
   if (presetName)
     qs = *presetName + " - ";
 
-  qs += synthdata->jackName + " - (" + QString::number(synthdata->poly) + ")";
+  qs += synthdata->name + " - (" + QString::number(synthdata->poly) + ")";
   mainWindow->setWindowTitle(qs);
 }
 
@@ -349,13 +348,9 @@ snd_seq_t *ModularSynth::open_seq() {
     fprintf(stderr, "Error opening ALSA sequencer.");
     return NULL;
   }
-  clientid = snd_seq_client_id(seq_handle);
-  if (synthdata->jackName == AMS_SHORTNAME) {
-    synthdata->jackName.sprintf("ams_%d", clientid);
-    setMainWindowTitle();
-  }
-  snd_seq_set_client_name(seq_handle, synthdata->jackName.toLatin1().constData());
-  if (snd_seq_create_simple_port(seq_handle, "ams",
+
+  snd_seq_set_client_name(seq_handle, (synthdata->name + " Midi").toLatin1().constData());
+  if (snd_seq_create_simple_port(seq_handle, "in",
 				 SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
 				 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
     fprintf(stderr, "Error creating sequencer write port.");
@@ -363,7 +358,7 @@ snd_seq_t *ModularSynth::open_seq() {
     return NULL;
   }
   for (l1 = 0; l1 < 2; ++l1)
-    if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "ams",
+    if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "out",
             SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ,
             SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
       fprintf(stderr, "Error creating sequencer read port.");
@@ -1974,7 +1969,7 @@ void ModularSynth::allVoicesOff()
 
 void ModularSynth::cleanUpSynth()
 {
-  prefWidget->savePref(synthdata->rcPath);
+  prefWidget->savePref(rcFd);
   fprintf(stderr, "Closing synth...\n");
   delete this;
 }
