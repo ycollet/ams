@@ -40,6 +40,8 @@ SynthData::SynthData(const QString &synthName, int poly, float edge)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
   , activeMidiControllers(NULL)
+  , framesDone(0)
+  , framesGUIPinged(0)
 {
   if (pthread_mutex_init(&rtMutex, NULL) < 0) {
     StdErr << __PRETTY_FUNCTION__ << ": pthread_mutex_init() failed" << endl;
@@ -564,7 +566,7 @@ int SynthData::jack_callback (jack_nframes_t nframes)
     return 0;
 }
 
-void SynthData::call_modules (void)
+void SynthData::call_modules(void)
 {
   int i;
      
@@ -585,14 +587,18 @@ void SynthData::call_modules (void)
     if (noteCounter[i] > 1000000000)
       noteCounter[i] = 1000000000;
   }
+  framesDone += cyclesize;
+  if (framesDone - framesGUIPinged > 2000 && pipeMessage)
+    if (write(pipeFd[1], &pipeMessage, 1) == 1) {
+      framesGUIPinged = framesDone;
+      pipeMessage = 0;
+    }
 }
 
 void SynthData::readMIDI(void)
 {
   if (!seq_handle)
     return;
-
-  char pipeMessage = 0;
 
   pthread_mutex_lock(&rtMutex);
 
@@ -704,7 +710,4 @@ void SynthData::readMIDI(void)
   }
 
   pthread_mutex_unlock(&rtMutex);
-
-  if (pipeMessage)
-    write(pipeFd[1], &pipeMessage, 1);
 }

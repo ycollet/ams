@@ -102,6 +102,9 @@ class SynthData
     RingBuffer<MidiControllerKey> mckRed;
     RingBuffer<MidiControllableBase *> mcSet;
     int pipeFd[2];
+    char pipeMessage;
+    unsigned framesDone;
+    unsigned framesGUIPinged;
 
   private:
 

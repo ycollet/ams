@@ -10,13 +10,16 @@
 
 class M_pcmout : public Module
 {
-    float gain,polyroot;
-    float mixer_gain[2]; 
+    float gain, polyroot;
+    float mixer_gain[2];
+    float ag, ag_displayed;
     int agc;
 
     Module *module_in[2];
     Port *port_in[2];
     
+    virtual void mcAbleChanged(MidiControllableBase *);
+
   public: 
     float *pcmdata[2];
                             

@@ -16,6 +16,7 @@ MidiControllableBase:: ~MidiControllableBase()
 
 void MidiControllableBase::updateMGCs(MidiGUIcomponent *sender)
 {
+  module.mcAbleChanged(this);
   for (typeof(mcws.constBegin()) mcw = mcws.constBegin();
        mcw != mcws.constEnd();  mcw++)
     if (*mcw != sender)
