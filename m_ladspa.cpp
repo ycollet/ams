@@ -19,6 +19,7 @@
 #include "m_ladspa.h"
 #include "port.h"
 
+QPixmap *M_ladspa::logo;
 
 M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bool extCtrlPorts) 
   : Module(M_type_ladspa, 0, parent, QString(poly ? "Poly " : "") + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
@@ -298,6 +299,10 @@ void M_ladspa::paintEvent(QPaintEvent *) {
   
   QPainter p(this);
   QString qs;
+  QRect r = logo->rect();
+
+  r.moveCenter(rect().center());
+  p.drawPixmap(r, *logo);
 
   p.setPen(colorBorder);
   for (int i = 0; i < 4; i++) { 
@@ -306,8 +311,7 @@ void M_ladspa::paintEvent(QPaintEvent *) {
   }
   p.setPen(colorFont);
   p.setFont(synthdata->bigFont);
-  qs.sprintf("LADSPA %s", ladspa_dsc->Label);
-  p.drawText(10, 20, qs);
+  p.drawText(10, 20, ladspa_dsc->Label);
   p.setFont(synthdata->smallFont);
   qs.sprintf("ID %d", moduleID);
   p.drawText(10, 32, qs);

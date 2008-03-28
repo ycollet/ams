@@ -9,6 +9,7 @@
 #include <qstring.h>
 #include "modularsynth.h"
 #include "mainwindow.h"
+#include "m_ladspa.h"
 
 
 class ScrollArea: public QScrollArea {
@@ -312,6 +313,8 @@ int main(int argc, char *argv[])
     StdErr << "Loading preset " << presetName << endl; 
     modularSynth->load(presetName);
   }
+
+  M_ladspa::logo = new QPixmap(PIXMAPS_PATH"ladspa_logo_smaller_trans.png");
 
   return qApp->exec();
 }

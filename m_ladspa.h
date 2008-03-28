@@ -5,7 +5,7 @@
 #include "module.h"
 
 
-#define MODULE_LADSPA_WIDTH                220
+#define MODULE_LADSPA_WIDTH                140
 #define MODULE_LADSPA_HEIGHT                40
 #define MAX_AUDIOPORTS                       8     // TODO audioports should be allocated dynamically
 #define MAX_OUTPORTS                        16
@@ -33,6 +33,7 @@ public:
   int ladspaDesFuncIndex;
   bool isPoly, hasExtCtrlPorts;
   QString pluginName;
+  static QPixmap *logo;
     
 public:
   M_ladspa(QWidget* parent, int ladspaDesFuncIndex,
