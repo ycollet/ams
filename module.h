@@ -106,7 +106,7 @@ class Module : public Box
   }
   void incConnections();
   void decConnections();
-
+  virtual void mcAbleChanged(MidiControllableBase *) {}
     int save(FILE *f);
     virtual int saveConnections(FILE *f); 
     virtual int saveParameters(FILE *f);

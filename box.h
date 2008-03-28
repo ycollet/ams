@@ -8,7 +8,7 @@
 
 class Box: public QWidget
 {
-  //  Q_OBJECT
+  Q_OBJECT
 
 protected:
   bool drag;

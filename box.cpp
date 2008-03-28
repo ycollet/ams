@@ -7,6 +7,7 @@ QPoint Box::pressPos, Box::mousePressPos;
 
 Box::Box(QWidget *parent, const QString &name)
   : QWidget(parent)
+  , drag(false)
 {
   setObjectName(name);
   setAutoFillBackground(true);
