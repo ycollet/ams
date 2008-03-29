@@ -43,14 +43,16 @@ M_pcmin::M_pcmin(QWidget* parent, int port)
   configDialog->addSlider("Gain", gain, 0, 1, false);
   configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false);
   configDialog->addSlider("Volume 2", mixer_gain[1], 0, 1, false);
-  pcmdata[0] = new float [synthdata->periodsize];
-  pcmdata[1] = new float [synthdata->periodsize];
+  if (synthdata->withAlsa) {
+    pcmdata[0] = new float[2 * synthdata->periodsize];
+    pcmdata[1] = pcmdata[0] + synthdata->periodsize;
+  }
 }
 
 M_pcmin::~M_pcmin()
 {
-  delete[] pcmdata [0];
-  delete[] pcmdata [1];
+  if (synthdata->withAlsa)
+    delete[] pcmdata[0];
 }
 
 void M_pcmin::generateCycle() {

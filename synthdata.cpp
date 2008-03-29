@@ -524,9 +524,6 @@ int SynthData::jack_static_callback (jack_nframes_t nframes, void *arg)
 int SynthData::jack_callback (jack_nframes_t nframes)
 {
     int         i, j;
-    M_pcmin    *C;
-    M_pcmout   *P;
-    jack_default_audio_sample_t *p;
 
     if (nframes > MAXIMUM_PERIODSIZE) { 
         fprintf(stderr, "nframes exceeds allowed value %d\n", MAXIMUM_PERIODSIZE);
@@ -537,25 +534,22 @@ int SynthData::jack_callback (jack_nframes_t nframes)
 
     cyclesize = nframes;
 
-    for (i = 0; i < capt_ports; i += 2)
-    {
-        C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
-        for (j = 0; j < 2; j++)
-        {
-            p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_in [i + j], nframes));
-            if (C) memcpy (C->pcmdata [j], p, sizeof(jack_default_audio_sample_t) * nframes);
-	}
+    for (i = 0; i < capt_ports; i += 2) {
+      M_pcmin *C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
+      if (C)
+	for (j = 0; j < 2; j++)
+	  C->pcmdata[j] = (float *)jack_port_get_buffer(jack_in[i + j], nframes);
     }
 
     for (i = 0; i < play_ports; i += 2) {
-      P = doSynthesis ? (M_pcmout *)(play_mods [i >> 1]) : 0;    
+      M_pcmout *P = doSynthesis ? (M_pcmout *)(play_mods [i >> 1]) : 0;
       if (P) {
 	P->pcmdata[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[i], nframes);
 	P->pcmdata[1] = (jack_default_audio_sample_t *)jack_port_get_buffer(jack_out[i + 1], nframes);
 	P->generateCycle();
       } else
 	for (j = 0; j < 2; j++) {
-	  p = (jack_default_audio_sample_t *)(jack_port_get_buffer (jack_out [i + j], nframes));
+	  void *p = jack_port_get_buffer(jack_out [i + j], nframes);
 	  memset (p, 0, sizeof(jack_default_audio_sample_t) * nframes);
 	}
     }
