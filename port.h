@@ -9,7 +9,6 @@
 #include <qstring.h>
 #include <qcolor.h>
 #include <qpoint.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include "synthdata.h"
@@ -26,11 +25,11 @@ class Port : public QWidget
 
     QString portName;
     static class PopupMenu *contextMenu;
-    int portWidth;
+    int portNameWidth;
 
   public:
     Port(const QString &p_portName, dirType p_dir, int p_index, class Module *parent,
-         int p_portWidth = PORT_DEFAULT_WIDTH, int p_color = 0);
+         int p_color = 0);
     ~Port();
     int connectTo(Port *port);
     float **getinputdata (void);
@@ -42,8 +41,8 @@ class Port : public QWidget
     class Module *module;
     QList<Port*> connectedPortList;
     dirType dir;
-    int index, fontColor;
-    QColor jackColor, cableColor, colorFont1, colorFont2;
+    int index;
+    QColor jackColor, cableColor, &colorFont;
     outTypeEnum outType;
     bool highlighted;
     QList<outTypeEnum> outTypeAcceptList;

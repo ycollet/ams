@@ -99,7 +99,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
   for (unsigned l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
     if (LADSPA_IS_PORT_AUDIO(ladspa_dsc->PortDescriptors[l1])) {
       if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
-        Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 90);
+        Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this);
         audio_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
         audio_in_port->outTypeAcceptList.append(outType_audio);
         in_port_list.append(audio_in_port);
@@ -110,7 +110,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
         audio_in_index++;
       }
       if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
-        Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 90);
+        Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this);
         audio_out_port->move(MODULE_LADSPA_WIDTH - audio_out_port->width(), 
                              port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
         audio_out_port->outType = outType_audio;
@@ -128,7 +128,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
       controlPortRate[control_port_count] = false;
       if (hasExtCtrlPorts) {
         if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
-          Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 160, 1);
+          Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 1);
           ctrl_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
           ctrl_in_port->outTypeAcceptList.append(outType_audio);
           in_ctrl_port_list.append(ctrl_in_port);
@@ -136,7 +136,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
 //          fprintf(stderr, "input: %s\n", ladspa_dsc->PortNames[l1]);
         }
         if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
-          Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 110, 1);
+          Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 1);
           ctrl_out_port->move(MODULE_LADSPA_WIDTH - ctrl_out_port->width(),
                               port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
           ctrl_out_port->outType = outType_audio;

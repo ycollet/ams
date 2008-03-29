@@ -15,22 +15,24 @@
 
 PopupMenu *Port::contextMenu;
 
-Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent, int p_portWidth, int p_color) 
-           : QWidget(parent) {
-
+Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent, int p_color) 
+           : QWidget(parent)
+	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
+	   , portNameWidth(0)
+{
   module = parent;
   portName = p_portName;
   
-  portWidth = p_portWidth;
   dir = p_dir;
-  fontColor = p_color;
   jackColor = synthdata->colorJack;
   cableColor = synthdata->colorCable;
   highlighted = false;
   index = p_index;
-  colorFont1 = synthdata->colorPortFont1;
-  colorFont2 = synthdata->colorPortFont2;
-  setFixedSize(portWidth, PORT_DEFAULT_HEIGHT);    
+  int width = 6 + QFontMetrics(font()).boundingRect(p_portName).width();
+  if (width < 30)
+    width = 30;
+  setFixedWidth(width);
+  setFixedHeight(PORT_DEFAULT_HEIGHT);
 }
 
 Port::~Port() {
@@ -80,26 +82,26 @@ void Port::paintEvent(QPaintEvent *) {
 //   }
   p.setFont(synthdata->smallFont);
 //  p.setPen(QColor(255, 220, 60));
-  if (fontColor) {
-    p.setPen(colorFont2);
-  } else {
-    p.setPen(colorFont1);
-  }
+  p.setPen(colorFont);
+
   if (dir == PORT_IN) { 
     if (highlighted) {
       p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
     } else {
       p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
     }
-    p.drawText(5, 12, portName);
+    p.drawText(5, 11, portName);
   } else {
     if (highlighted) {
       p.fillRect(width() - 3, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
     } else {
       p.fillRect(width() - 3, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
     }
-    textRect = p.boundingRect(0, 0, width(), height(), Qt::AlignLeft, portName);
-    p.drawText(width() - textRect.width() - 5, 12, portName);
+    if (!portNameWidth) {
+      textRect = p.boundingRect(0, 0, width(), height(), Qt::AlignLeft, portName);
+      portNameWidth = textRect.width();
+    }
+    p.drawText(width() - portNameWidth - 5, 11, portName);
   }
 }  
    

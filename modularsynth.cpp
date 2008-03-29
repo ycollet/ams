@@ -1986,8 +1986,6 @@ void ModularSynth::refreshColors() {
     listModule[l1]->getColors();
     for (l2 = 0; l2 < listModule.at(l1)->portList.count(); ++l2) {
       listModule.at(l1)->portList.at(l2)->setPalette(QPalette(synthdata->colorModuleBackground, synthdata->colorModuleBackground));
-      listModule.at(l1)->portList.at(l2)->colorFont1 = synthdata->colorPortFont1;
-      listModule.at(l1)->portList.at(l2)->colorFont2 = synthdata->colorPortFont2;
     }
   }      
   prefWidget->refreshColors();
