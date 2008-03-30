@@ -32,7 +32,6 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SEQ_WIDTH, MODULE_SEQ_HEIGHT);
   port_trigger = new Port("Trigger", PORT_IN, 0, this);
   port_trigger->move(0, 35);
-  port_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_trigger);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 55);

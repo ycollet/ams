@@ -32,7 +32,6 @@ M_ad::M_ad(int outCount, QWidget* parent)
   qs.sprintf("CV In");
   port_in = new Port(qs, PORT_IN, 0, this);
   port_in->move(0, 40);
-  port_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_in);  for (l1 = 0; l1 < outCount; l1++) {
     qs.sprintf("CV Out %d", l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);

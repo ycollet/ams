@@ -34,15 +34,12 @@ M_vco2::M_vco2(QWidget* parent)
   waveForm = SINUS;
   port_M_freq = new Port("Freq", PORT_IN, 1, this);
   port_M_freq->move(0, 35);    
-  port_M_freq->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_freq); 
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_exp->move(0, 55);    
-  port_M_exp->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_exp); 
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_lin->move(0, 75);
-  port_M_lin->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_lin);
   port_M_pw = new Port("PW", PORT_IN, 4, this);
   port_M_pw->move(0, 95);

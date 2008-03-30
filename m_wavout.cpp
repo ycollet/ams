@@ -39,11 +39,9 @@ M_wavout::M_wavout(QWidget* parent)
   doRecord = 0;
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
-  port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
-  port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
 
   configDialog->initTabWidget();

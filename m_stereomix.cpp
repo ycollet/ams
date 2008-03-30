@@ -119,7 +119,6 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
     qs.sprintf("In %d", l1);
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
     audio_in_port->move(0, 40 + 20 * in_port_list.count());
-    audio_in_port->outTypeAcceptList.append(outType_audio);
     in_port_list.append(audio_in_port);
     portList.append(audio_in_port);
     hbox = configDialog->addHBox();

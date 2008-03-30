@@ -17,13 +17,16 @@ PopupMenu *Port::contextMenu;
 
 Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent, int p_color) 
            : QWidget(parent)
-	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
 	   , portNameWidth(0)
+	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
 {
   module = parent;
   portName = p_portName;
   
   dir = p_dir;
+  if (dir == PORT_IN)
+    outTypeAcceptList.append(outType_audio);
+
   jackColor = synthdata->colorJack;
   cableColor = synthdata->colorCable;
   highlighted = false;

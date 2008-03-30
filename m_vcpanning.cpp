@@ -29,11 +29,9 @@ M_vcpanning::M_vcpanning(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCPANNING_WIDTH, MODULE_VCPANNING_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
   port_M_pan = new Port("Pan CV", PORT_IN, 1, this); 
   port_M_pan->move(0, 55);
-  port_M_pan->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_pan);
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);

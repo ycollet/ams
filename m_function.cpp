@@ -30,7 +30,6 @@ M_function::M_function(int p_functionCount, QWidget* parent)
               MODULE_FUNCTION_HEIGHT + 20 + 20 * outPortCount);
   port_in = new Port("In", PORT_IN, 0, this);
   port_in->move(0, 40);
-  port_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_in);
   for (l1 = 0; l1 < outPortCount; l1++) {
     for (l2 = 0; l2 < MAXPOLY; l2++) {

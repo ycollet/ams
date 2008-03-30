@@ -27,11 +27,9 @@ M_sh::M_sh(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SH_WIDTH, MODULE_SH_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  port_M_in->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_in);
   port_M_trig = new Port("Trigger", PORT_IN, 1, this); 
   port_M_trig->move(0, 55);
-  port_M_trig->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trig);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 35);

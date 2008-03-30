@@ -37,15 +37,12 @@ M_midiout::M_midiout(QWidget* parent)
   triggerLevel = 0.5;
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
-  port_in[0]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[0]);
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
-  port_in[1]->outTypeAcceptList.append(outType_audio);
   portList.append(port_in[1]);
   port_M_trigger = new Port("Trigger", PORT_IN, 2, this);
   port_M_trigger->move(0, 75);
-  port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);
 
   configDialog->initTabWidget();

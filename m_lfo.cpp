@@ -48,7 +48,6 @@ M_lfo::M_lfo(QWidget* parent)
   }
   port_M_trigger = new Port("Reset", PORT_IN, 0, this);          
   port_M_trigger->move(0, 35);
-  port_M_trigger->outTypeAcceptList.append(outType_audio);
   portList.append(port_M_trigger);     
   port_sine = new Port("Sine", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 55);
