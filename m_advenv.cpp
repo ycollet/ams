@@ -41,9 +41,7 @@ M_advenv::M_advenv(QWidget* parent)
   release[4] = 0.05;
   timeScale = 1.0;
   port_gate = new Port("Gate", PORT_IN, 0, this);
-  port_gate->move(0, 35);
   port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
-  port_retrigger->move(0, 55);
   port_gain_out = new Port("Out", PORT_OUT, 0, this);          
   port_gain_out->move(width() - port_gain_out->width(), 75);
   port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          

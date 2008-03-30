@@ -29,7 +29,6 @@ M_function::M_function(int p_functionCount, QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_FUNCTION_WIDTH, 
               MODULE_FUNCTION_HEIGHT + 20 + 20 * outPortCount);
   port_in = new Port("In", PORT_IN, 0, this);
-  port_in->move(0, 40);
   for (l1 = 0; l1 < outPortCount; l1++) {
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       i[l2][l1] = 1;

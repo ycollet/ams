@@ -26,11 +26,8 @@ M_vcswitch::M_vcswitch(QWidget* parent)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCSWITCH_WIDTH, MODULE_VCSWITCH_HEIGHT);
   port_M_cv = new Port("CV", PORT_IN, 0, this); 
-  port_M_cv->move(0, 35);
   port_M_in[0] = new Port("In 0", PORT_IN, 1, this); 
-  port_M_in[0]->move(0, 55);
   port_M_in[1] = new Port("In 1", PORT_IN, 2, this); 
-  port_M_in[1]->move(0, 75);
   port_out[0] = new Port("Out 0", PORT_OUT, 0, this);          
   port_out[0]->move(width() - port_out[0]->width(), 35);
   port_out[1] = new Port("Out 1", PORT_OUT, 1, this);          

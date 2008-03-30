@@ -27,11 +27,8 @@ M_quantizer::M_quantizer(QWidget* parent)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_QUANTIZER_WIDTH, MODULE_QUANTIZER_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_in->move(0, 35);
   port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
-  port_M_trigger->move(0, 55);
   port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
-  port_M_transpose->move(0, 75);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
   port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          

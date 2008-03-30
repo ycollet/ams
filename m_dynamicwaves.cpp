@@ -71,15 +71,10 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
     }
   }
   port_M_freq = new Port("Freq", PORT_IN, 0, this);
-  port_M_freq->move(0, 35);    
   port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);
-  port_M_exp->move(0, 55);    
   port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
-  port_M_lin->move(0, 75);
   port_gate = new Port("Gate", PORT_IN, 3, this);
-  port_gate->move(0, 95);
   port_retrigger = new Port("Retrigger", PORT_IN, 4, this);
-  port_retrigger->move(0, 115);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 135);
 

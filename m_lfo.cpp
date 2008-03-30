@@ -47,7 +47,6 @@ M_lfo::M_lfo(QWidget* parent)
     dt[l1] = 4.0 / wave_period;
   }
   port_M_trigger = new Port("Reset", PORT_IN, 0, this);          
-  port_M_trigger->move(0, 35);
   port_sine = new Port("Sine", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 55);
   port_tri = new Port("Triangle", PORT_OUT, 1, this);          

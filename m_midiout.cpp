@@ -36,11 +36,8 @@ M_midiout::M_midiout(QWidget* parent)
   controller[1] = 25;
   triggerLevel = 0.5;
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[0]->move(0, 35);
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
-  port_in[1]->move(0, 55);
   port_M_trigger = new Port("Trigger", PORT_IN, 2, this);
-  port_M_trigger->move(0, 75);
 
   configDialog->initTabWidget();
   QVBoxLayout *gainTab = configDialog->addVBoxTab("Gain / Offset / Trigger Level");

@@ -22,10 +22,8 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   agc = 0;
   qs.sprintf (" -> Out %2d", port);
   port_in[0] = new Port(qs, PORT_IN, 0, this);          
-  port_in[0]->move(0, 35);
   qs.sprintf(" -> Out %2d", port + 1);
   port_in[1] = new Port(qs, PORT_IN, 1, this);          
-  port_in[1]->move(0, 55);
 
   configDialog->addSlider("Gain", gain, 0, 1, false);
   configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false);

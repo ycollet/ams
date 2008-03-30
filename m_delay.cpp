@@ -27,7 +27,6 @@ M_delay::M_delay(QWidget* parent)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DELAY_WIDTH, MODULE_DELAY_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_in->move(0, 35);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 55);
 

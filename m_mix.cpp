@@ -33,7 +33,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
   for (l1 = 0; l1 < in_channels; l1++) {
     qs.sprintf("In %d", l1);
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
-    audio_in_port->move(0, 40 + 20 * in_port_list.count());
     in_port_list.append(audio_in_port);
     mixer_gain[l1] = 1.0;    
     qs.sprintf("Volume %d", l1);

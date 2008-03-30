@@ -30,15 +30,10 @@ b_noise = 19.1919191919191919191919191919191919191919;
   inv2_rate = 2.0 / (double)synthdata->rate;// this double seems unnecessary
   
   port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_in->move(0, 35);
   port_M_freq = new Port("Freq", PORT_IN, 1, this); 
-  port_M_freq->move(0, 55);
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
-  port_M_exp->move(0, 75);    
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
-  port_M_lin->move(0, 95);
   port_M_resonance = new Port("Resonance", PORT_IN, 4, this); 
-  port_M_resonance->move(0, 115);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 130);
 
