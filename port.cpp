@@ -15,12 +15,14 @@
 
 PopupMenu *Port::contextMenu;
 
-Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent, int p_color) 
-           : QWidget(parent)
+Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *module, int p_color) 
+           : QWidget(module)
 	   , portNameWidth(0)
+	   , module(module)
 	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
 {
-  module = parent;
+  module->portList.append(this);
+
   portName = p_portName;
   
   dir = p_dir;

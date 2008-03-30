@@ -31,10 +31,8 @@ M_conv::M_conv(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_CONV_WIDTH, MODULE_CONV_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  portList.append(port_M_in);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 55);
-  portList.append(port_out);
 
   QStringList convModeNames;
   convModeNames << "V/Octave --> Hz";

@@ -35,7 +35,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
     audio_in_port->move(0, 40 + 20 * in_port_list.count());
     in_port_list.append(audio_in_port);
-    portList.append(audio_in_port);
     mixer_gain[l1] = 1.0;    
     qs.sprintf("Volume %d", l1);
     configDialog->addSlider(qs, mixer_gain[l1], 0, 2);
@@ -43,7 +42,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
   port_out = new Port("Out", PORT_OUT, 0, this);
   port_out->move(MODULE_MIX_WIDTH - port_out->width(),
                  35 + 20 * in_channels);
-  portList.append(port_out);
 }
 
 void M_mix::generateCycle() {

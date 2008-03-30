@@ -27,10 +27,8 @@ M_vquant::M_vquant(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VQUANT_WIDTH, MODULE_VQUANT_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  portList.append(port_M_in);
   port_quant = new Port("Out", PORT_OUT, 0, this);          
   port_quant->move(width() - port_quant->width(), 55);
-  portList.append(port_quant);
   gain = 1.0;
   configDialog->addSlider("Gain", gain, 0, 10);
 }

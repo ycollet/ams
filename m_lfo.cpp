@@ -48,25 +48,18 @@ M_lfo::M_lfo(QWidget* parent)
   }
   port_M_trigger = new Port("Reset", PORT_IN, 0, this);          
   port_M_trigger->move(0, 35);
-  portList.append(port_M_trigger);     
   port_sine = new Port("Sine", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 55);
-  portList.append(port_sine);
   port_tri = new Port("Triangle", PORT_OUT, 1, this);          
   port_tri->move(width() - port_tri->width(), 75);
-  portList.append(port_tri);
   port_sawup = new Port("Saw Up", PORT_OUT, 2, this);          
   port_sawup->move(width() - port_sawup->width(), 95);
-  portList.append(port_sawup);
   port_sawdown = new Port("Saw Down", PORT_OUT, 3, this);          
   port_sawdown->move(width() - port_sawdown->width(), 115);
-  portList.append(port_sawdown);
   port_rect = new Port("Rectangle", PORT_OUT, 4, this);          
   port_rect->move(width() - port_rect->width(), 135);
-  portList.append(port_rect);
   port_sh = new Port("S & H", PORT_OUT, 5, this);          
   port_sh->move(width() - port_sh->width(), 155);
-  portList.append(port_sh);
 
   configDialog->addSlider("Frequency", freq, 0, 100, true);
   configDialog->addSlider("Phi0", phi0, 0, 6.283);

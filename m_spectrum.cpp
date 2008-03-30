@@ -12,10 +12,8 @@ M_spectrum::M_spectrum(QWidget* parent)
 
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
-  portList.append(port_in[0]);
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
-  portList.append(port_in[1]);
   configDialog->addLabel(
 	"This modules source-code is outdated.\n"
 	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
@@ -63,10 +61,8 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   agc = 1;
   port_in[0] = new Port("In 0", PORT_IN, 0, this);          
   port_in[0]->move(0, 35);
-  portList.append(port_in[0]);
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
   port_in[1]->move(0, 55);
-  portList.append(port_in[1]);
   qs.sprintf("Spectrum ID %d", moduleID);
   configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();

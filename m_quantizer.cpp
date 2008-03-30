@@ -28,19 +28,14 @@ M_quantizer::M_quantizer(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_QUANTIZER_WIDTH, MODULE_QUANTIZER_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  portList.append(port_M_in);
   port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
   port_M_trigger->move(0, 55);
-  portList.append(port_M_trigger);
   port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
   port_M_transpose->move(0, 75);
-  portList.append(port_M_transpose);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
-  portList.append(port_out);
   port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
-  portList.append(port_trigger_out);
   quantum = QUANT_12;
   QStringList quantumNames ;
   quantumNames <<

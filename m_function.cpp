@@ -30,7 +30,6 @@ M_function::M_function(int p_functionCount, QWidget* parent)
               MODULE_FUNCTION_HEIGHT + 20 + 20 * outPortCount);
   port_in = new Port("In", PORT_IN, 0, this);
   port_in->move(0, 40);
-  portList.append(port_in);
   for (l1 = 0; l1 < outPortCount; l1++) {
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       i[l2][l1] = 1;
@@ -46,7 +45,6 @@ M_function::M_function(int p_functionCount, QWidget* parent)
     Port *audio_out_port = new Port(qs, PORT_OUT, out_port_list.count(), this);
     audio_out_port->move(MODULE_FUNCTION_WIDTH - audio_out_port->width(), 55 + 20 * l1);
     out_port_list.append(audio_out_port);
-    portList.append(audio_out_port);
   }
   qs.sprintf("Function %d -> 1 ID %d", outPortCount, moduleID);
   configDialog->setAddStretch(-1);

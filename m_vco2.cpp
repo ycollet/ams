@@ -34,32 +34,23 @@ M_vco2::M_vco2(QWidget* parent)
   waveForm = SINUS;
   port_M_freq = new Port("Freq", PORT_IN, 1, this);
   port_M_freq->move(0, 35);    
-  portList.append(port_M_freq); 
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_exp->move(0, 55);    
-  portList.append(port_M_exp); 
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_lin->move(0, 75);
-  portList.append(port_M_lin);
   port_M_pw = new Port("PW", PORT_IN, 4, this);
   port_M_pw->move(0, 95);
-  portList.append(port_M_pw);     
   port_sine = new Port("Out", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 115);
-  portList.append(port_sine);
   /*
   port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);          
   port_tri->move(width() - port_tri->width(), 135);
-  portList.append(port_tri);
   port_saw = new Port("Saw", PORT_OUT, 2, this, synthdata);          
   port_saw->move(width() - port_saw->width(), 155);
-  portList.append(port_saw);
   port_rect = new Port("Rectangle", PORT_OUT, 3, this, synthdata);          
   port_rect->move(width() - port_rect->width(), 175);
-  portList.append(port_rect);
   port_aux = new Port("Aux", PORT_OUT, 4, this, synthdata);          
   port_aux->move(width() - port_aux->width(), 195);
-  portList.append(port_aux);
   */
 
   configDialog->initTabWidget();

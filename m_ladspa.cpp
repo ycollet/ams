@@ -102,7 +102,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
         Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this);
         audio_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
         in_port_list.append(audio_in_port);
-        portList.append(audio_in_port);
 	for (l2 = 0; l2 < ladspaPoly; l2++)
 	  ladspa_dsc->connect_port(ladspa_handle[l2], l1, ladspaDataIn[audio_in_index][l2]);
 
@@ -113,7 +112,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
         audio_out_port->move(MODULE_LADSPA_WIDTH - audio_out_port->width(), 
                              port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
         out_port_list.append(audio_out_port);
-        portList.append(audio_out_port);
 	for (l2 = 0; l2 < ladspaPoly; l2++)
 	  ladspa_dsc->connect_port(ladspa_handle[l2], l1, data[out_port_list.count() + out_ctrl_port_list.count() - 1][l2]);
 
@@ -129,7 +127,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
           Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1], PORT_IN, in_port_list.count() + in_ctrl_port_list.count(), this, 1);
           ctrl_in_port->move(0, port_ofs + 20 * (in_port_list.count() + in_ctrl_port_list.count()));
           in_ctrl_port_list.append(ctrl_in_port);
-          portList.append(ctrl_in_port);
 //          fprintf(stderr, "input: %s\n", ladspa_dsc->PortNames[l1]);
         }
         if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
@@ -137,7 +134,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
           ctrl_out_port->move(MODULE_LADSPA_WIDTH - ctrl_out_port->width(),
                               port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
           out_ctrl_port_list.append(ctrl_out_port);
-          portList.append(ctrl_out_port);
           if (LADSPA_IS_HINT_SAMPLE_RATE(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
              controlPortRate[ctrl_out_index] = true;
           }

@@ -31,19 +31,14 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
   expMode = p_expMode;
   port_M_gain1 = new Port("Gain 0", PORT_IN, 0, this); 
   port_M_gain1->move(0, 35);
-  portList.append(port_M_gain1);
   port_M_gain2 = new Port("Gain 1", PORT_IN, 1, this); 
   port_M_gain2->move(0, 55);
-  portList.append(port_M_gain2);
   port_M_in1 = new Port("In 0", PORT_IN, 2, this); 
   port_M_in1->move(0, 75);
-  portList.append(port_M_in1);
   port_M_in2 = new Port("In 1", PORT_IN, 3, this); 
   port_M_in2->move(0, 95);
-  portList.append(port_M_in2);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 115);
-  portList.append(port_out);
 
   configDialog->addSlider("Gain", gain1, 0, 1);
   configDialog->addSlider("Gain 1", gain2, 0, 1);

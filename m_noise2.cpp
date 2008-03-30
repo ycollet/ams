@@ -36,14 +36,11 @@ M_noise2::M_noise2(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE2_WIDTH, MODULE_NOISE2_HEIGHT);
   port_white = new Port("Out", PORT_OUT, 0, this);          
   port_white->move(width() - port_white->width(), 35);
-  portList.append(port_white);
  /*
   port_pink = new Port("Pink", PORT_OUT, 1, this, synthdata);          
   port_pink->move(width() - port_pink->width(), 55);
-  portList.append(port_pink);
   port_random = new Port("Random", PORT_OUT, 2, this, synthdata);          
   port_random->move(width() - port_random->width(), 75);
-  portList.append(port_random);
   */
 
   QStringList noiseNames;

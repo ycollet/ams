@@ -28,10 +28,8 @@ M_slew::M_slew(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SLEW_WIDTH, MODULE_SLEW_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_in->move(0, 35);
-  portList.append(port_M_in);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 55);
-  portList.append(port_out);
   timeUp = 0.5;
   timeDown = 0.5;
   configDialog->addSlider("Time Up", timeUp, 0, 10);
