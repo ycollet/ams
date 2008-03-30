@@ -101,6 +101,8 @@ class Module : public Box
   public:
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
     virtual  ~Module();
+
+  int checkin(Port *); 
   int connected() {
     return connections;
   }
@@ -130,6 +132,17 @@ protected:
   virtual void paintEvent(QPaintEvent *ev);
   virtual void mousePressEvent (QMouseEvent* );
   void paint(QPainter &);
+
+  struct CtorVar {
+    static const int step = 20;
+    int in_index, out_index;
+    int in_off, out_off;
+    void reset() {
+      in_index = out_index = 0;
+      in_off = out_off = 35;
+    }
+  };
+  static CtorVar cv;
 
 signals:
     void dragged(QPoint pos);

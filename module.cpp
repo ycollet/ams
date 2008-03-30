@@ -19,8 +19,10 @@
 #include "midislider.h"
 #include "module.h"
 #include "main.h"
+#include "DBG_.h"
 
 int Module::portmemAllocated;
+Module::CtorVar Module::cv;
 
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
   : Box(parent, name)
@@ -29,6 +31,7 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QStri
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
+  cv.reset();
   cycleReady = false;
   
   synthdata->incModuleCount();
@@ -91,6 +94,21 @@ Module::~Module()
   }
 
   free(data);
+}
+
+int Module::checkin(Port *p)
+{
+  portList.append(p);
+  if (p->dir == PORT_IN) {
+    ASSERT(p->index == cv.in_index);
+    p->move(0, cv.in_off + cv.in_index * cv.step);
+    cv.in_index++;
+  } else {
+    ASSERT(p->index == cv.out_index);
+    p->move(width() - p->width(), cv.out_off + cv.out_index * cv.step);
+    cv.out_index++;
+  }
+  return 0;
 }
 
 void Module::paint(QPainter &p)

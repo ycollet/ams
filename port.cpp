@@ -15,17 +15,15 @@
 
 PopupMenu *Port::contextMenu;
 
-Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *module, int p_color) 
+Port::Port(const QString &p_portName, dirType dir, int p_index, Module *module, int p_color) 
            : QWidget(module)
 	   , portNameWidth(0)
 	   , module(module)
+	   , dir(dir)
 	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
 {
-  module->portList.append(this);
-
   portName = p_portName;
   
-  dir = p_dir;
   if (dir == PORT_IN)
     outTypeAcceptList.append(outType_audio);
   else
@@ -41,6 +39,8 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *module
     width = 30;
   setFixedWidth(width);
   setFixedHeight(PORT_DEFAULT_HEIGHT);
+
+  module->checkin(this);
 }
 
 Port::~Port() {
