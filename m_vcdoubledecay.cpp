@@ -49,7 +49,6 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
   portList.append(port_M_ratio);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 175);
-  port_out->outType = outType_audio;
   portList.append(port_out);
   a0 = 0;
   d0 = 0;

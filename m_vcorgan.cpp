@@ -44,7 +44,6 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
   portList.append(port_M_lin);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
-  port_out->outType = outType_audio;
   portList.append(port_out);
 
   configDialog->initTabWidget();

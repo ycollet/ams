@@ -112,7 +112,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
         Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this);
         audio_out_port->move(MODULE_LADSPA_WIDTH - audio_out_port->width(), 
                              port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
-        audio_out_port->outType = outType_audio;
         out_port_list.append(audio_out_port);
         portList.append(audio_out_port);
 	for (l2 = 0; l2 < ladspaPoly; l2++)
@@ -137,7 +136,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
           Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 1);
           ctrl_out_port->move(MODULE_LADSPA_WIDTH - ctrl_out_port->width(),
                               port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
-          ctrl_out_port->outType = outType_audio;
           out_ctrl_port_list.append(ctrl_out_port);
           portList.append(ctrl_out_port);
           if (LADSPA_IS_HINT_SAMPLE_RATE(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {

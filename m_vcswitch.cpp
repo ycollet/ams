@@ -36,15 +36,12 @@ M_vcswitch::M_vcswitch(QWidget* parent)
   portList.append(port_M_in[1]);
   port_out[0] = new Port("Out 0", PORT_OUT, 0, this);          
   port_out[0]->move(width() - port_out[0]->width(), 35);
-  port_out[0]->outType = outType_audio;
   portList.append(port_out[0]);
   port_out[1] = new Port("Out 1", PORT_OUT, 1, this);          
   port_out[1]->move(width() - port_out[1]->width(), 55);
-  port_out[1]->outType = outType_audio;
   portList.append(port_out[1]);
   port_mix = new Port("Mix", PORT_OUT, 2, this);          
   port_mix->move(width() - port_mix->width(), 75);
-  port_mix->outType = outType_audio;
   portList.append(port_mix);
 
   switchLevel = 0.5;

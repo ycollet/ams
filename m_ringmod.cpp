@@ -34,7 +34,6 @@ M_ringmod::M_ringmod(QWidget* parent)
   portList.append(port_M_vco2);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 70);
-  port_out->outType = outType_audio;
   portList.append(port_out);
 
   configDialog->addSlider("Gain", gain, 0, 5);

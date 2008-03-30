@@ -46,24 +46,19 @@ M_vco2::M_vco2(QWidget* parent)
   portList.append(port_M_pw);     
   port_sine = new Port("Out", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 115);
-  port_sine->outType = outType_audio;
   portList.append(port_sine);
   /*
   port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);          
   port_tri->move(width() - port_tri->width(), 135);
-  port_tri->outType = outType_audio;
   portList.append(port_tri);
   port_saw = new Port("Saw", PORT_OUT, 2, this, synthdata);          
   port_saw->move(width() - port_saw->width(), 155);
-  port_saw->outType = outType_audio;
   portList.append(port_saw);
   port_rect = new Port("Rectangle", PORT_OUT, 3, this, synthdata);          
   port_rect->move(width() - port_rect->width(), 175);
-  port_rect->outType = outType_audio;
   portList.append(port_rect);
   port_aux = new Port("Aux", PORT_OUT, 4, this, synthdata);          
   port_aux->move(width() - port_aux->width(), 195);
-  port_aux->outType = outType_audio;
   portList.append(port_aux);
   */
 

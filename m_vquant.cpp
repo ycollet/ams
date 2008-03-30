@@ -30,7 +30,6 @@ M_vquant::M_vquant(QWidget* parent)
   portList.append(port_M_in);
   port_quant = new Port("Out", PORT_OUT, 0, this);          
   port_quant->move(width() - port_quant->width(), 55);
-  port_quant->outType = outType_audio;
   portList.append(port_quant);
   gain = 1.0;
   configDialog->addSlider("Gain", gain, 0, 10);

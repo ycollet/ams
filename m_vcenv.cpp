@@ -46,7 +46,6 @@ M_vcenv::M_vcenv(QWidget* parent)
   portList.append(port_M_release);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 155);
-  port_out->outType = outType_audio;
   portList.append(port_out);
   a0 = 0.01;
   d0 = 0.3;

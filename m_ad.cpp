@@ -37,7 +37,6 @@ M_ad::M_ad(int outCount, QWidget* parent)
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
     port_out[l1]->move(MODULE_AD_WIDTH - port_out[l1]->width(), 
                        55 + 20 * l1);
-    port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       drift_a[l1][l2] = 0.4 * (double)random() / (double)RAND_MAX - 0.2;

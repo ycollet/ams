@@ -34,19 +34,15 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCMCV_WIDTH, MODULE_SCMCV_HEIGHT);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
   port_gate_out->move(width() - port_gate_out->width(), 35);
-  port_gate_out->outType = outType_audio;
   portList.append(port_gate_out);
   port_note_out = new Port("Freq", PORT_OUT, 1, this);          
   port_note_out->move(width() - port_note_out->width(), 55);
-  port_note_out->outType = outType_audio;
   portList.append(port_note_out);
   port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
   port_velocity_out->move(width() - port_velocity_out->width(), 75);
-  port_velocity_out->outType = outType_audio;
   portList.append(port_velocity_out);
   port_trig_out = new Port("Trigger", PORT_OUT, 3, this);
   port_trig_out->move(width() - port_trig_out->width(), 95);
-  port_trig_out->outType = outType_audio;
   portList.append(port_trig_out);
 
   QStringList channelNames;

@@ -34,11 +34,9 @@ M_env::M_env(QWidget* parent)
   portList.append(port_retrigger);
   port_gain_out = new Port("Out", PORT_OUT, 0, this);          
   port_gain_out->move(width() - port_gain_out->width(), 75);
-  port_gain_out->outType = outType_audio;
   portList.append(port_gain_out);
   port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
   port_inverse_out->move(width() - port_inverse_out->width(), 95);
-  port_inverse_out->outType = outType_audio;
   portList.append(port_inverse_out);
 
   configDialog->initTabWidget();

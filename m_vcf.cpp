@@ -46,7 +46,6 @@ b_noise = 19.1919191919191919191919191919191919191919;
   portList.append(port_M_resonance);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 130);
-  port_out->outType = outType_audio;
   portList.append(port_out);
 
   QStringList vcfTypeNames;

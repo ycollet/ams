@@ -37,7 +37,6 @@ M_vcpanning::M_vcpanning(QWidget* parent)
     qs.sprintf("Out %d", l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);          
     port_out[l1]->move(width() - port_out[l1]->width(), 75 + 20 * l1);
-    port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
   }
   q = 2.0 / ((double)synthdata->poly - 1.0);

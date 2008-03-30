@@ -43,7 +43,6 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
   port_out = new Port("Out", PORT_OUT, 0, this);
   port_out->move(MODULE_MIX_WIDTH - port_out->width(),
                  35 + 20 * in_channels);
-  port_out->outType = outType_audio;
   portList.append(port_out);
 }
 

@@ -45,7 +45,6 @@ M_function::M_function(int p_functionCount, QWidget* parent)
     qs.sprintf("Out %d", l1);
     Port *audio_out_port = new Port(qs, PORT_OUT, out_port_list.count(), this);
     audio_out_port->move(MODULE_FUNCTION_WIDTH - audio_out_port->width(), 55 + 20 * l1);
-    audio_out_port->outType = outType_audio;
     out_port_list.append(audio_out_port);
     portList.append(audio_out_port);
   }

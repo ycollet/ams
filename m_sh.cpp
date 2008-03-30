@@ -33,11 +33,9 @@ M_sh::M_sh(QWidget* parent)
   portList.append(port_M_trig);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 35);
-  port_out->outType = outType_audio;
   portList.append(port_out);
   port_gate = new Port("Gate", PORT_OUT, 1, this);          
   port_gate->move(width() - port_gate->width(), 55);
-  port_gate->outType = outType_audio;
   portList.append(port_gate);
   triggerLevel = 0.5;
   configDialog->addSlider("Trigger Level", triggerLevel, 0, 10);

@@ -144,7 +144,6 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
     port_out[l1]->move(MODULE_STEREOMIX_WIDTH - port_out[l1]->width(),
                        35 + 20 * (in_channels + l1));
-    port_out[l1]->outType = outType_audio;
     portList.append(port_out[l1]);
   }
 }

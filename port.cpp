@@ -26,6 +26,8 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *parent
   dir = p_dir;
   if (dir == PORT_IN)
     outTypeAcceptList.append(outType_audio);
+  else
+    outType = outType_audio;
 
   jackColor = synthdata->colorJack;
   cableColor = synthdata->colorCable;

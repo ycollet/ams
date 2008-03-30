@@ -87,7 +87,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   portList.append(port_retrigger);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 135);
-  port_out->outType = outType_audio;
   portList.append(port_out);
 
   configDialog->initTabWidget();

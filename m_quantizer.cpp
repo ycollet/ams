@@ -37,11 +37,9 @@ M_quantizer::M_quantizer(QWidget* parent)
   portList.append(port_M_transpose);
   port_out = new Port("Out", PORT_OUT, 0, this);          
   port_out->move(width() - port_out->width(), 95);
-  port_out->outType = outType_audio;
   portList.append(port_out);
   port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
   port_trigger_out->move(width() - port_trigger_out->width(), 115);
-  port_trigger_out->outType = outType_audio;
   portList.append(port_trigger_out);
   quantum = QUANT_12;
   QStringList quantumNames ;
