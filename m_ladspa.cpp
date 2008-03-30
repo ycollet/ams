@@ -287,26 +287,15 @@ M_ladspa::~M_ladspa()
 
 }
 
-void M_ladspa::paintEvent(QPaintEvent *) {
-  
+void M_ladspa::paintEvent(QPaintEvent *)
+{
   QPainter p(this);
-  QString qs;
   QRect r = logo->rect();
 
   r.moveCenter(rect().center());
   p.drawPixmap(r, *logo);
 
-  p.setPen(colorBorder);
-  for (int i = 0; i < 4; i++) { 
-    p.setPen(colorBorder.light(100 + 15 * i));
-    p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
-  }
-  p.setPen(colorFont);
-  p.setFont(synthdata->bigFont);
-  p.drawText(10, 20, ladspa_dsc->Label);
-  p.setFont(synthdata->smallFont);
-  qs.sprintf("ID %d", moduleID);
-  p.drawText(10, 32, qs);
+  paint(p);
 }
 
 void M_ladspa::generateCycle()

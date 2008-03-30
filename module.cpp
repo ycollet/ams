@@ -93,16 +93,15 @@ Module::~Module()
   free(data);
 }
 
-void Module::paintEvent(QPaintEvent *)
+void Module::paint(QPainter &p)
 {
-  QPainter p(this);
   QString  qs;
 
   p.setPen(colorBorder);
-  for (int i = 0; i < 4; ++i)
+  for (int i = 0; i < 3; ++i)
   { 
       p.setPen(colorBorder.light(100 + 15 * i));
-      p.drawRect(i, i, width() - 2 * i, height() - 2 * i);
+      p.drawRect(i, i, width() - 2 * i - 1, height() - 2 * i - 1);
   }
   p.setPen(colorFont);
   p.setFont(synthdata->bigFont);
@@ -110,6 +109,12 @@ void Module::paintEvent(QPaintEvent *)
   p.setFont(synthdata->smallFont); 
   qs.sprintf("ID %d", moduleID);
   p.drawText(10, 32, qs);
+}
+
+void Module::paintEvent(QPaintEvent *)
+{
+  QPainter p(this);
+  paint(p);
 }
 
 void Module::mousePressEvent(QMouseEvent *ev)

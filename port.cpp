@@ -35,7 +35,8 @@ Port::Port(const QString &p_portName, dirType p_dir, int p_index, Module *module
   cableColor = synthdata->colorCable;
   highlighted = false;
   index = p_index;
-  int width = 6 + QFontMetrics(font()).boundingRect(p_portName).width();
+  portNameWidth = QFontMetrics(QFont(synthdata->smallFont, this)).boundingRect(p_portName).width();
+  int width = 10 + portNameWidth;
   if (width < 30)
     width = 30;
   setFixedWidth(width);
@@ -104,11 +105,7 @@ void Port::paintEvent(QPaintEvent *) {
     } else {
       p.fillRect(width() - 3, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
     }
-    if (!portNameWidth) {
-      textRect = p.boundingRect(0, 0, width(), height(), Qt::AlignLeft, portName);
-      portNameWidth = textRect.width();
-    }
-    p.drawText(width() - portNameWidth - 5, 11, portName);
+    p.drawText(width() - portNameWidth - 6, 11, portName);
   }
 }  
    

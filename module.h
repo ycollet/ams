@@ -129,8 +129,9 @@ protected:
   void portMemAlloc(int outPortCount, bool poly);
   virtual void paintEvent(QPaintEvent *ev);
   virtual void mousePressEvent (QMouseEvent* );
+  void paint(QPainter &);
 
-  signals:
+signals:
     void dragged(QPoint pos);
     void removeModule();
                         
