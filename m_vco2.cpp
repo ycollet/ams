@@ -43,7 +43,6 @@ M_vco2::M_vco2(QWidget* parent)
   portList.append(port_M_lin);
   port_M_pw = new Port("PW", PORT_IN, 4, this);
   port_M_pw->move(0, 95);
-  port_M_pw->outTypeAcceptList.append(outType_audio); 
   portList.append(port_M_pw);     
   port_sine = new Port("Out", PORT_OUT, 0, this);          
   port_sine->move(width() - port_sine->width(), 115);
