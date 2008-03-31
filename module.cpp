@@ -19,7 +19,6 @@
 #include "midislider.h"
 #include "module.h"
 #include "main.h"
-#include "DBG_.h"
 
 int Module::portmemAllocated;
 Module::CtorVar Module::cv;
@@ -100,11 +99,9 @@ int Module::checkin(Port *p)
 {
   portList.append(p);
   if (p->dir == PORT_IN) {
-    ASSERT(p->index == cv.in_index);
     p->move(0, cv.in_off + cv.in_index * cv.step);
     cv.in_index++;
   } else {
-    ASSERT(p->index == cv.out_index);
     p->move(width() - p->width(), cv.out_off + cv.out_index * cv.step);
     cv.out_index++;
   }
