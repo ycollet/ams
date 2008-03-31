@@ -662,7 +662,6 @@ void SynthData::readMIDI(void)
 	break;
       }
       mc->context->setMidiValueRT(control14);
-      pipeMessage |= 1;
       //      StdOut << "did " << ev->data.control.value << endl;
     } else {
       mckRed.put(mcK);
