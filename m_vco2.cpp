@@ -32,10 +32,14 @@ M_vco2::M_vco2(QWidget* parent)
   }
   pw0 = 0.5;
   waveForm = SINUS;
+
+  cv.in_index = 1;
+  cv.in_off -= cv.step;
   port_M_freq = new Port("Freq", PORT_IN, 1, this);
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_pw = new Port("PW", PORT_IN, 4, this);
+
   cv.out_off = 115;
   port_sine = new Port("Out", PORT_OUT, 0, this);          
   /*
@@ -73,7 +77,8 @@ M_vco2::M_vco2(QWidget* parent)
 
 void M_vco2::generateCycle()
 {
-  unsigned int l1, l2,phint;
+  int l1, l2;
+  unsigned phint;
   float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
   float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
 

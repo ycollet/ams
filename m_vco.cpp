@@ -35,10 +35,14 @@ M_vco::M_vco(QWidget* parent)
   }
   pw0 = 0.5;
   waveForm = WAVE_SAW;
+
+  cv.in_index = 1;
+  cv.in_off -= cv.step;
   port_M_freq = new Port("Freq", PORT_IN, 1, this);
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_pw = new Port("PW", PORT_IN, 4, this);
+
   cv.out_off = 115;
   port_sine = new Port("Sine", PORT_OUT, 0, this);          
   port_tri = new Port("Triangle", PORT_OUT, 1, this);          
