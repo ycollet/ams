@@ -26,21 +26,14 @@ M_advmcv::M_advmcv(QWidget* parent)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVMCV_WIDTH, MODULE_ADVMCV_HEIGHT);
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_gate_out->move(width() - port_gate_out->width(), 35);
   port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_note_out->move(width() - port_note_out->width(), 55);
   port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_velocity_out->move(width() - port_velocity_out->width(), 75);
   port_trig_out = new Port("Trigger", PORT_OUT, 3, this);          
-  port_trig_out->move(width() - port_trig_out->width(), 95);
   port_aftertouch_out = new Port("Aftertouch", PORT_OUT, 4, this);          
-  port_aftertouch_out->move(width() - port_aftertouch_out->width(), 115);
   port_pitchbend_out = new Port("Pitchbend", PORT_OUT, 5, this);          
-  port_pitchbend_out->move(width() - port_pitchbend_out->width(), 135);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
     qs.sprintf("Controller %d", l1);
     port_controller_out[l1] = new Port(qs, PORT_OUT, 6+l1, this);          
-    port_controller_out[l1]->move(width() - port_controller_out[l1]->width(), 155 + 20 * l1);
   }
 
 //  QStrList *channelNames = new QStrList(true);

@@ -35,11 +35,8 @@ M_noise::M_noise(QWidget* parent)
   
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE_WIDTH, MODULE_NOISE_HEIGHT);
   port_white = new Port("White", PORT_OUT, 0, this);          
-  port_white->move(width() - port_white->width(), 35);
   port_pink = new Port("Pink", PORT_OUT, 1, this);          
-  port_pink->move(width() - port_pink->width(), 55);
   port_random = new Port("Random", PORT_OUT, 2, this);          
-  port_random->move(width() - port_random->width(), 75);
 
   configDialog->addSlider("Random Rate", rate, 0, 10);
   configDialog->addSlider("Random Level", level, 0, 1);

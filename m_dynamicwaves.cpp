@@ -75,8 +75,8 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
   port_gate = new Port("Gate", PORT_IN, 3, this);
   port_retrigger = new Port("Retrigger", PORT_IN, 4, this);
+  cv.out_off = 135;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 135);
 
   configDialog->initTabWidget();
   QStringList waveFormNames;

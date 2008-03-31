@@ -32,8 +32,8 @@ M_vcenv::M_vcenv(QWidget* parent)
   port_M_decay = new Port("Decay", PORT_IN, 3, this); 
   port_M_sustain = new Port("Sustain", PORT_IN, 4, this); 
   port_M_release = new Port("Release", PORT_IN, 5, this); 
+  cv.out_off = 155;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 155);
   a0 = 0.01;
   d0 = 0.3;
   s0 = 0.7;

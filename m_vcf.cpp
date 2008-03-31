@@ -34,8 +34,8 @@ b_noise = 19.1919191919191919191919191919191919191919;
   port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
   port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
   port_M_resonance = new Port("Resonance", PORT_IN, 4, this); 
+  cv.out_off = 130;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 130);
 
   QStringList vcfTypeNames;
   vcfTypeNames << "Resonant Lowpass";

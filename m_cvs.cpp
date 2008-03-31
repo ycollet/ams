@@ -29,7 +29,6 @@ M_cvs::M_cvs(QWidget* parent)
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     qs.sprintf("CV %d", l1);
     port_cv_out[l1] = new Port(qs, PORT_OUT, l1, this);          
-    port_cv_out[l1]->move(width() - port_cv_out[l1]->width(), 35 + 20 * l1);
   }
 
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {

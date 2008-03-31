@@ -28,10 +28,9 @@ M_env::M_env(QWidget* parent)
   timeScale = 1.0;
   port_gate = new Port("Gate", PORT_IN, 0, this);
   port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
+  cv.out_off = 75;
   port_gain_out = new Port("Out", PORT_OUT, 0, this);          
-  port_gain_out->move(width() - port_gain_out->width(), 75);
   port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
-  port_inverse_out->move(width() - port_inverse_out->width(), 95);
 
   configDialog->initTabWidget();
   QVBoxLayout *adsrTab = configDialog->addVBoxTab("ADSR");

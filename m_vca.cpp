@@ -33,8 +33,8 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
   port_M_gain2 = new Port("Gain 1", PORT_IN, 1, this); 
   port_M_in1 = new Port("In 0", PORT_IN, 2, this); 
   port_M_in2 = new Port("In 1", PORT_IN, 3, this); 
+  cv.out_off = 115;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 115);
 
   configDialog->addSlider("Gain", gain1, 0, 1);
   configDialog->addSlider("Gain 1", gain2, 0, 1);

@@ -38,9 +38,8 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
     qs.sprintf("Volume %d", l1);
     configDialog->addSlider(qs, mixer_gain[l1], 0, 2);
   }
+  cv.out_off += cv.step * in_channels;
   port_out = new Port("Out", PORT_OUT, 0, this);
-  port_out->move(MODULE_MIX_WIDTH - port_out->width(),
-                 35 + 20 * in_channels);
 }
 
 void M_mix::generateCycle() {

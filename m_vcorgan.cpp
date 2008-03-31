@@ -36,8 +36,8 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
   port_M_freq = new Port("Freq", PORT_IN, 0, this);
   port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);
   port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
+  cv.out_off = 95;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 95);
 
   configDialog->initTabWidget();
   QStringList waveFormNames;

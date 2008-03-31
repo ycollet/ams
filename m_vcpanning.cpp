@@ -29,10 +29,10 @@ M_vcpanning::M_vcpanning(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCPANNING_WIDTH, MODULE_VCPANNING_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_pan = new Port("Pan CV", PORT_IN, 1, this); 
+  cv.out_off = 75;
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);          
-    port_out[l1]->move(width() - port_out[l1]->width(), 75 + 20 * l1);
   }
   q = 2.0 / ((double)synthdata->poly - 1.0);
   for (l2 = 0; l2 < 2; l2++) {

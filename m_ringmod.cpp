@@ -28,8 +28,8 @@ M_ringmod::M_ringmod(QWidget* parent)
   gain = 0.5;
   port_M_vco1 = new Port("In 0", PORT_IN, 0, this); 
   port_M_vco2 = new Port("In 1", PORT_IN, 1, this); 
+  cv.out_off = 70;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 70);
 
   configDialog->addSlider("Gain", gain, 0, 5);
 }

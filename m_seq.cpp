@@ -31,14 +31,11 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   seqLen = p_seqLen;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SEQ_WIDTH, MODULE_SEQ_HEIGHT);
   port_trigger = new Port("Trigger", PORT_IN, 0, this);
+  cv.out_off = 55;
   port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_gate_out->move(width() - port_gate_out->width(), 55);
   port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_note_out->move(width() - port_note_out->width(), 75);
   port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_velocity_out->move(width() - port_velocity_out->width(), 95);
   port_trigger_out = new Port("Trigger", PORT_OUT, 3, this);          
-  port_trigger_out->move(width() - port_trigger_out->width(), 115);
 
   configDialog->initTabWidget();
   QVBoxLayout *generalTab = configDialog->addVBoxTab("Pitch Offset / Tempo / Gate Time");

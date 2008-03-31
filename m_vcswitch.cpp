@@ -29,11 +29,8 @@ M_vcswitch::M_vcswitch(QWidget* parent)
   port_M_in[0] = new Port("In 0", PORT_IN, 1, this); 
   port_M_in[1] = new Port("In 1", PORT_IN, 2, this); 
   port_out[0] = new Port("Out 0", PORT_OUT, 0, this);          
-  port_out[0]->move(width() - port_out[0]->width(), 35);
   port_out[1] = new Port("Out 1", PORT_OUT, 1, this);          
-  port_out[1]->move(width() - port_out[1]->width(), 55);
   port_mix = new Port("Mix", PORT_OUT, 2, this);          
-  port_mix->move(width() - port_mix->width(), 75);
 
   switchLevel = 0.5;
   configDialog->addSlider("Switch Level", switchLevel, 0, 10);

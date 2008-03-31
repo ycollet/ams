@@ -37,6 +37,8 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
   bool tabMode;
   QVBoxLayout *ladspaTab;
 
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
+              MODULE_LADSPA_HEIGHT);
   ladspaTab = 0;
   hasExtCtrlPorts = extCtrlPorts;
 //  fprintf(stderr, "new LADSPA module, Poly: %d\n", (int)isPoly);
@@ -108,8 +110,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
       }
       if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
         Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this);
-        audio_out_port->move(MODULE_LADSPA_WIDTH - audio_out_port->width(), 
-                             port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
         out_port_list.append(audio_out_port);
 	for (l2 = 0; l2 < ladspaPoly; l2++)
 	  ladspa_dsc->connect_port(ladspa_handle[l2], l1, data[out_port_list.count() + out_ctrl_port_list.count() - 1][l2]);
@@ -129,8 +129,6 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
         }
         if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
           Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1], PORT_OUT, out_port_list.count() + out_ctrl_port_list.count(), this, 1);
-          ctrl_out_port->move(MODULE_LADSPA_WIDTH - ctrl_out_port->width(),
-                              port_ofs + 20 * (out_port_list.count() + out_ctrl_port_list.count()));
           out_ctrl_port_list.append(ctrl_out_port);
           if (LADSPA_IS_HINT_SAMPLE_RATE(ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
              controlPortRate[ctrl_out_index] = true;

@@ -28,9 +28,7 @@ M_sh::M_sh(QWidget* parent)
   port_M_in = new Port("In", PORT_IN, 0, this); 
   port_M_trig = new Port("Trigger", PORT_IN, 1, this); 
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 35);
   port_gate = new Port("Gate", PORT_OUT, 1, this);          
-  port_gate->move(width() - port_gate->width(), 55);
   triggerLevel = 0.5;
   configDialog->addSlider("Trigger Level", triggerLevel, 0, 10);
   sample = 0;

@@ -33,8 +33,8 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
   port_M_sustain = new Port("Sustain", PORT_IN, 4, this); 
   port_M_release = new Port("Release", PORT_IN, 5, this); 
   port_M_ratio = new Port("Ratio", PORT_IN, 6, this); 
+  cv.out_off = 175;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_out->move(width() - port_out->width(), 175);
   a0 = 0;
   d0 = 0;
   s0 = 0;

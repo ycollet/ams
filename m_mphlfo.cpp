@@ -31,8 +31,6 @@ M_mphlfo::M_mphlfo(QWidget* parent)
       qs.sprintf("Tri Out %4d", (l1-8) * 45);
     }  
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
-    port_out[l1]->move(MODULE_MPHLFO_WIDTH - port_out[l1]->width(), 
-                       35 + 20 * l1);
   }
   freq = 0.1;
   gain_saw = 1.0;
