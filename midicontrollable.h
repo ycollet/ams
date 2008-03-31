@@ -90,6 +90,7 @@ signals:
   void triggered();
 };
 
+static const int CONTROL14_MAX = (1 << 14) - 1;
 
 template <typename t> class MidiControllable: public MidiControllableBase {
 protected:
@@ -121,12 +122,12 @@ public:
   virtual int getMin() { return toInt(min); }
   virtual int getMax() { return toInt(max); }
 
-  virtual bool setMidiValueRT(int val0to127) {
-    float tick = (float)(max - min) / 127;
+  virtual bool setMidiValueRT(int control14) {
+    float tick = (float)(max - min) / CONTROL14_MAX;
     if (!midiSign)
-      val0to127 = 127 - val0to127;
+      control14 = CONTROL14_MAX - control14;
     t old = value;
-    value = min + (int)(0.5 + tick * val0to127);
+    value = min + (int)(0.5 + tick * control14);
 
     return old != value;
   }

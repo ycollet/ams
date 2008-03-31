@@ -47,18 +47,18 @@ void MidiControllableDoOnce::updateMGCs(MidiGUIcomponent */*sender*/)
   trigger();
 }
 
-bool MidiControllableDoOnce::setMidiValueRT(int val0to127)
+bool MidiControllableDoOnce::setMidiValueRT(int control14)
 {
   if (!midiSign)
-    val0to127 = 127 - val0to127;
+    control14 = CONTROL14_MAX - control14;
 
-  if (val0to127 > std::max(95, lastVal)) {
-    lastVal = 127;
+  if (control14 > std::max((CONTROL14_MAX * 3) / 4, lastVal)) {
+    lastVal = CONTROL14_MAX;
     return true;
   }
 
-  if (val0to127 < std::min(32, lastVal))
-    lastVal = val0to127;
+  if (control14 < std::min(CONTROL14_MAX / 4, lastVal))
+    lastVal = control14;
 
   return false;
 }
@@ -183,12 +183,12 @@ void MidiControllableFloat::updateFloatMGCs()
   }
 }
 
-bool MidiControllableFloat::setMidiValueRT(int val0to127)
+bool MidiControllableFloat::setMidiValueRT(int control14)
 {
   if (!midiSign)
-    val0to127 = 127 - val0to127;
+    control14 = CONTROL14_MAX - control14;
 
-  int scaledVal = scaledMin + ((scaledMax - scaledMin) * val0to127) / 127;
+  int scaledVal = scaledMin + ((long long)(scaledMax - scaledMin) * control14) / CONTROL14_MAX;
   setValRT(scaledVal);
 
   return true;

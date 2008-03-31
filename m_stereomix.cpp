@@ -40,8 +40,8 @@ public:
   MCableMute(M_stereomix &module, const QString &name, float &value)
     : MidiControllable<float>(module, name, value, 0, 1) {}
 
-  bool setMidiValueRT(int val0to127) {
-    if (!MidiControllable<float>::setMidiValueRT(val0to127))
+  bool setMidiValueRT(int control14) {
+    if (!MidiControllable<float>::setMidiValueRT(control14))
       return false;
 
     maybeUnSolo();
@@ -66,8 +66,8 @@ public:
   MCableSolo(M_stereomix &module, const QString &name, float &value)
     : MidiControllable<float>(module, name, value, 0, 1) {}
 
-  bool setMidiValueRT(int val0to127) {
-    if (!MidiControllable<float>::setMidiValueRT(val0to127))
+  bool setMidiValueRT(int control14) {
+    if (!MidiControllable<float>::setMidiValueRT(control14))
       return false;
 
     m().soloed(value);

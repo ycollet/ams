@@ -642,26 +642,26 @@ void SynthData::readMIDI(void)
     typeof(activeMidiControllers->constBegin()) mc =
       qBinaryFind(activeMidiControllers->constBegin(), activeMidiControllers->constEnd(), mcK);
     if (mc != activeMidiControllers->constEnd()) {
-      int value;
+      int control14;
       switch (ev->type) {
       case SND_SEQ_EVENT_PITCHBEND:
-	value = (ev->data.control.value + 8192) >> 7;
+	control14 = ev->data.control.value + 8192;
 	break;
       case SND_SEQ_EVENT_CONTROL14:
-	value = ev->data.control.value >> 7;
+	control14 = ev->data.control.value;
 	break;
       case SND_SEQ_EVENT_CONTROLLER:
-	value = ev->data.control.value;
+	control14 = (ev->data.control.value << 7) + ev->data.control.value;
 	break;
       case SND_SEQ_EVENT_NOTEON:
-	value = ev->data.note.velocity;
+	control14 = (ev->data.note.velocity << 7) + ev->data.note.velocity;
 	break;
       default:
       case SND_SEQ_EVENT_NOTEOFF:
-	value = 0;
+	control14 = 0;
 	break;
       }
-      mc->context->setMidiValueRT(value);
+      mc->context->setMidiValueRT(control14);
       pipeMessage |= 1;
       //      StdOut << "did " << ev->data.control.value << endl;
     } else {
