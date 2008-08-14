@@ -19,7 +19,8 @@
 #include "m_ladspa.h"
 #include "port.h"
 
-QPixmap *M_ladspa::logo;
+#include "../pixmaps/ladspa_logo.xpm"
+
 
 M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
         bool poly, bool extCtrlPorts) 
@@ -41,6 +42,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
               MODULE_LADSPA_HEIGHT);
+  logo = QPixmap(ladspa_logo_xpm);
   ladspaTab = 0;
   hasExtCtrlPorts = extCtrlPorts;
 //  fprintf(stderr, "new LADSPA module, Poly: %d\n", (int)isPoly);
@@ -288,17 +290,18 @@ M_ladspa::~M_ladspa()
 void M_ladspa::paintEvent(QPaintEvent *)
 {
   QPainter p(this);
-  QRect r = logo->rect();
+  QRect r = logo.rect();
 
   r.moveCenter(rect().center());
-  p.drawPixmap(r, *logo);
+  p.drawPixmap(r, logo);
 
   paint(p);
 }
 
 void M_ladspa::generateCycle()
 {
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
   float ctrlVal;
 
   for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();

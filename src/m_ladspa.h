@@ -35,7 +35,9 @@ public:
   int ladspaDesFuncIndex;
   bool isPoly, hasExtCtrlPorts;
   QString pluginName;
-  static QPixmap *logo;
+
+private:
+  QPixmap logo;
     
 public:
   M_ladspa(QWidget* parent, int ladspaDesFuncIndex,
