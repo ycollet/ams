@@ -73,7 +73,8 @@ M_pcmout::~M_pcmout()
 
 void M_pcmout::generateCycle()
 {
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
   float max = 0.0, **indata;
   char pipeMessage = 0;
 

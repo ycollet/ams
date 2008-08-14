@@ -106,7 +106,8 @@ M_ad::M_ad(int outCount, QWidget* parent)
 
 void M_ad::generateCycle() {
 
-  int l1, l2, l3, l4, l5;
+  int l1, l3, l4, l5;
+  unsigned int l2;
   float dta, dra, rdt, rdr;
   double qdt, qdr;
   

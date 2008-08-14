@@ -51,7 +51,8 @@ M_delay::~M_delay() {
 
 void M_delay::generateCycle() {
 
-  int l1, l2, ofs, delay_frames;
+  int l1, ofs, delay_frames;
+  unsigned int l2;
 
     inData = port_M_in->getinputdata();
 

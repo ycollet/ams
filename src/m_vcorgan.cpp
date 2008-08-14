@@ -89,7 +89,8 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
 
 void M_vcorgan::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
   float dphi, phi1; 
   float freq_const[MODULE_VCORGAN_MAX_OSC], freq_tune[MODULE_VCORGAN_MAX_OSC];
   float gain_linfm, wave_period_2, current_gain;

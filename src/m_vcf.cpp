@@ -70,7 +70,8 @@ void M_vcf::initBuf(int) {
 
 void M_vcf::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
    double t1, t2, fa, fb, q0, f, q, p, iv_sin, iv_cos, iv_alpha, a0, a1, a2, b0, b1, b2;
 
     inData = port_M_in->getinputdata();

@@ -103,7 +103,8 @@ float M_scope::getGain() {
 
 void M_scope::generateCycle()
 {
-  int l1, l2, l3, ofs;
+  int l1, l3, ofs;
+  unsigned int l2;
   float mixgain, wavgain;
   float *scopedata, **indata;
 
@@ -125,9 +126,9 @@ void M_scope::generateCycle()
 
   scopedata = configDialog->scopeScreenList.at(0)->scopedata;
   ofs = configDialog->scopeScreenList.at(0)->writeofs;
-  for (l1 = 0; l1 < synthdata->cyclesize; ++l1) {   
-    scopedata[2 * ofs] = wavgain * floatdata[2 * l1];
-    scopedata[2 * ofs + 1] = wavgain * floatdata[2 * l1 + 1];
+  for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {   
+    scopedata[2 * ofs] = wavgain * floatdata[2 * l2];
+    scopedata[2 * ofs + 1] = wavgain * floatdata[2 * l2 + 1];
     ofs++;
     if (ofs >= SCOPE_BUFSIZE >> 1) {
       ofs -= SCOPE_BUFSIZE >> 1;

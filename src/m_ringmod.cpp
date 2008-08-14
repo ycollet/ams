@@ -46,7 +46,8 @@ float M_ringmod::getGain() {
 
 void M_ringmod::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
 
     vcoData1 = port_M_vco1->getinputdata ();
     vcoData2 = port_M_vco2->getinputdata ();

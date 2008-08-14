@@ -102,7 +102,8 @@ void M_scquantizer::calcScale() {
 
 void M_scquantizer::generateCycle() {
 
-  int l1, l2, l3, quant, transpose;
+  int l1, l3, quant, transpose;
+  unsigned int l2;
   float lutquant = 0.0;
 
     if (base != lastbase) {

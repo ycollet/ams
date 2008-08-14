@@ -62,7 +62,8 @@ M_vcenv2::M_vcenv2(QWidget* parent)
 
 void M_vcenv2::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   double ts, tsr, tsn, tmp, c, n;
 
     gateData = port_M_gate->getinputdata ();

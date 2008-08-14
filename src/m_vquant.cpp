@@ -34,7 +34,8 @@ M_vquant::M_vquant(QWidget* parent)
 
 void M_vquant::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
 
     inData = port_M_in->getinputdata();
 

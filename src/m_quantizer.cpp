@@ -169,7 +169,8 @@ M_quantizer::M_quantizer(QWidget* parent)
 
 void M_quantizer::generateCycle() {
 
-  int l1, l2, quant, lutquant, transpose;
+  int l1, quant, lutquant, transpose;
+  unsigned int l2;
 
     inData = port_M_in->getinputdata ();
     triggerData = port_M_trigger->getinputdata ();

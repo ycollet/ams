@@ -45,7 +45,8 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
 
 void M_vca::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   float  v, g;
 
     float **gainData1, **gainData2, **inData1, **inData2;       

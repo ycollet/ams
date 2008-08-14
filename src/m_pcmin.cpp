@@ -51,7 +51,8 @@ M_pcmin::~M_pcmin()
 
 void M_pcmin::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
   float mixgain;
 
     for (l1 = 0; l1 < 2; l1++) {

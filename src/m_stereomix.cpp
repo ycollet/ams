@@ -148,7 +148,8 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
 
 void M_stereomix::generateCycle()
 {
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   float mixgain[2];
 
   for (unsigned l3 = 0; l3 < in_channels; l3++)

@@ -50,10 +50,11 @@ M_noise::M_noise(QWidget* parent)
 
 void M_noise::generateCycle() {
 
-  unsigned int l1, l2, random_rate;
+  int l1;
+  unsigned int l2, random_rate;
   double white_noise;
 
-    random_rate = (int)(5000.0 * (double)rate + 100.0);
+    random_rate = (unsigned int)(5000.0 * (double)rate + 100.0);
     for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
       count++; 
       if (count > random_rate) {

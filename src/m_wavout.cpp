@@ -95,7 +95,8 @@ float M_wavout::getGain() {
 
 void M_wavout::generateCycle()
 {
-  int l1, l2, l3;
+  int l3;
+  unsigned int l1, l2;
   float max, mixgain, wavgain, **indata;
   short s;
 

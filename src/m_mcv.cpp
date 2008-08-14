@@ -51,7 +51,8 @@ M_mcv::M_mcv(QWidget* parent)
 
 void M_mcv::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   float gate, velocity;
 
     for (l1 = 0; l1 < synthdata->poly; l1++) {

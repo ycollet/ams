@@ -38,7 +38,8 @@ M_vcswitch::M_vcswitch(QWidget* parent)
 
 void M_vcswitch::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   float mix1, mix2;
 
     float **inData[2], **cvData;       

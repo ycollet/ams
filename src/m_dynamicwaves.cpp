@@ -150,7 +150,8 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
 
 void M_dynamicwaves::generateCycle() {
 
-  int l1, l2, l3, l4, status;
+  int l1, l3, l4, status;
+  unsigned int l2;
   float dphi, phi1; 
   float freq_const[MODULE_DYNAMICWAVES_MAX_OSC], freq_tune[MODULE_DYNAMICWAVES_MAX_OSC];
   float gain_linfm, wave_period_2, current_gain;

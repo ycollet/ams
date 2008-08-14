@@ -40,7 +40,8 @@ M_slew::M_slew(QWidget* parent)
 
 void M_slew::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
   float ds, slewUp, slewDown;
 
     inData = port_M_in->getinputdata ();

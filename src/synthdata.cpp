@@ -399,7 +399,8 @@ void *SynthData::alsa_static_thr_main (void *arg)
 
 void *SynthData::alsa_thr_main (void)
 {
-    int		i, k;
+    int		i;
+    unsigned int k;
     M_pcmin     *C;
     M_pcmout    *P;
 
@@ -606,7 +607,7 @@ void SynthData::readMIDI(void)
     MidiControllerKey mcK(ev); 
 // Voice assignment
     if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
-	(midiChannel < 0 || midiChannel == ev->data.control.channel))
+	(midiChannel < 0 || midiChannel == ev->data.control.channel)) {
       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
 
 // Note On: Search for oldest voice to allocate new note.          
@@ -631,14 +632,16 @@ void SynthData::readMIDI(void)
 
 // Note Off      
         for (l2 = 0; l2 < poly; ++l2)
-          if (notes[l2] == ev->data.note.note &&
-	      channel[l2] == ev->data.note.channel &&
-	      noteCounter[l2] < 1000000)
-            if (sustainFlag)
-              sustainNote[l2] = true;
-            else
-              noteCounter[l2] = 1000000; 
+            if (notes[l2] == ev->data.note.note &&
+                    channel[l2] == ev->data.note.channel &&
+                    noteCounter[l2] < 1000000) {
+                if (sustainFlag)
+                    sustainNote[l2] = true;
+                else
+                    noteCounter[l2] = 1000000;
+            }
       }
+    }
 
     typeof(activeMidiControllers->constBegin()) mc =
       qBinaryFind(activeMidiControllers->constBegin(), activeMidiControllers->constEnd(), mcK);

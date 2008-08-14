@@ -37,7 +37,8 @@ M_sh::M_sh(QWidget* parent)
 
 void M_sh::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
 
     inData = port_M_in->getinputdata ();
     trigData = port_M_trig->getinputdata ();

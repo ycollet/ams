@@ -253,6 +253,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   midiChannelBox->addWidget(channelText);
   channelText->setText(tr("MIDI C&hannel:"));
   QComboBox *comboBox = new QComboBox();
+  channelText->setBuddy(comboBox);
   midiChannelBox->addWidget(comboBox);
   midiChannelBox->addStretch();
   midiChannelBox->addStretch();

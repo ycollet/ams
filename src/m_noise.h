@@ -11,7 +11,7 @@ class M_noise : public Module
 {
     Q_OBJECT
 
-    int count;
+    unsigned int count;
     float rate, level;
     float buf[3], r;
     Port *port_white, *port_pink, *port_random;

@@ -83,7 +83,8 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
 
 void M_seq::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
 
     triggerData = port_trigger->getinputdata ();
 

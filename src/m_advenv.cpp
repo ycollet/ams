@@ -101,7 +101,8 @@ M_advenv::M_advenv(QWidget* parent)
 
 void M_advenv::generateCycle() {
 
-  int l1, l2, status;
+  int l1, status;
+  unsigned int l2;
   float tscale, de_a[4], de_d[3];
   float t[8];
 

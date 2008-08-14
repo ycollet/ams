@@ -43,7 +43,8 @@ M_cvs::M_cvs(QWidget* parent)
 
 void M_cvs::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
 
     for (l3 = 0; l3 < MODULE_CVS_CV_COUNT; l3++) {
       for (l1 = 0; l1 < synthdata->poly; l1++) {

@@ -83,7 +83,8 @@ void M_midiout::generateCycle()
   if (!synthdata->seq_handle)
     return;
 
-  int l1, l2, l3, mididata, velocitydata;
+  int l1, l3, mididata, velocitydata;
+  unsigned int l2;
   snd_seq_event_t ev;
 
   triggerData = port_M_trigger->getinputdata();

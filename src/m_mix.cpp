@@ -44,7 +44,8 @@ M_mix::M_mix(int p_in_channels, QWidget* parent)
 
 void M_mix::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l3;
+  unsigned int l2;
   float mixgain;
 
     for (l3 = 0; l3 < in_port_list.count(); l3++) inData [l3] = in_port_list.at(l3)->getinputdata();

@@ -109,7 +109,8 @@ void M_scmcv::calcScale() {
 
 void M_scmcv::generateCycle() {
 
-  int l1, l2, index;
+  int l1, index;
+  unsigned int l2;
   float df, gate, velocity;
 
     if (base != lastbase) {

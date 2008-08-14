@@ -65,9 +65,9 @@ class SynthData
     int midiControllerMode;
    
     int poly;
-    int rate;
-    int cyclesize;
-    int periodsize;
+    unsigned int rate;
+    unsigned int cyclesize;
+    snd_pcm_uframes_t periodsize;
     int periods;
     int moduleCount;
     int moduleID;

@@ -62,7 +62,8 @@ M_env::M_env(QWidget* parent)
 
 void M_env::generateCycle()
 {
-  int l1, l2, status;
+  int l1, status;
+  unsigned int l2;
   float tscale, de_attack, de_decay, de_release;
   float a, dl, dc, h;
   int idl, idla, idlah, idlahdc;

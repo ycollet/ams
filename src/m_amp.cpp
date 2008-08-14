@@ -34,7 +34,8 @@ M_amp::M_amp(QWidget* parent)
 
 void M_amp::generateCycle() {
 
-  int l1, l2;
+  int l1;
+  unsigned int l2;
 
     inData = port_M_in->getinputdata();
 

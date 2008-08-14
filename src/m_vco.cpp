@@ -74,7 +74,8 @@ M_vco::M_vco(QWidget* parent)
 
 void M_vco::generateCycle() {
 
-  int l1, l2,phint;
+  int l1, phint;
+  unsigned int l2;
   float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
   float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
 
