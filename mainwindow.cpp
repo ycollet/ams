@@ -6,6 +6,8 @@
 #include "mainwindow.h"
 #include "synthdata.h"
 
+#include "pixmaps/ams_32.xpm"
+
 /*some constants*/
 #define APPNAME  "AlsaModularSynth"
 #define PATCHEXT ".ams"
@@ -24,7 +26,7 @@ int MainWindow::pipeFd[2];
 
 MainWindow::MainWindow(const ModularSynthOptions& mso)
 {
-  //TODO: setWindowIcon(QPixmap(ams_icon));
+  setWindowIcon(QPixmap(ams_32_xpm));
 
   /*init synthesizer*/
   modularSynth = new ModularSynth(this, mso);
