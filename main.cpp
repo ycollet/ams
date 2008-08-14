@@ -6,7 +6,10 @@
 
 #include <QApplication>
 #include <QString>
+#include <QLibraryInfo>
+#include <QLocale>
 #include <QObject>
+#include <QTranslator>
 
 #include "mainwindow.h"
 #include "m_ladspa.h"
@@ -105,6 +108,17 @@ int main(int argc, char *argv[])
 		     "2007 Karsten Wiese\n";
   QApplication app(argc, argv);
 
+  // translator for Qt library strings
+  QTranslator qtTr;
+  QLocale loc = QLocale::system();
+
+  if (qtTr.load(QString("qt_") + loc.name(),
+              QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+      app.installTranslator(&qtTr);
+  else
+      qWarning("No Qt translation for locale '%s' found.",
+              loc.name().toUtf8().constData());
+  
   int getopt_return;
   int option_index;
   ModularSynthOptions msoptions;
