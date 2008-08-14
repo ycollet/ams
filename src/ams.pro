@@ -130,6 +130,7 @@ HEADERS += box.h \
            midiwidget.h \
            modularsynth.h \
            module.h \
+           msoptions.h \
            multi_envelope.h \
            port.h \
            port_popup.h \
@@ -138,6 +139,7 @@ HEADERS += box.h \
            scopescreen.h \
            synthdata.h \
            textedit.h
+
 SOURCES += box.cpp \
            canvas.cpp \
            canvasfunction.cpp \
@@ -212,4 +214,5 @@ SOURCES += box.cpp \
            synthdata.cpp \
            textedit.cpp
 
-TRANSLATIONS = ams_de.ts
+TRANSLATIONS = \
+	translations/ams_de.ts
