@@ -14,6 +14,8 @@ enum dynamicWaveFormType { DYNAMICWAVE_SINE, DYNAMICWAVE_SAW, DYNAMICWAVE_TRI, D
 
 class M_dynamicwaves : public Module
 {
+    Q_OBJECT
+
     float attack[8][MODULE_DYNAMICWAVES_MAX_OSC], sustain[MODULE_DYNAMICWAVES_MAX_OSC];
     float release[5][MODULE_DYNAMICWAVES_MAX_OSC];
     float timeScale;

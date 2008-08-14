@@ -20,7 +20,7 @@
 #include "port.h"
 
 M_inv::M_inv(QWidget* parent) 
-  : Module(M_type_inv, 1, parent, "Inverter")
+  : Module(M_type_inv, 1, parent, tr("Inverter"))
 {
   QString qs;
 

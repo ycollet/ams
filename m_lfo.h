@@ -9,6 +9,8 @@
 
 class M_lfo : public Module
 {
+    Q_OBJECT
+
     float freq, phi0;
     double si[MAXPOLY], old_si[MAXPOLY];
     double sa[MAXPOLY], old_sa[MAXPOLY];

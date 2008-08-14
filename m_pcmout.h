@@ -10,6 +10,8 @@
 
 class M_pcmout : public Module
 {
+    Q_OBJECT
+
     float gain, polyroot;
     float mixer_gain[2];
     float ag, ag_displayed;

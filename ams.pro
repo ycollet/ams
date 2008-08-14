@@ -211,3 +211,5 @@ SOURCES += box.cpp \
            scopescreen.cpp \
            synthdata.cpp \
            textedit.cpp
+
+TRANSLATIONS = ams_de.ts

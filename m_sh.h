@@ -9,6 +9,8 @@
 
 class M_sh : public Module
 {
+    Q_OBJECT
+
     float triggerLevel, sample;
     bool gate;
     Module *in_M_in, *in_M_trig; 

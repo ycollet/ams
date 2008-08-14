@@ -9,6 +9,8 @@
 
 class M_mcv : public Module
 {
+    Q_OBJECT
+
     float pitchbend;
     Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
 

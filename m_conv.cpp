@@ -22,7 +22,7 @@
 #include "port.h"
 
 M_conv::M_conv(QWidget* parent) 
-  : Module(M_type_conv, 1, parent, "Converter")
+  : Module(M_type_conv, 1, parent, tr("Converter"))
 {
   QString qs;
 
@@ -34,11 +34,11 @@ M_conv::M_conv(QWidget* parent)
   port_out = new Port("Out", PORT_OUT, 0, this);          
 
   QStringList convModeNames;
-  convModeNames << "V/Octave --> Hz";
-  convModeNames << "V/Octave --> 0..1, 1=rate/2";
-  convModeNames << "V/Octave --> 0..1, 1=20000 Hz";
-  configDialog->addComboBox("Conversion Mode ", convMode, convModeNames);
-  configDialog->addIntSlider("Octave Offset", octave, -3, 3);
+  convModeNames << tr("V/Octave --> Hz");
+  convModeNames << tr("V/Octave --> 0..1, 1=rate/2");
+  convModeNames << tr("V/Octave --> 0..1, 1=20000 Hz");
+  configDialog->addComboBox(tr("Conversion Mode "), convMode, convModeNames);
+  configDialog->addIntSlider(tr("Octave Offset"), octave, -3, 3);
 }
 
 void M_conv::generateCycle() {

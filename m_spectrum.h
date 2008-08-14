@@ -29,6 +29,8 @@
 
 class M_spectrum : public Module
 {
+  Q_OBJECT
+
   Port *port_in[2];
 
 public:

@@ -20,20 +20,20 @@
 #include "port.h"
 
 M_vcenv::M_vcenv(QWidget* parent)
-  : Module(M_type_vcenv, 1, parent, "VC Envelope")
+  : Module(M_type_vcenv, 1, parent, tr("VC Envelope"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV_WIDTH, MODULE_VCENV_HEIGHT);
-  port_M_gate = new Port("Gate", PORT_IN, 0, this); 
-  port_M_retrigger = new Port("Retrigger", PORT_IN, 1, this); 
-  port_M_attack = new Port("Attack", PORT_IN, 2, this); 
-  port_M_decay = new Port("Decay", PORT_IN, 3, this); 
-  port_M_sustain = new Port("Sustain", PORT_IN, 4, this); 
-  port_M_release = new Port("Release", PORT_IN, 5, this); 
+  port_M_gate = new Port(tr("Gate"), PORT_IN, 0, this); 
+  port_M_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this); 
+  port_M_attack = new Port(tr("Attack"), PORT_IN, 2, this); 
+  port_M_decay = new Port(tr("Decay"), PORT_IN, 3, this); 
+  port_M_sustain = new Port(tr("Sustain"), PORT_IN, 4, this); 
+  port_M_release = new Port(tr("Release"), PORT_IN, 5, this); 
   cv.out_off = 155;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   a0 = 0.01;
   d0 = 0.3;
   s0 = 0.7;
@@ -52,23 +52,24 @@ M_vcenv::M_vcenv(QWidget* parent)
     e[l1] = 0;
     old_e[l1] = 0;
   }
-  configDialog->addSlider("Attack Offset", a0, 0, 1);
-  configDialog->addSlider("Decay Offset", d0, 0, 1);
-  configDialog->addSlider("Sustain Offset", s0, 0, 1);
-  configDialog->addSlider("Release Offset", r0, 0, 1);
-  configDialog->addSlider("Attack Gain", aGain, -1, 1);
-  configDialog->addSlider("Decay Gain", dGain, -1, 1);
-  configDialog->addSlider("Sustain Gain", sGain, -1, 1);
-  configDialog->addSlider("Release Gain", rGain, -1, 1);
+  configDialog->addSlider(tr("Attack Offset"), a0, 0, 1);
+  configDialog->addSlider(tr("Decay Offset"), d0, 0, 1);
+  configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);
+  configDialog->addSlider(tr("Release Offset"), r0, 0, 1);
+  configDialog->addSlider(tr("Attack Gain"), aGain, -1, 1);
+  configDialog->addSlider(tr("Decay Gain"), dGain, -1, 1);
+  configDialog->addSlider(tr("Sustain Gain"), sGain, -1, 1);
+  configDialog->addSlider(tr("Release Gain"), rGain, -1, 1);
   QStringList timeScaleNames;
   timeScaleNames << " 0.1 s";
   timeScaleNames << " 1.0 s";
   timeScaleNames << "10.0 s";
-  configDialog->addComboBox("Time Scale", timeScale, timeScaleNames);
+  configDialog->addComboBox(tr("Time Scale"), timeScale, timeScaleNames);
   QStringList decayReleaseModeNames;
-  decayReleaseModeNames << "Linear";
-  decayReleaseModeNames << "Exponential";
-  configDialog->addComboBox("Decay/Release Mode", decayReleaseMode, decayReleaseModeNames);
+  decayReleaseModeNames << tr("Linear");
+  decayReleaseModeNames << tr("Exponential");
+  configDialog->addComboBox(tr("Decay/Release Mode"), decayReleaseMode,
+          decayReleaseModeNames);
 }
 
 void M_vcenv::generateCycle() {

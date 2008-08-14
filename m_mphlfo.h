@@ -9,6 +9,8 @@
 
 class M_mphlfo : public Module
 {
+    Q_OBJECT
+
     Port *port_out[16];
     float freq, gain_saw, gain_tri;
     double tri, saw, d_tri, d_saw;

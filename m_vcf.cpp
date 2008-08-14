@@ -13,7 +13,7 @@
 #include "m_vcf.h"
 
 M_vcf::M_vcf(QWidget* parent) 
-  : Module(M_type_vcf, 1, parent, "VCF")
+  : Module(M_type_vcf, 1, parent, tr("VCF"))
 {
   QString qs;
 
@@ -29,31 +29,31 @@ b_noise = 19.1919191919191919191919191919191919191919;
   pi2_rate = 2.0f * M_PI / synthdata->rate; // how often changes the rate? I guess once on init, or?
   inv2_rate = 2.0 / (double)synthdata->rate;// this double seems unnecessary
   
-  port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_freq = new Port("Freq", PORT_IN, 1, this); 
-  port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
-  port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
-  port_M_resonance = new Port("Resonance", PORT_IN, 4, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_freq = new Port(tr("Freq"), PORT_IN, 1, this); 
+  port_M_exp = new Port(tr("Exp. FM"), PORT_IN, 2, this);
+  port_M_lin = new Port(tr("Lin. FM"), PORT_IN, 3, this);
+  port_M_resonance = new Port(tr("Resonance"), PORT_IN, 4, this); 
   cv.out_off = 130;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
   QStringList vcfTypeNames;
-  vcfTypeNames << "Resonant Lowpass";
-  vcfTypeNames << "Lowpass";
-  vcfTypeNames << "Highpass";
-  vcfTypeNames << "Bandpass I";
-  vcfTypeNames << "Bandpass II";
-  vcfTypeNames << "Notch";
-  vcfTypeNames << "24 dB Lowpass I";
-  vcfTypeNames << "24 dB Lowpass II";
-  configDialog->addComboBox("VCF Type", vcfType, vcfTypeNames);
+  vcfTypeNames << tr("Resonant Lowpass");
+  vcfTypeNames << tr("Lowpass");
+  vcfTypeNames << tr("Highpass");
+  vcfTypeNames << tr("Bandpass I");
+  vcfTypeNames << tr("Bandpass II");
+  vcfTypeNames << tr("Notch");
+  vcfTypeNames << tr("24 dB Lowpass I");
+  vcfTypeNames << tr("24 dB Lowpass II");
+  configDialog->addComboBox(tr("VCF Type"), vcfType, vcfTypeNames);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)), this, SLOT(initBuf(int)));
-  configDialog->addSlider("Input Gain", gain, 0, 10);
-  configDialog->addSlider("Frequency", freq, 0, 10);
-  configDialog->addSlider("Exp. FM Gain", vcfExpFMGain, 0, 10);
-  configDialog->addSlider("Lin. FM Gain", vcfLinFMGain, 0, 10);
-  configDialog->addSlider("Resonance", resonance, 0.01, 1);
-  configDialog->addSlider("Resonance Gain", resonanceGain, 0, 1);
+  configDialog->addSlider(tr("Input Gain"), gain, 0, 10);
+  configDialog->addSlider(tr("Frequency"), freq, 0, 10);
+  configDialog->addSlider(tr("Exp. FM Gain"), vcfExpFMGain, 0, 10);
+  configDialog->addSlider(tr("Lin. FM Gain"), vcfLinFMGain, 0, 10);
+  configDialog->addSlider(tr("Resonance"), resonance, 0.01, 1);
+  configDialog->addSlider(tr("Resonance Gain"), resonanceGain, 0, 1);
 }
 
 void M_vcf::initBuf(int) {

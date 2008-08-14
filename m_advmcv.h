@@ -10,6 +10,8 @@
 
 class M_advmcv : public Module
 {
+    Q_OBJECT
+
     float pitchbend;
     Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
     Port *port_aftertouch_out, *port_pitchbend_out, *port_controller_out[MODULE_ADVMCV_CONTROLLER_PORTS];

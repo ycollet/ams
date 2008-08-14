@@ -21,16 +21,16 @@
 #include "port.h"
 
 M_mcv::M_mcv(QWidget* parent) 
-  : Module(M_type_mcv, 4, parent, "MCV")
+  : Module(M_type_mcv, 4, parent, tr("MCV"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MCV_WIDTH, MODULE_MCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
+  port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);          
 
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
@@ -45,8 +45,8 @@ M_mcv::M_mcv(QWidget* parent)
     freq[l1] = 0;
   }
   configDialog->addComboBox(" ", channel, channelNames)->hide();
-  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
-  configDialog->addSlider("Pitch", pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
 }
 
 void M_mcv::generateCycle() {

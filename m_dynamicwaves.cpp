@@ -18,7 +18,8 @@
 
 
 M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent) 
-  : Module(M_type_dynamicwaves, 1, parent, QString("DynamicWaves ") + QString::number(p_oscCount))
+  : Module(M_type_dynamicwaves, 1, parent,
+          tr("DynamicWaves %1").arg(p_oscCount))
 {
   QString qs;
   int l1, l2;

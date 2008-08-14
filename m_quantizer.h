@@ -12,6 +12,8 @@ enum quantumType { QUANT_12, QUANT_6, QUANT_MAJOR, QUANT_MINOR, QUANT_CHORD_MAJO
 
 class M_quantizer : public Module
 {
+    Q_OBJECT
+
     Port *port_M_in, *port_M_trigger, *port_M_transpose, *port_out, *port_trigger_out;
     int qsig[MAXPOLY], trigCount[MAXPOLY];
     bool trigger[MAXPOLY];

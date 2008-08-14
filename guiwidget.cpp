@@ -42,16 +42,16 @@ GuiWidget::GuiWidget(QWidget* parent, const char *name)
   currentGroupBox = NULL;
   currentTabIndex = 0;
 
-  QPushButton *addPresetButton = new QPushButton("Add Preset");
+  QPushButton *addPresetButton = new QPushButton(tr("&Add Preset"));
   presetContainerLayout->addWidget(addPresetButton);
   QObject::connect(addPresetButton, SIGNAL(clicked()), this, SLOT(addPreset()));  
   QPushButton *overwritePresetButton =
-    new QPushButton("OverwritePreset");
+    new QPushButton(tr("&Overwrite Preset"));
   presetContainerLayout->addWidget(overwritePresetButton);
   QObject::connect(overwritePresetButton, SIGNAL(clicked()),
 		   this, SLOT(overwritePreset()));  
   presetCountLabel = new QLabel();
-  presetCountLabel->setText("Presets for this configuration: 0");
+  presetCountLabel->setText(tr("Presets for this configuration: 0"));
   presetContainerLayout->addWidget(presetCountLabel);
   QPushButton *decButton = new QPushButton("-1");
   presetContainerLayout->addWidget(decButton);
@@ -141,7 +141,7 @@ int GuiWidget::setPresetCount(int count) {
   QString qs;
 
   presetCount = count;
-  qs.sprintf("Presets for this configuration: %d", presetCount);
+  qs = tr("Presets for this configuration: %1").arg(presetCount);
   presetCountLabel->setText(qs);
   return 0;
 }

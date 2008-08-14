@@ -9,6 +9,8 @@
 
 class M_pcmin : public Module
 {
+    Q_OBJECT
+
     float gain;
     float mixer_gain[2]; 
     Port *port_out[2];

@@ -8,6 +8,8 @@
 
 class M_vcswitch : public Module
 {
+    Q_OBJECT
+
     float switchLevel;
     Port *port_M_in[2], *port_M_cv, *port_out[2], *port_mix;
     

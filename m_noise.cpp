@@ -21,7 +21,7 @@
 #include "port.h"
 
 M_noise::M_noise(QWidget* parent) 
-  : Module(M_type_noise, 3, parent, "Noise")
+  : Module(M_type_noise, 3, parent, tr("Noise"))
 {
   QString qs;
   int l2;
@@ -34,12 +34,12 @@ M_noise::M_noise(QWidget* parent)
   randmax = 2.0 / (double)RAND_MAX;
   
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE_WIDTH, MODULE_NOISE_HEIGHT);
-  port_white = new Port("White", PORT_OUT, 0, this);          
-  port_pink = new Port("Pink", PORT_OUT, 1, this);          
-  port_random = new Port("Random", PORT_OUT, 2, this);          
+  port_white = new Port(tr("White"), PORT_OUT, 0, this);          
+  port_pink = new Port(tr("Pink"), PORT_OUT, 1, this);          
+  port_random = new Port(tr("Random"), PORT_OUT, 2, this);          
 
-  configDialog->addSlider("Random Rate", rate, 0, 10);
-  configDialog->addSlider("Random Level", level, 0, 1);
+  configDialog->addSlider(tr("Random Rate"), rate, 0, 10);
+  configDialog->addSlider(tr("Random Level"), level, 0, 1);
   r = 0;
   for (l2 = 0; l2 < 3; ++l2) {
     buf[l2] = 0;

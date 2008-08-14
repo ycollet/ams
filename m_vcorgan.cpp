@@ -6,7 +6,7 @@
 #include "port.h"
 
 M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent) 
-  : Module(M_type_vcorgan, 1, parent, "VC Organ")
+  : Module(M_type_vcorgan, 1, parent, tr("VC Organ"))
 {
   QString qs;
   int l1, l2;
@@ -33,56 +33,56 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
       phi[l1][l2] = 0;
     }
   }
-  port_M_freq = new Port("Freq", PORT_IN, 0, this);
-  port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);
-  port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
+  port_M_freq = new Port(tr("Freq"), PORT_IN, 0, this);
+  port_M_exp = new Port(tr("Exp. FM"), PORT_IN, 1, this);
+  port_M_lin = new Port(tr("Lin. FM"), PORT_IN, 2, this);
   cv.out_off = 95;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
   configDialog->initTabWidget();
   QStringList waveFormNames;
   waveFormNames <<
-    "Sine" <<
-    "Saw" <<
-    "Tri" <<
-    "Rect" <<
-    "Saw 2";
-  QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune / Modulation");
-  configDialog->addIntSlider("Octave", octave, 0, 6, generalTab);
-  configDialog->addSlider("Tune", tune, 0, 1, false, generalTab);
-  configDialog->addSlider("Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
-  configDialog->addSlider("Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
+    tr("Sine") <<
+    tr("Saw") <<
+    tr("Tri") <<
+    tr("Rect") <<
+    tr("Saw 2");
+  QVBoxLayout *generalTab = configDialog->addVBoxTab(tr("Tune / Modulation"));
+  configDialog->addIntSlider(tr("Octave"), octave, 0, 6, generalTab);
+  configDialog->addSlider(tr("Tune"), tune, 0, 1, false, generalTab);
+  configDialog->addSlider(tr("Exp. FM Gain"), expFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider(tr("Lin. FM Gain"), linFMGain, 0, 10, false, generalTab);
 
   if (oscCount < 8) {
-    QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer");
+    QVBoxLayout *mixTab = configDialog->addVBoxTab(tr("Mixer"));
     for (l1 = 0; l1 < oscCount; l1++) {
-      qs.sprintf("Volume %d", l1);
+      qs = tr("Volume %1").arg(l1);
       configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
     }
   } else {
-    QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer 0-3");
-    QVBoxLayout *mixTab2 = configDialog->addVBoxTab("Mixer 4-7");
+    QVBoxLayout *mixTab = configDialog->addVBoxTab(tr("Mixer 0-3"));
+    QVBoxLayout *mixTab2 = configDialog->addVBoxTab(tr("Mixer 4-7"));
     for (l1 = 0; l1 < 4; l1++) {
-      qs.sprintf("Volume %d", l1);
+      qs = tr("Volume %1").arg(l1);
       configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
-      qs.sprintf("Volume %d", l1 + 4);
+      qs = tr("Volume %1").arg(l1 + 4);
       configDialog->addSlider(qs, gain[l1+4], 0, 1, false, mixTab2);
     }
   }
   for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Osc %d", l1);
+    qs = tr("Osc %1").arg(l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
-    qs.sprintf("Wave Form %d", l1);
+    qs =tr("Wave Form %1").arg(l1);
     configDialog->addComboBox(qs, waveForm[l1], waveFormNames, oscTab[l1]);
-    qs.sprintf("Octave %d", l1);
+    qs = tr("Octave %1").arg(l1);
     configDialog->addIntSlider(qs, osc_octave[l1], 0, 3, oscTab[l1]);
-    qs.sprintf("Tune %d", l1);
+    qs = tr("Tune %1").arg(l1);
     configDialog->addSlider(qs, osc_tune[l1], 0, 1, false, oscTab[l1]);
-    qs.sprintf("Harmonic %d", l1);
+    qs = tr("Harmonic %1").arg(l1);
     configDialog->addIntSlider(qs, harmonic[l1], 1, 16, oscTab[l1]);
-    qs.sprintf("Subharmonic %d", l1);
+    qs = tr("Subharmonic %1").arg(l1);
     configDialog->addIntSlider(qs, subharmonic[l1], 1, 16, oscTab[l1]);
-    qs.sprintf("Phi0 %d", l1);
+    qs = tr("Phi0 %1").arg(l1);
     configDialog->addSlider(qs, phi0[l1], 0, 6.283, false, oscTab[l1]);
   }
 }

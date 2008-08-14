@@ -10,6 +10,8 @@
 
 class M_env : public Module
 {
+    Q_OBJECT
+
     float delay, attack, hold, decay, sustain, release;
     float e_noteOff[MAXPOLY], de[MAXPOLY];
     Port *port_gate, *port_retrigger, *port_inverse_out, *port_gain_out;

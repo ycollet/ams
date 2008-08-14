@@ -26,16 +26,16 @@
 #include "port.h"
 
 M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname) 
-  : Module(M_type_scmcv, 4, parent, "Scala MCV")
+  : Module(M_type_scmcv, 4, parent, tr("Scala MCV"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCMCV_WIDTH, MODULE_SCMCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
+  port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);
 
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
@@ -60,19 +60,19 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
   configDialog->addComboBox(" ", channel, channelNames);
-  configDialog->addIntSlider("Scale Offset", base, -60, 60);
-  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
-  configDialog->addSlider("Pitch", pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("Scale Offset"), base, -60, 60);
+  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
   sclname = "No_Scale_loaded";
-  configDialog->addLabel("   Scale: " + sclname);
+  configDialog->addLabel(tr("   Scale: ") + sclname);
   configDialog->addLabel("   ");
-  MidiControllableDoOnce * doO = configDialog->addPushButton("Load Scale");
+  MidiControllableDoOnce * doO = configDialog->addPushButton(tr("Load Scale"));
   QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser())); 
   fileDialog = NULL;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {
-    fprintf(stderr, "\nYou did not set the environment variable SCALA_PATH.\n");
-    fprintf(stderr, "Assuming SCALA_PATH=/usr/share/scala\n");
+    qWarning("\nYou did not set the environment variable SCALA_PATH.");
+    qWarning("Assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";   
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;
@@ -151,7 +151,8 @@ void M_scmcv::generateCycle() {
 void M_scmcv::openBrowser() {
 
   if (!fileDialog) {
-    fileDialog = new QFileDialog(NULL, tr("Load Scala"), dirpath, "Scala files (*.scl)");
+    fileDialog = new QFileDialog(NULL, tr("Load Scala"), dirpath,
+            tr("Scala files (*.scl)"));
     QObject::connect(fileDialog, SIGNAL(currentChanged(const QString &)), this, SLOT(loadScale(const QString &)));
   }
   fileDialog->show();
@@ -165,11 +166,12 @@ void M_scmcv::loadScale(const QString &p_sclname) {
   sclname = p_sclname;  
   QFile qfile(sclname);
   if (!qfile.open(QIODevice::ReadOnly)) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not load Scala file "+sclname);
+    QMessageBox::information( this, "AlsaModularSynth",
+            tr("Could not load Scala file '%1'").arg(sclname));
     sclname = "No_Scale_loaded";
     return;
   }
-  configDialog->labelList.at(0)->setText("   Scale: " + sclname);
+  configDialog->labelList.at(0)->setText(tr("   Scale: ") + sclname);
   QTextStream stream(&qfile);
   while (!stream.atEnd()) {
     qs = stream.readLine(); 

@@ -20,17 +20,17 @@
 #include "port.h"
 
 M_delay::M_delay(QWidget* parent) 
-  : Module(M_type_delay, 1, parent, "Delay")
+  : Module(M_type_delay, 1, parent, tr("Delay"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DELAY_WIDTH, MODULE_DELAY_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider("Delay", delay, 0, 10);
+  configDialog->addSlider(tr("Delay"), delay, 0, 10);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     buf[l1] = (float *)malloc(MAX_DELAY_FRAMES * sizeof(float));

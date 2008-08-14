@@ -19,12 +19,13 @@
 
 
 M_advenv::M_advenv(QWidget* parent) 
-  : Module(M_type_advenv, 2, parent, "Advanced ENV")
+  : Module(M_type_advenv, 2, parent, tr("Advanced ENV"))
 {
   QString qs;
   int l1;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVENV_WIDTH, MODULE_ADVENV_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVENV_WIDTH,
+          MODULE_ADVENV_HEIGHT);
   attack[0] = 0;
   attack[1] = 0.05;
   attack[2] = 0.5;
@@ -40,48 +41,50 @@ M_advenv::M_advenv(QWidget* parent)
   release[3] = 0.2;
   release[4] = 0.05;
   timeScale = 1.0;
-  port_gate = new Port("Gate", PORT_IN, 0, this);
-  port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
+  port_gate = new Port(tr("Gate"), PORT_IN, 0, this);
+  port_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this);
   cv.out_off = 75;
   port_gain_out = new Port("Out", PORT_OUT, 0, this);
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
+  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);          
 
-  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(1, &timeScale, attack, &sustain, release);
+  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(1,
+          &timeScale, attack, &sustain, release);
   configDialog->initTabWidget();
-  QVBoxLayout *sustainTab = configDialog->addVBoxTab("Time Scale / Sustain / Delay");
-  QVBoxLayout *attackTimeTab = configDialog->addVBoxTab("Attack Time");
-  QVBoxLayout *attackLevelTab = configDialog->addVBoxTab("Attack Level");
-  QVBoxLayout *releaseTimeTab = configDialog->addVBoxTab("Release Time");
-  QVBoxLayout *releaseLevelTab = configDialog->addVBoxTab("Release Level");
-  qs.sprintf("Time Scale");
+  QVBoxLayout *sustainTab = configDialog->addVBoxTab(
+          tr("Time Scale / Sustain / Delay"));
+  QVBoxLayout *attackTimeTab = configDialog->addVBoxTab(tr("Attack Time"));
+  QVBoxLayout *attackLevelTab = configDialog->addVBoxTab(tr("Attack Level"));
+  QVBoxLayout *releaseTimeTab = configDialog->addVBoxTab(tr("Release Time"));
+  QVBoxLayout *releaseLevelTab = configDialog->addVBoxTab(tr("Release Level"));
+  qs = tr("Time Scale");
   configDialog->addSlider(qs, timeScale, 0.1, 10, false, sustainTab);
-  qs.sprintf("Sustain");
+  qs = tr("Sustain");
   configDialog->addSlider(qs, sustain, 0, 1, false, sustainTab);
-  qs.sprintf("Delay");
+  qs = tr("Delay");
   configDialog->addSlider(qs, attack[0], 0, 1, false, sustainTab);
-  qs.sprintf("Attack Time 0");
+  qs = tr("Attack Time 0");
   configDialog->addSlider(qs, attack[1], 0, 1, false, attackTimeTab);
-  qs.sprintf("Attack Level 0");
+  qs = tr("Attack Level 0");
   configDialog->addSlider(qs, attack[2], 0, 1, false, attackLevelTab);
-  qs.sprintf("Attack Time 1");
+  qs = tr("Attack Time 1");
   configDialog->addSlider(qs, attack[3], 0, 1, false, attackTimeTab);
-  qs.sprintf("Attack Level 1");
+  qs = tr("Attack Level 1");
   configDialog->addSlider(qs, attack[4], 0, 1, false, attackLevelTab);
-  qs.sprintf("Attack Time 2");
+  qs = tr("Attack Time 2");
   configDialog->addSlider(qs, attack[5], 0, 1, false, attackTimeTab);
-  qs.sprintf("Attack Level 2");
+  qs = tr("Attack Level 2");
   configDialog->addSlider(qs, attack[6], 0, 1, false, attackLevelTab);
-  qs.sprintf("Attack Time 3");
+  qs = tr("Attack Time 3");
   configDialog->addSlider(qs, attack[7], 0, 1, false, attackTimeTab);
-  qs.sprintf("Release Time 0");
+  qs = tr("Release Time 0");
   configDialog->addSlider(qs, release[0], 0, 1, false, releaseTimeTab);
-  qs.sprintf("Release Level 0");
+  qs = tr("Release Level 0");
   configDialog->addSlider(qs, release[1], 0, 1, false, releaseLevelTab);
-  qs.sprintf("Release Time 1");
+  qs = tr("Release Time 1");
   configDialog->addSlider(qs, release[2], 0, 1, false, releaseTimeTab);
-  qs.sprintf("Release Level 1");
+  qs = tr("Release Level 1");
   configDialog->addSlider(qs, release[3], 0, 1, false, releaseLevelTab);
-  qs.sprintf("Release Time 2");
+  qs = tr("Release Time 2");
   configDialog->addSlider(qs, release[4], 0, 1, false, releaseTimeTab);
   multiEnv->listenTo(this);
 

@@ -20,16 +20,16 @@
 #include "port.h"
 
 M_vquant::M_vquant(QWidget* parent) 
-  : Module(M_type_vquant, 1, parent, "Quantizer 2")
+  : Module(M_type_vquant, 1, parent, tr("Quantizer 2"))
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VQUANT_WIDTH, MODULE_VQUANT_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
-  port_quant = new Port("Out", PORT_OUT, 0, this);          
+  port_quant = new Port(tr("Out"), PORT_OUT, 0, this);          
   gain = 1.0;
-  configDialog->addSlider("Gain", gain, 0, 10);
+  configDialog->addSlider(tr("Gain"), gain, 0, 10);
 }
 
 void M_vquant::generateCycle() {

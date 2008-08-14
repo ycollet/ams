@@ -20,7 +20,7 @@ MultiEnvelope::MultiEnvelope(int p_envCount, float *timeScaleRef, float *attackR
   , sustainRef(sustainRef)
   , releaseRef(releaseRef)
 {
-  setObjectName("Multi Envelope");
+  setObjectName(tr("Multi Envelope"));
   envCount = p_envCount;
   
   setAutoFillBackground(true);
@@ -88,7 +88,7 @@ void MultiEnvelope::paintEvent(QPaintEvent *)
       pen.setWidth(2);
       p.setPen(pen);
       p.drawPolyline(points);
-      qs.sprintf("Env. %d", l1);
+      qs = tr("Env. %1").arg(l1);
       p.drawText(40 * l1 + 5, 15, qs);   
     }
   } else {

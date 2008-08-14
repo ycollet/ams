@@ -22,7 +22,7 @@
 
 
 M_pcmin::M_pcmin(QWidget* parent, int port) 
-  : Module(M_type_pcmin, 2, parent, "PCM In")
+  : Module(M_type_pcmin, 2, parent, tr("PCM In"))
  {
   QString qs;
 
@@ -34,9 +34,9 @@ M_pcmin::M_pcmin(QWidget* parent, int port)
   port_out[0] = new Port(qs, PORT_OUT, 0, this);          
   qs.sprintf ("In %2d -> ", port + 1);
   port_out[1] = new Port(qs, PORT_OUT, 1, this);          
-  configDialog->addSlider("Gain", gain, 0, 1, false);
-  configDialog->addSlider("Volume 1", mixer_gain[0], 0, 1, false);
-  configDialog->addSlider("Volume 2", mixer_gain[1], 0, 1, false);
+  configDialog->addSlider(tr("Gain"), gain, 0, 1, false);
+  configDialog->addSlider(tr("Volume 1"), mixer_gain[0], 0, 1, false);
+  configDialog->addSlider(tr("Volume 2"), mixer_gain[1], 0, 1, false);
   if (synthdata->withAlsa) {
     pcmdata[0] = new float[2 * synthdata->periodsize];
     pcmdata[1] = pcmdata[0] + synthdata->periodsize;

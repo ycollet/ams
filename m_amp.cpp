@@ -20,16 +20,16 @@
 #include "port.h"
 
 M_amp::M_amp(QWidget* parent) 
-  : Module(M_type_amp, 1, parent, "Amplifier")
+  : Module(M_type_amp, 1, parent, tr("Amplifier"))
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_AMP_WIDTH, MODULE_AMP_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   gain = 1;
-  configDialog->addSlider("Gain", gain, -10, 10);
+  configDialog->addSlider(tr("Gain"), gain, -10, 10);
 }
 
 void M_amp::generateCycle() {

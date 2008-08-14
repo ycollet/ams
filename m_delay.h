@@ -10,6 +10,8 @@
 
 class M_delay : public Module
 {
+    Q_OBJECT 
+
     float delay;
     int read_ofs;
     Port *port_M_in, *port_out;

@@ -20,33 +20,33 @@
 #include "port.h"
 
 M_quantizer::M_quantizer(QWidget* parent) 
-  : Module(M_type_quantizer, 2, parent, "Quantizer")
+  : Module(M_type_quantizer, 2, parent, tr("Quantizer"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_QUANTIZER_WIDTH, MODULE_QUANTIZER_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
-  port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this); 
+  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this); 
   cv.out_off = 95;
   port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
+  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);          
   quantum = QUANT_12;
   QStringList quantumNames ;
   quantumNames <<
-    "1/12" <<
-    "1/6" <<
-    "Major Scale" <<
-    "Minor Scale" <<
-    "Major Chord" <<
-    "Minor Chord" <<
-    "Major 7 Chord" <<
-    "Minor 7 Chord" <<
-    "Major 6 Chord" <<
-    "Minor 6 Chord" <<
-    "Pentatonic";
-  configDialog->addComboBox("Quantization", quantum, quantumNames);
+    tr("1/12") <<
+    tr("1/6") <<
+    tr("Major Scale") <<
+    tr("Minor Scale") <<
+    tr("Major Chord") <<
+    tr("Minor Chord") <<
+    tr("Major 7 Chord") <<
+    tr("Minor 7 Chord") <<
+    tr("Major 6 Chord") <<
+    tr("Minor 6 Chord") <<
+    tr("Pentatonic");
+  configDialog->addComboBox(tr("Quantization"), quantum, quantumNames);
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;

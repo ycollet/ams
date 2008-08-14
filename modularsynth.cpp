@@ -98,15 +98,15 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   synthdata = new SynthData(mso.synthName, mso.poly, mso.edge);
 
   midiWidget = new MidiWidget(NULL);
-  midiWidget->setWindowTitle("AlsaModularSynth Control Center");
+  midiWidget->setWindowTitle(tr("AlsaModularSynth Control Center"));
   synthdata->midiWidget = midiWidget;
   
   guiWidget = new GuiWidget(NULL);
-  guiWidget->setWindowTitle("AlsaModularSynth Parameter View");
+  guiWidget->setWindowTitle(tr("AlsaModularSynth Parameter View"));
   synthdata->guiWidget = guiWidget;
   
   prefWidget = new PrefWidget();
-  prefWidget->setWindowTitle("AlsaModularSynth Preferences");
+  prefWidget->setWindowTitle(tr("AlsaModularSynth Preferences"));
   QObject::connect(prefWidget, SIGNAL(prefChanged()),
                    this, SLOT(refreshColors()));
 
@@ -247,7 +247,7 @@ int ModularSynth::go(bool withJack)
   if ((synthdata->seq_handle = open_seq()))
     initSeqNotifier();
   else
-    fprintf(stderr, " MIDI wont work!\n");
+    qWarning(QObject::tr(" MIDI wont work!").toUtf8());
 
   midiWidget->setActiveMidiControllers();
 
@@ -332,7 +332,7 @@ snd_seq_t *ModularSynth::open_seq() {
   QString qs;
 
   if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK) < 0) {
-    fprintf(stderr, "Error opening ALSA sequencer.");
+    qWarning(QObject::tr("Error opening ALSA sequencer.").toUtf8());
     return NULL;
   }
 
@@ -340,7 +340,7 @@ snd_seq_t *ModularSynth::open_seq() {
   if (snd_seq_create_simple_port(seq_handle, "in",
 				 SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
 				 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
-    fprintf(stderr, "Error creating sequencer write port.");
+    qWarning(QObject::tr("Error creating sequencer write port.").toUtf8());
     snd_seq_close(seq_handle);
     return NULL;
   }
@@ -348,7 +348,7 @@ snd_seq_t *ModularSynth::open_seq() {
     if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "out",
             SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ,
             SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
-      fprintf(stderr, "Error creating sequencer read port.");
+      qWarning(QObject::tr("Error creating sequencer read port.").toUtf8());
       snd_seq_close(seq_handle);
       return NULL;
     }
@@ -604,418 +604,472 @@ void ModularSynth::stopSynth()
 //################################################ start add new modules
 void ModularSynth::newM_seq(int seqLen) {
 
-  M_seq *m = new M_seq(seqLen, this);
-  initNewModule(m);
+    M_seq *m = new M_seq(seqLen, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_seq_8() {
 
-  newM_seq(8);
+    newM_seq(8);
 }
 
 void ModularSynth::newM_seq_12() {
 
-  newM_seq(12);
+    newM_seq(12);
 }
 
 void ModularSynth::newM_seq_16() {
 
-  newM_seq(16);
+    newM_seq(16);
 }
 
 void ModularSynth::newM_seq_24() {
 
-  newM_seq(24);
+    newM_seq(24);
 }
 
 void ModularSynth::newM_seq_32() {
 
-  newM_seq(32);
+    newM_seq(32);
 }
 
 void ModularSynth::newM_vcorgan(int oscCount) {
- 
-  M_vcorgan *m = new M_vcorgan(oscCount, this);
-  initNewModule(m);
+
+    M_vcorgan *m = new M_vcorgan(oscCount, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcorgan_4() {
 
-  newM_vcorgan(4);
+    newM_vcorgan(4);
 }
 
 void ModularSynth::newM_vcorgan_6() {
 
-  newM_vcorgan(6);
+    newM_vcorgan(6);
 }
 
 void ModularSynth::newM_vcorgan_8() {
 
-  newM_vcorgan(8);
+    newM_vcorgan(8);
 }
 
 void ModularSynth::newM_dynamicwaves(int oscCount) {
- 
-  M_dynamicwaves *m = new M_dynamicwaves(oscCount, this);
-  initNewModule(m);
+
+    M_dynamicwaves *m = new M_dynamicwaves(oscCount, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_dynamicwaves_4() {
 
-  newM_dynamicwaves(4);
+    newM_dynamicwaves(4);
 }
 
 void ModularSynth::newM_dynamicwaves_6() {
 
-  newM_dynamicwaves(6);
+    newM_dynamicwaves(6);
 }
 
 void ModularSynth::newM_dynamicwaves_8() {
 
-  newM_dynamicwaves(8);
+    newM_dynamicwaves(8);
 }
 
 void ModularSynth::newM_mcv() {
 
-  M_mcv *m = new M_mcv(this);
-  initNewModule(m);
+    M_mcv *m = new M_mcv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_advmcv() {
 
-  M_advmcv *m = new M_advmcv(this);
-  synthdata->listM_advmcv.append(m);
-  initNewModule(m);
+    M_advmcv *m = new M_advmcv(this);
+    if (m != NULL) {
+        synthdata->listM_advmcv.append(m);
+        initNewModule(m);
+    }
 }
 
 void ModularSynth::newM_scmcv() {
 
-  M_scmcv *m = new M_scmcv(this);
-  initNewModule(m);
+    M_scmcv *m = new M_scmcv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_scmcv(QString *p_scalaName) {
 
-  M_scmcv *m = new M_scmcv(this, p_scalaName);
-  initNewModule(m);
+    M_scmcv *m = new M_scmcv(this, p_scalaName);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_env() {
 
-  M_env *m = new M_env(this);
-  initNewModule(m);
+    M_env *m = new M_env(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv() {
 
-  M_vcenv *m = new M_vcenv(this);
-  initNewModule(m);
+    M_vcenv *m = new M_vcenv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcenv2() {
 
-  M_vcenv2 *m = new M_vcenv2(this);
-  initNewModule(m);
+    M_vcenv2 *m = new M_vcenv2(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcdoubledecay() {
 
-  M_vcdoubledecay *m = new M_vcdoubledecay(this);
-  initNewModule(m);
+    M_vcdoubledecay *m = new M_vcdoubledecay(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcpanning() {
 
-  M_vcpanning *m = new M_vcpanning(this);
-  initNewModule(m);
+    M_vcpanning *m = new M_vcpanning(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_advenv() {
 
-  M_advenv *m = new M_advenv(this);
-  initNewModule(m);
+    M_advenv *m = new M_advenv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vco() {
 
-  M_vco *m = new M_vco(this);
-  initNewModule(m);
+    M_vco *m = new M_vco(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 void ModularSynth::newM_vco2() {
 
-  M_vco2 *m = new M_vco2(this);
-  initNewModule(m);
+    M_vco2 *m = new M_vco2(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vca_lin() {
 
-  M_vca *m = new M_vca(false, this);
-  initNewModule(m);
+    M_vca *m = new M_vca(false, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vca_exp() {
 
-  M_vca *m = new M_vca(true, this);
-  initNewModule(m);
+    M_vca *m = new M_vca(true, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_lfo() {
 
-  M_lfo *m = new M_lfo(this);
-  initNewModule(m);
+    M_lfo *m = new M_lfo(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_mphlfo() {
 
-  M_mphlfo *m = new M_mphlfo(this);
-  initNewModule(m);
+    M_mphlfo *m = new M_mphlfo(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_noise() {
 
-  M_noise *m = new M_noise(this);
-  initNewModule(m);
+    M_noise *m = new M_noise(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 void ModularSynth::newM_noise2() {
 
-  M_noise2 *m = new M_noise2(this);
-  initNewModule(m);
+    M_noise2 *m = new M_noise2(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 void ModularSynth::newM_ringmod() {
 
-  M_ringmod *m = new M_ringmod(this);
-  initNewModule(m);
+    M_ringmod *m = new M_ringmod(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_inv() {
 
-  M_inv *m = new M_inv(this);
-  initNewModule(m);
+    M_inv *m = new M_inv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_amp() {
 
-  M_amp *m = new M_amp(this);
-  initNewModule(m);
+    M_amp *m = new M_amp(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_ad(int outCount) {
 
-  M_ad *m = new M_ad(outCount, this);
-  initNewModule(m);
+    M_ad *m = new M_ad(outCount, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_ad_2() { 
 
-  newM_ad(2);
+    newM_ad(2);
 }
 
 void ModularSynth::newM_ad_4() { 
 
-  newM_ad(4);
+    newM_ad(4);
 }
 
 void ModularSynth::newM_ad_6() { 
 
-  newM_ad(6);
+    newM_ad(6);
 }
 
 void ModularSynth::newM_vquant() {
 
-  M_vquant *m = new M_vquant(this);
-  initNewModule(m);
+    M_vquant *m = new M_vquant(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_conv() {
 
-  M_conv *m = new M_conv(this);
-  initNewModule(m);
+    M_conv *m = new M_conv(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_cvs() {
 
-  M_cvs *m = new M_cvs(this);
-  initNewModule(m);
+    M_cvs *m = new M_cvs(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_sh() {
 
-  M_sh *m = new M_sh(this);
-  initNewModule(m);
+    M_sh *m = new M_sh(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcswitch() {
 
-  M_vcswitch *m = new M_vcswitch(this);
-  initNewModule(m);
+    M_vcswitch *m = new M_vcswitch(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_slew() {
 
-  M_slew *m = new M_slew(this);
-  initNewModule(m);
+    M_slew *m = new M_slew(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_quantizer() {
 
-  M_quantizer *m = new M_quantizer(this);
-  initNewModule(m);
+    M_quantizer *m = new M_quantizer(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_scquantizer(QString *p_scalaName) {
 
-  M_scquantizer *m = new M_scquantizer(this, p_scalaName);
-  initNewModule(m);
+    M_scquantizer *m = new M_scquantizer(this, p_scalaName);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_scquantizer() {
 
-  M_scquantizer *m = new M_scquantizer(this);
-  initNewModule(m);
+    M_scquantizer *m = new M_scquantizer(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_delay() {
 
-  M_delay *m = new M_delay(this);
-  initNewModule(m);
+    M_delay *m = new M_delay(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_mix(int in_channels) {
 
-  M_mix *m = new M_mix(in_channels, this);
-  initNewModule(m);
+    M_mix *m = new M_mix(in_channels, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_function(int functionCount) {
 
-  M_function *m = new M_function(functionCount, this);
-  initNewModule(m);
+    M_function *m = new M_function(functionCount, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_function_1() {
 
-  newM_function(1);
+    newM_function(1);
 }
 
 void ModularSynth::newM_function_2() {
 
-  newM_function(2);
+    newM_function(2);
 }
 
 void ModularSynth::newM_function_4() {
 
-  newM_function(4);
+    newM_function(4);
 }
 
 void ModularSynth::newM_stereomix(int in_channels) {
 
-  M_stereomix *m = new M_stereomix(in_channels, this);
-  initNewModule(m);
+    M_stereomix *m = new M_stereomix(in_channels, this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_mix_2() {
 
-  newM_mix(2);
+    newM_mix(2);
 }
 
 void ModularSynth::newM_mix_4() {
 
-  newM_mix(4);
+    newM_mix(4);
 }
 
 void ModularSynth::newM_mix_8() {
 
-  newM_mix(8);
+    newM_mix(8);
 }
 
 void ModularSynth::newM_stereomix_2() {
 
-  newM_stereomix(2);
+    newM_stereomix(2);
 }
 
 void ModularSynth::newM_stereomix_4() {
 
-  newM_stereomix(4);
+    newM_stereomix(4);
 }
 
 void ModularSynth::newM_stereomix_8() {
 
-  newM_stereomix(8);
+    newM_stereomix(8);
 }
 
 void ModularSynth::newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspaPoly, bool p_extCtrlPorts) {
 
-  QString qs;
+    QString qs;
 
-  qs.sprintf("%s", synthdata->ladspaLib.at(p_ladspaDesFuncIndex).desc.at(n)->Name);
-  M_ladspa *m = new M_ladspa(this, p_ladspaDesFuncIndex, n, p_newLadspaPoly, p_extCtrlPorts);
-  initNewModule(m);
+    qs = synthdata->ladspaLib.at(p_ladspaDesFuncIndex).desc.at(n)->Name;
+    M_ladspa *m = new M_ladspa(this, p_ladspaDesFuncIndex, n,
+            p_newLadspaPoly, p_extCtrlPorts);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_wavout() {
 
-  M_wavout *m = new M_wavout(this);
-  synthdata->wavoutModuleList.append(m);
-  initNewModule(m);
+    M_wavout *m = new M_wavout(this);
+    if (m != NULL) {
+        synthdata->wavoutModuleList.append(m);
+        initNewModule(m);
+    }
 }
 
 void ModularSynth::newM_midiout() {
 
-  M_midiout *m = new M_midiout(this);
-  synthdata->midioutModuleList.append(m);
-  initNewModule(m);
+    M_midiout *m = new M_midiout(this);
+    if (m != NULL) {
+        synthdata->midioutModuleList.append(m);
+        initNewModule(m);
+    }
 }
 
 void ModularSynth::newM_pcmout()
 {
     int k;
-    M_pcmout *M; 
+    M_pcmout *m; 
 
     k = synthdata->find_play_mod (0);
     if (k >= 0) 
     {
-        M = new M_pcmout (this, 2 * k);
-        initNewModule (M);
-        synthdata->set_play_mod (k, M);
+        m = new M_pcmout (this, 2 * k);
+        if (m != NULL) {
+            initNewModule(m);
+            synthdata->set_play_mod (k, m);
+        }
     } 
-    else fprintf (stderr, "All available output ports are in use\n");
+    else qWarning(QObject::tr("All available output ports are in use").toUtf8());
 }
 
 void ModularSynth::newM_pcmin()
 {
     int k;
-    M_pcmin *M; 
+    M_pcmin *m; 
 
     k = synthdata->find_capt_mod (0);
     if (k >= 0) 
     {
-        M = new M_pcmin(this, 2 * k);
-        initNewModule (M);
-        synthdata->set_capt_mod (k, M);
+        m = new M_pcmin(this, 2 * k);
+        if (m != NULL) {
+            initNewModule(m);
+            synthdata->set_capt_mod (k, m);
+        }
     } 
-    else fprintf (stderr, "All available input ports are in use\n");
+    else qWarning(QObject::tr("All available input ports are in use").toUtf8());
 }
 
 void ModularSynth::newM_scope() {
 
-  M_scope *m = new M_scope(this);
-  synthdata->scopeModuleList.append(m);
-  initNewModule(m);
+    M_scope *m = new M_scope(this);
+    if (m != NULL) {
+        synthdata->scopeModuleList.append(m);
+        initNewModule(m);
+    }
 }
 
 void ModularSynth::newM_spectrum() {
 
-  M_spectrum *m = new M_spectrum(this);
+    M_spectrum *m = new M_spectrum(this);
+    if (m != NULL) {
 #ifdef OUTDATED_CODE
-  synthdata->spectrumModuleList.append(m);
+        synthdata->spectrumModuleList.append(m);
 #endif
-  initNewModule(m);
+        initNewModule(m);
+    }
 }
 
 void ModularSynth::newM_vcf() {
- 
-  M_vcf *m = new M_vcf(this);
-  initNewModule(m);
+
+    M_vcf *m = new M_vcf(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 //========================================== End of adding module functions
 
@@ -1060,7 +1114,7 @@ void ModularSynth::portSelected() {
         connectingPort[1]->connectTo(connectingPort[0]);
         redrawPortConnections();
     } else {
-      qWarning("Connection refused.");
+      qWarning(QObject::tr("Connection refused.").toUtf8());
       connectingPort[0] = NULL;
       connectingPort[1] = NULL;
     }
@@ -1169,12 +1223,14 @@ void ModularSynth::loadColors() {
   char sc[2048];
 
   config_fn = QFileDialog::getOpenFileName(this, tr("Load Colors"),
-					   synthdata->loadPath, tr("AlsaModularSynth Color files (*.acs)"));
+					   synthdata->loadPath,
+                                           tr("AlsaModularSynth Color files (*.acs)"));
   if (config_fn.isEmpty())
     return;
 
   if (!(f = fopen(config_fn.toLatin1().constData(), "r"))) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
+    QMessageBox::information( this, "AlsaModularSynth",
+            tr("Could not open file."));
   } else {
     while(Fscanf(f, "%s", sc) != EOF) {
       qs = QString(sc);
@@ -1208,12 +1264,14 @@ void ModularSynth::saveColors() {
   QString config_fn, qs;
   
   config_fn = QFileDialog::getSaveFileName(this, tr("Save Colors"),
-					   synthdata->savePath, tr("AlsaModularSynth Color files (*.acs)"));
+					   synthdata->savePath,
+                                           tr("AlsaModularSynth Color files (*.acs)"));
   if (config_fn.isEmpty())
     return;
 
   if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) { 
-    QMessageBox::information( this, "AlsaModularSynth", "Could not save file.");
+    QMessageBox::information( this, "AlsaModularSynth",
+            tr("Could not save file."));
   } else {
     fprintf(f, "ColorBackground %d %d %d\n", synthdata->colorBackground.red(), synthdata->colorBackground.green(), synthdata->colorBackground.blue());
     fprintf(f, "ColorModuleBackground %d %d %d\n", synthdata->colorModuleBackground.red(), synthdata->colorModuleBackground.green(), synthdata->colorModuleBackground.blue());
@@ -1230,7 +1288,8 @@ void ModularSynth::load(QTextStream& ts)
   int l1 = 0;
   int moduleID = 0;
   int index = 0;
-  int M_type, value, x, y, w, h, subID1, subID2;
+  M_typeEnum M_type;
+  int value, x, y, w, h, subID1, subID2;
   int index1, index2, moduleID1, moduleID2, midiSign;
   int index_read1, index_read2, moduleID_read1, moduleID_read2;
   int type, ch, param, isLogInt, sliderMin, sliderMax;
@@ -1263,186 +1322,195 @@ void ModularSynth::load(QTextStream& ts)
 
     else if (qs.startsWith("Module", Qt::CaseInsensitive) && !commentFlag) {
         tokens = qs.split(' ');
-      M_type = tokens[1].toInt();
+      M_type = (M_typeEnum)tokens[1].toInt();
       moduleID = tokens[2].toInt();
       newBoxPos.setX(tokens[3].toInt());
       newBoxPos.setY(tokens[4].toInt());
 
-      switch ((M_typeEnum)M_type) {
-      case M_type_ladspa: 
-        newLadspaPolyFlag = tokens[5].toInt();
-        ladspaLibName = tokens[6];
-        pluginName = qs.section(' ', 7);
-	StdErr << "Loading LADSPA plugin \"" << pluginName <<
-	  "\" from library \"" << ladspaLibName << "\"." << endl;
-	if (!synthdata->getLadspaIDs(ladspaLibName, pluginName, &subID1, &subID2)) {
-	  QMessageBox::information(this, "AlsaModularSynth",
-				   "Could not find LADSPA plugin \"" +
-				   pluginName + "\" from library \"" +
-				   ladspaLibName + "\".");
-	  ladspaLoadErr = true;
-	}
-	break;
-      case M_type_scquantizer: 
-      case M_type_scmcv: 
-	scalaName = tokens[5];
-	break;
-      default: 
-        subID1 = tokens[5].toInt();
-        subID2 = tokens[6].toInt();
-	break;
+      switch (M_type) {
+          case M_type_ladspa: 
+              newLadspaPolyFlag = tokens[5].toInt();
+              ladspaLibName = tokens[6];
+              pluginName = qs.section(' ', 7);
+              StdErr << "Loading LADSPA plugin \"" << pluginName <<
+                  "\" from library \"" << ladspaLibName << "\"." << endl;
+
+              if (!synthdata->getLadspaIDs(ladspaLibName, pluginName,
+                          &subID1, &subID2)) {
+                  QMessageBox::information(this, "AlsaModularSynth",
+                          tr("Could not find LADSPA plugin "
+                              "\"%1\" from library \"%2\".")
+                          .arg(pluginName).arg(ladspaLibName));
+                  ladspaLoadErr = true;
+              }
+              break;
+          case M_type_scquantizer: 
+          case M_type_scmcv: 
+              scalaName = tokens[5];
+              break;
+          default: 
+              subID1 = tokens[5].toInt();
+              subID2 = tokens[6].toInt();
+              break;
       }
 
-      switch((M_typeEnum)M_type) {
-      case M_type_custom: 
-	break;
-      case M_type_vco: 
-	newM_vco();
-	break;
-      case M_type_vco2: 
-	newM_vco2();
-	break;
+      switch(M_type) {
+          case M_type_custom: 
+              break;
+          case M_type_vco: 
+              newM_vco();
+              break;
+          case M_type_vco2: 
+              newM_vco2();
+              break;
 
-      case M_type_vca: 
-	if (subID1) newM_vca_exp();
-	else        newM_vca_lin();
-	break;
-      case M_type_vcf: 
-	newM_vcf();
-	break;
-      case M_type_lfo: 
-	newM_lfo();
-	break;
-      case M_type_mphlfo: 
-	newM_mphlfo();
-	break;
-      case M_type_noise: 
-	newM_noise();
-	break;
-      case M_type_noise2: 
-	newM_noise2();
-	break;
+          case M_type_vca: 
+              if (subID1) 
+                  newM_vca_exp();
+              else
+                  newM_vca_lin();
+              break;
+          case M_type_vcf: 
+              newM_vcf();
+              break;
+          case M_type_lfo: 
+              newM_lfo();
+              break;
+          case M_type_mphlfo: 
+              newM_mphlfo();
+              break;
+          case M_type_noise: 
+              newM_noise();
+              break;
+          case M_type_noise2: 
+              newM_noise2();
+              break;
 
-      case M_type_delay: 
-	newM_delay();
-	break;
-      case M_type_seq: 
-	newM_seq(subID1);
-	break;
-      case M_type_env: 
-	newM_env();
-	break;
-      case M_type_vcenv: 
-	newM_vcenv();
-	break;
-      case M_type_vcenv2: 
-	newM_vcenv2();
-	break;
-      case M_type_vcdoubledecay: 
-	newM_vcdoubledecay();
-	break;
-      case M_type_vcpanning: 
-	newM_vcpanning();
-	break;
-      case M_type_advenv: 
-	newM_advenv();
-	break;
-      case M_type_mcv: 
-	newM_mcv();
-	break;
-      case M_type_advmcv: 
-	newM_advmcv();
-	break;
-      case M_type_scmcv: 
-	newM_scmcv(&scalaName);
-	break;
-      case M_type_ringmod: 
-	newM_ringmod();
-	break;
-      case M_type_inv: 
-	newM_inv();
-	break;
-      case M_type_amp: 
-	newM_amp();
-	break;
-      case M_type_vquant: 
-	newM_vquant();
-	break;
-      case M_type_conv: 
-	newM_conv();
-	break;
-      case M_type_sh: 
-	newM_sh();
-	break;
-      case M_type_vcswitch: 
-	newM_vcswitch();
-	break;
-      case M_type_cvs: 
-	newM_cvs();
-	break;
-      case M_type_slew: 
-	newM_slew();
-	break;
-      case M_type_quantizer: 
-	newM_quantizer();
-	break;
-      case M_type_scquantizer: 
-	newM_scquantizer(&scalaName);
-	break;
-      case M_type_ad: 
-	newM_ad(subID1);
-	break;
-      case M_type_mix: 
-	newM_mix(subID1);
-	break;
-      case M_type_function: 
-	newM_function(subID1);
-	break;
-      case M_type_stereomix: 
-	newM_stereomix(subID1);
-	break;
-      case M_type_vcorgan: 
-	newM_vcorgan(subID1);
-	break;
-      case M_type_dynamicwaves: 
-	newM_dynamicwaves(subID1);
-	break;
-      case M_type_ladspa: 
-	if (!ladspaLoadErr) {
-            newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2,
-                    newLadspaPolyFlag & 1);
-	} 
-	break;
-      case M_type_pcmout:
-      case M_type_jackout:
-	newM_pcmout();
-	break;
-      case M_type_pcmin:
-      case M_type_jackin:
-	newM_pcmin();
-	break;
-      case M_type_wavout:
-	newM_wavout(); 
-	break;
-      case M_type_midiout:
-	newM_midiout(); 
-	break;
-      case M_type_scope:
-	newM_scope(); 
-	break;
-      case M_type_spectrum:
-	newM_spectrum(); 
-	break;
+          case M_type_delay: 
+              newM_delay();
+              break;
+          case M_type_seq: 
+              newM_seq(subID1);
+              break;
+          case M_type_env: 
+              newM_env();
+              break;
+          case M_type_vcenv: 
+              newM_vcenv();
+              break;
+          case M_type_vcenv2: 
+              newM_vcenv2();
+              break;
+          case M_type_vcdoubledecay: 
+              newM_vcdoubledecay();
+              break;
+          case M_type_vcpanning: 
+              newM_vcpanning();
+              break;
+          case M_type_advenv: 
+              newM_advenv();
+              break;
+          case M_type_mcv: 
+              newM_mcv();
+              break;
+          case M_type_advmcv: 
+              newM_advmcv();
+              break;
+          case M_type_scmcv: 
+              newM_scmcv(&scalaName);
+              break;
+          case M_type_ringmod: 
+              newM_ringmod();
+              break;
+          case M_type_inv: 
+              newM_inv();
+              break;
+          case M_type_amp: 
+              newM_amp();
+              break;
+          case M_type_vquant: 
+              newM_vquant();
+              break;
+          case M_type_conv: 
+              newM_conv();
+              break;
+          case M_type_sh: 
+              newM_sh();
+              break;
+          case M_type_vcswitch: 
+              newM_vcswitch();
+              break;
+          case M_type_cvs: 
+              newM_cvs();
+              break;
+          case M_type_slew: 
+              newM_slew();
+              break;
+          case M_type_quantizer: 
+              newM_quantizer();
+              break;
+          case M_type_scquantizer: 
+              newM_scquantizer(&scalaName);
+              break;
+          case M_type_ad: 
+              newM_ad(subID1);
+              break;
+          case M_type_mix: 
+              newM_mix(subID1);
+              break;
+          case M_type_function: 
+              newM_function(subID1);
+              break;
+          case M_type_stereomix: 
+              newM_stereomix(subID1);
+              break;
+          case M_type_vcorgan: 
+              newM_vcorgan(subID1);
+              break;
+          case M_type_dynamicwaves: 
+              newM_dynamicwaves(subID1);
+              break;
+          case M_type_ladspa: 
+              if (!ladspaLoadErr) {
+                  newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2,
+                          newLadspaPolyFlag & 1);
+              } 
+              break;
+          case M_type_pcmout:
+          case M_type_jackout:
+              newM_pcmout();
+              break;
+          case M_type_pcmin:
+          case M_type_jackin:
+              newM_pcmin();
+              break;
+          case M_type_wavout:
+              newM_wavout(); 
+              break;
+          case M_type_midiout:
+              newM_midiout(); 
+              break;
+          case M_type_scope:
+              newM_scope(); 
+              break;
+          case M_type_spectrum:
+              newM_spectrum(); 
+              break;
       }
+      // TODO:
+      //m = listModule.last();
       m = listModule.at(listModule.count() - 1);
-      m->moduleID=moduleID;
+      // TODO:
+      // m->setModuleId(moduleID);
+      m->moduleID = moduleID;
       qs = m->configDialog->windowTitle();
       qs2 = qs.left(qs.lastIndexOf(' '));
       qs.sprintf(" %d", moduleID);
       m->configDialog->setWindowTitle(qs2+qs);
+
       midiWidget->addModule(m);
       if (synthdata->moduleID <= moduleID) {
-	synthdata->moduleID = moduleID + 1;
+          synthdata->moduleID = moduleID + 1;
       }
     }
     else if (qs.startsWith("Comment", Qt::CaseInsensitive) && !commentFlag) {
@@ -1456,6 +1524,7 @@ void ModularSynth::load(QTextStream& ts)
       new_textEdit(w, h);
     }
   }
+  // end of file reached, we start again looking for other tags
   ts.seek(0);
 
   while (!ts.atEnd() && !ladspaLoadErr) {
@@ -1682,18 +1751,20 @@ void ModularSynth::load(QTextStream& ts)
       if (qs.startsWith("FSMIDI", Qt::CaseInsensitive)) {
 	listModule.at(l1)->configDialog->midiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.startsWith("ISMIDI", Qt::CaseInsensitive)) {
+      else if (qs.startsWith("ISMIDI", Qt::CaseInsensitive)) {
 	listModule.at(l1)->configDialog->intMidiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.startsWith("LSMIDI", Qt::CaseInsensitive)) {
+      else if (qs.startsWith("LSMIDI", Qt::CaseInsensitive)) {
 	listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.startsWith("CMIDI", Qt::CaseInsensitive)) {
+      else if (qs.startsWith("CMIDI", Qt::CaseInsensitive)) {
 	listModule.at(l1)->configDialog->midiComboBoxList.at(index)->mcAble.connectToController(mck);
       }
-      if (qs.startsWith("TMIDI", Qt::CaseInsensitive)) {
+      else if (qs.startsWith("TMIDI", Qt::CaseInsensitive)) {
 	listModule.at(l1)->configDialog->midiCheckBoxList.at(index)->mcAble.connectToController(mck);
       }
+      else
+          qWarning(tr("Unknown MIDI controller tag found: %1").arg(qs).toUtf8());
     }
 
     else if (qs.startsWith("#PARA#", Qt::CaseInsensitive)) {
@@ -1782,7 +1853,8 @@ void ModularSynth::load(QTextStream& ts)
 	  break;
 	}
       }
-    }  
+    }
+
     else if (qs.startsWith("Program", Qt::CaseInsensitive)) {
 
       index = tokens[1].toInt(); 
@@ -1794,6 +1866,7 @@ void ModularSynth::load(QTextStream& ts)
       }
       guiWidget->presetList[currentProgram].append(value);
     }
+    
     else if (qs.startsWith("PresetName", Qt::CaseInsensitive)) {
         QRegExp rx("\"([^\"]+)\"");
         int pos = rx.indexIn(qs);
@@ -1808,6 +1881,9 @@ void ModularSynth::load(QTextStream& ts)
       qs2.sprintf("%3d", guiWidget->presetNameList.count());
       guiWidget->presetNameList.append(qs2+qs);
     }
+    /*For debugging only, 'Module' and 'Comment' will also apear*/
+    else
+        qWarning(tr("Unknown tag found: %1").arg(qs).toUtf8());
   } // end while loop
 
   if (guiWidget->presetCount)
@@ -1829,15 +1905,17 @@ void ModularSynth::load(QTextStream& ts)
 
 void ModularSynth::save(QTextStream& ts)
 {
-  int l1, l2, value;
-  QString qs;
-  QStringList::iterator presetit;
-
+    int l1, l2, value;
+    QString qs;
+    QStringList::iterator presetit;
     int offX = 0, offY = 0;
+
     if (childrenRect().left() > 100)
       offX = childrenRect().left() - 100;
+
     if (childrenRect().top() > 66)
       offY = childrenRect().top() - 66;
+    
     for (l1 = 0; l1 < listModule.count(); ++l1) {
       ts << "Module "
           << (int)listModule.at(l1)->M_type << ' '
@@ -1975,7 +2053,7 @@ void ModularSynth::allVoicesOff()
 void ModularSynth::cleanUpSynth()
 {
   prefWidget->savePref(rcFd);
-  qWarning("Closing synth...");
+  qWarning(QObject::tr("Closing synth...").toUtf8());
 }
 
 void ModularSynth::showContextMenu(QPoint pos) {

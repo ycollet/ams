@@ -10,6 +10,8 @@
        
 class M_mix : public Module
 {
+    Q_OBJECT
+
     QList<Port*> in_port_list;
     Port *port_out;
     float gain;

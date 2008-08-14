@@ -21,7 +21,7 @@
 #include "port.h"
 
 M_lfo::M_lfo(QWidget* parent) 
-  : Module(M_type_lfo, 6, parent, "LFO")
+  : Module(M_type_lfo, 6, parent, tr("LFO"))
 {
   QString qs;
   int l1;
@@ -46,17 +46,17 @@ M_lfo::M_lfo(QWidget* parent)
     state[l1] = 0;
     dt[l1] = 4.0 / wave_period;
   }
-  port_M_trigger = new Port("Reset", PORT_IN, 0, this);          
+  port_M_trigger = new Port(tr("Reset"), PORT_IN, 0, this);          
   cv.out_off = 55;
-  port_sine = new Port("Sine", PORT_OUT, 0, this);          
-  port_tri = new Port("Triangle", PORT_OUT, 1, this);          
-  port_sawup = new Port("Saw Up", PORT_OUT, 2, this);          
-  port_sawdown = new Port("Saw Down", PORT_OUT, 3, this);          
-  port_rect = new Port("Rectangle", PORT_OUT, 4, this);          
-  port_sh = new Port("S & H", PORT_OUT, 5, this);          
+  port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);          
+  port_tri = new Port(tr("Triangle"), PORT_OUT, 1, this);          
+  port_sawup = new Port(tr("Saw Up"), PORT_OUT, 2, this);          
+  port_sawdown = new Port(tr("Saw Down"), PORT_OUT, 3, this);          
+  port_rect = new Port(tr("Rectangle"), PORT_OUT, 4, this);          
+  port_sh = new Port(tr("S & H"), PORT_OUT, 5, this);          
 
-  configDialog->addSlider("Frequency", freq, 0, 100, true);
-  configDialog->addSlider("Phi0", phi0, 0, 6.283);
+  configDialog->addSlider(tr("Frequency"), freq, 0, 100, true);
+  configDialog->addSlider(tr("Phi0"), phi0, 0, 6.283);
   tm = time(NULL) % 1000000;
   srand(abs(tm - 10000 * (tm % 100)));
 }

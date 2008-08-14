@@ -9,6 +9,8 @@
 
 class M_vca : public Module
 {
+    Q_OBJECT
+
     float gain1, gain2, in1, in2, out;
     Port *port_M_gain1, *port_M_in1, *port_M_gain2, *port_M_in2, *port_out;
     

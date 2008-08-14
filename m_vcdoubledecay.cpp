@@ -20,21 +20,21 @@
 #include "port.h"
 
 M_vcdoubledecay::M_vcdoubledecay(QWidget* parent) 
-  : Module(M_type_vcdoubledecay, 1, parent, "VC Double Decay")
+  : Module(M_type_vcdoubledecay, 1, parent, tr("VC Double Decay"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCDOUBLEDECAY_WIDTH, MODULE_VCDOUBLEDECAY_HEIGHT);
-  port_M_gate = new Port("Gate", PORT_IN, 0, this); 
-  port_M_retrigger = new Port("Retrigger", PORT_IN, 1, this); 
-  port_M_attack = new Port("Attack", PORT_IN, 2, this);
-  port_M_decay = new Port("Decay", PORT_IN, 3, this); 
-  port_M_sustain = new Port("Sustain", PORT_IN, 4, this); 
-  port_M_release = new Port("Release", PORT_IN, 5, this); 
-  port_M_ratio = new Port("Ratio", PORT_IN, 6, this); 
+  port_M_gate = new Port(tr("Gate"), PORT_IN, 0, this); 
+  port_M_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this); 
+  port_M_attack = new Port(tr("Attack"), PORT_IN, 2, this);
+  port_M_decay = new Port(tr("Decay"), PORT_IN, 3, this); 
+  port_M_sustain = new Port(tr("Sustain"), PORT_IN, 4, this); 
+  port_M_release = new Port(tr("Release"), PORT_IN, 5, this); 
+  port_M_ratio = new Port(tr("Ratio"), PORT_IN, 6, this); 
   cv.out_off = 175;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   a0 = 0;
   d0 = 0;
   s0 = 0;
@@ -57,16 +57,16 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
     s[l1] = 0;
     old_s[l1] = 0;
   }
-  configDialog->addSlider("Attack Offset", a0, -8, 8);
-  configDialog->addSlider("Decay Offset", d0, -8, 8);
-  configDialog->addSlider("Sustain Offset", s0, 0, 1);
-  configDialog->addSlider("Ratio Offset", r0, 0, 1);
-  configDialog->addSlider("Release Offset", rl0, -8, 8);
-  configDialog->addSlider("Attack Gain", aGain, -8, 8);
-  configDialog->addSlider("Decay Gain", dGain, -8, 8);
-  configDialog->addSlider("Sustain Gain", sGain, 0, 1);
-  configDialog->addSlider("Ratio Gain", rGain, 0, 1);
-  configDialog->addSlider("Release Gain", rlGain, -8, 8);
+  configDialog->addSlider(tr("Attack Offset"), a0, -8, 8);
+  configDialog->addSlider(tr("Decay Offset"), d0, -8, 8);
+  configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);
+  configDialog->addSlider(tr("Ratio Offset"), r0, 0, 1);
+  configDialog->addSlider(tr("Release Offset"), rl0, -8, 8);
+  configDialog->addSlider(tr("Attack Gain"), aGain, -8, 8);
+  configDialog->addSlider(tr("Decay Gain"), dGain, -8, 8);
+  configDialog->addSlider(tr("Sustain Gain"), sGain, 0, 1);
+  configDialog->addSlider(tr("Ratio Gain"), rGain, 0, 1);
+  configDialog->addSlider(tr("Release Gain"), rlGain, -8, 8);
 }
 
 void M_vcdoubledecay::generateCycle() {

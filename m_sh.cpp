@@ -20,17 +20,17 @@
 #include "port.h"
 
 M_sh::M_sh(QWidget* parent)
-  : Module(M_type_sh, 2, parent, "Sample & Hold")
+  : Module(M_type_sh, 2, parent, tr("Sample & Hold"))
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SH_WIDTH, MODULE_SH_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_trig = new Port("Trigger", PORT_IN, 1, this); 
-  port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_gate = new Port("Gate", PORT_OUT, 1, this);          
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_trig = new Port(tr("Trigger"), PORT_IN, 1, this); 
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_gate = new Port(tr("Gate"), PORT_OUT, 1, this);          
   triggerLevel = 0.5;
-  configDialog->addSlider("Trigger Level", triggerLevel, 0, 10);
+  configDialog->addSlider(tr("Trigger Level"), triggerLevel, 0, 10);
   sample = 0;
   gate = false;
 }

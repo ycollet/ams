@@ -21,7 +21,7 @@
 
 
 M_midiout::M_midiout(QWidget* parent) 
-  : Module(M_type_midiout, 0, parent, "Midi Out")
+  : Module(M_type_midiout, 0, parent, tr("Midi Out"))
 {
   QString qs;
   int l1, l2;
@@ -35,34 +35,35 @@ M_midiout::M_midiout(QWidget* parent)
   controller[0] = 24;
   controller[1] = 25;
   triggerLevel = 0.5;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
-  port_M_trigger = new Port("Trigger", PORT_IN, 2, this);
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          
+  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 2, this);
 
   configDialog->initTabWidget();
-  QVBoxLayout *gainTab = configDialog->addVBoxTab("Gain / Offset / Trigger Level");
-  QVBoxLayout *midiTab = configDialog->addVBoxTab("MIDI Settings");
+  QVBoxLayout *gainTab = configDialog->addVBoxTab(
+          tr("Gain / Offset / Trigger Level"));
+  QVBoxLayout *midiTab = configDialog->addVBoxTab(tr("MIDI Settings"));
   QStringList channelNames;
   for (l1 = 0; l1 < 16; l1++) {
     qs.sprintf("%4d", l1);
     channelNames << qs;
   }
   channel = 0;
-  configDialog->addComboBox("MIDI Channel", channel, channelNames, midiTab);
-  configDialog->addSlider("Gain 0", mixer_gain[0], 0, 10, false, gainTab);
-  configDialog->addSlider("Gain 1", mixer_gain[1], 0, 10, false, gainTab);
-  configDialog->addIntSlider("Offset 0", offset[0], 0, 127, gainTab);
-  configDialog->addIntSlider("Offset 1", offset[1], 0, 127, gainTab);
+  configDialog->addComboBox(tr("MIDI Channel"), channel, channelNames, midiTab);
+  configDialog->addSlider(tr("Gain 0"), mixer_gain[0], 0, 10, false, gainTab);
+  configDialog->addSlider(tr("Gain 1"), mixer_gain[1], 0, 10, false, gainTab);
+  configDialog->addIntSlider(tr("Offset 0"), offset[0], 0, 127, gainTab);
+  configDialog->addIntSlider(tr("Offset 1"), offset[1], 0, 127, gainTab);
   QStringList midiNames;
   midiNames <<
-    "In 0/1: Controller" <<
-    "In 0: Controller In 1: Pitchbend" <<
-    "In 0/1: Note" <<
-    "In 0: Note, In 1: Velocity";
-  configDialog->addComboBox("MIDI Event Type", midiMode, midiNames, midiTab);
-  configDialog->addIntSlider("Controller 0", controller[0], 0, 127, midiTab);
-  configDialog->addIntSlider("Controller 1", controller[1], 0, 127, midiTab);
-  configDialog->addSlider("Trigger Level", triggerLevel, 0, 10, false, gainTab);
+    tr("In 0/1: Controller") <<
+    tr("In 0: Controller In 1: Pitchbend") <<
+    tr("In 0/1: Note") <<
+    tr("In 0: Note, In 1: Velocity");
+  configDialog->addComboBox(tr("MIDI Event Type"), midiMode, midiNames, midiTab);
+  configDialog->addIntSlider(tr("Controller 0"), controller[0], 0, 127, midiTab);
+  configDialog->addIntSlider(tr("Controller 1"), controller[1], 0, 127, midiTab);
+  configDialog->addSlider(tr("Trigger Level"), triggerLevel, 0, 10, false, gainTab);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     trigger[l1] = false;
     for (l2 = 0; l2 < 2; l2++) {

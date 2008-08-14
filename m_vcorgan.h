@@ -13,6 +13,8 @@ enum waveFormType { ORGAN_SINE, ORGAN_SAW, ORGAN_TRI, ORGAN_RECT, ORGAN_SAW2 };
 
 class M_vcorgan : public Module
 {
+    Q_OBJECT
+
     float tune, osc_tune[MODULE_VCORGAN_MAX_OSC], gain[MODULE_VCORGAN_MAX_OSC];
     int octave, osc_octave[MODULE_VCORGAN_MAX_OSC];
     int harmonic[MODULE_VCORGAN_MAX_OSC], subharmonic[MODULE_VCORGAN_MAX_OSC];

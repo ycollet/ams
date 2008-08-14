@@ -9,6 +9,8 @@
 
 class M_slew : public Module
 {
+    Q_OBJECT
+
     Port *port_M_in, *port_out;
     float timeUp, timeDown;
     float lastData[MAXPOLY];

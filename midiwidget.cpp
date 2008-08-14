@@ -62,8 +62,8 @@ QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
       if (!c && !index.column()) {
 	QString qs;
 	c = &midiControllerList.at(index.row());
-	return qs.sprintf("type: %d channel: %d param: %d",
-			  c->type(), c->ch(), c->param());
+	return qs = tr("type: %1 channel: %2 param: %3")
+            .arg(c->type()).arg(c->ch()).arg(c->param());
       }
   }
   return QVariant();
@@ -73,7 +73,7 @@ QVariant MidiControllerModel::headerData(int section, Qt::Orientation orientatio
 					 int role) const
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-    return section ? "Module" : "MIDI Controller / Parameter";
+    return section ? tr("Module") : tr("MIDI Controller / Parameter");
   
   return QVariant();
 }
@@ -147,7 +147,7 @@ QVariant ModuleModel::headerData(int section, Qt::Orientation orientation,
 				 int role) const
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-    return section ? "MIDI Sign" : "Module / Parameter";
+    return section ? tr("MIDI Sign") : tr("Module / Parameter");
   
   return QVariant();
 }
@@ -219,19 +219,19 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   currentGUIcontrol->setMargin(5);
   floatHelperLayout = new QHBoxLayout();
   currentGUIcontrol->addLayout(floatHelperLayout);
-  logCheck = new QCheckBox("Log");
+  logCheck = new QCheckBox(tr("&Log"));
   floatHelperLayout->addWidget(logCheck);
   QObject::connect(logCheck, SIGNAL(toggled(bool)), this, SLOT(setLogMode(bool)));
   floatHelperLayout->addStretch();
-  newMinButton = new QPushButton("Set Min");
+  newMinButton = new QPushButton(tr("Set Mi&n"));
   floatHelperLayout->addWidget(newMinButton);
   QObject::connect(newMinButton, SIGNAL(clicked()), this, SLOT(setNewMin()));
   floatHelperLayout->addStretch();
-  newMaxButton = new QPushButton("Set Max");
+  newMaxButton = new QPushButton(tr("Set Ma&x"));
   floatHelperLayout->addWidget(newMaxButton);
   QObject::connect(newMaxButton, SIGNAL(clicked()), this, SLOT(setNewMax()));
   floatHelperLayout->addStretch();
-  resetMinMaxButton = new QPushButton("Reset Min/Max");
+  resetMinMaxButton = new QPushButton(tr("&Reset Min/Max"));
   floatHelperLayout->addWidget(resetMinMaxButton);
   QObject::connect(resetMinMaxButton, SIGNAL(clicked()), this, SLOT(setInitialMinMax()));
   showFloatHelpers(false);
@@ -242,7 +242,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   checkbuttonBox->setSpacing(10);
   checkbuttonBox->setMargin(5);
   QStringList channelNames;
-  channelNames << "Omni";
+  channelNames << tr("Omni");
   for (l1 = 1; l1 < 17; l1++) {
     qs.sprintf("%4d", l1);
     channelNames << qs;
@@ -251,7 +251,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   controlFrame->addLayout(midiChannelBox);
   QLabel *channelText = new QLabel();
   midiChannelBox->addWidget(channelText);
-  channelText->setText("MIDI Channel:");
+  channelText->setText(tr("MIDI C&hannel:"));
   QComboBox *comboBox = new QComboBox();
   midiChannelBox->addWidget(comboBox);
   midiChannelBox->addStretch();
@@ -261,7 +261,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   comboBox->setFixedSize(comboBox->sizeHint());
   QObject::connect(comboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiChannel(int)));
   midiChannelBox->addStretch();
-  addGuiButton = new QPushButton("Add to Parameter View");
+  addGuiButton = new QPushButton(tr("Add to &Parameter View"));
   addGuiButton->setEnabled(false);
   midiChannelBox->addWidget(addGuiButton);
   QObject::connect(addGuiButton, SIGNAL(clicked()), this, SLOT(addToParameterViewClicked()));
@@ -271,31 +271,31 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
   buttonBox->setSpacing(5);
   buttonBox->setMargin(5);
   buttonBox->addStretch();
-  noteCheck = new QCheckBox("Enable note events");
+  noteCheck = new QCheckBox(tr("&Enable note events"));
   checkbuttonBox->addWidget(noteCheck);
   noteCheck->setChecked(noteControllerEnabled);
-  configCheck = new QCheckBox("Follow Configuration Dialog");
+  configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
   checkbuttonBox->addWidget(configCheck);
   configCheck->setChecked(followConfig);
-  midiCheck = new QCheckBox("Follow MIDI");
+  midiCheck = new QCheckBox(tr("Follow &MIDI"));
   checkbuttonBox->addWidget(midiCheck);
   midiCheck->setChecked(followMidi);         
   QObject::connect(noteCheck, SIGNAL(stateChanged(int)), this, SLOT(noteControllerCheckToggle(int)));
   QObject::connect(configCheck, SIGNAL(stateChanged(int)), this, SLOT(configCheckToggle(int)));
   QObject::connect(midiCheck, SIGNAL(stateChanged(int)), this, SLOT(midiCheckToggle(int)));
   buttonBox->addStretch();
-  bindButton = new QPushButton("Bind");
+  bindButton = new QPushButton(tr("&Bind"));
   bindButton->setEnabled(false);
   buttonBox->addWidget(bindButton);
   buttonBox->addStretch();
-  clearButton = new QPushButton("Clear Binding");
+  clearButton = new QPushButton(tr("&Clear Binding"));
   buttonBox->addWidget(clearButton);
   clearButton->setEnabled(false);
   buttonBox->addStretch();
-  clearAllButton = new QPushButton("Clear All");
+  clearAllButton = new QPushButton(tr("Clear &All"));
   buttonBox->addWidget(clearAllButton);
   buttonBox->addStretch();
-  midiSignButton = new QPushButton("Toggle MIDI Sign");
+  midiSignButton = new QPushButton(tr("&Toggle MIDI Sign"));
   buttonBox->addWidget(midiSignButton);
   midiSignButton->setEnabled(false);
   buttonBox->addStretch();
@@ -407,14 +407,18 @@ void MidiWidget::addToParameterViewClicked() {
     return;
 
   if (synthdata->guiWidget->presetCount > 0) {
-    qs.sprintf("This will erase all presets for this configuration. Continue ?");
+    qs = tr("This will erase all presets for this configuration. Continue?");
     QMessageBox questionContinue("AlsaModularSynth", qs, QMessageBox::NoIcon,
-                                 QMessageBox::Yes | QMessageBox::Default, QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
+                                 QMessageBox::Yes | QMessageBox::Default,
+                                 QMessageBox::No  | QMessageBox::Escape,
+                                 QMessageBox::NoButton);
     if (questionContinue.exec() == QMessageBox::No) {
       return;
     }
   }
-  qs = QInputDialog::getText(this, "AlsaModularSynth", "Add this parameter to frame:", QLineEdit::Normal, currentFrameName, &ok);
+  qs = QInputDialog::getText(this, "AlsaModularSynth",
+         tr("Add this parameter to frame:"),
+         QLineEdit::Normal, currentFrameName, &ok);
   currentFrameName = qs;
   if (qs.isEmpty()) {
     return;
@@ -426,11 +430,13 @@ void MidiWidget::addToParameterViewClicked() {
     frameIndex = l1;
   }
   if (!foundFrameName) {
-    qs2 = "Frame " + qs + " does not exist. Create ?"; 
-    QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
-                         QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
+    qs2 = tr("Frame '%1' does not exist. Create?").arg(qs); 
+    QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon,
+            QMessageBox::Yes | QMessageBox::Default,
+            QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
     if (question.exec() == QMessageBox::Yes) {
-      qs3 = QInputDialog::getText(this, "AlsaModularSynth", "Add frame to tab:", QLineEdit::Normal, currentTabName, &ok);
+      qs3 = QInputDialog::getText(this, "AlsaModularSynth",
+              tr("Add frame to tab:"), QLineEdit::Normal, currentTabName, &ok);
       currentTabName = qs3;
       foundTabName = false;
       tabIndex = 0;
@@ -439,9 +445,10 @@ void MidiWidget::addToParameterViewClicked() {
         tabIndex = l1;
         synthdata->guiWidget->setTab(tabIndex);
       } else {
-        qs2 = "Tab " +qs3 + " does not exist. Create ?";
-        QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon, QMessageBox::Yes | QMessageBox::Default,
-                             QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
+        qs2 = tr("Tab '%1' does not exist. Create?").arg(qs3);
+        QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon,
+                QMessageBox::Yes | QMessageBox::Default,
+                QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
         if (question.exec() == QMessageBox::Yes) {
 	  //printf("Creating tab %s.\n", qs3.latin1());
           synthdata->guiWidget->addTab(qs3.trimmed());
@@ -460,7 +467,8 @@ void MidiWidget::addToParameterViewClicked() {
   //  qs2.sprintf("%s  ID %d", midiGUIcomponent->objectName(), module->moduleID);
   qs2 = midiControllable->name + "  ID " +
     QString().setNum(midiControllable->module.moduleID);
-  qs = QInputDialog::getText(this, "AlsaModularSynth", "Parameter name:", QLineEdit::Normal, qs2, &ok);
+  qs = QInputDialog::getText(this, "AlsaModularSynth",
+          tr("Parameter name:"), QLineEdit::Normal, qs2, &ok);
   synthdata->guiWidget->addParameter(midiControllable, qs);
 }
 

@@ -62,7 +62,7 @@ Function::Function(int p_functionCount, int *p_mode, int *p_editIndex, tFunction
     CanvasFunction *canvasFunction = new CanvasFunction(*this, l1);
     canvasFunctionList.append(canvasFunction);
     updateFunction(l1);
-    qs.sprintf("Out %d", l1);
+    qs = tr("Out %1").arg(l1);
     QGraphicsSimpleTextItem *canvasText = new QGraphicsSimpleTextItem(qs, 0, scene());
     canvasText->setPos(8 + 50 * l1, 4);
     //    canvasText->setColor(colorTable[l1]);

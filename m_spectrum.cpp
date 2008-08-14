@@ -4,14 +4,14 @@
 
 
 M_spectrum::M_spectrum(QWidget* parent) 
-  : Module(M_type_spectrum, 0, parent, "Spectrum")
+  : Module(M_type_spectrum, 0, parent, tr("Spectrum"))
 {
   QString qs;
  
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
 
-  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          
   configDialog->addLabel(
 	"This modules source-code is outdated.\n"
 	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
@@ -57,9 +57,9 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   mixer_gain[0] = 1.0;
   mixer_gain[1] = 1.0;
   agc = 1;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
-  qs.sprintf("Spectrum ID %d", moduleID);
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          
+  qs = tr("Spectrum ID %1").arg(moduleID);
   configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
   zoom = 1;
@@ -85,10 +85,10 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   minLabel->setText(qs);
   qs.sprintf("%d Hz", (int)rint(f_max));
   maxLabel->setText(qs);
-  configDialog->addTab(spectrumTab, "Spectrum");
+  configDialog->addTab(spectrumTab, tr("Spectrum"));
   Q3VBox *paramTab = new Q3VBox(configDialog->tabWidget);
   Q3VBox *zoomTab = new Q3VBox(configDialog->tabWidget);
-  configDialog->addSlider("Gain (dB)", gain, -20, 20, false, zoomTab);
+  configDialog->addSlider(tr("Gain (dB)"), gain, -20, 20, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(0), SIGNAL(valueChanged(int)),
                    this, SLOT(updateZoom(int)));
   configDialog->addSlider("f_min", f_min, 0, f_max, false, zoomTab);
@@ -97,7 +97,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   configDialog->addSlider("f_max", f_max, 0, f_max, false, zoomTab);
   QObject::connect(configDialog->midiSliderList.at(2), SIGNAL(valueChanged(int)),
                    this, SLOT(update_f_max(int)));
-  configDialog->addCheckBox(freqZoom, "Frequency Zoom", &freqZoom, zoomTab);
+  configDialog->addCheckBox(freqZoom, tr("Frequency Zoom"), &freqZoom, zoomTab);
   QObject::connect(configDialog->midiCheckBoxList.at(0)->checkBox, SIGNAL(toggled(bool)),
                    this, SLOT(freqZoomToggled(bool)));
   
@@ -105,37 +105,34 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   vbox1 = configDialog->addVBox(hbox1);
   vbox2 = configDialog->addVBox(hbox1);
   QStringList viewModeNames;
-  viewModeNames << "Normal Spectrum";
-  viewModeNames << "Spectrum over Time";
-  configDialog->addComboBox("Display Mode", viewMode, &viewModeNames, vbox1);
+  viewModeNames << tr("Normal Spectrum") << tr("Spectrum over Time");
+  configDialog->addComboBox(tr("Display Mode"), viewMode, &viewModeNames, vbox1);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateViewMode(int)));
   QStringList refreshModeNames;
-  refreshModeNames << "Continuous";
-  refreshModeNames << "Single";
-  refreshModeNames << "Mouse";
-  configDialog->addComboBox("Refresh Mode", refreshMode, &refreshModeNames, vbox2);
+  refreshModeNames << tr("Continuous") << tr("Single") << tr("Mouse");
+  configDialog->addComboBox(tr("Refresh Mode"), refreshMode, &refreshModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateRefreshMode(int)));
   QStringList normModeNames;
-  normModeNames << "Each Line";
-  normModeNames << "Global";
-  normModeNames << "Fixed";
-  configDialog->addComboBox("Normalization Mode", normMode, &normModeNames, vbox1);
+  normModeNames << tr("Each Line");
+  normModeNames << tr("Global");
+  normModeNames << tr("Fixed");
+  configDialog->addComboBox(tr("Normalization Mode"), normMode, &normModeNames, vbox1);
   QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateNormMode(int)));
   QStringList fftModeNames;
-  fftModeNames << "Power Spectrum";
-  fftModeNames << "Abs";
-  fftModeNames << "dB";
-  configDialog->addComboBox("Spectrum Mode", fftMode, &fftModeNames, vbox2);
+  fftModeNames << tr("Power Spectrum");
+  fftModeNames << tr("Abs");
+  fftModeNames << tr("dB");
+  configDialog->addComboBox(tr("Spectrum Mode"), fftMode, &fftModeNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(3)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateFFTMode(int)));
   QStringList windowNames;
-  windowNames << "Hamming";
-  windowNames << "Bartlett";
-  windowNames << "Hanning";
-  windowNames << "Welch";
+  windowNames << tr("Hamming");
+  windowNames << tr("Bartlett");
+  windowNames << tr("Hanning");
+  windowNames << tr("Welch");
   configDialog->addComboBox("Window Function", window, &windowNames, vbox2);
   QObject::connect(configDialog->midiComboBoxList.at(4)->comboBox, SIGNAL(highlighted(int)),
                    this, SLOT(updateWindow(int)));
@@ -154,11 +151,12 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   fftFramesNames << " 8192";
   fftFramesNames << "16384";
   fftFramesNames << "32768";
-  configDialog->addComboBox("Window Size", fftFrames, &fftFramesNames, vbox1);
-  QObject::connect(configDialog->midiComboBoxList.at(5)->comboBox, SIGNAL(highlighted(int)),
-                   this, SLOT(updateFFTFrames(int)));
-  configDialog->addTab(zoomTab, "Zoom");
-  configDialog->addTab(paramTab, "Mode / Window");
+  configDialog->addComboBox(tr("Window Size"), fftFrames,
+          &fftFramesNames, vbox1);
+  QObject::connect(configDialog->midiComboBoxList.at(5)->comboBox,
+          SIGNAL(highlighted(int)), this, SLOT(updateFFTFrames(int)));
+  configDialog->addTab(zoomTab, tr("Zoom"));
+  configDialog->addTab(paramTab, tr("Mode / Window"));
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
   configDialog->spectrumScreenList.at(0)->writeofs = 0;

@@ -21,6 +21,8 @@
 
 class MultiEnvelope : public QWidget, public MCedThing
 {
+    Q_OBJECT
+
     int envCount;
     float *timeScaleRef, *attackRef, *sustainRef, *releaseRef;
     QColor colorTable[8];

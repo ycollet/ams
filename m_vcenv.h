@@ -9,6 +9,8 @@
 
 class M_vcenv : public Module
 {
+    Q_OBJECT
+
     Port *port_M_gate, *port_M_retrigger, *port_M_attack, *port_M_decay, *port_M_sustain, *port_M_release, *port_out;
     
   public: 

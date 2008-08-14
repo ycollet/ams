@@ -13,6 +13,8 @@ enum WaveFormType {SINUS,TRIANGLE,SAWTOOTH,RECTANGLE, AWAVE_SAW, AWAVE_SAW2, AWA
 
 class M_vco2 : public Module
 {
+    Q_OBJECT
+
     float freq, phi0, pw0;
     float edge;
     float wave_period;

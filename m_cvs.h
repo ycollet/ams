@@ -10,6 +10,8 @@
 
 class M_cvs : public Module
 {
+    Q_OBJECT
+
     Port *port_cv_out[MODULE_CVS_CV_COUNT];
     float cv[MODULE_CVS_CV_COUNT], cv_fine[MODULE_CVS_CV_COUNT];
                 

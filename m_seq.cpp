@@ -19,7 +19,7 @@
 #include "port.h"
 
 M_seq::M_seq(int p_seqLen, QWidget* parent)
-  : Module(M_type_seq, 4, parent, "SEQ")
+  : Module(M_type_seq, 4, parent, tr("SEQ"))
   , tickFrames(0)
   , tickFramesRemain(0)
 {
@@ -30,15 +30,16 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
 
   seqLen = p_seqLen;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SEQ_WIDTH, MODULE_SEQ_HEIGHT);
-  port_trigger = new Port("Trigger", PORT_IN, 0, this);
+  port_trigger = new Port(tr("Trigger"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_trigger_out = new Port("Trigger", PORT_OUT, 3, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
+  port_trigger_out = new Port(tr("Trigger"), PORT_OUT, 3, this);          
 
   configDialog->initTabWidget();
-  QVBoxLayout *generalTab = configDialog->addVBoxTab("Pitch Offset / Tempo / Gate Time");
+  QVBoxLayout *generalTab = configDialog->addVBoxTab(
+          tr("Pitch Offset / Tempo / Gate Time"));
   int seqLen_8 = (seqLen + 7) / 8;
   for (l1 = 0; l1 < seqLen_8; l1++) {
     sprintf(str, "Pitch %d", l1);

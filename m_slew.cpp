@@ -20,19 +20,19 @@
 #include "port.h"
 
 M_slew::M_slew(QWidget* parent)
-  : Module(M_type_slew, 1, parent, "Slew Limiter")
+  : Module(M_type_slew, 1, parent, tr("Slew Limiter"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SLEW_WIDTH, MODULE_SLEW_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   timeUp = 0.5;
   timeDown = 0.5;
-  configDialog->addSlider("Time Up", timeUp, 0, 10);
-  configDialog->addSlider("Time Down", timeDown, 0, 10);
+  configDialog->addSlider(tr("Time Up"), timeUp, 0, 10);
+  configDialog->addSlider(tr("Time Down"), timeDown, 0, 10);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     lastData[l1] = 0;
   }

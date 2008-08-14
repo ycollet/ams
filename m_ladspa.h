@@ -13,6 +13,8 @@
 
 class M_ladspa : public Module
 {
+    Q_OBJECT
+
   QList<Port*> in_port_list, out_port_list;
   QList<Port*> in_ctrl_port_list, out_ctrl_port_list;
   const LADSPA_Descriptor *ladspa_dsc;

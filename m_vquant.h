@@ -8,6 +8,8 @@
 
 class M_vquant : public Module
 {
+    Q_OBJECT
+
     Port *port_M_in, *port_quant;
     
   public: 

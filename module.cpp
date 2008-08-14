@@ -23,7 +23,8 @@
 int Module::portmemAllocated;
 Module::CtorVar Module::cv;
 
-Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name)
+Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
+        const QString &name)
   : Box(parent, name)
   , connections(0)
   , data(NULL)
@@ -122,7 +123,7 @@ void Module::paint(QPainter &p)
   p.setFont(synthdata->bigFont);
   p.drawText(10, 20, objectName());
   p.setFont(synthdata->smallFont); 
-  qs.sprintf("ID %d", moduleID);
+  qs = tr("ID %1").arg(moduleID);
   p.drawText(10, 32, qs);
 }
 

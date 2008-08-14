@@ -20,7 +20,7 @@
 #include "port.h"
 
 M_cvs::M_cvs(QWidget* parent)
-  : Module(M_type_cvs, MODULE_CVS_CV_COUNT, parent, "CV Source")
+  : Module(M_type_cvs, MODULE_CVS_CV_COUNT, parent, tr("CV Source"))
 {
   QString qs;
   int l1;

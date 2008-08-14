@@ -103,7 +103,8 @@ void M_stereomix::updateSolos(MidiGUIcomponent *sender)
 
 
 M_stereomix::M_stereomix(int p_in_channels, QWidget* parent) 
-  : Module(M_type_stereomix,2, parent, QString("Stereo Mixer ") + QString::number(p_in_channels))
+  : Module(M_type_stereomix, 2, parent, tr("Stereo Mixer %1")
+          .arg(p_in_channels))
   , solo_index(-1)
 {
   QString qs;
@@ -113,26 +114,27 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_STEREOMIX_WIDTH, 
               MODULE_STEREOMIX_HEIGHT + 40 + 20 * in_channels);
   gain = 1.0;
-  configDialog->addSlider("Master Volume", gain, 0, 10, true);
+  configDialog->addSlider(tr("Master Volume"), gain, 0, 10, true);
   ignore_check = false;
   for (unsigned l1 = 0; l1 < in_channels; l1++) {
-    qs.sprintf("In %d", l1);
+    qs = tr("In %1").arg(l1);
     Port *audio_in_port = new Port(qs, PORT_IN, in_port_list.count(), this);
     in_port_list.append(audio_in_port);
     hbox = configDialog->addHBox();
     mute[l1] = 0.0;
-    qs.sprintf("Mute %d", l1);
+    qs = tr("Mute %1").arg(l1);
     configDialog->addCheckBox(*new MCableMute(*this, qs, mute[l1]), hbox);
     solo[l1] = 0.0;    
-    qs.sprintf("Solo %d", l1);
+    qs = tr("Solo %1").arg(l1);
     configDialog->addCheckBox(*new MCableSolo(*this, qs, solo[l1]), hbox);
     mixer_gain[l1] = 1.0;    
-    qs.sprintf("Volume %d", l1);
-    MidiSlider *slider = configDialog->addSlider(qs, mixer_gain[l1], 0, 2, true, hbox);
+    qs = tr("Volume %1").arg(l1);
+    MidiSlider *slider = configDialog->addSlider(qs, mixer_gain[l1],
+            0, 2, true, hbox);
     slider->setMinimumWidth(200);
     hbox->setStretchFactor(slider, 100);
     pan[l1] = 0.0;    
-    qs.sprintf("Pan %d", l1);
+    qs = tr("Pan %1").arg(l1);
     slider = configDialog->addSlider(qs, pan[l1], -1, 1, false, hbox);
     slider->setMinimumWidth(150);
     hbox->setStretchFactor(slider, 100);

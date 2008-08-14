@@ -10,6 +10,8 @@ enum auxWaveFormType { WAVE_SAW, WAVE_SAW2, WAVE_SAW3 };
 
 class M_vco : public Module
 {
+    Q_OBJECT
+
     float freq, phi0, pw0;
     float edge;
     float wave_period;

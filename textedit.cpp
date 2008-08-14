@@ -13,7 +13,7 @@ TextEdit::TextEdit(QWidget* parent, const char *name)
   textEdit = new QTextEdit(this);
   textEdit->setPalette(QPalette(QColor(77, 70, 64), QColor(250, 250, 250)));
   layout->addWidget(textEdit);
-  QPushButton *removeButton = new QPushButton("Remove Comment", this);
+  QPushButton *removeButton = new QPushButton(tr("&Remove Comment"), this);
   QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeThisTextEdit()));
   layout->addWidget(removeButton);
   setLayout(layout);

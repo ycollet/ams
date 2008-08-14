@@ -21,8 +21,10 @@
 
 QPixmap *M_ladspa::logo;
 
-M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bool extCtrlPorts) 
-  : Module(M_type_ladspa, 0, parent, QString(poly ? "Poly " : "") + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
+M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
+        bool poly, bool extCtrlPorts) 
+  : Module(M_type_ladspa, 0, parent, QString(poly ? tr("Poly ") : "")
+          + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
   , ladspa_dsc(synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n))
   , ladspaPoly(poly ? synthdata->poly : 1)
   , ladspaDesFuncIndex(ladspaDesFuncIndex)
@@ -90,9 +92,9 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n, bool poly, bo
     for (l1 = 0; l1 < ladspaPoly; l1++)
       ladspa_dsc->activate(ladspa_handle[l1]);
 
-  configDialog->addLabel(QString("Name: ") + ladspa_dsc->Name);
-  configDialog->addLabel(QString("Author: ") + ladspa_dsc->Maker);
-  configDialog->addLabel(QString("Copyright: ") + ladspa_dsc->Copyright);
+  configDialog->addLabel(tr("Name: ") + ladspa_dsc->Name);
+  configDialog->addLabel(tr("Author: ") + ladspa_dsc->Maker);
+  configDialog->addLabel(tr("Copyright: ") + ladspa_dsc->Copyright);
   if (tabMode)
     configDialog->initTabWidget();
 

@@ -26,21 +26,21 @@
 #include "port.h"
 
 M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname) 
-  : Module(M_type_scquantizer, 2, parent, "Scala Quantizer")
+  : Module(M_type_scquantizer, 2, parent, tr("Scala Quantizer"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCQUANTIZER_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_trigger = new Port("Trigger", PORT_IN, 1, this); 
-  port_M_transpose = new Port("Transpose", PORT_IN, 2, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this); 
+  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this); 
   cv.out_off = 95;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_trigger_out = new Port("Trigger Out", PORT_OUT, 1, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);          
   base = 0;
   lastbase = 12;
-  configDialog->addIntSlider("Note Offset", base, -36, 36);
+  configDialog->addIntSlider(tr("Note Offset"), base, -36, 36);
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     qsig[l1] = 0;
@@ -48,7 +48,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
     trigger[l1] = 0;
   }
   sclname = "No_Scale_loaded";
-  configDialog->addLabel("   Scale: " + sclname);
+  configDialog->addLabel(tr("   Scale: ") + sclname);
   configDialog->addLabel("   ");
 //!!   configDialog->addPushButton("Load Scale");
 //   QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
@@ -63,8 +63,8 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   scale_lut_length = 12;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {
-    fprintf(stderr, "\nYou did not set the environment variable SCALA_PATH.\n");
-    fprintf(stderr, "Assuming SCALA_PATH=/usr/share/scala\n");
+    qWarning("\nYou did not set the environment variable SCALA_PATH.");
+    qWarning("Assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;
@@ -103,7 +103,7 @@ void M_scquantizer::calcScale() {
 void M_scquantizer::generateCycle() {
 
   int l1, l2, l3, quant, transpose;
-  float lutquant;
+  float lutquant = 0.0;
 
     if (base != lastbase) {
       calcScale();
@@ -195,11 +195,12 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
   sclname = p_sclname;  
   QFile qfile(sclname);
   if (!qfile.open(QIODevice::ReadOnly)) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not load Scala file "+sclname);
+    QMessageBox::information( this, "AlsaModularSynth",
+            tr("Could not load Scala file '%1'").arg(sclname));
     sclname = "No_Scale_loaded";
     return; 
   }
-  configDialog->labelList.at(0)->setText("   Scale: " + sclname);
+  configDialog->labelList.at(0)->setText(tr("   Scale: ") + sclname);
   QTextStream stream(&qfile);
   while (!stream.atEnd()) {
     qs = stream.readLine(); 

@@ -9,6 +9,8 @@
 
 class M_ringmod : public Module
 {
+    Q_OBJECT
+
     float gain;
     Port *port_M_vco1, *port_M_vco2, *port_out;
     

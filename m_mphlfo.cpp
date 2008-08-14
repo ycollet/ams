@@ -17,7 +17,7 @@
 #include "port.h"
 
 M_mphlfo::M_mphlfo(QWidget* parent) 
-  : Module(M_type_mphlfo, 16, parent, "Multiphase LFO") {
+  : Module(M_type_mphlfo, 16, parent, tr("Multiphase LFO")) {
 
   QString qs;
   int l1;
@@ -41,12 +41,13 @@ M_mphlfo::M_mphlfo(QWidget* parent)
   mode = 0;
   d_tri = 4.0 * freq / (double)synthdata->rate;
   d_saw = 0.5 * d_tri;
-  configDialog->addSlider("Frequency (Hz)", freq, 0.01, 20, true);
-  configDialog->addSlider("Gain Saw", gain_saw, 0.01, 5, true);
-  configDialog->addSlider("Gain Triangle", gain_tri, 0.01, 5, true);
+  configDialog->addSlider(tr("Frequency (Hz)"), freq, 0.01, 20, true);
+  configDialog->addSlider(tr("Gain Saw"), gain_saw, 0.01, 5, true);
+  configDialog->addSlider(tr("Gain Triangle"), gain_tri, 0.01, 5, true);
   QStringList modeNames;
-  modeNames << "Saw Up" << "Saw Down" << "Saw Up (0..135) / Saw Down (180..315)";
-  configDialog->addComboBox("Saw Mode", mode, modeNames);
+  modeNames << tr("Saw Up") << tr("Saw Down")
+      << tr("Saw Up (0..135) / Saw Down (180..315)");
+  configDialog->addComboBox(tr("Saw Mode"), mode, modeNames);
 }
 
 void M_mphlfo::generateCycle() {
@@ -60,10 +61,6 @@ void M_mphlfo::generateCycle() {
                                          :  4.0 * freq / (double)synthdata->rate;
     d_saw = 0.5 * fabs(d_tri);
     switch(mode) {
-      case 0:
-        sign_saw1 = 1.0;
-        sign_saw2 = 1.0;
-        break;
       case 1:
         sign_saw1 = -1.0;
         sign_saw2 = -1.0;
@@ -72,26 +69,16 @@ void M_mphlfo::generateCycle() {
         sign_saw1 = 1.0;
         sign_saw2 = -1.0;
         break;
+      case 0: // fall through
+      default:
+        sign_saw1 = 1.0;
+        sign_saw2 = 1.0;
+        break;
     }
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       tri += d_tri;
       saw += d_saw;
       switch(state) {
-        case 0:
-          if (tri > 0.5) {
-            state++;
-          }  
-          tri45 = 0.5 + tri;
-          tri90 = 1.0 - tri;
-          tri135 = 0.5 - tri;
-          saw45 = 0.25 + saw;
-          saw90 = 0.5 + saw; 
-          saw135 = 0.75 + saw; 
-          saw180 = -1.0 + saw;
-          saw225 = -0.75 + saw;
-          saw270 = -0.5 + saw;
-          saw315 = -0.25 + saw;
-          break;
         case 1:
           if (tri > 1.0) {
             state++;
@@ -200,6 +187,22 @@ void M_mphlfo::generateCycle() {
           saw90 = 0.5 + saw;
           saw135 = 0.75 + saw;
           saw180 = 1.0 + saw;
+          saw225 = -0.75 + saw;
+          saw270 = -0.5 + saw;
+          saw315 = -0.25 + saw;
+          break;
+        case 0: // fall through
+        default:
+          if (tri > 0.5) {
+            state++;
+          }  
+          tri45 = 0.5 + tri;
+          tri90 = 1.0 - tri;
+          tri135 = 0.5 - tri;
+          saw45 = 0.25 + saw;
+          saw90 = 0.5 + saw; 
+          saw135 = 0.75 + saw; 
+          saw180 = -1.0 + saw;
           saw225 = -0.75 + saw;
           saw270 = -0.5 + saw;
           saw315 = -0.25 + saw;

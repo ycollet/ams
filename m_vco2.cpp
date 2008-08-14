@@ -6,7 +6,7 @@
 #include "port.h"
 
 M_vco2::M_vco2(QWidget* parent) 
-  : Module(M_type_vco2, 1, parent, "VCO2")
+  : Module(M_type_vco2, 1, parent, tr("VCO2"))
 {
   QString qs;
   int l1;
@@ -35,13 +35,13 @@ M_vco2::M_vco2(QWidget* parent)
 
   cv.in_index = 1;
   cv.in_off -= cv.step;
-  port_M_freq = new Port("Freq", PORT_IN, 1, this);
-  port_M_exp = new Port("Exp. FM", PORT_IN, 2, this);
-  port_M_lin = new Port("Lin. FM", PORT_IN, 3, this);
-  port_M_pw = new Port("PW", PORT_IN, 4, this);
+  port_M_freq = new Port(tr("Freq"), PORT_IN, 1, this);
+  port_M_exp = new Port(tr("Exp. FM"), PORT_IN, 2, this);
+  port_M_lin = new Port(tr("Lin. FM"), PORT_IN, 3, this);
+  port_M_pw = new Port(tr("PW"), PORT_IN, 4, this);
 
   cv.out_off = 115;
-  port_sine = new Port("Out", PORT_OUT, 0, this);          
+  port_sine = new Port(tr("Out"), PORT_OUT, 0, this);          
   /*
   port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);          
   port_saw = new Port("Saw", PORT_OUT, 2, this, synthdata);          
@@ -50,29 +50,32 @@ M_vco2::M_vco2(QWidget* parent)
   */
 
   configDialog->initTabWidget();
-  QVBoxLayout *freqTab = configDialog->addVBoxTab("Frequency");
+  QVBoxLayout *freqTab = configDialog->addVBoxTab(tr("Frequency"));
   QStringList waveFormNames;
-  waveFormNames << "Sinus";
-  waveFormNames << "Triangle";
-  waveFormNames << "Sawtooth";
-  waveFormNames << "Rectangle";
-  waveFormNames << "Aux Saw";
-  waveFormNames << "Aux Saw 1";
-  waveFormNames << "Aux Saw 2";
-  configDialog->addComboBox("Wave Form", waveForm, waveFormNames, freqTab);
-  configDialog->addIntSlider("Octave", octave, 0, 6, freqTab);
-  configDialog->addSlider("Tune", freq, 0, 1, false, freqTab);
-  configDialog->addIntSlider("Harmonic", harmonic, 1, 16, freqTab);
-  configDialog->addIntSlider("Subharmonic", subharmonic, 1, 16, freqTab);
+  waveFormNames << tr("Sine");
+  waveFormNames << tr("Triangle");
+  waveFormNames << tr("Sawtooth");
+  waveFormNames << tr("Rectangle");
+  waveFormNames << tr("Aux Saw");
+  waveFormNames << tr("Aux Saw 1");
+  waveFormNames << tr("Aux Saw 2");
+  configDialog->addComboBox(tr("Wave Form"), waveForm, waveFormNames, freqTab);
+  configDialog->addIntSlider(tr("Octave"), octave, 0, 6, freqTab);
+  configDialog->addSlider(tr("Tune"), freq, 0, 1, false, freqTab);
+  configDialog->addIntSlider(tr("Harmonic"), harmonic, 1, 16, freqTab);
+  configDialog->addIntSlider(tr("Subharmonic"), subharmonic, 1, 16, freqTab);
 
-  QVBoxLayout *pulseTab = configDialog->addVBoxTab("Pulse Width / Phase");
-  configDialog->addSlider("PW", pw0, 0.1, 0.9, false, pulseTab);
-  configDialog->addSlider("PW Gain", pwGain, 0, 1, false, pulseTab);
-  configDialog->addSlider("Phi0", phi0, 0, 6.283, false, pulseTab);
+  QVBoxLayout *pulseTab = configDialog->addVBoxTab(tr("Pulse Width / Phase"));
+  configDialog->addSlider(tr("PW"), pw0, 0.1, 0.9, false, pulseTab);
+  configDialog->addSlider(tr("PW Gain"), pwGain, 0, 1, false, pulseTab);
+  configDialog->addSlider(tr("Phi0"), phi0, 0, 6.283, false, pulseTab);
 
-  QVBoxLayout *modulationTab = configDialog->addVBoxTab("Modulation / Aux Waveform");
-  configDialog->addSlider("Exp. FM Gain", vcoExpFMGain, 0, 10, false, modulationTab);
-  configDialog->addSlider("Lin. FM Gain", vcoLinFMGain, 0, 10, false, modulationTab);
+  QVBoxLayout *modulationTab = configDialog->addVBoxTab(
+          tr("Modulation / Aux Waveform"));
+  configDialog->addSlider(tr("Exp. FM Gain"), vcoExpFMGain, 0, 10,
+          false, modulationTab);
+  configDialog->addSlider(tr("Lin. FM Gain"), vcoLinFMGain, 0, 10,
+          false, modulationTab);
 }
 
 void M_vco2::generateCycle()

@@ -25,7 +25,7 @@
 
 
 M_scope::M_scope(QWidget* parent) 
-  : Module(M_type_scope, 0, parent, "Scope")
+  : Module(M_type_scope, 0, parent, tr("Scope"))
 {
   QString qs;
   QHBoxLayout *hbox;
@@ -35,8 +35,8 @@ M_scope::M_scope(QWidget* parent)
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
 
-  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);
 
   configDialog->initTabWidget();
   mode = 0;
@@ -46,28 +46,31 @@ M_scope::M_scope(QWidget* parent)
   zoom = 1;
   timeScale = 100;
   configDialog->setAddStretch(-1);
-  QVBoxLayout *scopeTab = configDialog->addVBoxTab("Scope");
+  QVBoxLayout *scopeTab = configDialog->addVBoxTab(tr("Scope"));
   configDialog->setAddStretch(-1);
   //  scopeTab->setMinimumHeight(200);
   configDialog->addScopeScreen(timeScale, mode, edge, triggerMode, 
                                triggerThrs, zoom, scopeTab);
 
-  configDialog->addSlider("Time Scale", timeScale, 10, 1000, false, scopeTab);
-  configDialog->addSlider("Gain", zoom, 0.1, 10, false, scopeTab);
-  QVBoxLayout *triggerTab = configDialog->addVBoxTab("Trigger");
+  configDialog->addSlider(tr("Time Scale"), timeScale, 10, 1000, false,
+          scopeTab);
+  configDialog->addSlider(tr("Gain"), zoom, 0.1, 10, false, scopeTab);
+  QVBoxLayout *triggerTab = configDialog->addVBoxTab(tr("Trigger"));
   configDialog->setAddStretch(1);
   hbox = configDialog->addHBox(triggerTab);
   configDialog->setAddStretch(0);
   QStringList triggerModeNames;
-  triggerModeNames << "Continuous" << "Triggered" << "Single";
-  configDialog->addComboBox("Refresh Mode", triggerMode, triggerModeNames, hbox);
-  QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)),
-                   this, SLOT(updateTriggerMode(int)));
+  triggerModeNames << tr("Continuous") << tr("Triggered") << tr("Single");
+  configDialog->addComboBox(tr("Refresh Mode"), triggerMode,
+          triggerModeNames, hbox);
+  QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox,
+          SIGNAL(highlighted(int)), this, SLOT(updateTriggerMode(int)));
   QStringList edgeNames;
-  edgeNames << "Rising" << "Falling";
-  configDialog->addComboBox("Trigger Edge", edge, edgeNames, hbox);
+  edgeNames << tr("Rising") << tr("Falling");
+  configDialog->addComboBox(tr("Trigger Edge"), edge, edgeNames, hbox);
   configDialog->setAddStretch(1);
-  configDialog->addSlider("Trigger Level", triggerThrs, -1, 1, false, triggerTab);
+  configDialog->addSlider(tr("Trigger Level"), triggerThrs, -1, 1,
+          false, triggerTab);
   //!!  configDialog->addPushButton("Trigger", (void (Module::*)())&M_scope::singleShot, triggerTab);
   //  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
   //                   configDialog->scopeScreenList.at(0), SLOT(singleShot()));

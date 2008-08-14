@@ -9,6 +9,8 @@
 
 class M_midiout : public Module
 {
+    Q_OBJECT
+
     float mixer_gain[2], triggerLevel; 
     int midiMode, offset[2], controller[2], channel;
     Port *port_in[2], *port_M_trigger;

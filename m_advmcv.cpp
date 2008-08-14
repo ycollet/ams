@@ -19,20 +19,20 @@
 
 
 M_advmcv::M_advmcv(QWidget* parent) 
-  : Module(M_type_advmcv, 10, parent, "Advanced MCV")
+  : Module(M_type_advmcv, 10, parent, tr("Advanced MCV"))
 {
   QString qs;
   int l1, l2;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVMCV_WIDTH, MODULE_ADVMCV_HEIGHT);
-  port_gate_out = new Port("Gate", PORT_OUT, 0, this);          
-  port_note_out = new Port("Freq", PORT_OUT, 1, this);          
-  port_velocity_out = new Port("Velocity", PORT_OUT, 2, this);          
-  port_trig_out = new Port("Trigger", PORT_OUT, 3, this);          
-  port_aftertouch_out = new Port("Aftertouch", PORT_OUT, 4, this);          
-  port_pitchbend_out = new Port("Pitchbend", PORT_OUT, 5, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
+  port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);          
+  port_aftertouch_out = new Port(tr("Aftertouch"), PORT_OUT, 4, this);          
+  port_pitchbend_out = new Port(tr("Pitchbend"), PORT_OUT, 5, this);          
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
-    qs.sprintf("Controller %d", l1);
+    qs = tr("Controller %1").arg(l1);
     port_controller_out[l1] = new Port(qs, PORT_OUT, 6+l1, this);          
   }
 
@@ -55,10 +55,10 @@ M_advmcv::M_advmcv(QWidget* parent)
     freq[l1] = 0;
   }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider("Note Offset", pitch, -36, 36);
-  configDialog->addSlider("Pitch", pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
-    qs.sprintf("Controller %d", l1);
+    qs = tr("Controller %1").arg(l1);
     configDialog->addIntSlider(qs, controller_num[l1], 0, 127);
   }
 }

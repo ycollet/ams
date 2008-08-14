@@ -2,7 +2,7 @@
 #define M_STEREOMIX_H
 
 #include "module.h"
-
+#include "midiguicomponent.h"
 
 #define MODULE_STEREOMIX_WIDTH                115
 #define MODULE_STEREOMIX_HEIGHT                40
@@ -10,6 +10,8 @@
        
 class M_stereomix : public Module
 {
+    Q_OBJECT
+
   class MCableMute;
   class MCableSolo;
 

@@ -86,13 +86,13 @@ LadspaDialog::LadspaDialog()
   int colon, lastcolon;
   glob_t globbuf;
 
-  setWindowTitle("Ladspa Browser");
+  setWindowTitle(tr("Ladspa Browser"));
   vbox.setMargin(10);
   vbox.setSpacing(10);
   const char *_lp = getenv("LADSPA_PATH");
   if (!_lp) {
-    fprintf(stderr, "\nYou did not set the environment variable LADSPA_PATH.\n");
-    fprintf(stderr, "Assuming LADSPA_PATH=" LADSPA_PATH "\n");
+    qWarning("You did not set the environment variable LADSPA_PATH.");
+    qWarning("Assuming LADSPA_PATH=" LADSPA_PATH);
     ladspapath = LADSPA_PATH;
   } else {
     ladspapath = _lp;
@@ -146,7 +146,7 @@ LadspaDialog::LadspaDialog()
   QObject::connect(searchLine, SIGNAL(textEdited(const QString &)),
 		   this, SLOT(searchLineEdited(const QString &)));
   searchBox->addWidget(searchLine);
-  QPushButton *searchButton = new QPushButton("Search");
+  QPushButton *searchButton = new QPushButton(tr("&Search"));
   searchBox->addWidget(searchButton);
   QObject::connect(searchButton, SIGNAL(clicked()), this, SLOT(searchClicked()));
   QObject::connect(searchLine, SIGNAL(returnPressed()), this, SLOT(searchClicked()));
@@ -169,19 +169,21 @@ LadspaDialog::LadspaDialog()
 		   this,
 		   SLOT(pluginHighlighted(const QItemSelection &, const QItemSelection &)));
 
-  extCtrlPortsCheck = new QCheckBox("Export control ports as module ports");
+  extCtrlPortsCheck = new QCheckBox(
+          tr("&Export control ports as module ports"));
   vbox.addWidget(extCtrlPortsCheck);
   QHBoxLayout *buttonBox = new QHBoxLayout();
   vbox.addLayout(buttonBox);
-  insertButton = new QPushButton("Create Plugin");
+  insertButton = new QPushButton(tr("&Create Plugin"));
   buttonBox->addWidget(insertButton);
   insertButton->setEnabled(false);
   QObject::connect(insertButton, SIGNAL(clicked()), this, SLOT(insertClicked()));
   buttonBox->addStretch();
-  insertPolyButton = new QPushButton("Create Poly Plugin");
+  insertPolyButton = new QPushButton(tr("Create &Poly Plugin"));
   buttonBox->addWidget(insertPolyButton);
   insertPolyButton->setEnabled(false);
-  QObject::connect(insertPolyButton, SIGNAL(clicked()), this, SLOT(insertPolyClicked()));
+  QObject::connect(insertPolyButton, SIGNAL(clicked()), this,
+          SLOT(insertPolyClicked()));
 }
 
 LadspaDialog::~LadspaDialog() {
@@ -214,9 +216,9 @@ void LadspaDialog::pluginHighlighted(const QItemSelection &selected, const QItem
   if (selectedDesc != -1) {
     const LADSPA_Descriptor * desc =
       synthdata->ladspaLib.at(selectedLib).desc.at(selectedDesc);
-    pluginLabel->setText(QString("Label: ") + desc->Label);
-    pluginMaker->setText(QString("Author: ") + desc->Maker);
-    pluginCopyright->setText(QString("Copyright: ") + desc->Copyright);
+    pluginLabel->setText(tr("Label: ") + desc->Label);
+    pluginMaker->setText(tr("Author: ") + desc->Maker);
+    pluginCopyright->setText(tr("Copyright: ") + desc->Copyright);
   } else {
     pluginLabel->setText("");
     pluginMaker->setText("");

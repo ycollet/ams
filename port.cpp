@@ -15,7 +15,8 @@
 
 PopupMenu *Port::contextMenu;
 
-Port::Port(const QString &p_portName, dirType dir, int p_index, Module *module, int p_color) 
+Port::Port(const QString &p_portName, dirType dir, int p_index,
+        Module *module, int p_color) 
            : QWidget(module)
 	   , portNameWidth(0)
 	   , module(module)

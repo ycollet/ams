@@ -13,7 +13,7 @@
 #include "midicontrollable.h"
 
 M_env::M_env(QWidget* parent) 
-  : Module(M_type_env, 2, parent, "ENV")
+  : Module(M_type_env, 2, parent, tr("ENV"))
 {
   QString qs;
   int l1;
@@ -26,22 +26,23 @@ M_env::M_env(QWidget* parent)
   sustain = 0.7;
   release = 0.05;
   timeScale = 1.0;
-  port_gate = new Port("Gate", PORT_IN, 0, this);
-  port_retrigger = new Port("Retrigger", PORT_IN, 1, this);
+  port_gate = new Port(tr("Gate"), PORT_IN, 0, this);
+  port_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this);
   cv.out_off = 75;
-  port_gain_out = new Port("Out", PORT_OUT, 0, this);          
-  port_inverse_out = new Port("Inverse Out", PORT_OUT, 1, this);          
+  port_gain_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);          
 
   configDialog->initTabWidget();
-  QVBoxLayout *adsrTab = configDialog->addVBoxTab("ADSR");
-  QVBoxLayout *delayTab = configDialog->addVBoxTab("Delay / Hold / Time Scale");
-  configDialog->addSlider("Delay", delay, 0, 1, false, delayTab);
-  configDialog->addSlider("Attack", attack, 0, 1, false, adsrTab);
-  configDialog->addSlider("Hold", hold, 0, 1, false, delayTab);
-  configDialog->addSlider("Decay", decay, 0, 1, false, adsrTab);
-  configDialog->addSlider("Sustain", sustain, 0, 1, false, adsrTab);
-  configDialog->addSlider("Release", release, 0, 1, false, adsrTab);
-  configDialog->addSlider("Time Scale", timeScale, 0.1, 10, false, delayTab);
+  QVBoxLayout *adsrTab = configDialog->addVBoxTab(tr("ADSR"));
+  QVBoxLayout *delayTab = configDialog->addVBoxTab(
+          tr("Delay / Hold / Time Scale"));
+  configDialog->addSlider(tr("Delay"), delay, 0, 1, false, delayTab);
+  configDialog->addSlider(tr("Attack"), attack, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("Hold"), hold, 0, 1, false, delayTab);
+  configDialog->addSlider(tr("Decay"), decay, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("Sustain"), sustain, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("Release"), release, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("Time Scale"), timeScale, 0.1, 10, false, delayTab);
 
   configDialog->addEnvelope(*dynamic_cast<MidiControllableFloat *>(midiControllables.at(0)),
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(1)),

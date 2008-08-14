@@ -20,7 +20,7 @@
 #include "port.h"
 
 M_vca::M_vca(bool p_expMode, QWidget* parent) 
-  : Module(M_type_vca, 1, parent, p_expMode ? "Exp. VCA" : "Lin. VCA")
+  : Module(M_type_vca, 1, parent, p_expMode ? tr("Exp. VCA") : tr("Lin. VCA"))
 {
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCA_WIDTH, MODULE_VCA_HEIGHT);
   gain1 = 0;
@@ -29,18 +29,18 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
   in2 = 1.0;
   out = 1.0;
   expMode = p_expMode;
-  port_M_gain1 = new Port("Gain 0", PORT_IN, 0, this); 
-  port_M_gain2 = new Port("Gain 1", PORT_IN, 1, this); 
-  port_M_in1 = new Port("In 0", PORT_IN, 2, this); 
-  port_M_in2 = new Port("In 1", PORT_IN, 3, this); 
+  port_M_gain1 = new Port(tr("Gain 0"), PORT_IN, 0, this); 
+  port_M_gain2 = new Port(tr("Gain 1"), PORT_IN, 1, this); 
+  port_M_in1 = new Port(tr("In 0"), PORT_IN, 2, this); 
+  port_M_in2 = new Port(tr("In 1"), PORT_IN, 3, this); 
   cv.out_off = 115;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider("Gain", gain1, 0, 1);
-  configDialog->addSlider("Gain 1", gain2, 0, 1);
-  configDialog->addSlider("In 0", in1, 0, 2);
-  configDialog->addSlider("In 1", in2, 0, 2);
-  configDialog->addSlider("Output level", out, 0, 2);
+  configDialog->addSlider(tr("Gain"), gain1, 0, 1);
+  configDialog->addSlider(tr("Gain 1"), gain2, 0, 1);
+  configDialog->addSlider(tr("In 0"), in1, 0, 2);
+  configDialog->addSlider(tr("In 1"), in2, 0, 2);
+  configDialog->addSlider(tr("Output level"), out, 0, 2);
 }
 
 void M_vca::generateCycle() {

@@ -9,6 +9,8 @@
 
 class M_noise : public Module
 {
+    Q_OBJECT
+
     int count;
     float rate, level;
     float buf[3], r;

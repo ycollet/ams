@@ -20,18 +20,18 @@
 #include "port.h"
 
 M_ringmod::M_ringmod(QWidget* parent) 
-  : Module(M_type_ringmod, 1, parent, "Ring Modulator")
+  : Module(M_type_ringmod, 1, parent, tr("Ring Modulator"))
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_RINGMOD_WIDTH, MODULE_RINGMOD_HEIGHT);
   gain = 0.5;
-  port_M_vco1 = new Port("In 0", PORT_IN, 0, this); 
-  port_M_vco2 = new Port("In 1", PORT_IN, 1, this); 
+  port_M_vco1 = new Port(tr("In 0"), PORT_IN, 0, this); 
+  port_M_vco2 = new Port(tr("In 1"), PORT_IN, 1, this); 
   cv.out_off = 70;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider("Gain", gain, 0, 5);
+  configDialog->addSlider(tr("Gain"), gain, 0, 5);
 }
 
 int M_ringmod::setGain(float p_gain) {

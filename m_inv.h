@@ -9,6 +9,8 @@
 
 class M_inv : public Module
 {
+    Q_OBJECT
+
     Port *port_M_in, *port_out;
     
   public: 

@@ -20,15 +20,15 @@
 #include "port.h"
 
 M_vcpanning::M_vcpanning(QWidget* parent) 
-  : Module(M_type_vcpanning, 2, parent, "VC Panning")
+  : Module(M_type_vcpanning, 2, parent, tr("VC Panning"))
 {
   QString qs;
   int l1, l2;
   float pos, q;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCPANNING_WIDTH, MODULE_VCPANNING_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
-  port_M_pan = new Port("Pan CV", PORT_IN, 1, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_pan = new Port(tr("Pan CV"), PORT_IN, 1, this); 
   cv.out_off = 75;
   for (l1 = 0; l1 < 2; l1++) {
     qs.sprintf("Out %d", l1);
@@ -62,18 +62,18 @@ M_vcpanning::M_vcpanning(QWidget* parent)
   }  
   panGain = 0.0;
   panOffset = 0.0;
-  configDialog->addSlider("Pan Offset", panOffset, -1, 1);
-  configDialog->addSlider("Pan Gain", panGain, 0, 2);
+  configDialog->addSlider(tr("Pan Offset"), panOffset, -1, 1);
+  configDialog->addSlider(tr("Pan Gain"), panGain, 0, 2);
   QStringList panModeNames;
   panModeNames <<
-    "VC control" <<
-    "Fixed alternating panorama, full width" <<
-    "Fixed alternating panorama, half width" <<
-    "Fixed alternating panorama, quarter width" <<
-    "Sort by pitch, Low <--> High" <<
-    "Sort by pitch, High <--> Low" <<
-    "Mono";
-  configDialog->addComboBox("Panning Mode", panMode, panModeNames);
+    tr("VC control") <<
+    tr("Fixed alternating panorama, full width") <<
+    tr("Fixed alternating panorama, half width") <<
+    tr("Fixed alternating panorama, quarter width") <<
+    tr("Sort by pitch, Low <--> High") <<
+    tr("Sort by pitch, High <--> Low") <<
+    tr("Mono");
+  configDialog->addComboBox(tr("Panning Mode"), panMode, panModeNames);
 }
 
 void M_vcpanning::generateCycle() {

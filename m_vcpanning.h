@@ -9,6 +9,8 @@
 
 class M_vcpanning : public Module
 {
+    Q_OBJECT
+
     Port *port_M_in, *port_M_pan, *port_out[2];
     
   public: 
