@@ -1,17 +1,16 @@
 #ifndef PORT_H
 #define PORT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qlist.h>
-#include <qstring.h>
-#include <qcolor.h>
-#include <qpoint.h>
+#include <QColor>
+#include <QList>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QPoint>
+#include <QString>
+#include <QWidget>
+
 #include "synthdata.h"
+#include "port_popup.h"
 
 #define PORT_DEFAULT_WIDTH  80
 #define PORT_DEFAULT_HEIGHT 15
@@ -24,18 +23,14 @@ class Port : public QWidget
   Q_OBJECT
 
     QString portName;
-    static class PopupMenu *contextMenu;
     int portNameWidth;
 
-  public:
-    Port(const QString &p_portName, dirType p_dir, int p_index, class Module *parent,
-         int p_color = 0);
+    public:
+    Port(const QString &p_portName, dirType p_dir, int p_index,
+            class Module *parent, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
     float **getinputdata (void);
-
-  private:
-    void showContextMenu(QPoint pos);
 
   public:
     class Module *module;
@@ -46,6 +41,9 @@ class Port : public QWidget
     outTypeEnum outType;
     bool highlighted;
     QList<outTypeEnum> outTypeAcceptList;
+    void popupMenuClicked(PopupMenu::portAction);
+    bool hasConnectedPort();
+    Port* needsConnectionToPort();
 
   signals:
     void portClicked();
@@ -53,9 +51,7 @@ class Port : public QWidget
     
   protected:
     virtual void paintEvent(QPaintEvent *ev);
-    virtual void mousePressEvent (QMouseEvent* );
-    virtual void mouseReleaseEvent (QMouseEvent* );
-    virtual void mouseMoveEvent (QMouseEvent* );
+    virtual void mousePressEvent(QMouseEvent* );
     
   public:
     void disconnectClicked();  
@@ -67,6 +63,8 @@ class Port : public QWidget
     void cableDefaultClicked();
     void jackColorClicked();
     void cableColorClicked();
+    bool isInPort();
+    bool hasIndex(int idx);
 };
   
 #endif

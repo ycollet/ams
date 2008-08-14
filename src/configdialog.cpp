@@ -48,7 +48,8 @@ ConfigDialog::ConfigDialog(Module &module)
   removeFrame->addStretch();
   vBox->addLayout(removeFrame);
   removeButtonShow(true);
-  QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeButtonClicked()));
+  QObject::connect(removeButton, SIGNAL(clicked()),
+          this, SLOT(removeButtonClicked()));
 }
 
 ConfigDialog::~ConfigDialog()
@@ -67,12 +68,14 @@ MidiSlider *ConfigDialog::addSlider(const QString &name, float &valueRef, float 
   return midiSlider;
 }
 
-int ConfigDialog::addFloatIntSlider(const QString &name, float &valueRef, float minValue, float maxValue, QBoxLayout *layout)
+int ConfigDialog::addFloatIntSlider(const QString &name,
+        float &valueRef, float minValue, float maxValue, QBoxLayout *layout)
 {
   MidiControllable<float> *mcAble =
     new MidiControllable<float>(module, name, valueRef, minValue, maxValue);
 
-  IntMidiSlider *intMidiSlider = new IntMidiSlider(GUIcomponentType_floatintslider, *mcAble);
+  IntMidiSlider *intMidiSlider = new IntMidiSlider(
+          GUIcomponentType_floatintslider, *mcAble);
   insertWidget(layout, intMidiSlider);
 
   floatIntMidiSliderList.append(intMidiSlider);
@@ -161,7 +164,7 @@ MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef,
   return envelope;
 }
 
-int ConfigDialog::addLabel(QString label, QBoxLayout *layout) {
+int ConfigDialog::addLabel(const QString& label, QBoxLayout *layout) {
 
   QLabel *configLabel;
 
@@ -274,7 +277,8 @@ int ConfigDialog::addSpectrumScreen(QBoxLayout *layout) {
 }
 #endif
 
-int ConfigDialog::addFunction(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &point, int p_pointCount, QBoxLayout *layout) {
+int ConfigDialog::addFunction(int p_functionCount, int *p_mode,
+        int *p_editIndex, tFunction &point, int p_pointCount, QBoxLayout *layout) {
 
   Function *function;
 
@@ -301,4 +305,81 @@ void ConfigDialog::removeButtonShow(bool show)
   removeFrame->setEnabled(show);
   removeFrame->setMargin(show ? 5 : 0);
   removeButton->setVisible(show);
+}
+
+MidiSlider* ConfigDialog::getMidiSlider(int idx)
+{
+    MidiSlider* ms = NULL;
+
+    if ((idx + 1) > midiSliderList.count())
+        qWarning("Slider index out of range (value = %d)", idx);
+    else
+        ms = midiSliderList.at(idx);
+    return ms;
+}
+
+IntMidiSlider* ConfigDialog::getIntMidiSlider(int idx)
+{
+    IntMidiSlider* ims = NULL;
+
+    if ((idx + 1) > intMidiSliderList.count())
+        qWarning("Integer slider index out of range (value = %d)", idx);
+    else
+        ims = intMidiSliderList.at(idx);
+    return ims;
+}
+
+IntMidiSlider* ConfigDialog::getFloatIntMidiSlider(int idx)
+{
+    IntMidiSlider* ims = NULL;
+
+    if ((idx + 1) > floatIntMidiSliderList.count())
+        qWarning("Float slider index out of range (value = %d)", idx);
+    else
+        ims = floatIntMidiSliderList.at(idx);
+    return ims;
+}
+
+MidiComboBox* ConfigDialog::getMidiComboBox(int idx)
+{
+    MidiComboBox* mcb = NULL;
+
+    if ((idx + 1) > midiComboBoxList.count())
+        qWarning("ComboBox index out of range (value = %d)", idx);
+    else
+        mcb = midiComboBoxList.at(idx);
+    return mcb;
+}
+
+MidiCheckBox* ConfigDialog::getMidiCheckBox(int idx)
+{
+    MidiCheckBox* mcb = NULL;
+
+    if ((idx + 1) > midiCheckBoxList.count())
+        qWarning("CheckBox index out of range (value = %d)", idx);
+    else
+        mcb = midiCheckBoxList.at(idx);
+    return mcb;
+}
+
+MidiPushButton* ConfigDialog::getMidiPushButton(int idx)
+{
+    MidiPushButton* mpb = NULL;
+
+    if ((idx + 1) > midiPushButtonList.count())
+        qWarning("PushButton index out of range (value = %d)", idx);
+    else
+        mpb = midiPushButtonList.at(idx);
+    return mpb;
+}
+
+Function* ConfigDialog::getFunction(int idx)
+{
+    Function* fnc = NULL;
+
+    if ((idx + 1) > functionList.count())
+        qWarning("Function index out of range (value = %d)", idx);
+    else
+        fnc = functionList.at(idx);
+    return fnc;
 }

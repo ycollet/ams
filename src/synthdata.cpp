@@ -332,7 +332,8 @@ int SynthData::find_capt_mod (void *M)
 
 
 
-int SynthData::initAlsa (const char *name, int fsamp, int frsize, int nfrags, int ncapt, int nplay)
+int SynthData::initAlsa (const char *name, unsigned int fsamp,
+        snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt, int nplay)
 {
     pthread_attr_t     attr;
     struct sched_param parm;
@@ -501,7 +502,8 @@ int SynthData::initJack (int ncapt, int nplay)
         exit (1);
     }
 
-    fprintf (stderr, "Connected to JACK with %d inputs and %d outputs\n", capt_ports, play_ports); 
+    qWarning("Connected to JACK with %d inputs and %d outputs",
+            capt_ports, play_ports); 
 
     return 0;
 }
@@ -510,9 +512,11 @@ int SynthData::closeJack ()
 {
     qWarning(QObject::tr("Closing JACK...").toUtf8());
     jack_deactivate (jack_handle);
-    for (int i = 0; i < play_ports; i++) jack_port_unregister(jack_handle, jack_out[i]);
-    for (int i = 0; i < capt_ports; i++) jack_port_unregister(jack_handle, jack_in[i]);
-    jack_client_close (jack_handle);
+    for (int i = 0; i < play_ports; i++)
+        jack_port_unregister(jack_handle, jack_out[i]);
+    for (int i = 0; i < capt_ports; i++)
+        jack_port_unregister(jack_handle, jack_in[i]);
+    jack_client_close(jack_handle);
     return 0;
 }
 

@@ -18,6 +18,9 @@ public:
   int textEditID;
   class QTextEdit *textEdit;
 
+private:
+  QPoint mousePressPos;
+
 public:
   TextEdit(QWidget* parent=0, const char *name=0);
   virtual  ~TextEdit();
@@ -30,7 +33,7 @@ protected:
 
 signals:
   void dragged(QPoint pos);
-  void sizeDragged(QPoint pos);
+  void sizeDragged(const QPoint&);
   void removeTextEdit();
                         
 public slots: 

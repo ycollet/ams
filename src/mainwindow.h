@@ -5,7 +5,9 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMainWindow>
+#include <QMenu>
 #include <QSocketNotifier>
+#include <QStringList>
 
 #include "modularsynth.h"
 #include "msoptions.h"
@@ -17,14 +19,19 @@ class MainWindow: public QMainWindow {
   static void sighandler(int);
 
 private:
+    int rcFd;
     QString fileName;
+    QStringList recentFiles;
     ModularSynth *modularSynth;
+    QMenu* fileRecentlyOpenedFiles;
     bool saveFile();
     void newFile();
     void openFile(const QString&);
     void chooseFile();
+    bool isSave();
     int querySaveChanges();
     bool isModified();
+    void addRecentlyOpenedFile(const QString&, QStringList&);
 
 private slots:
     void unixSignal(int fd);
@@ -33,12 +40,20 @@ private slots:
     void fileSave();
     void fileSaveAs();
     void updateWindowTitle();
+    void helpAboutQt();
+    void recentFileActivated(QAction*);
+    void setupRecentFilesMenu();
+
 
 public:
   MainWindow(const ModularSynthOptions&);
+  virtual ~MainWindow();
 
 protected:
   void closeEvent(QCloseEvent *e);
+  void readConfig();
+  void writeConfig();
+
 };
 
 #endif

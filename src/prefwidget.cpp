@@ -163,135 +163,187 @@ PrefWidget::PrefWidget()
   QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
 }
 
-bool PrefWidget::loadPref(QString config_fn)
+void PrefWidget::loadPref(QString& line)
 {
-  QFile f(config_fn);
-  if (!f.open( QIODevice::ReadOnly )) {
-    QMessageBox::information(this, "AlsaModularSynth",
-            tr("Could not open user preferences file."));
-    return false;
-  }
+    int r, g, b;
 
-  return loadPref(f.handle());
+    if (line.startsWith("ColorBackground")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorBackground = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorModuleBackground")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleBackground = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorModuleBorder")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleBorder = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorModuleFont")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleFont = QColor(r, g, b);
+        synthdata->colorPortFont1 = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorJack")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorJack = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorCable")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorCable = QColor(r, g, b);
+    }       
+    else if (line.startsWith("MidiControllerMode")) {
+        midiControllerMode = line.section(' ', 1, 1).toInt();
+        synthdata->midiControllerMode = midiControllerMode;
+    }       
+    else if (line.startsWith("LoadPath")) {
+        loadPath = line.section(' ', 1); 
+        if (loadPath.isEmpty())
+            loadPath = QDir::homePath();
+        loadEdit->setText(loadPath);
+        synthdata->loadPath = loadPath;
+    }       
+    else if (line.startsWith("SavePath")) {
+        savePath = line.section(' ', 1); 
+        if (savePath.isEmpty())
+            savePath = QDir::homePath();
+        saveEdit->setText(savePath);
+        synthdata->savePath = savePath;
+    }       
 }
 
-bool PrefWidget::loadPref(int rcFd)
+//TODO: remove this
+void PrefWidget::loadPref(int rcFd)
 {
   QString qs, qs2;
   int r,g,b;
 
   QTextStream rctext(fdopen(rcFd, "r"));
-    QRegExp sep(" ");
     while (!rctext.atEnd()) {
       qs = rctext.readLine(); 
       if (qs.contains("ColorBackground")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorBackground = QColor(r, g, b);
       }        
       else if (qs.contains("ColorModuleBackground")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorModuleBackground = QColor(r, g, b);
       }        
       else if (qs.contains("ColorModuleBorder")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorModuleBorder = QColor(r, g, b);
       }        
       else if (qs.contains("ColorModuleFont")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorModuleFont = QColor(r, g, b);
         synthdata->colorPortFont1 = QColor(r, g, b);
       }        
       else if (qs.contains("ColorJack")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorJack = QColor(r, g, b);
       }        
       else if (qs.contains("ColorCable")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         r = qs2.toInt();
-        qs2 = qs.section(sep, 2, 2); 
+        qs2 = qs.section(' ', 2, 2); 
         g = qs2.toInt();
-        qs2 = qs.section(sep, 3, 3); 
+        qs2 = qs.section(' ', 3, 3); 
         b = qs2.toInt();
         synthdata->colorCable = QColor(r, g, b);
       }       
       else if (qs.contains("MidiControllerMode")) {
-        qs2 = qs.section(sep, 1, 1); 
+        qs2 = qs.section(' ', 1, 1); 
         midiControllerMode = qs2.toInt();
         synthdata->midiControllerMode = midiControllerMode;
       }       
       else if (qs.contains("LoadPath")) {
-        loadPath = qs.section(sep, 1, 1); 
+        loadPath = qs.section(' ', 1); 
         if (loadPath.isEmpty())
             loadPath = QDir::homePath();
         loadEdit->setText(loadPath);
         synthdata->loadPath = loadPath;
       }       
       else if (qs.contains("SavePath")) {
-        savePath = qs.section(sep, 1, 1); 
+        savePath = qs.section(' ', 1); 
         if (savePath.isEmpty())
             savePath = QDir::homePath();
         saveEdit->setText(savePath);
         synthdata->savePath = savePath;
       }       
     }   
-    //  }        
+
   StdErr << "loadPath: " << synthdata->loadPath << ", savePath: " <<
     synthdata->savePath <<  endl;
   recallColors();
   refreshColors();
-  return true;
 }
 
-void PrefWidget::savePref(int rcFd)
+void PrefWidget::savePref(QTextStream& rctext)
 {
-  QString qs;
-
-//   QFile f(config_fn);
-//   if (!f.open( QIODevice::WriteOnly )) {
-//     QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
-//   } else {
-  if (ftruncate(rcFd, 0)) {
-    StdErr << "Ooops in " << __FUNCTION__ << " at " << __LINE__ << endl;
-    exit(-1);
-  }
-  lseek(rcFd, 0, SEEK_SET);
-  QTextStream rctext(fdopen(rcFd, "w"));
-    rctext << "ColorBackground " << synthdata->colorBackground.red() << " " << synthdata->colorBackground.green() << " " << synthdata->colorBackground.blue() << "\n";
-    rctext << "ColorModuleBackground " << synthdata->colorModuleBackground.red() << " " << synthdata->colorModuleBackground.green() << " " << synthdata->colorModuleBackground.blue() << "\n";
-    rctext << "ColorModuleBorder " << synthdata->colorModuleBorder.red() << " " << synthdata->colorModuleBorder.green() << " " << synthdata->colorModuleBorder.blue() << "\n";
-    rctext << "ColorModuleFont " << synthdata->colorModuleFont.red() << " " << synthdata->colorModuleFont.green() << " " << synthdata->colorModuleFont.blue() << "\n";
-    rctext << "ColorJack " << synthdata->colorJack.red() << " " << synthdata->colorJack.green() << " " << synthdata->colorJack.blue() << "\n";
-    rctext << "ColorCable " << synthdata->colorCable.red() << " " << synthdata->colorCable.green() << " " << synthdata->colorCable.blue() << "\n";
+    rctext << "ColorBackground "
+        << synthdata->colorBackground.red() << " "
+        << synthdata->colorBackground.green() << " "
+        << synthdata->colorBackground.blue() << "\n";
+    rctext << "ColorModuleBackground "
+        << synthdata->colorModuleBackground.red() << " "
+        << synthdata->colorModuleBackground.green() << " "
+        << synthdata->colorModuleBackground.blue() << "\n";
+    rctext << "ColorModuleBorder "
+        << synthdata->colorModuleBorder.red() << " "
+        << synthdata->colorModuleBorder.green() << " "
+        << synthdata->colorModuleBorder.blue() << "\n";
+    rctext << "ColorModuleFont "
+        << synthdata->colorModuleFont.red() << " "
+        << synthdata->colorModuleFont.green() << " "
+        << synthdata->colorModuleFont.blue() << "\n";
+    rctext << "ColorJack "
+        << synthdata->colorJack.red() << " "
+        << synthdata->colorJack.green() << " "
+        << synthdata->colorJack.blue() << "\n";
+    rctext << "ColorCable "
+        << synthdata->colorCable.red() << " "
+        << synthdata->colorCable.green() << " "
+        << synthdata->colorCable.blue() << "\n";
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     rctext << "LoadPath " << synthdata->loadPath << "\n";
     rctext << "SavePath " << synthdata->savePath << "\n";
-    //    f.close();
-    //  }       
 }                             
 
 void PrefWidget::submitPref()
@@ -309,9 +361,12 @@ void PrefWidget::applyPref() {
 void PrefWidget::refreshColors() {
 
   colorBackgroundLabel->setPalette(QPalette(colorBackground, colorBackground));  
-  colorModuleBackgroundLabel->setPalette(QPalette(colorModuleBackground, colorModuleBackground));  
-  colorModuleBorderLabel->setPalette(QPalette(colorModuleBorder, colorModuleBorder));  
-  colorModuleFontLabel->setPalette(QPalette(colorModuleFont, colorModuleFont));  
+  colorModuleBackgroundLabel->setPalette(QPalette(
+              colorModuleBackground, colorModuleBackground));  
+  colorModuleBorderLabel->setPalette(QPalette(
+              colorModuleBorder, colorModuleBorder));  
+  colorModuleFontLabel->setPalette(QPalette(
+              colorModuleFont, colorModuleFont));  
   colorCableLabel->setPalette(QPalette(colorCable, colorCable));  
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
   midiModeComboBox->setCurrentIndex(midiControllerMode);

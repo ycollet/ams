@@ -20,11 +20,6 @@ class GuiWidget : public QWidget
 {
   Q_OBJECT
 
-  struct GuiFrame {
-    int tabIndex;
-    QVBoxLayout *frameBox;
-  };
-  
 
   QVBoxLayout vLayout;
 
@@ -36,6 +31,11 @@ class GuiWidget : public QWidget
   QLineEdit *presetName;
    
 public: 
+  struct GuiFrame {
+    int tabIndex;
+    QVBoxLayout *frameBox;
+  };
+  
   int presetCount;
   QStringList frameNameList;
   QList<GuiFrame*> frameBoxList;
@@ -58,6 +58,8 @@ public:
   void setCurrentPresetText();
   int addParameter(MidiControllableBase *, const QString &parameterName);
   void remove(MidiControllableBase *);
+  MidiControllableBase* getMidiControllableParameter(int);
+  GuiWidget::GuiFrame* getGuiFrame(int);
 
 public slots:
   void presetDec();

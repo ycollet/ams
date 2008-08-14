@@ -11,9 +11,7 @@
 #include "synthdata.h"
 #include "module.h"
 #include "main.h"
-#include "port_popup.h"
 
-PopupMenu *Port::contextMenu;
 
 Port::Port(const QString &p_portName, dirType dir, int p_index,
         Module *module, int p_color) 
@@ -34,7 +32,8 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
   cableColor = synthdata->colorCable;
   highlighted = false;
   index = p_index;
-  portNameWidth = QFontMetrics(QFont(synthdata->smallFont, this)).boundingRect(p_portName).width();
+  portNameWidth = QFontMetrics(QFont(synthdata->smallFont,
+              this)).boundingRect(p_portName).width();
   int width = 10 + portNameWidth;
   if (width < 30)
     width = 30;
@@ -74,6 +73,19 @@ int Port::connectTo(Port *port)
   return(0);
 }
 
+Port* Port::needsConnectionToPort()
+{
+    if ((dir == PORT_IN) && (connectedPortList.count() > 0))
+        return connectedPortList.at(0);
+    else 
+        return NULL;
+}
+
+bool Port::hasConnectedPort()
+{
+    return (connectedPortList.count() > 0);
+}
+
 void Port::paintEvent(QPaintEvent *) {
 
   QPainter p(this);  
@@ -110,48 +122,58 @@ void Port::paintEvent(QPaintEvent *) {
   }
 }  
    
-void Port::mousePressEvent(QMouseEvent *ev) {
-  
-  switch (ev->button()) {
-  case Qt::LeftButton:   
-    emit portClicked();
-    break;
-  case Qt::RightButton:
-    if (dir == PORT_IN)
-      showContextMenu(ev->pos());
-
-    break;
-  case Qt::MidButton:
-    break;
-  default:
-    break;
-  }
-}  
-   
-void Port::mouseReleaseEvent(QMouseEvent *ev) {
-  
-  switch (ev->button()) {
-  case Qt::LeftButton:
-    break;
-  case Qt::RightButton:
-    break;
-  case Qt::MidButton:
-    break;
-  default:
-    break;
-  }
-}  
-   
-void Port::mouseMoveEvent(QMouseEvent *) {
-
-}      
-
-void Port::showContextMenu(QPoint pos)
+void Port::mousePressEvent(QMouseEvent *ev)
 {
-  if (!contextMenu)
-    contextMenu = new PopupMenu();
+    switch (ev->button()) {
+        case Qt::LeftButton:   
+            emit portClicked();
+            ev->accept();
+            break;
+        default:
+            ev->ignore();
+            break;
+    }
+}  
+   
+bool Port::isInPort()
+{
+    return (dir == PORT_IN);
+}
 
-  contextMenu->popup(this, mapToGlobal(pos));
+void Port::popupMenuClicked(PopupMenu::portAction ac)
+{
+    switch(ac) {
+        case PopupMenu::paDisconnect:
+            disconnectClicked();
+            break;
+        case PopupMenu::paDefaultCable:
+            cableDefaultClicked();
+            break;
+        case PopupMenu::paGrayCable:
+            cableGrayClicked();
+            break;
+        case PopupMenu::paRedCable:
+            cableRedClicked();
+            break;
+        case PopupMenu::paGreenCable:
+            cableGreenClicked();
+            break;
+        case PopupMenu::paBlueCable:
+            cableBlueClicked();
+            break;
+        case PopupMenu::paYellowCable:
+            cableYellowClicked();
+            break;
+        case PopupMenu::paSetJackColor:
+            jackColorClicked();
+            break;
+        case PopupMenu::paSetCableColor:
+            cableColorClicked();
+            break;
+        case PopupMenu::paNone:
+        default:
+            break;
+    }
 }
 
 void Port::disconnectClicked() {
@@ -240,4 +262,9 @@ void Port::cableColorClicked() {
     cableColor = tmp;
   }
   update();
+}
+
+bool Port::hasIndex(int idx)
+{
+    return (index == idx);
 }

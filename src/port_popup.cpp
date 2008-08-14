@@ -1,43 +1,63 @@
 #include "port_popup.h"
 
-PopupMenu::PopupMenu()
-  :port(NULL)
+PopupMenu::PopupMenu(QWidget* parent)
+  :QMenu(parent)
 {
-  QAction *a = new QAction(tr("Disconnect"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(disconnectClicked()));
-  addAction(a);
+  acDisconnect = new QAction(tr("Disconnect"), this);
+  addAction(acDisconnect);
 
-  insertSeparator();
-  a = new QAction(tr("Default Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableDefaultClicked()));
-  addAction(a);
+  addSeparator();
+  acDefaultCable = new QAction(tr("Default Cable"), this);
+  addAction(acDefaultCable);
 
-  a = new QAction(tr("Gray Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableGrayClicked()));
-  addAction(a);
+  acGrayCable = new QAction(tr("Gray Cable"), this);
+  addAction(acGrayCable);
 
-  a = new QAction(tr("Red Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableRedClicked()));
-  addAction(a);
+  acRedCable = new QAction(tr("Red Cable"), this);
+  addAction(acRedCable);
 
-  a = new QAction(tr("Green Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableGreenClicked()));
-  addAction(a);
+  acGreenCable = new QAction(tr("Green Cable"), this);
+  addAction(acGreenCable);
 
-  a = new QAction(tr("Blue Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableBlueClicked()));
-  addAction(a);
+  acBlueCable = new QAction(tr("Blue Cable"), this);
+  addAction(acBlueCable);
 
-  a = new QAction(tr("Yellow Cable"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableYellowClicked()));
-  addAction(a);
+  acYellowCable = new QAction(tr("Yellow Cable"), this);
+  addAction(acYellowCable);
 
-  insertSeparator();
-  a = new QAction(tr("Set Jack Color"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(jackColorClicked()));
-  addAction(a);
+  addSeparator();
+  acSetJackColor = new QAction(tr("Set Jack Color..."), this);
+  addAction(acSetJackColor);
 
-  a = new QAction(tr("Set Cable Color"), this);
-  connect(a, SIGNAL(triggered()), this, SLOT(cableColorClicked()));
-  addAction(a);
+  acSetCableColor = new QAction(tr("Set Cable Color..."), this);
+  addAction(acSetCableColor);
+}
+
+PopupMenu::portAction PopupMenu::runAt(const QPoint& pos)
+{
+    portAction result;
+    QAction* ac = exec(pos);
+
+    if (ac == acDisconnect)
+        result = paDisconnect;
+    else if (ac ==acDefaultCable)
+        result = paDefaultCable;
+    else if (ac ==acGrayCable)
+        result = paGrayCable;
+    else if (ac ==acRedCable)
+        result = paRedCable;
+    else if (ac ==acGreenCable)
+        result = paGreenCable;
+    else if (ac ==acBlueCable)
+        result = paBlueCable;
+    else if (ac ==acYellowCable)
+        result = paYellowCable;
+    else if (ac ==acSetJackColor)
+        result = paSetJackColor;
+    else if (ac ==acSetCableColor)
+        result = paSetCableColor;
+    else
+        result = paNone;
+
+    return result;
 }

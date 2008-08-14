@@ -16,10 +16,10 @@
 #include <qsizepolicy.h>
 #include <qpoint.h>
 #include <qlist.h>
-#include <QMouseEvent>
 #include <QPaintEvent>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
+
 #include "synthdata.h"
 #include "configdialog.h"
 #include "port.h"
@@ -85,7 +85,7 @@ class Module : public Box
 {
   Q_OBJECT
 
-  int connections;
+    int connections;
     
   public: 
     ConfigDialog *configDialog;
@@ -97,41 +97,48 @@ class Module : public Box
     int moduleID, outPortCount;
 //    class QTreeWidgetItem *listViewItem;
     QColor colorBackground, colorBorder, colorFont;
-  static int portmemAllocated;
+    static int portmemAllocated;
 
   public:
-    Module(M_typeEnum M_type, int outPortCount, QWidget* parent, const QString &name);
-    virtual  ~Module();
+    Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
+            const QString &name);
+    virtual ~Module();
 
-  int checkin(Port *); 
-  int connected() {
-    return connections;
-  }
-  void incConnections();
-  void decConnections();
-  virtual void mcAbleChanged(MidiControllableBase *) {}
-    int save(QTextStream&);
-    virtual int saveConnections(QTextStream&); 
-    virtual int saveParameters(QTextStream&);
-    virtual int saveBindings(QTextStream&); 
-    virtual int load(FILE *f);
+    int checkin(Port *); 
+    int connected() {
+      return connections;
+    }
+    void incConnections();
+    void decConnections();
+    virtual void mcAbleChanged(MidiControllableBase *) {}
+    void save(QTextStream&);
+    virtual void saveConnections(QTextStream&); 
+    virtual void saveParameters(QTextStream&);
+    virtual void saveBindings(QTextStream&); 
     void getColors(void);
 
-  float **getData(int index) {
-    if (!cycleReady) {
-      generateCycle();
-      cycleReady = true;
+    float **getData(int index) {
+        if (!cycleReady) {
+            generateCycle();
+            cycleReady = true;
+        }
+        return data[index];
     }
-    return data[index];
-  }
-
+    void showConfigDialog(const QPoint&);
+    bool hasModuleId(int);
+    void setModuleId(int);
+    MidiControllableBase * getMidiControlableBase(int);
+    Port* getPortAt(int);
+    Port* getPortWithIndex(int);
+    Port* getInPortWithIndex(int);
+    Port* getOutPortWithIndex(int);
 
 protected:
   virtual void generateCycle() = 0;
 
   void portMemAlloc(int outPortCount, bool poly);
   virtual void paintEvent(QPaintEvent *ev);
-  virtual void mousePressEvent (QMouseEvent* );
+  //virtual void mousePressEvent (QMouseEvent* );
   void paint(QPainter &);
 
   struct CtorVar {

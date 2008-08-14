@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <QApplication>
+#include <QDir>
 #include <QString>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -12,9 +13,11 @@
 #include <QTranslator>
 
 #include "mainwindow.h"
-#include "m_ladspa.h"
 #include "msoptions.h"
+#include "config.h"
 
+
+#define AMSDIR ".alsamodular"
 
 static struct option options[] =
         {{"periodsize", 1, 0, 'b'},
@@ -37,73 +40,69 @@ static struct option options[] =
 QTextStream StdOut(stdout);
 QTextStream StdErr(stderr);
 
-QString amsHOME()
-{
-  return QString(getenv("HOME")) + "/.alsamodular/";
-}
+
 
 QString amsRcPath(const QString &synthName)
 {
-  QString string;
-  QTextStream rcPath(&string);
-  rcPath << amsHOME() << synthName;
-  rcPath << ".cfg";
-  return string;
+  return QString("%1/" AMSDIR "/%2.cfg").arg(QDir::homePath())
+      .arg(synthName);
 }
 
-QString amsSynthName(const QString &name, int index)
+QString amsSynthName(const QString &name, unsigned int index)
 {
-  QString string;
-  QTextStream synthName(&string);
-  synthName << name;
-  if (index)
-    synthName << "_" << index;
-  return string; 
+  return QString("%1_%2").arg(name).arg(index);
 }
 
 int makeSynthName(QString &name)
 {
     int fd;
-    mkdir(amsHOME().toLatin1().data(), 0777);
 
-    for (int index = 0; index < 9; index++) {
+    QDir amshome = QDir(QDir::homePath());
+    if (!amshome.exists(AMSDIR)) {
+        if (!amshome.mkdir(AMSDIR)) {
+            qWarning(QObject::tr("Could not create ams home "
+                        "directory.").toUtf8());
+            return -1;
+        }
+    }
+
+    for (unsigned int index = 1; index <= 9; index++) {
         QString rcPath = amsRcPath(amsSynthName(name, index));
-        StdOut << rcPath << endl;
+        //StdOut << "Resource file path: " << rcPath << endl;
         fd = open(rcPath.toLatin1().data(), O_CREAT|O_RDWR, 0666);
         if (fd == -1) {
-            qWarning(QObject::tr("Failed to open file %1")
+            qWarning(QObject::tr("Failed to open file '%1'")
                     .arg(rcPath).toUtf8());
-            exit(-1);
+            return -1;
         }
 
         struct flock lock = {F_WRLCK, SEEK_SET, 0, 0, 0};
         if (fcntl(fd, F_SETLK, &lock) == -1) {
             close(fd);
-            StdOut << "occupied" << rcPath << endl;
+            StdOut << "File occupied: " << rcPath << endl;
         } else {
             lock.l_type = F_RDLCK;
             if (fcntl(fd, F_SETLK, &lock) == -1) {
                 qWarning(QObject::tr("Ooops in %1 at %2")
                         .arg(__FUNCTION__).arg(__LINE__).toUtf8());
-                exit(-1);
+                return -1;
             }
             name = amsSynthName(name, index);
             return fd;
         }
     }
-    qWarning(QObject::tr("%1 occupied.").arg(name).toUtf8());
-    exit(-1);
+    qWarning(QObject::tr("Client name '%1' occupied.").arg(name).toUtf8());
     return -1;
 }
 
 
 int main(int argc, char *argv[])  
 {
-  char aboutText[] = AMS_LONGNAME " " AMS_VERSION 
+  char aboutText[] = AMS_LONGNAME " " VERSION 
                      "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
-		     "additional programming:\n"
+		     "Additional programming:\n"
 		     "2007 Malte Steiner\n"
 		     "2007 Karsten Wiese\n";
   QApplication app(argc, argv);
@@ -117,6 +116,15 @@ int main(int argc, char *argv[])
       app.installTranslator(&qtTr);
   else
       qWarning("No Qt translation for locale '%s' found.",
+              loc.name().toUtf8().constData());
+  
+  // translator for ams strings
+  QTranslator amsTr;
+
+  if (amsTr.load(QString("ams_") + loc.name(), TRANSLATIONSDIR))
+      app.installTranslator(&amsTr);
+  else
+      qWarning("No " AMS_LONGNAME " translation for locale '%s' found.",
               loc.name().toUtf8().constData());
   
   int getopt_return;
@@ -204,11 +212,12 @@ int main(int argc, char *argv[])
   }
 
   msoptions.rcFd = makeSynthName(msoptions.synthName);
+  if (msoptions.rcFd == -1)
+      exit(1);
+
   MainWindow* top = new MainWindow(msoptions);
   Q_CHECK_PTR(top);
   top->resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-  M_ladspa::logo = new QPixmap(PIXMAPS_PATH"ladspa_logo_smaller_trans.png");
 
   return app.exec();
 }

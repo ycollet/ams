@@ -1,62 +1,42 @@
+#ifndef PORT_POPUP_H
+#define PORT_POPUP_H
+
+#include <QAction>
 #include <QMenu>
-#include "modularsynth.h"
-#include "module.h"
-#include "port.h"
 
 class PopupMenu: public QMenu {
   Q_OBJECT
 
-  Port *port;
-
 public:
+    enum portAction {
+        paNone = 0,
+        paDisconnect,
+        paDefaultCable,
+        paGrayCable,
+        paRedCable,
+        paGreenCable,
+        paBlueCable,
+        paYellowCable,
+        paSetJackColor,
+        paSetCableColor
+    };
 
-  void popup(Port *p, QPoint pos) {
-    port = p;
-    QMenu::popup(pos);
-  }
+  PopupMenu(QWidget* parent = NULL);
+  PopupMenu::portAction runAt(const QPoint&);
 
-  PopupMenu()
-    :port(NULL)
-  {
-    QAction *a = new QAction("Disconnect", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(disconnectClicked()));
-    addAction(a);
+private:
+  QAction* acDisconnect;
+  QAction* acDefaultCable;
+  QAction* acGrayCable;
+  QAction* acRedCable;
+  QAction* acGreenCable;
+  QAction* acBlueCable;
+  QAction* acYellowCable;
+  QAction* acSetJackColor;
+  QAction* acSetCableColor;
 
-    addSeparator();
-    a = new QAction("Default Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableDefaultClicked()));
-    addAction(a);
 
-    a = new QAction("Gray Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableGrayClicked()));
-    addAction(a);
-
-    a = new QAction("Red Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableRedClicked()));
-    addAction(a);
-
-    a = new QAction("Green Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableGreenClicked()));
-    addAction(a);
-
-    a = new QAction("Blue Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableBlueClicked()));
-    addAction(a);
-
-    a = new QAction("Yellow Cable", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableYellowClicked()));
-    addAction(a);
-
-    addSeparator();
-    a = new QAction("Set Jack Color", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(jackColorClicked()));
-    addAction(a);
-
-    a = new QAction("Set Cable Color", this);
-    connect(a, SIGNAL(triggered()), this, SLOT(cableColorClicked()));
-    addAction(a);
-  }
-
+/*
 public slots:
   void disconnectClicked() {
     port->disconnectClicked();
@@ -93,4 +73,7 @@ public slots:
     port->cableColorClicked();
     port->module->modularSynth()->update();
   }
+  */
 };
+
+#endif

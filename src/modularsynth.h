@@ -10,13 +10,11 @@
 #include <qcheckbox.h>  
 #include <qlabel.h>
 #include <qlist.h>
-//#include <q3frame.h>
 #include <qmessagebox.h>
 #include <QMainWindow>
 #include <qsocketnotifier.h>
 #include <qpoint.h>
 #include <qcolor.h>
-//Added by qt3to4:
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QTextStream>
@@ -25,6 +23,7 @@
 #include "synthdata.h"
 #include "module.h"
 #include "port.h"
+#include "port_popup.h"
 #include "midiwidget.h"
 #include "msoptions.h"
 #include "ladspadialog.h"
@@ -52,16 +51,15 @@ class ModularSynth : public QWidget
     class PrefWidget *prefWidget;
     bool loadingPatch;
     QString pcmname;
-    int   fsamp;
-    int   frsize;
-    int   nfrags;
+    unsigned int fsamp;
+    snd_pcm_uframes_t frsize;
+    unsigned int nfrags;
     int   ncapt;
     int   nplay;
     bool paintFastly;
-    bool modified;
     double _zoomFactor;
     QPoint newBoxPos;
-  int rcFd;
+    QPoint lastMousePos;
     void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
@@ -75,7 +73,7 @@ class ModularSynth : public QWidget
     void newM_dynamicwaves(int oscCount);
     void newM_ad(int outCount);
     void new_textEdit(int w, int h);
-    void showContextMenu(QPoint pos);
+    void showContextMenu(const QPoint&);
     bool clearConfig(bool restart);
             
 public:
@@ -83,7 +81,6 @@ public:
   ~ModularSynth();
 
     QMenu *contextMenu;
-    void resize(void);
     int go(bool withJack);
     void setPaintFastly(bool v) {
       paintFastly = v;
@@ -95,14 +92,23 @@ public:
     QString getSavePath();
     void setSavePath(const QString& sp);
     int getSynthDataPoly();
+    QSize sizeHint() const;
 
   protected:
     class QAbstractScrollArea *scrollArea() {
       return (QAbstractScrollArea *)parent();
     }
-    void paintEvent(QPaintEvent *pe);
-    virtual void mousePressEvent (QMouseEvent* );
-    virtual void mouseReleaseEvent (QMouseEvent* );
+    void paintEvent(QPaintEvent*);
+    virtual void mousePressEvent(QMouseEvent*);
+    virtual void mouseReleaseEvent(QMouseEvent*);
+    virtual void mouseMoveEvent(QMouseEvent*);
+
+  private:
+    QWidget* dragWidget;
+    bool modified;
+    PopupMenu* portPopup;
+    Module* getModuleWithId(int);
+    TextEdit* getTextEditAt(int);
     
   public slots: 
     void displayAbout();
@@ -177,7 +183,7 @@ public:
     void newM_dynamicwaves_4();
     void newM_dynamicwaves_6();
     void newM_dynamicwaves_8();
-    void resizeTextEdit(QPoint pos);
+    void resizeTextEdit(const QPoint& pos);
     void portSelected();
     void deleteModule();
     void deleteModule(Module *m);
@@ -189,7 +195,9 @@ public:
     void loadColors();
     void saveColors();
     void allVoicesOff();
-    void cleanUpSynth();
+    void loadPreferences(int);
+    void loadPreferences(QString&);
+    void savePreferences(QTextStream&);
     void refreshColors();
     void redrawPortConnections();
     void updateColors();

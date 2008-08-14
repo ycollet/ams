@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "synthdata.h"
 
-#include "pixmaps/ams_32.xpm"
+#include "../pixmaps/ams_32.xpm"
 
 /*some constants*/
 #define APPNAME  "AlsaModularSynth"
@@ -17,7 +17,7 @@ class ScrollArea: public QScrollArea {
   void resizeEvent(QResizeEvent *ev)
   {
     QScrollArea::resizeEvent(ev);
-    ((ModularSynth*)widget())->resize();
+    widget()->adjustSize();
   }
 };
 
@@ -26,31 +26,19 @@ int MainWindow::pipeFd[2];
 
 MainWindow::MainWindow(const ModularSynthOptions& mso)
 {
+  /*make sure the window destructor is called on program exit*/
+  setAttribute(Qt::WA_DeleteOnClose);
   setWindowIcon(QPixmap(ams_32_xpm));
+  fileName = "";
+  rcFd = mso.rcFd;
 
   /*init synthesizer*/
   modularSynth = new ModularSynth(this, mso);
-  if (mso.havePresetPath) {
-    qWarning(QObject::tr("Preset path now %1").arg(mso.presetPath).toUtf8()); 
-    modularSynth->setLoadPath(mso.presetPath);
-  }
-  modularSynth->go(mso.enableJack);
-  // TODO: check autoload option
-  if (mso.havePreset) {
-    qWarning(QObject::tr("Loading preset %1").arg(mso.presetName).toUtf8()); 
-    openFile(mso.presetName);
-  }
-
-  fileName = "";
-  updateWindowTitle();
 
   /*init window*/
   ScrollArea *scrollArea = new ScrollArea();
   scrollArea->setWidget(modularSynth);
   setCentralWidget(scrollArea);
-
-  QObject::connect(qApp, SIGNAL(aboutToQuit()), modularSynth,
-          SLOT(cleanUpSynth()));
 
   QMenu *filePopup = menuBar()->addMenu(tr("&File"));
   QMenu *synthesisPopup = menuBar()->addMenu(tr("&Synthesis"));
@@ -65,15 +53,17 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           Qt::CTRL + Qt::Key_N);
   filePopup->addAction(tr("&Open..."), this, SLOT(fileOpen()),
           Qt::CTRL + Qt::Key_O);
-  filePopup->addAction(tr("&Save"), this, SLOT(fileSave()));
-  filePopup->addAction(tr("Save &as..."), this, SLOT(fileSaveAs()),
+  fileRecentlyOpenedFiles = filePopup->addMenu(tr("&Recently opened files"));
+  filePopup->addAction(tr("&Save"), this, SLOT(fileSave()),
           Qt::CTRL + Qt::Key_S);
+  filePopup->addAction(tr("Save &as..."), this, SLOT(fileSaveAs()));
   filePopup->addSeparator();
-  filePopup->addAction(tr("&Load Colors"), modularSynth, SLOT(loadColors()));
-  filePopup->addAction(tr("Save &Colors"), modularSynth, SLOT(saveColors()));
+  filePopup->addAction(tr("&Load Colors..."), modularSynth, SLOT(loadColors()));
+  filePopup->addAction(tr("Save &Colors as..."), modularSynth, SLOT(saveColors()));
   filePopup->addSeparator();
   filePopup->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()),
           Qt::CTRL + Qt::Key_Q);
+  connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
 
   synthesisPopup->addAction(tr("&Start"), modularSynth, SLOT(startSynth()),
           Qt::CTRL + Qt::Key_B);
@@ -155,6 +145,14 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 
   helpMenu->addAction(tr("&About AlsaModularSynth..."), modularSynth,
           SLOT(displayAbout()));
+  helpMenu->addAction(tr("About &Qt..."), this,
+          SLOT(helpAboutQt()));
+
+  connect(filePopup, SIGNAL(aboutToShow()), this,
+          SLOT(setupRecentFilesMenu()));
+  connect(fileRecentlyOpenedFiles, SIGNAL(triggered(QAction*)), this,
+        SLOT(recentFileActivated(QAction*)));
+
 
   if (pipe(pipeFd) < 0)
     return;
@@ -169,11 +167,40 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   action.sa_handler = sighandler;
   sigaction(SIGINT, &action, NULL);
 
+  readConfig();
+  updateWindowTitle();
+
+  if (mso.havePresetPath) {
+    qWarning(QObject::tr("Preset path now %1").arg(mso.presetPath).toUtf8()); 
+    modularSynth->setLoadPath(mso.presetPath);
+  }
+  modularSynth->go(mso.enableJack);
+
+  // autoload patch file
+  if (mso.havePreset) {
+    qWarning(QObject::tr("Loading preset %1").arg(mso.presetName).toUtf8()); 
+    openFile(mso.presetName);
+  }
+
   if (mso.noGui)
       hide();
   else
       show();
 }
+
+
+MainWindow::~MainWindow()
+{
+    qWarning(QObject::tr("Closing synthesizer...").toUtf8());
+    writeConfig();
+
+    // remove file lock
+    struct flock lock = {F_WRLCK, SEEK_SET, 0, 0, 0};
+    if (fcntl(rcFd, F_UNLCK, &lock) == -1) {
+        qWarning(QObject::tr("Could not unlock preferences file.").toUtf8());
+    }
+}
+
 
 void MainWindow::sighandler(int s)
 {
@@ -226,22 +253,7 @@ void MainWindow::chooseFile()
 
 void MainWindow::fileNew()
 {           
-    if (isModified()) {
-        int choice = querySaveChanges();
-        switch (choice) {
-            case 0: 
-                if (saveFile())
-                    newFile();
-                break;
-            case 1:
-                newFile();
-                break;
-            case 2: 
-            default: 
-                break;
-        }
-    }       
-    else
+    if (isSave())
         newFile();
 }
 
@@ -251,36 +263,43 @@ void MainWindow::newFile()
  
     fileName = "";
     updateWindowTitle();
-    qWarning(tr("New patch file created").toUtf8());
 }
 
 
 void MainWindow::fileOpen()
 {
+    if (isSave())
+        chooseFile();
+}
+
+
+bool MainWindow::isSave()
+{
+    bool result = false;
+
     if (isModified()) {
         int choice = querySaveChanges();
         switch (choice) {
-            case 0:
+            case 0: //Yes
                 if (saveFile())
-                    chooseFile();
+                    result = true;
                 break;
-            case 1:
-                chooseFile();
+            case 1: //No
+                result = true;
                 break;
-            case 2:
+            case 2: //Cancel
             default:
                 break;
         }
     }
     else
-        chooseFile();
+        result = true;
+    return result;
 }
 
 
 void MainWindow::openFile(const QString& fn)
 {
-    modularSynth->setLoadPath(fn.left(fn.lastIndexOf('/')));
-
     QFile f(fn);
 
     if (!f.open(QIODevice::ReadOnly)) {
@@ -288,6 +307,7 @@ void MainWindow::openFile(const QString& fn)
         return;
     }
 
+    modularSynth->setLoadPath(fn.left(fn.lastIndexOf('/')));
     modularSynth->clearConfig();
     fileName = fn;
     QTextStream ts(&f);
@@ -295,6 +315,7 @@ void MainWindow::openFile(const QString& fn)
     modularSynth->load(ts);
     f.close();
     
+    addRecentlyOpenedFile(fileName, recentFiles);
     updateWindowTitle();
 }
 
@@ -364,25 +385,101 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    if (!isModified())
+    if (isSave())
         e->accept();
-    else {
-        int choice = querySaveChanges();
-        switch (choice) {
-            case 0:
-                if (saveFile())
-                    e->accept();
-                else 
-                    e->ignore();
-                break;
-            case 1:
-                e->accept();
-                break;
-            case 2:
-            default:
-                e->ignore();
-                break;
+    else 
+        e->ignore();
+}
+
+void MainWindow::helpAboutQt()
+{
+    QMessageBox::aboutQt(this, tr("About Qt"));
+}
+
+void MainWindow::readConfig()
+{
+    QString s;
+    QFile file;
+
+    if (!file.open(rcFd, QIODevice::ReadOnly)) {
+        qWarning("Could not open preferences file.");
+        return;
+    }
+    if (!file.seek(0)) {
+        qWarning("Could not seek start of preferences file.");
+        file.close();
+        return;
+    }
+    QTextStream ts(&file);
+
+    while (!ts.atEnd()) {
+        s = ts.readLine(); 
+        if (s.startsWith("RecentFile"))
+            addRecentlyOpenedFile(s.section(' ', 1), recentFiles);
+        else
+            modularSynth->loadPreferences(s);
+    }
+    file.close();
+    modularSynth->refreshColors();
+}
+
+void MainWindow::writeConfig()
+{
+    QFile file;
+
+    if (!file.open(rcFd, QIODevice::WriteOnly)) {
+        qWarning("Could not open preferences file.");
+        return;
+    }
+    if (!file.resize(0)) {
+        qWarning("Could not resize preferences file.");
+        file.close();
+        return;
+    }
+    QTextStream ts(&file);
+    modularSynth->savePreferences(ts);
+
+    // save recent files
+    if (recentFiles.count() > 0) {
+        QStringList::Iterator it = recentFiles.begin();
+        for (; it != recentFiles.end(); ++it) {
+            ts << "RecentFile " << *it << endl;
         }
     }
+    file.close();
+}
+
+void MainWindow::setupRecentFilesMenu()
+{
+    fileRecentlyOpenedFiles->clear();
+
+    if (recentFiles.count() > 0) {
+        fileRecentlyOpenedFiles->setEnabled(true);
+        QStringList::Iterator it = recentFiles.begin();
+        for (; it != recentFiles.end(); ++it) {
+            fileRecentlyOpenedFiles->addAction(*it);
+        }
+    } else {
+        fileRecentlyOpenedFiles->setEnabled(false);
+    }
+}
+
+void MainWindow::recentFileActivated(QAction *action)
+{
+    if (!action->text().isEmpty()) {
+        if (isSave())
+            openFile(action->text());
+    }
+}
+
+void MainWindow::addRecentlyOpenedFile(const QString &fn, QStringList &lst)
+{
+    QFileInfo fi(fn);
+    if (lst.contains(fi.absoluteFilePath()))
+        return;
+    if (lst.count() >= 6 )
+        lst.removeLast();
+
+    lst.prepend(fi.absoluteFilePath());
 }
 

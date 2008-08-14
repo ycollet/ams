@@ -18,7 +18,9 @@
 #include <qlineedit.h>
 #include <qfile.h>
 #include <qtabwidget.h>
+#include <QTextStream>
 #include <QVBoxLayout>
+
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 
@@ -44,14 +46,14 @@ class PrefWidget : public QWidget
    
   public:
     PrefWidget();
-    bool loadPref(QString config_fn);
-    bool loadPref(int rcFd);
+    void loadPref(int);
+    void loadPref(QString&);
+    void savePref(QTextStream&);
 
   signals:
     void prefChanged();
 
   public slots:
-    void savePref(int rcFd);
     void submitPref();
     void applyPref();
     void refreshColors();

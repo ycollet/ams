@@ -21,7 +21,7 @@
 #include "port.h"
 
 M_noise2::M_noise2(QWidget* parent) 
-  : Module(M_type_noise2, 1, parent, "Noise2")
+  : Module(M_type_noise2, 1, parent, tr("Noise2"))
 {
   QString qs;
   int l2;
@@ -41,10 +41,10 @@ M_noise2::M_noise2(QWidget* parent)
   */
 
   QStringList noiseNames;
-  noiseNames << "White" << "Random" << "Pink";
-  configDialog->addComboBox("Noise Type ", NoiseType, noiseNames);
-  configDialog->addSlider("Random Rate", rate, 0, 10);
-  configDialog->addSlider("Random Level", level, 0, 1);
+  noiseNames << tr("White") << tr("Random") << tr("Pink");
+  configDialog->addComboBox(tr("Noise Type"), NoiseType, noiseNames);
+  configDialog->addSlider(tr("Random Rate"), rate, 0, 10);
+  configDialog->addSlider(tr("Random Level"), level, 0, 1);
   r = 0;
   for (l2 = 0; l2 < 3; ++l2) {
     buf[l2] = 0;
@@ -55,10 +55,10 @@ M_noise2::M_noise2(QWidget* parent)
 
 void M_noise2::generateCycle() {
 
-  unsigned int l1, l2, random_rate;
+  int l1;
+  unsigned int l2;
   float white_noise;
 
-    if (NoiseType==RAND) random_rate = (int)(5000.0 * (double)rate + 100.0);
      switch (NoiseType)
      {
       case WHITE:
@@ -74,6 +74,7 @@ void M_noise2::generateCycle() {
       break;
       case RAND:
       {
+        unsigned int random_rate = (unsigned int)(5000.0 * (double)rate + 100.0);
     	for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
       		count++; 
       		if (count > random_rate) {

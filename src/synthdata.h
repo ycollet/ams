@@ -93,8 +93,14 @@ class SynthData
     QString name;
     int midi_out_port[2];
     int midiChannel;
-    QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
-    QColor colorCable, colorJack;
+    QColor colorBackground;
+    QColor colorModuleBackground;
+    QColor colorModuleBorder;
+    QColor colorModuleFont;
+    QColor colorPortFont1;
+    QColor colorPortFont2;
+    QColor colorCable;
+    QColor colorJack;
     QFont bigFont, smallFont;
 
     pthread_mutex_t rtMutex;
@@ -137,7 +143,9 @@ public:
     void set_capt_mod (unsigned int k, void *M) { if (k < MAX_CAPT_PORTS / 2) capt_mods [k] = M; }
     void set_play_mod (unsigned int k, void *M) { if (k < MAX_PLAY_PORTS / 2) play_mods [k] = M; }
 
-    int initAlsa (const char *name, int fsamp, int frsize, int nfrags, int ncapt, int nplay);
+    int initAlsa (const char *name, unsigned int fsamp,
+            snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt,
+            int nplay);
     int closeAlsa();
 
     int initJack (int ncapt, int nplay);

@@ -4,6 +4,7 @@
 #ifndef MSOPTIONS_H
 #define MSOPTIONS_H
 
+#include <alsa/asoundlib.h>
 #include <QString>
 
 struct ModularSynthOptions {
@@ -11,10 +12,10 @@ struct ModularSynthOptions {
     QString pcmname;
     QString presetName;
     QString presetPath;
-    int frsize;
-    int fsamp;
+    snd_pcm_uframes_t frsize;
+    unsigned int fsamp;
+    unsigned int nfrags;
     int ncapt;
-    int nfrags;
     int nplay;
     int poly;
     int rcFd;

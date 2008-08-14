@@ -92,7 +92,9 @@ int GuiWidget::addFrame(const QString &frameName)
 int GuiWidget::setFrame(int index) {
 
 //  fprintf(stderr, "Setting frame index %d.\n", index);  
-  currentGroupBox = frameBoxList.at(index)->frameBox;
+  GuiFrame* gf = getGuiFrame(index);
+  if (gf != NULL)
+      currentGroupBox = gf->frameBox;
   return(0);  
 }
 
@@ -148,32 +150,35 @@ int GuiWidget::setPresetCount(int count) {
 
 int GuiWidget::setCurrentPreset(int presetNum, bool rt)
 {
-  int index, value;
+    int index, value;
 
-  if (presetCount == 0)
-    currentPreset = 0;
+    if (presetCount == 0)
+        currentPreset = 0;
 
-  if (presetNum < 0 || presetNum >= presetCount)
-    return -1;
+    if (presetNum < 0 || presetNum >= presetCount)
+        return -1;
 
-  currentPreset = presetNum;
+    currentPreset = presetNum;
 
-  for (index = 0; index < presetList[currentPreset].count(); index++) {
-    value = presetList[currentPreset][index];
-     //!!    parameterList.at(index)->invalidateController();
-    if (rt) {
-      parameterList.at(index)->setValRT(value);
-      synthdata->mcSet.put(parameterList.at(index));
-    } else {
-      //      StdOut << currentPreset << " " << parameterList.at(index)->name << " " << index << " " << value << " " << endl;
-      parameterList.at(index)->setVal(value, NULL);
+    for (index = 0; index < presetList[currentPreset].count(); index++) {
+        value = presetList[currentPreset][index];
+        //!!    parameterList.at(index)->invalidateController();
+        MidiControllableBase* mcb = getMidiControllableParameter(index);
+        if (mcb != NULL) {
+            if (rt) {
+                mcb->setValRT(value);
+                synthdata->mcSet.put(mcb);
+            } else {
+                // StdOut << currentPreset << " " << mcb->name << " " << index << " " << value << " " << endl;
+                mcb->setVal(value, NULL);
+            }
+        }
     }
-  }
 
-  if (!rt)
-    setCurrentPresetText();
+    if (!rt)
+        setCurrentPresetText();
 
-  return 0;
+    return 0;
 }
 
 void GuiWidget::setCurrentPresetText()
@@ -222,7 +227,7 @@ void GuiWidget::addPreset() {
 
 void GuiWidget::overwritePreset()
 {
-  int l1, value;
+  int l1;
   QString qs;
 
   if (!presetCount)
@@ -230,10 +235,12 @@ void GuiWidget::overwritePreset()
 
   presetList[currentPreset].clear();
   for (l1 = 0; l1 < parameterList.count(); l1++) {
-    value = parameterList.at(l1)->sliderVal();
-    presetList[currentPreset].append(value);
+      MidiControllableBase* mcb = getMidiControllableParameter(l1);
+      if (mcb != NULL)
+          presetList[currentPreset].append(mcb->sliderVal());
   } 
-  for (QStringList::Iterator it = presetNameList.begin(); it != presetNameList.end(); it++) {
+  for (QStringList::Iterator it = presetNameList.begin();
+          it != presetNameList.end(); it++) {
     qs = (*it).mid(0, 3);
     if (qs.toInt() == currentPreset) {
       qs.sprintf("%3d", currentPreset);
@@ -287,7 +294,30 @@ void GuiWidget::remove(MidiControllableBase *mcAble)
   delete mgc;
 
   for (int ps = 0; ps < presetCount; ps++)
-    presetList[ps].removeAt(index);
+      presetList[ps].removeAt(index);
 
   parameterList.removeAt(index);
+}
+
+MidiControllableBase* GuiWidget::getMidiControllableParameter(int idx)
+{
+    MidiControllableBase* mcb = NULL;
+
+    if ((idx + 1) > parameterList.count())
+        qWarning("Midi controllable parameter index out of "
+                "range (value = %d)", idx);
+    else
+        mcb = parameterList.at(idx);
+    return mcb;
+}
+
+GuiWidget::GuiFrame* GuiWidget::getGuiFrame(int idx)
+{
+    GuiFrame* gf = NULL;
+
+    if ((idx + 1) > frameBoxList.count())
+        qWarning("Gui frame index out of range (value = %d)", idx);
+    else
+        gf = frameBoxList.at(idx);
+    return gf;
 }

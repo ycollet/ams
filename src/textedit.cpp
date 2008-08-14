@@ -45,36 +45,37 @@ void TextEdit::paintEvent(QPaintEvent *) {
 
 void TextEdit::mousePressEvent(QMouseEvent *ev)
 {
-  Box::mousePressEvent(ev);
-  
-  switch (ev->button()) {
-  case Qt::MidButton:
-    sizeDrag = true;
-    mousePressPos = ev->pos();
-  default:
-    break;
-  }
+    switch (ev->button()) {
+        case Qt::MidButton:
+            sizeDrag = true;
+            mousePressPos = ev->pos();
+            ev->accept();
+        default:
+            ev->ignore();
+            break;
+    }
 }  
 
 void TextEdit::mouseReleaseEvent(QMouseEvent *ev)
 {
-  Box::mouseReleaseEvent(ev);
-
-  switch (ev->button()) {
-  case Qt::MidButton:
-    sizeDrag = false;
-  default:
-    break;
-  }
+    switch (ev->button()) {
+        case Qt::MidButton:
+            sizeDrag = false;
+            ev->accept();
+        default:
+            ev->ignore();
+            break;
+    }
 }  
    
 void TextEdit::mouseMoveEvent(QMouseEvent *ev)
 {
-  Box::mouseMoveEvent(ev);
-
-  if (sizeDrag) {   
-    emit sizeDragged(ev->pos());  
-  }
+    if (sizeDrag) {   
+        emit sizeDragged(ev->pos());  
+        ev->accept();
+    }
+    else
+        ev->ignore();
 }  
             
 void TextEdit::removeThisTextEdit() {

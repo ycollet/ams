@@ -4,8 +4,6 @@
 #define AMS_LONGNAME "AlsaModularSynth"
 #define AMS_SHORTNAME "AMS"
 
-#define AMS_VERSION "1.9.0 beta 2"
-
 // Compile time options for AlsaModularSynth
 
 #define DEFAULT_SETUP

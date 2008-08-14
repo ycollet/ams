@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <qwidget.h>
 #include <qpainter.h>
 #include <qstring.h>
@@ -8,7 +5,7 @@
 #include <qcheckbox.h>
 #include <qlabel.h>
 #include <QPaintEvent>
-#include <QMouseEvent>
+
 #include "midicombobox.h"
 #include "midicheckbox.h"
 #include "modularsynth.h"
@@ -19,6 +16,7 @@
 #include "midislider.h"
 #include "module.h"
 #include "main.h"
+
 
 int Module::portmemAllocated;
 Module::CtorVar Module::cv;
@@ -46,7 +44,8 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
 
   configDialog = new ConfigDialog(*this);
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
-  QObject::connect(configDialog, SIGNAL(removeModuleClicked()), this, SLOT(removeThisModule()));
+  QObject::connect(configDialog, SIGNAL(removeModuleClicked()),
+          this, SLOT(removeThisModule()));
   if (outPortCount)
     portMemAlloc(outPortCount, true);
 }
@@ -133,57 +132,50 @@ void Module::paintEvent(QPaintEvent *)
   paint(p);
 }
 
-void Module::mousePressEvent(QMouseEvent *ev)
+void Module::showConfigDialog(const QPoint& pos)
 {
-  Box::mousePressEvent(ev);
-  switch (ev->button()) {
-  case Qt::RightButton:
+    configDialog->move(pos);
     configDialog->show();
     configDialog->raise();
-  default:
-    break;
-  }
-}  
-            
+}
+
 void Module::removeThisModule() {
 
   emit removeModule();
 }
 
-int Module::save(QTextStream& ts) {
+void Module::save(QTextStream& ts) {
 
   saveConnections(ts);
   saveParameters(ts);
   saveBindings(ts);
-  return 0;
 }
 
-int Module::saveConnections(QTextStream& ts) {
+void Module::saveConnections(QTextStream& ts) {
 
-  Port *port[2];
-  int l1;
+    Port *inport;
+    Port *outport;
 
-  for (l1 = 0; l1 < portList.count(); ++l1) {
-    port[0] = portList.at(l1);
-    if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
-      port[1] = port[0]->connectedPortList.at(0);
-      ts << "ColorP "
-          << port[0]->index << ' '
-          << port[1]->index << ' '
-          << port[0]->module->moduleID << ' '
-          << port[1]->module->moduleID << ' '
-          << port[0]->jackColor.red() << ' '
-          << port[0]->jackColor.green() << ' '
-          << port[0]->jackColor.blue() << ' '
-          << port[0]->cableColor.red() << ' '
-          << port[0]->cableColor.green() << ' '
-          << port[0]->cableColor.blue() << endl;
-    }   
-  }    
-  return 0; 
+    for (int l1 = 0; l1 < portList.count(); ++l1) {
+        inport = portList.at(l1);
+        outport = inport->needsConnectionToPort();
+        if (outport != NULL) {
+            ts << "ColorP "
+                << inport->index << ' '
+                << outport->index << ' '
+                << inport->module->moduleID << ' '
+                << outport->module->moduleID << ' '
+                << inport->jackColor.red() << ' '
+                << inport->jackColor.green() << ' '
+                << inport->jackColor.blue() << ' '
+                << inport->cableColor.red() << ' '
+                << inport->cableColor.green() << ' '
+                << inport->cableColor.blue() << endl;
+        }   
+    }    
 }
 
-int Module::saveParameters(QTextStream& ts)
+void Module::saveParameters(QTextStream& ts)
 {
   int l1, l2, l3;
 
@@ -229,10 +221,9 @@ int Module::saveParameters(QTextStream& ts)
       }
        
   }
-  return 0;
 }
 
-int Module::saveBindings(QTextStream& ts)
+void Module::saveBindings(QTextStream& ts)
 {
   int l1, l2;
 
@@ -296,12 +287,6 @@ int Module::saveBindings(QTextStream& ts)
               ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }
-  return 0;
-}
-
-int Module::load(FILE *)
-{
-  return 0;
 }
 
 void Module::getColors(void)
@@ -328,3 +313,94 @@ void Module::decConnections()
     configDialog->removeButtonShow(true);
   }
 }
+
+bool Module::hasModuleId(int id)
+{
+    return (moduleID == id); 
+}
+ 
+void Module::setModuleId(int id)
+{
+    QString qs, qs2;
+
+    if (moduleID != id) {
+        moduleID = id;
+        qs = configDialog->windowTitle();
+        qs2 = qs.left(qs.lastIndexOf(' '));
+        qs.sprintf(" %d", moduleID);
+        configDialog->setWindowTitle(qs2+qs);
+    }
+}
+ 
+MidiControllableBase* Module::getMidiControlableBase(int idx)
+{
+    MidiControllableBase* mcb = NULL;
+
+    if ((idx + 1) > midiControllables.count())
+        qWarning("MidiControllableBase index out of range (value = %d)", idx);
+    else
+        mcb = midiControllables.at(idx);
+    return mcb;
+}
+
+Port* Module::getPortAt(int idx)
+{
+    Port* p = NULL;
+
+    if ((idx + 1) > portList.count()) {
+        qWarning("Port index out of range (value = %d).", idx);
+    }
+    else
+        p = portList.at(idx);
+
+    return p;
+}
+
+Port* Module::getPortWithIndex(int idx)
+{
+    Port* p = NULL;
+
+    for (int i = 0; i < portList.count(); ++i) {
+        p = portList.at(i);
+        if (p != NULL && p->hasIndex(idx)) {
+            break;
+        }
+    }
+    if (p == NULL)
+        qWarning("No port with index %d found.", idx);
+
+    return p;
+}
+
+Port* Module::getInPortWithIndex(int idx)
+{
+    Port* p = NULL;
+
+    for (int i = 0; i < portList.count(); ++i) {
+        p = portList.at(i);
+        if (p != NULL && p->hasIndex(idx) && p->isInPort()) {
+            break;
+        }
+    }
+    if (p == NULL)
+        qWarning("No input port with index %d found.", idx);
+
+    return p;
+}
+
+Port* Module::getOutPortWithIndex(int idx)
+{
+    Port* p = NULL;
+
+    for (int i = 0; i < portList.count(); ++i) {
+        p = portList.at(i);
+        if (p != NULL && p->hasIndex(idx) && !p->isInPort()) {
+            break;
+        }
+    }
+    if (p == NULL)
+        qWarning("No output port with index %d found.", idx);
+
+    return p;
+}
+

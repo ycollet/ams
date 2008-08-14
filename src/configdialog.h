@@ -74,7 +74,7 @@ public:
 		  MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout = NULL);
   class MultiEnvelope *addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout = NULL);
   int addFunction(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &, int p_pointCount, QBoxLayout *layout = NULL);
-  int addLabel(QString label, QBoxLayout *layout = NULL);
+  int addLabel(const QString& label, QBoxLayout *layout = NULL);
   int addScopeScreen(float &timeScaleRef, int &modeRef, int &edgeRef, int &triggerModeRef, 
 		     float &triggerThrsRef, float &zoomRef, QBoxLayout *layout = NULL);
 #ifdef OUTDATED_CODE
@@ -89,6 +89,13 @@ public:
   QVBoxLayout *addVBox(QBoxLayout *layout = NULL);
   int addLineEdit(const char *lineName, QBoxLayout *layout = NULL);
   int initTabWidget();
+  MidiSlider* getMidiSlider(int);
+  IntMidiSlider* getIntMidiSlider(int); 
+  IntMidiSlider* getFloatIntMidiSlider(int); 
+  MidiComboBox* getMidiComboBox(int);
+  MidiCheckBox* getMidiCheckBox(int);
+  MidiPushButton* getMidiPushButton(int);
+  Function* getFunction(int);
     
 signals:
   void removeModuleClicked();
