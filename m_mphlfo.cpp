@@ -20,7 +20,7 @@ M_mphlfo::M_mphlfo(QWidget* parent)
   : Module(M_type_mphlfo, 16, parent, "Multiphase LFO") {
 
   QString qs;
-  int l1, l2;
+  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MPHLFO_WIDTH, 
               MODULE_MPHLFO_HEIGHT);
@@ -51,7 +51,7 @@ M_mphlfo::M_mphlfo(QWidget* parent)
 
 void M_mphlfo::generateCycle() {
 
-  int l1, l2, l3;
+  int l1, l2;
   double tri45, tri90, tri135, saw45, saw90, saw135, saw180, saw225, saw270, saw315;
   double sign_saw1, sign_saw2;
   

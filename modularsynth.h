@@ -26,6 +26,7 @@
 #include "module.h"
 #include "port.h"
 #include "midiwidget.h"
+#include "msoptions.h"
 #include "ladspadialog.h"
 
 extern QTextStream StdErr;
@@ -39,7 +40,6 @@ class ModularSynth : public QWidget
   Q_OBJECT
 
     QMessageBox *aboutWidget;
-    QMainWindow *mainWindow;
     QList<Module*> listModule;
     QList<class TextEdit*> listTextEdit;
     connectorStyleType connectorStyle;    
@@ -51,13 +51,14 @@ class ModularSynth : public QWidget
     class GuiWidget *guiWidget;
     class PrefWidget *prefWidget;
     bool loadingPatch;
-    const char *pcmname;
+    QString pcmname;
     int   fsamp;
     int   frsize;
     int   nfrags;
     int   ncapt;
     int   nplay;
     bool paintFastly;
+    bool modified;
     double _zoomFactor;
     QPoint newBoxPos;
   int rcFd;
@@ -78,23 +79,24 @@ class ModularSynth : public QWidget
     bool clearConfig(bool restart);
             
 public:
-  ModularSynth(QMainWindow *, const QString &, int,
-		 const char *pcmname, int fsamp, int frsize, int nfrags, 
-		 int ncapt, int nplay, int poly, float edge);
+  ModularSynth(QWidget* parent, const ModularSynthOptions&);
   ~ModularSynth();
 
     QMenu *contextMenu;
     void resize(void);
     int go(bool withJack);
-    int setPresetPath(QString name);
-    int setSavePath(QString name);
     void setPaintFastly(bool v) {
       paintFastly = v;
     }
-    void moveAllBoxes(QPoint const &delta);
+    void moveAllBoxes(const QPoint &delta);
+    bool isModified();
+    QString getLoadPath();
+    void setLoadPath(const QString& sp);
+    QString getSavePath();
+    void setSavePath(const QString& sp);
+    int getSynthDataPoly();
 
   protected:
-    void setMainWindowTitle(const QString *presetName = NULL);
     class QAbstractScrollArea *scrollArea() {
       return (QAbstractScrollArea *)parent();
     }
@@ -159,7 +161,8 @@ public:
     void newM_stereomix_2();
     void newM_stereomix_4();
     void newM_stereomix_8();
-    void newM_ladspa(int p_ladspaDesFuncIndex, int n, bool p_newLadspaPoly, bool p_extCtrlPorts);
+    void newM_ladspa(int p_ladspaDesFuncIndex, int n,
+            bool p_newLadspaPoly, bool p_extCtrlPorts);
     void newM_pcmout();
     void newM_pcmin();
     void newM_wavout();
@@ -181,14 +184,14 @@ public:
     void deleteTextEdit();
     void deleteTextEdit(TextEdit *te);
     void clearConfig();
-    void load(const QString &);
-    void load();
-    void save();
+    void load(QTextStream&);
+    void save(QTextStream&);
     void loadColors();
     void saveColors();
     void allVoicesOff();
     void cleanUpSynth();
     void refreshColors();
+    void redrawPortConnections();
     void updateColors();
 };
 

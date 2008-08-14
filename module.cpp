@@ -149,15 +149,15 @@ void Module::removeThisModule() {
   emit removeModule();
 }
 
-int Module::save(FILE *f) {
+int Module::save(QTextStream& ts) {
 
-  saveConnections(f);
-  saveParameters(f);
-  saveBindings(f);
+  saveConnections(ts);
+  saveParameters(ts);
+  saveBindings(ts);
   return 0;
 }
 
-int Module::saveConnections(FILE *f) {
+int Module::saveConnections(QTextStream& ts) {
 
   Port *port[2];
   int l1;
@@ -166,105 +166,133 @@ int Module::saveConnections(FILE *f) {
     port[0] = portList.at(l1);
     if ((port[0]->dir == PORT_IN) && port[0]->connectedPortList.count()) {
       port[1] = port[0]->connectedPortList.at(0);
-      fprintf(f, "ColorP %d %d %d %d %d %d %d %d %d %d\n", port[0]->index, port[1]->index,
-              port[0]->module->moduleID, port[1]->module->moduleID, 
-              port[0]->jackColor.red(), port[0]->jackColor.green(), port[0]->jackColor.blue(),
-              port[0]->cableColor.red(), port[0]->cableColor.green(), port[0]->cableColor.blue());
+      ts << "ColorP "
+          << port[0]->index << ' '
+          << port[1]->index << ' '
+          << port[0]->module->moduleID << ' '
+          << port[1]->module->moduleID << ' '
+          << port[0]->jackColor.red() << ' '
+          << port[0]->jackColor.green() << ' '
+          << port[0]->jackColor.blue() << ' '
+          << port[0]->cableColor.red() << ' '
+          << port[0]->cableColor.green() << ' '
+          << port[0]->cableColor.blue() << endl;
     }   
   }    
   return 0; 
 }
 
-int Module::saveParameters(FILE *f)
+int Module::saveParameters(QTextStream& ts)
 {
   int l1, l2, l3;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
     MidiControllableFloat &mcAbleF = dynamic_cast<MidiControllableFloat &>(configDialog->midiSliderList.at(l1)->mcAble);
-    fprintf(f, "FSlider %d %d %d %d %d %d %d\n", moduleID, l1,
-	    mcAbleF.sliderVal(),
-	    mcAbleF.getLog(),
-	    mcAbleF.sliderMin(),
-	    mcAbleF.sliderMax(),
-	    mcAbleF.midiSign);
+    ts << "FSlider " << moduleID << ' ' << l1 << ' '
+        << mcAbleF.sliderVal() << ' ' 
+        << mcAbleF.getLog() << ' ' 
+        << mcAbleF.sliderMin() << ' ' 
+        << mcAbleF.sliderMax() << ' ' 
+        << mcAbleF.midiSign << endl;
   }  
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1)
-    fprintf(f, "ISlider %d %d %d %d\n", moduleID, l1, 
-	    configDialog->intMidiSliderList.at(l1)->mcAble.sliderVal(),
-	    configDialog->intMidiSliderList.at(l1)->mcAble.midiSign);
+    ts << "ISlider " << moduleID << ' ' << l1 << ' '
+        << configDialog->intMidiSliderList.at(l1)->mcAble.sliderVal() << ' ' 
+        << configDialog->intMidiSliderList.at(l1)->mcAble.midiSign << endl;
 
   for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1)
-    fprintf(f, "LSlider %d %d %d %d\n", moduleID, l1, 
-	    configDialog->floatIntMidiSliderList.at(l1)->mcAble.sliderVal(),
-	    configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiSign);
+      ts << "LSlider " << moduleID << ' ' << l1 << ' '
+          << configDialog->floatIntMidiSliderList.at(l1)->mcAble.sliderVal() << ' ' 
+          << configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiSign << endl;
 
   for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1)
-    fprintf(f, "ComboBox %d %d %d %d\n", moduleID, l1, 
-	    configDialog->midiComboBoxList.at(l1)->mcAble.getValue(),
-	    configDialog->midiComboBoxList.at(l1)->mcAble.midiSign);
+    ts << "ComboBox " << moduleID << ' ' << l1 << ' '
+        << configDialog->midiComboBoxList.at(l1)->mcAble.getValue() << ' ' 
+        << configDialog->midiComboBoxList.at(l1)->mcAble.midiSign << endl;
 
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1)
-    fprintf(f, "CheckBox %d %d %d %d\n", moduleID, l1, 
-	    configDialog->midiCheckBoxList.at(l1)->mcAble.getValue(),
-	    configDialog->midiCheckBoxList.at(l1)->mcAble.midiSign);
+    ts << "CheckBox " << moduleID << ' ' << l1 << ' '
+        << configDialog->midiCheckBoxList.at(l1)->mcAble.getValue() << ' ' 
+        << configDialog->midiCheckBoxList.at(l1)->mcAble.midiSign << endl;
 
   for (l1 = 0; l1 < configDialog->functionList.count(); ++l1) {
-    fprintf(f, "Function %d %d %d %d\n", moduleID, l1, 
-	    configDialog->functionList.at(l1)->functionCount,
-	    configDialog->functionList.at(l1)->pointCount);
+    ts << "Function " << moduleID << ' ' << l1 << ' '
+        << configDialog->functionList.at(l1)->functionCount << ' ' 
+        << configDialog->functionList.at(l1)->pointCount << endl;
+
     for (l2 = 0; l2 < configDialog->functionList.at(l1)->functionCount; l2++)
       for (l3 = 0; l3 < configDialog->functionList.at(l1)->pointCount; l3++) {
-        fprintf(f, "Point %d %d %d %d %d %d\n", moduleID, l1, l2, l3,
-		configDialog->functionList.at(l1)->getPoint(l2, l3).x(),
-		configDialog->functionList.at(l1)->getPoint(l2, l3).y());
+        ts << "Point " << moduleID << ' ' << l1 << ' ' << l2 << ' ' << l3 << ' '
+            << configDialog->functionList.at(l1)->getPoint(l2, l3).x() << ' ' 
+            << configDialog->functionList.at(l1)->getPoint(l2, l3).y() << endl;
       }
        
   }
   return 0;
 }
 
-int Module::saveBindings(FILE *f)
+int Module::saveBindings(QTextStream& ts)
 {
   int l1, l2;
 
   for (l1 = 0; l1 < configDialog->midiSliderList.count(); ++l1) {
-     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
-       fprintf(f, "FSMIDI %d %d %d %d %d\n", moduleID, l1,
-	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
-	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
-	       configDialog->midiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
+     for (l2 = 0; l2 < configDialog->midiSliderList.at(l1)
+             ->mcAble.midiControllerList.count(); ++l2) {
+       ts << "FSMIDI " << moduleID << ' ' << l1 << ' '
+           << configDialog->midiSliderList.at(l1)
+           ->mcAble.midiControllerList.at(l2).type() << ' ' 
+           << configDialog->midiSliderList.at(l1)
+           ->mcAble.midiControllerList.at(l2).ch() << ' '
+           << configDialog->midiSliderList.at(l1)
+           ->mcAble.midiControllerList.at(l2).param() << endl;
      }
   }  
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
-      fprintf(f, "ISMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
-	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
-	      configDialog->intMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
+      for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.count(); ++l2) {
+          ts << "FSMIDI " << moduleID << ' ' << l1 << ' '
+              << configDialog->intMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).type() << ' '
+              << configDialog->intMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).ch() << ' '
+              << configDialog->intMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }  
   for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
-      fprintf(f, "LSMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).type(),
-	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).ch(),  
-	      configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiControllerList.at(l2).param());
+      for (l2 = 0; l2 < configDialog->floatIntMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.count(); ++l2) {
+          ts << "LSMIDI " << moduleID << ' ' << l1 << ' '
+              << configDialog->floatIntMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).type() << ' '
+              << configDialog->floatIntMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).ch() << ' '
+              << configDialog->floatIntMidiSliderList.at(l1)
+              ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }  
   for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
-      fprintf(f, "CMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).type(),
-	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).ch(),    
-	      configDialog->midiComboBoxList.at(l1)->mcAble.midiControllerList.at(l2).param());
+      for (l2 = 0; l2 < configDialog->midiComboBoxList.at(l1)
+              ->mcAble.midiControllerList.count(); ++l2) {
+          ts << "CMIDI " << moduleID << ' ' << l1 << ' '
+              << configDialog->midiComboBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).type() << ' '
+              << configDialog->midiComboBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).ch() << ' '
+              << configDialog->midiComboBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }  
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
-    for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.count(); ++l2) {
-      fprintf(f, "TMIDI %d %d %d %d %d\n", moduleID, l1,
-	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).type(),
-	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).ch(),    
-	      configDialog->midiCheckBoxList.at(l1)->mcAble.midiControllerList.at(l2).param());
+      for (l2 = 0; l2 < configDialog->midiCheckBoxList.at(l1)
+              ->mcAble.midiControllerList.count(); ++l2) {
+          ts << "TMIDI " << moduleID << ' ' << l1 << ' '
+              << configDialog->midiCheckBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).type() << ' '
+              << configDialog->midiCheckBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).ch() << ' '
+              << configDialog->midiCheckBoxList.at(l1)
+              ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }
   return 0;

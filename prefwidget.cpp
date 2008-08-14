@@ -18,6 +18,7 @@
 #include <qdialog.h>
 #include <qregexp.h> 
 #include <qlayout.h> 
+#include <QDir>
 #include <QGridLayout>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
@@ -59,9 +60,9 @@ PrefWidget::PrefWidget()
   QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
   QWidget *pathWidget = new QWidget();
   QVBoxLayout *pathBox = new QVBoxLayout(pathWidget);
-  tabWidget->addTab(colorWidget, "Colors");
-  tabWidget->addTab(midiWidget, "MIDI");
-  tabWidget->addTab(pathWidget, "Paths");
+  tabWidget->addTab(colorWidget, tr("Colors"));
+  tabWidget->addTab(midiWidget, tr("MIDI"));
+  tabWidget->addTab(pathWidget, tr("Paths"));
 
   QGridLayout *colorLayout = new QGridLayout();//colorGridWidget, 12, 2, 10);
   colorBox->addLayout(colorLayout);
@@ -111,24 +112,24 @@ PrefWidget::PrefWidget()
   pathBox->addStretch();
   QHBoxLayout *loadPathBox = new QHBoxLayout();
   pathBox->addLayout(loadPathBox);
-  QLabel *loadLabel = new QLabel("Load Path:");
+  QLabel *loadLabel = new QLabel(tr("Load Path:"));
   loadPathBox->addWidget(loadLabel);
   loadEdit = new QLineEdit();
   pathBox->addWidget(loadEdit);
   loadEdit->setText(loadPath);
-  QPushButton *browseLoadButton = new QPushButton("Browse");
+  QPushButton *browseLoadButton = new QPushButton(tr("Browse"));
   loadPathBox->addStretch();
   loadPathBox->addWidget(browseLoadButton);
 
   pathBox->addStretch();
   QHBoxLayout *savePathBox = new QHBoxLayout();
   pathBox->addLayout(savePathBox);
-  QLabel *saveLabel = new QLabel("Save Path:");
+  QLabel *saveLabel = new QLabel(tr("Save Path:"));
   savePathBox->addWidget(saveLabel);
   saveEdit = new QLineEdit();
   pathBox->addWidget(saveEdit);
   saveEdit->setText(savePath);
-  QPushButton *browseSaveButton = new QPushButton("Browse");
+  QPushButton *browseSaveButton = new QPushButton(tr("Browse"));
   savePathBox->addStretch();
   savePathBox->addWidget(browseSaveButton);
 
@@ -144,13 +145,13 @@ PrefWidget::PrefWidget()
   QHBoxLayout *buttonContainer = new QHBoxLayout();
   vBox.addLayout(buttonContainer);
   buttonContainer->addStretch();
-  QPushButton *cancelButton = new QPushButton("Cancel");
+  QPushButton *cancelButton = new QPushButton(tr("Cancel"));
   buttonContainer->addWidget(cancelButton);
   buttonContainer->addStretch();
-  QPushButton *applyButton = new QPushButton("Apply");
+  QPushButton *applyButton = new QPushButton(tr("Apply"));
   buttonContainer->addWidget(applyButton);
   buttonContainer->addStretch();
-  QPushButton *okButton = new QPushButton("OK");
+  QPushButton *okButton = new QPushButton(tr("OK"));
   buttonContainer->addWidget(okButton);
   buttonContainer->addStretch();
   QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
@@ -162,7 +163,8 @@ bool PrefWidget::loadPref(QString config_fn)
 {
   QFile f(config_fn);
   if (!f.open( QIODevice::ReadOnly )) {
-    QMessageBox::information( this, "AlsaModularSynth", "Could not open file.");
+    QMessageBox::information(this, "AlsaModularSynth",
+            tr("Could not open file."));
     return false;
   }
 
@@ -187,7 +189,7 @@ bool PrefWidget::loadPref(int rcFd)
         b = qs2.toInt();
         synthdata->colorBackground = QColor(r, g, b);
       }        
-      if (qs.contains("ColorModuleBackground")) {
+      else if (qs.contains("ColorModuleBackground")) {
         qs2 = qs.section(sep, 1, 1); 
         r = qs2.toInt();
         qs2 = qs.section(sep, 2, 2); 
@@ -196,7 +198,7 @@ bool PrefWidget::loadPref(int rcFd)
         b = qs2.toInt();
         synthdata->colorModuleBackground = QColor(r, g, b);
       }        
-      if (qs.contains("ColorModuleBorder")) {
+      else if (qs.contains("ColorModuleBorder")) {
         qs2 = qs.section(sep, 1, 1); 
         r = qs2.toInt();
         qs2 = qs.section(sep, 2, 2); 
@@ -205,7 +207,7 @@ bool PrefWidget::loadPref(int rcFd)
         b = qs2.toInt();
         synthdata->colorModuleBorder = QColor(r, g, b);
       }        
-      if (qs.contains("ColorModuleFont")) {
+      else if (qs.contains("ColorModuleFont")) {
         qs2 = qs.section(sep, 1, 1); 
         r = qs2.toInt();
         qs2 = qs.section(sep, 2, 2); 
@@ -215,7 +217,7 @@ bool PrefWidget::loadPref(int rcFd)
         synthdata->colorModuleFont = QColor(r, g, b);
         synthdata->colorPortFont1 = QColor(r, g, b);
       }        
-      if (qs.contains("ColorJack")) {
+      else if (qs.contains("ColorJack")) {
         qs2 = qs.section(sep, 1, 1); 
         r = qs2.toInt();
         qs2 = qs.section(sep, 2, 2); 
@@ -224,7 +226,7 @@ bool PrefWidget::loadPref(int rcFd)
         b = qs2.toInt();
         synthdata->colorJack = QColor(r, g, b);
       }        
-      if (qs.contains("ColorCable")) {
+      else if (qs.contains("ColorCable")) {
         qs2 = qs.section(sep, 1, 1); 
         r = qs2.toInt();
         qs2 = qs.section(sep, 2, 2); 
@@ -233,18 +235,22 @@ bool PrefWidget::loadPref(int rcFd)
         b = qs2.toInt();
         synthdata->colorCable = QColor(r, g, b);
       }       
-      if (qs.contains("MidiControllerMode")) {
+      else if (qs.contains("MidiControllerMode")) {
         qs2 = qs.section(sep, 1, 1); 
         midiControllerMode = qs2.toInt();
         synthdata->midiControllerMode = midiControllerMode;
       }       
-      if (qs.contains("LoadPath")) {
+      else if (qs.contains("LoadPath")) {
         loadPath = qs.section(sep, 1, 1); 
+        if (loadPath.isEmpty())
+            loadPath = QDir::homePath();
         loadEdit->setText(loadPath);
         synthdata->loadPath = loadPath;
       }       
-      if (qs.contains("SavePath")) {
+      else if (qs.contains("SavePath")) {
         savePath = qs.section(sep, 1, 1); 
+        if (savePath.isEmpty())
+            savePath = QDir::homePath();
         saveEdit->setText(savePath);
         synthdata->savePath = savePath;
       }       

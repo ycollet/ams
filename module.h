@@ -18,6 +18,7 @@
 #include <qlist.h>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QTextStream>
 #include <alsa/asoundlib.h>
 #include "synthdata.h"
 #include "configdialog.h"
@@ -109,10 +110,10 @@ class Module : public Box
   void incConnections();
   void decConnections();
   virtual void mcAbleChanged(MidiControllableBase *) {}
-    int save(FILE *f);
-    virtual int saveConnections(FILE *f); 
-    virtual int saveParameters(FILE *f);
-    virtual int saveBindings(FILE *f); 
+    int save(QTextStream&);
+    virtual int saveConnections(QTextStream&); 
+    virtual int saveParameters(QTextStream&);
+    virtual int saveBindings(QTextStream&); 
     virtual int load(FILE *f);
     void getColors(void);
 
