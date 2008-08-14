@@ -35,6 +35,15 @@ current detune/drift amplitude (for each sample). These detune/drift
 amplitudes are added to the input CV and the sum is then passed to the 
 outputs. The Autotune button will reset detune/drift amplitudes.
 
+
+If you start with a fresh cvs checkout, please first apply
+
+  autoreconf -i
+
+to get a proper configure script. For more instructions about compiling
+and installing this application please refer to the INSTALL file.
+
+
 Have a lot of fun !
 
 Please send bug reports or any other feedback to 
