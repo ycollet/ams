@@ -240,7 +240,7 @@ translations_DATA = \
 EXTRA_DIST = ams.pro $(translations)
 
 # all generated files to be removed by "make clean"
-CLEANFILES = $(nodist_ams_SOURCES)
+CLEANFILES = $(nodist_ams_SOURCES) $(translations_DATA)
 
 AM_LDFLAGS = @QT_LIBS@
 AM_CXXFLAGS = @QT_CXXFLAGS@ @AMS_CXXFLAGS@

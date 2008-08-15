@@ -191,13 +191,15 @@ void Port::disconnectClicked() {
 
 float **Port::getinputdata (void)
 {
-  Module *M;
+    Module *M;
+    Port* outport;
 
-  if (connectedPortList.count()) {
-    M = connectedPortList.at(0)->module;
-    return M->getData(connectedPortList.at(0)->index);
-  } else
-    return synthdata->zeroModuleData;
+    if (connectedPortList.count() > 0) {
+        outport = connectedPortList.at(0);
+        M = outport->module;
+        return M->getData(outport->index);
+    } else
+        return synthdata->zeroModuleData;
 }
 
 void Port::cableGrayClicked() {
