@@ -3337,6 +3337,54 @@ Save changes?</source>
     </message>
 </context>
 <context>
+    <name>PopupMenu</name>
+    <message>
+        <location filename="../port_popup.cpp" line="6"/>
+        <source>Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="10"/>
+        <source>Default Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="13"/>
+        <source>Gray Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="16"/>
+        <source>Red Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="19"/>
+        <source>Green Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="22"/>
+        <source>Blue Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="25"/>
+        <source>Yellow Cable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="29"/>
+        <source>Set Jack Color...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../port_popup.cpp" line="32"/>
+        <source>Set Cable Color...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PrefWidget</name>
     <message>
         <location filename="../prefwidget.cpp" line="63"/>

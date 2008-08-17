@@ -1,0 +1,25 @@
+2008-07-?? Guido Scholz <guido.scholz@bayernline.de>
+	* whole package: Sourcecode files moved to new src subdirectory
+	and newly developed autotools framework added.
+	* man/ams.1: Lost man page added.
+
+2008-07-?? Guido Scholz <guido.scholz@bayernline.de>
+	* mainwindow.cpp, modularsynth.cpp: Menu for recently opened
+	files added.
+
+2008-07-15 Guido Scholz <guido.scholz@bayernline.de>
+	* *.cpp, ams_de.ts: Most strings are made translatable and a
+	German translation is added. Keyboard shortcuts added, where
+	ever possible.
+
+2008-07-12 Guido Scholz <guido.scholz@bayernline.de>
+	* main.cpp: Support for Qt library translations added.
+	* mainwindow.cpp: Application icon added.
+
+2008-07-09 Guido Scholz <guido.scholz@bayernline.de>
+	* main.cpp, mainwindow.*, modularsynth.*: "File save as" function
+	implemented.
+
+2008-06-17 Guido Scholz <guido.scholz@bayernline.de>
+	* ringbuffer.h: Adapt atomic operations to new Qt 4.4 interface
+

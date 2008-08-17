@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
 		     "Additional programming:\n"
-		     "2007 Malte Steiner\n"
-		     "2007 Karsten Wiese\n";
+		     "2007 Malte Steiner, Karsten Wiese\n"
+		     "2008 Guido Scholz\n";
   QApplication app(argc, argv);
 
   // translator for Qt library strings
