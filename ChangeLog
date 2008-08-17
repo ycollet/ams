@@ -1,13 +1,15 @@
-2008-07-?? Guido Scholz <guido.scholz@bayernline.de>
+2008-08-17 Guido Scholz <guido.scholz@bayernline.de>
+	* INSTALL: File replaced by generic file which comes with the
+	autotools set.
+
+2008-07-27 Guido Scholz <guido.scholz@bayernline.de>
 	* whole package: Sourcecode files moved to new src subdirectory
 	and newly developed autotools framework added.
 	* man/ams.1: Lost man page added.
 
-2008-07-?? Guido Scholz <guido.scholz@bayernline.de>
+2008-07-15 Guido Scholz <guido.scholz@bayernline.de>
 	* mainwindow.cpp, modularsynth.cpp: Menu for recently opened
 	files added.
-
-2008-07-15 Guido Scholz <guido.scholz@bayernline.de>
 	* *.cpp, ams_de.ts: Most strings are made translatable and a
 	German translation is added. Keyboard shortcuts added, where
 	ever possible.
