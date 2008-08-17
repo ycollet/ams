@@ -1,0 +1,15 @@
+ams-2.0.0 (2008-??-??)
+  Fixed Bugs
+    o ...
+
+  New Features
+    o Redesign of 3D look
+    o Application icon
+    o German translation
+    o Keyboard shortcuts for menu and dialog items
+    o Menu item for recently opened files
+
+  General Changes
+    o Port form Qt 3 to Qt 4.x library.
+    o A newly written autoconf/automake environment now provides the
+      usual "./configure && make && make install" comfort.
