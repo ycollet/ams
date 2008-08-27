@@ -1,3 +1,7 @@
+2008-08-27 Guido Scholz <guido.scholz@bayernline.de>
+	* synthdata.*: Fixed crash caused by Alsa SND_SEQ_EVENT_SYSEX
+	events.
+
 2008-08-17 Guido Scholz <guido.scholz@bayernline.de>
 	* INSTALL: File replaced by generic file which comes with the
 	autotools set.

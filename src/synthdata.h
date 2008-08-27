@@ -114,13 +114,21 @@ class SynthData
 
   private:
 
-    void create_zero_data (void);
-    static void *alsa_static_thr_main (void *arg);
-    static int   jack_static_callback (jack_nframes_t nframes, void *arg);
-    void  *alsa_thr_main (void);
-    int    jack_callback (jack_nframes_t nframes);
-    void   call_modules (void);
-    void readMIDI(void);
+    void create_zero_data(void);
+    static void *alsa_static_thr_main(void *arg);
+    static int jack_static_callback(jack_nframes_t nframes, void *arg);
+    void *alsa_thr_main(void);
+    int  jack_callback(jack_nframes_t nframes);
+    void call_modules(void);
+    void readAlsaMidiEvents(void);
+    void processAlsaMidiEvent(snd_seq_event_t*);
+    void handleMidiEventNoteOn(snd_seq_event_t*);
+    void handleMidiEventNoteOff(snd_seq_event_t*);
+    void handleMidiEventPgmChange(snd_seq_event_t*);
+    void handleMidiEventController(snd_seq_event_t*);
+    void handleMidiEventPitchbend(snd_seq_event_t*);
+    void handleMidiEventChanPress(snd_seq_event_t*);
+    void handleMidiEventControll14(snd_seq_event_t*);
 
 public:
 

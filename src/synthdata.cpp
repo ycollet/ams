@@ -410,7 +410,7 @@ void *SynthData::alsa_thr_main (void)
     while (withAlsa)
     {
 	k = alsa_handle->pcm_wait();
-	readMIDI();
+        readAlsaMidiEvents();
 
         while (k >= cyclesize)
        	{
@@ -527,7 +527,7 @@ int SynthData::jack_static_callback (jack_nframes_t nframes, void *arg)
 }
 
 
-int SynthData::jack_callback (jack_nframes_t nframes)
+int SynthData::jack_callback(jack_nframes_t nframes)
 {
     int         i, j;
 
@@ -536,7 +536,7 @@ int SynthData::jack_callback (jack_nframes_t nframes)
         return 0;
     }
 
-    readMIDI();
+    readAlsaMidiEvents();
 
     cyclesize = nframes;
 
@@ -595,121 +595,215 @@ void SynthData::call_modules(void)
     }
 }
 
-void SynthData::readMIDI(void)
+void SynthData::readAlsaMidiEvents(void)
 {
     if (!seq_handle)
         return;
 
     pthread_mutex_lock(&rtMutex);
 
+    snd_seq_event_t *ev;
+    int result;
+
     for (int pending = snd_seq_event_input_pending(seq_handle, 1);
             pending > 0; --pending) {
-        int l2;
-        snd_seq_event_t *ev;
-        snd_seq_event_input(seq_handle, &ev);
-        //    MidiController midiController(ev); 
-        MidiControllerKey mcK(ev); 
-        // Voice assignment
-        if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
-                (midiChannel < 0 || midiChannel == ev->data.control.channel)) {
-            if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
-
-                // Note On: Search for oldest voice to allocate new note.          
-                int osc = 0;
-                int noteCount = 0;
-                bool foundOsc = false;
-                for (l2 = 0; l2 < poly; ++l2)
-                    if (noteCounter[l2] > noteCount) {
-                        noteCount = noteCounter[l2];
-                        osc = l2;
-                        foundOsc = true;
-                    }
-
-                if (foundOsc) {
-                    noteCounter[osc] = 0;
-                    sustainNote[osc] = false;
-                    velocity[osc] = ev->data.note.velocity;
-                    channel[osc] = ev->data.note.channel;
-                    notes[osc] = ev->data.note.note;
-                }  
-            } else {
-
-                // Note Off      
-                for (l2 = 0; l2 < poly; ++l2)
-                    if (notes[l2] == ev->data.note.note &&
-                            channel[l2] == ev->data.note.channel &&
-                            noteCounter[l2] < 1000000) {
-                        if (sustainFlag)
-                            sustainNote[l2] = true;
-                        else
-                            noteCounter[l2] = 1000000;
-                    }
-            }
-        }
-
-        typeof(activeMidiControllers->constBegin()) mc =
-            qBinaryFind(activeMidiControllers->constBegin(),
-                    activeMidiControllers->constEnd(), mcK);
-        if (mc != activeMidiControllers->constEnd()) {
-            int control14;
-            switch (ev->type) {
-                case SND_SEQ_EVENT_PITCHBEND:
-                    control14 = ev->data.control.value + 8192;
-                    break;
-                case SND_SEQ_EVENT_CONTROL14:
-                    control14 = ev->data.control.value;
-                    break;
-                case SND_SEQ_EVENT_CONTROLLER:
-                    control14 = (ev->data.control.value << 7) + ev->data.control.value;
-                    break;
-                case SND_SEQ_EVENT_NOTEON:
-                    control14 = (ev->data.note.velocity << 7) + ev->data.note.velocity;
-                    break;
-                default:
-                case SND_SEQ_EVENT_NOTEOFF:
-                    control14 = 0;
-                    break;
-            }
-            mc->context->setMidiValueRT(control14);
-            //      StdOut << "did " << ev->data.control.value << endl;
-        } else {
-            mckRed.put(mcK);
-            pipeMessage |= 2;
-            //      StdOut << "not " << ev->data.control.value << endl;
-        }
-        if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
-            if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
-                for (l2 = 0; l2 < poly; ++l2)
-                    if (noteCounter[l2] < 1000000 && channel[l2] == ev->data.note.channel)
-                        noteCounter[l2] = 1000000;
-
-            if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
-                //	StdOut << ev->data.control.value << endl;
-                sustainFlag = ev->data.control.value > 63;
-                if (!sustainFlag)
-                    for (l2 = 0; l2 < poly; ++l2)
-                        if (sustainNote[l2])
-                            noteCounter[l2] = 1000000;
-            }
-        }
-        if (ev->type == SND_SEQ_EVENT_PGMCHANGE) {
-            guiWidget->setCurrentPreset(ev->data.control.value, true);
-            pipeMessage |= 4;
-        }
-        for (int l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
-            switch (ev->type) {
-                case SND_SEQ_EVENT_CHANPRESS: 
-                    synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
-                    break;
-                case SND_SEQ_EVENT_PITCHBEND:
-                    synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
-                    break;
-                case SND_SEQ_EVENT_CONTROLLER: 
-                    synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
-                    break;
-            }
-
+        result = snd_seq_event_input(seq_handle, &ev);
+        if (result < 0)
+            break;
+        if (ev != NULL)
+            processAlsaMidiEvent(ev);
     }
-
     pthread_mutex_unlock(&rtMutex);
 }
+
+void SynthData::processAlsaMidiEvent(snd_seq_event_t *ev)
+{
+    switch (ev->type) {
+        case SND_SEQ_EVENT_NOTEON:
+            handleMidiEventNoteOn(ev);
+            break;
+        case SND_SEQ_EVENT_NOTEOFF:
+            handleMidiEventNoteOff(ev);
+            break;
+        case SND_SEQ_EVENT_CONTROLLER:
+            handleMidiEventController(ev);
+            break;
+        case SND_SEQ_EVENT_PITCHBEND:
+            handleMidiEventPitchbend(ev);
+            break;
+        case SND_SEQ_EVENT_PGMCHANGE:
+            handleMidiEventPgmChange(ev);
+            break;
+        case SND_SEQ_EVENT_CHANPRESS:
+            handleMidiEventChanPress(ev);
+            break;
+        case SND_SEQ_EVENT_CONTROL14:
+            handleMidiEventControll14(ev);
+            break;
+        case SND_SEQ_EVENT_SYSEX:
+                qWarning("SYSEX MIDI events are not supported");
+            break;
+        default:
+                qWarning("Unsupported MIDI event received (type = %d)",
+                        ev->type);
+            break;
+    }
+}
+
+void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
+{
+    if (ev->data.note.velocity == 0) {
+        handleMidiEventNoteOff(ev);
+        return;
+    }
+
+    if (midiChannel < 0 || midiChannel == ev->data.control.channel) {
+        int osc = 0;
+        int noteCount = 0;
+        bool foundOsc = false;
+
+        for (int i = 0; i < poly; ++i)
+            if (noteCounter[i] > noteCount) {
+                noteCount = noteCounter[i];
+                osc = i;
+                foundOsc = true;
+                break;
+            }
+
+        if (foundOsc) {
+            noteCounter[osc] = 0;
+            sustainNote[osc] = false;
+            velocity[osc] = ev->data.note.velocity;
+            channel[osc] = ev->data.note.channel;
+            notes[osc] = ev->data.note.note;
+        }  
+
+    }
+    //TODO: check if this is not MIDI channel specific
+    MidiControllerKey mcK(ev);
+
+    typeof(activeMidiControllers->constBegin()) mc =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+            mc->context->setMidiValueRT(
+                    (ev->data.note.velocity << 7) + ev->data.note.velocity);
+    }
+    else {
+        mckRed.put(mcK);
+        pipeMessage |= 2;
+    }
+}
+
+void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
+{
+    if (midiChannel < 0 || midiChannel == ev->data.control.channel) {
+        for (int i = 0; i < poly; ++i)
+            if (notes[i] == ev->data.note.note &&
+                    channel[i] == ev->data.note.channel &&
+                    noteCounter[i] < 1000000) {
+                if (sustainFlag)
+                    sustainNote[i] = true;
+                else
+                    noteCounter[i] = 1000000;
+            }
+    }
+
+    //TODO: check if this is not MIDI channel specific
+    MidiControllerKey mcK(ev);
+
+    typeof(activeMidiControllers->constBegin()) mc =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+            mc->context->setMidiValueRT(0);
+    }
+    else {
+        mckRed.put(mcK);
+        pipeMessage |= 2;
+    }
+}
+
+void SynthData::handleMidiEventPgmChange(snd_seq_event_t *ev)
+{
+    guiWidget->setCurrentPreset(ev->data.control.value, true);
+    pipeMessage |= 4;
+}
+
+void SynthData::handleMidiEventController(snd_seq_event_t *ev)
+{
+    MidiControllerKey mcK(ev);
+
+    typeof(activeMidiControllers->constBegin()) mc =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+            mc->context->setMidiValueRT(
+                    (ev->data.control.value << 7) + ev->data.control.value);
+    }
+    else {
+        mckRed.put(mcK);
+        pipeMessage |= 2;
+    }
+
+    if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
+        for (int i = 0; i < poly; ++i)
+            if (noteCounter[i] < 1000000 && channel[i] == ev->data.note.channel)
+                noteCounter[i] = 1000000;
+
+    else if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
+        bool sustainFlag = ev->data.control.value > 63;
+        if (!sustainFlag)
+            for (int i = 0; i < poly; ++i)
+                if (sustainNote[i])
+                    noteCounter[i] = 1000000;
+    }
+
+    for (int i = 0; i < synthdata->listM_advmcv.count(); ++i)
+        synthdata->listM_advmcv.at(i)->controllerEvent(
+                ev->data.control.param, ev->data.control.value);
+}
+
+void SynthData::handleMidiEventPitchbend(snd_seq_event_t *ev)
+{
+    MidiControllerKey mcK(ev);
+
+    typeof(activeMidiControllers->constBegin()) mc =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+            mc->context->setMidiValueRT(ev->data.control.value + 8192);
+    }
+    else {
+        mckRed.put(mcK);
+        pipeMessage |= 2;
+    }
+
+    for (int i = 0; i < synthdata->listM_advmcv.count(); ++i)
+        synthdata->listM_advmcv.at(i)->pitchbendEvent(
+                ev->data.control.value); 
+}
+
+void SynthData::handleMidiEventChanPress(snd_seq_event_t *ev)
+{
+    for (int i = 0; i < synthdata->listM_advmcv.count(); ++i)
+        synthdata->listM_advmcv.at(i)->aftertouchEvent(
+                ev->data.control.value);
+}
+
+void SynthData::handleMidiEventControll14(snd_seq_event_t *ev)
+{
+    MidiControllerKey mcK(ev);
+
+    typeof(activeMidiControllers->constBegin()) mc =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (mc != activeMidiControllers->constEnd()) {
+            mc->context->setMidiValueRT(ev->data.control.value);
+    }
+    else {
+        mckRed.put(mcK);
+        pipeMessage |= 2;
+    }
+}
+
