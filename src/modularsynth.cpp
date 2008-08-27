@@ -426,33 +426,34 @@ int ModularSynth::getSynthDataPoly()
 
 snd_seq_t *ModularSynth::open_seq() {
 
-  snd_seq_t *seq_handle;
-  int l1;
-  QString qs;
+    snd_seq_t *seq_handle;
+    QString qs;
 
-  if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK) < 0) {
-    qWarning(QObject::tr("Error opening ALSA sequencer.").toUtf8());
-    return NULL;
-  }
-
-  snd_seq_set_client_name(seq_handle, (synthdata->name + " Midi").toLatin1().constData());
-  if (snd_seq_create_simple_port(seq_handle, "in",
-				 SND_SEQ_PORT_CAP_WRITE|SND_SEQ_PORT_CAP_SUBS_WRITE,
-				 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
-    qWarning(QObject::tr("Error creating sequencer write port.").toUtf8());
-    snd_seq_close(seq_handle);
-    return NULL;
-  }
-  for (l1 = 0; l1 < 2; ++l1)
-    if ((synthdata->midi_out_port[l1] = snd_seq_create_simple_port(seq_handle, "out",
-            SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ,
-            SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
-      qWarning(QObject::tr("Error creating sequencer read port.").toUtf8());
-      snd_seq_close(seq_handle);
-      return NULL;
+    if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX,
+                SND_SEQ_NONBLOCK) < 0) {
+        qWarning(QObject::tr("Error opening ALSA sequencer.").toUtf8());
+        return NULL;
     }
 
-  return seq_handle;
+    snd_seq_set_client_name(seq_handle,
+            (synthdata->name + " Midi").toLatin1().constData());
+    if (snd_seq_create_simple_port(seq_handle, "ams in",
+                SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
+                SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
+        qWarning(QObject::tr("Error creating sequencer write port.").toUtf8());
+        snd_seq_close(seq_handle);
+        return NULL;
+    }
+    for (int l1 = 0; l1 < 2; ++l1)
+        if ((synthdata->midi_out_port[l1] =
+                    snd_seq_create_simple_port(seq_handle, "ams out",
+                        SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ,
+                        SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
+            qWarning(QObject::tr("Error creating sequencer read port.").toUtf8());
+            snd_seq_close(seq_handle);
+            return NULL;
+        }
+    return seq_handle;
 }
 
 int ModularSynth::initSeqNotifier()

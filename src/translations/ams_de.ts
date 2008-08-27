@@ -3262,37 +3262,37 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1329"/>
+        <location filename="../modularsynth.cpp" line="1330"/>
         <source>Load Colors</source>
         <translation>Farben lasen</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1372"/>
+        <location filename="../modularsynth.cpp" line="1373"/>
         <source>AlsaModularSynth Color files (*.acs)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1337"/>
+        <location filename="../modularsynth.cpp" line="1338"/>
         <source>Could not open file.</source>
         <translation>Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1370"/>
+        <location filename="../modularsynth.cpp" line="1371"/>
         <source>Save Colors</source>
         <translation>Farben speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1378"/>
+        <location filename="../modularsynth.cpp" line="1379"/>
         <source>Could not save file.</source>
         <translation>Konnte Datei nicht speichern.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1450"/>
+        <location filename="../modularsynth.cpp" line="1451"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1910"/>
+        <location filename="../modularsynth.cpp" line="1911"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3530,52 +3530,52 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="442"/>
+        <location filename="../modularsynth.cpp" line="443"/>
         <source>Error creating sequencer write port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="450"/>
+        <location filename="../modularsynth.cpp" line="452"/>
         <source>Error creating sequencer read port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1130"/>
+        <location filename="../modularsynth.cpp" line="1131"/>
         <source>All available output ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1148"/>
+        <location filename="../modularsynth.cpp" line="1149"/>
         <source>All available input ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1221"/>
+        <location filename="../modularsynth.cpp" line="1222"/>
         <source>Connection refused.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1946"/>
+        <location filename="../modularsynth.cpp" line="1947"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1962"/>
+        <location filename="../modularsynth.cpp" line="1963"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1976"/>
+        <location filename="../modularsynth.cpp" line="1977"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1986"/>
+        <location filename="../modularsynth.cpp" line="1987"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2037"/>
+        <location filename="../modularsynth.cpp" line="2038"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
