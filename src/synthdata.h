@@ -113,7 +113,6 @@ class SynthData
     unsigned framesGUIPinged;
 
   private:
-
     void create_zero_data(void);
     static void *alsa_static_thr_main(void *arg);
     static int jack_static_callback(jack_nframes_t nframes, void *arg);
@@ -131,7 +130,6 @@ class SynthData
     void handleMidiEventControll14(snd_seq_event_t*);
 
 public:
-
   SynthData(const QString &name, int p_poly, float p_edge);
   void stopPCM();
   ~SynthData();
@@ -158,7 +156,6 @@ public:
 
     int initJack (int ncapt, int nplay);
     int closeJack();
-
 };
 
 extern SynthData *synthdata;

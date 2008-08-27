@@ -12,25 +12,28 @@ public:
 public:
   MidiControllerContext() {}
 
-  void setMidiValueRT(int value);
+  void setMidiValueRT(unsigned int value);
 };
-                              
+
+
 class MidiControllerKey {
 
 public:
-  static int mkKey(unsigned char type, unsigned char ch, unsigned int param) {
-    int key = ((int)type << 28) | (((int)ch & 0xF) << 24) | ((param & 0xFF) << 16) | 0xFFFF;
+  static unsigned int mkKey(unsigned char type, unsigned char ch,
+          unsigned int param) {
+    unsigned int key = ((unsigned int)type << 28) |
+        (((unsigned int)ch & 0xF) << 24) | ((param & 0xFF) << 16) | 0xFFFF;
     return key;
   }
 
 protected:
-  int key;
+  unsigned int key;
 
 public:
   bool isValid() {
     return !(*this == MidiControllerKey());
   }
-  int getKey() const {
+  unsigned int getKey() const {
     return key;
   }
   unsigned char type() const {
@@ -44,16 +47,17 @@ public:
   }
 
   MidiControllerKey()
-    : key(mkKey(-1, -1, -1))
+    : key(mkKey(0, 0, 0))
   {}
   MidiControllerKey(unsigned char type, unsigned char ch, unsigned int param)
     : key(mkKey(type, ch, param))
   {}
   MidiControllerKey(snd_seq_event_t *ev)
     : key(mkKey(ev->type, ev->data.control.channel,
-		ev->type == SND_SEQ_EVENT_PITCHBEND  ?
-		0  :  (ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) ?
-		ev->data.note.note  :  ev->data.control.param))
+		ev->type == SND_SEQ_EVENT_PITCHBEND ?
+		0 : (ev->type == SND_SEQ_EVENT_NOTEON ||
+                    ev->type == SND_SEQ_EVENT_NOTEOFF) ?
+		ev->data.note.note : ev->data.control.param))
   {}
   MidiControllerKey(const MidiControllerKey &other)
     : key(other.key)
@@ -61,7 +65,7 @@ public:
   MidiControllerKey(MidiControllerKey &other)
     : key(other.key)
   {} 
-  MidiControllerKey(int key)
+  MidiControllerKey(unsigned int key)
     : key(key | 0xFFFF)
   {} 
 
@@ -101,7 +105,7 @@ public:
     //    std::cout << __PRETTY_FUNCTION__ << " " << other.context << " " << context << std::endl;
     other.context = NULL;
   } 
-  MidiController(int key)
+  MidiController(unsigned int key)
     : MidiControllerKey(key)
     , context(NULL)
   {} 

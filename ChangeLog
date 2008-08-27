@@ -2,6 +2,9 @@
 	* synthdata.*: Fixed crash caused by Alsa SND_SEQ_EVENT_SYSEX
 	events.
 	* midicontrollerlist.*: Empty files removed.
+	* midicontroller.*: Possible fix for broken MIDI event type
+	transformation if type values are > 127 (changed "int" to
+	"unsigned int"). Untested.
 
 2008-08-17 Guido Scholz <guido.scholz@bayernline.de>
 	* INSTALL: File replaced by generic file which comes with the
