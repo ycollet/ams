@@ -10,7 +10,6 @@
 #include "synthdata.h"
 #include "guiwidget.h"
 #include "midicontroller.h"
-#include "midicontrollerlist.h"
 #include "midiguicomponent.h"
 #include "module.h"
 #include "midislider.h"

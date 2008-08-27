@@ -132,7 +132,6 @@ ams_SOURCES = \
 	midicombobox.cpp \
 	midicontrollable.cpp \
 	midicontroller.cpp \
-	midicontrollerlist.cpp \
 	midiguicomponent.cpp \
 	midipushbutton.cpp \
 	midislider.cpp \
@@ -210,7 +209,6 @@ noinst_HEADERS = \
 	midicombobox.h \
 	midicontrollable.h \
 	midicontroller.h \
-	midicontrollerlist.h \
 	midiguicomponent.h \
 	midipushbutton.h \
 	midisliderbase.h \
