@@ -679,20 +679,11 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
         }  
 
     }
-    //TODO: check if this is not MIDI channel specific
-    MidiControllerKey mcK(ev);
 
-    typeof(activeMidiControllers->constBegin()) mc =
-        qBinaryFind(activeMidiControllers->constBegin(),
-                activeMidiControllers->constEnd(), mcK);
-    if (mc != activeMidiControllers->constEnd()) {
-            mc->context->setMidiValueRT(
-                    (ev->data.note.velocity << 7) + ev->data.note.velocity);
-    }
-    else {
-        mckRed.put(mcK);
-        pipeMessage |= 2;
-    }
+    MidiControllerContext* mcctx = getMidiControllerContext(ev);
+    if (mcctx != NULL)
+        mcctx->setMidiValueRT(
+                (ev->data.note.velocity << 7) + ev->data.note.velocity);
 }
 
 void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
@@ -709,19 +700,9 @@ void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
             }
     }
 
-    //TODO: check if this is not MIDI channel specific
-    MidiControllerKey mcK(ev);
-
-    typeof(activeMidiControllers->constBegin()) mc =
-        qBinaryFind(activeMidiControllers->constBegin(),
-                activeMidiControllers->constEnd(), mcK);
-    if (mc != activeMidiControllers->constEnd()) {
-            mc->context->setMidiValueRT(0);
-    }
-    else {
-        mckRed.put(mcK);
-        pipeMessage |= 2;
-    }
+    MidiControllerContext* mcctx = getMidiControllerContext(ev);
+    if (mcctx != NULL)
+        mcctx->setMidiValueRT(0);
 }
 
 void SynthData::handleMidiEventPgmChange(snd_seq_event_t *ev)
@@ -732,19 +713,10 @@ void SynthData::handleMidiEventPgmChange(snd_seq_event_t *ev)
 
 void SynthData::handleMidiEventController(snd_seq_event_t *ev)
 {
-    MidiControllerKey mcK(ev);
-
-    typeof(activeMidiControllers->constBegin()) mc =
-        qBinaryFind(activeMidiControllers->constBegin(),
-                activeMidiControllers->constEnd(), mcK);
-    if (mc != activeMidiControllers->constEnd()) {
-            mc->context->setMidiValueRT(
-                    (ev->data.control.value << 7) + ev->data.control.value);
-    }
-    else {
-        mckRed.put(mcK);
-        pipeMessage |= 2;
-    }
+    MidiControllerContext* mcctx = getMidiControllerContext(ev);
+    if (mcctx != NULL)
+        mcctx->setMidiValueRT(
+                (ev->data.control.value << 7) + ev->data.control.value);
 
     if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
         for (int i = 0; i < poly; ++i)
@@ -766,18 +738,9 @@ void SynthData::handleMidiEventController(snd_seq_event_t *ev)
 
 void SynthData::handleMidiEventPitchbend(snd_seq_event_t *ev)
 {
-    MidiControllerKey mcK(ev);
-
-    typeof(activeMidiControllers->constBegin()) mc =
-        qBinaryFind(activeMidiControllers->constBegin(),
-                activeMidiControllers->constEnd(), mcK);
-    if (mc != activeMidiControllers->constEnd()) {
-            mc->context->setMidiValueRT(ev->data.control.value + 8192);
-    }
-    else {
-        mckRed.put(mcK);
-        pipeMessage |= 2;
-    }
+    MidiControllerContext* mcctx = getMidiControllerContext(ev);
+    if (mcctx != NULL)
+        mcctx->setMidiValueRT(ev->data.control.value + 8192);
 
     for (int i = 0; i < synthdata->listM_advmcv.count(); ++i)
         synthdata->listM_advmcv.at(i)->pitchbendEvent(
@@ -793,17 +756,26 @@ void SynthData::handleMidiEventChanPress(snd_seq_event_t *ev)
 
 void SynthData::handleMidiEventControll14(snd_seq_event_t *ev)
 {
+    MidiControllerContext* mcctx = getMidiControllerContext(ev);
+    if (mcctx != NULL)
+        mcctx->setMidiValueRT(ev->data.control.value);
+}
+
+MidiControllerContext* SynthData::getMidiControllerContext(snd_seq_event_t *ev)
+{
+    MidiControllerContext* result;
     MidiControllerKey mcK(ev);
 
     typeof(activeMidiControllers->constBegin()) mc =
         qBinaryFind(activeMidiControllers->constBegin(),
                 activeMidiControllers->constEnd(), mcK);
-    if (mc != activeMidiControllers->constEnd()) {
-            mc->context->setMidiValueRT(ev->data.control.value);
-    }
+    if (mc != activeMidiControllers->constEnd())
+            result = mc->context;
     else {
+        result = NULL;
         mckRed.put(mcK);
         pipeMessage |= 2;
     }
+    return result;
 }
 

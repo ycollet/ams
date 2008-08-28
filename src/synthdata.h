@@ -128,6 +128,7 @@ class SynthData
     void handleMidiEventPitchbend(snd_seq_event_t*);
     void handleMidiEventChanPress(snd_seq_event_t*);
     void handleMidiEventControll14(snd_seq_event_t*);
+    MidiControllerContext* getMidiControllerContext(snd_seq_event_t*);
 
 public:
   SynthData(const QString &name, int p_poly, float p_edge);

@@ -12,7 +12,7 @@ public:
 public:
   MidiControllerContext() {}
 
-  void setMidiValueRT(unsigned int value);
+  void setMidiValueRT(int value);
 };
 
 

@@ -3,7 +3,7 @@
 #include "midicontrollable.h"
 
 
-void MidiControllerContext::setMidiValueRT(unsigned int value)
+void MidiControllerContext::setMidiValueRT(int value)
 {
     for (typeof(mcAbles.constBegin()) it = mcAbles.constBegin();
             it != mcAbles.constEnd(); it++) {
