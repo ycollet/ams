@@ -3247,57 +3247,57 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="104"/>
+        <location filename="../modularsynth.cpp" line="102"/>
         <source>AlsaModularSynth Control Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="108"/>
+        <location filename="../modularsynth.cpp" line="106"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="112"/>
+        <location filename="../modularsynth.cpp" line="110"/>
         <source>AlsaModularSynth Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1330"/>
+        <location filename="../modularsynth.cpp" line="1197"/>
         <source>Load Colors</source>
         <translation>Farben lasen</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1373"/>
+        <location filename="../modularsynth.cpp" line="1240"/>
         <source>AlsaModularSynth Color files (*.acs)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1338"/>
+        <location filename="../modularsynth.cpp" line="1205"/>
         <source>Could not open file.</source>
         <translation>Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1371"/>
+        <location filename="../modularsynth.cpp" line="1238"/>
         <source>Save Colors</source>
         <translation>Farben speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1379"/>
+        <location filename="../modularsynth.cpp" line="1246"/>
         <source>Could not save file.</source>
         <translation>Konnte Datei nicht speichern.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1451"/>
+        <location filename="../modularsynth.cpp" line="1318"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1911"/>
+        <location filename="../modularsynth.cpp" line="1778"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="363"/>
+        <location filename="../modularsynth.cpp" line="364"/>
         <source>About </source>
         <translation type="unfinished"></translation>
     </message>
@@ -3305,7 +3305,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="121"/>
+        <location filename="../module.cpp" line="128"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>
@@ -3520,62 +3520,62 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="346"/>
+        <location filename="../modularsynth.cpp" line="347"/>
         <source> MIDI wont work!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="434"/>
+        <location filename="../modularsynth.cpp" line="435"/>
         <source>Error opening ALSA sequencer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="443"/>
+        <location filename="../modularsynth.cpp" line="444"/>
         <source>Error creating sequencer write port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="452"/>
+        <location filename="../modularsynth.cpp" line="453"/>
         <source>Error creating sequencer read port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1131"/>
+        <location filename="../modularsynth.cpp" line="1003"/>
         <source>All available output ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1149"/>
+        <location filename="../modularsynth.cpp" line="1021"/>
         <source>All available input ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1222"/>
+        <location filename="../modularsynth.cpp" line="1096"/>
         <source>Connection refused.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1947"/>
+        <location filename="../modularsynth.cpp" line="1814"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1963"/>
+        <location filename="../modularsynth.cpp" line="1830"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1977"/>
+        <location filename="../modularsynth.cpp" line="1844"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1987"/>
+        <location filename="../modularsynth.cpp" line="1854"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2038"/>
+        <location filename="../modularsynth.cpp" line="1905"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>

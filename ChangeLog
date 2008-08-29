@@ -1,3 +1,7 @@
+2008-08-29 Guido Scholz <guido.scholz@bayernline.de>
+	* modularsynth.*, module.*, port.*: List of ports now is private
+	to module, port selection rewritten.
+
 2008-08-27 Guido Scholz <guido.scholz@bayernline.de>
 	* synthdata.*: Fixed crash caused by Alsa SND_SEQ_EVENT_SYSEX
 	events.

@@ -42,8 +42,7 @@ class ModularSynth : public QWidget
     QList<Module*> listModule;
     QList<class TextEdit*> listTextEdit;
     connectorStyleType connectorStyle;    
-    bool firstPort;
-    Port *connectingPort[2];
+    Port *selectedPort;
     QSocketNotifier *seqNotifier;
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
@@ -60,7 +59,6 @@ class ModularSynth : public QWidget
     double _zoomFactor;
     QPoint newBoxPos;
     QPoint lastMousePos;
-    void initPorts(Module *m);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
     snd_seq_t *open_seq(); 
@@ -184,7 +182,7 @@ public:
     void newM_dynamicwaves_6();
     void newM_dynamicwaves_8();
     void resizeTextEdit(const QPoint& pos);
-    void portSelected();
+    void portSelected(Port*);
     void deleteModule();
     void deleteModule(Module *m);
     void deleteTextEdit();

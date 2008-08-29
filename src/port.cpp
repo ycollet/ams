@@ -126,7 +126,7 @@ void Port::mousePressEvent(QMouseEvent *ev)
 {
     switch (ev->button()) {
         case Qt::LeftButton:   
-            emit portClicked();
+            emit portClicked(this);
             ev->accept();
             break;
         default:
@@ -286,4 +286,12 @@ void Port::removeAllConnectionsTo(Port* p)
     int connections = connectedPortList.removeAll(p);
     for (int i = 0; i < connections; i++)
         module->decConnections();
+}
+
+void Port::setHighlighted(bool lighton)
+{
+    if (highlighted != lighton) {
+        highlighted = lighton;
+        update();
+    }
 }

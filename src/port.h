@@ -24,6 +24,7 @@ class Port : public QWidget
 
     QString portName;
     int portNameWidth;
+    bool highlighted;
     QList<Port*> connectedPortList;
 
   public:
@@ -38,7 +39,6 @@ class Port : public QWidget
     int index;
     QColor jackColor, cableColor, &colorFont;
     outTypeEnum outType;
-    bool highlighted;
     QList<outTypeEnum> outTypeAcceptList;
     void popupMenuClicked(PopupMenu::portAction);
     bool hasConnectedPort();
@@ -56,13 +56,14 @@ class Port : public QWidget
     bool hasIndex(int);
     void removeAllConnectedPorts();
     void removeAllConnectionsTo(Port*);
+    void setHighlighted(bool);
 
   protected:
     virtual void paintEvent(QPaintEvent *ev);
     virtual void mousePressEvent(QMouseEvent* );
     
   signals:
-    void portClicked();
+    void portClicked(Port*);
     void portDisconnected();
 };
   

@@ -17,6 +17,7 @@
 #include <qpoint.h>
 #include <qlist.h>
 #include <QPaintEvent>
+#include <QPainter>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
 
@@ -86,13 +87,13 @@ class Module : public Box
   Q_OBJECT
 
     int connections;
+    QList<Port*> portList;
     
   public: 
     ConfigDialog *configDialog;
     float ***data; 
     bool cycleReady;
     M_typeEnum M_type;  
-    QList<Port*> portList;
     QList<class MidiControllableBase *> midiControllables;
     int moduleID, outPortCount;
 //    class QTreeWidgetItem *listViewItem;
@@ -132,6 +133,7 @@ class Module : public Box
     Port* getPortWithIndex(int);
     Port* getInPortWithIndex(int);
     Port* getOutPortWithIndex(int);
+    void paintCablesToConnectedPorts(QPainter&);
 
 protected:
   virtual void generateCycle() = 0;
@@ -155,6 +157,8 @@ protected:
 signals:
     void dragged(QPoint pos);
     void removeModule();
+    void portSelected(Port*);
+    void portDisconnected();
                         
   public slots: 
     virtual void removeThisModule();

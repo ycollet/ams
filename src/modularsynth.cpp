@@ -89,11 +89,9 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   , paintFastly(false)
   , _zoomFactor(1.0)
 {
-  firstPort = true;
   modified = false;
   dragWidget = NULL;
-  connectingPort[0] = NULL;
-  connectingPort[1] = NULL;
+  selectedPort = NULL;
   connectorStyle = CONNECTOR_BEZIER;
   portPopup = new PopupMenu(this);
   aboutWidget = new QMessageBox(parent); 
@@ -146,23 +144,25 @@ QSize ModularSynth::sizeHint() const
 void ModularSynth::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
-    int l1, l2;
-    Port *port[2];
-    int port_x[2], port_y[2];
-    QPoint port_pos[2];
-    QColor cableColor, jackColor;
-    Module* m;
+    //int l1, l2;
+    //Port *port[2];
+    //int port_x[2], port_y[2];
+    //QPoint port_pos[2];
+    //QColor cableColor, jackColor;
+    //Module* m;
 
     if (!paintFastly)
         p.setRenderHint(QPainter::Antialiasing);
 
-    p.setPen(jackColor.light(170));
-    for (l1 = 0; l1 < listModule.count(); ++l1) {
-        m = listModule.at(l1);
+    //p.setPen(jackColor.light(170));
+    for (int l1 = 0; l1 < listModule.count(); ++l1) {
+        Module* m = listModule.at(l1);
         
         if (m == NULL)
             continue;
 
+        m->paintCablesToConnectedPorts(p);
+        /*
         for (l2 = 0; l2 < m->portList.count(); ++l2) {
             port[0] = m->portList.at(l2);
             cableColor = port[0]->cableColor;
@@ -226,6 +226,7 @@ void ModularSynth::paintEvent(QPaintEvent *)
                 // else ... (other connector style was lost)
             }
         }
+        */
     }
 }
  
@@ -513,138 +514,6 @@ void ModularSynth::midiAction(int fd)
 
   if (pipeIn[0] & 4)
     guiWidget->setCurrentPresetText();
-
-  return;
-
-//   snd_seq_event_t *ev;
-//   QString qs;
-//   int l1, l2, osc, noteCount;
-//   bool foundOsc;
-
-//   do {
-//     snd_seq_event_input(synthdata->seq_handle, &ev);
-//     MidiController midiController(ev); 
-//     if (midiWidget->isVisible()) {
-//       if (ev->type == SND_SEQ_EVENT_CONTROLLER ||
-// 	  ev->type == SND_SEQ_EVENT_CONTROL14 ||
-// 	  ev->type == SND_SEQ_EVENT_PITCHBEND)
-// 	midiWidget->addMidiController(midiController);
-
-//       if (midiWidget->noteControllerEnabled &&
-// 	  (ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF))
-// 	midiWidget->addMidiController(midiController);
-//     }
-
-//     const MidiController *c = midiWidget->midiController(midiController);
-//     if (c) {
-//       int value;
-//       switch (c->type()) {
-//       case SND_SEQ_EVENT_PITCHBEND:
-// 	value = (ev->data.control.value + 8192) >> 7;
-// 	break;
-//       case SND_SEQ_EVENT_CONTROL14:
-// 	value = ev->data.control.value >> 7;
-// 	break;
-//       case SND_SEQ_EVENT_CONTROLLER:
-// 	value = ev->data.control.value;
-// 	break;
-//       case SND_SEQ_EVENT_NOTEON:
-// 	value = ev->data.note.velocity;
-// 	break;
-//       default:
-//       case SND_SEQ_EVENT_NOTEOFF:
-// 	value = 0;
-// 	break;
-//       }
-//       //!!      emit c->context->sendMidiValue(value);
-//       if (midiWidget->followMidi)
-// 	midiWidget->setSelectedController(*c);
-//     }
-
-// // Voice assignment
-
-//     if ((ev->type == SND_SEQ_EVENT_NOTEON || ev->type == SND_SEQ_EVENT_NOTEOFF) &&
-// 	(synthdata->midiChannel < 0 || synthdata->midiChannel == ev->data.control.channel))
-//       if ((ev->type == SND_SEQ_EVENT_NOTEON) && (ev->data.note.velocity > 0)) {
-
-// // Note On: Search for oldest voice to allocate new note.          
-          
-//           osc = 0;
-//           noteCount = 0;
-//           foundOsc = false;
-//           for (l2 = 0; l2 < synthdata->poly; ++l2)
-//             if (synthdata->noteCounter[l2] > noteCount) {
-//               noteCount = synthdata->noteCounter[l2];
-//               osc = l2;
-//               foundOsc = true;
-//             }
-
-//           if (foundOsc) {
-//             synthdata->noteCounter[osc] = 0;
-//             synthdata->sustainNote[osc] = false;
-//             synthdata->velocity[osc] = ev->data.note.velocity;
-//             synthdata->channel[osc] = ev->data.note.channel;
-//             synthdata->notes[osc] = ev->data.note.note;
-//           }  
-//       } else {
-      
-// // Note Off      
-      
-//         for (l2 = 0; l2 < synthdata->poly; ++l2)
-//           if ((synthdata->notes[l2] == ev->data.note.note)
-//             && (synthdata->channel[l2] == ev->data.note.channel))
-//             if (synthdata->sustainFlag)
-//               synthdata->sustainNote[l2] = true;
-//             else
-//               synthdata->noteCounter[l2] = 1000000; 
-
-//       }       
-
-    
-//     if (ev->type == SND_SEQ_EVENT_CONTROLLER) {
-//       if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
-//         for (l2 = 0; l2 < synthdata->poly; ++l2)
-//           if ((synthdata->noteCounter[l2] < 1000000) && (synthdata->channel[l2] == ev->data.note.channel))
-//             synthdata->noteCounter[l2] = 1000000;
-
-//       if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
-//         synthdata->sustainFlag = ev->data.control.value > 63;
-//         if (!synthdata->sustainFlag)
-//           for (l2 = 0; l2 < synthdata->poly; ++l2)
-//             if (synthdata->sustainNote[l2])
-//               synthdata->noteCounter[l2] = 1000000;
-//       }
-//     }
-//     if (ev->type == SND_SEQ_EVENT_PGMCHANGE)
-//       guiWidget->setCurrentPreset(ev->data.control.value);
-
-//     for (l1 = 0; l1 < synthdata->listM_advmcv.count(); ++l1)
-//       switch (ev->type) {
-//         case SND_SEQ_EVENT_CHANPRESS: 
-//           synthdata->listM_advmcv.at(l1)->aftertouchEvent(ev->data.control.value);
-//           break;
-//         case SND_SEQ_EVENT_PITCHBEND:
-//           synthdata->listM_advmcv.at(l1)->pitchbendEvent(ev->data.control.value); 
-//           break;
-//         case SND_SEQ_EVENT_CONTROLLER: 
-//           synthdata->listM_advmcv.at(l1)->controllerEvent(ev->data.control.param, ev->data.control.value);
-//           break;
-//       }
-
-//     snd_seq_free_event(ev);
-//   } while (snd_seq_event_input_pending(synthdata->seq_handle, 0) > 0);
-}
-
-void ModularSynth::initPorts(Module *m) {
-
-  int l1;
-
-  for (l1 = 0; l1 < m->portList.count(); ++l1) {
-    QObject::connect(m->portList.at(l1), SIGNAL(portClicked()), 
-                     this, SLOT(portSelected()));
-    QObject::connect(m->portList.at(l1), SIGNAL(portDisconnected()), 
-                     this, SLOT(redrawPortConnections()));
-  }
 }
 
 /* redraws complete module area when a module connection is changed*/
@@ -659,12 +528,17 @@ void ModularSynth::initNewModule(Module *m)
   m->move(newBoxPos);
   m->show();
 
-  QObject::connect(m, SIGNAL(removeModule()), this, SLOT(deleteModule()));
+  QObject::connect(m, SIGNAL(removeModule()),
+          this, SLOT(deleteModule()));
+  QObject::connect(m, SIGNAL(portSelected(Port*)),
+          this, SLOT(portSelected(Port*)));
+  QObject::connect(m, SIGNAL(portDisconnected()),
+          this, SLOT(redrawPortConnections()));
+
   listModule.append(m);
   if (!loadingPatch) {
     midiWidget->addModule(m);
   }
-  initPorts(m);
   modified = true;
 }
 
@@ -673,7 +547,6 @@ void ModularSynth::new_textEdit()
   TextEdit *te = new TextEdit(this, "textEdit");
   te->move(newBoxPos);
   te->show();
-  //  QObject::connect(te, SIGNAL(dragged(QPoint)), this, SLOT(moveTextEdit(QPoint)));
   QObject::connect(te, SIGNAL(sizeDragged(const QPoint&)),
           this, SLOT(resizeTextEdit(const QPoint&)));
   QObject::connect(te, SIGNAL(removeTextEdit()), this, SLOT(deleteTextEdit()));
@@ -687,7 +560,6 @@ void ModularSynth::new_textEdit(int w, int h) {
   te->setFixedSize(w, h);
   te->move(newBoxPos);
   te->show();
-  //  QObject::connect(te, SIGNAL(dragged(QPoint)), this, SLOT(moveTextEdit(QPoint)));
   QObject::connect(te, SIGNAL(sizeDragged(const QPoint&)),
           this, SLOT(resizeTextEdit(const QPoint&)));
   QObject::connect(te, SIGNAL(removeTextEdit()), this, SLOT(deleteTextEdit()));
@@ -1195,44 +1067,39 @@ void ModularSynth::resizeTextEdit(const QPoint& pos) {
 }
 
 // selecting and connecting ports:
-void ModularSynth::portSelected() {
+void ModularSynth::portSelected(Port* p)
+{
+    if (p == NULL)
+        return;
 
-  if (firstPort) {
-    firstPort = false;
-    connectingPort[0] = (Port *)sender();
-    connectingPort[0]->highlighted = true;
-    connectingPort[0]->update();
-  } else {
-    firstPort = true;
-    connectingPort[1] = (Port *)sender();
-    connectingPort[0]->highlighted = false;  
-    connectingPort[0]->update();
-    //connectingPort[0]->cableColor = LastCableColor;  
-    connectingPort[1]->highlighted = false;
-    connectingPort[1]->update();
-    if ((((connectingPort[0]->dir == PORT_IN) &&
-                    (connectingPort[1]->dir == PORT_OUT))
-                || ((connectingPort[1]->dir == PORT_IN) &&
-                    (connectingPort[0]->dir == PORT_OUT)))
-            && (connectingPort[0]->module != connectingPort[1]->module)) {
-        connectingPort[0]->connectTo(connectingPort[1]);
-        connectingPort[1]->connectTo(connectingPort[0]);
-        redrawPortConnections();
-    } else {
-      qWarning(QObject::tr("Connection refused.").toUtf8());
-      connectingPort[0] = NULL;
-      connectingPort[1] = NULL;
+    if (selectedPort == p) {
+        p->setHighlighted(false);
+        selectedPort = NULL;
     }
-  } 
+    else if (selectedPort == NULL) {
+        selectedPort = p;
+        p->setHighlighted(true);
+    }
+    else if (selectedPort->module == p->module) {
+        qWarning(QObject::tr("Connection refused.").toUtf8());
+    }
+    else if (((selectedPort->isInPort()) && (!p->isInPort()))
+            || ((p->isInPort()) && (!selectedPort->isInPort()))) {
+        selectedPort->connectTo(p);
+        p->connectTo(selectedPort);
+        p->setHighlighted(false);
+        selectedPort->setHighlighted(false);
+        selectedPort = NULL;
+        redrawPortConnections();
+    }
+    else
+        qWarning(QObject::tr("Connection refused.").toUtf8());
 }
 
 void ModularSynth::deleteModule() {
 
   Module *m;
  
-  connectingPort[0] = NULL;
-  connectingPort[1] = NULL;
-  firstPort = true;
   m = (Module *)sender();
   listModule.removeAll(m);
   deleteModule(m);
@@ -2238,15 +2105,10 @@ void ModularSynth::showContextMenu(const QPoint& pos) {
 
 void ModularSynth::refreshColors() {
 
-  int l1, l2;
-  for (l1 = 0; l1 < listModule.count(); ++l1) {
+  for (int l1 = 0; l1 < listModule.count(); ++l1) {
       Module* m = listModule[l1];
-      m->getColors();
-      for (l2 = 0; l2 < m->portList.count(); ++l2) {
-          m->portList.at(l2)->setPalette(QPalette(
-                      synthdata->colorModuleBackground,
-                      synthdata->colorModuleBackground));
-      }
+      if (m != NULL)
+          m->getColors();
   }      
   prefWidget->refreshColors();
 

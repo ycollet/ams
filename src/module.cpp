@@ -40,7 +40,8 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
 //   colorFont = synthdata->colorModuleFont;
   synthdata->moduleList.append(this);
 //   setPalette(QPalette(colorBackground, colorBackground));
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DEFAULT_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH,
+          MODULE_DEFAULT_HEIGHT);
 
   configDialog = new ConfigDialog(*this);
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
@@ -50,58 +51,64 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
     portMemAlloc(outPortCount, true);
 }
 
-void Module::portMemAlloc(int outPortCount, bool poly)
+void Module::portMemAlloc(int outports, bool poly)
 {
-                           // TODO Caution, if poly is changed
-  this->outPortCount = outPortCount;
-  data = (float ***)malloc(outPortCount * sizeof(float **));
-  int voices = poly ? synthdata->poly : 1;
-  for (int l1 = 0; l1 < outPortCount; ++l1) {
-    data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
-    int size = voices * synthdata->periodsize * sizeof(float);
-    data[l1][0] = (float *)malloc(size);
-    memset(data[l1][0], 0, size);
-    portmemAllocated += size;
-    for (int l2 = 1; l2 < synthdata->poly; ++l2)
-      data[l1][l2] = data[l1][l2 - 1] + (poly ? synthdata->periodsize : 0);
-  }
+    // TODO Caution, if poly is changed
+    outPortCount = outports;
+    data = (float ***)malloc(outPortCount * sizeof(float **));
+    int voices = poly ? synthdata->poly : 1;
+
+    for (int l1 = 0; l1 < outPortCount; ++l1) {
+        data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
+        int size = voices * synthdata->periodsize * sizeof(float);
+        data[l1][0] = (float *)malloc(size);
+        memset(data[l1][0], 0, size);
+        portmemAllocated += size;
+        for (int l2 = 1; l2 < synthdata->poly; ++l2)
+            data[l1][l2] = data[l1][l2 - 1] +
+                (poly ? synthdata->periodsize : 0);
+    }
 }
 
 Module::~Module()
 {
-  int l1;
+    int l1;
 
-  delete configDialog;  
+    delete configDialog;  
 
-  synthdata->midiWidget->removeModule(this);
+    synthdata->midiWidget->removeModule(this);
 
-  qDeleteAll(midiControllables.begin(), midiControllables.end());
+    qDeleteAll(midiControllables.begin(), midiControllables.end());
 
-  for (l1 = 0; l1 < portList.count(); ++l1) {
-    Port *port = portList.at(l1);
-    port->removeAllConnectedPorts();
-  }
+    for (l1 = 0; l1 < portList.count(); ++l1) {
+        Port *port = portList.at(l1);
+        if (port != NULL)
+            port->removeAllConnectedPorts();
+    }
 
-  for (l1 = 0; l1 < outPortCount; ++l1) {
-    free(data[l1][0]);
-    portmemAllocated -= synthdata->poly * synthdata->periodsize * sizeof(float);
-    free(data[l1]);
-  }
+    for (l1 = 0; l1 < outPortCount; ++l1) {
+        free(data[l1][0]);
+        portmemAllocated -= synthdata->poly * synthdata->periodsize
+            * sizeof(float);
+        free(data[l1]);
+    }
 
-  free(data);
+    free(data);
 }
 
 int Module::checkin(Port *p)
 {
-  portList.append(p);
-  if (p->dir == PORT_IN) {
-    p->move(0, cv.in_off + cv.in_index * cv.step);
-    cv.in_index++;
-  } else {
-    p->move(width() - p->width(), cv.out_off + cv.out_index * cv.step);
-    cv.out_index++;
-  }
-  return 0;
+    portList.append(p);
+    if (p->dir == PORT_IN) {
+        p->move(0, cv.in_off + cv.in_index * cv.step);
+        cv.in_index++;
+    } else {
+        p->move(width() - p->width(), cv.out_off + cv.out_index * cv.step);
+        cv.out_index++;
+    }
+    connect(p, SIGNAL(portClicked(Port*)), this, SIGNAL(portSelected(Port*)));
+    connect(p, SIGNAL(portDisconnected()), this, SIGNAL(portDisconnected()));
+    return 0;
 }
 
 void Module::paint(QPainter &p)
@@ -135,20 +142,21 @@ void Module::showConfigDialog(const QPoint& pos)
     configDialog->raise();
 }
 
-void Module::removeThisModule() {
+void Module::removeThisModule()
+{
 
   emit removeModule();
 }
 
-void Module::save(QTextStream& ts) {
-
+void Module::save(QTextStream& ts)
+{
   saveConnections(ts);
   saveParameters(ts);
   saveBindings(ts);
 }
 
-void Module::saveConnections(QTextStream& ts) {
-
+void Module::saveConnections(QTextStream& ts)
+{
     Port *inport;
     Port *outport;
 
@@ -292,6 +300,13 @@ void Module::getColors(void)
   setPalette(QPalette(alphaBack, alphaBack));
   colorBorder = synthdata->colorModuleBorder;
   colorFont = synthdata->colorModuleFont;
+
+  // update also port colors
+  for (int l2 = 0; l2 < portList.count(); ++l2) {
+      portList.at(l2)->setPalette(QPalette(
+                  synthdata->colorModuleBackground,
+                  synthdata->colorModuleBackground));
+  }
 }
 
 void Module::incConnections()
@@ -400,3 +415,58 @@ Port* Module::getOutPortWithIndex(int idx)
     return p;
 }
 
+void Module::paintCablesToConnectedPorts(QPainter& painter)
+{
+    int inportx, inporty, outportx, outporty;
+
+    for (int i = 0; i < portList.count(); ++i) {
+        Port* inport = portList.at(i);
+        Port* outport = inport->needsConnectionToPort();
+        if (outport == NULL) 
+            continue;
+
+        QColor cableColor, jackColor;
+        QPen pen;
+        QPainterPath path;
+        int xShift = 30;
+        cableColor = inport->cableColor;
+        jackColor = outport->jackColor;
+
+        inportx = inport->pos().x() + x() - 10;
+        outportx = outport->pos().x() + outport->width() +
+            outport->module->x() + 10;
+        inporty = inport->pos().y() + y() + inport->height()/2;
+        outporty = outport->pos().y() + outport->module->y() +
+            outport->height()/2;
+        if (outportx > inportx)
+            xShift += (outportx - inportx) >> 3;
+
+        path.moveTo(inportx, inporty);
+        path.cubicTo(inportx - xShift, inporty + 3,
+                outportx + xShift, outporty + 3, outportx, outporty);
+        pen.setWidth(5);
+        pen.setColor(cableColor.dark(120));
+        painter.strokePath(path, pen);
+
+        pen.setWidth(3);
+        pen.setColor(cableColor);
+        painter.strokePath(path, pen);
+
+        pen.setWidth(1);
+        pen.setColor(cableColor.light(120));
+        painter.strokePath(path, pen);
+
+        painter.fillRect(inportx, inporty - 3, 11, 7,
+                QBrush(jackColor.dark(120)));
+        painter.fillRect(outportx - 11, outporty - 3, 11, 7,
+                QBrush(jackColor.dark(120)));
+        painter.fillRect(inportx, inporty - 2, 11, 5,
+                QBrush(jackColor));
+        painter.fillRect(outportx - 11, outporty - 2, 11, 5,
+                QBrush(jackColor));
+        painter.fillRect(inportx, inporty - 1, 11, 3,
+                QBrush(jackColor.light(120)));
+        painter.fillRect(outportx - 11, outporty - 1, 11, 3,
+                QBrush(jackColor.light(120)));
+    }
+}
