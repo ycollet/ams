@@ -69,7 +69,7 @@ void Module::portMemAlloc(int outPortCount, bool poly)
 
 Module::~Module()
 {
-  int l1, l2;
+  int l1;
 
   delete configDialog;  
 
@@ -79,11 +79,7 @@ Module::~Module()
 
   for (l1 = 0; l1 < portList.count(); ++l1) {
     Port *port = portList.at(l1);
-    QList<Port *> &connected = port->connectedPortList;
-    for (l2 = 0; l2 < connected.count(); ++l2)
-      connected.at(l2)->connectedPortList.removeAll(port); 
-
-    connected.clear();
+    port->removeAllConnectedPorts();
   }
 
   for (l1 = 0; l1 < outPortCount; ++l1) {

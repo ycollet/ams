@@ -48,29 +48,29 @@ Port::~Port() {
 
 int Port::connectTo(Port *port)
 {
-  synthdata->port_sem.acquire();
+    synthdata->port_sem.acquire();
 
-  if (dir == PORT_OUT) {
-    if (port->outTypeAcceptList.contains(outType)) {
-      connectedPortList.append(port);
-      module->incConnections();
-      port->jackColor = synthdata->colorJack;
-      port->cableColor = synthdata->colorCable;
-    }
-  } else {
-    if (outTypeAcceptList.contains(port->outType)) {
-      if (connectedPortList.count()) {
-        connectedPortList.at(0)->connectedPortList.removeAll(this);
-        connectedPortList.at(0)->module->decConnections();
-        connectedPortList.clear();
-      } else
-	module->incConnections();
+    if (dir == PORT_OUT) {
+        if (port->outTypeAcceptList.contains(outType)) {
+            connectedPortList.append(port);
+            module->incConnections();
+            port->jackColor = synthdata->colorJack;
+            port->cableColor = synthdata->colorCable;
+        }
+    } else {
+        if (outTypeAcceptList.contains(port->outType)) {
+            if (connectedPortList.count()) {
+                connectedPortList.at(0)->connectedPortList.removeAll(this);
+                connectedPortList.at(0)->module->decConnections();
+                connectedPortList.clear();
+            } else
+                module->incConnections();
 
-      connectedPortList.append(port);
+            connectedPortList.append(port);
+        }
     }
-  }
-  synthdata->port_sem.release();
-  return(0);
+    synthdata->port_sem.release();
+    return(0);
 }
 
 Port* Port::needsConnectionToPort()
@@ -179,7 +179,7 @@ void Port::popupMenuClicked(PopupMenu::portAction ac)
 void Port::disconnectClicked() {
 
   synthdata->port_sem.acquire();
-  if (connectedPortList.count()) {
+  if (connectedPortList.count() > 0) {
     connectedPortList.at(0)->connectedPortList.removeAll(this);
     connectedPortList.at(0)->module->decConnections();
     connectedPortList.clear();
@@ -269,4 +269,21 @@ void Port::cableColorClicked() {
 bool Port::hasIndex(int idx)
 {
     return (index == idx);
+}
+
+void Port::removeAllConnectedPorts()
+{
+    for (int i = 0; i < connectedPortList.count(); i++) {
+        Port *port = connectedPortList.at(i);
+        if (port != NULL)
+            port->removeAllConnectionsTo(this);
+    }
+    connectedPortList.clear();
+}
+
+void Port::removeAllConnectionsTo(Port* p)
+{
+    int connections = connectedPortList.removeAll(p);
+    for (int i = 0; i < connections; i++)
+        module->decConnections();
 }

@@ -24,17 +24,16 @@ class Port : public QWidget
 
     QString portName;
     int portNameWidth;
+    QList<Port*> connectedPortList;
 
-    public:
+  public:
     Port(const QString &p_portName, dirType p_dir, int p_index,
             class Module *parent, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
     float **getinputdata (void);
 
-  public:
     class Module *module;
-    QList<Port*> connectedPortList;
     dirType dir;
     int index;
     QColor jackColor, cableColor, &colorFont;
@@ -44,16 +43,6 @@ class Port : public QWidget
     void popupMenuClicked(PopupMenu::portAction);
     bool hasConnectedPort();
     Port* needsConnectionToPort();
-
-  signals:
-    void portClicked();
-    void portDisconnected();
-    
-  protected:
-    virtual void paintEvent(QPaintEvent *ev);
-    virtual void mousePressEvent(QMouseEvent* );
-    
-  public:
     void disconnectClicked();  
     void cableGrayClicked();
     void cableRedClicked();
@@ -64,7 +53,17 @@ class Port : public QWidget
     void jackColorClicked();
     void cableColorClicked();
     bool isInPort();
-    bool hasIndex(int idx);
+    bool hasIndex(int);
+    void removeAllConnectedPorts();
+    void removeAllConnectionsTo(Port*);
+
+  protected:
+    virtual void paintEvent(QPaintEvent *ev);
+    virtual void mousePressEvent(QMouseEvent* );
+    
+  signals:
+    void portClicked();
+    void portDisconnected();
 };
   
 #endif

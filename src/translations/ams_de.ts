@@ -3305,7 +3305,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="125"/>
+        <location filename="../module.cpp" line="121"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>
