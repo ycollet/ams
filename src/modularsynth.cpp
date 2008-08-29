@@ -144,17 +144,10 @@ QSize ModularSynth::sizeHint() const
 void ModularSynth::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
-    //int l1, l2;
-    //Port *port[2];
-    //int port_x[2], port_y[2];
-    //QPoint port_pos[2];
-    //QColor cableColor, jackColor;
-    //Module* m;
 
     if (!paintFastly)
         p.setRenderHint(QPainter::Antialiasing);
 
-    //p.setPen(jackColor.light(170));
     for (int l1 = 0; l1 < listModule.count(); ++l1) {
         Module* m = listModule.at(l1);
         
@@ -162,71 +155,6 @@ void ModularSynth::paintEvent(QPaintEvent *)
             continue;
 
         m->paintCablesToConnectedPorts(p);
-        /*
-        for (l2 = 0; l2 < m->portList.count(); ++l2) {
-            port[0] = m->portList.at(l2);
-            cableColor = port[0]->cableColor;
-            jackColor = port[0]->jackColor;
-            port[1] = port[0]->needsConnectionToPort();
-
-            if (port[1] != NULL) {
-                port_pos[0] = port[0]->pos();
-                port_pos[1] = port[1]->pos();
-                //port_x[0] = port_pos[0].x() + port[0]->module->x() - 10;
-                port_x[0] = port_pos[0].x() + m->x() - 10;
-                port_x[1] = port_pos[1].x() + port[1]->width() +
-                    port[1]->module->x() + 10;
-                //port_y[0] = port_pos[0].y() + port[0]->module->y() +
-                //    port[0]->height()/2;
-                port_y[0] = port_pos[0].y() + m->y() +
-                    port[0]->height()/2;
-                port_y[1] = port_pos[1].y() + port[1]->module->y() +
-                    port[1]->height()/2;
-
-                if (connectorStyle == CONNECTOR_BEZIER) {
-                    QPen pen;
-                    QPainterPath path;
-                    int xShift = 30;
-                    if (port_x[1] > port_x[0])
-                        xShift += (port_x[1] - port_x[0]) >> 3;
-                    path.moveTo(port_x[0], port_y[0]);
-                    path.cubicTo(port_x[0] - xShift, port_y[0] + 3,
-                            port_x[1] + xShift, port_y[1] + 3,
-                            port_x[1], port_y[1]);
-                    pen.setWidth(5);
-                    pen.setColor(cableColor.dark(120));
-                    p.strokePath(path, pen);
-
-                    pen.setWidth(3);
-                    pen.setColor(cableColor);
-                    p.strokePath(path, pen);
-
-                    pen.setWidth(1);
-                    pen.setColor(cableColor.light(120));
-                    p.strokePath(path, pen);
-
-                    p.fillRect(port_x[0], port_y[0] - 3, 11, 7,
-                            QBrush(jackColor.dark(120)));
-                    p.fillRect(port_x[1] - 11, port_y[1] - 3, 11, 7,
-                            QBrush(jackColor.dark(120)));
-                    p.fillRect(port_x[0], port_y[0] - 2, 11, 5,
-                            QBrush(jackColor));
-                    p.fillRect(port_x[1] - 11, port_y[1] - 2, 11, 5,
-                            QBrush(jackColor));
-                    p.fillRect(port_x[0], port_y[0] - 1, 11, 3,
-                            QBrush(jackColor.light(120)));
-                    p.fillRect(port_x[1] - 11, port_y[1] - 1, 11, 3,
-                            QBrush(jackColor.light(120)));
-                    // pen.setWidth(1);
-                    // pen.setColor(jackColor.light(170));
-                    // p.setPen(pen);
-                    // p.drawLine(port_x[0], port_y[0], port_x[0] + 11, port_y[0]);
-                    // p.drawLine(port_x[1] - 11, port_y[1], port_x[1], port_y[1]);
-                }
-                // else ... (other connector style was lost)
-            }
-        }
-        */
     }
 }
  
@@ -341,22 +269,22 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
 
 int ModularSynth::go(bool withJack)
 {
-  if ((synthdata->seq_handle = open_seq()))
-    initSeqNotifier();
-  else
-    qWarning(QObject::tr(" MIDI wont work!").toUtf8());
+    if ((synthdata->seq_handle = open_seq()))
+        initSeqNotifier();
+    else
+        qWarning(QObject::tr("Alsa MIDI wont work!").toUtf8());
 
-  midiWidget->setActiveMidiControllers();
+    midiWidget->setActiveMidiControllers();
 
-  if (withJack) {
-    synthdata->initJack(ncapt, nplay);
-    synthdata->doSynthesis = true;
-  } else {
-    synthdata->initAlsa(pcmname.toLocal8Bit(), fsamp, frsize,
-            nfrags, ncapt, nplay);
-    synthdata->doSynthesis = true;
-  }
-  return 0;
+    if (withJack) {
+        synthdata->initJack(ncapt, nplay);
+        synthdata->doSynthesis = true;
+    } else {
+        synthdata->initAlsa(pcmname.toLocal8Bit(), fsamp, frsize,
+                nfrags, ncapt, nplay);
+        synthdata->doSynthesis = true;
+    }
+    return 0;
 }
 
 void ModularSynth::displayAbout() {
@@ -438,6 +366,7 @@ snd_seq_t *ModularSynth::open_seq() {
 
     snd_seq_set_client_name(seq_handle,
             (synthdata->name + " Midi").toLatin1().constData());
+
     if (snd_seq_create_simple_port(seq_handle, "ams in",
                 SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
                 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
@@ -459,61 +388,55 @@ snd_seq_t *ModularSynth::open_seq() {
 
 int ModularSynth::initSeqNotifier()
 {
-
-//   int alsaEventFd = 0;
-
-//   struct pollfd pfd[1];
-//   snd_seq_poll_descriptors(synthdata->seq_handle, pfd, 1, POLLIN);
-//   alsaEventFd = pfd[0].fd;
-  seqNotifier = new QSocketNotifier(synthdata->pipeFd[0], QSocketNotifier::Read, this);
-  QObject::connect(seqNotifier, SIGNAL(activated(int)),
-		   this, SLOT(midiAction(int)));
-  return(0);
+    seqNotifier = new QSocketNotifier(synthdata->pipeFd[0],
+            QSocketNotifier::Read, this);
+    QObject::connect(seqNotifier, SIGNAL(activated(int)),
+            this, SLOT(midiAction(int)));
+    return(0);
 }
 
 void ModularSynth::midiAction(int fd)
 {
-  char pipeIn[16];
+    char pipeIn[16];
 
-  ssize_t pipeRed = read(fd, pipeIn, sizeof(pipeIn));
+    ssize_t pipeRed = read(fd, pipeIn, sizeof(pipeIn));
 
-  if (pipeRed < 0) {
-    StdErr << __PRETTY_FUNCTION__ << ": read() " << endl;
-    perror(NULL);
-    exit(-1);
-  }
-  if (pipeRed < 1 || pipeRed >= (ssize_t)sizeof(pipeIn))
-    StdErr << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
-  if (pipeRed == 0)
-    return;
-
-  while (pipeRed > 1)
-    pipeIn[0] |= pipeIn[--pipeRed];
-
-  MidiControllableBase *mcAble = NULL;
-  for (int mCs = synthdata->mcSet.count(); mCs; --mCs) {
-    mcAble = synthdata->mcSet.get();
-    mcAble->updateMGCs(NULL);
-  }
-  if (mcAble)
-    midiWidget->midiTouched(*mcAble);
-
-  for (int mcKs = synthdata->mckRed.count();
-       mcKs; --mcKs) {
-    MidiControllerKey mcK = synthdata->mckRed.get();
-    if (midiWidget->isVisible()) {
-      if (mcK.type() == SND_SEQ_EVENT_CONTROLLER ||
-	  mcK.type() == SND_SEQ_EVENT_CONTROL14 ||
-	  mcK.type() == SND_SEQ_EVENT_PITCHBEND ||
-	  (midiWidget->noteControllerEnabled &&
-	   (mcK.type() == SND_SEQ_EVENT_NOTEON ||
-	    mcK.type() == SND_SEQ_EVENT_NOTEOFF)))
-	midiWidget->addMidiController(mcK);
+    if (pipeRed < 0) {
+        StdErr << __PRETTY_FUNCTION__ << ": read() " << endl;
+        perror(NULL);
+        exit(-1);
     }
-  }
+    if (pipeRed < 1 || pipeRed >= (ssize_t)sizeof(pipeIn))
+        StdErr << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
+    if (pipeRed == 0)
+        return;
 
-  if (pipeIn[0] & 4)
-    guiWidget->setCurrentPresetText();
+    while (pipeRed > 1)
+        pipeIn[0] |= pipeIn[--pipeRed];
+
+    MidiControllableBase *mcAble = NULL;
+    for (int mCs = synthdata->mcSet.count(); mCs; --mCs) {
+        mcAble = synthdata->mcSet.get();
+        mcAble->updateMGCs(NULL);
+    }
+    if (mcAble != NULL)
+        midiWidget->midiTouched(*mcAble);
+
+    for (int mcKs = synthdata->mckRed.count(); mcKs; --mcKs) {
+        MidiControllerKey mcK = synthdata->mckRed.get();
+        if (midiWidget->isVisible()) {
+            if (mcK.type() == SND_SEQ_EVENT_CONTROLLER ||
+                    mcK.type() == SND_SEQ_EVENT_CONTROL14 ||
+                    mcK.type() == SND_SEQ_EVENT_PITCHBEND ||
+                    (midiWidget->noteControllerEnabled &&
+                     (mcK.type() == SND_SEQ_EVENT_NOTEON ||
+                      mcK.type() == SND_SEQ_EVENT_NOTEOFF)))
+                midiWidget->addMidiController(mcK);
+        }
+    }
+
+    if (pipeIn[0] & 4)
+        guiWidget->setCurrentPresetText();
 }
 
 /* redraws complete module area when a module connection is changed*/
