@@ -3110,12 +3110,12 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="61"/>
         <source>&amp;Load Colors...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Farbschema laden...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
         <source>Save &amp;Colors as...</source>
-        <translation type="unfinished"></translation>
+        <translation>F&amp;arbschema speichern unter...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="56"/>
