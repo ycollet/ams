@@ -494,7 +494,7 @@
     <message>
         <location filename="../m_function.cpp" line="23"/>
         <source>Function</source>
-        <translation type="unfinished"></translation>
+        <translation>Funktion</translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="31"/>
@@ -539,7 +539,7 @@
     <message>
         <location filename="../m_function.cpp" line="64"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurücksetzen</translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="65"/>
@@ -554,7 +554,7 @@
     <message>
         <location filename="../m_function.cpp" line="76"/>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modus</translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="77"/>
@@ -585,12 +585,12 @@
     <message>
         <location filename="../m_ladspa.cpp" line="97"/>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
+        <translation>Name: </translation>
     </message>
     <message>
         <location filename="../m_ladspa.cpp" line="98"/>
         <source>Author: </source>
-        <translation>Autor:</translation>
+        <translation>Autor: </translation>
     </message>
     <message>
         <location filename="../m_ladspa.cpp" line="99"/>
@@ -3254,7 +3254,7 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="106"/>
         <source>AlsaModularSynth Parameter View</source>
-        <translation type="unfinished"></translation>
+        <translation>AlsaModularSynth Parameteransicht</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="110"/>
@@ -3269,7 +3269,7 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="1240"/>
         <source>AlsaModularSynth Color files (*.acs)</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbschemadateien (*.acs)</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1205"/>
@@ -3299,7 +3299,7 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="364"/>
         <source>About </source>
-        <translation type="unfinished"></translation>
+        <translation>Über </translation>
     </message>
 </context>
 <context>
@@ -3341,47 +3341,47 @@ Save changes?</source>
     <message>
         <location filename="../port_popup.cpp" line="6"/>
         <source>Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Trennen</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="10"/>
         <source>Default Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Standardkabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="13"/>
         <source>Gray Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Graues Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="16"/>
         <source>Red Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="19"/>
         <source>Green Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Grünes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="22"/>
         <source>Blue Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Blaues Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="25"/>
         <source>Yellow Cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelbes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="29"/>
         <source>Set Jack Color...</source>
-        <translation type="unfinished"></translation>
+        <translation>Steckerfarbe...</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="32"/>
         <source>Set Cable Color...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kabelfarbe...</translation>
     </message>
 </context>
 <context>
@@ -3552,7 +3552,7 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="1096"/>
         <source>Connection refused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Verbindung möglich.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1814"/>
@@ -3627,7 +3627,7 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="194"/>
         <source>Closing synthesizer...</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließe Synthesizer...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="200"/>
