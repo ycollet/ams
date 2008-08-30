@@ -32,6 +32,7 @@ private:
     int querySaveChanges();
     bool isModified();
     void addRecentlyOpenedFile(const QString&, QStringList&);
+    void appendRecentlyOpenedFile(const QString&, QStringList&);
 
 private slots:
     void unixSignal(int fd);

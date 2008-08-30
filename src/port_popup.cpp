@@ -3,33 +3,33 @@
 PopupMenu::PopupMenu(QWidget* parent)
   :QMenu(parent)
 {
-  acDisconnect = new QAction(tr("Disconnect"), this);
+  acDisconnect = new QAction(tr("&Disconnect"), this);
   addAction(acDisconnect);
 
   addSeparator();
-  acDefaultCable = new QAction(tr("Default Cable"), this);
+  acDefaultCable = new QAction(tr("De&fault Cable"), this);
   addAction(acDefaultCable);
 
-  acGrayCable = new QAction(tr("Gray Cable"), this);
+  acGrayCable = new QAction(tr("Gr&ay Cable"), this);
   addAction(acGrayCable);
 
-  acRedCable = new QAction(tr("Red Cable"), this);
+  acRedCable = new QAction(tr("&Red Cable"), this);
   addAction(acRedCable);
 
-  acGreenCable = new QAction(tr("Green Cable"), this);
+  acGreenCable = new QAction(tr("&Green Cable"), this);
   addAction(acGreenCable);
 
-  acBlueCable = new QAction(tr("Blue Cable"), this);
+  acBlueCable = new QAction(tr("&Blue Cable"), this);
   addAction(acBlueCable);
 
-  acYellowCable = new QAction(tr("Yellow Cable"), this);
+  acYellowCable = new QAction(tr("&Yellow Cable"), this);
   addAction(acYellowCable);
 
   addSeparator();
-  acSetJackColor = new QAction(tr("Set Jack Color..."), this);
+  acSetJackColor = new QAction(tr("Set &Jack Color..."), this);
   addAction(acSetJackColor);
 
-  acSetCableColor = new QAction(tr("Set Cable Color..."), this);
+  acSetCableColor = new QAction(tr("Set &Cable Color..."), this);
   addAction(acSetCableColor);
 }
 

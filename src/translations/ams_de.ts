@@ -583,17 +583,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ladspa.cpp" line="97"/>
+        <location filename="../m_ladspa.cpp" line="99"/>
         <source>Name: </source>
         <translation>Name: </translation>
     </message>
     <message>
-        <location filename="../m_ladspa.cpp" line="98"/>
+        <location filename="../m_ladspa.cpp" line="100"/>
         <source>Author: </source>
         <translation>Autor: </translation>
     </message>
     <message>
-        <location filename="../m_ladspa.cpp" line="99"/>
+        <location filename="../m_ladspa.cpp" line="101"/>
         <source>Copyright: </source>
         <translation>Copyright: </translation>
     </message>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../m_lfo.cpp" line="49"/>
         <source>Reset</source>
-        <translation type="unfinished">Zurücksetzen</translation>
+        <translation>Zurücksetzen</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="51"/>
@@ -3247,59 +3247,64 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="102"/>
+        <location filename="../modularsynth.cpp" line="103"/>
         <source>AlsaModularSynth Control Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="106"/>
+        <location filename="../modularsynth.cpp" line="107"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>AlsaModularSynth Parameteransicht</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="110"/>
+        <location filename="../modularsynth.cpp" line="111"/>
         <source>AlsaModularSynth Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1120"/>
+        <location filename="../modularsynth.cpp" line="1124"/>
         <source>Load Colors</source>
         <translation>Farben lasen</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1163"/>
+        <location filename="../modularsynth.cpp" line="1167"/>
         <source>AlsaModularSynth Color files (*.acs)</source>
         <translation>Farbschemadateien (*.acs)</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1128"/>
+        <location filename="../modularsynth.cpp" line="1132"/>
         <source>Could not open file.</source>
         <translation>Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1161"/>
+        <location filename="../modularsynth.cpp" line="1165"/>
         <source>Save Colors</source>
         <translation>Farben speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1169"/>
+        <location filename="../modularsynth.cpp" line="1173"/>
         <source>Could not save file.</source>
         <translation>Konnte Datei nicht speichern.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1241"/>
+        <location filename="../modularsynth.cpp" line="1245"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1701"/>
+        <location filename="../modularsynth.cpp" line="1715"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="292"/>
+        <location filename="../modularsynth.cpp" line="293"/>
         <source>About </source>
         <translation>Über </translation>
+    </message>
+    <message>
+        <location filename="../modularsynth.cpp" line="1459"/>
+        <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3340,48 +3345,48 @@ Save changes?</source>
     <name>PopupMenu</name>
     <message>
         <location filename="../port_popup.cpp" line="6"/>
-        <source>Disconnect</source>
-        <translation>Trennen</translation>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Trennen</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="10"/>
-        <source>Default Cable</source>
-        <translation>Standardkabel</translation>
+        <source>De&amp;fault Cable</source>
+        <translation>&amp;Standardkabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="13"/>
-        <source>Gray Cable</source>
-        <translation>Graues Kabel</translation>
+        <source>Gr&amp;ay Cable</source>
+        <translation>Gr&amp;aues Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="16"/>
-        <source>Red Cable</source>
-        <translation>Rotes Kabel</translation>
+        <source>&amp;Red Cable</source>
+        <translation>&amp;Rotes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="19"/>
-        <source>Green Cable</source>
-        <translation>Grünes Kabel</translation>
+        <source>&amp;Green Cable</source>
+        <translation>&amp;Grünes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="22"/>
-        <source>Blue Cable</source>
-        <translation>Blaues Kabel</translation>
+        <source>&amp;Blue Cable</source>
+        <translation>&amp;Blaues Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="25"/>
-        <source>Yellow Cable</source>
-        <translation>Gelbes Kabel</translation>
+        <source>&amp;Yellow Cable</source>
+        <translation>G&amp;elbes Kabel</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="29"/>
-        <source>Set Jack Color...</source>
-        <translation>Steckerfarbe...</translation>
+        <source>Set &amp;Jack Color...</source>
+        <translation>Ste&amp;ckerfarbe...</translation>
     </message>
     <message>
         <location filename="../port_popup.cpp" line="32"/>
-        <source>Set Cable Color...</source>
-        <translation>Kabelfarbe...</translation>
+        <source>Set &amp;Cable Color...</source>
+        <translation>&amp;Kabelfarbe...</translation>
     </message>
 </context>
 <context>
@@ -3404,37 +3409,37 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="71"/>
         <source>Background Color</source>
-        <translation>Hintergrundfarbe</translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="74"/>
         <source>Module Background Color</source>
-        <translation>Modulhintergrundfarbe</translation>
+        <translation>Modulhintergrund</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="77"/>
         <source>Module Border Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulum&amp;randung</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="80"/>
         <source>Module Font Color</source>
-        <translation>Schriftfarbe</translation>
+        <translation>Schrift</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="83"/>
         <source>Cable Color</source>
-        <translation>Kabelfarbe</translation>
+        <translation>Kabel</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="86"/>
         <source>Jack Color</source>
-        <translation>Steckerfarbe</translation>
+        <translation>Stecker</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="90"/>
         <source>&amp;Default colors</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Voreinstellung</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="99"/>
@@ -3520,57 +3525,57 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="363"/>
+        <location filename="../modularsynth.cpp" line="364"/>
         <source>Error opening ALSA sequencer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="373"/>
+        <location filename="../modularsynth.cpp" line="374"/>
         <source>Error creating sequencer write port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="382"/>
+        <location filename="../modularsynth.cpp" line="383"/>
         <source>Error creating sequencer read port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="926"/>
+        <location filename="../modularsynth.cpp" line="927"/>
         <source>All available output ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="944"/>
+        <location filename="../modularsynth.cpp" line="945"/>
         <source>All available input ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1019"/>
         <source>Connection refused.</source>
-        <translation>Keine Verbindung möglich.</translation>
+        <translation type="obsolete">Keine Verbindung möglich.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1737"/>
+        <location filename="../modularsynth.cpp" line="1751"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1753"/>
+        <location filename="../modularsynth.cpp" line="1767"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1767"/>
+        <location filename="../modularsynth.cpp" line="1781"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1777"/>
+        <location filename="../modularsynth.cpp" line="1791"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1828"/>
+        <location filename="../modularsynth.cpp" line="1842"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3630,7 +3635,7 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="275"/>
+        <location filename="../modularsynth.cpp" line="276"/>
         <source>Alsa MIDI wont work!</source>
         <translation type="unfinished"></translation>
     </message>

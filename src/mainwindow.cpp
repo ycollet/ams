@@ -415,7 +415,7 @@ void MainWindow::readConfig()
     while (!ts.atEnd()) {
         s = ts.readLine(); 
         if (s.startsWith("RecentFile"))
-            addRecentlyOpenedFile(s.section(' ', 1), recentFiles);
+            appendRecentlyOpenedFile(s.section(' ', 1), recentFiles);
         else
             modularSynth->loadPreferences(s);
     }
@@ -439,7 +439,7 @@ void MainWindow::writeConfig()
     QTextStream ts(&file);
     modularSynth->savePreferences(ts);
 
-    // save recent files
+    // save recently opened files
     if (recentFiles.count() > 0) {
         QStringList::Iterator it = recentFiles.begin();
         for (; it != recentFiles.end(); ++it) {
@@ -481,5 +481,16 @@ void MainWindow::addRecentlyOpenedFile(const QString &fn, QStringList &lst)
         lst.removeLast();
 
     lst.prepend(fi.absoluteFilePath());
+}
+
+void MainWindow::appendRecentlyOpenedFile(const QString &fn, QStringList &lst)
+{
+    QFileInfo fi(fn);
+    if (lst.contains(fi.absoluteFilePath()))
+        return;
+    if (lst.count() >= 6 )
+        lst.removeFirst();
+
+    lst.append(fi.absoluteFilePath());
 }
 

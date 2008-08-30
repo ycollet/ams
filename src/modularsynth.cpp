@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <qpainter.h>
 #include <qpixmap.h>
+#include <QApplication>
 #include <QAbstractScrollArea>
 #include <qcolordialog.h>
 #include <qsocketnotifier.h>
@@ -995,16 +996,19 @@ void ModularSynth::portSelected(Port* p)
     if (p == NULL)
         return;
 
-    if (selectedPort == p) {
-        p->setHighlighted(false);
-        selectedPort = NULL;
+    if (p->isInPort() && p->hasConnectedPort()) {
+        qApp->beep();
     }
     else if (selectedPort == NULL) {
         selectedPort = p;
         p->setHighlighted(true);
     }
+    else if (selectedPort == p) {
+        p->setHighlighted(false);
+        selectedPort = NULL;
+    }
     else if (selectedPort->module == p->module) {
-        qWarning(QObject::tr("Connection refused.").toUtf8());
+        qApp->beep();
     }
     else if (((selectedPort->isInPort()) && (!p->isInPort()))
             || ((p->isInPort()) && (!selectedPort->isInPort()))) {
@@ -1016,7 +1020,7 @@ void ModularSynth::portSelected(Port* p)
         redrawPortConnections();
     }
     else
-        qWarning(QObject::tr("Connection refused.").toUtf8());
+        qApp->beep();
 }
 
 void ModularSynth::deleteModule() {
@@ -1449,6 +1453,13 @@ void ModularSynth::load(QTextStream& ts)
         if (inport == NULL)
             continue;
 
+        if (inport->hasConnectedPort()) {
+            qWarning(tr("Input port %1 of module %2 is already connected. "
+                        "New connection to module %3 ignored.")
+                    .arg(index1).arg(moduleID1).arg(moduleID2).toUtf8());
+            continue;
+        }
+
         outport = mod2->getOutPortWithIndex(index2);
         if (outport == NULL)
             continue;
@@ -1648,14 +1659,16 @@ void ModularSynth::load(QTextStream& ts)
 
         MidiControllerKey mck(type, ch, param);
         midiWidget->addMidiController(mck);
-        //         MidiControllerKey const midiController = //new MidiController(type, ch, param);
-        // 	  //        if (!midiWidget->midiControllerList.contains(midiController)) {
-        //           *midiWidget->midiController(MidiController(type, ch, param));
-        // //         } else {
-        // //           QList<MidiController*>::iterator midiIndex = midiWidget->midiControllerList.find(midiController);
-        // //           delete(midiController);
-        // //           midiController = *midiIndex;
-        // //         }
+        // MidiControllerKey const midiController =
+        //    new MidiController(type, ch, param);
+        // if (!midiWidget->midiControllerList.contains(midiController)) {
+        //    *midiWidget->midiController(MidiController(type, ch, param));
+        // } else {
+        //  QList<MidiController*>::iterator midiIndex =
+        //     midiWidget->midiControllerList.find(midiController);
+        //  delete(midiController);
+        //  midiController = *midiIndex;
+        //  }
         if (qs.startsWith("FSMIDI", Qt::CaseInsensitive)) {
             m = getModuleWithId(moduleID);
             if (m != NULL) {
@@ -1698,7 +1711,8 @@ void ModularSynth::load(QTextStream& ts)
             }
         }
         else
-            qWarning(tr("Unknown MIDI controller tag found: %1").arg(qs).toUtf8());
+            qWarning(tr("Unknown MIDI controller tag found: %1")
+                    .arg(qs).toUtf8());
     }
 
     // #PARA# <te_id> <..> <line_idx>

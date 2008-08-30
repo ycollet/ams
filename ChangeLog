@@ -1,3 +1,8 @@
+2008-08-30 Guido Scholz <guido.scholz@bayernline.de>
+	* modularsynth.cpp: Prevent double inport connection. Beep
+	instead of error message if user tries wrong connection. Fix
+	resorting of recently opened files list.
+
 2008-08-29 Guido Scholz <guido.scholz@bayernline.de>
 	* modularsynth.*, module.*, port.*: List of ports now is private
 	to module, port selection rewritten.
