@@ -10,4 +10,5 @@ configure
 depcomp
 install-sh
 missing
+aclocal.m4
 .deps
