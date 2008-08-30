@@ -1,4 +1,5 @@
-_moc.cpp
+*_moc.cpp
 Makefile
 Makefile.in
 .deps
+ams
