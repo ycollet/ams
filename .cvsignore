@@ -1,6 +1,5 @@
-*_moc.cpp
-*Makefile
-*Makefile.in
+Makefile
+Makefile.in
 autom4te.cache
 config.guess
 config.log
@@ -11,4 +10,3 @@ depcomp
 install-sh
 missing
 aclocal.m4
-.deps
