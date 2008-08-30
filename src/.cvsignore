@@ -1,4 +1,5 @@
 *_moc.cpp
+*.qm
 Makefile
 Makefile.in
 .deps
