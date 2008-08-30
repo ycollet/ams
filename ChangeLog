@@ -9,6 +9,8 @@
 	* midicontroller.*: Possible fix for broken MIDI event type
 	transformation if type values are > 127 (changed "int" to
 	"unsigned int"). Untested.
+	* modularsynth.cpp: Application name added to MIDI in/out port
+	name.
 
 2008-08-17 Guido Scholz <guido.scholz@bayernline.de>
 	* INSTALL: File replaced by generic file which comes with the
