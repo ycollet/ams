@@ -1,6 +1,6 @@
-_moc.cpp
-Makefile
-Makefile.in
+*_moc.cpp
+*Makefile
+*Makefile.in
 autom4te.cache
 config.guess
 config.log

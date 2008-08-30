@@ -3,3 +3,6 @@ Makefile
 Makefile.in
 .deps
 ams
+stamp-h1
+config.h.in
+config.h
