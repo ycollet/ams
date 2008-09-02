@@ -106,7 +106,7 @@ class Module : public Box
             const QString &name);
     virtual ~Module();
 
-    int checkin(Port *); 
+    void addPort(Port*); 
     int connected() {
       return connections;
     }

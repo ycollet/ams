@@ -40,7 +40,7 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
   setFixedWidth(width);
   setFixedHeight(PORT_DEFAULT_HEIGHT);
 
-  module->checkin(this);
+  module->addPort(this);
 }
 
 Port::~Port() {

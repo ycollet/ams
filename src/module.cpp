@@ -97,7 +97,7 @@ Module::~Module()
     free(data);
 }
 
-int Module::checkin(Port *p)
+void Module::addPort(Port *p)
 {
     portList.append(p);
     if (p->isInPort()) {
@@ -109,7 +109,6 @@ int Module::checkin(Port *p)
     }
     connect(p, SIGNAL(portClicked(Port*)), this, SIGNAL(portSelected(Port*)));
     connect(p, SIGNAL(portDisconnected()), this, SIGNAL(portDisconnected()));
-    return 0;
 }
 
 void Module::paint(QPainter &p)
@@ -433,6 +432,7 @@ void Module::paintCablesToConnectedPorts(QPainter& painter)
         cableColor = inport->cableColor;
         jackColor = outport->jackColor;
 
+        // calculate cable path
         inportx = inport->pos().x() + x() - 10;
         outportx = outport->pos().x() + outport->width() +
             outport->module->x() + 10;
@@ -445,6 +445,8 @@ void Module::paintCablesToConnectedPorts(QPainter& painter)
         path.moveTo(inportx, inporty);
         path.cubicTo(inportx - xShift, inporty + 3,
                 outportx + xShift, outporty + 3, outportx, outporty);
+
+        // paint cable
         pen.setWidth(5);
         pen.setColor(cableColor.dark(120));
         painter.strokePath(path, pen);
@@ -457,6 +459,7 @@ void Module::paintCablesToConnectedPorts(QPainter& painter)
         pen.setColor(cableColor.light(120));
         painter.strokePath(path, pen);
 
+        // paint jack
         painter.fillRect(inportx, inporty - 3, 11, 7,
                 QBrush(jackColor.dark(120)));
         painter.fillRect(outportx - 11, outporty - 3, 11, 7,
