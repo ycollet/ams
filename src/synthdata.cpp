@@ -219,7 +219,7 @@ int SynthData::getModuleCount() {
 
 int SynthData::getModuleID() {
 
-  return(moduleID);
+  return moduleID;
 }
 
 int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int *n)

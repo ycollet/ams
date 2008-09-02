@@ -25,6 +25,7 @@ class Port : public QWidget
     QString portName;
     int portNameWidth;
     bool highlighted;
+    dirType dir;
     QList<Port*> connectedPortList;
 
   public:
@@ -35,7 +36,6 @@ class Port : public QWidget
     float **getinputdata (void);
 
     class Module *module;
-    dirType dir;
     int index;
     QColor jackColor, cableColor, &colorFont;
     outTypeEnum outType;
@@ -59,8 +59,8 @@ class Port : public QWidget
     void setHighlighted(bool);
 
   protected:
-    virtual void paintEvent(QPaintEvent *ev);
-    virtual void mousePressEvent(QMouseEvent* );
+    virtual void paintEvent(QPaintEvent*);
+    virtual void mousePressEvent(QMouseEvent*);
     
   signals:
     void portClicked(Port*);

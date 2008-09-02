@@ -99,7 +99,7 @@ Module::~Module()
 int Module::checkin(Port *p)
 {
     portList.append(p);
-    if (p->dir == PORT_IN) {
+    if (p->isInPort()) {
         p->move(0, cv.in_off + cv.in_index * cv.step);
         cv.in_index++;
     } else {

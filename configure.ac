@@ -55,25 +55,25 @@ AC_SUBST(AMS_CXXFLAGS)
 
 
 # Checks for libraries.
-AC_CHECK_LIB([GL], [glBegin], [LIBS="$LIBS -lGL"],
+AC_CHECK_LIB([GL], [glBegin], ,
              [AC_MSG_ERROR(GL is required)])
-AC_CHECK_LIB([GLU], [gluLookAt], [LIBS="$LIBS -lGLU"],
+AC_CHECK_LIB([GLU], [gluLookAt], ,
              [AC_MSG_ERROR(GLU is required)])
-AC_CHECK_LIB([QtCore], [main], [LIBS="$LIBS -lQtCore"],
+AC_CHECK_LIB([QtCore], [main], ,
              [AC_MSG_ERROR(QtCore is required)])
-AC_CHECK_LIB([QtGui], [main], [LIBS="$LIBS -lQtGui"],
+AC_CHECK_LIB([QtGui], [main], ,
              [AC_MSG_ERROR(QtGui is required)])
-AC_CHECK_LIB([QtOpenGL], [main], [LIBS="$LIBS -lQtOpenGL"],
+AC_CHECK_LIB([QtOpenGL], [main], ,
              [AC_MSG_ERROR(QtOpenGL is required)])
-AC_CHECK_LIB([asound], [snd_pcm_open], [LIBS="$LIBS -lasound"],
+AC_CHECK_LIB([asound], [snd_pcm_open], ,
              [AC_MSG_ERROR(asound is required)])
-AC_CHECK_LIB([clalsadrv], [main], [LIBS="$LIBS -lclalsadrv"],
+AC_CHECK_LIB([clalsadrv], [main], ,
              [AC_MSG_ERROR(clalsadrv is required)])
-AC_CHECK_LIB([jack], [jack_client_new], [LIBS="$LIBS -ljack"],
+AC_CHECK_LIB([jack], [jack_client_new], ,
              [AC_MSG_ERROR(jack is required)])
-AC_CHECK_LIB([pthread], [pthread_create], [LIBS="$LIBS -lpthread"],
+AC_CHECK_LIB([pthread], [pthread_create], ,
              [AC_MSG_ERROR(pthread is required)])
-AC_CHECK_LIB([m], [roundf],, AC_MSG_ERROR([required libm missing]))
+AC_CHECK_LIB([m], [roundf], , AC_MSG_ERROR([required libm missing]))
 
 PKG_CHECK_MODULES(QT, QtCore QtGui >= 4.2.0, HAVE_QT4="yes", HAVE_QT4="no")
 if test "x$HAVE_QT4" = "xyes"; then

@@ -1,3 +1,7 @@
+2008-09-02 Guido Scholz <guido.scholz@bayernline.de>
+	* configure.ac: Removed obsolete assignments to LIBS variable.
+	* port.h, module.cpp: Port direction is private now.
+
 2008-08-30 Guido Scholz <guido.scholz@bayernline.de>
 	* modularsynth.cpp: Prevent double inport connection. Beep
 	instead of error message if user tries wrong connection. Fix
