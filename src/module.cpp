@@ -16,6 +16,7 @@
 #include "midislider.h"
 #include "module.h"
 #include "main.h"
+#include "port.h"
 
 
 int Module::portmemAllocated;

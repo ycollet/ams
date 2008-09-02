@@ -15,6 +15,8 @@
 #define PORT_DEFAULT_WIDTH  80
 #define PORT_DEFAULT_HEIGHT 15
 
+class Module;
+
 enum dirType { PORT_IN, PORT_OUT };
 enum outTypeEnum { outType_audio, outType_control };
 
@@ -30,12 +32,12 @@ class Port : public QWidget
 
   public:
     Port(const QString &p_portName, dirType p_dir, int p_index,
-            class Module *parent, int p_color = 0);
+            Module *parent, int p_color = 0);
     ~Port();
     int connectTo(Port *port);
     float **getinputdata (void);
 
-    class Module *module;
+    Module *module;
     int index;
     QColor jackColor, cableColor, &colorFont;
     outTypeEnum outType;

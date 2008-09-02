@@ -955,47 +955,47 @@
 <context>
     <name>M_pcmout</name>
     <message>
-        <location filename="../m_pcmout.cpp" line="11"/>
+        <location filename="../m_pcmout.cpp" line="12"/>
         <source>PCM Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="28"/>
+        <location filename="../m_pcmout.cpp" line="29"/>
         <source>Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="29"/>
+        <location filename="../m_pcmout.cpp" line="30"/>
         <source>Volume 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="30"/>
+        <location filename="../m_pcmout.cpp" line="31"/>
         <source>Volume 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="32"/>
+        <location filename="../m_pcmout.cpp" line="33"/>
         <source>Disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="32"/>
+        <location filename="../m_pcmout.cpp" line="33"/>
         <source>Per Cycle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="52"/>
+        <location filename="../m_pcmout.cpp" line="53"/>
         <source>Keep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="33"/>
+        <location filename="../m_pcmout.cpp" line="34"/>
         <source>Reevaluate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_pcmout.cpp" line="34"/>
+        <location filename="../m_pcmout.cpp" line="35"/>
         <source>Automatic Gain Control</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1920,107 +1920,107 @@
 <context>
     <name>M_vcf</name>
     <message>
-        <location filename="../m_vcf.cpp" line="16"/>
+        <location filename="../m_vcf.cpp" line="17"/>
         <source>VCF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="32"/>
+        <location filename="../m_vcf.cpp" line="33"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="33"/>
+        <location filename="../m_vcf.cpp" line="34"/>
         <source>Freq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="34"/>
+        <location filename="../m_vcf.cpp" line="35"/>
         <source>Exp. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="35"/>
+        <location filename="../m_vcf.cpp" line="36"/>
         <source>Lin. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="55"/>
+        <location filename="../m_vcf.cpp" line="56"/>
         <source>Resonance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="38"/>
+        <location filename="../m_vcf.cpp" line="39"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="41"/>
+        <location filename="../m_vcf.cpp" line="42"/>
         <source>Resonant Lowpass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="42"/>
+        <location filename="../m_vcf.cpp" line="43"/>
         <source>Lowpass</source>
         <translation>Tiefpass</translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="43"/>
+        <location filename="../m_vcf.cpp" line="44"/>
         <source>Highpass</source>
         <translation>Hochpass</translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="44"/>
+        <location filename="../m_vcf.cpp" line="45"/>
         <source>Bandpass I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="45"/>
+        <location filename="../m_vcf.cpp" line="46"/>
         <source>Bandpass II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="46"/>
+        <location filename="../m_vcf.cpp" line="47"/>
         <source>Notch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="47"/>
+        <location filename="../m_vcf.cpp" line="48"/>
         <source>24 dB Lowpass I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="48"/>
+        <location filename="../m_vcf.cpp" line="49"/>
         <source>24 dB Lowpass II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="49"/>
+        <location filename="../m_vcf.cpp" line="50"/>
         <source>VCF Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="51"/>
+        <location filename="../m_vcf.cpp" line="52"/>
         <source>Input Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="52"/>
+        <location filename="../m_vcf.cpp" line="53"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="53"/>
+        <location filename="../m_vcf.cpp" line="54"/>
         <source>Exp. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="54"/>
+        <location filename="../m_vcf.cpp" line="55"/>
         <source>Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="56"/>
+        <location filename="../m_vcf.cpp" line="57"/>
         <source>Resonance Gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3310,7 +3310,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="128"/>
+        <location filename="../module.cpp" line="129"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>

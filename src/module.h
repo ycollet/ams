@@ -23,7 +23,6 @@
 
 #include "synthdata.h"
 #include "configdialog.h"
-#include "port.h"
 #include "box.h"
 
 #define MODULE_DEFAULT_WIDTH                 50
@@ -79,6 +78,8 @@ enum M_typeEnum {
   M_type_noise2,
   M_type_vco2
 };
+
+class Port;
 
 // types jackin and jackout kept to ensure existing patches will load. FA
 

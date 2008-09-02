@@ -5,6 +5,7 @@
 #include "m_pcmout.h"
 #include "midicombobox.h"
 #include "midicontrollable.h"
+#include "port.h"
 
 
 M_pcmout::M_pcmout(QWidget* parent, int port) 

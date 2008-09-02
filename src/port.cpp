@@ -14,13 +14,13 @@
 
 
 Port::Port(const QString &p_portName, dirType dir, int p_index,
-        Module *module, int p_color) 
-           : QWidget(module)
+        Module *parent, int p_color) 
+           : QWidget(parent)
 	   , portNameWidth(0)
-	   , module(module)
 	   , dir(dir)
 	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
 {
+  module = parent;
   portName = p_portName;
   
   if (dir == PORT_IN)

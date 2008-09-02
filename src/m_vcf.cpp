@@ -11,6 +11,7 @@
 #include "synthdata.h"
 #include "midicombobox.h"
 #include "m_vcf.h"
+#include "port.h"
 
 M_vcf::M_vcf(QWidget* parent) 
   : Module(M_type_vcf, 1, parent, tr("VCF"))
