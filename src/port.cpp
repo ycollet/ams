@@ -59,9 +59,10 @@ int Port::connectTo(Port *port)
         }
     } else {
         if (outTypeAcceptList.contains(port->outType)) {
-            if (connectedPortList.count()) {
-                connectedPortList.at(0)->connectedPortList.removeAll(this);
-                connectedPortList.at(0)->module->decConnections();
+            if (connectedPortList.count() > 0) {
+                Port* cport = connectedPortList.at(0);
+                cport->connectedPortList.removeAll(this);
+                cport->module->decConnections();
                 connectedPortList.clear();
             } else
                 module->incConnections();
@@ -178,15 +179,16 @@ void Port::popupMenuClicked(PopupMenu::portAction ac)
 
 void Port::disconnectClicked() {
 
-  synthdata->port_sem.acquire();
-  if (connectedPortList.count() > 0) {
-    connectedPortList.at(0)->connectedPortList.removeAll(this);
-    connectedPortList.at(0)->module->decConnections();
-    connectedPortList.clear();
-    module->decConnections();
-  }
-  synthdata->port_sem.release();
-  emit portDisconnected();
+    synthdata->port_sem.acquire();
+    if (connectedPortList.count() > 0) {
+        Port* cport = connectedPortList.at(0);
+        cport->connectedPortList.removeAll(this);
+        cport->module->decConnections();
+        connectedPortList.clear();
+        module->decConnections();
+    }
+    synthdata->port_sem.release();
+    emit portDisconnected();
 }
 
 float **Port::getinputdata (void)
