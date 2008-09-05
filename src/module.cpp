@@ -144,7 +144,6 @@ void Module::showConfigDialog(const QPoint& pos)
 
 void Module::removeThisModule()
 {
-
   emit removeModule();
 }
 
@@ -153,6 +152,11 @@ void Module::save(QTextStream& ts)
   saveConnections(ts);
   saveParameters(ts);
   saveBindings(ts);
+}
+
+int Module::connected()
+{
+    return connections;
 }
 
 void Module::saveConnections(QTextStream& ts)
@@ -303,10 +307,20 @@ void Module::getColors(void)
 
   // update also port colors
   for (int l2 = 0; l2 < portList.count(); ++l2) {
-      portList.at(l2)->setPalette(QPalette(
+      Port* port = portList.at(l2);
+      port->setPalette(QPalette(
                   synthdata->colorModuleBackground,
                   synthdata->colorModuleBackground));
   }
+}
+
+float **Module::getData(int index)
+{
+    if (!cycleReady) {
+        generateCycle();
+        cycleReady = true;
+    }
+    return data[index];
 }
 
 void Module::incConnections()

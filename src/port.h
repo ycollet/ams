@@ -34,7 +34,7 @@ class Port : public QWidget
     Port(const QString &p_portName, dirType p_dir, int p_index,
             Module *parent, int p_color = 0);
     ~Port();
-    int connectTo(Port *port);
+    void connectTo(Port*);
     float **getinputdata (void);
 
     Module *module;

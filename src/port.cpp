@@ -18,7 +18,9 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
            : QWidget(parent)
 	   , portNameWidth(0)
 	   , dir(dir)
-	   , colorFont(p_color ? synthdata->colorPortFont2 : synthdata->colorPortFont1)
+	   , colorFont(p_color
+                   ? synthdata->colorPortFont2
+                   : synthdata->colorPortFont1)
 {
   module = parent;
   portName = p_portName;
@@ -46,7 +48,7 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
 Port::~Port() {
 }
 
-int Port::connectTo(Port *port)
+void Port::connectTo(Port *port)
 {
     synthdata->port_sem.acquire();
 
@@ -71,7 +73,6 @@ int Port::connectTo(Port *port)
         }
     }
     synthdata->port_sem.release();
-    return(0);
 }
 
 Port* Port::needsConnectionToPort()
@@ -89,39 +90,33 @@ bool Port::hasConnectedPort()
 
 void Port::paintEvent(QPaintEvent *) {
 
-  QPainter p(this);  
-  QRect textRect;
-  //int l1;
+    QPainter p(this);  
+    QRect textRect;
 
-//   p.setPen(synthdata->colorModuleBorder);
-//   for (l1 = 0; l1 < 4; ++l1) {
-//     p.setPen(synthdata->colorModuleBorder.light(100 + 15 * l1));
-//     if (dir == PORT_IN) {
-//       p.drawLine(l1, 0, l1, height());
-//     } else {
-//       p.drawLine(width() - l1 - 1, 0, width() - l1 - 1, height());
-//     }
-//   }
-  p.setFont(synthdata->smallFont);
-//  p.setPen(QColor(255, 220, 60));
-  p.setPen(colorFont);
+    p.setFont(synthdata->smallFont);
+    p.setPen(colorFont);
 
-  if (dir == PORT_IN) { 
-    if (highlighted) {
-      p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
-    } else {
-      p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
+    if (dir == PORT_IN) { 
+        if (highlighted) {
+            p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
+        }
+        else {
+            p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
+        }
+        p.drawText(5, 11, portName);
     }
-    p.drawText(5, 11, portName);
-  } else {
-    if (highlighted) {
-      p.fillRect(width() - 3, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
-    } else {
-      p.fillRect(width() - 3, height()/2 - 2, 3, 5, QBrush(QColor(10, 10, 10)));
+    else {
+        if (highlighted) {
+            p.fillRect(width() - 3, height()/2 - 2, 3, 5,
+                    QBrush(QColor(240, 0, 0)));
+        }
+        else {
+            p.fillRect(width() - 3, height()/2 - 2, 3, 5,
+                    QBrush(QColor(10, 10, 10)));
+        }
+        p.drawText(width() - portNameWidth - 6, 11, portName);
     }
-    p.drawText(width() - portNameWidth - 6, 11, portName);
-  }
-}  
+}
    
 void Port::mousePressEvent(QMouseEvent *ev)
 {
@@ -200,7 +195,8 @@ float **Port::getinputdata (void)
         outport = connectedPortList.at(0);
         M = outport->module;
         return M->getData(outport->index);
-    } else
+    } 
+    else
         return synthdata->zeroModuleData;
 }
 

@@ -97,7 +97,6 @@ class Module : public Box
     M_typeEnum M_type;  
     QList<class MidiControllableBase *> midiControllables;
     int moduleID, outPortCount;
-//    class QTreeWidgetItem *listViewItem;
     QColor colorBackground, colorBorder, colorFont;
     static int portmemAllocated;
 
@@ -107,25 +106,16 @@ class Module : public Box
     virtual ~Module();
 
     void addPort(Port*); 
-    int connected() {
-      return connections;
-    }
+    int connected();
     void incConnections();
     void decConnections();
-    virtual void mcAbleChanged(MidiControllableBase *) {}
     void save(QTextStream&);
     virtual void saveConnections(QTextStream&); 
     virtual void saveParameters(QTextStream&);
     virtual void saveBindings(QTextStream&); 
+    virtual void mcAbleChanged(MidiControllableBase *) {}
     void getColors(void);
-
-    float **getData(int index) {
-        if (!cycleReady) {
-            generateCycle();
-            cycleReady = true;
-        }
-        return data[index];
-    }
+    float **getData(int);
     void showConfigDialog(const QPoint&);
     bool hasModuleId(int);
     void setModuleId(int);
@@ -141,7 +131,6 @@ protected:
 
   void portMemAlloc(int outPortCount, bool poly);
   virtual void paintEvent(QPaintEvent *ev);
-  //virtual void mousePressEvent (QMouseEvent* );
   void paint(QPainter &);
 
   struct CtorVar {
