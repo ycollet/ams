@@ -229,10 +229,12 @@ noinst_HEADERS = \
 
 translationsdir = $(pkgdatadir)/translations
 translations = \
-	translations/ams_de.ts
+	translations/ams_de.ts \
+	translations/ams_fr.ts
 
 translations_DATA = \
-	translations/ams_de.qm
+	translations/ams_de.qm \
+	translations/ams_fr.qm
 
 # misc files which are distributed but not installed
 EXTRA_DIST = ams.pro $(translations)
