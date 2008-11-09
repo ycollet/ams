@@ -3292,7 +3292,7 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1715"/>
+        <location filename="../modularsynth.cpp" line="1718"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3302,8 +3302,13 @@ Save changes?</source>
         <translation>Über </translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1459"/>
+        <location filename="../modularsynth.cpp" line="1462"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modularsynth.cpp" line="1238"/>
+        <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3555,27 +3560,27 @@ Save changes?</source>
         <translation type="obsolete">Keine Verbindung möglich.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1751"/>
+        <location filename="../modularsynth.cpp" line="1754"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1767"/>
+        <location filename="../modularsynth.cpp" line="1770"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1781"/>
+        <location filename="../modularsynth.cpp" line="1784"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1791"/>
+        <location filename="../modularsynth.cpp" line="1794"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1842"/>
+        <location filename="../modularsynth.cpp" line="1845"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>

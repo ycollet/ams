@@ -1,3 +1,6 @@
+2008-11-09 Frank Kober <goemusic@yahoo.fr>
+	* ams_fr.ts: French translation added.
+
 2008-09-02 Guido Scholz <guido.scholz@bayernline.de>
 	* configure.ac: Removed obsolete assignments to LIBS variable.
 	* port.h, module.cpp: Port direction is private now.

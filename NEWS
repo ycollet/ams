@@ -8,6 +8,7 @@ ams-2.0.0 (2008-??-??)
     o German translation
     o Keyboard shortcuts for menu and dialog items
     o Menu item for recently opened files
+    o French translation
 
   General Changes
     o Port form Qt 3 to Qt 4.x library.

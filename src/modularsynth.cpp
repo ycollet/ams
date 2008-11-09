@@ -1234,8 +1234,8 @@ void ModularSynth::load(QTextStream& ts)
               newLadspaPolyFlag = tokens[5].toInt();
               ladspaLibName = tokens[6];
               pluginName = qs.section(' ', 7);
-              StdErr << "Loading LADSPA plugin \"" << pluginName <<
-                  "\" from library \"" << ladspaLibName << "\"." << endl;
+              qWarning(tr("Loading LADSPA plugin \"%1\" from library \"%2\".") 
+                      .arg(pluginName).arg(ladspaLibName).toUtf8().constData());
 
               if (!synthdata->getLadspaIDs(ladspaLibName, pluginName,
                           &subID1, &subID2)) {
@@ -1287,7 +1287,6 @@ void ModularSynth::load(QTextStream& ts)
           case M_type_noise2: 
               newM_noise2();
               break;
-
           case M_type_delay: 
               newM_delay();
               break;
@@ -1400,9 +1399,13 @@ void ModularSynth::load(QTextStream& ts)
               break;
       }
 
-      m = listModule.last();
-      m->setModuleId(moduleID);
-      midiWidget->addModule(m);
+      if (listModule.count() > 0) {
+          m = listModule.last();
+          if (m != NULL) {
+              m->setModuleId(moduleID);
+              midiWidget->addModule(m);
+          }
+      }
 
       if (synthdata->moduleID <= moduleID) {
           synthdata->moduleID = moduleID + 1;
