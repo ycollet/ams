@@ -32,7 +32,7 @@ public:
   ColorWidget(const QString& l, QGridLayout *layout, QColor &color, int pos,
 	      PrefWidget *pw, const char *slot)
     : label(l)
-    , button("Change...")
+    , button(tr("Change..."))
   {
     setAutoFillBackground(true);
     setPalette(QPalette(color, color));

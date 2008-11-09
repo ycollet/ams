@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1">
 <context>
+    <name>ColorWidget</name>
+    <message>
+        <location filename="../prefwidget.cpp" line="35"/>
+        <source>Change...</source>
+        <translation>Ändern...</translation>
+    </message>
+</context>
+<context>
     <name>ConfigDialog</name>
     <message>
         <location filename="../configdialog.cpp" line="32"/>
@@ -74,7 +82,7 @@
     <message>
         <location filename="../ladspadialog.cpp" line="220"/>
         <source>Author: </source>
-        <translation>Autor:</translation>
+        <translation>Autor: </translation>
     </message>
     <message>
         <location filename="../ladspadialog.cpp" line="221"/>
