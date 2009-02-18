@@ -73,4 +73,15 @@ class PrefWidget : public QWidget
     void savePathUpdate();
 };
   
+
+class ColorWidget: public QWidget {
+  Q_OBJECT
+
+  QLabel label;
+  QPushButton button;
+public:
+  ColorWidget(const QString& l, QGridLayout *layout, QColor &color, int pos,
+	      PrefWidget *pw, const char *slot);
+};
+
 #endif
