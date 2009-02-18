@@ -22,142 +22,146 @@
 #include <QGridLayout>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
+
+#include "colorwidget.h"
 #include "synthdata.h"
 #include "prefwidget.h"
 
-ColorWidget::ColorWidget(const QString& l, QGridLayout *layout, QColor &color, int pos,
-			 PrefWidget *pw, const char *slot)
-  : label(l)
-  , button(tr("Change..."))
+
+
+PrefWidget::PrefWidget(): vBox(this)
 {
-  setAutoFillBackground(true);
-  setPalette(QPalette(color, color));
-  layout->addWidget(&label, pos - 1, 0);
-  layout->addWidget(this, pos, 0);
-  layout->addWidget(&button, pos, 1);
-  connect(&button, SIGNAL(clicked()), pw, slot);
-}
+    setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
+    vBox.setMargin(10);
+    vBox.setSpacing(5);
 
+    recallColors();
 
-PrefWidget::PrefWidget()
-  : vBox(this)
-{
-  setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
-  vBox.setMargin(10);
-  vBox.setSpacing(5);
-  
-  recallColors();
+    tabWidget = new QTabWidget();
+    vBox.addWidget(tabWidget);
 
-  tabWidget = new QTabWidget();
-  vBox.addWidget(tabWidget);
-  QWidget *colorWidget = new QWidget();
-  QVBoxLayout *colorBox = new QVBoxLayout(colorWidget);
-  QWidget *midiWidget = new QWidget();
-  QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
-  QWidget *pathWidget = new QWidget();
-  QVBoxLayout *pathBox = new QVBoxLayout(pathWidget);
-  tabWidget->addTab(colorWidget, tr("&Colors"));
-  tabWidget->addTab(midiWidget, tr("&MIDI"));
-  tabWidget->addTab(pathWidget, tr("&Paths"));
+    QWidget *colorWidget = new QWidget();
+    QVBoxLayout *colorBox = new QVBoxLayout(colorWidget);
+    QWidget *midiWidget = new QWidget();
+    QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
+    QWidget *pathWidget = new QWidget();
+    QVBoxLayout *pathBox = new QVBoxLayout(pathWidget);
 
-  QGridLayout *colorLayout = new QGridLayout();//colorGridWidget, 12, 2, 10);
-  colorBox->addLayout(colorLayout);
+    tabWidget->addTab(colorWidget, tr("&Colors"));
+    tabWidget->addTab(midiWidget, tr("&MIDI"));
+    tabWidget->addTab(pathWidget, tr("&Paths"));
 
-  // QLabel *label1 = new QLabel("Background Color", colorGridWidget);
-  colorBackgroundLabel = new ColorWidget(tr("Background Color"),
-          colorLayout, colorBackground, 1, this,
-          SLOT(colorBackgroundClicked()));
-  colorModuleBackgroundLabel = new ColorWidget(tr("Module Background Color"),
-          colorLayout, colorModuleBackground, 3, this,
-          SLOT(colorModuleBackgroundClicked()));
-  colorModuleBorderLabel = new ColorWidget(tr("Module Border Color"),
-          colorLayout, colorModuleBorder, 5, this,
-          SLOT(colorModuleBorderClicked()));
-  colorModuleFontLabel = new ColorWidget(tr("Module Font Color"),
-          colorLayout, colorModuleFont, 7, this,
-          SLOT(colorModuleFontClicked()));
-  colorCableLabel = new ColorWidget(tr("Cable Color"),
-          colorLayout, colorCable, 9, this,
-          SLOT(colorCableClicked()));
-  colorJackLabel = new ColorWidget(tr("Jack Color"),
-          colorLayout, colorJack, 11, this,
-          SLOT(colorJackClicked()));
+    QGridLayout *colorLayout = new QGridLayout();
+    colorBox->addLayout(colorLayout);
 
-  QPushButton *defaultColorButton = new QPushButton(tr("&Default colors"));
-  colorLayout->addWidget(defaultColorButton, 12, 1);
-  QObject::connect(defaultColorButton, SIGNAL(clicked()), this,
-          SLOT(defaultcolorClicked()));
+    // QLabel *label1 = new QLabel("Background Color", colorGridWidget);
+    colorBackgroundLabel = new ColorWidget(tr("Background Color"),
+            colorLayout, colorBackground, 1, this,
+            SLOT(colorBackgroundClicked()));
 
-  QHBoxLayout *midiModeSelectorBox = new QHBoxLayout();
-  midiBox->addLayout(midiModeSelectorBox);
-  //  new QWidget(midiModeSelectorBox);
-  midiModeSelectorBox->addStretch();
-  QLabel *midiModeLabel = new QLabel(tr("M&IDI Controller Mode: "));
-  midiModeSelectorBox->addWidget(midiModeLabel);
-  //  new QWidget(midiModeSelectorBox);
-  QStringList midiModeNames;
-  midiModeNames << tr("Avoid Parameter Jumps");
-  midiModeNames << tr("Init MIDI Controller");
-  midiModeNames << tr("Follow MIDI Controller");
-  midiModeComboBox = new QComboBox();
-  midiModeSelectorBox->addWidget(midiModeComboBox);
-  midiModeLabel->setBuddy(midiModeComboBox);
+    colorModuleBackgroundLabel = new ColorWidget(tr("Module Background Color"),
+            colorLayout, colorModuleBackground, 3, this,
+            SLOT(colorModuleBackgroundClicked()));
+
+    colorModuleBorderLabel = new ColorWidget(tr("Module Border Color"),
+            colorLayout, colorModuleBorder, 5, this,
+            SLOT(colorModuleBorderClicked()));
+
+    colorModuleFontLabel = new ColorWidget(tr("Module Font Color"),
+            colorLayout, colorModuleFont, 7, this,
+            SLOT(colorModuleFontClicked()));
+
+    colorCableLabel = new ColorWidget(tr("Cable Color"),
+            colorLayout, colorCable, 9, this,
+            SLOT(colorCableClicked()));
+
+    colorJackLabel = new ColorWidget(tr("Jack Color"),
+            colorLayout, colorJack, 11, this,
+            SLOT(colorJackClicked()));
+
+    QPushButton *defaultColorButton = new QPushButton(tr("&Default colors"));
+    colorLayout->addWidget(defaultColorButton, 12, 1);
+    QObject::connect(defaultColorButton, SIGNAL(clicked()), this,
+            SLOT(defaultcolorClicked()));
+
+    QHBoxLayout *midiModeSelectorBox = new QHBoxLayout();
+    midiBox->addLayout(midiModeSelectorBox);
     //  new QWidget(midiModeSelectorBox);
-  midiModeComboBox->addItems(midiModeNames);
-  midiModeComboBox->setCurrentIndex(midiControllerMode);
-  QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)), this, SLOT(updateMidiMode(int)));                
+    midiModeSelectorBox->addStretch();
+    QLabel *midiModeLabel = new QLabel(tr("M&IDI Controller Mode: "));
+    midiModeSelectorBox->addWidget(midiModeLabel);
+    //  new QWidget(midiModeSelectorBox);
+    QStringList midiModeNames;
+    midiModeNames << tr("Avoid Parameter Jumps");
+    midiModeNames << tr("Init MIDI Controller");
+    midiModeNames << tr("Follow MIDI Controller");
+    midiModeComboBox = new QComboBox();
+    midiModeSelectorBox->addWidget(midiModeComboBox);
+    midiModeLabel->setBuddy(midiModeComboBox);
+    //  new QWidget(midiModeSelectorBox);
+    midiModeComboBox->addItems(midiModeNames);
+    midiModeComboBox->setCurrentIndex(midiControllerMode);
+    QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)),
+            this, SLOT(updateMidiMode(int)));                
 
-  pathBox->addStretch();
-  QHBoxLayout *loadPathBox = new QHBoxLayout();
-  pathBox->addLayout(loadPathBox);
-  QLabel *loadLabel = new QLabel(tr("&Load Path:"));
-  loadPathBox->addWidget(loadLabel);
-  loadEdit = new QLineEdit();
-  pathBox->addWidget(loadEdit);
-  loadEdit->setText(loadPath);
-  loadLabel->setBuddy(loadEdit);
-  QPushButton *browseLoadButton = new QPushButton(tr("&Browse..."));
-  loadPathBox->addStretch();
-  loadPathBox->addWidget(browseLoadButton);
+    pathBox->addStretch();
+    QHBoxLayout *loadPathBox = new QHBoxLayout();
+    pathBox->addLayout(loadPathBox);
+    QLabel *loadLabel = new QLabel(tr("&Load Path:"));
+    loadPathBox->addWidget(loadLabel);
+    loadEdit = new QLineEdit();
+    pathBox->addWidget(loadEdit);
+    loadEdit->setText(loadPath);
+    loadLabel->setBuddy(loadEdit);
+    QPushButton *browseLoadButton = new QPushButton(tr("&Browse..."));
+    loadPathBox->addStretch();
+    loadPathBox->addWidget(browseLoadButton);
 
-  pathBox->addStretch();
-  QHBoxLayout *savePathBox = new QHBoxLayout();
-  pathBox->addLayout(savePathBox);
-  QLabel *saveLabel = new QLabel(tr("&Save Path:"));
-  savePathBox->addWidget(saveLabel);
-  saveEdit = new QLineEdit();
-  pathBox->addWidget(saveEdit);
-  saveEdit->setText(savePath);
-  saveLabel->setBuddy(saveEdit);
-  QPushButton *browseSaveButton = new QPushButton(tr("Bro&wse..."));
-  savePathBox->addStretch();
-  savePathBox->addWidget(browseSaveButton);
+    pathBox->addStretch();
+    QHBoxLayout *savePathBox = new QHBoxLayout();
+    pathBox->addLayout(savePathBox);
+    QLabel *saveLabel = new QLabel(tr("&Save Path:"));
+    savePathBox->addWidget(saveLabel);
+    saveEdit = new QLineEdit();
+    pathBox->addWidget(saveEdit);
+    saveEdit->setText(savePath);
+    saveLabel->setBuddy(saveEdit);
+    QPushButton *browseSaveButton = new QPushButton(tr("Bro&wse..."));
+    savePathBox->addStretch();
+    savePathBox->addWidget(browseSaveButton);
 
-  pathBox->addStretch();
+    pathBox->addStretch();
 
-  QObject::connect(browseLoadButton, SIGNAL(clicked()), this, SLOT(browseLoad()));
-  QObject::connect(browseSaveButton, SIGNAL(clicked()), this, SLOT(browseSave()));
-  QObject::connect(loadEdit, SIGNAL(lostFocus()), this, SLOT(loadPathUpdate()));
-  QObject::connect(loadEdit, SIGNAL(returnPressed()), this, SLOT(loadPathUpdate()));
-  QObject::connect(saveEdit, SIGNAL(lostFocus()), this, SLOT(savePathUpdate()));
-  QObject::connect(saveEdit, SIGNAL(returnPressed()), this, SLOT(savePathUpdate()));
+    QObject::connect(browseLoadButton, SIGNAL(clicked()),
+            this, SLOT(browseLoad()));
+    QObject::connect(browseSaveButton, SIGNAL(clicked()),
+            this, SLOT(browseSave()));
+    QObject::connect(loadEdit, SIGNAL(lostFocus()),
+            this, SLOT(loadPathUpdate()));
+    QObject::connect(loadEdit, SIGNAL(returnPressed()),
+            this, SLOT(loadPathUpdate()));
+    QObject::connect(saveEdit, SIGNAL(lostFocus()),
+            this, SLOT(savePathUpdate()));
+    QObject::connect(saveEdit, SIGNAL(returnPressed()),
+            this, SLOT(savePathUpdate()));
 
-  QHBoxLayout *buttonContainer = new QHBoxLayout();
-  vBox.addLayout(buttonContainer);
-  buttonContainer->addStretch();
-  QPushButton *applyButton = new QPushButton(tr("&Apply"));
-  buttonContainer->addWidget(applyButton);
-  buttonContainer->addStretch();
-  QPushButton *okButton = new QPushButton(tr("OK"));
-  buttonContainer->addWidget(okButton);
-  buttonContainer->addStretch();
-  QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-  buttonContainer->addWidget(cancelButton);
-  buttonContainer->addStretch();
-  QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
-  QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(applyPref()));  
-  QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
+    QHBoxLayout *buttonContainer = new QHBoxLayout();
+    vBox.addLayout(buttonContainer);
+    buttonContainer->addStretch();
+    QPushButton *applyButton = new QPushButton(tr("&Apply"));
+    buttonContainer->addWidget(applyButton);
+    buttonContainer->addStretch();
+    QPushButton *okButton = new QPushButton(tr("OK"));
+    buttonContainer->addWidget(okButton);
+    buttonContainer->addStretch();
+    QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+    buttonContainer->addWidget(cancelButton);
+    buttonContainer->addStretch();
+    QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
+    QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(applyPref()));  
+    QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
 }
+
 
 void PrefWidget::loadPref(QString& line)
 {
@@ -220,96 +224,6 @@ void PrefWidget::loadPref(QString& line)
     }       
 }
 
-//TODO: remove this
-void PrefWidget::loadPref(int rcFd)
-{
-  QString qs, qs2;
-  int r,g,b;
-
-  QTextStream rctext(fdopen(rcFd, "r"));
-    while (!rctext.atEnd()) {
-      qs = rctext.readLine(); 
-      if (qs.contains("ColorBackground")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorBackground = QColor(r, g, b);
-      }        
-      else if (qs.contains("ColorModuleBackground")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorModuleBackground = QColor(r, g, b);
-      }        
-      else if (qs.contains("ColorModuleBorder")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorModuleBorder = QColor(r, g, b);
-      }        
-      else if (qs.contains("ColorModuleFont")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorModuleFont = QColor(r, g, b);
-        synthdata->colorPortFont1 = QColor(r, g, b);
-      }        
-      else if (qs.contains("ColorJack")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorJack = QColor(r, g, b);
-      }        
-      else if (qs.contains("ColorCable")) {
-        qs2 = qs.section(' ', 1, 1); 
-        r = qs2.toInt();
-        qs2 = qs.section(' ', 2, 2); 
-        g = qs2.toInt();
-        qs2 = qs.section(' ', 3, 3); 
-        b = qs2.toInt();
-        synthdata->colorCable = QColor(r, g, b);
-      }       
-      else if (qs.contains("MidiControllerMode")) {
-        qs2 = qs.section(' ', 1, 1); 
-        midiControllerMode = qs2.toInt();
-        synthdata->midiControllerMode = midiControllerMode;
-      }       
-      else if (qs.contains("LoadPath")) {
-        loadPath = qs.section(' ', 1); 
-        if (loadPath.isEmpty())
-            loadPath = QDir::homePath();
-        loadEdit->setText(loadPath);
-        synthdata->loadPath = loadPath;
-      }       
-      else if (qs.contains("SavePath")) {
-        savePath = qs.section(' ', 1); 
-        if (savePath.isEmpty())
-            savePath = QDir::homePath();
-        saveEdit->setText(savePath);
-        synthdata->savePath = savePath;
-      }       
-    }   
-
-  StdErr << "loadPath: " << synthdata->loadPath << ", savePath: " <<
-    synthdata->savePath <<  endl;
-  recallColors();
-  refreshColors();
-}
 
 void PrefWidget::savePref(QTextStream& rctext)
 {

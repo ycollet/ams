@@ -3,7 +3,7 @@
 <context>
     <name>ColorWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="35"/>
+        <location filename="../colorwidget.cpp" line="6"/>
         <source>Change...</source>
         <translation>Changer...</translation>
     </message>
@@ -598,12 +598,12 @@
     <message>
         <location filename="../m_ladspa.cpp" line="100"/>
         <source>Author: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auteur: </translation>
     </message>
     <message>
         <location filename="../m_ladspa.cpp" line="101"/>
         <source>Copyright: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copyright: </translation>
     </message>
 </context>
 <context>
@@ -3403,117 +3403,117 @@ Save changes?</source>
 <context>
     <name>PrefWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="63"/>
+        <location filename="../prefwidget.cpp" line="50"/>
         <source>&amp;Colors</source>
         <translation>&amp;Couleurs</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="64"/>
+        <location filename="../prefwidget.cpp" line="51"/>
         <source>&amp;MIDI</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="65"/>
+        <location filename="../prefwidget.cpp" line="52"/>
         <source>&amp;Paths</source>
         <translation>&amp;Chemins</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="71"/>
+        <location filename="../prefwidget.cpp" line="58"/>
         <source>Background Color</source>
         <translation>Couleur de Fond</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="74"/>
+        <location filename="../prefwidget.cpp" line="62"/>
         <source>Module Background Color</source>
         <translation>Fond des Modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="77"/>
+        <location filename="../prefwidget.cpp" line="66"/>
         <source>Module Border Color</source>
         <translation>Cadre des Modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="80"/>
+        <location filename="../prefwidget.cpp" line="70"/>
         <source>Module Font Color</source>
         <translation>Police des Modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="83"/>
+        <location filename="../prefwidget.cpp" line="74"/>
         <source>Cable Color</source>
         <translation>Couleur des Cables</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="86"/>
+        <location filename="../prefwidget.cpp" line="78"/>
         <source>Jack Color</source>
         <translation>Couleur des Jacks</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="90"/>
+        <location filename="../prefwidget.cpp" line="82"/>
         <source>&amp;Default colors</source>
         <translation>Couleurs &amp;Standards</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="99"/>
+        <location filename="../prefwidget.cpp" line="91"/>
         <source>M&amp;IDI Controller Mode: </source>
         <translation>Mode Controleur M&amp;IDI:</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="103"/>
+        <location filename="../prefwidget.cpp" line="95"/>
         <source>Avoid Parameter Jumps</source>
         <translation>Eviter les sauts de paramètres</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="104"/>
+        <location filename="../prefwidget.cpp" line="96"/>
         <source>Init MIDI Controller</source>
         <translation>Initialiser le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="105"/>
+        <location filename="../prefwidget.cpp" line="97"/>
         <source>Follow MIDI Controller</source>
         <translation>Suivre le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="117"/>
+        <location filename="../prefwidget.cpp" line="110"/>
         <source>&amp;Load Path:</source>
         <translation>Chemin de &amp;chargement:</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="123"/>
+        <location filename="../prefwidget.cpp" line="116"/>
         <source>&amp;Browse...</source>
         <translation>&amp;Explorer...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="130"/>
+        <location filename="../prefwidget.cpp" line="123"/>
         <source>&amp;Save Path:</source>
         <translation>Chemin d&apos;&amp;enregistrement:</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="136"/>
+        <location filename="../prefwidget.cpp" line="129"/>
         <source>Bro&amp;wse...</source>
         <translation>E&amp;xplorer...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="152"/>
+        <location filename="../prefwidget.cpp" line="151"/>
         <source>&amp;Apply</source>
         <translation>&amp;Appliquer</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="155"/>
+        <location filename="../prefwidget.cpp" line="154"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="158"/>
+        <location filename="../prefwidget.cpp" line="157"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="488"/>
+        <location filename="../prefwidget.cpp" line="398"/>
         <source>Choose Load Path</source>
         <translation>Choisir le chemin de chargement</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="500"/>
+        <location filename="../prefwidget.cpp" line="410"/>
         <source>Choose Save Path</source>
         <translation>Choisir le chemin d&apos;enregistrement</translation>
     </message>

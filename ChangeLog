@@ -1,3 +1,8 @@
+2009-02-18 Guido Scholz <guido.scholz@bayernline.de>
+	* colorwidget.*, prefwidget.cpp: Color widget class moved to
+	separate file, missing Q_OBJECT macro added.
+	* prefwidget.*, modularsynth.*: Unused code removed.
+
 2008-11-09 Frank Kober <goemusic@yahoo.fr>
 	* ams_fr.ts: French translation added.
 

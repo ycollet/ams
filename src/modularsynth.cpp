@@ -2012,6 +2012,7 @@ void ModularSynth::save(QTextStream& ts)
   modified = false;
 }
 //====================================================== End persistence
+
 void ModularSynth::allVoicesOff()
 {
   int l2;
@@ -2025,23 +2026,21 @@ void ModularSynth::allVoicesOff()
 void ModularSynth::loadPreferences(QString& line)
 {
     prefWidget->loadPref(line);
-}
-
-void ModularSynth::loadPreferences(int rcFd)
-{
-    prefWidget->loadPref(rcFd);
     refreshColors();
 }
+
 
 void ModularSynth::savePreferences(QTextStream& ts)
 {
     prefWidget->savePref(ts);
 }
 
+
 void ModularSynth::showContextMenu(const QPoint& pos) {
   
     contextMenu->popup(mapToGlobal(pos));
 }
+
 
 void ModularSynth::refreshColors() {
 
@@ -2058,6 +2057,7 @@ void ModularSynth::refreshColors() {
   setPalette(p);
   update();
 }
+
 
 void ModularSynth::updateColors()
 {

@@ -3,7 +3,7 @@
 <context>
     <name>ColorWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="35"/>
+        <location filename="../colorwidget.cpp" line="6"/>
         <source>Change...</source>
         <translation>Ändern...</translation>
     </message>
@@ -3405,117 +3405,117 @@ Save changes?</source>
 <context>
     <name>PrefWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="63"/>
+        <location filename="../prefwidget.cpp" line="50"/>
         <source>&amp;Colors</source>
         <translation>&amp;Farben</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="64"/>
+        <location filename="../prefwidget.cpp" line="51"/>
         <source>&amp;MIDI</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="65"/>
+        <location filename="../prefwidget.cpp" line="52"/>
         <source>&amp;Paths</source>
         <translation>&amp;Pfade</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="71"/>
+        <location filename="../prefwidget.cpp" line="58"/>
         <source>Background Color</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="74"/>
+        <location filename="../prefwidget.cpp" line="62"/>
         <source>Module Background Color</source>
         <translation>Modulhintergrund</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="77"/>
+        <location filename="../prefwidget.cpp" line="66"/>
         <source>Module Border Color</source>
         <translation>Modulum&amp;randung</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="80"/>
+        <location filename="../prefwidget.cpp" line="70"/>
         <source>Module Font Color</source>
         <translation>Schrift</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="83"/>
+        <location filename="../prefwidget.cpp" line="74"/>
         <source>Cable Color</source>
         <translation>Kabel</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="86"/>
+        <location filename="../prefwidget.cpp" line="78"/>
         <source>Jack Color</source>
         <translation>Stecker</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="90"/>
+        <location filename="../prefwidget.cpp" line="82"/>
         <source>&amp;Default colors</source>
         <translation>&amp;Voreinstellung</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="99"/>
+        <location filename="../prefwidget.cpp" line="91"/>
         <source>M&amp;IDI Controller Mode: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="103"/>
+        <location filename="../prefwidget.cpp" line="95"/>
         <source>Avoid Parameter Jumps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="104"/>
+        <location filename="../prefwidget.cpp" line="96"/>
         <source>Init MIDI Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="105"/>
+        <location filename="../prefwidget.cpp" line="97"/>
         <source>Follow MIDI Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="117"/>
+        <location filename="../prefwidget.cpp" line="110"/>
         <source>&amp;Load Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="123"/>
+        <location filename="../prefwidget.cpp" line="116"/>
         <source>&amp;Browse...</source>
         <translation>&amp;Wählen...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="130"/>
+        <location filename="../prefwidget.cpp" line="123"/>
         <source>&amp;Save Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="136"/>
+        <location filename="../prefwidget.cpp" line="129"/>
         <source>Bro&amp;wse...</source>
         <translation>W&amp;ählen...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="152"/>
+        <location filename="../prefwidget.cpp" line="151"/>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="155"/>
+        <location filename="../prefwidget.cpp" line="154"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="158"/>
+        <location filename="../prefwidget.cpp" line="157"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="488"/>
+        <location filename="../prefwidget.cpp" line="398"/>
         <source>Choose Load Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="500"/>
+        <location filename="../prefwidget.cpp" line="410"/>
         <source>Choose Save Path</source>
         <translation type="unfinished"></translation>
     </message>

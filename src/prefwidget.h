@@ -31,14 +31,16 @@
  */ 
 class PrefWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  QVBoxLayout vBox;
+    QVBoxLayout vBox;
     QTabWidget *tabWidget;
     QString loadPath, savePath;
-    QWidget *colorBackgroundLabel, *colorModuleBackgroundLabel, *colorModuleBorderLabel, *colorModuleFontLabel,
+    QWidget *colorBackgroundLabel, *colorModuleBackgroundLabel,
+            *colorModuleBorderLabel, *colorModuleFontLabel,
 	    *colorCableLabel, *colorJackLabel;
-    QColor colorBackground, colorModuleBackground, colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
+    QColor colorBackground, colorModuleBackground,
+           colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
     QComboBox *midiModeComboBox;
     QLineEdit *loadEdit, *saveEdit;
@@ -46,7 +48,6 @@ class PrefWidget : public QWidget
    
   public:
     PrefWidget();
-    void loadPref(int);
     void loadPref(QString&);
     void savePref(QTextStream&);
 
@@ -73,15 +74,5 @@ class PrefWidget : public QWidget
     void savePathUpdate();
 };
   
-
-class ColorWidget: public QWidget {
-  Q_OBJECT
-
-  QLabel label;
-  QPushButton button;
-public:
-  ColorWidget(const QString& l, QGridLayout *layout, QColor &color, int pos,
-	      PrefWidget *pw, const char *slot);
-};
 
 #endif

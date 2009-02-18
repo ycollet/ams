@@ -6,6 +6,7 @@ bin_PROGRAMS = ams
 nodist_ams_SOURCES = \
 	box_moc.cpp \
 	canvas_moc.cpp \
+	colorwidget_moc.cpp \
 	configdialog_moc.cpp \
 	function_moc.cpp \
 	guiwidget_moc.cpp \
@@ -76,6 +77,7 @@ ams_SOURCES = \
 	box.cpp \
 	canvas.cpp \
 	canvasfunction.cpp \
+	colorwidget.cpp \
 	configdialog.cpp \
 	envelope.cpp \
 	function.cpp \
@@ -152,6 +154,7 @@ noinst_HEADERS = \
 	box.h \
 	canvas.h \
 	canvasfunction.h \
+	colorwidget.h \
 	configdialog.h \
 	envelope.h \
 	function.h \
