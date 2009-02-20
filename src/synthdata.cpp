@@ -1,3 +1,5 @@
+#include <sys/time.h> 
+#include <sys/resource.h> 
 #include <stdio.h>
 #include <stdlib.h>
 #include <qobject.h>
@@ -336,7 +338,6 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
         snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt, int nplay)
 {
     pthread_attr_t     attr;
-    struct sched_param parm;
 
     withAlsa = true;
     ncapt &= ~1;
@@ -362,7 +363,13 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     cyclesize  = frsize;
     create_zero_data ();
 
-    parm.sched_priority = sched_get_priority_max (SCHED_FIFO);
+    rlimit rlim;
+    sched_param parm;
+    if (getrlimit(RLIMIT_RTPRIO, &rlim))
+	parm.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    else
+	parm.sched_priority = rlim.rlim_cur;
+
     pthread_attr_init (&attr);
     pthread_attr_setdetachstate (&attr, PTHREAD_CREATE_DETACHED);
     pthread_attr_setschedpolicy (&attr, SCHED_FIFO);
