@@ -19,6 +19,7 @@
 #include <QStringList>
 #include <QTextBlock>
 #include <QTextEdit>
+
 #include "midislider.h"
 #include "intmidislider.h"
 #include "midicombobox.h"
@@ -1800,27 +1801,42 @@ void ModularSynth::load(QTextStream& ts)
             if (mcb != NULL) {
                 guiWidget->addParameter(mcb, qs);
 
-                // prevent crash reading old style files
+                // check for additional parameters of float sliders
                 if (tokens.count() == 5) {
 
                     MidiControllableFloat *mcAbleF =
                         dynamic_cast<MidiControllableFloat *>(mcb);
 
-                    if (mcAbleF) {
+                    if (mcAbleF != NULL) {
                         sliderMin = tokens[2].toInt();
                         sliderMax = tokens[3].toInt();
                         isLog = (tokens[4].toInt() == 1);
+
+                        mcAbleF->setNewMin(sliderMin);
+                        mcAbleF->setNewMax(sliderMax);
+                        mcAbleF->setLog(isLog);
+
                         /*listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider)*/
                         //!! ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
                         // ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
                         // ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLog);
                     }
+                    else
+                        qWarning("MIDI controllable at index %d for "
+                                "parameter '%s' is no float parameter.",
+                                index, qs.toUtf8().constData());
                 }
                 else
-                    qWarning("Parameter list too short: %s.",
-                            qs.toUtf8().constData());
+                    qWarning("Parameter list too short for '%s' (index = %d).",
+                            qs.toUtf8().constData(), index);
             }
+            else
+                qWarning("No MIDI controllable at index %d found.",
+                        index);
         }
+        else
+            qWarning("No module with ID %d for parameter %s found.",
+                    moduleID, qs.toUtf8().constData());
     }
 
     else if (qs.startsWith("Program", Qt::CaseInsensitive)) {
@@ -1874,17 +1890,19 @@ void ModularSynth::load(QTextStream& ts)
 
 void ModularSynth::save(QTextStream& ts)
 {
-    int l1, l2, value;
-    QString qs;
-    QStringList::iterator presetit;
+    int l1, l2;
     int offX = 0, offY = 0;
+    QString qs;
 
+    // adjust modules x position
     if (childrenRect().left() > 100)
       offX = childrenRect().left() - 100;
 
+    // adjust modules y position
     if (childrenRect().top() > 66)
       offY = childrenRect().top() - 66;
     
+    // save module parameters
     for (l1 = 0; l1 < listModule.count(); ++l1) {
       ts << "Module "
           << (int)listModule.at(l1)->M_type << ' '
@@ -1948,6 +1966,7 @@ void ModularSynth::save(QTextStream& ts)
       listModule.at(l1)->save(ts);
     }
 
+    // save comment window content
     for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
         TextEdit *te = listTextEdit.at(l1);
         if (te != NULL) {
@@ -1970,46 +1989,10 @@ void ModularSynth::save(QTextStream& ts)
         }
     }
 
-    for (l1 = 0; l1 < guiWidget->tabList.count(); ++l1)
-        ts << "Tab \"" << guiWidget->tabNameList.at(l1) << "\"" << endl; 
+    // save MIDI controller window configuration
+    guiWidget->save(ts);
 
-    for (l1 = 0; l1 < guiWidget->frameBoxList.count(); ++l1) {
-      ts << "Frame \""
-         << guiWidget->frameBoxList.at(l1)->frameBox->parentWidget()
-            ->objectName() << "\" "
-         << guiWidget->frameBoxList.at(l1)->tabIndex << endl;
-
-      for (l2 = 0; l2 < guiWidget->parameterList.count(); ++l2)
-        if (guiWidget->mgcs.at(l2)->parent() ==
-                guiWidget->frameBoxList.at(l1)->frameBox->parentWidget()) {
-          ts << "Parameter \""
-              << guiWidget->mgcs.at(l2)->nameLabel.text() << "\" "
-              << guiWidget->parameterList.at(l2)->module.moduleID << ' '
-              << guiWidget->parameterList.at(l2)->midiControllableListIndex
-              << ' ';
-
-	  MidiControllableFloat *mcAbleF = dynamic_cast<MidiControllableFloat *>(guiWidget->parameterList.at(l2));
-          if (mcAbleF)
-              ts << mcAbleF->sliderMin() << ' '
-                 << mcAbleF->sliderMax() << ' '
-                 << mcAbleF->getLog() << endl;
-          else
-              ts << endl;
-        }
-    }
-
-    for (l1 = 0; l1 < guiWidget->presetCount; ++l1) {
-      for (int p = 0; p < guiWidget->presetList[l1].count(); p++) {
-        value = guiWidget->presetList[l1][p];
-        ts << "Program " << l1 << ' ' << value << endl;
-      } 
-    }
-    for (presetit = guiWidget->presetNameList.begin();
-            presetit != guiWidget->presetNameList.end(); ++presetit) {
-        ts << "PresetName \"" << (*presetit).mid(3) << "\"" << endl;
-    } 
-
-  modified = false;
+    modified = false;
 }
 //====================================================== End persistence
 

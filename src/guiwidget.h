@@ -12,9 +12,9 @@
 #include "synthdata.h"
 #include "midiguicomponent.h"
 
-#define GUI_DEFAULT_WIDTH   300
-#define  GUI_DEFAULT_HEIGHT 200
-#define MAX_PRESETS         128
+#define GUI_DEFAULT_WIDTH  300
+#define GUI_DEFAULT_HEIGHT 200
+#define MAX_PRESETS        128
 
 class GuiWidget : public QWidget
 {
@@ -41,9 +41,9 @@ public:
   QList<GuiFrame*> frameBoxList;
   QStringList tabNameList;
   QStringList presetNameList;
-  QList<QHBoxLayout *> tabList;
+  QList<QHBoxLayout*> tabList;
   QList<MidiControllableBase*> parameterList;
-  QList<MidiGUIcomponent *> mgcs;
+  QList<MidiGUIcomponent*> mgcs;
   QList<int> presetList[MAX_PRESETS];
     
 public:
@@ -60,6 +60,7 @@ public:
   void remove(MidiControllableBase *);
   MidiControllableBase* getMidiControllableParameter(int);
   GuiWidget::GuiFrame* getGuiFrame(int);
+  void save(QTextStream&);
 
 public slots:
   void presetDec();

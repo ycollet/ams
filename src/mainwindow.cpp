@@ -431,11 +431,13 @@ void MainWindow::writeConfig()
         qWarning("Could not open preferences file.");
         return;
     }
+
     if (!file.resize(0)) {
         qWarning("Could not resize preferences file.");
         file.close();
         return;
     }
+
     QTextStream ts(&file);
     modularSynth->savePreferences(ts);
 

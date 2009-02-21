@@ -1,3 +1,8 @@
+2009-02-21 Guido Scholz <guido.scholz@bayernline.de>
+	* guiwidget.*, modularsynth.cpp: Saving of parameter view
+	settings reorganized, reading of float slider parameters
+	enabled.
+
 2009-02-18 Guido Scholz <guido.scholz@bayernline.de>
 	* colorwidget.*, prefwidget.cpp: Color widget class moved to
 	separate file, missing Q_OBJECT macro added.
