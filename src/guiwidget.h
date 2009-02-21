@@ -1,14 +1,16 @@
 #ifndef GUIWIDGET_H
 #define GUIWIDGET_H
 
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qtabwidget.h>
+#include <QDialog>
 #include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QSpinBox>
+#include <QTabWidget>
 #include <QVBoxLayout>
 #include <alsa/asoundlib.h>
+
 #include "synthdata.h"
 #include "midiguicomponent.h"
 
@@ -16,7 +18,7 @@
 #define GUI_DEFAULT_HEIGHT 200
 #define MAX_PRESETS        128
 
-class GuiWidget : public QWidget
+class GuiWidget : public QDialog
 {
   Q_OBJECT
 

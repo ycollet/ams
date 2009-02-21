@@ -1,12 +1,8 @@
 #include <stdio.h>
-#include <qlabel.h>
 #include <QGroupBox>
-#include <qspinbox.h>
 #include <QTextStream>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
 #include <alsa/asoundlib.h>
+
 #include "synthdata.h"
 #include "guiwidget.h"
 #include "midicontroller.h"
@@ -20,7 +16,7 @@
 
 
 GuiWidget::GuiWidget(QWidget* parent, const char *name) 
-    : QWidget(parent), vLayout(this)
+    : QDialog(parent), vLayout(this)
 {
     setObjectName(name);
 

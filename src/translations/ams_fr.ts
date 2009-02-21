@@ -27,22 +27,22 @@
 <context>
     <name>GuiWidget</name>
     <message>
-        <location filename="../guiwidget.cpp" line="45"/>
+        <location filename="../guiwidget.cpp" line="41"/>
         <source>&amp;Add Preset</source>
         <translation>&amp;Ajouter Preset</translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="50"/>
+        <location filename="../guiwidget.cpp" line="46"/>
         <source>&amp;Overwrite Preset</source>
         <translation>&amp;Remplacer Preset</translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="55"/>
+        <location filename="../guiwidget.cpp" line="51"/>
         <source>Presets for this configuration: 0</source>
         <translation>Presets pour cette configuration: 0</translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="148"/>
+        <location filename="../guiwidget.cpp" line="144"/>
         <source>Presets for this configuration: %1</source>
         <translation>Presets pour cette configuration: %1</translation>
     </message>

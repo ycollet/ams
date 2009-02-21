@@ -2,6 +2,8 @@
 	* guiwidget.*, modularsynth.cpp: Saving of parameter view
 	settings reorganized, reading of float slider parameters
 	enabled.
+	* guiwidget.*: Inherit parameter view widget from QDialog to
+	create a proper window decoration.
 
 2009-02-18 Guido Scholz <guido.scholz@bayernline.de>
 	* colorwidget.*, prefwidget.cpp: Color widget class moved to
