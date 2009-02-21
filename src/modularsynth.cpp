@@ -77,6 +77,8 @@
 #include "prefwidget.h"
 #include "config.h"
 
+static const char COLOREXT[] = ".acs";
+
 
 SynthData *synthdata;
 
@@ -1118,69 +1120,89 @@ static void setColor(FILE *f, QColor &c)
 
 void ModularSynth::loadColors() {
 
-  QString config_fn, qs;
-  FILE *f;
-  char sc[2048];
+    QString config_fn, qs;
+    FILE *f;
+    char sc[2048];
 
-  config_fn = QFileDialog::getOpenFileName(this, tr("Load Colors"),
-					   synthdata->loadPath,
-                                           tr("AlsaModularSynth Color files (*.acs)"));
-  if (config_fn.isEmpty())
-    return;
+    config_fn = QFileDialog::getOpenFileName(this, tr("Load Colors"),
+            synthdata->loadPath, tr("AlsaModularSynth Color files") +
+            " (*" + COLOREXT + ")");
+    if (config_fn.isEmpty())
+        return;
 
-  if (!(f = fopen(config_fn.toLatin1().constData(), "r"))) {
-    QMessageBox::information( this, "AlsaModularSynth",
-            tr("Could not open file."));
-  } else {
-    while(Fscanf(f, "%s", sc) != EOF) {
-      qs = QString(sc);
-      if (qs.contains("ColorBackground", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorBackground);
-      }        
-      else if (qs.contains("ColorModuleBackground", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorModuleBackground);
-      }        
-      else if (qs.contains("ColorModuleBorder", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorModuleBorder);
-      }        
-      else if (qs.contains("ColorModuleFont", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorModuleFont);
-      }        
-      else if (qs.contains("ColorJack", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorJack);
-      }        
-      else if (qs.contains("ColorCable", Qt::CaseInsensitive)) {
-        setColor(f, synthdata->colorCable);
-      }        
-    }      
-    updateColors();
-    fclose(f);
-  }        
+    if (!(f = fopen(config_fn.toLatin1().constData(), "r"))) {
+        QMessageBox::information( this, "AlsaModularSynth",
+                tr("Could not open file."));
+    }
+    else {
+        while (Fscanf(f, "%s", sc) != EOF) {
+            qs = QString(sc);
+            if (qs.contains("ColorBackground", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorBackground);
+            }        
+            else if (qs.contains("ColorModuleBackground", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorModuleBackground);
+            }        
+            else if (qs.contains("ColorModuleBorder", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorModuleBorder);
+            }        
+            else if (qs.contains("ColorModuleFont", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorModuleFont);
+            }        
+            else if (qs.contains("ColorJack", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorJack);
+            }        
+            else if (qs.contains("ColorCable", Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorCable);
+            }        
+        }      
+        updateColors();
+        fclose(f);
+    }        
 }
 
 void ModularSynth::saveColors() {
 
-  FILE *f;
-  QString config_fn, qs;
-  
-  config_fn = QFileDialog::getSaveFileName(this, tr("Save Colors"),
-					   synthdata->savePath,
-                                           tr("AlsaModularSynth Color files (*.acs)"));
-  if (config_fn.isEmpty())
-    return;
+    FILE *f;
+    QString config_fn, qs;
 
-  if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) { 
-    QMessageBox::information( this, "AlsaModularSynth",
-            tr("Could not save file."));
-  } else {
-    fprintf(f, "ColorBackground %d %d %d\n", synthdata->colorBackground.red(), synthdata->colorBackground.green(), synthdata->colorBackground.blue());
-    fprintf(f, "ColorModuleBackground %d %d %d\n", synthdata->colorModuleBackground.red(), synthdata->colorModuleBackground.green(), synthdata->colorModuleBackground.blue());
-    fprintf(f, "ColorModuleBorder %d %d %d\n", synthdata->colorModuleBorder.red(), synthdata->colorModuleBorder.green(), synthdata->colorModuleBorder.blue());
-    fprintf(f, "ColorModuleFont %d %d %d\n", synthdata->colorModuleFont.red(), synthdata->colorModuleFont.green(), synthdata->colorModuleFont.blue());
-    fprintf(f, "ColorJack %d %d %d\n", synthdata->colorJack.red(), synthdata->colorJack.green(), synthdata->colorJack.blue());
-    fprintf(f, "ColorCable %d %d %d\n", synthdata->colorCable.red(), synthdata->colorCable.green(), synthdata->colorCable.blue());
-    fclose(f);
-  }
+    config_fn = QFileDialog::getSaveFileName(this, tr("Save Colors"),
+            synthdata->savePath, tr("AlsaModularSynth Color files") + 
+            " (*" + COLOREXT + ")");
+    if (config_fn.isEmpty())
+        return;
+
+    /*check for file extension*/
+    if (!config_fn.endsWith(COLOREXT))
+        config_fn.append(COLOREXT);
+
+    if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) { 
+        QMessageBox::information( this, "AlsaModularSynth",
+                tr("Could not save file."));
+    }
+    else {
+        fprintf(f, "ColorBackground %d %d %d\n",
+                synthdata->colorBackground.red(),
+                synthdata->colorBackground.green(),
+                synthdata->colorBackground.blue());
+        fprintf(f, "ColorModuleBackground %d %d %d\n",
+                synthdata->colorModuleBackground.red(),
+                synthdata->colorModuleBackground.green(),
+                synthdata->colorModuleBackground.blue());
+        fprintf(f, "ColorModuleBorder %d %d %d\n",
+                synthdata->colorModuleBorder.red(),
+                synthdata->colorModuleBorder.green(),
+                synthdata->colorModuleBorder.blue());
+        fprintf(f, "ColorModuleFont %d %d %d\n",
+                synthdata->colorModuleFont.red(),
+                synthdata->colorModuleFont.green(),
+                synthdata->colorModuleFont.blue());
+        fprintf(f, "ColorJack %d %d %d\n", synthdata->colorJack.red(),
+                synthdata->colorJack.green(), synthdata->colorJack.blue());
+        fprintf(f, "ColorCable %d %d %d\n", synthdata->colorCable.red(),
+                synthdata->colorCable.green(), synthdata->colorCable.blue());
+        fclose(f);
+    }
 }                             
 
 void ModularSynth::load(QTextStream& ts)

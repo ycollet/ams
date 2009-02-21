@@ -6,6 +6,8 @@
 	create a proper window decoration.
 	* configdialog.*: Inherit module config dialog from QDialog to
 	create a proper window decoration.
+	* modularsynth.cpp: Append suffix to color scheme files if not
+	given by user.
 
 2009-02-18 Guido Scholz <guido.scholz@bayernline.de>
 	* colorwidget.*, prefwidget.cpp: Color widget class moved to
