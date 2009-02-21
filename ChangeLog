@@ -4,6 +4,8 @@
 	enabled.
 	* guiwidget.*: Inherit parameter view widget from QDialog to
 	create a proper window decoration.
+	* configdialog.*: Inherit module config dialog from QDialog to
+	create a proper window decoration.
 
 2009-02-18 Guido Scholz <guido.scholz@bayernline.de>
 	* colorwidget.*, prefwidget.cpp: Color widget class moved to

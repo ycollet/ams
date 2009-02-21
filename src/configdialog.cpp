@@ -27,8 +27,10 @@
 #include "spectrumscreen.h"
 #include "function.h"
 
+
 ConfigDialog::ConfigDialog(Module &module) 
-  : addStretch(1)
+  : QDialog(&module),
+    addStretch(1)
   , removeButton(new QPushButton(tr("&Remove Module")))
   , removeFrame(new QHBoxLayout())
   , module(module)

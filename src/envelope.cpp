@@ -6,8 +6,10 @@
 #include "midicontrollable.h"
 
 
-Envelope::Envelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef,
-                   MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef)
+Envelope::Envelope(MidiControllableFloat &delayRef,
+        MidiControllableFloat &attackRef, MidiControllableFloat &holdRef,
+        MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef,
+        MidiControllableFloat &releaseRef)
   : delayRef(delayRef)
   , attackRef(attackRef)
   , holdRef(holdRef)

@@ -11,7 +11,7 @@
 <context>
     <name>ConfigDialog</name>
     <message>
-        <location filename="../configdialog.cpp" line="32"/>
+        <location filename="../configdialog.cpp" line="34"/>
         <source>&amp;Remove Module</source>
         <translation>&amp;Entferne Modul</translation>
     </message>
