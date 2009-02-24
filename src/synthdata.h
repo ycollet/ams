@@ -102,6 +102,20 @@ class SynthData
     QColor colorCable;
     QColor colorJack;
     QFont bigFont, smallFont;
+    struct EditingFlags {
+	enum {
+	    CrossTopLeft = 1,
+	};
+	int f;
+	bool crossTopLeft() {
+	    return f & CrossTopLeft;
+	}
+	void setCrossTopLeft(bool v) {
+	    f &= ~CrossTopLeft;
+	    if (v)
+		f |= CrossTopLeft;
+	}
+    } editingFlags;
 
     pthread_mutex_t rtMutex;
     QList<MidiController> *activeMidiControllers;

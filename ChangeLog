@@ -1,3 +1,10 @@
+2009-02-24 Karsten Wiese <fzuuzf@googlemail.com>
+	* prefwidget.*, modularsynth.*: Boxes can be moved past the
+	topleft canvas border. Behaviour selectable via new tab in
+	prefwidget.
+	* modularsynth.*: Fix QObject's complaint about deleting while
+	in event-handler by using deleteLater().
+
 2009-02-21 Guido Scholz <guido.scholz@bayernline.de>
 	* guiwidget.*, modularsynth.cpp: Saving of parameter view
 	settings reorganized, reading of float slider parameters

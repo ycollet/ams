@@ -42,9 +42,11 @@ class PrefWidget : public QWidget
     QColor colorBackground, colorModuleBackground,
            colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
     QColor colorCable, colorJack;
-    QComboBox *midiModeComboBox;
+    QComboBox *midiModeComboBox,
+	      *editingModeComboBox;
     QLineEdit *loadEdit, *saveEdit;
-    int midiControllerMode;
+    int	midiControllerMode,
+	editingMode;
    
   public:
     PrefWidget();
@@ -70,6 +72,7 @@ class PrefWidget : public QWidget
     void browseLoad();
     void browseSave();
     void updateMidiMode(int);
+    void updateEditingMode(int);
     void loadPathUpdate();
     void savePathUpdate();
 };

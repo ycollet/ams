@@ -46,10 +46,13 @@ PrefWidget::PrefWidget(): vBox(this)
     QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
     QWidget *pathWidget = new QWidget();
     QVBoxLayout *pathBox = new QVBoxLayout(pathWidget);
+    QWidget *editingWidget = new QWidget();
+    QVBoxLayout *editingBox = new QVBoxLayout(editingWidget);
 
     tabWidget->addTab(colorWidget, tr("&Colors"));
     tabWidget->addTab(midiWidget, tr("&MIDI"));
     tabWidget->addTab(pathWidget, tr("&Paths"));
+    tabWidget->addTab(editingWidget, tr("&Editing"));
 
     QGridLayout *colorLayout = new QGridLayout();
     colorBox->addLayout(colorLayout);
@@ -145,6 +148,22 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(saveEdit, SIGNAL(returnPressed()),
             this, SLOT(savePathUpdate()));
 
+    QHBoxLayout *editingModeSelectorBox = new QHBoxLayout();
+    editingBox->addLayout(editingModeSelectorBox);
+    editingModeSelectorBox->addStretch();
+    QLabel *editingModeLabel = new QLabel(tr("Box movement:"));
+    editingModeSelectorBox->addWidget(editingModeLabel);
+    QStringList editingModeNames;
+    editingModeNames << tr("Standard");
+    editingModeNames << tr("No topleft border");
+    editingModeComboBox = new QComboBox();
+    editingModeSelectorBox->addWidget(editingModeComboBox);
+    editingModeLabel->setBuddy(midiModeComboBox);
+    editingModeComboBox->addItems(editingModeNames);
+    QObject::connect(editingModeComboBox, SIGNAL(highlighted(int)),
+            this, SLOT(updateEditingMode(int)));                
+
+
     QHBoxLayout *buttonContainer = new QHBoxLayout();
     vBox.addLayout(buttonContainer);
     buttonContainer->addStretch();
@@ -222,6 +241,10 @@ void PrefWidget::loadPref(QString& line)
         saveEdit->setText(savePath);
         synthdata->savePath = savePath;
     }       
+    else if (line.startsWith("EditingFlags")) {
+	synthdata->editingFlags.f = line.section(' ', 1).toInt();
+	editingMode = synthdata->editingFlags.crossTopLeft();
+    }       
 }
 
 
@@ -254,6 +277,7 @@ void PrefWidget::savePref(QTextStream& rctext)
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
     rctext << "LoadPath " << synthdata->loadPath << "\n";
     rctext << "SavePath " << synthdata->savePath << "\n";
+    rctext << "EditingFlags " << synthdata->editingFlags.f << "\n";
 }                             
 
 void PrefWidget::submitPref()
@@ -280,6 +304,7 @@ void PrefWidget::refreshColors() {
   colorCableLabel->setPalette(QPalette(colorCable, colorCable));  
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
   midiModeComboBox->setCurrentIndex(midiControllerMode);
+  editingModeComboBox->setCurrentIndex(editingMode);
   loadEdit->setText(loadPath);
   saveEdit->setText(savePath);
 }
@@ -293,6 +318,7 @@ void PrefWidget::recallColors() {
   colorCable = synthdata->colorCable;
   colorJack = synthdata->colorJack;
   midiControllerMode = synthdata->midiControllerMode;
+  editingMode = synthdata->editingFlags.crossTopLeft();
   loadPath = synthdata->loadPath;
   savePath = synthdata->savePath;
 }
@@ -316,6 +342,7 @@ void PrefWidget::storeColors() {
   synthdata->colorCable = colorCable;
   synthdata->colorJack = colorJack;
   synthdata->midiControllerMode = midiControllerMode;
+  synthdata->editingFlags.setCrossTopLeft(editingMode);
   synthdata->loadPath = loadPath;
   synthdata->savePath = savePath;
 }
@@ -389,6 +416,11 @@ void PrefWidget::colorJackClicked() {
 void PrefWidget::updateMidiMode(int mode) {
 
   midiControllerMode = mode;
+}
+
+void PrefWidget::updateEditingMode(int mode)
+{
+  editingMode = mode;
 }
 
 void PrefWidget::browseLoad() {

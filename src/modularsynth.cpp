@@ -224,35 +224,43 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
 
 void ModularSynth::mouseMoveEvent(QMouseEvent *ev)
 {
-    if (dragWidget != NULL) {
-        QPoint newPos = dragWidget->pos() + ev->globalPos() - lastMousePos;
-        lastMousePos = ev->globalPos();
+    if (!dragWidget)
+	return;
 
-        /*top and left limit for movement*/
-        if (newPos.x() < 0)
-            newPos.setX(0);
-        if (newPos.y() < 0)
-            newPos.setY(0);
+    bool crossTopLeft = synthdata->editingFlags.crossTopLeft();
+    QPoint delta = ev->globalPos() - lastMousePos;
+    lastMousePos = ev->globalPos();
+    QPoint newPos = dragWidget->pos() + delta;
 
-        dragWidget->move(newPos);
-
-/* TODO: this should be user configurable behavior
-        QPoint moveAll;
-        if (newPos.x() < 0)
-            moveAll.rx() = - newPos.x();
-        if (newPos.y() < 0)
-            moveAll.ry() = - newPos.y();
-        QPoint topLeft = childrenRect().topLeft();
-        if (topLeft.x() > 60)
-            moveAll.rx() = - (topLeft.x() - 60);
-        if (topLeft.y() > 20)
-            moveAll.ry() = - (topLeft.y() - 20);
-        moveAllBoxes(moveAll);
-*/
-        adjustSize();
-        update();
-        modified = true;
+    if (!crossTopLeft) {
+	/*top and left limit for movement*/
+	if (newPos.x() < 0)
+		newPos.setX(0);
+	if (newPos.y() < 0)
+		newPos.setY(0);
     }
+    dragWidget->move(newPos);
+    if (crossTopLeft) {
+	QPoint moveAll;
+	if (newPos.x() < 0)
+	    moveAll.rx() = - newPos.x();
+	if (newPos.y() < 0)
+	    moveAll.ry() = - newPos.y();
+
+	QRect chR = childrenRect();
+	if (delta.x() > 0 && chR.topLeft().x() > 60) {
+	    int x = std::min(delta.x(), chR.topLeft().x() - 60);
+	    moveAll.rx() -= x;
+	}
+	if (delta.y() > 0 && chR.topLeft().y() > 30) {
+	    int y = std::min(delta.y(), chR.topLeft().y() - 30);
+	    moveAll.ry() -= y;
+	}
+	moveAllBoxes(moveAll);
+    }
+    adjustSize();
+    update();
+    modified = true;
 }  
 
 void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
@@ -1032,14 +1040,15 @@ void ModularSynth::deleteModule() {
  
   m = (Module *)sender();
   listModule.removeAll(m);
-  deleteModule(m);
+  m->deleteLater();
   modified = true;
 }
 
-void ModularSynth::deleteTextEdit() {
-
-  listTextEdit.removeAll((TextEdit *)sender());
-  delete((TextEdit *)sender());
+void ModularSynth::deleteTextEdit()
+{
+  TextEdit *t = dynamic_cast<TextEdit *>(sender());
+  listTextEdit.removeAll(t);
+  t->deleteLater();
 }
 
 void ModularSynth::deleteTextEdit(TextEdit *te) {
