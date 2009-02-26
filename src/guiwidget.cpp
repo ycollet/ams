@@ -95,9 +95,8 @@ int GuiWidget::setFrame(int index) {
     return(0);  
 }
 
-int GuiWidget::addTab(const QString &tabName) {
-
-    //  printf("Adding tab %s.\n", tabName.latin1());
+int GuiWidget::addTab(const QString &tabName)
+{
     tabNameList.append(tabName);
     QWidget *tab = new QWidget();
     setObjectName(tabName);
@@ -108,9 +107,8 @@ int GuiWidget::addTab(const QString &tabName) {
     return(0);  
 }
 
-int GuiWidget::setTab(int index) {
-
-    //   fprintf(stderr, "Setting tab index %d.\n", index);  
+int GuiWidget::setTab(int index)
+{
     currentTab = tabList.at(index);
     currentTabIndex = index;
     return(0);  
@@ -119,12 +117,26 @@ int GuiWidget::setTab(int index) {
 int GuiWidget::addParameter(MidiControllableBase *mcAble,
         const QString &parameterName)
 {
-    if (!currentGroupBox)
+    if (currentGroupBox == NULL) {
+        qWarning("No current group box found.");
         return -1;
+    }
+
+    if (mcAble == NULL) {
+        qWarning("No MIDI controlable item found.");
+        return -1;
+    }
 
     clearPresets();
 
-    MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>(mcAble->mcws.at(0))->createTwin();
+    MidiGUIcomponent *mgc = dynamic_cast<MidiGUIcomponent *>(
+            mcAble->mcws.at(0))->createTwin();
+
+    if (mgc == NULL) {
+        qWarning("No GUI component for MIDI controlable item found.");
+        return -1;
+    }
+
     currentGroupBox->addWidget(mgc);
     currentGroupBox->addStretch(100);
     parameterList.append(mcAble);
@@ -197,22 +209,20 @@ void GuiWidget::setCurrentPresetText()
     }
 }
 
-void GuiWidget::presetDec() {
-
-    if (currentPreset > 0) {
+void GuiWidget::presetDec()
+{
+    if (currentPreset > 0)
         setCurrentPreset(currentPreset - 1);
-    }
 }
 
-void GuiWidget::presetInc() {
-
-    if (currentPreset < presetCount - 1) {
+void GuiWidget::presetInc()
+{
+    if (currentPreset < presetCount - 1)
         setCurrentPreset(currentPreset + 1);
-    }
 }
 
-void GuiWidget::addPreset() {
-
+void GuiWidget::addPreset()
+{
     QString qs;
 
     if (presetCount) {

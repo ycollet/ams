@@ -42,7 +42,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="144"/>
+        <location filename="../guiwidget.cpp" line="156"/>
         <source>Presets for this configuration: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3134,120 +3134,120 @@ Save changes?</source>
 <context>
     <name>MidiControllerModel</name>
     <message>
-        <location filename="../midiwidget.cpp" line="65"/>
-        <source>type: %1 channel: %2 param: %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../midiwidget.cpp" line="75"/>
+        <location filename="../midiwidget.cpp" line="79"/>
         <source>Module</source>
         <translation>Modul</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="75"/>
+        <location filename="../midiwidget.cpp" line="79"/>
         <source>MIDI Controller / Parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../midiwidget.cpp" line="66"/>
+        <source>type: %1 channel: %2 param: %3</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MidiWidget</name>
     <message>
-        <location filename="../midiwidget.cpp" line="221"/>
+        <location filename="../midiwidget.cpp" line="256"/>
         <source>&amp;Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="225"/>
+        <location filename="../midiwidget.cpp" line="262"/>
         <source>Set Mi&amp;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="229"/>
+        <location filename="../midiwidget.cpp" line="267"/>
         <source>Set Ma&amp;x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="233"/>
+        <location filename="../midiwidget.cpp" line="272"/>
         <source>&amp;Reset Min/Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="244"/>
+        <location filename="../midiwidget.cpp" line="284"/>
         <source>Omni</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="253"/>
+        <location filename="../midiwidget.cpp" line="295"/>
         <source>MIDI C&amp;hannel:</source>
         <translation>MIDI-&amp;Kanal:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="264"/>
+        <location filename="../midiwidget.cpp" line="308"/>
         <source>Add to &amp;Parameter View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="274"/>
+        <location filename="../midiwidget.cpp" line="320"/>
         <source>&amp;Enable note events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="277"/>
+        <location filename="../midiwidget.cpp" line="323"/>
         <source>&amp;Follow Configuration Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="280"/>
+        <location filename="../midiwidget.cpp" line="326"/>
         <source>Follow &amp;MIDI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="287"/>
+        <location filename="../midiwidget.cpp" line="337"/>
         <source>&amp;Bind</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="291"/>
+        <location filename="../midiwidget.cpp" line="342"/>
         <source>&amp;Clear Binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="295"/>
+        <location filename="../midiwidget.cpp" line="347"/>
         <source>Clear &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="298"/>
+        <location filename="../midiwidget.cpp" line="351"/>
         <source>&amp;Toggle MIDI Sign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="410"/>
+        <location filename="../midiwidget.cpp" line="484"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="420"/>
+        <location filename="../midiwidget.cpp" line="494"/>
         <source>Add this parameter to frame:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="433"/>
+        <location filename="../midiwidget.cpp" line="509"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="439"/>
+        <location filename="../midiwidget.cpp" line="516"/>
         <source>Add frame to tab:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="448"/>
+        <location filename="../midiwidget.cpp" line="530"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="471"/>
+        <location filename="../midiwidget.cpp" line="556"/>
         <source>Parameter name:</source>
         <translation>Parametername:</translation>
     </message>
@@ -3336,12 +3336,12 @@ Save changes?</source>
 <context>
     <name>ModuleModel</name>
     <message>
-        <location filename="../midiwidget.cpp" line="149"/>
+        <location filename="../midiwidget.cpp" line="167"/>
         <source>MIDI Sign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="149"/>
+        <location filename="../midiwidget.cpp" line="167"/>
         <source>Module / Parameter</source>
         <translation type="unfinished"></translation>
     </message>

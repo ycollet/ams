@@ -20,6 +20,7 @@
 #include "module.h"
 #include "midiguicomponent.h"
 
+
 class MidiControllerModel : public QAbstractItemModel
 {
 Q_OBJECT
@@ -29,7 +30,8 @@ friend class MidiWidget;
   QVector<MidiController> &midiControllerList;
 
 public:
-  MidiControllerModel(QVector<MidiController> &midiControllerList, QObject *parent = 0)
+  MidiControllerModel(QVector<MidiController> &midiControllerList,
+          QObject *parent = 0)
     : QAbstractItemModel(parent)
     , midiControllerList(midiControllerList)
   {}
@@ -45,6 +47,7 @@ public:
 
   void insert(QVector<MidiController>::iterator c, MidiController &mc);
 };
+
 
 class ModuleModel : public QAbstractItemModel
 {
@@ -69,6 +72,7 @@ public:
 
 private:
 };
+
 
 class MidiWidget : public QWidget
 {
@@ -117,13 +121,16 @@ public:
   ~MidiWidget();
   void addMidiController(MidiControllerKey midiController);
   const MidiController *midiController(MidiControllerKey midiController) {
-    typeof(midiControllerList.constEnd()) c =
-      qBinaryFind(midiControllerList.constBegin(), midiControllerList.constEnd(), midiController);
-    return c == midiControllerList.constEnd() ? NULL : &*c;
+      typeof(midiControllerList.constEnd()) c =
+          qBinaryFind(midiControllerList.constBegin(),
+                  midiControllerList.constEnd(), midiController);
+      return c == midiControllerList.constEnd() ? NULL : &*c;
   }
   void setActiveMidiControllers();
-  void addMidiControllable(MidiControllerKey mck, MidiControllableBase *midiGuiComponent);
-  void removeMidiControllable(MidiControllerKey midiController, MidiControllableBase *midiGuiComponent);
+  void addMidiControllable(MidiControllerKey mck,
+          MidiControllableBase *midiGuiComponent);
+  void removeMidiControllable(MidiControllerKey midiController,
+          MidiControllableBase *midiGuiComponent);
   const MidiControllerKey getSelectedController() {
     return selectedController;
   }
