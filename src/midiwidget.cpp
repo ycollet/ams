@@ -50,11 +50,17 @@ QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
     if (index.isValid() && role == Qt::DisplayRole) {
         const MidiController *c = (const MidiController *)index.internalPointer();
         MidiControllableBase *mcAble = NULL;
-        if (c != NULL)
-            mcAble = c->context->mcAbles.at(index.row());
+        if ((c != NULL) && (c->context != NULL)) {
+            //FIXME: crash if context not valid
+            if (c->context->mcAbles.count() > 0) {
+                if (index.row() < c->context->mcAbles.count()) {
+                    mcAble = c->context->mcAbles.at(index.row());
+                }
+            }
+        }
 
         if (mcAble != NULL) {
-            if (index.column())
+            if (index.column() > 0)
                 return mcAble->module.configDialog->windowTitle();
             else
                 return mcAble->name;
