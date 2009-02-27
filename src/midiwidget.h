@@ -54,9 +54,7 @@ class ModuleModel : public QAbstractItemModel
     QList<Module*> list;
 
   public:
-    ModuleModel(QObject *parent = 0)
-        : QAbstractItemModel(parent) {}
-
+    ModuleModel(QObject *parent = 0);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -72,31 +70,29 @@ class MidiWidget : public QWidget
 {
     Q_OBJECT
 
-    friend class MidiControllerModel;
-
-  private:
     MidiGUIcomponent *mgc;
-    QTreeView *midiControllerListView, *moduleListView;
     QVBoxLayout vbox;
     MidiControllerModel midiControllerModel;
     ModuleModel moduleModel;
     MidiControllerKey selectedController;
     int selectedControlMcAble;
+
+    QTreeView* midiControllerListView;
+    QTreeView* moduleListView;
     QVBoxLayout *currentGUIcontrol;
     QCheckBox *logCheck;
     QPushButton *newMinButton;
     QPushButton *newMaxButton;
     QPushButton *resetMinMaxButton;
-    QString currentFrameName, currentTabName;
-
-    MidiControllableBase *midiControllable;
-
-    QVector<MidiController> midiControllerList;
     QPushButton *addGuiButton;
     QPushButton *bindButton;
     QPushButton *clearButton;
     QPushButton *clearAllButton;
     QPushButton *midiSignButton;
+    QString currentFrameName, currentTabName;
+
+    MidiControllableBase *midiControllable;
+    QVector<MidiController> midiControllerList;
 
     void selectMcAble(MidiControllableBase &mcAble);
     void showFloatHelpers(bool show);

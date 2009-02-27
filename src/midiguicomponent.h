@@ -3,8 +3,8 @@
 
 #include <QLabel>
 #include <QWidget>
-#include <qlist.h>
-#include "synthdata.h"
+#include <QList>
+
 #include "midicontroller.h"
 #include "mced.h"
 
@@ -12,9 +12,14 @@
   *@author Matthias Nagorni
   */
 
-enum GUIcomponentType { GUIcomponentType_slider, GUIcomponentType_intslider, 
-                        GUIcomponentType_checkbox, GUIcomponentType_combobox, 
-                        GUIcomponentType_pushbutton, GUIcomponentType_floatintslider };
+enum GUIcomponentType{
+    GUIcomponentType_slider,
+    GUIcomponentType_intslider, 
+    GUIcomponentType_checkbox,
+    GUIcomponentType_combobox, 
+    GUIcomponentType_pushbutton,
+    GUIcomponentType_floatintslider
+};
 
 class MidiGUIcomponent : public QWidget, public MCed {
 Q_OBJECT

@@ -1,10 +1,6 @@
-#include <qslider.h>
-#include <qlabel.h>
-#include <stdio.h>
 #include <math.h>
+
 #include "midicombobox.h"
-#include "synthdata.h"
-#include "midiguicomponent.h"
 #include "midicontrollable.h"
 
 

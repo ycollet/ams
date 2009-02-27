@@ -2,11 +2,16 @@
 #define MIDICONTROLLABLE_H
 
 #include <QString>
+
 #include "midisliderbase.h"
 #include "midicontroller.h"
 #include "module.h"
 
 #define SLIDER_SCALE 16384.0
+
+/*forward declarations*/
+class MidiControllerKey;
+class MCed;
 
 
 class MidiControllableBase {
@@ -14,11 +19,11 @@ class MidiControllableBase {
         static QString temp;
 
     public:
-        class Module &module; 
+        Module &module; 
         QString name;
         int midiControllableListIndex;
-        QList<class MidiControllerKey> midiControllerList;
-        QList<class MCed *> mcws;
+        QList<MidiControllerKey> midiControllerList;
+        QList<MCed*> mcws;
         bool midiSign; 
 
         MidiControllableBase(Module &module, const QString &name)

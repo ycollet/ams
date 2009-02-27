@@ -1,10 +1,8 @@
-#include <math.h>
-#include <qsplitter.h>
-#include <qinputdialog.h>
-#include <qmessagebox.h>
-#include <qstringlist.h>
-#include <qlineedit.h>
-#include <alsa/asoundlib.h>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QSplitter>
+#include <QStringList>
 
 #include "guiwidget.h"
 #include "intmidislider.h"
@@ -121,6 +119,12 @@ void MidiControllerModel::insert(QVector<MidiController>::iterator c,
     QVector<MidiController>::iterator n = midiControllerList.insert(c, mc);
     n->context = new MidiControllerContext();
     endInsertRows();
+}
+
+
+/*class ModuleModel*/
+ModuleModel::ModuleModel(QObject* parent): QAbstractItemModel(parent)
+{
 }
 
 
