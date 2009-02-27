@@ -1,35 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
-#include <unistd.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h> 
 #include <qsplitter.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
 #include <qinputdialog.h>
 #include <qmessagebox.h>
 #include <qstringlist.h>
 #include <qlineedit.h>
-#include <QTreeWidget>
 #include <alsa/asoundlib.h>
-#include "synthdata.h"
-#include "midiwidget.h"
+
+#include "guiwidget.h"
+#include "intmidislider.h"
+#include "midicheckbox.h"
+#include "midicombobox.h"
 #include "midicontroller.h"
 #include "midiguicomponent.h"
-#include "module.h"
-#include "midislider.h"
-#include "intmidislider.h"
-#include "midicombobox.h"
-#include "midicheckbox.h"
 #include "midipushbutton.h"
-#include "guiwidget.h"
+#include "midislider.h"
+#include "midiwidget.h"
+#include "module.h"
+#include "synthdata.h"
 
+
+MidiControllerModel::MidiControllerModel(QVector<MidiController>
+        &midiControllerList, QObject *parent)
+    : QAbstractItemModel(parent)
+    , midiControllerList(midiControllerList)
+{
+}
 
 
 int MidiControllerModel::rowCount(const QModelIndex &parent) const
@@ -251,12 +246,12 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     QVBoxLayout *controlFrame = new QVBoxLayout();
     controlFrame->setSpacing(5);
     vbox.addLayout(controlFrame);
-    guiControlParent = new QFrame(); // QVBoxLayout
+    QFrame* guiControlParent = new QFrame(); // QVBoxLayout
     controlFrame->addWidget(guiControlParent);
     guiControlParent->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     currentGUIcontrol = new QVBoxLayout(guiControlParent);
     currentGUIcontrol->setMargin(5);
-    floatHelperLayout = new QHBoxLayout();
+    QHBoxLayout* floatHelperLayout = new QHBoxLayout();
     currentGUIcontrol->addLayout(floatHelperLayout);
     
     logCheck = new QCheckBox(tr("&Log"));
@@ -296,9 +291,8 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
 
     QHBoxLayout *midiChannelBox = new QHBoxLayout();
     controlFrame->addLayout(midiChannelBox);
-    QLabel *channelText = new QLabel();
+    QLabel *channelText = new QLabel(tr("MIDI C&hannel:"));
     midiChannelBox->addWidget(channelText);
-    channelText->setText(tr("MIDI C&hannel:"));
     QComboBox *comboBox = new QComboBox();
     channelText->setBuddy(comboBox);
     midiChannelBox->addWidget(comboBox);
@@ -323,15 +317,19 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     buttonBox->setSpacing(5);
     buttonBox->setMargin(5);
     buttonBox->addStretch();
-    noteCheck = new QCheckBox(tr("&Enable note events"));
+
+    QCheckBox* noteCheck = new QCheckBox(tr("&Enable note events"));
     checkbuttonBox->addWidget(noteCheck);
     noteCheck->setChecked(noteControllerEnabled);
-    configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
+    
+    QCheckBox* configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
     checkbuttonBox->addWidget(configCheck);
     configCheck->setChecked(followConfig);
-    midiCheck = new QCheckBox(tr("Follow &MIDI"));
+    
+    QCheckBox* midiCheck = new QCheckBox(tr("Follow &MIDI"));
     checkbuttonBox->addWidget(midiCheck);
     midiCheck->setChecked(followMidi);         
+    
     QObject::connect(noteCheck, SIGNAL(stateChanged(int)),
             this, SLOT(noteControllerCheckToggle(int)));
     QObject::connect(configCheck, SIGNAL(stateChanged(int)),
@@ -793,7 +791,7 @@ void MidiWidget::setActiveMidiControllers()
             if ((*mca)->module.connected()) {
                 if (!amcc) {
                     New->append(mc->getKey());
-                    amcc = New->back().context = new MidiControllerContext;
+                    amcc = New->back().context = new MidiControllerContext();
                 }
                 amcc->mcAbles.append(*mca);
             }
@@ -807,4 +805,34 @@ void MidiWidget::setActiveMidiControllers()
     pthread_mutex_unlock(&synthdata->rtMutex);
 
     delete old;
+}
+
+
+const MidiController* MidiWidget::midiController(
+        MidiControllerKey midiController)
+{
+    typeof(midiControllerList.constEnd()) c =
+        qBinaryFind(midiControllerList.constBegin(),
+                midiControllerList.constEnd(), midiController);
+    return c == midiControllerList.constEnd() ? NULL : &*c;
+}
+
+
+const MidiControllerKey MidiWidget::getSelectedController()
+{
+    return selectedController;
+}
+
+
+void MidiWidget::guiComponentTouched(MidiControllableBase &mcAble)
+{
+    if (followConfig)
+        selectMcAble(mcAble);
+}
+
+
+void MidiWidget::midiTouched(MidiControllableBase &mcAble)
+{
+    if (followMidi)
+        selectMcAble(mcAble);
 }

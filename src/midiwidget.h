@@ -1,170 +1,143 @@
 #ifndef MIDIWIDGET_H
 #define MIDIWIDGET_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <qwidget.h>
 #include <QAbstractListModel>
+#include <QCheckBox>
 #include <QItemSelectionModel>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <alsa/asoundlib.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QSlider>   
+#include <QString>
+#include <QTreeView>
+#include <QVBoxLayout>
+#include <QWidget>
+
 #include "midicontroller.h"
-#include "synthdata.h"
-#include "module.h"
 #include "midiguicomponent.h"
+
+
+/*forward declarations*/
+class Module;
 
 
 class MidiControllerModel : public QAbstractItemModel
 {
-Q_OBJECT
+    Q_OBJECT
 
-friend class MidiWidget;
+    friend class MidiWidget;
 
-  QVector<MidiController> &midiControllerList;
+    QVector<MidiController> &midiControllerList;
 
-public:
-  MidiControllerModel(QVector<MidiController> &midiControllerList,
-          QObject *parent = 0)
-    : QAbstractItemModel(parent)
-    , midiControllerList(midiControllerList)
-  {}
+  public:
+    MidiControllerModel(QVector<MidiController> &midiControllerList,
+            QObject *parent = 0);
 
-  int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  QVariant data(const QModelIndex &index, int role) const;
-  QVariant headerData(int section, Qt::Orientation orientation,
-		      int role = Qt::DisplayRole) const;
-  QModelIndex index(int row, int column,
-		    const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex parent(const QModelIndex &child) const;
-  int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+            int role = Qt::DisplayRole) const;
+    QModelIndex index(int row, int column,
+            const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &child) const;
 
-  void insert(QVector<MidiController>::iterator c, MidiController &mc);
+    void insert(QVector<MidiController>::iterator c, MidiController &mc);
 };
 
 
 class ModuleModel : public QAbstractItemModel
 {
-Q_OBJECT
+    Q_OBJECT
 
-friend class MidiWidget;
+    friend class MidiWidget;
 
-  QList<class Module *> list;
+    QList<Module*> list;
 
-public:
-  ModuleModel(QObject *parent = 0)
-    : QAbstractItemModel(parent) {}
+  public:
+    ModuleModel(QObject *parent = 0)
+        : QAbstractItemModel(parent) {}
 
-  int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  QVariant data(const QModelIndex &index, int role) const;
-  QVariant headerData(int section, Qt::Orientation orientation,
-		      int role = Qt::DisplayRole) const;
-  QModelIndex index(int row, int column,
-		    const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex parent(const QModelIndex &child) const;
-  int columnCount(const QModelIndex &parent = QModelIndex()) const;
-
-private:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+            int role = Qt::DisplayRole) const;
+    QModelIndex index(int row, int column,
+            const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &child) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
 };
 
 
 class MidiWidget : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
 
-  friend class MidiControllerModel;
+    friend class MidiControllerModel;
 
-private:
-  MidiGUIcomponent *mgc;
-  QCheckBox *noteCheck, *configCheck, *midiCheck;
-  class QTreeView *midiControllerListView, *moduleListView;
-  QVBoxLayout vbox;
-  MidiControllerModel midiControllerModel;
-  ModuleModel moduleModel;
-  MidiControllerKey selectedController;
-  int selectedControlMcAble;
-  QVBoxLayout *currentGUIcontrol;
-  QHBoxLayout *floatHelperLayout;
-  QFrame *guiControlParent;
-  QLabel *valueLabel, *minLabel, *maxLabel;
-  QSlider *slider;
-  QCheckBox *logCheck, *currentCheck;
-  QPushButton *newMinButton;
-  QPushButton *newMaxButton;
-  QPushButton *resetMinMaxButton;
-  QString currentFrameName, currentTabName;
-  class QComboBox *comboBox;
+  private:
+    MidiGUIcomponent *mgc;
+    QTreeView *midiControllerListView, *moduleListView;
+    QVBoxLayout vbox;
+    MidiControllerModel midiControllerModel;
+    ModuleModel moduleModel;
+    MidiControllerKey selectedController;
+    int selectedControlMcAble;
+    QVBoxLayout *currentGUIcontrol;
+    QCheckBox *logCheck;
+    QPushButton *newMinButton;
+    QPushButton *newMaxButton;
+    QPushButton *resetMinMaxButton;
+    QString currentFrameName, currentTabName;
 
-  MidiControllableBase *midiControllable;
+    MidiControllableBase *midiControllable;
 
-  QVector<MidiController> midiControllerList;
-  QPushButton *addGuiButton;
-  QPushButton *bindButton;
-  QPushButton *clearButton;
-  QPushButton *clearAllButton;
-  QPushButton *midiSignButton;
+    QVector<MidiController> midiControllerList;
+    QPushButton *addGuiButton;
+    QPushButton *bindButton;
+    QPushButton *clearButton;
+    QPushButton *clearAllButton;
+    QPushButton *midiSignButton;
 
-  void selectMcAble(MidiControllableBase &mcAble);
-  void showFloatHelpers(bool show);
+    void selectMcAble(MidiControllableBase &mcAble);
+    void showFloatHelpers(bool show);
 
-public: 
-   bool noteControllerEnabled, followConfig, followMidi;
-    
-public:
-  MidiWidget(QWidget* parent, const char *name=0);
-  ~MidiWidget();
-  void addMidiController(MidiControllerKey midiController);
-  const MidiController *midiController(MidiControllerKey midiController) {
-      typeof(midiControllerList.constEnd()) c =
-          qBinaryFind(midiControllerList.constBegin(),
-                  midiControllerList.constEnd(), midiController);
-      return c == midiControllerList.constEnd() ? NULL : &*c;
-  }
-  void setActiveMidiControllers();
-  void addMidiControllable(MidiControllerKey mck,
-          MidiControllableBase *midiGuiComponent);
-  void removeMidiControllable(MidiControllerKey midiController,
-          MidiControllableBase *midiGuiComponent);
-  const MidiControllerKey getSelectedController() {
-    return selectedController;
-  }
-  void setSelectedController(MidiControllerKey midiController);
+  public: 
+    bool noteControllerEnabled, followConfig, followMidi;
 
-  void addModule(Module *m);
-  void removeModule(Module *m);
-  void guiComponentTouched(MidiControllableBase &mcAble) {
-    if (followConfig)
-      selectMcAble(mcAble);
-  }
-  void midiTouched(MidiControllableBase &mcAble) {
-    if (followMidi)
-      selectMcAble(mcAble);
-  }
+    MidiWidget(QWidget* parent, const char *name=0);
+    ~MidiWidget();
+    void addMidiController(MidiControllerKey midiController);
+    const MidiController *midiController(MidiControllerKey midiController);
+    void setActiveMidiControllers();
+    void addMidiControllable(MidiControllerKey mck,
+            MidiControllableBase *midiGuiComponent);
+    void removeMidiControllable(MidiControllerKey midiController,
+            MidiControllableBase *midiGuiComponent);
+    const MidiControllerKey getSelectedController();
+    void setSelectedController(MidiControllerKey midiController);
+    void addModule(Module *m);
+    void removeModule(Module *m);
+    void guiComponentTouched(MidiControllableBase &mcAble);
+    void midiTouched(MidiControllableBase &mcAble);
 
-public slots: 
-  void clearAllClicked();
-  void clearClicked();
-  void bindClicked();
-  void addToParameterViewClicked();
-  void noteControllerCheckToggle(int);
-  void configCheckToggle(int);
-  void midiCheckToggle(int);
-  void toggleMidiSign();
-  void guiControlChanged(const QItemSelection &selected,
-			 const QItemSelection &deselected);
-  void midiControlChanged(const QItemSelection &selected,
-			  const QItemSelection &deselected);
-  void setLogMode(bool on);
-  void setNewMin();
-  void setNewMax();
-  void setInitialMinMax();
-  void updateMidiChannel(int index);
+  public slots: 
+    void clearAllClicked();
+    void clearClicked();
+    void bindClicked();
+    void addToParameterViewClicked();
+    void noteControllerCheckToggle(int);
+    void configCheckToggle(int);
+    void midiCheckToggle(int);
+    void toggleMidiSign();
+    void guiControlChanged(const QItemSelection &selected,
+            const QItemSelection &deselected);
+    void midiControlChanged(const QItemSelection &selected,
+            const QItemSelection &deselected);
+    void setLogMode(bool on);
+    void setNewMin();
+    void setNewMax();
+    void setInitialMinMax();
+    void updateMidiChannel(int index);
 };
   
 #endif
