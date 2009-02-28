@@ -1,22 +1,17 @@
 #include <qwidget.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qslider.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <QPaintEvent>
+#include <QPainter>
 
-#include "midicombobox.h"
-#include "midicheckbox.h"
-#include "modularsynth.h"
-#include "synthdata.h"
 #include "configdialog.h"
 #include "intmidislider.h"
+#include "main.h"
+#include "midicheckbox.h"
+#include "midicombobox.h"
 #include "midicontrollable.h"
 #include "midislider.h"
+#include "modularsynth.h"
 #include "module.h"
-#include "main.h"
 #include "port.h"
+#include "synthdata.h"
 
 
 int Module::portmemAllocated;

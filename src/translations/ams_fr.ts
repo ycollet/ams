@@ -93,68 +93,83 @@
 <context>
     <name>M_ad</name>
     <message>
-        <location filename="../m_ad.cpp" line="24"/>
+        <location filename="../m_ad.cpp" line="15"/>
         <source>Analog Driver %1 Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="59"/>
+        <location filename="../m_ad.cpp" line="50"/>
         <source>Detune Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="61"/>
+        <location filename="../m_ad.cpp" line="52"/>
         <source>Detune Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="63"/>
+        <location filename="../m_ad.cpp" line="54"/>
         <source>Detune Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="65"/>
+        <location filename="../m_ad.cpp" line="56"/>
         <source>Drift Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="67"/>
+        <location filename="../m_ad.cpp" line="58"/>
         <source>Drift Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="69"/>
+        <location filename="../m_ad.cpp" line="60"/>
         <source>Drift Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="72"/>
+        <location filename="../m_ad.cpp" line="63"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="80"/>
+        <location filename="../m_ad.cpp" line="71"/>
         <source>Voice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="185"/>
+        <location filename="../m_ad.cpp" line="176"/>
         <source>Detune %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="187"/>
+        <location filename="../m_ad.cpp" line="178"/>
         <source>Drift %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="97"/>
+        <location filename="../m_ad.cpp" line="88"/>
         <source>Autotune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="99"/>
+        <location filename="../m_ad.cpp" line="90"/>
         <source>Bypass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="23"/>
+        <source>CV In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="27"/>
+        <source>CV Out %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="48"/>
+        <source>Parameter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3326,7 +3341,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="128"/>
+        <location filename="../module.cpp" line="123"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>

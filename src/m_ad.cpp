@@ -1,23 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qdialog.h>
+#include <QString>
 #include <alsa/asoundlib.h>
+
 #include "synthdata.h"
 #include "midicontrollable.h"
 #include "midicombobox.h"
 #include "m_ad.h"
 #include "midipushbutton.h"
 #include "port.h"
+
 
 M_ad::M_ad(int outCount, QWidget* parent) 
   : Module(M_type_ad, outCount, parent,
@@ -29,11 +20,11 @@ M_ad::M_ad(int outCount, QWidget* parent)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_AD_WIDTH, 
               MODULE_AD_HEIGHT + 20 + 20 * outCount);
-  qs.sprintf("CV In");
+  qs = tr("CV In");
   port_in = new Port(qs, PORT_IN, 0, this);
   cv.out_off = 55;
   for (l1 = 0; l1 < outCount; l1++) {
-    qs.sprintf("CV Out %d", l1);
+    qs = tr("CV Out %1").arg(l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
     for (l2 = 0; l2 < MAXPOLY; l2++) {
       drift_a[l1][l2] = 0.4 * (double)random() / (double)RAND_MAX - 0.2;
@@ -54,7 +45,7 @@ M_ad::M_ad(int outCount, QWidget* parent)
   driftCount = 0;
   bypass = 0;
   configDialog->initTabWidget();
-  QVBoxLayout *paramTab = configDialog->addVBoxTab("Parameter");
+  QVBoxLayout *paramTab = configDialog->addVBoxTab(tr("Parameter"));
 
   configDialog->addSlider(tr("Detune Amplitude"), detune_amp, 0,
           0.084, true, paramTab);

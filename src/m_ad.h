@@ -5,18 +5,22 @@
 #include "module.h"
 
 
-#define MODULE_AD_WIDTH                140
-#define MODULE_AD_HEIGHT                40
+enum {
+    MODULE_AD_WIDTH = 140,
+    MODULE_AD_HEIGHT = 40
+};
 
 class M_ad : public Module
 {
   Q_OBJECT
 
   private:
-    Port *port_in, *port_out[MAX_ANALOGUE_DRIVER_OUT];
+    Port *port_in;
+    Port *port_out[MAX_ANALOGUE_DRIVER_OUT];
     float detune_amp, detune_rate, drift_amp, drift_rate, detune_mod, drift_mod;
     float detune_a[MAXPOLY], detune_c[MAXPOLY];
-    float drift_a[MAX_ANALOGUE_DRIVER_OUT][MAXPOLY], drift_c[MAX_ANALOGUE_DRIVER_OUT][MAXPOLY];
+    float drift_a[MAX_ANALOGUE_DRIVER_OUT][MAXPOLY],
+          drift_c[MAX_ANALOGUE_DRIVER_OUT][MAXPOLY];
     float bypass;
     int detuneCount, driftCount, voice[2];
     QTimer *timer;
