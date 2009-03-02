@@ -401,9 +401,9 @@ snd_seq_t *ModularSynth::open_seq() {
 int ModularSynth::initSeqNotifier()
 {
     seqNotifier = new QSocketNotifier(synthdata->pipeFd[0],
-            QSocketNotifier::Read, this);
+				      QSocketNotifier::Read, this);
     QObject::connect(seqNotifier, SIGNAL(activated(int)),
-            this, SLOT(midiAction(int)));
+		     this, SLOT(midiAction(int)));
     return(0);
 }
 
@@ -431,7 +431,7 @@ void ModularSynth::midiAction(int fd)
         mcAble = synthdata->mcSet.get();
         mcAble->updateMGCs(NULL);
     }
-    if (mcAble != NULL)
+    if (mcAble)
         midiWidget->midiTouched(*mcAble);
 
     for (int mcKs = synthdata->mckRed.count(); mcKs; --mcKs) {

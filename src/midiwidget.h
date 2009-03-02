@@ -26,22 +26,21 @@ class MidiControllerModel : public QAbstractItemModel
 
     friend class MidiWidget;
 
-    QVector<MidiController> &midiControllerList;
+    QList<MidiController> &rMidiControllers;
 
   public:
-    MidiControllerModel(QVector<MidiController> &midiControllerList,
-            QObject *parent = 0);
+    MidiControllerModel(QList<MidiController> & , QObject *parent = 0);
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
-            int role = Qt::DisplayRole) const;
+			int role = Qt::DisplayRole) const;
     QModelIndex index(int row, int column,
-            const QModelIndex &parent = QModelIndex()) const;
+		      const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
 
-    void insert(QVector<MidiController>::iterator c, MidiController &mc);
+    void insert(int , MidiController &mc);
 };
 
 
@@ -58,9 +57,9 @@ class ModuleModel : public QAbstractItemModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
-            int role = Qt::DisplayRole) const;
+			int role = Qt::DisplayRole) const;
     QModelIndex index(int row, int column,
-            const QModelIndex &parent = QModelIndex()) const;
+		      const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 };
@@ -77,7 +76,7 @@ class MidiWidget : public QWidget
     MidiControllerKey selectedController;
     int selectedControlMcAble;
 
-    QTreeView* midiControllerListView;
+    QTreeView* midiControllerView;
     QTreeView* moduleListView;
     QVBoxLayout *currentGUIcontrol;
     QCheckBox *logCheck;
@@ -92,7 +91,7 @@ class MidiWidget : public QWidget
     QString currentFrameName, currentTabName;
 
     MidiControllableBase *midiControllable;
-    QVector<MidiController> midiControllerList;
+    QList<MidiController> midiControllers;
 
     void selectMcAble(MidiControllableBase &mcAble);
     void showFloatHelpers(bool show);
@@ -110,7 +109,6 @@ class MidiWidget : public QWidget
     void removeMidiControllable(MidiControllerKey midiController,
             MidiControllableBase *midiGuiComponent);
     const MidiControllerKey getSelectedController();
-    void setSelectedController(MidiControllerKey midiController);
     void addModule(Module *m);
     void removeModule(Module *m);
     void guiComponentTouched(MidiControllableBase &mcAble);

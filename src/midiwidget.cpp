@@ -17,10 +17,10 @@
 #include "synthdata.h"
 
 
-MidiControllerModel::MidiControllerModel(QVector<MidiController>
-        &midiControllerList, QObject *parent)
+MidiControllerModel::MidiControllerModel(QList<MidiController> &rMidiControllers,
+					 QObject *parent)
     : QAbstractItemModel(parent)
-    , midiControllerList(midiControllerList)
+    , rMidiControllers(rMidiControllers)
 {
 }
 
@@ -28,11 +28,11 @@ MidiControllerModel::MidiControllerModel(QVector<MidiController>
 int MidiControllerModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid())
-        return midiControllerList.count();
+        return rMidiControllers.count();
 
     const MidiController *c = (const MidiController *)parent.internalPointer();
     if (c == NULL)
-        return midiControllerList.at(parent.row()).context->mcAbles.count();
+        return rMidiControllers.at(parent.row()).context->mcAbles.count();
 
     return 0;
 }
@@ -60,7 +60,7 @@ QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
         } else
             if ((c == NULL) && (index.column() == 0)) {
                 QString qs;
-                c = &midiControllerList.at(index.row());
+                c = &rMidiControllers.at(index.row());
                 return qs = tr("type: %1 channel: %2 param: %3")
                     .arg(c->type()).arg(c->ch()).arg(c->param());
             }
@@ -85,20 +85,23 @@ QModelIndex MidiControllerModel::index(int row, int column,
         const QModelIndex &parent) const
 {
     if (parent.isValid())
-        return createIndex(row, column,
-                (void*)&midiControllerList.at(parent.row()));
+	return createIndex(row, column,
+			   (void *)&rMidiControllers.at(parent.row()));
     else
-        return createIndex(row, column, (void*)NULL);
+        return createIndex(row, column);
 }
 
 
 QModelIndex MidiControllerModel::parent(const QModelIndex &child) const
 {
     if (child.isValid() && child.internalPointer()) {
-        const MidiController *c =
+        const MidiController *mc =
             (const MidiController *)child.internalPointer();
 
-        int row = c - midiControllerList.data();
+	typeof(rMidiControllers.constEnd()) c
+		= qBinaryFind(rMidiControllers.constBegin(),
+			      rMidiControllers.constEnd(), *mc);
+        int row = c - rMidiControllers.begin();
         return index(row, 0);
     }
     return QModelIndex();
@@ -111,13 +114,11 @@ int MidiControllerModel::columnCount(const QModelIndex &/*parent*/) const
 }
 
 
-void MidiControllerModel::insert(QVector<MidiController>::iterator c,
-        MidiController &mc)
+void MidiControllerModel::insert(int row, MidiController &mc)
 {
-    int row = &*c - midiControllerList.data();
     beginInsertRows(QModelIndex(), row, row);
-    QVector<MidiController>::iterator n = midiControllerList.insert(c, mc);
-    n->context = new MidiControllerContext();
+    rMidiControllers.insert(row, mc);
+    rMidiControllers[row].context = new MidiControllerContext();
     endInsertRows();
 }
 
@@ -207,7 +208,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     : QWidget(parent)
     , mgc(NULL)
     , vbox(this)
-    , midiControllerModel(midiControllerList)
+    , midiControllerModel(midiControllers)
     , selectedControlMcAble(-1)
     , midiControllable(NULL)
 {
@@ -225,15 +226,15 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     QSplitter *listViewBox = new QSplitter();
     vbox.addWidget(listViewBox, 2);
 
-    midiControllerListView = new QTreeView(listViewBox);
-    midiControllerListView->setModel(&midiControllerModel);
-    midiControllerListView->setAllColumnsShowFocus(true);
+    midiControllerView = new QTreeView(listViewBox);
+    midiControllerView->setModel(&midiControllerModel);
+    midiControllerView->setAllColumnsShowFocus(true);
     
     moduleListView = new QTreeView(listViewBox);
     moduleListView->setModel(&moduleModel);
     moduleListView->setAllColumnsShowFocus(true);
 
-    QObject::connect(midiControllerListView->selectionModel(),
+    QObject::connect(midiControllerView->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &,
                     const QItemSelection &)),
             this,
@@ -379,16 +380,16 @@ MidiWidget::~MidiWidget()
 
 void MidiWidget::clearAllClicked()
 {
-    for (int l1 = 0; l1 < midiControllerList.count(); l1++) {
-        const MidiController &c = midiControllerList.at(l1);
+    for (int l1 = 0; l1 < midiControllers.count(); l1++) {
+        const MidiController &c = midiControllers.at(l1);
         while (c.context->mcAbles.count()) {
             MidiControllableBase *mcAble = c.context->mcAbles.at(0);
             mcAble->disconnectController(c);
         }
     }
     midiControllerModel.beginRemoveRows(QModelIndex(), 0,
-            midiControllerList.count() - 1);
-    midiControllerList.clear();
+					midiControllers.count() - 1);
+    midiControllers.clear();
     midiControllerModel.endRemoveRows();  
 }
 
@@ -396,35 +397,35 @@ void MidiWidget::clearAllClicked()
 void MidiWidget::addMidiController(MidiControllerKey mck)
 {
     MidiController mc(mck.getKey());
-    typeof(midiControllerList.end()) c(midiControllerList.end());
+    typeof(midiControllers.end()) c(midiControllers.end());
 
-    if (!midiControllerList.empty()) {
-        c = qLowerBound(midiControllerList.begin(),
-                midiControllerList.end(), mck);
-        if (c != midiControllerList.end()) {
+    if (!midiControllers.empty()) {
+        c = qBinaryFind(midiControllers.begin(),
+                midiControllers.end(), mck);
+        if (c != midiControllers.end()) {
             if (*c == mc) {
                 return;
             }
         }
     }
-    midiControllerModel.insert(c, mc);
-    midiControllerListView->resizeColumnToContents(0);
+    midiControllerModel.insert(c - midiControllers.begin(), mc);
+    midiControllerView->resizeColumnToContents(0);
 }
 
 
 void MidiWidget::addMidiControllable(MidiControllerKey mck,
         MidiControllableBase *mcAble)
 {
-    typeof(midiControllerList.constEnd()) c
-        = qBinaryFind(midiControllerList.constBegin(),
-                midiControllerList.constEnd(), mck);
+    typeof(midiControllers.constEnd()) c
+        = qBinaryFind(midiControllers.constBegin(),
+                midiControllers.constEnd(), mck);
 
-    if (c == midiControllerList.end()) {
+    if (c == midiControllers.end()) {
         StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
         return;
     }
 
-    int row = &*c - midiControllerList.data();
+    int row = c - midiControllers.begin();
     int childRow = c->context->mcAbles.count();
 
     midiControllerModel.beginInsertRows(midiControllerModel.index(row, 0),
@@ -438,15 +439,15 @@ void MidiWidget::addMidiControllable(MidiControllerKey mck,
 void MidiWidget::removeMidiControllable(MidiControllerKey mck,
         MidiControllableBase *mcAble)
 {
-    typeof(midiControllerList.constEnd()) c
-        = qBinaryFind(midiControllerList.constBegin(),
-                midiControllerList.constEnd(), mck);
-    if (c == midiControllerList.end()) {
+    typeof(midiControllers.constEnd()) c
+        = qBinaryFind(midiControllers.constBegin(),
+                midiControllers.constEnd(), mck);
+    if (c == midiControllers.end()) {
         StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
         return;
     }
 
-    int row = &*c - midiControllerList.data();
+    int row = c - midiControllers.begin();
     int childRow = c->context->mcAbles.indexOf(mcAble);
     if (childRow != -1) {
         midiControllerModel.beginRemoveRows(midiControllerModel.index(row, 0),
@@ -461,10 +462,10 @@ void MidiWidget::removeMidiControllable(MidiControllerKey mck,
 void MidiWidget::clearClicked()
 {
     if (selectedController.isValid() && selectedControlMcAble != -1) {
-        typeof(midiControllerList.constEnd()) c
-            = qBinaryFind(midiControllerList.constBegin(),
-                    midiControllerList.constEnd(), selectedController);
-        if (c == midiControllerList.end()) {
+        typeof(midiControllers.constEnd()) c
+            = qBinaryFind(midiControllers.constBegin(),
+                    midiControllers.constEnd(), selectedController);
+        if (c == midiControllers.end()) {
             StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
             return;
         }
@@ -569,10 +570,10 @@ void MidiWidget::addToParameterViewClicked()
 
 void MidiWidget::bindClicked()
 {
-    if ((midiControllable != NULL) && selectedController.isValid()
-            && selectedControlMcAble == -1) {
-        int row = midiControllerList.indexOf(selectedController.getKey());
-        midiControllerListView->setExpanded(
+    if (midiControllable &&
+	selectedController.isValid() &&	selectedControlMcAble == -1) {
+        int row = midiControllers.indexOf(selectedController.getKey());
+        midiControllerView->setExpanded(
                 midiControllerModel.index(row, 0), true);
         midiControllable->connectToController(selectedController);
         setActiveMidiControllers();
@@ -646,12 +647,11 @@ void MidiWidget::toggleMidiSign()
 
 /* Module parameter selection changed, right list */
 void MidiWidget::guiControlChanged(const QItemSelection &selected,
-        const QItemSelection &/*deselected*/)
+				   const QItemSelection &/*deselected*/)
 {
-    Module *module;
     bool success = false;
 
-    if (midiControllable != NULL) {
+    if (midiControllable) {
         delete mgc;
         mgc = NULL;
         midiControllable = NULL;
@@ -659,9 +659,9 @@ void MidiWidget::guiControlChanged(const QItemSelection &selected,
 
     if (selected.indexes().count() > 0) {
         const QModelIndex mi = selected.indexes().at(0);
-        module = (Module *)mi.internalPointer();
+        Module *module = (Module *)mi.internalPointer();
 
-        if ((module != NULL) && mi.row() < module->midiControllables.count()) {
+        if (module && mi.row() < module->midiControllables.count()) {
             midiControllable = module->midiControllables.at(mi.row());
             success = true;
         }
@@ -678,7 +678,7 @@ void MidiWidget::guiControlChanged(const QItemSelection &selected,
 
 /* MIDI controller selection changed , left list */
 void MidiWidget::midiControlChanged(const QItemSelection &selected,
-        const QItemSelection &/*deselected*/)
+				    const QItemSelection &/*deselected*/)
 {
     selectedController = MidiControllerKey();
     selectedControlMcAble = -1;
@@ -689,14 +689,12 @@ void MidiWidget::midiControlChanged(const QItemSelection &selected,
         const QModelIndex mi = selected.indexes().at(0);
         const MidiController *mc = (const MidiController *)mi.internalPointer();
 
-        if (mc != NULL) {
+        if (mc) {
             selectedController = mc->getKey();
             selectedControlMcAble = mi.row();
             clearEnable = true;
-        }
-        else {
-            //TODO: check this 
-            selectedController = midiControllerList.at(mi.row()).getKey();
+        } else {
+            selectedController = midiControllers.at(mi.row()).getKey();
             bindEnable = true;
         }
     }
@@ -729,23 +727,6 @@ void MidiWidget::setInitialMinMax()
         dynamic_cast<MidiControllableFloat *>(midiControllable)->resetMinMax();
 }  
 
-void MidiWidget::setSelectedController(MidiControllerKey mck)
-{
-    if (!(mck == selectedController)) {
-        typeof(midiControllerList.constEnd()) c
-            = qBinaryFind(midiControllerList.constBegin(),
-                    midiControllerList.constEnd(), mck);
-        if (c == midiControllerList.end()) {
-            StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
-            return;
-        }
-        midiControllerListView->selectionModel()->
-            select(midiControllerModel.
-                    index(&*c - midiControllerList.data(), 0),
-                    QItemSelectionModel::ClearAndSelect);
-    }
-}
-
 void MidiWidget::selectMcAble(MidiControllableBase &mcAble)
 {
     int row = moduleModel.list.indexOf(&mcAble.module);
@@ -753,8 +734,10 @@ void MidiWidget::selectMcAble(MidiControllableBase &mcAble)
     row = mcAble.module.midiControllables.indexOf(&mcAble);
     index = moduleModel.index(row, 0, index);
     moduleListView->scrollTo(index);
-    moduleListView->selectionModel()->select(index,
-            QItemSelectionModel::ClearAndSelect);
+    if (&mcAble == midiControllable)
+	return;
+    moduleListView->selectionModel()->
+	select(index, QItemSelectionModel::ClearAndSelect);
 }
 
 void MidiWidget::showFloatHelpers(bool show)
@@ -782,9 +765,9 @@ void MidiWidget::setActiveMidiControllers()
     typeof(synthdata->activeMidiControllers) New =
         new typeof(*synthdata->activeMidiControllers);
 
-    for (typeof(midiControllerList.constBegin()) mc =
-            midiControllerList.constBegin();
-            mc != midiControllerList.constEnd(); ++mc) {
+    for (typeof(midiControllers.constBegin()) mc =
+            midiControllers.constBegin();
+            mc != midiControllers.constEnd(); ++mc) {
 
         MidiControllerContext *amcc = NULL;
 
@@ -812,14 +795,13 @@ void MidiWidget::setActiveMidiControllers()
 }
 
 
-const MidiController* MidiWidget::midiController(
-        MidiControllerKey midiController)
-{
-    typeof(midiControllerList.constEnd()) c =
-        qBinaryFind(midiControllerList.constBegin(),
-                midiControllerList.constEnd(), midiController);
-    return c == midiControllerList.constEnd() ? NULL : &*c;
-}
+// const MidiController* MidiWidget::midiController(MidiControllerKey mck)
+// {
+//     typeof(midiControllers.constEnd()) c =
+//         qBinaryFind(midiControllers.constBegin(),
+// 		    midiControllers.constEnd(), mck);
+//     return c == midiControllers.constEnd() ? NULL : &*c;
+// }
 
 
 const MidiControllerKey MidiWidget::getSelectedController()
