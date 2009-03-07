@@ -400,8 +400,8 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
     typeof(midiControllers.end()) c(midiControllers.end());
 
     if (!midiControllers.empty()) {
-        c = qBinaryFind(midiControllers.begin(),
-                midiControllers.end(), mck);
+        c = qLowerBound(midiControllers.begin(),
+			midiControllers.end(), mck);
         if (c != midiControllers.end()) {
             if (*c == mc) {
                 return;
