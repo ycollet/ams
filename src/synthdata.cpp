@@ -674,7 +674,6 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
                 noteCount = noteCounter[i];
                 osc = i;
                 foundOsc = true;
-                break;
             }
 
         if (foundOsc) {
