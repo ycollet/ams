@@ -134,6 +134,9 @@ ModularSynth::~ModularSynth()
 
   listModule.clear();
 
+  guiWidget->close();
+  prefWidget->close();
+  midiWidget->close();
   delete synthdata;
 }
 
