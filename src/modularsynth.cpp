@@ -437,8 +437,8 @@ void ModularSynth::midiAction(int fd)
     if (mcAble)
         midiWidget->midiTouched(*mcAble);
 
-    for (int mcKs = synthdata->mckRed.count(); mcKs; --mcKs) {
-        MidiControllerKey mcK = synthdata->mckRed.get();
+    for (int mcKs = synthdata->mckRead.count(); mcKs; --mcKs) {
+        MidiControllerKey mcK = synthdata->mckRead.get();
         if (midiWidget->isVisible()) {
             if (mcK.type() == SND_SEQ_EVENT_CONTROLLER ||
                     mcK.type() == SND_SEQ_EVENT_CONTROL14 ||
@@ -450,8 +450,20 @@ void ModularSynth::midiAction(int fd)
         }
     }
 
+    for (int mcKs = synthdata->mckDump.count(); mcKs; --mcKs) {
+	MidiControllerKey mcK = synthdata->mckDump.get();
+	switch (mcK.type()) {
+	case SND_SEQ_EVENT_SYSEX:
+	    StdErr << "SYSEX MIDI events are not supported" << endl;
+	    break;
+	default:
+	    StdErr << "Unsupported MIDI event received (type = " <<
+		mcK.type() << ")" << endl;
+	    break;
+	}
+    }
     if (pipeIn[0] & 4)
-        guiWidget->setCurrentPresetText();
+	guiWidget->setCurrentPresetText();
 }
 
 /* redraws complete module area when a module connection is changed*/

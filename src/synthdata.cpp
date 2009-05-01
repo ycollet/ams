@@ -647,13 +647,16 @@ void SynthData::processAlsaMidiEvent(snd_seq_event_t *ev)
         case SND_SEQ_EVENT_CONTROL14:
             handleMidiEventControll14(ev);
             break;
-        case SND_SEQ_EVENT_SYSEX:
-                qWarning("SYSEX MIDI events are not supported");
+
+	// Ignore list
+	case SND_SEQ_EVENT_PORT_SUBSCRIBED:
             break;
-        default:
-                qWarning("Unsupported MIDI event received (type = %d)",
-                        ev->type);
-            break;
+
+	default:
+	    MidiControllerKey mcK(ev);
+	    mckDump.put(mcK);
+	    pipeMessage |= 2;
+	    break;
     }
 }
 
@@ -779,7 +782,7 @@ MidiControllerContext* SynthData::getMidiControllerContext(snd_seq_event_t *ev)
             result = mc->context;
     else {
         result = NULL;
-        mckRed.put(mcK);
+        mckRead.put(mcK);
         pipeMessage |= 2;
     }
     return result;

@@ -21,10 +21,11 @@ class MidiControllerContext {
 class MidiControllerKey {
     public:
         static unsigned int mkKey(unsigned char type, unsigned char ch,
-                unsigned int param) {
-            unsigned int key = ((unsigned int)type << 28)
-                | (((unsigned int)ch & 0xF) << 24)
-                | ((param & 0xFF) << 16) | 0xFFFF;
+				  unsigned int param) {
+            unsigned int key =
+		    ((unsigned int)type << 24) |
+		    (((unsigned int)ch & 0xF) << 20) |
+		    ((param & 0xFF) << 12) | 0xFFF;
             return key;
         }
 
@@ -39,20 +40,20 @@ class MidiControllerKey {
             return key;
         }
         unsigned char type() const {
-            return (key >> 28) & 0xF;
+            return key >> 24;
         }
         unsigned char ch() const {
-            return (key & 0x0F000000) >> 24;
+            return (key & 0x0F00000) >> 20;
         }
         unsigned int param() const {
-            return (key & 0x00FF0000) >> 16;
+            return (key & 0x00FF000) >> 12;
         }
 
         MidiControllerKey()
             : key(mkKey(0, 0, 0))
         {}
         MidiControllerKey(unsigned char type, unsigned char ch,
-                unsigned int param)
+			  unsigned int param)
             : key(mkKey(type, ch, param))
         {}
         MidiControllerKey(snd_seq_event_t *ev)
@@ -69,7 +70,7 @@ class MidiControllerKey {
             : key(other.key)
         {} 
         MidiControllerKey(unsigned int key)
-            : key(key | 0xFFFF)
+            : key(key | 0xFFF)
         {} 
 
         bool operator == (const MidiControllerKey &other ) const {

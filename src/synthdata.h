@@ -119,7 +119,7 @@ class SynthData
 
     pthread_mutex_t rtMutex;
     QList<MidiController> *activeMidiControllers;
-    RingBuffer<MidiControllerKey> mckRed;
+    RingBuffer<MidiControllerKey> mckRead, mckDump;
     RingBuffer<MidiControllableBase *> mcSet;
     int pipeFd[2];
     char pipeMessage;
