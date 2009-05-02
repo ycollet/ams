@@ -1100,12 +1100,11 @@ bool ModularSynth::clearConfig(bool restart)
   if (restartSynth)
     sleep(1);
 
-  synthdata->initVoices();
-  guiWidget->clearGui();
   for (l1 = 0; l1 < listModule.count(); ++l1) {
     deleteModule(listModule.at(l1));
   }
   listModule.clear();
+  guiWidget->clearGui();
   for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
     deleteTextEdit(listTextEdit.at(l1));
   }
@@ -1115,6 +1114,7 @@ bool ModularSynth::clearConfig(bool restart)
   if (restartSynth && restart)
     synthdata->doSynthesis = true;
 
+  synthdata->initVoices();
   update();
   return restartSynth;
 }
@@ -1806,11 +1806,11 @@ void ModularSynth::load(QTextStream& ts)
         QRegExp rx("\"([^\"]+)\"");
         int pos = rx.indexIn(qs);
         if (pos != -1) {
-            guiWidget->addFrame(rx.cap(1));
             pos += rx.matchedLength();
             QString number = qs.mid(pos);
             number = number.trimmed();
             guiWidget->setTab(number.toInt());
+            guiWidget->addFrame(rx.cap(1));
         }
         else
             qWarning(QObject::tr("No data for frame '%1' found.")
