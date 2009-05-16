@@ -480,8 +480,9 @@ int SynthData::initJack (int ncapt, int nplay)
     capt_ports = ncapt & ~1;
     if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
     if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
-
-    if ((jack_handle = jack_client_new(name.toLatin1().constData())) == 0) {
+    jack_handle = jack_client_open(name.toLatin1().constData(),
+				   JackNullOption, NULL);
+    if (!jack_handle) {
         qWarning(QObject::tr("Can't connect to JACK").toUtf8());
         exit (1);
     }
@@ -685,12 +686,14 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
             velocity[osc] = ev->data.note.velocity;
             channel[osc] = ev->data.note.channel;
             notes[osc] = ev->data.note.note;
+	    if (poly == 1)
+		noteList.pushNote(ev->data.note.note);
         }  
 
     }
 
-    MidiControllerContext* mcctx = getMidiControllerContext(ev);
-    if (mcctx != NULL)
+    MidiControllerContext *mcctx = getMidiControllerContext(ev);
+    if (mcctx)
         mcctx->setMidiValueRT(
                 (ev->data.note.velocity << 7) + ev->data.note.velocity);
 }
@@ -698,19 +701,25 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
 void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
 {
     if (midiChannel < 0 || midiChannel == ev->data.control.channel) {
-        for (int i = 0; i < poly; ++i)
-            if (notes[i] == ev->data.note.note &&
-                    channel[i] == ev->data.note.channel &&
-                    noteCounter[i] < 1000000) {
+	for (int i = 0; i < poly; ++i) {
+	    if (notes[i] == ev->data.note.note &&
+		channel[i] == ev->data.note.channel &&
+		noteCounter[i] < 1000000) {
                 if (sustainFlag)
                     sustainNote[i] = true;
                 else
                     noteCounter[i] = 1000000;
-            }
+	    }
+	    if (poly == 1 && channel[i] == ev->data.note.channel) {
+		noteList.deleteNote(ev->data.note.note);
+		if (noteList.anyNotesPressed() &&
+		    notes[i] == ev->data.note.note)
+		    notes[i] = noteList.lastNote();
+	    }
+	}
     }
-
-    MidiControllerContext* mcctx = getMidiControllerContext(ev);
-    if (mcctx != NULL)
+    MidiControllerContext *mcctx = getMidiControllerContext(ev);
+    if (mcctx)
         mcctx->setMidiValueRT(0);
 }
 

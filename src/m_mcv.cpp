@@ -49,25 +49,30 @@ M_mcv::M_mcv(QWidget* parent)
   configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
 }
 
-void M_mcv::generateCycle() {
-
+void M_mcv::generateCycle()
+{
   int l1;
   unsigned int l2;
   float gate, velocity;
 
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
-      freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
-//      if (freq[l1] < 0) freq[l1] = 0;
-      velocity = (float)synthdata->velocity[l1] / 127.0;
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        data[0][l1][l2] = gate;
-        data[1][l1][l2] = freq[l1];
-        data[2][l1][l2] = velocity;
-      } 
-      memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
-//      data[3][l1][0] = trig[l1];
-      data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
-    }
+  for (l1 = 0; l1 < synthdata->poly; l1++) {
+    // do legato in mono mode
+    gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
+      (synthdata->poly == 1 ?
+       synthdata->noteList.anyNotesPressed() :
+       synthdata->noteCounter[l1] < 1000000);
+    freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
+      
+    //      if (freq[l1] < 0) freq[l1] = 0;
+    velocity = (float)synthdata->velocity[l1] / 127.0;
+    for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      data[0][l1][l2] = gate;
+      data[1][l1][l2] = freq[l1];
+      data[2][l1][l2] = velocity;
+    } 
+    memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
+    //      data[3][l1][0] = trig[l1];
+    data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
+  }
 }
 

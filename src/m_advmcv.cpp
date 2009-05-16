@@ -68,30 +68,32 @@ M_advmcv::~M_advmcv()
   synthdata->listM_advmcv.removeAll(this);
 }
 
-void M_advmcv::generateCycle() {
-
+void M_advmcv::generateCycle()
+{
   int l1, l3;
   unsigned int l2;
   float gate, velocity;
 
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
-      freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
-      velocity = (float)synthdata->velocity[l1] / 127.0;
-      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-        data[0][l1][l2] = gate;
-        data[1][l1][l2] = freq[l1];
-        data[2][l1][l2] = velocity;
-        data[4][l1][l2] = aftertouch_cv;
-        data[5][l1][l2] = pitchbend_cv;
-        for (l3 = 0; l3 < MODULE_ADVMCV_CONTROLLER_PORTS; l3++) {
-          data[6+l3][l1][l2] = controller_cv[l3];
-        }
-      } 
-      memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
-//      data[3][l1][0] = trig[l1];
-      data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
-    }
+  for (l1 = 0; l1 < synthdata->poly; l1++) {
+    gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
+      (synthdata->poly == 1 ?
+       synthdata->noteList.anyNotesPressed() :
+       synthdata->noteCounter[l1] < 1000000);
+    freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
+    velocity = (float)synthdata->velocity[l1] / 127.0;
+    for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+      data[0][l1][l2] = gate;
+      data[1][l1][l2] = freq[l1];
+      data[2][l1][l2] = velocity;
+      data[4][l1][l2] = aftertouch_cv;
+      data[5][l1][l2] = pitchbend_cv;
+      for (l3 = 0; l3 < MODULE_ADVMCV_CONTROLLER_PORTS; l3++)
+	data[6+l3][l1][l2] = controller_cv[l3];
+    } 
+    memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
+    //      data[3][l1][0] = trig[l1];
+    data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
+  }
 }
 
 void M_advmcv::aftertouchEvent(int value)

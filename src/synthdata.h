@@ -17,6 +17,7 @@
 #include "main.h"
 #include "midicontroller.h"
 #include "ringbuffer.h"
+#include "notelist.h"
 
 extern QTextStream StdErr;
 extern QTextStream StdOut;
@@ -57,6 +58,7 @@ class SynthData
     float edge;
 
     int notes[MAXPOLY];               // Midi notes
+    NoteList noteList;                // Stack for handling legato
     int velocity[MAXPOLY];            // Velocity
     int channel[MAXPOLY];
     int noteCounter[MAXPOLY];

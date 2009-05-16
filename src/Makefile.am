@@ -147,7 +147,8 @@ ams_SOURCES = \
 	prefwidget.cpp \
 	scopescreen.cpp \
 	synthdata.cpp \
-	textedit.cpp
+	textedit.cpp \
+	notelist.cpp
 
 # list of all header files
 noinst_HEADERS = \
@@ -228,7 +229,8 @@ noinst_HEADERS = \
 	scopescreen.h \
 	spectrumscreen.h \
 	synthdata.h \
-	textedit.h
+	textedit.h \
+	notelist.h
 
 translationsdir = $(pkgdatadir)/translations
 translations = \

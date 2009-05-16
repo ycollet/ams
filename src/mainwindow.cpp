@@ -259,7 +259,7 @@ void MainWindow::fileNew()
 
 void MainWindow::newFile()
 {  
-    modularSynth->clearConfig();
+    modularSynth->clearConfig(true);
  
     fileName = "";
     updateWindowTitle();
@@ -308,7 +308,6 @@ void MainWindow::openFile(const QString& fn)
     }
 
     modularSynth->setLoadPath(fn.left(fn.lastIndexOf('/')));
-    modularSynth->clearConfig();
     fileName = fn;
     QTextStream ts(&f);
     ts.setCodec("UTF-8");
@@ -372,14 +371,11 @@ void MainWindow::fileSaveAs()
 
 void MainWindow::updateWindowTitle()
 {
-    int poly = modularSynth->getSynthDataPoly();
-
-    if (fileName.isEmpty())
-        setWindowTitle(QString(APPNAME) + QString(" - (%1) - ").arg(poly) +
-                " [" + tr("noname") + "]");
-    else
-        setWindowTitle(QString(APPNAME) + QString(" - (%1) - ").arg(poly) +
-                " [" + fileName + "]");
+    QString title = QString("%1 - (%2) - [%3]").
+	arg(synthdata->name).
+	arg(modularSynth->getSynthDataPoly()).
+	arg(fileName.isEmpty() ? tr("noname") : fileName);
+    setWindowTitle(title);
 }
 
 

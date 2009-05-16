@@ -107,46 +107,49 @@ void M_scmcv::calcScale() {
   }
 }
 
-void M_scmcv::generateCycle() {
-
+void M_scmcv::generateCycle()
+{
   int l1, index;
   unsigned int l2;
   float df, gate, velocity;
 
-    if (base != lastbase) {
-      calcScale();
-    }
-    for (l1 = 0; l1 < synthdata->poly; l1++) {
-      gate = ((synthdata->channel[l1] == channel-1)||(channel == 0)) && (synthdata->noteCounter[l1] < 1000000);
-      lastfreq[l1] = freq[l1];
-      index = synthdata->notes[l1] + pitch;
+  if (base != lastbase)
+    calcScale();
+
+  for (l1 = 0; l1 < synthdata->poly; l1++) {
+    gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
+      (synthdata->poly == 1 ?
+       synthdata->noteList.anyNotesPressed() :
+       synthdata->noteCounter[l1] < 1000000);
+    lastfreq[l1] = freq[l1];
+    index = synthdata->notes[l1] + pitch;
       
-      freq[l1] = ((index >=0) && (index < 128)) ? pitchbend + scale_notes[index] : 0;
-//      if (freq[l1] < 0) freq[l1] = 0;
-      velocity = (float)synthdata->velocity[l1] / 127.0;
-      memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
-//      data[3][l1][0] = trig[l1];
-      data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
-      if ((freq[l1] == lastfreq[l1]) || (freq[l1] == 0) || (lastfreq[l1] == 0)) {
-        for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = gate;
-          data[1][l1][l2] = freq[l1];
-          data[2][l1][l2] = velocity;
-        }
-      } else {
-        df = (freq[l1] - lastfreq[l1]) / (float)MODULE_SCMCV_RESPONSE;
-        for (l2 = 0; l2 < MODULE_SCMCV_RESPONSE; l2++) {
-          data[0][l1][l2] = gate;
-          data[1][l1][l2] = lastfreq[l1] + df * (float)l2;
-          data[2][l1][l2] = velocity;
-        }
-        for (l2 = MODULE_SCMCV_RESPONSE; l2 < synthdata->cyclesize; l2++) {
-          data[0][l1][l2] = gate;
-          data[1][l1][l2] = freq[l1];
-          data[2][l1][l2] = velocity;
-        }
+    freq[l1] = ((index >=0) && (index < 128)) ? pitchbend + scale_notes[index] : 0;
+    //      if (freq[l1] < 0) freq[l1] = 0;
+    velocity = (float)synthdata->velocity[l1] / 127.0;
+    memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
+    //      data[3][l1][0] = trig[l1];
+    data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)
+    if ((freq[l1] == lastfreq[l1]) || (freq[l1] == 0) || (lastfreq[l1] == 0)) {
+      for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+	data[0][l1][l2] = gate;
+	data[1][l1][l2] = freq[l1];
+	data[2][l1][l2] = velocity;
+      }
+    } else {
+      df = (freq[l1] - lastfreq[l1]) / (float)MODULE_SCMCV_RESPONSE;
+      for (l2 = 0; l2 < MODULE_SCMCV_RESPONSE; l2++) {
+	data[0][l1][l2] = gate;
+	data[1][l1][l2] = lastfreq[l1] + df * (float)l2;
+	data[2][l1][l2] = velocity;
+      }
+      for (l2 = MODULE_SCMCV_RESPONSE; l2 < synthdata->cyclesize; l2++) {
+	data[0][l1][l2] = gate;
+	data[1][l1][l2] = freq[l1];
+	data[2][l1][l2] = velocity;
       }
     }
+  }
 }
 
 void M_scmcv::openBrowser() {
