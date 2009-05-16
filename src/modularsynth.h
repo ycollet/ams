@@ -72,12 +72,12 @@ class ModularSynth : public QWidget
     void newM_ad(int outCount);
     void new_textEdit(int w, int h);
     void showContextMenu(const QPoint&);
-    bool clearConfig(bool restart);
             
 public:
   ModularSynth(QWidget* parent, const ModularSynthOptions&);
   ~ModularSynth();
 
+    bool clearConfig(bool restart);
     QMenu *contextMenu;
     int go(bool withJack);
     void setPaintFastly(bool v) {
@@ -187,7 +187,6 @@ public:
     void deleteModule(Module *m);
     void deleteTextEdit();
     void deleteTextEdit(TextEdit *te);
-    void clearConfig();
     void load(QTextStream&);
     void save(QTextStream&);
     void loadColors();

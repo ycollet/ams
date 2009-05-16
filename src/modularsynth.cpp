@@ -1119,11 +1119,6 @@ bool ModularSynth::clearConfig(bool restart)
   return restartSynth;
 }
 
-void ModularSynth::clearConfig()
-{
-  clearConfig(true);
-}
-
 //#################################################### Start persistence
 static int Fscanf(FILE *f, const char *format, ...)
 {
