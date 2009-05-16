@@ -79,7 +79,7 @@ public:
 
     bool clearConfig(bool restart);
     QMenu *contextMenu;
-    int go(bool withJack);
+    int go(bool forceJack, bool forceAlsa);
     void setPaintFastly(bool v) {
       paintFastly = v;
     }

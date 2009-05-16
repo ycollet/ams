@@ -282,7 +282,7 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
     }
 }  
 
-int ModularSynth::go(bool withJack)
+int ModularSynth::go(bool forceJack, bool forceAlsa)
 {
     if ((synthdata->seq_handle = open_seq()))
         initSeqNotifier();
@@ -291,14 +291,17 @@ int ModularSynth::go(bool withJack)
 
     midiWidget->setActiveMidiControllers();
 
-    if (withJack) {
-        synthdata->initJack(ncapt, nplay);
-        synthdata->doSynthesis = true;
-    } else {
-        synthdata->initAlsa(pcmname.toLocal8Bit(), fsamp, frsize,
-                nfrags, ncapt, nplay);
-        synthdata->doSynthesis = true;
-    }
+    int err = forceAlsa ? -1 : synthdata->initJack(ncapt, nplay);
+
+    if (err < 0 && !forceJack)
+	err = synthdata->initAlsa(pcmname.toLocal8Bit(),
+				  fsamp, frsize, nfrags, ncapt, nplay);
+
+    if (err < 0)
+	exit(err);
+
+    synthdata->doSynthesis = true;
+
     return 0;
 }
 
@@ -308,11 +311,10 @@ void ModularSynth::displayAbout() {
             AMS_LONGNAME " " VERSION 
             "\nby Matthias Nagorni and Fons Adriaensen\n"
             "(c)2002-2003 SuSE AG Nuremberg\n"
-            "(c)2003 Fons Adriaensen\n\n"
-            "Additional programming:\n"
-            "2007 Malte Steiner\n"
-            "2007 Karsten Wiese\n"
-            "2008 Guido Scholz\n\n"
+            "(c)2003 Fons Adriaensen\n"
+            "(c)2007 Malte Steiner\n"
+            "(c)2007-2009 Karsten Wiese\n"
+            "(c)2008-2009 Guido Scholz\n\n"
             "Documentation and examples can be found in\n"
             "/usr/share/ams\n\n"
             "More presets and updates are available from\n"

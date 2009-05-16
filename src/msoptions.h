@@ -22,7 +22,8 @@ struct ModularSynthOptions {
     bool noGui;
     bool havePreset;
     bool havePresetPath;
-    bool enableJack;
+    bool forceJack;
+    bool forceAlsa;
     float edge;
 };
 

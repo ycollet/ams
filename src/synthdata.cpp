@@ -347,7 +347,7 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     if (alsa_handle->stat () < 0)
     {
         fprintf (stderr, "Can't connect to ALSA\n");
-        exit (1);
+        return -ENODEV;
     } 
     capt_ports = alsa_handle->ncapt ();
     play_ports = alsa_handle->nplay ();
@@ -484,7 +484,7 @@ int SynthData::initJack (int ncapt, int nplay)
 				   JackNullOption, NULL);
     if (!jack_handle) {
         qWarning(QObject::tr("Can't connect to JACK").toUtf8());
-        exit (1);
+        return -ENODEV;
     }
 
     jack_set_process_callback (jack_handle, jack_static_callback, (void *)this);

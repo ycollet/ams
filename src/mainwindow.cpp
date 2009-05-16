@@ -174,7 +174,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
     qWarning(QObject::tr("Preset path now %1").arg(mso.presetPath).toUtf8()); 
     modularSynth->setLoadPath(mso.presetPath);
   }
-  modularSynth->go(mso.enableJack);
+  modularSynth->go(mso.forceJack, mso.forceAlsa);
 
   // autoload patch file
   if (mso.havePreset) {

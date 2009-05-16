@@ -1,3 +1,20 @@
+2009-05-16 Karsten Wiese <fzuuzf@googlemail.com>
+	* call jack_client_open() instead of deprecated jack_client_new().
+	* legato in monophonic mode by Atte Andre Jensen.
+	* Doing console io from rt thread can cause harm to ears and speakers.
+	  Defer unsupported midi messages warnings to userinterface.
+	* Fix 2 bugs in ModularSynth that caused accessviolation on exit
+	  and wrong box placement in Parameter View.
+	* Call guiWidget->close(), prefWidget->close() and  midiWidget->close()
+	  from ModularSynth::dtor to let process finish on Mainwindow closing
+	  also if any of those widgets is shown.
+	* Reenable polyphonic mode. Fix by Atte Andre Jensen.
+	* MainWindow::updateWindowTitle(): Use synthdata->name instead of APPNAME
+	  to match MIDI and Jack names.
+	* Rework commandline options. Started by Atte Andre Jensen. Tweaked to
+	  resemble Fons Adriaensen's programs.
+	* configure.ac: bump VERSION to "2.0.1-rc1".
+	
 2009-03-02 Karsten Wiese <fzuuzf@googlemail.com>
 	* midiwidget.*: Fix crash if second controller is about to show
 	after 1st controller is bound to controllable.

@@ -30,7 +30,8 @@ static struct option options[] =
          {"preset", 1, 0, 'l'},
          {"presetpath", 1, 0, 'd'},
          {"nogui", 0, 0, 'n'},
-         {"jack", 0, 0, 'j'},
+         {"jack", 0, 0, 'J'},
+         {"alsa", 0, 0, 'A'},
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
          {"name", 1, 0, 'N'},
@@ -98,13 +99,14 @@ int makeSynthName(QString &name)
 
 int main(int argc, char *argv[])  
 {
-  char aboutText[] = AMS_LONGNAME " " VERSION 
-                     "\nby Matthias Nagorni and Fons Adriaensen\n"
+  char aboutText[] = AMS_LONGNAME " " VERSION " (c)2002-2009";
+  /*                 "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
 		     "Additional programming:\n"
 		     "2007 Malte Steiner, Karsten Wiese\n"
 		     "2008 Guido Scholz\n";
+ */
   QApplication app(argc, argv);
 
   // translator for Qt library strings
@@ -145,10 +147,11 @@ int main(int argc, char *argv[])
   msoptions.presetPath = "";
   msoptions.havePreset = false;
   msoptions.havePresetPath = false;
-  msoptions.enableJack = false;
+  msoptions.forceJack = false;
+  msoptions.forceAlsa = false;
 
-  while((getopt_return = getopt_long(argc, argv, "hnjb:p:f:e:c:l:d:r:i:o:N:",
-				     options, &option_index)) >= 0) {
+  while ((getopt_return = getopt_long(argc, argv, "hnJAb:p:f:e:c:l:d:r:i:o:N:",
+				      options, &option_index)) >= 0) {
     switch(getopt_return) {
     case 'p': 
         msoptions.poly = atoi(optarg);
@@ -179,8 +182,13 @@ int main(int argc, char *argv[])
     case 'n':
         msoptions.noGui = true;
         break;
-    case 'j':
-        msoptions.enableJack = true;
+    case 'J':
+        msoptions.forceJack = true;
+        msoptions.forceAlsa = false;
+        break;
+    case 'A':
+        msoptions.forceJack = false;
+        msoptions.forceAlsa = true;
         break;
     case 'i': 
         msoptions.ncapt = atoi(optarg);
@@ -192,23 +200,30 @@ int main(int argc, char *argv[])
       msoptions.synthName += optarg;
       break;
     case 'h':
-        printf("\n%s", aboutText);
-        printf("--jack                       Enable JACK I/O\n");
-        printf("--in <num>                   Number of JACK input ports\n");
-        printf("--out <num>                  Number of JACK output ports\n");
-        printf("--poly <num>                 Polyphony [1]\n");
-        printf("--periodsize <frames>        Periodsize [%d]\n", DEFAULT_PERIODSIZE);
-        printf("--frag <num>                 Number of fragments [%d]\n", DEFAULT_PERIODS);
-        printf("--rate <samples/s>           Samplerate [%d]\n", DEFAULT_RATE);
-        printf("--edge <0..10>               VCO Edge [1.0]\n");
-        printf("--soundcard <plug>           Soundcard [hw:0,0]\n");
-        printf("--preset <file>              Preset file\n");
-        printf("--presetpath <path>          Preset path\n");
-        printf("--nogui                      Start without GUI\n");
-        printf("--name                       ALSASEQ/JACK clientname, windowtitle [ams_ALSASEQ-ID]\n\n");
+	printf("%s\n\n", aboutText);
+	printf("Usage:\tams [OPTION]... [PRESETFILE]\n\nOptions:\n");
+        printf("  -J, --jack                    Force JACK\n");
+        printf("    -i, --in <num>                Number of JACK input ports\n");
+        printf("    -o, --out <num>               Number of JACK output ports\n");
+        printf("  -A, --alsa                    Force ALSA\n");
+        printf("    -c, --soundcard <plug>        Soundcard [hw:0,0]\n");
+        printf("    -b, --periodsize <frames>     Periodsize [%d]\n", DEFAULT_PERIODSIZE);
+        printf("    -f, --frag <num>              Number of fragments [%d]\n", DEFAULT_PERIODS);
+        printf("    -r, --rate <samples/s>        Samplerate [%d]\n", DEFAULT_RATE);
+        printf("  -p, --poly <num>              Polyphony [1]\n");
+        printf("  -e, --edge <0..10>            VCO Edge [1.0]\n");
+        printf("  -l, --preset <file>           Preset file\n");
+        printf("  -d, --presetpath <path>       Preset path\n");
+        printf("  -n, --nogui                   Start without GUI\n");
+        printf("  -N, --name <name>             ALSASEQ/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
         break;
     }
+  }
+
+  if (!msoptions.havePreset && optind < argc){
+    msoptions.presetName = argv[optind];
+    msoptions.havePreset = true;
   }
 
   msoptions.rcFd = makeSynthName(msoptions.synthName);
