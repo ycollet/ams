@@ -1,4 +1,5 @@
 .\" Copyright (c) 2003 Dave Phillips
+.\" Copyright (c) 2009 Guido Scholz
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -20,12 +21,12 @@
 .\" Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
 .\" USA.
 .\"
-.TH AlsaModularSynth 1 "November 2003"
+.TH AlsaModularSynth 1 "May 2009"
 .SH NAME
 AlsaModularSynth (AMS) - A software synthesizer modeled after modular
 patching synthesizers
 .SH SYNOPSIS
-.BI "ams [" OPTIONS "]"
+.BI "ams [" OPTIONS "] [" file "]"
 .SH DESCRIPTION
 The
 .B AlsaModularSynth
@@ -51,7 +52,7 @@ are shown here with their default values in brackets.
 
 .TP 10
 .B --jack
-Enable JACK I/O
+Force JACK I/O
 
 .TP 10
 .BI "--in " <num>
@@ -68,6 +69,10 @@ Polyphony [1]
 .TP 10
 .BI "--periodsize " <frames>
 Period size [1024]
+
+.TP 10
+.B --alsa
+Force ALSA I/O
 
 .TP 10
 .BI "--frag " <num>
@@ -97,8 +102,12 @@ Preset path
 .B --nogui                      
 Start without GUI
 
+.TP 10
+.BI "--name " <name>
+ALSASEQ/JACK clientname, windowtitle
+
 .SH FILES
-Numerous example patches can be found in
+Numerous example and tutorial patches can be found in
 .I /usr/share/ams
 or
 .I /usr/local/share/ams.
@@ -107,11 +116,13 @@ Tutorial documentation is available at
 .I http://alsamodular.sourceforge.net/alsamodularsynth_doc.html.
 
 .SH BUGS
-Please send bug reports or any other feedback to Matthias Nagorni <mana@suse.de>
+Please send bug reports or any other feedback to the developer mailing
+list <alsamodular-devel@lists.sourceforge.net>
 
-.SH AUTHOR
+.SH AUTHORS
 .B AMS
-is written and maintained by Dr. Matthias Nagorni.
+was written by Dr. Matthias Nagorni, Fons Adriaensen, Karsten Wiese,
+Malte Steiner and Guido Scholz.
 
 .SH COPYRIGHT
 Copyright and license information for
@@ -120,4 +131,4 @@ Copyright and license information for
 .B AlsaModularSynth
 by Matthias Nagorni (c) 2002-2003 SuSE AG Nuremberg.
 Licensed under the
-.B GNU Public License.
+.B GNU General Public License V2.
