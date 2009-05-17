@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
   msoptions.forceJack = false;
   msoptions.forceAlsa = false;
 
-  while ((getopt_return = getopt_long(argc, argv, "hnJAb:p:f:e:c:l:d:r:i:o:N:",
+  while ((getopt_return = getopt_long(argc, argv, "hnJjAab:p:f:e:c:l:d:r:i:o:N:",
 				      options, &option_index)) >= 0) {
     switch(getopt_return) {
     case 'p': 
@@ -183,10 +183,12 @@ int main(int argc, char *argv[])
         msoptions.noGui = true;
         break;
     case 'J':
+    case 'j':
         msoptions.forceJack = true;
         msoptions.forceAlsa = false;
         break;
     case 'A':
+    case 'a':
         msoptions.forceJack = false;
         msoptions.forceAlsa = true;
         break;

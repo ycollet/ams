@@ -1,3 +1,7 @@
+2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>
+	* cmdline options: reenable -j and -a.
+	* legato mode: Make "All notes off" also clear the notelist.
+
 2009-05-16 Guido Scholz <guido.scholz@bayernline.de>
 	* man/ams.1: New command line options added.
 	* configure.ac: bump VERSION down to "2.0.0-rc1".
