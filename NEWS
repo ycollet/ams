@@ -6,7 +6,7 @@ ams-2.0.0 (2009-05-??)
     o German translation
     o Keyboard shortcuts for menu and dialog items
     o Menu item for recently opened files
-    o French translation (by Fank Korber)
+    o French translation (by Fank Kober)
     o New --name command line option to specify the ALSASEQ/JACK
       clientname
     o Legato in monophonic mode using the "--poly 1" command line
