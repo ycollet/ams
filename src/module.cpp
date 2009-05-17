@@ -245,7 +245,7 @@ void Module::saveBindings(QTextStream& ts)
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
       for (l2 = 0; l2 < configDialog->intMidiSliderList.at(l1)
               ->mcAble.midiControllerList.count(); ++l2) {
-          ts << "FSMIDI " << moduleID << ' ' << l1 << ' '
+          ts << "ISMIDI " << moduleID << ' ' << l1 << ' '
               << configDialog->intMidiSliderList.at(l1)
               ->mcAble.midiControllerList.at(l2).type() << ' '
               << configDialog->intMidiSliderList.at(l1)

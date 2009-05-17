@@ -1,6 +1,8 @@
 2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>
 	* cmdline options: reenable -j and -a.
 	* legato mode: Make "All notes off" also clear the notelist.
+	* ISMIDI is the correct tag for an intMidiSlider,
+	  fix incorrectly saved as FSMIDI midibindings.
 
 2009-05-16 Guido Scholz <guido.scholz@bayernline.de>
 	* man/ams.1: New command line options added.
