@@ -24,6 +24,7 @@ public:
   bool anyNotesPressed() {
     return last != -1;
   }
+  void reset();
 };
 
 #endif

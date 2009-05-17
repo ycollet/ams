@@ -118,9 +118,7 @@ void M_scmcv::generateCycle()
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
-      (synthdata->poly == 1 ?
-       synthdata->noteList.anyNotesPressed() :
-       synthdata->noteCounter[l1] < 1000000);
+	   synthdata->noteCounter[l1] < 1000000;
     lastfreq[l1] = freq[l1];
     index = synthdata->notes[l1] + pitch;
       

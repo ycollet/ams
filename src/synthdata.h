@@ -43,6 +43,7 @@ class SynthData
     jack_client_t *jack_handle;
     jack_port_t *jack_in  [MAX_CAPT_PORTS];
     jack_port_t *jack_out [MAX_PLAY_PORTS];
+    bool setAllNotesOff;
 
   public:
     bool withAlsa;
@@ -152,6 +153,9 @@ public:
   ~SynthData();
 
   void initVoices();
+  void allNotesOff() {
+    setAllNotesOff = true;
+  }
 
   float exp_table(float x);
   float exp2_table(float ) FATTR_FLOAT_ARG;

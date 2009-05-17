@@ -2041,12 +2041,7 @@ void ModularSynth::save(QTextStream& ts)
 
 void ModularSynth::allVoicesOff()
 {
-  int l2;
-
-  for (l2 = 0; l2 < synthdata->poly; ++l2)
-    if (synthdata->noteCounter[l2] < 1000000)
-      synthdata->noteCounter[l2] = 1000000;
-
+  synthdata->allNotesOff();
 }
 
 void ModularSynth::loadPreferences(QString& line)

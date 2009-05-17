@@ -36,7 +36,8 @@ union uf {
 float SynthData::exp2_data[EXP2_BUF_LEN];
 
 SynthData::SynthData(const QString &synthName, int poly, float edge)
-  : edge(edge)
+  : setAllNotesOff(false)
+  , edge(edge)
   , poly(poly)
   , port_sem(1)
   , name(synthName)
@@ -622,6 +623,15 @@ void SynthData::readAlsaMidiEvents(void)
             processAlsaMidiEvent(ev);
     }
     pthread_mutex_unlock(&rtMutex);
+
+    if (!setAllNotesOff)
+	return;
+
+    setAllNotesOff = false;
+    for (int l2 = 0; l2 < synthdata->poly; ++l2)
+	if (synthdata->noteCounter[l2] < 1000000)
+	    synthdata->noteCounter[l2] = 1000000;
+    noteList.reset();
 }
 
 void SynthData::processAlsaMidiEvent(snd_seq_event_t *ev)
@@ -701,22 +711,21 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
 void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
 {
     if (midiChannel < 0 || midiChannel == ev->data.control.channel) {
-	for (int i = 0; i < poly; ++i) {
-	    if (notes[i] == ev->data.note.note &&
-		channel[i] == ev->data.note.channel &&
-		noteCounter[i] < 1000000) {
-                if (sustainFlag)
-                    sustainNote[i] = true;
-                else
-                    noteCounter[i] = 1000000;
+	for (int i = 0; i < poly; ++i)
+	    if (channel[i] == ev->data.note.channel) {
+		if (poly == 1)  
+		    noteList.deleteNote(ev->data.note.note);
+		if (notes[i] == ev->data.note.note && noteCounter[i] < 1000000) {
+		    if (poly == 1 && noteList.anyNotesPressed()) {
+			notes[i] = noteList.lastNote();
+			noteCounter[i] = 0;
+		    } else
+			if (sustainFlag)
+			    sustainNote[i] = true;
+			else
+			    noteCounter[i] = 1000000;
+		}
 	    }
-	    if (poly == 1 && channel[i] == ev->data.note.channel) {
-		noteList.deleteNote(ev->data.note.note);
-		if (noteList.anyNotesPressed() &&
-		    notes[i] == ev->data.note.note)
-		    notes[i] = noteList.lastNote();
-	    }
-	}
     }
     MidiControllerContext *mcctx = getMidiControllerContext(ev);
     if (mcctx)

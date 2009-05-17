@@ -59,3 +59,9 @@ void NoteList::deleteNote(int note)
     }
   }
 }
+
+void NoteList::reset()
+{
+  while (anyNotesPressed())
+    deleteNote(lastNote());
+}

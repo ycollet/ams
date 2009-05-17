@@ -18,7 +18,7 @@ ams-2.0.0 (2009-05-??)
       usual "./configure && make && make install" comfort.
     o Command line options are reworked.
       - JACK now is the default interface, if the connection fails ams
-        connects to ALSA. This behavior can be modified using the -j and
-        -a options.
+        connects to ALSA. This behavior can be modified using the -J and
+        -A options.
       - The initial patch file to be loaded no longer needs the -l
         option.

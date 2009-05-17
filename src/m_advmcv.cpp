@@ -76,9 +76,7 @@ void M_advmcv::generateCycle()
 
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
-      (synthdata->poly == 1 ?
-       synthdata->noteList.anyNotesPressed() :
-       synthdata->noteCounter[l1] < 1000000);
+	   synthdata->noteCounter[l1] < 1000000;
     freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
     velocity = (float)synthdata->velocity[l1] / 127.0;
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
