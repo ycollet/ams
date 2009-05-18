@@ -437,7 +437,8 @@ void MidiWidget::addMidiControllable(MidiControllerKey mck,
 
 
 void MidiWidget::removeMidiControllable(MidiControllerKey mck,
-        MidiControllableBase *mcAble)
+					MidiControllableBase *mcAble,
+					bool *updateActiveMidiControllers)
 {
     typeof(midiControllers.constEnd()) c
         = qBinaryFind(midiControllers.constBegin(),
@@ -455,7 +456,10 @@ void MidiWidget::removeMidiControllable(MidiControllerKey mck,
         c->context->mcAbles.removeAll(mcAble);
         midiControllerModel.endRemoveRows();  
     }
-    setActiveMidiControllers();
+    if (!updateActiveMidiControllers || *updateActiveMidiControllers)
+	setActiveMidiControllers();
+    if (updateActiveMidiControllers)
+	*updateActiveMidiControllers = false;
 }
 
 
@@ -762,36 +766,34 @@ void MidiWidget::updateMidiChannel(int index)
 
 void MidiWidget::setActiveMidiControllers()
 {
-    typeof(synthdata->activeMidiControllers) New =
-        new typeof(*synthdata->activeMidiControllers);
+  typeof(synthdata->activeMidiControllers) New =
+    new typeof(*synthdata->activeMidiControllers);
 
-    for (typeof(midiControllers.constBegin()) mc =
-            midiControllers.constBegin();
-            mc != midiControllers.constEnd(); ++mc) {
+  for (typeof(midiControllers.constBegin()) mc =
+	 midiControllers.constBegin();
+       mc != midiControllers.constEnd(); ++mc) {
+    MidiControllerContext *amcc = NULL;
 
-        MidiControllerContext *amcc = NULL;
+    for (typeof(mc->context->mcAbles.constBegin()) mca =
+	   mc->context->mcAbles.constBegin();
+	 mca != mc->context->mcAbles.constEnd(); ++mca)
+      if ((*mca)->module.isAlive()) {
+	if (!amcc) {
+	  New->append(mc->getKey());
+	  amcc = New->back().context = new MidiControllerContext();
+	}
+	amcc->mcAbles.append(*mca);
+      }
+  }
 
-        for (typeof(mc->context->mcAbles.constBegin()) mca =
-                mc->context->mcAbles.constBegin();
-                mca != mc->context->mcAbles.constEnd(); ++mca)
+  typeof(synthdata->activeMidiControllers) old =
+    synthdata->activeMidiControllers;
 
-            if ((*mca)->module.connected()) {
-                if (!amcc) {
-                    New->append(mc->getKey());
-                    amcc = New->back().context = new MidiControllerContext();
-                }
-                amcc->mcAbles.append(*mca);
-            }
-    }
+  pthread_mutex_lock(&synthdata->rtMutex);
+  synthdata->activeMidiControllers = New;
+  pthread_mutex_unlock(&synthdata->rtMutex);
 
-    typeof(synthdata->activeMidiControllers) old =
-        synthdata->activeMidiControllers;
-
-    pthread_mutex_lock(&synthdata->rtMutex);
-    synthdata->activeMidiControllers = New;
-    pthread_mutex_unlock(&synthdata->rtMutex);
-
-    delete old;
+  delete old;
 }
 
 

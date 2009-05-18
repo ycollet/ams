@@ -1,3 +1,8 @@
+2009-05-18 Karsten Wiese <fzuuzf@googlemail.com>
+	* Module deletion fixed to allow midibound activity also for
+	unconnected modules. 
+	* M_type_pcmout deletion fixed to avoid crash.
+	
 2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>
 	* cmdline options: reenable -j and -a.
 	* legato mode: Make "All notes off" also clear the notelist.

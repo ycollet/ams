@@ -10,9 +10,6 @@ QString MidiControllableBase::temp;
 
 MidiControllableBase:: ~MidiControllableBase()
 {
-    synthdata->guiWidget->remove(this);
-    while (midiControllerList.count())
-        disconnectController(midiControllerList.at(0));
 }
 
 void MidiControllableBase::updateMGCs(MidiGUIcomponent *sender)
@@ -36,7 +33,15 @@ void MidiControllableBase::connectToController(MidiControllerKey midiController)
     }
 }
 
-void MidiControllableBase::disconnectController(MidiControllerKey midiController)
+void MidiControllableBase::disconnect(bool *updateActiveMidiControllers)
+{
+  synthdata->guiWidget->remove(this);
+  while (midiControllerList.count())
+    disconnectController(midiControllerList.at(0), updateActiveMidiControllers);
+}
+
+void MidiControllableBase::disconnectController(MidiControllerKey midiController,
+						bool *updateActiveMidiControllers)
 {
     midiControllerList.removeAll(midiController);
     synthdata->midiWidget->removeMidiControllable(midiController, this);

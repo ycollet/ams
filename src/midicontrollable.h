@@ -34,7 +34,7 @@ class MidiControllableBase {
             midiControllableListIndex = module.midiControllables.count();
             module.midiControllables.append(this);
         }
-
+	void disconnect(bool *updateActiveMidiControllers);
         virtual ~MidiControllableBase();
 
         virtual void updateMGCs(MidiGUIcomponent *sender);
@@ -67,7 +67,8 @@ class MidiControllableBase {
         }
 
         void connectToController(MidiControllerKey midiController);
-        void disconnectController(MidiControllerKey midiController);
+        void disconnectController(MidiControllerKey midiController,
+				  bool *updateActiveMidiControllers = NULL);
 };
 
 

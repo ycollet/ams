@@ -333,7 +333,23 @@ int SynthData::find_capt_mod (void *M)
     return -1;
 }
 
+void SynthData::set_capt_mod(unsigned int k, void *M)
+{
+  if (k < MAX_CAPT_PORTS / 2) {
+    pthread_mutex_lock(&rtMutex);
+    capt_mods[k] = M;
+    pthread_mutex_unlock(&rtMutex);
+  }
+}
 
+void SynthData::set_play_mod(unsigned int k, void *M)
+{
+  if (k < MAX_PLAY_PORTS / 2) {
+    pthread_mutex_lock(&rtMutex);
+    play_mods[k] = M;
+    pthread_mutex_unlock(&rtMutex);
+  }
+}
 
 int SynthData::initAlsa (const char *name, unsigned int fsamp,
         snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt, int nplay)
@@ -418,6 +434,8 @@ void *SynthData::alsa_thr_main (void)
     while (withAlsa)
     {
 	k = alsa_handle->pcm_wait();
+	pthread_mutex_lock(&rtMutex);
+
         readAlsaMidiEvents();
 
         while (k >= cyclesize)
@@ -462,6 +480,7 @@ void *SynthData::alsa_thr_main (void)
 
             k -= cyclesize;
 	}
+	pthread_mutex_unlock(&rtMutex);
     }
  
     alsa_handle->pcm_stop ();
@@ -545,6 +564,8 @@ int SynthData::jack_callback(jack_nframes_t nframes)
         return 0;
     }
 
+    pthread_mutex_lock(&rtMutex);
+
     readAlsaMidiEvents();
 
     cyclesize = nframes;
@@ -572,7 +593,8 @@ int SynthData::jack_callback(jack_nframes_t nframes)
     if (doSynthesis)
       call_modules();
  
-    return 0;
+   pthread_mutex_unlock(&rtMutex);
+   return 0;
 }
 
 void SynthData::call_modules(void)
@@ -609,8 +631,6 @@ void SynthData::readAlsaMidiEvents(void)
     if (!seq_handle)
         return;
 
-    pthread_mutex_lock(&rtMutex);
-
     snd_seq_event_t *ev;
     int result;
 
@@ -622,7 +642,6 @@ void SynthData::readAlsaMidiEvents(void)
         if (ev != NULL)
             processAlsaMidiEvent(ev);
     }
-    pthread_mutex_unlock(&rtMutex);
 
     if (!setAllNotesOff)
 	return;

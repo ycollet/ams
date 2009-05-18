@@ -184,7 +184,6 @@ public:
     void resizeTextEdit(const QPoint& pos);
     void portSelected(Port*);
     void deleteModule();
-    void deleteModule(Module *m);
     void deleteTextEdit();
     void deleteTextEdit(TextEdit *te);
     void load(QTextStream&);

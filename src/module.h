@@ -81,10 +81,13 @@ class MidiControllableBase;
 class Module : public Box
 {
   Q_OBJECT
+  bool alive;
+  int connections;
+  QList<Port*> portList;
 
-    int connections;
-    QList<Port*> portList;
-    
+protected:
+    virtual ~Module();
+
   public: 
     ConfigDialog *configDialog;
     float ***data; 
@@ -95,11 +98,13 @@ class Module : public Box
     QColor colorBackground, colorBorder, colorFont;
     static int portmemAllocated;
 
-  public:
+public:
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
-            const QString &name);
-    virtual ~Module();
-
+	   const QString &name);
+    void Delete();
+    bool isAlive() {
+	return alive;
+    }
     void addPort(Port*); 
     int connected();
     void incConnections();

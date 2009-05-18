@@ -20,6 +20,7 @@ Module::CtorVar Module::cv;
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
         const QString &name)
   : Box(parent, name)
+  , alive(true)
   , connections(0)
   , data(NULL)
   , M_type(M_type)
@@ -66,13 +67,40 @@ void Module::portMemAlloc(int outports, bool poly)
     }
 }
 
+void Module::Delete()
+{
+  if (M_type == M_type_pcmout) {
+    int k = synthdata->find_play_mod(this);
+    if (k >= 0)
+      synthdata->set_play_mod(k, 0);
+  }
+  if (M_type == M_type_pcmin) {
+    int k = synthdata->find_capt_mod(this);
+    if (k >= 0)
+      synthdata->set_capt_mod(k, 0);
+  }
+#ifdef OUTDATED_CODE
+  if (M_type == M_type_spectrum) {
+    synthdata->spectrumModuleList.remove((QObject *)m);
+  }
+#endif
+  bool updateActiveMidiControllers = true;
+  alive = false;
+  for (typeof(midiControllables.begin()) mcAI = midiControllables.begin();
+       mcAI != midiControllables.end();
+       ++mcAI)
+    (*mcAI)->disconnect(&updateActiveMidiControllers);
+
+  synthdata->midiWidget->removeModule(this);
+
+  deleteLater();
+}
+
 Module::~Module()
 {
     int l1;
 
     delete configDialog;  
-
-    synthdata->midiWidget->removeModule(this);
 
     qDeleteAll(midiControllables.begin(), midiControllables.end());
 
@@ -320,18 +348,14 @@ float **Module::getData(int index)
 
 void Module::incConnections()
 {
-  if (connections++ == 0) {
+  if (connections++ == 0)
     configDialog->removeButtonShow(false);
-    synthdata->midiWidget->setActiveMidiControllers();
-  }
 }
 
 void Module::decConnections()
 {
-  if (--connections == 0) {
-    synthdata->midiWidget->setActiveMidiControllers();
+  if (--connections == 0)
     configDialog->removeButtonShow(true);
-  }
 }
 
 bool Module::hasModuleId(int id)

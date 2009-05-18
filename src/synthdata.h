@@ -159,24 +159,24 @@ public:
 
   float exp_table(float x);
   float exp2_table(float ) FATTR_FLOAT_ARG;
-    int incModuleCount();
-    int decModuleCount();
-    int getModuleCount();
-    int getModuleID();
-    int getLadspaIDs(QString setName, QString pluginName, int *index, int *n);
+  int incModuleCount();
+  int decModuleCount();
+  int getModuleCount();
+  int getModuleID();
+  int getLadspaIDs(QString setName, QString pluginName, int *index, int *n);
 
-    int find_capt_mod (void *);
-    int find_play_mod (void *);
-    void set_capt_mod (unsigned int k, void *M) { if (k < MAX_CAPT_PORTS / 2) capt_mods [k] = M; }
-    void set_play_mod (unsigned int k, void *M) { if (k < MAX_PLAY_PORTS / 2) play_mods [k] = M; }
+  int find_capt_mod(void *);
+  int find_play_mod(void *);
+  void set_capt_mod(unsigned int k, void *M);
+  void set_play_mod(unsigned int k, void *M);
 
-    int initAlsa (const char *name, unsigned int fsamp,
-            snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt,
-            int nplay);
-    int closeAlsa();
+  int initAlsa (const char *name, unsigned int fsamp,
+		snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt,
+		int nplay);
+  int closeAlsa();
 
-    int initJack (int ncapt, int nplay);
-    int closeJack();
+  int initJack (int ncapt, int nplay);
+  int closeJack();
 };
 
 extern SynthData *synthdata;

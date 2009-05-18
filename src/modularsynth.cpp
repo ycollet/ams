@@ -130,7 +130,7 @@ ModularSynth::~ModularSynth()
   synthdata->stopPCM();
   synthdata->midiWidget->clearAllClicked();
   for (int l1 = 0; l1 < listModule.count(); ++l1)
-    deleteModule(listModule.at(l1));
+    listModule.at(l1)->Delete();
 
   listModule.clear();
 
@@ -1057,7 +1057,7 @@ void ModularSynth::deleteModule() {
  
   m = (Module *)sender();
   listModule.removeAll(m);
-  m->deleteLater();
+  m->Delete();
   modified = true;
 }
 
@@ -1073,26 +1073,6 @@ void ModularSynth::deleteTextEdit(TextEdit *te) {
   delete(te);
 }
 
-void ModularSynth::deleteModule(Module *m)
-{
-  if (m->M_type == M_type_pcmout)
-  {
-      int k = synthdata->find_play_mod (m);
-      if (k >= 0) synthdata->set_play_mod (k, 0);
-  }
-  if (m->M_type == M_type_pcmin)
-  {
-      int k = synthdata->find_capt_mod (m);
-      if (k >= 0) synthdata->set_capt_mod (k, 0);
-  }
-#ifdef OUTDATED_CODE
-  if (m->M_type == M_type_spectrum) {
-    synthdata->spectrumModuleList.remove((QObject *)m);
-  }
-#endif
-  delete(m);
-}
-
 bool ModularSynth::clearConfig(bool restart)
 {
   int l1;
@@ -1102,9 +1082,9 @@ bool ModularSynth::clearConfig(bool restart)
   if (restartSynth)
     sleep(1);
 
-  for (l1 = 0; l1 < listModule.count(); ++l1) {
-    deleteModule(listModule.at(l1));
-  }
+  for (l1 = 0; l1 < listModule.count(); ++l1)
+    listModule.at(l1)->Delete();
+
   listModule.clear();
   guiWidget->clearGui();
   for (l1 = 0; l1 < listTextEdit.count(); ++l1) {

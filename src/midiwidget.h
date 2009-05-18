@@ -105,9 +105,10 @@ class MidiWidget : public QWidget
     const MidiController *midiController(MidiControllerKey midiController);
     void setActiveMidiControllers();
     void addMidiControllable(MidiControllerKey mck,
-            MidiControllableBase *midiGuiComponent);
+			     MidiControllableBase *midiGuiComponent);
     void removeMidiControllable(MidiControllerKey midiController,
-            MidiControllableBase *midiGuiComponent);
+				MidiControllableBase *midiGuiComponent,
+				bool *updateActiveMidiControllers = NULL);
     const MidiControllerKey getSelectedController();
     void addModule(Module *m);
     void removeModule(Module *m);
