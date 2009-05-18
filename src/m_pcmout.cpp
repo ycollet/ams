@@ -76,7 +76,7 @@ void M_pcmout::generateCycle()
 {
   int l1, l3;
   unsigned int l2;
-  float max = 0.0, **indata;
+  float max = 0.0;
   char pipeMessage = 0;
 
   if (agc == 3) {
@@ -86,9 +86,7 @@ void M_pcmout::generateCycle()
   }
 
   for (l1 = 0; l1 < 2; l1++) {
-    indata = port_in [l1]->getinputdata ();
-    if (indata == synthdata->zeroModuleData)
-      continue;
+    float **indata = port_in[l1]->getinputdata();
 
     float mixgain = gain * mixer_gain[l1];
     if (agc == 2)
@@ -104,7 +102,7 @@ void M_pcmout::generateCycle()
 
       pcmdata[l1][l2] *= mixgain;
       if (agc && max < fabs(pcmdata[l1][l2]))
-	  max = fabs(pcmdata[l1][l2]);
+	max = fabs(pcmdata[l1][l2]);
     }
   }
   if (max > 0.999f) {
