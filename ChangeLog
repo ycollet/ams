@@ -1,7 +1,11 @@
+2009-05-19 Karsten Wiese <fzuuzf@googlemail.com>
+	* ModularSynth::mousePressEvent():
+	  Fix newBoxPos and popup position. Style.
+
 2009-05-18 Karsten Wiese <fzuuzf@googlemail.com>
 	* M_pcmout: Fix noise after disconnection.
 	* Module deletion fixed to allow midibound activity also for
-	unconnected modules. 
+	  unconnected modules. 
 	* M_type_pcmout deletion fixed to avoid crash.
 	
 2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>

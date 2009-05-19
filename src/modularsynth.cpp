@@ -185,39 +185,36 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
             }
 
         case Qt::RightButton:
-            {
-            /* there are three different context actions:
-             * 1) show port property menu
-             * 2) show module property dialog
-             * 3) show module list menu
-             **/
-            QWidget *pw = childAt(ev->pos());
-            if (pw != NULL) {
-                Port* pp = qobject_cast<Port *>(pw);
-                if (pp != 0) {
-                    if (pp->isInPort()) {
-                        // show port popup menu
-                        pp->popupMenuClicked(portPopup->runAt(
-                                    ev->globalPos()));
-                        update();
-                    }
-                }
-                else {
-                    Module* mb = qobject_cast<Module *>(pw);
-                    if (mb != 0) {
-                        // show module property window
-                        mb->showConfigDialog(ev->globalPos());
-                    }
-                }
-            }
-            else {
-                // show module list menu
-                newBoxPos = ev->globalPos();
-                contextMenu->popup(ev->pos());
-            }
-            ev->accept();
-            break;
-            }
+	  {
+	    /* there are three different context actions:
+	     * 1) show port property menu
+	     * 2) show module property dialog
+	     * 3) show module list menu
+	     **/
+	    QWidget *pw = childAt(ev->pos());
+	    if (pw) {
+	      Port *pp = qobject_cast<Port *>(pw);
+	      if (pp) {
+		if (pp->isInPort()) {
+		  // show port popup menu
+		  pp->popupMenuClicked(portPopup->runAt(ev->globalPos()));
+		  update();
+		}
+	      } else {
+		Module *mb = qobject_cast<Module *>(pw);
+		if (mb) {
+		  // show module property window
+		  mb->showConfigDialog(ev->globalPos());
+		}
+	      }
+	    } else {
+	      // show module list menu
+	      newBoxPos = ev->pos();
+	      contextMenu->popup(ev->globalPos());
+	    }
+	    ev->accept();
+	  }
+	  break;
 
         default:
             ev->ignore();
