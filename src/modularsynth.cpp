@@ -129,10 +129,6 @@ ModularSynth::~ModularSynth()
 {
   synthdata->stopPCM();
   synthdata->midiWidget->clearAllClicked();
-  for (int l1 = 0; l1 < listModule.count(); ++l1)
-    listModule.at(l1)->Delete();
-
-  listModule.clear();
 
   guiWidget->close();
   prefWidget->close();
@@ -297,7 +293,7 @@ int ModularSynth::go(bool forceJack, bool forceAlsa)
     if (err < 0)
 	exit(err);
 
-    synthdata->doSynthesis = true;
+    startSynth();
 
     return 0;
 }
@@ -517,12 +513,16 @@ void ModularSynth::new_textEdit(int w, int h) {
 
 void ModularSynth::startSynth()
 {
+  pthread_mutex_lock(&synthdata->rtMutex);
   synthdata->doSynthesis = true;
+  pthread_mutex_unlock(&synthdata->rtMutex);
 }
 
 void ModularSynth::stopSynth()
 {
+  pthread_mutex_lock(&synthdata->rtMutex);
   synthdata->doSynthesis = false;
+  pthread_mutex_unlock(&synthdata->rtMutex);
 }
 //################################################ start add new modules
 void ModularSynth::newM_seq(int seqLen) {
@@ -1075,9 +1075,7 @@ bool ModularSynth::clearConfig(bool restart)
   int l1;
 
   bool restartSynth = synthdata->doSynthesis;
-  synthdata->doSynthesis = false;
-  if (restartSynth)
-    sleep(1);
+  stopSynth();
 
   for (l1 = 0; l1 < listModule.count(); ++l1)
     listModule.at(l1)->Delete();
@@ -1091,7 +1089,7 @@ bool ModularSynth::clearConfig(bool restart)
   synthdata->moduleID = 0;
   synthdata->moduleCount = 0;
   if (restartSynth && restart)
-    synthdata->doSynthesis = true;
+    startSynth();
 
   synthdata->initVoices();
   update();
@@ -1899,7 +1897,9 @@ void ModularSynth::load(QTextStream& ts)
   adjustSize();
   update();
   midiWidget->setActiveMidiControllers();
-  synthdata->doSynthesis = restartSynth;
+  if (restartSynth)
+    startSynth();
+
   StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
   StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
   StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;

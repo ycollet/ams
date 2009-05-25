@@ -1,3 +1,7 @@
+2009-05-25 Karsten Wiese <fzuuzf@googlemail.com>
+	* MainWindow::closeEvent():
+	  Call modularSynth->clearConfig(); to fix crash when quitting.
+
 2009-05-19 Karsten Wiese <fzuuzf@googlemail.com>
 	* ModularSynth::mousePressEvent():
 	  Fix newBoxPos and popup position. Style.

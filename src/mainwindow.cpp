@@ -381,10 +381,11 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    if (isSave())
-        e->accept();
-    else 
-        e->ignore();
+  if (isSave()) {
+    modularSynth->clearConfig(false);
+    e->accept();
+  } else 
+    e->ignore();
 }
 
 void MainWindow::helpAboutQt()
