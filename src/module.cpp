@@ -69,21 +69,39 @@ void Module::portMemAlloc(int outports, bool poly)
 
 void Module::Delete()
 {
-  if (M_type == M_type_pcmout) {
-    int k = synthdata->find_play_mod(this);
+  int k;
+
+  pthread_mutex_lock(&synthdata->rtMutex);
+  switch (M_type) {
+  default:
+    break;
+  case M_type_pcmout:
+    k = synthdata->find_play_mod(this);
     if (k >= 0)
       synthdata->set_play_mod(k, 0);
-  }
-  if (M_type == M_type_pcmin) {
-    int k = synthdata->find_capt_mod(this);
+    break;
+  case M_type_pcmin:
+    k = synthdata->find_capt_mod(this);
     if (k >= 0)
       synthdata->set_capt_mod(k, 0);
-  }
+    break;
+  case M_type_wavout:
+    synthdata->wavoutModuleList.removeAll((M_wavout *)this);
+    break;
+  case M_type_scope:
+    synthdata->scopeModuleList.removeAll((M_scope *)this);
+    break;
+  case M_type_midiout:
+    synthdata->midioutModuleList.removeAll((M_midiout *)this);
+    break;
 #ifdef OUTDATED_CODE
-  if (M_type == M_type_spectrum) {
+  case M_type_spectrum:
     synthdata->spectrumModuleList.remove((QObject *)m);
-  }
+    break;
 #endif
+  }
+  pthread_mutex_unlock(&synthdata->rtMutex);
+
   bool updateActiveMidiControllers = true;
   alive = false;
   for (typeof(midiControllables.begin()) mcAI = midiControllables.begin();

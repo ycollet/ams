@@ -1,3 +1,9 @@
+2009-06-09 Karsten Wiese <fzuuzf@googlemail.com>
+	* m_midiout.cpp, m_scope.cpp, m_wavout.cpp, module.cpp, synthdata.cpp:
+	  Fix crash on switching presets containing M_wavout or M_scope
+	  modules.
+	* configure.ac: bump VERSION to "2.0.0-rc2".
+
 2009-05-25 Karsten Wiese <fzuuzf@googlemail.com>
 	* MainWindow::closeEvent():
 	  Call modularSynth->clearConfig(); to fix crash when quitting.

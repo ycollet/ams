@@ -88,7 +88,6 @@ M_scope::M_scope(QWidget* parent)
 
 M_scope::~M_scope()
 {
-  synthdata->scopeModuleList.removeAll(this);
   free(floatdata);
 }
 

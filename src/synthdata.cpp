@@ -335,20 +335,14 @@ int SynthData::find_capt_mod (void *M)
 
 void SynthData::set_capt_mod(unsigned int k, void *M)
 {
-  if (k < MAX_CAPT_PORTS / 2) {
-    pthread_mutex_lock(&rtMutex);
+  if (k < MAX_CAPT_PORTS / 2)
     capt_mods[k] = M;
-    pthread_mutex_unlock(&rtMutex);
-  }
 }
 
 void SynthData::set_play_mod(unsigned int k, void *M)
 {
-  if (k < MAX_PLAY_PORTS / 2) {
-    pthread_mutex_lock(&rtMutex);
+  if (k < MAX_PLAY_PORTS / 2)
     play_mods[k] = M;
-    pthread_mutex_unlock(&rtMutex);
-  }
 }
 
 int SynthData::initAlsa (const char *name, unsigned int fsamp,
@@ -586,7 +580,7 @@ int SynthData::jack_callback(jack_nframes_t nframes)
       } else
 	for (j = 0; j < 2; j++) {
 	  void *p = jack_port_get_buffer(jack_out [i + j], nframes);
-	  memset (p, 0, sizeof(jack_default_audio_sample_t) * nframes);
+	  memset(p, 0, sizeof(jack_default_audio_sample_t) * nframes);
 	}
     }
 

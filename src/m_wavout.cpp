@@ -83,8 +83,6 @@ M_wavout::M_wavout(QWidget* parent)
 
 M_wavout::~M_wavout()
 {
-  synthdata->wavoutModuleList.removeAll(this);
-
   free(wavdata);
   free(floatdata);
 }

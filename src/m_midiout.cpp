@@ -75,7 +75,6 @@ M_midiout::M_midiout(QWidget* parent)
 
 M_midiout::~M_midiout()
 {
-  synthdata->midioutModuleList.removeAll(this);
 }
 
 void M_midiout::generateCycle()
