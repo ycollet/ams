@@ -55,6 +55,7 @@ class ModularSynth : public QWidget
     unsigned int nfrags;
     int   ncapt;
     int   nplay;
+    int   verbose;
     bool paintFastly;
     double _zoomFactor;
     QPoint newBoxPos;

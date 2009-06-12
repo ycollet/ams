@@ -90,6 +90,7 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   , nfrags(mso.nfrags)
   , ncapt(mso.ncapt)
   , nplay(mso.nplay)
+  , verbose(mso.verbose)
   , paintFastly(false)
   , _zoomFactor(1.0)
 {
@@ -1899,10 +1900,11 @@ void ModularSynth::load(QTextStream& ts)
   midiWidget->setActiveMidiControllers();
   if (restartSynth)
     startSynth();
-
-  StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
-  StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
-  StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
+  if (verbose) {
+    StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
+    StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
+    StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
+  }
   midiWidget->followConfig = followConfig;
   guiWidget->refreshGui();
   modified = false;

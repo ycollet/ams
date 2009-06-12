@@ -149,8 +149,9 @@ int main(int argc, char *argv[])
   msoptions.havePresetPath = false;
   msoptions.forceJack = false;
   msoptions.forceAlsa = false;
+  msoptions.verbose = 0;
 
-  while ((getopt_return = getopt_long(argc, argv, "hnJjAab:p:f:e:c:l:d:r:i:o:N:",
+  while ((getopt_return = getopt_long(argc, argv, "hnJjAab:p:f:e:c:l:d:r:i:o:vN:",
 				      options, &option_index)) >= 0) {
     switch(getopt_return) {
     case 'p': 
@@ -198,6 +199,9 @@ int main(int argc, char *argv[])
     case 'o': 
         msoptions.nplay = atoi(optarg);
         break;
+    case 'v':
+      msoptions.verbose++;
+      break;
     case 'N':
       msoptions.synthName += optarg;
       break;
@@ -217,6 +221,7 @@ int main(int argc, char *argv[])
         printf("  -l, --preset <file>           Preset file\n");
         printf("  -d, --presetpath <path>       Preset path\n");
         printf("  -n, --nogui                   Start without GUI\n");
+        printf("  -v,				verbose\n");
         printf("  -N, --name <name>             ALSASEQ/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
         break;

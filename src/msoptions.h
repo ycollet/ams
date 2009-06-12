@@ -25,6 +25,7 @@ struct ModularSynthOptions {
     bool forceJack;
     bool forceAlsa;
     float edge;
+    int verbose;
 };
 
 #endif    // MSOPTIONS_H
