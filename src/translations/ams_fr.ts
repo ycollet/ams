@@ -1182,7 +1182,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="175"/>
+        <location filename="../m_scmcv.cpp" line="176"/>
         <source>   Scale: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1192,17 +1192,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="155"/>
+        <location filename="../m_scmcv.cpp" line="156"/>
         <source>Load Scala</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="156"/>
+        <location filename="../m_scmcv.cpp" line="157"/>
         <source>Scala files (*.scl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="171"/>
+        <location filename="../m_scmcv.cpp" line="172"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2644,17 +2644,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="243"/>
+        <location filename="../m_wavout.cpp" line="241"/>
         <source>Choose Wave File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="244"/>
+        <location filename="../m_wavout.cpp" line="242"/>
         <source>WAV files (*.wav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="274"/>
+        <location filename="../m_wavout.cpp" line="272"/>
         <source>Time: %1:%2:%3 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -3109,7 +3109,7 @@ Save changes?</source>
         <translation>Ouvrir fichier patch</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="355"/>
         <source>Patch files</source>
         <translation>Fichiers patch</translation>
     </message>
@@ -3119,27 +3119,27 @@ Save changes?</source>
         <translation>Echec de lecture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="338"/>
+        <location filename="../mainwindow.cpp" line="337"/>
         <source>Could not open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="355"/>
+        <location filename="../mainwindow.cpp" line="354"/>
         <source>Save patch file</source>
         <translation>Enregistrer fichier patch</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="369"/>
+        <location filename="../mainwindow.cpp" line="368"/>
         <source>Saving aborted</source>
         <translation>Enregistrement annulé</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="379"/>
+        <location filename="../mainwindow.cpp" line="377"/>
         <source>noname</source>
         <translation>sansnom</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="396"/>
+        <location filename="../mainwindow.cpp" line="393"/>
         <source>About Qt</source>
         <translation>A propos de Qt</translation>
     </message>
@@ -3165,102 +3165,102 @@ Save changes?</source>
 <context>
     <name>MidiWidget</name>
     <message>
-        <location filename="../midiwidget.cpp" line="261"/>
+        <location filename="../midiwidget.cpp" line="262"/>
         <source>&amp;Log</source>
         <translation>&amp;Log</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="267"/>
+        <location filename="../midiwidget.cpp" line="268"/>
         <source>Set Mi&amp;n</source>
         <translation>Définir Mi&amp;n</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="272"/>
+        <location filename="../midiwidget.cpp" line="273"/>
         <source>Set Ma&amp;x</source>
         <translation>Définir Ma&amp;x</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="277"/>
+        <location filename="../midiwidget.cpp" line="278"/>
         <source>&amp;Reset Min/Max</source>
         <translation>&amp;Réinitialiser Min/Max</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="289"/>
+        <location filename="../midiwidget.cpp" line="290"/>
         <source>Omni</source>
         <translation>Omni</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="298"/>
+        <location filename="../midiwidget.cpp" line="299"/>
         <source>MIDI C&amp;hannel:</source>
         <translation>Canal &amp;MIDI:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="312"/>
+        <location filename="../midiwidget.cpp" line="313"/>
         <source>Add to &amp;Parameter View</source>
         <translation>Ajouter à la Vue &amp;Paramètres</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="325"/>
+        <location filename="../midiwidget.cpp" line="326"/>
         <source>&amp;Enable note events</source>
         <translation>Activer les &amp;Evênements de Notes</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="329"/>
+        <location filename="../midiwidget.cpp" line="330"/>
         <source>&amp;Follow Configuration Dialog</source>
         <translation>Suivre &amp;Fenêtre de Configuration</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="333"/>
+        <location filename="../midiwidget.cpp" line="334"/>
         <source>Follow &amp;MIDI</source>
         <translation>Suivre entrée &amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="345"/>
+        <location filename="../midiwidget.cpp" line="346"/>
         <source>&amp;Bind</source>
         <translation>&amp;Relier</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="350"/>
+        <location filename="../midiwidget.cpp" line="351"/>
         <source>&amp;Clear Binding</source>
         <translation>&amp;Séparer</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="355"/>
+        <location filename="../midiwidget.cpp" line="356"/>
         <source>Clear &amp;All</source>
         <translation>&amp;Tout Séparer</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="359"/>
+        <location filename="../midiwidget.cpp" line="360"/>
         <source>&amp;Toggle MIDI Sign</source>
         <translation>&amp;Inverser Signe MIDI</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="492"/>
+        <location filename="../midiwidget.cpp" line="497"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation>Ceci effacera tous les presets pour cette configuration. Continuer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="502"/>
+        <location filename="../midiwidget.cpp" line="507"/>
         <source>Add this parameter to frame:</source>
         <translation>Ajouter ce paramètre au cadre:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="517"/>
+        <location filename="../midiwidget.cpp" line="522"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation>Le cadre &apos;%1&apos; n&apos;existe pas. Créer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="524"/>
+        <location filename="../midiwidget.cpp" line="529"/>
         <source>Add frame to tab:</source>
         <translation>Ajouter le cadre à l&apos;onglet:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="538"/>
+        <location filename="../midiwidget.cpp" line="543"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation>L&apos;onglet &apos;%1&apos; n&apos;existe pas. Créer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="564"/>
+        <location filename="../midiwidget.cpp" line="569"/>
         <source>Parameter name:</source>
         <translation>Nom du paramètre:</translation>
     </message>
@@ -3268,17 +3268,17 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="106"/>
+        <location filename="../modularsynth.cpp" line="107"/>
         <source>AlsaModularSynth Control Center</source>
         <translation>Centre de Contrôle AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="110"/>
+        <location filename="../modularsynth.cpp" line="111"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>Vue Paramètres AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="114"/>
+        <location filename="../modularsynth.cpp" line="115"/>
         <source>AlsaModularSynth Preferences</source>
         <translation>Préférences AlsaModularSynth</translation>
     </message>
@@ -3288,7 +3288,7 @@ Save changes?</source>
         <translation>A propos de</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1136"/>
+        <location filename="../modularsynth.cpp" line="1124"/>
         <source>Load Colors</source>
         <translation>Charger Couleurs</translation>
     </message>
@@ -3298,42 +3298,42 @@ Save changes?</source>
         <translation type="obsolete">Fichiers Couleurs AlsaModularSynth (*.acs)</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1144"/>
+        <location filename="../modularsynth.cpp" line="1132"/>
         <source>Could not open file.</source>
         <translation>Echec d&apos;ouverture du fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1178"/>
+        <location filename="../modularsynth.cpp" line="1166"/>
         <source>Save Colors</source>
         <translation>Enregistrer Couleurs</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1190"/>
+        <location filename="../modularsynth.cpp" line="1178"/>
         <source>Could not save file.</source>
         <translation>Echec d&apos;enregistrement fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1277"/>
+        <location filename="../modularsynth.cpp" line="1265"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation>Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1494"/>
+        <location filename="../modularsynth.cpp" line="1482"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
         <translation>Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1750"/>
+        <location filename="../modularsynth.cpp" line="1738"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation>Tag controleur MIDI inconnu détecté: %1</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1270"/>
+        <location filename="../modularsynth.cpp" line="1258"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1180"/>
+        <location filename="../modularsynth.cpp" line="1168"/>
         <source>AlsaModularSynth Color files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3341,7 +3341,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="123"/>
+        <location filename="../module.cpp" line="169"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>
@@ -3349,12 +3349,12 @@ Save changes?</source>
 <context>
     <name>ModuleModel</name>
     <message>
-        <location filename="../midiwidget.cpp" line="172"/>
+        <location filename="../midiwidget.cpp" line="173"/>
         <source>MIDI Sign</source>
         <translation>Signe MIDI</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="172"/>
+        <location filename="../midiwidget.cpp" line="173"/>
         <source>Module / Parameter</source>
         <translation>Module / Paramètre</translation>
     </message>
@@ -3561,22 +3561,22 @@ Save changes?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="64"/>
+        <location filename="../main.cpp" line="65"/>
         <source>Could not create ams home directory.</source>
         <translation>Echec de création du repertoire ams home.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="75"/>
+        <location filename="../main.cpp" line="76"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="87"/>
+        <location filename="../main.cpp" line="88"/>
         <source>Ooops in %1 at %2</source>
         <translation>Ooops dans %1 à %2</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="95"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation>Nom du client &apos;%1&apos; déjà occupé.</translation>
     </message>
@@ -3601,87 +3601,87 @@ Save changes?</source>
         <translation>Echec de déverouillage du fichier de préférences.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="287"/>
+        <location filename="../modularsynth.cpp" line="284"/>
         <source>Alsa MIDI wont work!</source>
         <translation>ALSA MIDI ne fonctionnera pas!</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="375"/>
+        <location filename="../modularsynth.cpp" line="374"/>
         <source>Error opening ALSA sequencer.</source>
         <translation>Erreur d&apos;ouverture du séquenceur ALSA.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="385"/>
+        <location filename="../modularsynth.cpp" line="384"/>
         <source>Error creating sequencer write port.</source>
         <translation>Erreur de création du port d&apos;écriture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="394"/>
+        <location filename="../modularsynth.cpp" line="393"/>
         <source>Error creating sequencer read port.</source>
         <translation>Erreur de création du port de lecture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="938"/>
+        <location filename="../modularsynth.cpp" line="953"/>
         <source>All available output ports are in use</source>
         <translation>Tous les ports de sortie disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="956"/>
+        <location filename="../modularsynth.cpp" line="971"/>
         <source>All available input ports are in use</source>
         <translation>Tous les ports d&apos;entrée disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1786"/>
+        <location filename="../modularsynth.cpp" line="1774"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation>Titre pour l&apos;onglet &apos;%1&apos; introuvable.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1802"/>
+        <location filename="../modularsynth.cpp" line="1790"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation>Données pour le cadre &apos;%1&apos; non trouvées.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1816"/>
+        <location filename="../modularsynth.cpp" line="1804"/>
         <source>No parameter values found.</source>
         <translation>Valeurs de paramètre introuvables.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1826"/>
+        <location filename="../modularsynth.cpp" line="1814"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation>Nom du paramètre &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1892"/>
+        <location filename="../modularsynth.cpp" line="1880"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="381"/>
+        <location filename="../synthdata.cpp" line="392"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation>Echec d&apos;établir un fil ALSA avec priorité RT</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="387"/>
+        <location filename="../synthdata.cpp" line="398"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation>Echec d&apos;établir un fil ALSA</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="396"/>
+        <location filename="../synthdata.cpp" line="407"/>
         <source>Closing ALSA...</source>
         <translation>Fermeture d&apos;ALSA...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="485"/>
+        <location filename="../synthdata.cpp" line="500"/>
         <source>Can&apos;t connect to JACK</source>
         <translation>Echec de connexion à JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="508"/>
+        <location filename="../synthdata.cpp" line="523"/>
         <source>Can&apos;t activate JACK</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="520"/>
+        <location filename="../synthdata.cpp" line="535"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>

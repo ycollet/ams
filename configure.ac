@@ -55,10 +55,6 @@ AC_SUBST(AMS_CXXFLAGS)
 
 
 # Checks for libraries.
-AC_CHECK_LIB([GL], [glBegin], ,
-             [AC_MSG_ERROR(GL is required)])
-AC_CHECK_LIB([GLU], [gluLookAt], ,
-             [AC_MSG_ERROR(GLU is required)])
 AC_CHECK_LIB([QtCore], [main], ,
              [AC_MSG_ERROR(QtCore is required)])
 AC_CHECK_LIB([QtGui], [main], ,
