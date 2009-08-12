@@ -1,3 +1,9 @@
+2009-08-12 Guido Scholz <guido.scholz@bayernline.de>
+	* src/modules.cpp: Compile error for Qt 4.2 fixed, caused by
+	missing QPainterPath header.
+
++++ Release 2.0.0 (2009-06-15) +++
+
 2009-06-12 Karsten Wiese <fzuuzf@googlemail.com>
 	* main.cpp, modularsynth.cpp, modularsynth.h, msoptions.h:
 	  -v "verbose" command line option.
@@ -22,7 +28,7 @@
 	* Module deletion fixed to allow midibound activity also for
 	  unconnected modules. 
 	* M_type_pcmout deletion fixed to avoid crash.
-	
+
 2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>
 	* cmdline options: reenable -j and -a.
 	* legato mode: Make "All notes off" also clear the notelist.

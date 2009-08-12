@@ -1,5 +1,6 @@
-#include <qwidget.h>
+#include <QWidget>
 #include <QPainter>
+#include <QPainterPath>
 
 #include "configdialog.h"
 #include "intmidislider.h"
