@@ -1,3 +1,6 @@
+2009-09-05 Frank Neumann <beachnase@web.de>
+	* configure.ac: Compiler optimization for arch x86_64 added.
+
 2009-08-12 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modules.cpp: Compile error for Qt 4.2 fixed, caused by
 	missing QPainterPath header.

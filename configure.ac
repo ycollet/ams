@@ -39,6 +39,10 @@ case "$target" in
          AMS_OPT_CXXFLAGS="-march=pentium4 -msse -mfpmath=sse -ffast-math"
          AC_MSG_RESULT(i786)
          ;;
+    x86_64-*-*)
+         AMS_OPT_CXXFLAGS="-m64 -msse -mfpmath=sse -ffast-math"
+         AC_MSG_RESULT(x86_64)
+         ;;
     *)
          AC_MSG_RESULT(i386)
          AC_MSG_WARN(This is probably not what you want, use --target)
