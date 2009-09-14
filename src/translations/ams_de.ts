@@ -3237,32 +3237,32 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="497"/>
+        <location filename="../midiwidget.cpp" line="511"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="507"/>
+        <location filename="../midiwidget.cpp" line="521"/>
         <source>Add this parameter to frame:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="522"/>
+        <location filename="../midiwidget.cpp" line="536"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="529"/>
+        <location filename="../midiwidget.cpp" line="543"/>
         <source>Add frame to tab:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="543"/>
+        <location filename="../midiwidget.cpp" line="557"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="569"/>
+        <location filename="../midiwidget.cpp" line="583"/>
         <source>Parameter name:</source>
         <translation>Parametername:</translation>
     </message>

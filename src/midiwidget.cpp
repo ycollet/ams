@@ -407,12 +407,21 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
 			midiControllers.end(), mck);
         if (c != midiControllers.end()) {
             if (*c == mc) {
-                /* controller is found, now update selection*/
-                int row = midiControllers.indexOf(mc);
-                QModelIndex index = midiControllerModel.index(row, 0);
-                midiControllerView->selectionModel()->
-                    select(index, QItemSelectionModel::ClearAndSelect);
-                return;
+                /* controller is found, now update selection */
+                if (followMidi) {
+                    int row = midiControllers.indexOf(mc);
+                    QModelIndex index = midiControllerModel.index(row, 0);
+                    midiControllerView->scrollTo(index);
+                    //FIXME: index calculation fails if controller
+                    // assigned to module parameter
+
+                    /* only update seletion if not already selected*/
+                    if (mck == selectedController) 
+                        return;
+                    midiControllerView->selectionModel()->
+                        select(index, QItemSelectionModel::ClearAndSelect);
+                    return;
+                }
             }
         }
     }
