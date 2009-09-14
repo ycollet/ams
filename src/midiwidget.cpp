@@ -394,6 +394,9 @@ void MidiWidget::clearAllClicked()
 }
 
 
+/* MIDI event arrived from modularsynth.cpp
+ * this adds a controller to the controller list view or
+ * update the selection, if it is already there */
 void MidiWidget::addMidiController(MidiControllerKey mck)
 {
     MidiController mc(mck.getKey());
@@ -404,6 +407,11 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
 			midiControllers.end(), mck);
         if (c != midiControllers.end()) {
             if (*c == mc) {
+                /* controller is found, now update selection*/
+                int row = midiControllers.indexOf(mc);
+                QModelIndex index = midiControllerModel.index(row, 0);
+                midiControllerView->selectionModel()->
+                    select(index, QItemSelectionModel::ClearAndSelect);
                 return;
             }
         }
@@ -730,6 +738,19 @@ void MidiWidget::setInitialMinMax()
     if (midiControllable != NULL)
         dynamic_cast<MidiControllableFloat *>(midiControllable)->resetMinMax();
 }  
+/*
+void MidiWidget::selectController(MidiControllableBase &mcAble)
+{
+    int row = midiControllerModel.list.indexOf(mc);
+    QModelIndex index = moduleModel.index(row, 0);
+    row = mcAble.module.midiControllables.indexOf(&mcAble);
+    index = moduleModel.index(row, 0, index);
+    moduleListView->scrollTo(index);
+    if (&mcAble == midiControllable)
+	return;
+    moduleListView->selectionModel()->
+	select(index, QItemSelectionModel::ClearAndSelect);
+}*/
 
 void MidiWidget::selectMcAble(MidiControllableBase &mcAble)
 {
@@ -818,7 +839,9 @@ void MidiWidget::guiComponentTouched(MidiControllableBase &mcAble)
         selectMcAble(mcAble);
 }
 
-
+/* MIDI event arrived from modularsynth.cpp;
+ * this only updates the module view selection but does not update the
+ * controller view selection */
 void MidiWidget::midiTouched(MidiControllableBase &mcAble)
 {
     if (followMidi)

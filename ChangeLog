@@ -1,3 +1,7 @@
+2009-08-14 Guido Scholz <guido.scholz@bayernline.de>
+	* src/midiwidget.cpp: Update selection in MIDI controller view,
+	if MIDI event of an already listed controller arrives.
+
 2009-09-05 Frank Neumann <beachnase@web.de>
 	* configure.ac: Compiler optimization for arch x86_64 added.
 
