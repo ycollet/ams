@@ -803,16 +803,15 @@ void SynthData::handleMidiEventControll14(snd_seq_event_t *ev)
 
 MidiControllerContext* SynthData::getMidiControllerContext(snd_seq_event_t *ev)
 {
-    MidiControllerContext* result;
+    MidiControllerContext* result = NULL;
     MidiControllerKey mcK(ev);
 
     typeof(activeMidiControllers->constBegin()) mc =
         qBinaryFind(activeMidiControllers->constBegin(),
                 activeMidiControllers->constEnd(), mcK);
     if (mc != activeMidiControllers->constEnd())
-            result = mc->context;
-    else {
-        result = NULL;
+        result = mc->context;
+    if (midiWidget->isVisible()) {
         mckRead.put(mcK);
         pipeMessage |= 2;
     }

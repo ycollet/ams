@@ -412,16 +412,14 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
                     int row = midiControllers.indexOf(mc);
                     QModelIndex index = midiControllerModel.index(row, 0);
                     midiControllerView->scrollTo(index);
-                    //FIXME: index calculation fails if controller
-                    // assigned to module parameter
 
-                    /* only update seletion if not already selected*/
+                    /* only update selection if not already selected*/
                     if (mck == selectedController) 
                         return;
                     midiControllerView->selectionModel()->
                         select(index, QItemSelectionModel::ClearAndSelect);
-                    return;
                 }
+		return;
             }
         }
     }
@@ -747,19 +745,6 @@ void MidiWidget::setInitialMinMax()
     if (midiControllable != NULL)
         dynamic_cast<MidiControllableFloat *>(midiControllable)->resetMinMax();
 }  
-/*
-void MidiWidget::selectController(MidiControllableBase &mcAble)
-{
-    int row = midiControllerModel.list.indexOf(mc);
-    QModelIndex index = moduleModel.index(row, 0);
-    row = mcAble.module.midiControllables.indexOf(&mcAble);
-    index = moduleModel.index(row, 0, index);
-    moduleListView->scrollTo(index);
-    if (&mcAble == midiControllable)
-	return;
-    moduleListView->selectionModel()->
-	select(index, QItemSelectionModel::ClearAndSelect);
-}*/
 
 void MidiWidget::selectMcAble(MidiControllableBase &mcAble)
 {

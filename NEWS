@@ -2,6 +2,8 @@ ams-2.x.x (2009-??-??)
 
   Fixed Bugs
     o Compile error for Qt 4.2 fixed
+    o Highlight MIDI controller in Control Center,
+      if MIDI event has been received.
 
   New Features
     o

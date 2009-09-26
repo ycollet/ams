@@ -1,3 +1,8 @@
+2009-09-26 Karsten Wiese <fzuuzf@googlemail.com>
+	* src/midiwidget.cpp: Update comments, move one return.
+	* SynthData::getMidiControllerContext(): Tell userinterface
+	"MIDI event happened", if (midiWidget->isVisible()).
+
 2009-08-14 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midiwidget.cpp: Update selection in MIDI controller view,
 	if MIDI event of an already listed controller arrives.
