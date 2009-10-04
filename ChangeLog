@@ -1,3 +1,7 @@
+2009-10-04 Karsten Wiese <fzuuzf@googlemail.com>
+	* src/midiwidget.cpp: Fix crash unbinding multiple controllables
+	connected to the same midi controller by using QPersistentModelIndex.
+
 2009-09-26 Karsten Wiese <fzuuzf@googlemail.com>
 	* src/midiwidget.cpp: Update comments, move one return.
 	* SynthData::getMidiControllerContext(): Tell userinterface

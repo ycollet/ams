@@ -4,6 +4,8 @@ ams-2.x.x (2009-??-??)
     o Compile error for Qt 4.2 fixed
     o Highlight MIDI controller in Control Center,
       if MIDI event has been received.
+    o Fix crash unbinding multiple controllables connected to the
+      same midi controller.
 
   New Features
     o

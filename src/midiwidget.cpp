@@ -209,7 +209,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     , mgc(NULL)
     , vbox(this)
     , midiControllerModel(midiControllers)
-    , selectedControlMcAble(-1)
+    , selectedMcAbleIndex(QModelIndex())
     , midiControllable(NULL)
 {
     setObjectName(name);
@@ -480,7 +480,7 @@ void MidiWidget::removeMidiControllable(MidiControllerKey mck,
 
 void MidiWidget::clearClicked()
 {
-    if (selectedController.isValid() && selectedControlMcAble != -1) {
+    if (selectedController.isValid() && selectedMcAbleIndex.isValid()) {
         typeof(midiControllers.constEnd()) c
             = qBinaryFind(midiControllers.constBegin(),
                     midiControllers.constEnd(), selectedController);
@@ -489,8 +489,8 @@ void MidiWidget::clearClicked()
             return;
         }
 
-        MidiControllableBase *mcAble = c->context->mcAbles.at(
-                selectedControlMcAble);
+        MidiControllableBase *mcAble =
+            c->context->mcAbles.at(selectedMcAbleIndex.row());
         if (mcAble != NULL)
             mcAble->disconnectController(selectedController);
     }
@@ -590,7 +590,7 @@ void MidiWidget::addToParameterViewClicked()
 void MidiWidget::bindClicked()
 {
     if (midiControllable &&
-	selectedController.isValid() &&	selectedControlMcAble == -1) {
+	selectedController.isValid() &&	!selectedMcAbleIndex.isValid()) {
         int row = midiControllers.indexOf(selectedController.getKey());
         midiControllerView->setExpanded(
                 midiControllerModel.index(row, 0), true);
@@ -700,17 +700,16 @@ void MidiWidget::midiControlChanged(const QItemSelection &selected,
 				    const QItemSelection &/*deselected*/)
 {
     selectedController = MidiControllerKey();
-    selectedControlMcAble = -1;
     bool bindEnable = false;
     bool clearEnable = false;
-
+    selectedMcAbleIndex = QModelIndex();
     if (selected.indexes().count() > 0) {
         const QModelIndex mi = selected.indexes().at(0);
         const MidiController *mc = (const MidiController *)mi.internalPointer();
 
         if (mc) {
             selectedController = mc->getKey();
-            selectedControlMcAble = mi.row();
+            selectedMcAbleIndex = mi;
             clearEnable = true;
         } else {
             selectedController = midiControllers.at(mi.row()).getKey();

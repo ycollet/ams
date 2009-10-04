@@ -6,7 +6,7 @@
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QPushButton>
-#include <QSlider>   
+#include <QSlider>
 #include <QString>
 #include <QTreeView>
 #include <QVBoxLayout>
@@ -74,8 +74,7 @@ class MidiWidget : public QWidget
     MidiControllerModel midiControllerModel;
     ModuleModel moduleModel;
     MidiControllerKey selectedController;
-    int selectedControlMcAble;
-
+    QPersistentModelIndex selectedMcAbleIndex;
     QTreeView* midiControllerView;
     QTreeView* moduleListView;
     QVBoxLayout *currentGUIcontrol;
@@ -96,7 +95,7 @@ class MidiWidget : public QWidget
     void selectMcAble(MidiControllableBase &mcAble);
     void showFloatHelpers(bool show);
 
-  public: 
+  public:
     bool noteControllerEnabled, followConfig, followMidi;
 
     MidiWidget(QWidget* parent, const char *name=0);
@@ -115,7 +114,7 @@ class MidiWidget : public QWidget
     void guiComponentTouched(MidiControllableBase &mcAble);
     void midiTouched(MidiControllableBase &mcAble);
 
-  public slots: 
+  public slots:
     void clearAllClicked();
     void clearClicked();
     void bindClicked();
@@ -125,14 +124,14 @@ class MidiWidget : public QWidget
     void midiCheckToggle(int);
     void toggleMidiSign();
     void guiControlChanged(const QItemSelection &selected,
-            const QItemSelection &deselected);
+			   const QItemSelection &deselected);
     void midiControlChanged(const QItemSelection &selected,
-            const QItemSelection &deselected);
+			    const QItemSelection &deselected);
     void setLogMode(bool on);
     void setNewMin();
     void setNewMax();
     void setInitialMinMax();
     void updateMidiChannel(int index);
 };
-  
+
 #endif
