@@ -32,7 +32,7 @@ int MidiControllerModel::rowCount(const QModelIndex &parent) const
 
     const MidiController *c = (const MidiController *)parent.internalPointer();
     if (c == NULL)
-        return rMidiControllers.at(parent.row()).context->mcAbles.count();
+	return rMidiControllers.at(parent.row()).context->mcAbles.count();
 
     return 0;
 }
@@ -204,7 +204,7 @@ int ModuleModel::columnCount(const QModelIndex &/*parent*/) const
 
 /* MidiWidget class*/
 
-MidiWidget::MidiWidget(QWidget* parent, const char *name) 
+MidiWidget::MidiWidget(QWidget* parent, const char *name)
     : QWidget(parent)
     , mgc(NULL)
     , vbox(this)
@@ -229,7 +229,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     midiControllerView = new QTreeView(listViewBox);
     midiControllerView->setModel(&midiControllerModel);
     midiControllerView->setAllColumnsShowFocus(true);
-    
+
     moduleListView = new QTreeView(listViewBox);
     moduleListView->setModel(&moduleModel);
     moduleListView->setAllColumnsShowFocus(true);
@@ -258,7 +258,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     currentGUIcontrol->setMargin(5);
     QHBoxLayout* floatHelperLayout = new QHBoxLayout();
     currentGUIcontrol->addLayout(floatHelperLayout);
-    
+
     logCheck = new QCheckBox(tr("&Log"));
     floatHelperLayout->addWidget(logCheck);
     QObject::connect(logCheck, SIGNAL(toggled(bool)),
@@ -326,15 +326,15 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     QCheckBox* noteCheck = new QCheckBox(tr("&Enable note events"));
     checkbuttonBox->addWidget(noteCheck);
     noteCheck->setChecked(noteControllerEnabled);
-    
+
     QCheckBox* configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
     checkbuttonBox->addWidget(configCheck);
     configCheck->setChecked(followConfig);
-    
+
     QCheckBox* midiCheck = new QCheckBox(tr("Follow &MIDI"));
     checkbuttonBox->addWidget(midiCheck);
-    midiCheck->setChecked(followMidi);         
-    
+    midiCheck->setChecked(followMidi);
+
     QObject::connect(noteCheck, SIGNAL(stateChanged(int)),
             this, SLOT(noteControllerCheckToggle(int)));
     QObject::connect(configCheck, SIGNAL(stateChanged(int)),
@@ -352,16 +352,16 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     buttonBox->addWidget(clearButton);
     clearButton->setEnabled(false);
     buttonBox->addStretch();
-    
+
     clearAllButton = new QPushButton(tr("Clear &All"));
     buttonBox->addWidget(clearAllButton);
     buttonBox->addStretch();
-    
+
     midiSignButton = new QPushButton(tr("&Toggle MIDI Sign"));
     buttonBox->addWidget(midiSignButton);
     midiSignButton->setEnabled(false);
     buttonBox->addStretch();
-    
+
     QObject::connect(bindButton, SIGNAL(clicked()),
             this, SLOT(bindClicked()));
     QObject::connect(clearButton, SIGNAL(clicked()),
@@ -390,7 +390,7 @@ void MidiWidget::clearAllClicked()
     midiControllerModel.beginRemoveRows(QModelIndex(), 0,
 					midiControllers.count() - 1);
     midiControllers.clear();
-    midiControllerModel.endRemoveRows();  
+    midiControllerModel.endRemoveRows();
 }
 
 
@@ -414,7 +414,7 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
                     midiControllerView->scrollTo(index);
 
                     /* only update selection if not already selected*/
-                    if (mck == selectedController) 
+                    if (mck == selectedController)
                         return;
                     midiControllerView->selectionModel()->
                         select(index, QItemSelectionModel::ClearAndSelect);
@@ -446,7 +446,7 @@ void MidiWidget::addMidiControllable(MidiControllerKey mck,
     midiControllerModel.beginInsertRows(midiControllerModel.index(row, 0),
             childRow, childRow);
     c->context->mcAbles.append(mcAble);
-    midiControllerModel.endInsertRows();  
+    midiControllerModel.endInsertRows();
     moduleListView->resizeColumnToContents(0);
 }
 
@@ -469,7 +469,7 @@ void MidiWidget::removeMidiControllable(MidiControllerKey mck,
         midiControllerModel.beginRemoveRows(midiControllerModel.index(row, 0),
                 childRow, childRow);
         c->context->mcAbles.removeAll(mcAble);
-        midiControllerModel.endRemoveRows();  
+        midiControllerModel.endRemoveRows();
     }
     if (!updateActiveMidiControllers || *updateActiveMidiControllers)
 	setActiveMidiControllers();
@@ -525,7 +525,7 @@ void MidiWidget::addToParameterViewClicked()
     currentFrameName = qs;
     if (qs.isEmpty())
         return;
-    
+
     foundFrameName = false;
     frameIndex = 0;
     if ((l1 =synthdata->guiWidget->frameNameList.indexOf(qs.trimmed())) >= 0) {
@@ -534,7 +534,7 @@ void MidiWidget::addToParameterViewClicked()
     }
 
     if (!foundFrameName) {
-        qs2 = tr("Frame '%1' does not exist. Create?").arg(qs); 
+        qs2 = tr("Frame '%1' does not exist. Create?").arg(qs);
         QMessageBox question("AlsaModularSynth", qs2, QMessageBox::NoIcon,
                 QMessageBox::Yes | QMessageBox::Default,
                 QMessageBox::No  | QMessageBox::Escape, QMessageBox::NoButton);
@@ -573,7 +573,7 @@ void MidiWidget::addToParameterViewClicked()
         else
             return;
 
-    } 
+    }
     else
         synthdata->guiWidget->setFrame(frameIndex);
 
@@ -582,7 +582,7 @@ void MidiWidget::addToParameterViewClicked()
 
     qs = QInputDialog::getText(this, "AlsaModularSynth",
             tr("Parameter name:"), QLineEdit::Normal, qs2, &ok);
-    
+
     synthdata->guiWidget->addParameter(midiControllable, qs);
 }
 
@@ -602,19 +602,19 @@ void MidiWidget::bindClicked()
 
 void MidiWidget::noteControllerCheckToggle(int state)
 {
-    noteControllerEnabled = state;  
+    noteControllerEnabled = state;
 }
 
 
 void MidiWidget::configCheckToggle(int state)
 {
-    followConfig = state;  
+    followConfig = state;
 }
 
 
 void MidiWidget::midiCheckToggle(int state)
 {
-    followMidi = state;  
+    followMidi = state;
 }
 
 
@@ -648,7 +648,7 @@ void MidiWidget::removeModule(Module *m)
     moduleModel.beginRemoveRows(QModelIndex(), row, row);
     moduleModel.list.removeAll(m);
     moduleModel.endRemoveRows();
-}  
+}
 
 
 void MidiWidget::toggleMidiSign()
@@ -735,16 +735,16 @@ void MidiWidget::setNewMin()
 }
 
 void MidiWidget::setNewMax()
-{        
+{
     if (midiControllable != NULL)
         dynamic_cast<MidiControllableFloat *>(midiControllable)->setNewMax();
-}  
+}
 
 void MidiWidget::setInitialMinMax()
 {
     if (midiControllable != NULL)
         dynamic_cast<MidiControllableFloat *>(midiControllable)->resetMinMax();
-}  
+}
 
 void MidiWidget::selectMcAble(MidiControllableBase &mcAble)
 {
