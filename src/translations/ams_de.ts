@@ -3160,7 +3160,7 @@ Save changes?</source>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="65"/>
-        <source>type: %1 channel: %2 param: %3</source>
+        <source>Type: %1 Channel: %2 Param: %3</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3237,32 +3237,32 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="511"/>
+        <location filename="../midiwidget.cpp" line="512"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="521"/>
+        <location filename="../midiwidget.cpp" line="522"/>
         <source>Add this parameter to frame:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="536"/>
+        <location filename="../midiwidget.cpp" line="537"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="543"/>
+        <location filename="../midiwidget.cpp" line="544"/>
         <source>Add frame to tab:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="557"/>
+        <location filename="../midiwidget.cpp" line="558"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="583"/>
+        <location filename="../midiwidget.cpp" line="584"/>
         <source>Parameter name:</source>
         <translation>Parametername:</translation>
     </message>

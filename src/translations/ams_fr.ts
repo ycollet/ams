@@ -3149,7 +3149,7 @@ Save changes?</source>
     <message>
         <location filename="../midiwidget.cpp" line="65"/>
         <source>type: %1 channel: %2 param: %3</source>
-        <translation type="unfinished">type: %1 canal: %2 param: %3</translation>
+        <translation type="obsolete">type: %1 canal: %2 param: %3</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="78"/>
@@ -3160,6 +3160,11 @@ Save changes?</source>
         <location filename="../midiwidget.cpp" line="78"/>
         <source>MIDI Controller / Parameter</source>
         <translation>Controleur MIDI / Paramètre</translation>
+    </message>
+    <message>
+        <location filename="../midiwidget.cpp" line="65"/>
+        <source>Type: %1 Channel: %2 Param: %3</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3235,32 +3240,32 @@ Save changes?</source>
         <translation>&amp;Inverser Signe MIDI</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="511"/>
+        <location filename="../midiwidget.cpp" line="512"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation>Ceci effacera tous les presets pour cette configuration. Continuer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="521"/>
+        <location filename="../midiwidget.cpp" line="522"/>
         <source>Add this parameter to frame:</source>
         <translation>Ajouter ce paramètre au cadre:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="536"/>
+        <location filename="../midiwidget.cpp" line="537"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation>Le cadre &apos;%1&apos; n&apos;existe pas. Créer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="543"/>
+        <location filename="../midiwidget.cpp" line="544"/>
         <source>Add frame to tab:</source>
         <translation>Ajouter le cadre à l&apos;onglet:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="557"/>
+        <location filename="../midiwidget.cpp" line="558"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation>L&apos;onglet &apos;%1&apos; n&apos;existe pas. Créer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="583"/>
+        <location filename="../midiwidget.cpp" line="584"/>
         <source>Parameter name:</source>
         <translation>Nom du paramètre:</translation>
     </message>

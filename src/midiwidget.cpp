@@ -61,8 +61,8 @@ QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
             if ((c == NULL) && (index.column() == 0)) {
                 QString qs;
                 c = &rMidiControllers.at(index.row());
-                return qs = tr("type: %1 channel: %2 param: %3")
-                    .arg(c->type()).arg(c->ch()).arg(c->param());
+                return qs = tr("Type: %1 Channel: %2 Param: %3")
+                    .arg(c->type()).arg(c->ch() + 1).arg(c->param());
             }
     }
     return QVariant();
