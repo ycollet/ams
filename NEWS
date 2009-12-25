@@ -1,4 +1,4 @@
-ams-2.x.x (2009-??-??)
+ams-2.0.1 (2009-12-26)
 
   Fixed Bugs
     o Compile error for Qt 4.2 fixed
@@ -6,12 +6,14 @@ ams-2.x.x (2009-??-??)
       if MIDI event has been received.
     o Fix crash unbinding multiple controllables connected to the
       same midi controller.
+    o Initialized variable in env-module. 
+      Fixes env-module mute bug discribed by lee(mrleelee).
 
   New Features
     o
 
   General Changes
-    o
+    o MIDI channel numbering changed from 0..15	to 1..16.
 
 
 
