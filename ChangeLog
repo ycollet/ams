@@ -1,3 +1,6 @@
+2009-12-25 Karsten Wiese <fzuuzf@googlemail.com>
+	* src/m_env.cpp: Initialize M_env::e_noteOff[].
+
 2009-10-07 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midiwidget.cpp: MIDI channel numbering changed from 0..15
 	to 1..16.

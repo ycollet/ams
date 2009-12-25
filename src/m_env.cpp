@@ -57,6 +57,7 @@ M_env::M_env(QWidget* parent)
     noteOnOfs[l1] = 0;
     e[l1] = 0;
     de[l1] = 0;
+    e_noteOff[l1] = 0;
   }
 }
 
