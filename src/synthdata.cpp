@@ -389,13 +389,14 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     pthread_attr_setinheritsched (&attr, PTHREAD_EXPLICIT_SCHED);
     if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
     {
-        qWarning(QObject::tr("Can't create ALSA thread with RT priority").toUtf8());
+        qWarning("%s", QObject::tr("Can't create ALSA thread with RT priority")
+                .toUtf8().constData());
         pthread_attr_setschedpolicy (&attr, SCHED_OTHER);
         parm.sched_priority = sched_get_priority_max (SCHED_OTHER);
         pthread_attr_setschedparam (&attr, &parm);
         if (pthread_create (&alsa_thread, &attr, alsa_static_thr_main, this))
         {
-            qWarning(QObject::tr("Can't create ALSA thread").toUtf8());
+            qWarning("%s", QObject::tr("Can't create ALSA thread").toUtf8().constData());
             exit (1);
 	}
     }
@@ -404,7 +405,7 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
 
 int SynthData::closeAlsa ()
 {
-    qWarning(QObject::tr("Closing ALSA...").toUtf8());
+    qWarning("%s", QObject::tr("Closing ALSA...").toUtf8().constData());
     withAlsa = false;
     sleep (1);
     delete alsa_handle;
@@ -497,7 +498,7 @@ int SynthData::initJack (int ncapt, int nplay)
     jack_handle = jack_client_open(name.toLatin1().constData(),
 				   JackNullOption, NULL);
     if (!jack_handle) {
-        qWarning(QObject::tr("Can't connect to JACK").toUtf8());
+        qWarning("%s", QObject::tr("Can't connect to JACK").toUtf8().constData());
         return -ENODEV;
     }
 
@@ -520,7 +521,7 @@ int SynthData::initJack (int ncapt, int nplay)
 
     if (jack_activate (jack_handle))
     {
-        qWarning(QObject::tr("Can't activate JACK").toUtf8());
+        qWarning("%s", QObject::tr("Can't activate JACK").toUtf8().constData());
         exit (1);
     }
 
@@ -532,7 +533,7 @@ int SynthData::initJack (int ncapt, int nplay)
 
 int SynthData::closeJack ()
 {
-    qWarning(QObject::tr("Closing JACK...").toUtf8());
+    qWarning("%s", QObject::tr("Closing JACK...").toUtf8().constData());
     jack_deactivate (jack_handle);
     for (int i = 0; i < play_ports; i++)
         jack_port_unregister(jack_handle, jack_out[i]);

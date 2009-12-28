@@ -61,8 +61,8 @@ int makeSynthName(QString &name)
     QDir amshome = QDir(QDir::homePath());
     if (!amshome.exists(AMSDIR)) {
         if (!amshome.mkdir(AMSDIR)) {
-            qWarning(QObject::tr("Could not create ams home "
-                        "directory.").toUtf8());
+            qWarning("%s", QObject::tr("Could not create ams home "
+                        "directory.").toLatin1().constData());
             return -1;
         }
     }
@@ -72,8 +72,8 @@ int makeSynthName(QString &name)
         //StdOut << "Resource file path: " << rcPath << endl;
         fd = open(rcPath.toLatin1().data(), O_CREAT|O_RDWR, 0666);
         if (fd == -1) {
-            qWarning(QObject::tr("Failed to open file '%1'")
-                    .arg(rcPath).toUtf8());
+            qWarning("%s", QObject::tr("Failed to open file '%1'")
+                    .arg(rcPath).toLatin1().constData());
             return -1;
         }
 
@@ -84,15 +84,16 @@ int makeSynthName(QString &name)
         } else {
             lock.l_type = F_RDLCK;
             if (fcntl(fd, F_SETLK, &lock) == -1) {
-                qWarning(QObject::tr("Ooops in %1 at %2")
-                        .arg(__FUNCTION__).arg(__LINE__).toUtf8());
+                qWarning("%s", QObject::tr("Ooops in %1 at %2")
+                        .arg(__FUNCTION__).arg(__LINE__).toLatin1().constData());
                 return -1;
             }
             name = amsSynthName(name, index);
             return fd;
         }
     }
-    qWarning(QObject::tr("Client name '%1' occupied.").arg(name).toUtf8());
+    qWarning("%s", QObject::tr("Client name '%1' occupied.").arg(name)
+            .toLatin1().constData());
     return -1;
 }
 
@@ -118,7 +119,7 @@ int main(int argc, char *argv[])
       app.installTranslator(&qtTr);
   else
       qWarning("No Qt translation for locale '%s' found.",
-              loc.name().toUtf8().constData());
+              loc.name().toLatin1().constData());
   
   // translator for ams strings
   QTranslator amsTr;
@@ -127,7 +128,7 @@ int main(int argc, char *argv[])
       app.installTranslator(&amsTr);
   else
       qWarning("No " AMS_LONGNAME " translation for locale '%s' found.",
-              loc.name().toUtf8().constData());
+              loc.name().toLatin1().constData());
   
   int getopt_return;
   int option_index;

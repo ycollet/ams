@@ -1,3 +1,15 @@
+2009-12-28 Guido Scholz <guido.scholz@bayernline.de>
+	* src/main.cpp, src/mainwindow.cpp, src/synthdata.cpp: Fixed
+	compiler warnings caused by usage of string literals without
+	format parameters in qWarning(), appears with Qt 4.5.
+	* src/mainwindow.cpp: Compiler warning about ignored write()
+	result fixed.
+	* src/m_wavout.cpp: Compiler warning about ignored getcwd()
+	result fixed.
+
+
++++ Release 2.0.1 (2009-12-26) +++
+
 2009-12-25 Karsten Wiese <fzuuzf@googlemail.com>
 	* src/m_env.cpp: Initialize M_env::e_noteOff[].
 
@@ -24,6 +36,7 @@
 2009-08-12 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modules.cpp: Compile error for Qt 4.2 fixed, caused by
 	missing QPainterPath header.
+
 
 +++ Release 2.0.0 (2009-06-15) +++
 

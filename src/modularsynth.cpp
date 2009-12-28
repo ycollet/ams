@@ -281,7 +281,7 @@ int ModularSynth::go(bool forceJack, bool forceAlsa)
     if ((synthdata->seq_handle = open_seq()))
         initSeqNotifier();
     else
-        qWarning(QObject::tr("Alsa MIDI wont work!").toUtf8());
+        qWarning("%s", QObject::tr("Alsa MIDI wont work!").toUtf8().constData());
 
     midiWidget->setActiveMidiControllers();
 
@@ -371,7 +371,7 @@ snd_seq_t *ModularSynth::open_seq() {
 
     if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX,
                 SND_SEQ_NONBLOCK) < 0) {
-        qWarning(QObject::tr("Error opening ALSA sequencer.").toUtf8());
+        qWarning("%s", QObject::tr("Error opening ALSA sequencer.").toUtf8().constData());
         return NULL;
     }
 
@@ -381,7 +381,7 @@ snd_seq_t *ModularSynth::open_seq() {
     if (snd_seq_create_simple_port(seq_handle, "ams in",
                 SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
                 SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
-        qWarning(QObject::tr("Error creating sequencer write port.").toUtf8());
+        qWarning("%s", QObject::tr("Error creating sequencer write port.").toUtf8().constData());
         snd_seq_close(seq_handle);
         return NULL;
     }
@@ -390,7 +390,7 @@ snd_seq_t *ModularSynth::open_seq() {
                     snd_seq_create_simple_port(seq_handle, "ams out",
                         SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ,
                         SND_SEQ_PORT_TYPE_APPLICATION)) < 0) {
-            qWarning(QObject::tr("Error creating sequencer read port.").toUtf8());
+            qWarning("%s", QObject::tr("Error creating sequencer read port.").toUtf8().constData());
             snd_seq_close(seq_handle);
             return NULL;
         }
@@ -950,7 +950,7 @@ void ModularSynth::newM_pcmout()
         }
     } 
     else
-        qWarning(QObject::tr("All available output ports are in use").toUtf8());
+        qWarning("%s", QObject::tr("All available output ports are in use").toUtf8().constData());
 }
 
 void ModularSynth::newM_pcmin()
@@ -968,7 +968,7 @@ void ModularSynth::newM_pcmin()
         }
     } 
     else
-        qWarning(QObject::tr("All available input ports are in use").toUtf8());
+        qWarning("%s", QObject::tr("All available input ports are in use").toUtf8().constData());
 }
 
 void ModularSynth::newM_scope() {
@@ -1254,7 +1254,7 @@ void ModularSynth::load(QTextStream& ts)
               newLadspaPolyFlag = tokens[5].toInt();
               ladspaLibName = tokens[6];
               pluginName = qs.section(' ', 7);
-              qWarning(tr("Loading LADSPA plugin \"%1\" from library \"%2\".") 
+              qWarning("%s", tr("Loading LADSPA plugin \"%1\" from library \"%2\".") 
                       .arg(pluginName).arg(ladspaLibName).toUtf8().constData());
 
               if (!synthdata->getLadspaIDs(ladspaLibName, pluginName,
@@ -1477,9 +1477,9 @@ void ModularSynth::load(QTextStream& ts)
             continue;
 
         if (inport->hasConnectedPort()) {
-            qWarning(tr("Input port %1 of module %2 is already connected. "
+            qWarning("%s", tr("Input port %1 of module %2 is already connected. "
                         "New connection to module %3 ignored.")
-                    .arg(index1).arg(moduleID1).arg(moduleID2).toUtf8());
+                    .arg(index1).arg(moduleID1).arg(moduleID2).toUtf8().constData());
             continue;
         }
 
@@ -1734,8 +1734,8 @@ void ModularSynth::load(QTextStream& ts)
             }
         }
         else
-            qWarning(tr("Unknown MIDI controller tag found: %1")
-                    .arg(qs).toUtf8());
+            qWarning("%s", tr("Unknown MIDI controller tag found: %1")
+                    .arg(qs).toUtf8().constData());
     }
 
     // #PARA# <te_id> <..> <line_idx>
@@ -1770,8 +1770,8 @@ void ModularSynth::load(QTextStream& ts)
         if (pos != -1)
             guiWidget->addTab(rx.cap(1));
         else
-            qWarning(QObject::tr("No title for tab '%1' found.")
-                    .arg(qs).toUtf8());
+            qWarning("%s", QObject::tr("No title for tab '%1' found.")
+                    .arg(qs).toUtf8().constData());
     }
 
     // Frame <"FrameName"> <frame number>
@@ -1786,8 +1786,8 @@ void ModularSynth::load(QTextStream& ts)
             guiWidget->addFrame(rx.cap(1));
         }
         else
-            qWarning(QObject::tr("No data for frame '%1' found.")
-                    .arg(qs).toUtf8());
+            qWarning("%s", QObject::tr("No data for frame '%1' found.")
+                    .arg(qs).toUtf8().constData());
     }
 
     // Parameter <"ParamName"> <modid> <index>
@@ -1801,7 +1801,7 @@ void ModularSynth::load(QTextStream& ts)
             numbers = numbers.trimmed();
             tokens = numbers.split(' ');
             if (tokens.isEmpty()) {
-                qWarning(QObject::tr("No parameter values found.").toUtf8());
+                qWarning("%s", QObject::tr("No parameter values found.").toUtf8().constData());
                 continue;
             }
 
@@ -1810,8 +1810,8 @@ void ModularSynth::load(QTextStream& ts)
             index = tokens[1].toInt();
         }
         else {
-            qWarning(QObject::tr("No parameter name '%1' found.")
-                    .arg(qs).toUtf8());
+            qWarning("%s", QObject::tr("No parameter name '%1' found.")
+                    .arg(qs).toUtf8().constData());
             continue;
         }
         m = getModuleWithId(moduleID);
@@ -1876,8 +1876,8 @@ void ModularSynth::load(QTextStream& ts)
         if (pos != -1)
             qs = rx.cap(1);
         else {
-            qWarning(QObject::tr("No name for preset '%1' found.")
-                    .arg(qs).toUtf8());
+            qWarning("%s", QObject::tr("No name for preset '%1' found.")
+                    .arg(qs).toUtf8().constData());
             continue;
         }
 
@@ -1886,7 +1886,7 @@ void ModularSynth::load(QTextStream& ts)
     }
     /*For debugging only, 'Module' and 'Comment' will also apear
     else
-        qWarning(tr("Unknown tag found: %1").arg(qs).toUtf8());
+        qWarning("%s", tr("Unknown tag found: %1").arg(qs).toUtf8().constData());
     */
   } // end while loop
 

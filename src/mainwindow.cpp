@@ -171,14 +171,16 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   updateWindowTitle();
 
   if (mso.havePresetPath) {
-    qWarning(QObject::tr("Preset path now %1").arg(mso.presetPath).toUtf8()); 
+    qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
+            .toUtf8().constData()); 
     modularSynth->setLoadPath(mso.presetPath);
   }
   modularSynth->go(mso.forceJack, mso.forceAlsa);
 
   // autoload patch file
   if (mso.havePreset) {
-    qWarning(QObject::tr("Loading preset %1").arg(mso.presetName).toUtf8()); 
+    qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
+            .toUtf8().constData()); 
     openFile(mso.presetName);
   }
 
@@ -191,21 +193,27 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 
 MainWindow::~MainWindow()
 {
-    qWarning(QObject::tr("Closing synthesizer...").toUtf8());
+    qWarning("%s", QObject::tr("Closing synthesizer...").toUtf8().constData());
     writeConfig();
 
     // remove file lock
     struct flock lock = {F_WRLCK, SEEK_SET, 0, 0, 0};
     if (fcntl(rcFd, F_UNLCK, &lock) == -1) {
-        qWarning(QObject::tr("Could not unlock preferences file.").toUtf8());
+        qWarning("%s", QObject::tr("Could not unlock preferences file.")
+                .toUtf8().constData());
     }
 }
 
 
 void MainWindow::sighandler(int s)
 {
-  char pipeMessage = s;
-  write(pipeFd[1], &pipeMessage, 1);
+    ssize_t result;
+
+    char pipeMessage = s;
+    result = write(pipeFd[1], &pipeMessage, 1);
+    if (result == -1)
+        qWarning("%s", QObject::tr("Error writing to pipe: %1")
+                .arg(errno).toUtf8().constData());
 }
 
 void MainWindow::unixSignal(int /*fd*/)
@@ -303,7 +311,8 @@ void MainWindow::openFile(const QString& fn)
     QFile f(fn);
 
     if (!f.open(QIODevice::ReadOnly)) {
-        qWarning(tr("Could not read file '%1'").arg(fn).toUtf8());
+        qWarning("%s", tr("Could not read file '%1'").arg(fn)
+                .toUtf8().constData());
         return;
     }
 
@@ -334,7 +343,8 @@ bool MainWindow::saveFile()
 
     QFile f(fileName);
     if (!f.open(QIODevice::WriteOnly)) {
-        qWarning(tr("Could not open file '%1'").arg(fileName).toUtf8());
+        qWarning("%s", tr("Could not open file '%1'").arg(fileName)
+                .toUtf8().constData());
         return false;
     }
 
@@ -365,7 +375,7 @@ void MainWindow::fileSaveAs()
         saveFile();
     }
     else
-        qWarning(tr("Saving aborted").toUtf8());
+        qWarning("%s", tr("Saving aborted").toUtf8().constData());
 }
 
 
@@ -399,11 +409,11 @@ void MainWindow::readConfig()
     QFile file;
 
     if (!file.open(rcFd, QIODevice::ReadOnly)) {
-        qWarning("Could not open preferences file.");
+        qWarning("%s", "Could not open preferences file.");
         return;
     }
     if (!file.seek(0)) {
-        qWarning("Could not seek start of preferences file.");
+        qWarning("%s", "Could not seek start of preferences file.");
         file.close();
         return;
     }
@@ -425,12 +435,12 @@ void MainWindow::writeConfig()
     QFile file;
 
     if (!file.open(rcFd, QIODevice::WriteOnly)) {
-        qWarning("Could not open preferences file.");
+        qWarning("%s", "Could not open preferences file.");
         return;
     }
 
     if (!file.resize(0)) {
-        qWarning("Could not resize preferences file.");
+        qWarning("%s", "Could not resize preferences file.");
         file.close();
         return;
     }

@@ -235,15 +235,20 @@ void M_wavout::createWav() {
 
 void M_wavout::openBrowser() {
 
-  char buf[2048];
+    char buf[2048];
+    char * result;
 
-  getcwd(buf, 2048);
-  wavname = QFileDialog::getSaveFileName(this, tr("Choose Wave File"),
-          buf, tr("WAV files (*.wav)"));
-  if (!wavname.isEmpty()) {
-    configDialog->lineEditList.at(0)->setText(wavname);    
-    createWav();
-  }
+    result = getcwd(buf, 2048);
+    if (result == NULL) {
+        qWarning("Error in getcwd((): %d", errno);
+        return;
+    }
+    wavname = QFileDialog::getSaveFileName(this, tr("Choose Wave File"),
+            buf, tr("WAV files (*.wav)"));
+    if (!wavname.isEmpty()) {
+        configDialog->lineEditList.at(0)->setText(wavname);    
+        createWav();
+    }
 }
 
 void M_wavout::timerProc() {          
