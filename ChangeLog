@@ -1,3 +1,8 @@
+2009-12-29 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.cpp: Handler for SIGUSR1 added to save
+	currently opened patch file. This enables LADI session handling
+	on application level 1.
+
 2009-12-28 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp, src/mainwindow.cpp, src/synthdata.cpp: Fixed
 	compiler warnings caused by usage of string literals without

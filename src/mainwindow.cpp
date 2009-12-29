@@ -166,6 +166,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   memset(&action, 0, sizeof(action));
   action.sa_handler = sighandler;
   sigaction(SIGINT, &action, NULL);
+  sigaction(SIGUSR1, &action, NULL);
 
   readConfig();
   updateWindowTitle();
@@ -204,25 +205,42 @@ MainWindow::~MainWindow()
     }
 }
 
-
+/*handle UNIX system signals*/
 void MainWindow::sighandler(int s)
 {
     ssize_t result;
+    int pipeMessage = s;
 
-    char pipeMessage = s;
-    result = write(pipeFd[1], &pipeMessage, 1);
+    result = write(pipeFd[1], &pipeMessage, sizeof(pipeMessage));
     if (result == -1)
-        qWarning("%s", QObject::tr("Error writing to pipe: %1")
-                .arg(errno).toUtf8().constData());
+        qWarning("Error writing to pipe: %d", errno);
 }
 
-void MainWindow::unixSignal(int /*fd*/)
+/*handle incoming unix signal messages*/
+void MainWindow::unixSignal(int fd)
 {
-    //char pipeIn[4];
-    //int pipeRed = read(fd, pipeIn, sizeof(pipeIn));
-    //StdOut << __PRETTY_FUNCTION__ << (int)pipeIn[0]  << endl;
-    //qApp->quit();
-    qApp->closeAllWindows();
+    int message;
+    ssize_t result;
+
+    result = read(fd, &message, sizeof(message));
+    if (result == -1) {
+        qWarning("Error reading signal message pipe: %d", errno);
+        return;
+    }
+
+    switch(message) {
+        case SIGINT:
+            qApp->closeAllWindows();
+            break;
+
+        case SIGUSR1:
+            saveFile();
+            break;
+
+        default:
+            qWarning("Unexpected signal received: %d", message);
+            break;
+    }
 }
 
 /*check for changed file data*/

@@ -45,7 +45,6 @@ private slots:
     void recentFileActivated(QAction*);
     void setupRecentFilesMenu();
 
-
 public:
   MainWindow(const ModularSynthOptions&);
   virtual ~MainWindow();
