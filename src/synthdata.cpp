@@ -675,6 +675,7 @@ void SynthData::processAlsaMidiEvent(snd_seq_event_t *ev)
 
 	// Ignore list
 	case SND_SEQ_EVENT_PORT_SUBSCRIBED:
+	case SND_SEQ_EVENT_SENSING:
             break;
 
 	default:

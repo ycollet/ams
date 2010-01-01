@@ -369,7 +369,7 @@ snd_seq_t *ModularSynth::open_seq() {
     snd_seq_t *seq_handle;
     QString qs;
 
-    if (snd_seq_open(&seq_handle, "hw", SND_SEQ_OPEN_DUPLEX,
+    if (snd_seq_open(&seq_handle, "default", SND_SEQ_OPEN_DUPLEX,
                 SND_SEQ_NONBLOCK) < 0) {
         qWarning("%s", QObject::tr("Error opening ALSA sequencer.").toUtf8().constData());
         return NULL;
@@ -378,9 +378,11 @@ snd_seq_t *ModularSynth::open_seq() {
     snd_seq_set_client_name(seq_handle,
             (synthdata->name + " Midi").toLatin1().constData());
 
-    if (snd_seq_create_simple_port(seq_handle, "ams in",
-                SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
-                SND_SEQ_PORT_TYPE_APPLICATION) < 0) {
+    int inPort =
+	snd_seq_create_simple_port(seq_handle, "ams in",
+				   SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
+				   SND_SEQ_PORT_TYPE_APPLICATION);
+    if (inPort < 0) {
         qWarning("%s", QObject::tr("Error creating sequencer write port.").toUtf8().constData());
         snd_seq_close(seq_handle);
         return NULL;
@@ -394,6 +396,24 @@ snd_seq_t *ModularSynth::open_seq() {
             snd_seq_close(seq_handle);
             return NULL;
         }
+    /*
+ALSA sequencer exposes a filter API.
+ams doesn't use all MIDI event types,
+so making ALSA seq only give it what it uses, would be nice:
+    snd_seq_client_info_t *client_info;
+    snd_seq_client_info_malloc(&client_info);
+    snd_seq_client_info_event_filter_add(client_info, SND_SEQ_EVENT_NOTEON);
+    snd_seq_client_info_event_filter_add(client_info, SND_SEQ_EVENT_NOTEOFF);
+Add more calls for the remaining used MIDI types.
+    snd_seq_set_client_info(seq_handle, client_info);
+    *//*
+Same filter effect, higher level API:
+    snd_seq_set_client_event_filter(seq_handle, SND_SEQ_EVENT_NOTEON);
+    snd_seq_set_client_event_filter(seq_handle, SND_SEQ_EVENT_NOTEOFF);
+
+Bad result: it doesn't work, don't know why.
+    */
+
     return seq_handle;
 }
 

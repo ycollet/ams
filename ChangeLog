@@ -1,3 +1,10 @@
+2010-01-01 Karsten Wiese <fzuuzf@googlemail.com>
+	* src/synthdata.cpp: Add SND_SEQ_EVENT_SENSING (42) to the list
+	of ignored MIDI event types.
+	* src/modularsynth.cpp: Add test code for ALSA MIDI event type
+	filtering. Didn't work, commented it out. Committed it nonetheless
+	so I don't try this again without knowing what I already tried.
+
 2009-12-29 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp: Handler for SIGUSR1 added to save
 	currently opened patch file. This enables LADI session handling
