@@ -16,7 +16,6 @@ M_env::M_env(QWidget* parent)
   : Module(M_type_env, 2, parent, tr("ENV"))
 {
   QString qs;
-  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ENV_WIDTH, MODULE_ENV_HEIGHT);
   delay = 0;
@@ -50,15 +49,6 @@ M_env::M_env(QWidget* parent)
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(3)),
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(4)),
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(5)));
-
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    gate[l1] = false;
-    retrigger[l1] = false;
-    noteOnOfs[l1] = 0;
-    e[l1] = 0;
-    de[l1] = 0;
-    e_noteOff[l1] = 0;
-  }
 }
 
 void M_env::generateCycle()

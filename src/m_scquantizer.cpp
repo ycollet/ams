@@ -42,11 +42,6 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   lastbase = 12;
   configDialog->addIntSlider(tr("Note Offset"), base, -36, 36);
 
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    qsig[l1] = 0;
-    trigCount[l1] = 0;
-    trigger[l1] = 0;
-  }
   sclname = "No_Scale_loaded";
   configDialog->addLabel(tr("   Scale: ") + sclname);
   configDialog->addLabel("   ");

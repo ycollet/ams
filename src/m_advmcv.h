@@ -13,12 +13,13 @@ class M_advmcv : public Module
     Q_OBJECT
 
     float pitchbend;
+    PolyArr<float> freq;
     Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
     Port *port_aftertouch_out, *port_pitchbend_out, *port_controller_out[MODULE_ADVMCV_CONTROLLER_PORTS];
 
   public: 
     int  pitch, channel, controller_num[MODULE_ADVMCV_CONTROLLER_PORTS];
-    float freq[MAXPOLY], aftertouch_cv, pitchbend_cv;
+    float aftertouch_cv, pitchbend_cv;
     float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS];
                 
   public:

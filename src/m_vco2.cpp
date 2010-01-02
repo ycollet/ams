@@ -9,7 +9,6 @@ M_vco2::M_vco2(QWidget* parent)
   : Module(M_type_vco2, 1, parent, tr("VCO2"))
 {
   QString qs;
-  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCO2_WIDTH, MODULE_VCO2_HEIGHT);
   wave_period = (float)WAVE_PERIOD;
@@ -27,9 +26,6 @@ M_vco2::M_vco2(QWidget* parent)
   subharmonic = 1;
   octave = 3;
   edge = 0.95;
-  for (l1 = 0; l1 < MAXPOLY; ++l1) {
-    phi[l1] = 0;
-  }
   pw0 = 0.5;
   waveForm = SINUS;
 

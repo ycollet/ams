@@ -28,7 +28,7 @@ class M_scmcv : public Module
   public: 
     int base, lastbase, channel;
     QString sclname, dirpath;
-    float freq[MAXPOLY], lastfreq[MAXPOLY];
+    PolyArr<float> freq, lastfreq;
                 
   public:
     M_scmcv(QWidget* parent=0, QString *p_sclname = 0);

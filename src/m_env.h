@@ -13,14 +13,13 @@ class M_env : public Module
     Q_OBJECT
 
     float delay, attack, hold, decay, sustain, release;
-    float e_noteOff[MAXPOLY], de[MAXPOLY];
+    PolyArr<bool> gate, retrigger;
+    PolyArr<int> noteOnOfs;
+    PolyArr<float> e_noteOff, de, e;
     Port *port_gate, *port_retrigger, *port_inverse_out, *port_gain_out;
 
   public: 
-    float e[MAXPOLY];
     float timeScale;
-    bool gate[MAXPOLY], retrigger[MAXPOLY];
-    int noteOnOfs[MAXPOLY];
     float **gateData, **retriggerData;
                 
   public:

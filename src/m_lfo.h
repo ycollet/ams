@@ -9,23 +9,25 @@
 
 class M_lfo : public Module
 {
-    Q_OBJECT
+  Q_OBJECT
 
-    float freq, phi0;
-    double si[MAXPOLY], old_si[MAXPOLY];
-    double sa[MAXPOLY], old_sa[MAXPOLY];
-    double t[MAXPOLY], old_t[MAXPOLY];
-    double r[MAXPOLY], old_r[MAXPOLY];
-    double sh[MAXPOLY], old_sh[MAXPOLY];
-    int state[MAXPOLY];
-    double dt[MAXPOLY], wave_period;
-    bool trigger[MAXPOLY];
-    Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect, *port_sh;
+  float freq, phi0;
+  double wave_period;
+  PolyArr<double>
+    si, old_si,
+    sa, old_sa,
+    t, old_t,
+    r, old_r,
+    sh, old_sh,
+    dt;
+  PolyArr<int> state;
+  PolyArr<bool> trigger;
+  Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect, *port_sh;
                                 
-  public:
-    M_lfo(QWidget* parent=0);
+public:
+  M_lfo(QWidget* parent=0);
 
-    void generateCycle();
+  void generateCycle();
 };
   
 #endif

@@ -16,9 +16,9 @@ class M_vcdoubledecay : public Module
   public: 
     float **gateData, **retriggerData, **attackData, **decayData, **sustainData, **releaseData, **ratioData;        
     float a0, d0, s0, r0, rl0, aGain, dGain, sGain, rGain, rlGain;
-    float e[MAXPOLY], e2[MAXPOLY], old_e[MAXPOLY], old_e2[MAXPOLY], s[MAXPOLY], old_s[MAXPOLY];
-    int state[MAXPOLY];
-    bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
+    PolyArr<float> e, e2, old_e, old_e2, s, old_s;
+    PolyArr<int> state;
+    PolyArr<bool> noteActive, gate, retrigger;
                                     
   public:
     M_vcdoubledecay(QWidget* parent=0);

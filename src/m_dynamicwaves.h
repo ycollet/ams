@@ -36,7 +36,7 @@ class M_dynamicwaves : public Module
   public: 
     int oscCount;
     float e[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC]; 
-    bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
+    PolyArr<bool> noteActive, gate, retrigger;
     bool oscActive[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
     long noteOnOfs[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC]; 
     long noteOffOfs[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];

@@ -13,7 +13,7 @@ class M_slew : public Module
 
     Port *port_M_in, *port_out;
     float timeUp, timeDown;
-    float lastData[MAXPOLY];
+    PolyArr<float> lastData;
     
   public: 
     float **inData;       

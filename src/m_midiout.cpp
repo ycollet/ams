@@ -65,7 +65,6 @@ M_midiout::M_midiout(QWidget* parent)
   configDialog->addIntSlider(tr("Controller 1"), controller[1], 0, 127, midiTab);
   configDialog->addSlider(tr("Trigger Level"), triggerLevel, 0, 10, false, gainTab);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
-    trigger[l1] = false;
     for (l2 = 0; l2 < 2; l2++) {
       triggeredNote[l2][l1] = 0;
       lastmididata[l2][l1] = 0;

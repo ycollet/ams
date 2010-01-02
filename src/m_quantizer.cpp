@@ -48,11 +48,6 @@ M_quantizer::M_quantizer(QWidget* parent)
     tr("Pentatonic");
   configDialog->addComboBox(tr("Quantization"), quantum, quantumNames);
 
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    qsig[l1] = 0;
-    trigCount[l1] = 0;
-    trigger[l1] = 0;
-  }
   for (l1 = 0; l1 < 12; l1++) {
     lut[0][l1] = l1;
     lut[1][l1] = (int)(l1 / 2) * 2;

@@ -23,7 +23,6 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
   : Module(M_type_vcdoubledecay, 1, parent, tr("VC Double Decay"))
 {
   QString qs;
-  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCDOUBLEDECAY_WIDTH, MODULE_VCDOUBLEDECAY_HEIGHT);
   port_M_gate = new Port(tr("Gate"), PORT_IN, 0, this); 
@@ -45,18 +44,6 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
   sGain = 1.0;
   rlGain = 1.0;
   rGain = 1.0;
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    gate[l1] = false;
-    retrigger[l1] = false;
-    state[l1] = 0;
-    noteActive[l1] = false;
-    e[l1] = 0;
-    e2[l1] = 0;
-    old_e[l1] = 0;
-    old_e2[l1] = 0;
-    s[l1] = 0;
-    old_s[l1] = 0;
-  }
   configDialog->addSlider(tr("Attack Offset"), a0, -8, 8);
   configDialog->addSlider(tr("Decay Offset"), d0, -8, 8);
   configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);

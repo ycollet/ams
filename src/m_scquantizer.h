@@ -14,15 +14,15 @@ class M_scquantizer : public Module
 
   private:
     Port *port_M_in, *port_M_trigger, *port_M_transpose, *port_out, *port_trigger_out;
-    int trigCount[MAXPOLY];
-    bool trigger[MAXPOLY];
+    PolyArr<int> trigCount;
+    PolyArr<bool> trigger;
     int quantum;
 
     float scale_lut[128];
     bool scale_lut_isRatio[128];
     int scale_lut_length;
     float scale_notes[128];
-    float qsig[MAXPOLY];
+    PolyArr<float> qsig;
     QFileDialog *fileDialog;
                            
   private:

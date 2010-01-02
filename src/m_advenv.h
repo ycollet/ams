@@ -13,15 +13,13 @@ class M_advenv : public Module
     Q_OBJECT
 
     float attack[8], sustain, release[5];
-    float e_noteOff[MAXPOLY], de[MAXPOLY], de_release[MAXPOLY];
+    PolyArr<bool> gate, retrigger, noteActive;
+    PolyArr<int> noteOnOfs, noteOffOfs;
+    PolyArr<float> e_noteOff, de, e, de_release;
     Port *port_gate, *port_retrigger, *port_inverse_out, *port_gain_out;
 
   public: 
-    float e[MAXPOLY];
     float timeScale;
-    bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
-    int noteOnOfs[MAXPOLY];
-    int noteOffOfs[MAXPOLY];
     float **gateData, **retriggerData;
                 
   public:

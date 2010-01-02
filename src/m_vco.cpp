@@ -12,7 +12,6 @@ M_vco::M_vco(QWidget* parent)
     : Module(M_type_vco, 5, parent, tr("VCO"))
 {
     QString qs;
-    int l1;
 
     setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCO_WIDTH, MODULE_VCO_HEIGHT);
     wave_period = (float)WAVE_PERIOD;
@@ -30,9 +29,6 @@ M_vco::M_vco(QWidget* parent)
     subharmonic = 1;
     octave = 3;
     edge = 0.95;
-    for (l1 = 0; l1 < MAXPOLY; ++l1) {
-        phi[l1] = 0;
-    }
     pw0 = 0.5;
     waveForm = WAVE_SAW;
 

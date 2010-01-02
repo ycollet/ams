@@ -16,9 +16,9 @@ class M_vcenv2 : public Module
   public: 
     float **gateData, **retriggerData, **attackData, **decayData, **sustainData, **releaseData;        
     float a0, d0, s0, r0, aGain, dGain, sGain, rGain;
-    float e[MAXPOLY];
-    int state[MAXPOLY];
-    bool noteActive[MAXPOLY], gate[MAXPOLY], retrigger[MAXPOLY];
+    PolyArr<float> e;
+    PolyArr<int> state;
+    PolyArr<bool> noteActive, gate, retrigger;
                                     
   public:
     M_vcenv2(QWidget* parent=0);

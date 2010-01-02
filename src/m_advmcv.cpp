@@ -51,9 +51,6 @@ M_advmcv::M_advmcv(QWidget* parent)
     controller_cv[l2] = 0;
     controller_num[l2] = 0;
   }
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    freq[l1] = 0;
-  }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
   configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
   configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);

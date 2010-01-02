@@ -1,3 +1,7 @@
+2010-01-02 Karsten Wiese <fzuuzf@googlemail.com>
+	* template <typename tn> class PolyArr;
+	Replace simple [MAXPOLY] arrays by it to ensure initialization.
+
 2010-01-01 Karsten Wiese <fzuuzf@googlemail.com>
 	* src/synthdata.cpp: Add SND_SEQ_EVENT_SENSING (42) to the list
 	of ignored MIDI event types.

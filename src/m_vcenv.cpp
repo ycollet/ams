@@ -23,7 +23,6 @@ M_vcenv::M_vcenv(QWidget* parent)
   : Module(M_type_vcenv, 1, parent, tr("VC Envelope"))
 {
   QString qs;
-  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCENV_WIDTH, MODULE_VCENV_HEIGHT);
   port_M_gate = new Port(tr("Gate"), PORT_IN, 0, this); 
@@ -44,14 +43,6 @@ M_vcenv::M_vcenv(QWidget* parent)
   rGain = 0.0;
   timeScale = 1;
   decayReleaseMode = 1;
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    gate[l1] = false;
-    retrigger[l1] = false;
-    state[l1] = 0;
-    noteActive[l1] = false;
-    e[l1] = 0;
-    old_e[l1] = 0;
-  }
   configDialog->addSlider(tr("Attack Offset"), a0, 0, 1);
   configDialog->addSlider(tr("Decay Offset"), d0, 0, 1);
   configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);

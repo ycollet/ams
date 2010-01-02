@@ -176,6 +176,7 @@ void SynthData::initVoices()
     velocity[l1] = 0;
     noteCounter[l1] = 1000000;
     sustainNote[l1] = false;
+    channel[l1] = -1;
   }
 }
 

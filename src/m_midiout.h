@@ -14,7 +14,7 @@ class M_midiout : public Module
     float mixer_gain[2], triggerLevel; 
     int midiMode, offset[2], controller[2], channel;
     Port *port_in[2], *port_M_trigger;
-    bool trigger[MAXPOLY];    
+    PolyArr<bool> trigger;    
     int triggeredNote[2][MAXPOLY], lastmididata[2][MAXPOLY];
     
   public: 

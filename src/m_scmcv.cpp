@@ -48,10 +48,6 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   pitch = 0;
   lastbase = 12;
   pitchbend = 0;
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    lastfreq[l1] = 0;
-    freq[l1] = 0;
-  }
   for (l1 = 0; l1 < 12; l1++) {       
     scale_lut_isRatio[l1] = false;
     scale_lut[l1] = 100.0 + (float)l1 * 100.0;

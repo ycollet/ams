@@ -153,5 +153,21 @@ public:
   public slots: 
     virtual void removeThisModule();
 };
+
+
+template <typename tn> class PolyArr {
+  tn D[MAXPOLY];
+public:
+  PolyArr() {
+    memset(D, 0, sizeof(D));
+  }
+  PolyArr(tn v) {
+    for (int i = 0; i < MAXPOLY; ++i)
+      D[i] = v;
+  }
+  tn &operator [] (unsigned u) {
+    return D[u];
+  }
+};
   
 #endif

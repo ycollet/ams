@@ -59,9 +59,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
     release[4][l1] = 0.01;
   }
   for (l1 = 0; l1 < MAXPOLY; l1++) {
-    gate[l1] = false;
-    retrigger[l1] = false;
-    noteActive[l1] = false;
     for (l2 = 0; l2 < oscCount; l2++) {
       phi[l1][l2] = 0;
       oscActive[l1][l2] = false;

@@ -22,30 +22,17 @@
 
 M_lfo::M_lfo(QWidget* parent) 
   : Module(M_type_lfo, 6, parent, tr("LFO"))
+  , wave_period((double)synthdata->rate / (16.0 * freq))
+  , sa(-1)
+  , dt(4.0 / wave_period)
 {
   QString qs;
-  int l1;
   long tm;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LFO_WIDTH, MODULE_LFO_HEIGHT);
   freq = 5;
   phi0 = 0;
-  wave_period = (double)synthdata->rate / (16.0 * freq);
-  for (l1 = 0; l1 < MAXPOLY; l1++) {
-    trigger[l1] = false;
-    si[l1] = 0;
-    old_si[l1] = 0;
-    sa[l1] = -1;
-    old_sa[l1] = 0;
-    t[l1] = 0;
-    old_t[l1] = 0;
-    r[l1] = 0;
-    old_r[l1] = 0;
-    old_sh[l1] = 0;
-    sh[l1] = 0;
-    state[l1] = 0;
-    dt[l1] = 4.0 / wave_period;
-  }
+  
   port_M_trigger = new Port(tr("Reset"), PORT_IN, 0, this);          
   cv.out_off = 55;
   port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);          

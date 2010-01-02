@@ -22,7 +22,6 @@ M_advenv::M_advenv(QWidget* parent)
   : Module(M_type_advenv, 2, parent, tr("Advanced ENV"))
 {
   QString qs;
-  int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ADVENV_WIDTH,
           MODULE_ADVENV_HEIGHT);
@@ -87,16 +86,6 @@ M_advenv::M_advenv(QWidget* parent)
   qs = tr("Release Time 2");
   configDialog->addSlider(qs, release[4], 0, 1, false, releaseTimeTab);
   multiEnv->listenTo(this);
-
-  for (l1 = 0; l1 < synthdata->poly; l1++) {
-    noteActive[l1] = false;
-    gate[l1] = false;
-    retrigger[l1] = false;
-    noteOnOfs[l1] = 0;
-    noteOffOfs[l1] = 0;
-    e[l1] = 0;
-    de[l1] = 0;
-  }
 }
 
 void M_advenv::generateCycle() {

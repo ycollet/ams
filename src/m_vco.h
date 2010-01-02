@@ -15,7 +15,7 @@ class M_vco : public Module
     float freq, phi0, pw0;
     float edge;
     float wave_period;
-    float phi[MAXPOLY];
+    PolyArr<float> phi;
    // float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
    // float freq_const, freq_tune, gain_linfm, log2, pw_low, pw_high,
     float wave_period_2,wave_period_3,Pi2Times,PKonst;

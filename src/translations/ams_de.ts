@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name></name>
+    <message>
+        <source>Load Colors</source>
+        <translation type="obsolete">Farben lasen</translation>
+    </message>
+    <message>
+        <source>Could not open file.</source>
+        <translation type="obsolete">Konnte Datei nicht öffnen.</translation>
+    </message>
+    <message>
+        <source>Save Colors</source>
+        <translation type="obsolete">Farben speichern</translation>
+    </message>
+    <message>
+        <source>Could not save file.</source>
+        <translation type="obsolete">Konnte Datei nicht speichern.</translation>
+    </message>
+</context>
+<context>
     <name>ColorWidget</name>
     <message>
         <location filename="../colorwidget.cpp" line="6"/>
@@ -186,117 +205,117 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="44"/>
+        <location filename="../m_advenv.cpp" line="43"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="45"/>
+        <location filename="../m_advenv.cpp" line="44"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="48"/>
+        <location filename="../m_advenv.cpp" line="47"/>
         <source>Inverse Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="54"/>
+        <location filename="../m_advenv.cpp" line="53"/>
         <source>Time Scale / Sustain / Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="55"/>
+        <location filename="../m_advenv.cpp" line="54"/>
         <source>Attack Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="56"/>
+        <location filename="../m_advenv.cpp" line="55"/>
         <source>Attack Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="57"/>
+        <location filename="../m_advenv.cpp" line="56"/>
         <source>Release Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="58"/>
+        <location filename="../m_advenv.cpp" line="57"/>
         <source>Release Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="59"/>
+        <location filename="../m_advenv.cpp" line="58"/>
         <source>Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="61"/>
+        <location filename="../m_advenv.cpp" line="60"/>
         <source>Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="63"/>
+        <location filename="../m_advenv.cpp" line="62"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="65"/>
+        <location filename="../m_advenv.cpp" line="64"/>
         <source>Attack Time 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="67"/>
+        <location filename="../m_advenv.cpp" line="66"/>
         <source>Attack Level 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="69"/>
+        <location filename="../m_advenv.cpp" line="68"/>
         <source>Attack Time 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="71"/>
+        <location filename="../m_advenv.cpp" line="70"/>
         <source>Attack Level 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="73"/>
+        <location filename="../m_advenv.cpp" line="72"/>
         <source>Attack Time 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="75"/>
+        <location filename="../m_advenv.cpp" line="74"/>
         <source>Attack Level 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="77"/>
+        <location filename="../m_advenv.cpp" line="76"/>
         <source>Attack Time 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="79"/>
+        <location filename="../m_advenv.cpp" line="78"/>
         <source>Release Time 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="81"/>
+        <location filename="../m_advenv.cpp" line="80"/>
         <source>Release Level 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="83"/>
+        <location filename="../m_advenv.cpp" line="82"/>
         <source>Release Time 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="85"/>
+        <location filename="../m_advenv.cpp" line="84"/>
         <source>Release Level 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="87"/>
+        <location filename="../m_advenv.cpp" line="86"/>
         <source>Release Time 2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -340,17 +359,17 @@
     </message>
     <message>
         <location filename="../m_advmcv.cpp" line="35"/>
-        <location filename="../m_advmcv.cpp" line="61"/>
+        <location filename="../m_advmcv.cpp" line="58"/>
         <source>Controller %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advmcv.cpp" line="58"/>
+        <location filename="../m_advmcv.cpp" line="55"/>
         <source>Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advmcv.cpp" line="59"/>
+        <location filename="../m_advmcv.cpp" line="56"/>
         <source>Pitch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -454,67 +473,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="29"/>
+        <location filename="../m_env.cpp" line="28"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="30"/>
+        <location filename="../m_env.cpp" line="29"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="32"/>
+        <location filename="../m_env.cpp" line="31"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="33"/>
+        <location filename="../m_env.cpp" line="32"/>
         <source>Inverse Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="36"/>
+        <location filename="../m_env.cpp" line="35"/>
         <source>ADSR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="38"/>
+        <location filename="../m_env.cpp" line="37"/>
         <source>Delay / Hold / Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="39"/>
+        <location filename="../m_env.cpp" line="38"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="40"/>
+        <location filename="../m_env.cpp" line="39"/>
         <source>Attack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="41"/>
+        <location filename="../m_env.cpp" line="40"/>
         <source>Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="42"/>
+        <location filename="../m_env.cpp" line="41"/>
         <source>Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="43"/>
+        <location filename="../m_env.cpp" line="42"/>
         <source>Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="44"/>
+        <location filename="../m_env.cpp" line="43"/>
         <source>Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="45"/>
+        <location filename="../m_env.cpp" line="44"/>
         <source>Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,47 +655,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="49"/>
+        <location filename="../m_lfo.cpp" line="36"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="51"/>
+        <location filename="../m_lfo.cpp" line="38"/>
         <source>Sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="52"/>
+        <location filename="../m_lfo.cpp" line="39"/>
         <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="53"/>
+        <location filename="../m_lfo.cpp" line="40"/>
         <source>Saw Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="54"/>
+        <location filename="../m_lfo.cpp" line="41"/>
         <source>Saw Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="55"/>
+        <location filename="../m_lfo.cpp" line="42"/>
         <source>Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="56"/>
+        <location filename="../m_lfo.cpp" line="43"/>
         <source>S &amp; H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="58"/>
+        <location filename="../m_lfo.cpp" line="45"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="59"/>
+        <location filename="../m_lfo.cpp" line="46"/>
         <source>Phi0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -709,12 +728,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="48"/>
+        <location filename="../m_mcv.cpp" line="45"/>
         <source>Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="49"/>
+        <location filename="../m_mcv.cpp" line="46"/>
         <source>Pitch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1175,43 +1194,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="63"/>
+        <location filename="../m_scmcv.cpp" line="59"/>
         <source>Scale Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="64"/>
+        <location filename="../m_scmcv.cpp" line="60"/>
         <source>Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="65"/>
+        <location filename="../m_scmcv.cpp" line="61"/>
         <source>Pitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="67"/>
-        <location filename="../m_scmcv.cpp" line="176"/>
+        <location filename="../m_scmcv.cpp" line="63"/>
+        <location filename="../m_scmcv.cpp" line="172"/>
         <source>   Scale: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="69"/>
+        <location filename="../m_scmcv.cpp" line="65"/>
         <source>Load Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="156"/>
+        <location filename="../m_scmcv.cpp" line="152"/>
         <source>Load Scala</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="157"/>
+        <location filename="../m_scmcv.cpp" line="153"/>
         <source>Scala files (*.scl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="172"/>
+        <location filename="../m_scmcv.cpp" line="168"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1328,18 +1347,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scquantizer.cpp" line="51"/>
-        <location filename="../m_scquantizer.cpp" line="204"/>
+        <location filename="../m_scquantizer.cpp" line="46"/>
+        <location filename="../m_scquantizer.cpp" line="199"/>
         <source>   Scale: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scquantizer.cpp" line="185"/>
+        <location filename="../m_scquantizer.cpp" line="180"/>
         <source>Load Scala</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scquantizer.cpp" line="200"/>
+        <location filename="../m_scquantizer.cpp" line="195"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1419,22 +1438,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="29"/>
+        <location filename="../m_slew.cpp" line="28"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="31"/>
+        <location filename="../m_slew.cpp" line="30"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="34"/>
+        <location filename="../m_slew.cpp" line="33"/>
         <source>Time Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="35"/>
+        <location filename="../m_slew.cpp" line="34"/>
         <source>Time Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1682,92 +1701,92 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="29"/>
+        <location filename="../m_vcdoubledecay.cpp" line="28"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="30"/>
+        <location filename="../m_vcdoubledecay.cpp" line="29"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="31"/>
+        <location filename="../m_vcdoubledecay.cpp" line="30"/>
         <source>Attack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="32"/>
+        <location filename="../m_vcdoubledecay.cpp" line="31"/>
         <source>Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="33"/>
+        <location filename="../m_vcdoubledecay.cpp" line="32"/>
         <source>Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="34"/>
+        <location filename="../m_vcdoubledecay.cpp" line="33"/>
         <source>Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="35"/>
+        <location filename="../m_vcdoubledecay.cpp" line="34"/>
         <source>Ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="37"/>
+        <location filename="../m_vcdoubledecay.cpp" line="36"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="60"/>
+        <location filename="../m_vcdoubledecay.cpp" line="47"/>
         <source>Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="61"/>
+        <location filename="../m_vcdoubledecay.cpp" line="48"/>
         <source>Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="62"/>
+        <location filename="../m_vcdoubledecay.cpp" line="49"/>
         <source>Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="63"/>
+        <location filename="../m_vcdoubledecay.cpp" line="50"/>
         <source>Ratio Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="64"/>
+        <location filename="../m_vcdoubledecay.cpp" line="51"/>
         <source>Release Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="65"/>
+        <location filename="../m_vcdoubledecay.cpp" line="52"/>
         <source>Attack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="66"/>
+        <location filename="../m_vcdoubledecay.cpp" line="53"/>
         <source>Decay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="67"/>
+        <location filename="../m_vcdoubledecay.cpp" line="54"/>
         <source>Sustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="68"/>
+        <location filename="../m_vcdoubledecay.cpp" line="55"/>
         <source>Ratio Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcdoubledecay.cpp" line="69"/>
+        <location filename="../m_vcdoubledecay.cpp" line="56"/>
         <source>Release Gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1780,97 +1799,97 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="29"/>
+        <location filename="../m_vcenv.cpp" line="28"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="30"/>
+        <location filename="../m_vcenv.cpp" line="29"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="31"/>
+        <location filename="../m_vcenv.cpp" line="30"/>
         <source>Attack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="32"/>
+        <location filename="../m_vcenv.cpp" line="31"/>
         <source>Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="33"/>
+        <location filename="../m_vcenv.cpp" line="32"/>
         <source>Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="34"/>
+        <location filename="../m_vcenv.cpp" line="33"/>
         <source>Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="36"/>
+        <location filename="../m_vcenv.cpp" line="35"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="55"/>
+        <location filename="../m_vcenv.cpp" line="46"/>
         <source>Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="56"/>
+        <location filename="../m_vcenv.cpp" line="47"/>
         <source>Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="57"/>
+        <location filename="../m_vcenv.cpp" line="48"/>
         <source>Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="58"/>
+        <location filename="../m_vcenv.cpp" line="49"/>
         <source>Release Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="59"/>
+        <location filename="../m_vcenv.cpp" line="50"/>
         <source>Attack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="60"/>
+        <location filename="../m_vcenv.cpp" line="51"/>
         <source>Decay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="61"/>
+        <location filename="../m_vcenv.cpp" line="52"/>
         <source>Sustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="62"/>
+        <location filename="../m_vcenv.cpp" line="53"/>
         <source>Release Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="67"/>
+        <location filename="../m_vcenv.cpp" line="58"/>
         <source>Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="69"/>
+        <location filename="../m_vcenv.cpp" line="60"/>
         <source>Linear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="70"/>
+        <location filename="../m_vcenv.cpp" line="61"/>
         <source>Exponential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv.cpp" line="71"/>
+        <location filename="../m_vcenv.cpp" line="62"/>
         <source>Decay/Release Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1883,77 +1902,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="29"/>
+        <location filename="../m_vcenv2.cpp" line="28"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="30"/>
+        <location filename="../m_vcenv2.cpp" line="29"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="31"/>
+        <location filename="../m_vcenv2.cpp" line="30"/>
         <source>Attack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="32"/>
+        <location filename="../m_vcenv2.cpp" line="31"/>
         <source>Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="33"/>
+        <location filename="../m_vcenv2.cpp" line="32"/>
         <source>Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="34"/>
+        <location filename="../m_vcenv2.cpp" line="33"/>
         <source>Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="36"/>
+        <location filename="../m_vcenv2.cpp" line="35"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="53"/>
+        <location filename="../m_vcenv2.cpp" line="45"/>
         <source>Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="54"/>
+        <location filename="../m_vcenv2.cpp" line="46"/>
         <source>Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="55"/>
+        <location filename="../m_vcenv2.cpp" line="47"/>
         <source>Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="56"/>
+        <location filename="../m_vcenv2.cpp" line="48"/>
         <source>Release Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="57"/>
+        <location filename="../m_vcenv2.cpp" line="49"/>
         <source>Attack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="58"/>
+        <location filename="../m_vcenv2.cpp" line="50"/>
         <source>Decay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="59"/>
+        <location filename="../m_vcenv2.cpp" line="51"/>
         <source>Sustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcenv2.cpp" line="60"/>
+        <location filename="../m_vcenv2.cpp" line="52"/>
         <source>Release Gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2075,119 +2094,119 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="41"/>
+        <location filename="../m_vco.cpp" line="37"/>
         <source>Freq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="42"/>
+        <location filename="../m_vco.cpp" line="38"/>
         <source>Exp. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="43"/>
+        <location filename="../m_vco.cpp" line="39"/>
         <source>Lin. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="44"/>
-        <location filename="../m_vco.cpp" line="61"/>
+        <location filename="../m_vco.cpp" line="40"/>
+        <location filename="../m_vco.cpp" line="57"/>
         <source>PW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="47"/>
+        <location filename="../m_vco.cpp" line="43"/>
         <source>Sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="48"/>
+        <location filename="../m_vco.cpp" line="44"/>
         <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="49"/>
-        <location filename="../m_vco.cpp" line="67"/>
+        <location filename="../m_vco.cpp" line="45"/>
+        <location filename="../m_vco.cpp" line="63"/>
         <source>Saw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="50"/>
+        <location filename="../m_vco.cpp" line="46"/>
         <source>Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="51"/>
+        <location filename="../m_vco.cpp" line="47"/>
         <source>Aux</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="54"/>
+        <location filename="../m_vco.cpp" line="50"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="55"/>
+        <location filename="../m_vco.cpp" line="51"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="56"/>
+        <location filename="../m_vco.cpp" line="52"/>
         <source>Tune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="57"/>
+        <location filename="../m_vco.cpp" line="53"/>
         <source>Harmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="58"/>
+        <location filename="../m_vco.cpp" line="54"/>
         <source>Subharmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="60"/>
+        <location filename="../m_vco.cpp" line="56"/>
         <source>Pulse Width / Phase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="62"/>
+        <location filename="../m_vco.cpp" line="58"/>
         <source>PW Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="63"/>
+        <location filename="../m_vco.cpp" line="59"/>
         <source>Phi0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="65"/>
+        <location filename="../m_vco.cpp" line="61"/>
         <source>Modulation / Aux Waveform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="68"/>
+        <location filename="../m_vco.cpp" line="64"/>
         <source>Saw 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="69"/>
+        <location filename="../m_vco.cpp" line="65"/>
         <source>Saw 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="70"/>
+        <location filename="../m_vco.cpp" line="66"/>
         <source>Aux Wave Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="71"/>
+        <location filename="../m_vco.cpp" line="67"/>
         <source>Exp. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco.cpp" line="72"/>
+        <location filename="../m_vco.cpp" line="68"/>
         <source>Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2200,123 +2219,123 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="38"/>
+        <location filename="../m_vco2.cpp" line="34"/>
         <source>Freq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="39"/>
+        <location filename="../m_vco2.cpp" line="35"/>
         <source>Exp. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="40"/>
+        <location filename="../m_vco2.cpp" line="36"/>
         <source>Lin. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="41"/>
-        <location filename="../m_vco2.cpp" line="69"/>
+        <location filename="../m_vco2.cpp" line="37"/>
+        <location filename="../m_vco2.cpp" line="65"/>
         <source>PW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="44"/>
+        <location filename="../m_vco2.cpp" line="40"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="53"/>
+        <location filename="../m_vco2.cpp" line="49"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="55"/>
+        <location filename="../m_vco2.cpp" line="51"/>
         <source>Sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="56"/>
+        <location filename="../m_vco2.cpp" line="52"/>
         <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="57"/>
+        <location filename="../m_vco2.cpp" line="53"/>
         <source>Sawtooth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="58"/>
+        <location filename="../m_vco2.cpp" line="54"/>
         <source>Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="59"/>
+        <location filename="../m_vco2.cpp" line="55"/>
         <source>Aux Saw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="60"/>
+        <location filename="../m_vco2.cpp" line="56"/>
         <source>Aux Saw 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="61"/>
+        <location filename="../m_vco2.cpp" line="57"/>
         <source>Aux Saw 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="62"/>
+        <location filename="../m_vco2.cpp" line="58"/>
         <source>Wave Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="63"/>
+        <location filename="../m_vco2.cpp" line="59"/>
         <source>Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="64"/>
+        <location filename="../m_vco2.cpp" line="60"/>
         <source>Tune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="65"/>
+        <location filename="../m_vco2.cpp" line="61"/>
         <source>Harmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="66"/>
+        <location filename="../m_vco2.cpp" line="62"/>
         <source>Subharmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="68"/>
+        <location filename="../m_vco2.cpp" line="64"/>
         <source>Pulse Width / Phase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="70"/>
+        <location filename="../m_vco2.cpp" line="66"/>
         <source>PW Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="71"/>
+        <location filename="../m_vco2.cpp" line="67"/>
         <source>Phi0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="74"/>
+        <location filename="../m_vco2.cpp" line="70"/>
         <source>Modulation / Aux Waveform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="75"/>
+        <location filename="../m_vco2.cpp" line="71"/>
         <source>Exp. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vco2.cpp" line="77"/>
+        <location filename="../m_vco2.cpp" line="73"/>
         <source>Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3311,38 +3330,28 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1124"/>
+        <location filename="../modularsynth.cpp" line="1144"/>
         <source>Load Colors</source>
-        <translation>Farben lasen</translation>
+        <translation type="unfinished">Farben lasen</translation>
     </message>
     <message>
         <source>AlsaModularSynth Color files (*.acs)</source>
         <translation type="obsolete">Farbschemadateien (*.acs)</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1132"/>
+        <location filename="../modularsynth.cpp" line="1152"/>
         <source>Could not open file.</source>
-        <translation>Konnte Datei nicht öffnen.</translation>
+        <translation type="unfinished">Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1166"/>
+        <location filename="../modularsynth.cpp" line="1186"/>
         <source>Save Colors</source>
-        <translation>Farben speichern</translation>
+        <translation type="unfinished">Farben speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1178"/>
+        <location filename="../modularsynth.cpp" line="1198"/>
         <source>Could not save file.</source>
-        <translation>Konnte Datei nicht speichern.</translation>
-    </message>
-    <message>
-        <location filename="../modularsynth.cpp" line="1263"/>
-        <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../modularsynth.cpp" line="1737"/>
-        <source>Unknown MIDI controller tag found: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Konnte Datei nicht speichern.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="304"/>
@@ -3350,19 +3359,29 @@ Save changes?</source>
         <translation>Über </translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1480"/>
-        <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
+        <location filename="../modularsynth.cpp" line="1145"/>
+        <location filename="../modularsynth.cpp" line="1187"/>
+        <source>AlsaModularSynth Color files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1257"/>
+        <location filename="../modularsynth.cpp" line="1277"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1125"/>
-        <location filename="../modularsynth.cpp" line="1167"/>
-        <source>AlsaModularSynth Color files</source>
+        <location filename="../modularsynth.cpp" line="1283"/>
+        <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modularsynth.cpp" line="1500"/>
+        <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modularsynth.cpp" line="1757"/>
+        <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3609,22 +3628,22 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="384"/>
+        <location filename="../modularsynth.cpp" line="386"/>
         <source>Error creating sequencer write port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="393"/>
+        <location filename="../modularsynth.cpp" line="395"/>
         <source>Error creating sequencer read port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="953"/>
+        <location filename="../modularsynth.cpp" line="973"/>
         <source>All available output ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="971"/>
+        <location filename="../modularsynth.cpp" line="991"/>
         <source>All available input ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3633,57 +3652,57 @@ Save changes?</source>
         <translation type="obsolete">Keine Verbindung möglich.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1773"/>
+        <location filename="../modularsynth.cpp" line="1793"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1789"/>
+        <location filename="../modularsynth.cpp" line="1809"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1804"/>
+        <location filename="../modularsynth.cpp" line="1824"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1813"/>
+        <location filename="../modularsynth.cpp" line="1833"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1879"/>
+        <location filename="../modularsynth.cpp" line="1899"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="392"/>
+        <location filename="../synthdata.cpp" line="393"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="399"/>
+        <location filename="../synthdata.cpp" line="400"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="408"/>
+        <location filename="../synthdata.cpp" line="409"/>
         <source>Closing ALSA...</source>
         <translation>Schließe ALSA-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="501"/>
+        <location filename="../synthdata.cpp" line="502"/>
         <source>Can&apos;t connect to JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="524"/>
+        <location filename="../synthdata.cpp" line="525"/>
         <source>Can&apos;t activate JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="536"/>
+        <location filename="../synthdata.cpp" line="537"/>
         <source>Closing JACK...</source>
         <translation>Schließe JACK-Verbindung...</translation>
     </message>
