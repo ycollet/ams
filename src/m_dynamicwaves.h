@@ -19,15 +19,14 @@ class M_dynamicwaves : public Module
     float attack[8][MODULE_DYNAMICWAVES_MAX_OSC], sustain[MODULE_DYNAMICWAVES_MAX_OSC];
     float release[5][MODULE_DYNAMICWAVES_MAX_OSC];
     float timeScale;
-    float e_noteOff[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];    
-    float de[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
-    float de_release[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
+    PolyArr<float[MODULE_DYNAMICWAVES_MAX_OSC]> e_noteOff, de, de_release;
     float tune, osc_tune[MODULE_DYNAMICWAVES_MAX_OSC], gain[MODULE_DYNAMICWAVES_MAX_OSC];
     int octave, osc_octave[MODULE_DYNAMICWAVES_MAX_OSC];
     int harmonic[MODULE_DYNAMICWAVES_MAX_OSC], subharmonic[MODULE_DYNAMICWAVES_MAX_OSC];
     int waveForm[MODULE_DYNAMICWAVES_MAX_OSC];
     float expFMGain, linFMGain;
-    float phi0[MODULE_DYNAMICWAVES_MAX_OSC], phi[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
+    float phi0[MODULE_DYNAMICWAVES_MAX_OSC];
+    PolyArr<float[MODULE_DYNAMICWAVES_MAX_OSC]> phi;
     float wave_period;
     bool allEnvTerminated;
     Port *port_M_freq, *port_M_exp, *port_M_lin, *port_gate, *port_retrigger;
@@ -35,11 +34,10 @@ class M_dynamicwaves : public Module
                     
   public: 
     int oscCount;
-    float e[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC]; 
+    PolyArr<float[MODULE_DYNAMICWAVES_MAX_OSC]> e; 
     PolyArr<bool> noteActive, gate, retrigger;
-    bool oscActive[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
-    long noteOnOfs[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC]; 
-    long noteOffOfs[MAXPOLY][MODULE_DYNAMICWAVES_MAX_OSC];
+    PolyArr<bool[MODULE_DYNAMICWAVES_MAX_OSC]> oscActive;
+    PolyArr<long[MODULE_DYNAMICWAVES_MAX_OSC]> noteOnOfs, noteOffOfs;
     float **gateData;
     float **retriggerData;
     float **freqData;        

@@ -22,7 +22,7 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
           tr("DynamicWaves %1").arg(p_oscCount))
 {
   QString qs;
-  int l1, l2;
+  int l1;
   QVBoxLayout *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
   QVBoxLayout *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
 
@@ -57,16 +57,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
     release[2][l1] = 0.01;
     release[3][l1] = 0.5;
     release[4][l1] = 0.01;
-  }
-  for (l1 = 0; l1 < MAXPOLY; l1++) {
-    for (l2 = 0; l2 < oscCount; l2++) {
-      phi[l1][l2] = 0;
-      oscActive[l1][l2] = false;
-      noteOnOfs[l1][l2] = 0;
-      noteOffOfs[l1][l2] = 0;
-      e[l1][l2] = 0;
-      de[l1][l2] = 0;
-    }
   }
   port_M_freq = new Port("Freq", PORT_IN, 0, this);
   port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);

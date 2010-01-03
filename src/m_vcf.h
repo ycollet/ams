@@ -24,7 +24,7 @@ class M_vcf : public Module
     float pi2_rate,inv2_rate;
     float freq_tune, gain_linfm, qr, moog_f, revMoog, moog2times;
     double b_noise;
-     double in[5][MAXPOLY], buf[5][MAXPOLY];
+    PolyArr<double[5]> in, buf;
    
 
     int vcfType;

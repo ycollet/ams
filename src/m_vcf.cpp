@@ -23,7 +23,6 @@ M_vcf::M_vcf(QWidget* parent)
   freq = 5;
   resonance = 0.8;
   dBgain = 3.0;
-  initBuf(0);
   freq_const = 2.85f / 20000.0f;
   fInvertRandMax= 1.0f/(float)RAND_MAX ;
 b_noise = 19.1919191919191919191919191919191919191919;
@@ -57,16 +56,10 @@ b_noise = 19.1919191919191919191919191919191919191919;
   configDialog->addSlider(tr("Resonance Gain"), resonanceGain, 0, 1);
 }
 
-void M_vcf::initBuf(int) {
-
-  int l1, l2;
-
-  for (l1 = 0; l1 < MAXPOLY; ++l1) {
-    for (l2 = 0; l2 < 5; ++l2) {
-      buf[l2][l1] = 0;   
-      in[l2][l1] = 0;
-    }
-  }
+void M_vcf::initBuf(int)
+{
+  buf.Set0();
+  in.Set0();
 }
 
 void M_vcf::generateCycle() {
@@ -107,9 +100,9 @@ void M_vcf::generateCycle() {
 		b_noiseout = b_noise - 1.5;// was 0.5
 		b_noise = b_noise + 19.0;
 
-            buf[0][l1] = fa * buf[0][l1] + f * (gain * inData[l1][l2] + fb * (buf[0][l1] - buf[1][l1]) + 0.00001 * b_noiseout);// ((float)rand() * fInvertRandMax - 1.0f));
-            buf[1][l1] = fa * buf[1][l1] + f * buf[0][l1];
-            data[0][l1][l2] = buf[1][l1];
+            buf[l1][0] = fa * buf[l1][0] + f * (gain * inData[l1][l2] + fb * (buf[l1][0] - buf[l1][1]) + 0.00001 * b_noiseout);// ((float)rand() * fInvertRandMax - 1.0f));
+            buf[l1][1] = fa * buf[l1][1] + f * buf[l1][0];
+            data[0][l1][l2] = buf[l1][1];
           }
         }
         break;
@@ -140,13 +133,13 @@ void M_vcf::generateCycle() {
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos; 
             a2 = 1.0 - iv_alpha;
-            temp = 1.0 / a0 * (b0 * gain * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
-                                       - a1 * buf[2][l1] - a2 * buf[3][l1]);
+            temp = 1.0 / a0 * (b0 * gain * inData[l1][l2] + b1 * buf[l1][0] + b2 * buf[l1][1]
+                                       - a1 * buf[l1][2] - a2 * buf[l1][3]);
             data[0][l1][l2]=temp;
-	    buf[1][l1] = buf[0][l1];                          
-            buf[0][l1] = gain * inData[l1][l2];
-            buf[3][l1] = buf[2][l1];
-            buf[2][l1] = temp;//data[0][l1][l2];
+	    buf[l1][1] = buf[l1][0];                          
+            buf[l1][0] = gain * inData[l1][l2];
+            buf[l1][3] = buf[l1][2];
+            buf[l1][2] = temp;//data[0][l1][l2];
           }
         } 
         break;
@@ -176,13 +169,13 @@ void M_vcf::generateCycle() {
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos; 
             a2 = 1.0 - iv_alpha;
-            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
-                                       - a1 * buf[2][l1] - a2 * buf[3][l1]);
+            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[l1][0] + b2 * buf[l1][1]
+                                       - a1 * buf[l1][2] - a2 * buf[l1][3]);
             data[0][l1][l2]=temp;
-	    buf[1][l1] = buf[0][l1];                          
-            buf[0][l1] = gain * inData[l1][l2];
-            buf[3][l1] = buf[2][l1];
-            buf[2][l1] = temp;//data[0][l1][l2];
+	    buf[l1][1] = buf[l1][0];                          
+            buf[l1][0] = gain * inData[l1][l2];
+            buf[l1][3] = buf[l1][2];
+            buf[l1][2] = temp;//data[0][l1][l2];
           }
         } 
         break;
@@ -213,13 +206,13 @@ void M_vcf::generateCycle() {
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
              
-	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
-                                       - a1 * buf[2][l1] - a2 * buf[3][l1]);
+	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[l1][0] + b2 * buf[l1][1]
+                                       - a1 * buf[l1][2] - a2 * buf[l1][3]);
             data[0][l1][l2]=temp;
-	    buf[1][l1] = buf[0][l1];                          
-            buf[0][l1] = gain * inData[l1][l2];
-            buf[3][l1] = buf[2][l1];
-            buf[2][l1] = temp;//data[0][l1][l2];
+	    buf[l1][1] = buf[l1][0];                          
+            buf[l1][0] = gain * inData[l1][l2];
+            buf[l1][3] = buf[l1][2];
+            buf[l1][2] = temp;//data[0][l1][l2];
           }
         } 
         break;
@@ -248,13 +241,13 @@ void M_vcf::generateCycle() {
             a0 = 1.0 + iv_alpha;
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
-            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
-                                       - a1 * buf[2][l1] - a2 * buf[3][l1]);
+            temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[l1][0] + b2 * buf[l1][1]
+                                       - a1 * buf[l1][2] - a2 * buf[l1][3]);
             data[0][l1][l2] = temp;
-	    buf[1][l1] = buf[0][l1];                          
-            buf[0][l1] = gain * inData[l1][l2];
-            buf[3][l1] = buf[2][l1];
-            buf[2][l1] = temp;//data[0][l1][l2];
+	    buf[l1][1] = buf[l1][0];                          
+            buf[l1][0] = gain * inData[l1][l2];
+            buf[l1][3] = buf[l1][2];
+            buf[l1][2] = temp;//data[0][l1][l2];
           }
         } 
         break;
@@ -284,13 +277,13 @@ void M_vcf::generateCycle() {
             a1 = -2.0 * iv_cos;
             a2 = 1.0 - iv_alpha;
             
-	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[0][l1] + b2 * buf[1][l1]
-                                       - a1 * buf[2][l1] - a2 * buf[3][l1]);
+	    temp = 1.0 / a0 * (gain * b0 * inData[l1][l2] + b1 * buf[l1][0] + b2 * buf[l1][1]
+                                       - a1 * buf[l1][2] - a2 * buf[l1][3]);
 	    data[0][l1][l2] = temp;// conversion	
-            buf[1][l1] = buf[0][l1];                          
-            buf[0][l1] = gain * inData[l1][l2];
-            buf[3][l1] = buf[2][l1];
-            buf[2][l1] = temp;//data[0][l1][l2];
+            buf[l1][1] = buf[l1][0];                          
+            buf[l1][0] = gain * inData[l1][l2];
+            buf[l1][3] = buf[l1][2];
+            buf[l1][2] = temp;//data[0][l1][l2];
           }
         } 
         break;
@@ -324,18 +317,18 @@ void M_vcf::generateCycle() {
 		b_noiseout = b_noise - 1.5; // was - 0.5 now with - 1.0
 
 		b_noise = b_noise + 19.0;
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//((float)rand() * fInvertRandMax - 1.0);
-            in[0][l1] -= fb * buf[4][l1];
-            in[0][l1] *=0.35013 * (moog2times * moog2times);
-            buf[1][l1] = in[0][l1] + 0.3 * in[1][l1] + revMoog * buf[1][l1];
-            in[1][l1] = in[0][l1];
-            buf[2][l1] = buf[1][l1] + 0.3 * in[2][l1] + revMoog * buf[2][l1];
-            in[2][l1] = buf[1][l1]; 
-            buf[3][l1] = buf[2][l1] + 0.3 * in[3][l1] + revMoog * buf[3][l1];
-            in[3][l1] = buf[2][l1];
-            buf[4][l1] = buf[3][l1] + 0.3 * in[4][l1] + revMoog * buf[4][l1];
-            in[4][l1] = buf[3][l1];
-            data[0][l1][l2] = buf[4][l1];
+            in[l1][0] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//((float)rand() * fInvertRandMax - 1.0);
+            in[l1][0] -= fb * buf[l1][4];
+            in[l1][0] *=0.35013 * (moog2times * moog2times);
+            buf[l1][1] = in[l1][0] + 0.3 * in[l1][1] + revMoog * buf[l1][1];
+            in[l1][1] = in[l1][0];
+            buf[l1][2] = buf[l1][1] + 0.3 * in[l1][2] + revMoog * buf[l1][2];
+            in[l1][2] = buf[l1][1]; 
+            buf[l1][3] = buf[l1][2] + 0.3 * in[l1][3] + revMoog * buf[l1][3];
+            in[l1][3] = buf[l1][2];
+            buf[l1][4] = buf[l1][3] + 0.3 * in[l1][4] + revMoog * buf[l1][4];
+            in[l1][4] = buf[l1][3];
+            data[0][l1][l2] = buf[l1][4];
           }
         }  
         break;
@@ -371,20 +364,20 @@ void M_vcf::generateCycle() {
 
 		b_noise = b_noise + 19.0;
 
-            in[0][l1] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//* ((float)rand() * fInvertRandMax - 1.0);
-            in[0][l1] -= q * buf[4][l1];
-            if (in[0][l1] < -1.0) in[0][l1] = -1.0;
-            if (in[0][l1] > 1.0) in[0][l1] = 1.0;        
-            t1 = buf[1][l1];
-            buf[1][l1] = (in[0][l1] + buf[0][l1]) * p - buf[1][l1] * fa;
-            t2 = buf[2][l1];
-            buf[2][l1] = (buf[1][l1] + t1) * p - buf[2][l1] * fa;
-            t1 = buf[3][l1];
-            buf[3][l1] = (buf[2][l1] + t2) * p - buf[3][l1] * fa;
-            buf[4][l1] = (buf[3][l1] + t1) * p - buf[4][l1] * fa;
-            buf[4][l1] -= buf[4][l1] * buf[4][l1] * buf[4][l1] * 0.166667;
-            buf[0][l1] = in[0][l1];
-            data[0][l1][l2] = buf[4][l1];
+            in[l1][0] = gain * inData[l1][l2] + 0.000001 * b_noiseout;//* ((float)rand() * fInvertRandMax - 1.0);
+            in[l1][0] -= q * buf[l1][4];
+            if (in[l1][0] < -1.0) in[l1][0] = -1.0;
+            if (in[l1][0] > 1.0) in[l1][0] = 1.0;        
+            t1 = buf[l1][1];
+            buf[l1][1] = (in[l1][0] + buf[l1][0]) * p - buf[l1][1] * fa;
+            t2 = buf[l1][2];
+            buf[l1][2] = (buf[l1][1] + t1) * p - buf[l1][2] * fa;
+            t1 = buf[l1][3];
+            buf[l1][3] = (buf[l1][2] + t2) * p - buf[l1][3] * fa;
+            buf[l1][4] = (buf[l1][3] + t1) * p - buf[l1][4] * fa;
+            buf[l1][4] -= buf[l1][4] * buf[l1][4] * buf[l1][4] * 0.166667;
+            buf[l1][0] = in[l1][0];
+            data[0][l1][l2] = buf[l1][4];
           }
         }
         break;
