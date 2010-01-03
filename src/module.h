@@ -159,11 +159,14 @@ template <typename tn> class PolyArr {
   tn D[MAXPOLY];
 public:
   PolyArr() {
-    memset(D, 0, sizeof(D));
+    Set0();
   }
   PolyArr(tn v) {
     for (int i = 0; i < MAXPOLY; ++i)
       D[i] = v;
+  }
+  void Set0() {
+    memset(D, 0, sizeof(D));
   }
   tn &operator [] (unsigned u) {
     return D[u];
