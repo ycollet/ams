@@ -15,6 +15,8 @@
 
 M_vcf::M_vcf(QWidget* parent) 
   : Module(M_type_vcf, 1, parent, tr("VCF"))
+  , vcfType(VCF_LR)
+  , vcfTypeUsed(-1)
 {
   QString qs;
 
@@ -47,7 +49,6 @@ b_noise = 19.1919191919191919191919191919191919191919;
   vcfTypeNames << tr("24 dB Lowpass I");
   vcfTypeNames << tr("24 dB Lowpass II");
   configDialog->addComboBox(tr("VCF Type"), vcfType, vcfTypeNames);
-  QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox, SIGNAL(highlighted(int)), this, SLOT(initBuf(int)));
   configDialog->addSlider(tr("Input Gain"), gain, 0, 10);
   configDialog->addSlider(tr("Frequency"), freq, 0, 10);
   configDialog->addSlider(tr("Exp. FM Gain"), vcfExpFMGain, 0, 10);
@@ -56,7 +57,7 @@ b_noise = 19.1919191919191919191919191919191919191919;
   configDialog->addSlider(tr("Resonance Gain"), resonanceGain, 0, 1);
 }
 
-void M_vcf::initBuf(int)
+void M_vcf::initBuf()
 {
   buf.Set0();
   in.Set0();
@@ -67,14 +68,18 @@ void M_vcf::generateCycle() {
   int l1;
   unsigned int l2;
    double t1, t2, fa, fb, q0, f, q, p, iv_sin, iv_cos, iv_alpha, a0, a1, a2, b0, b1, b2;
+   float **inData, **resonanceData, **freqData, **linFMData, **expFMData;       
 
     inData = port_M_in->getinputdata();
     freqData = port_M_freq->getinputdata();
     expFMData = port_M_exp->getinputdata();
     linFMData = port_M_lin->getinputdata();
     resonanceData = port_M_resonance->getinputdata();
-
-    switch (vcfType) {
+    if (vcfTypeUsed != vcfType) {
+      initBuf();
+      vcfTypeUsed = vcfType;
+    }
+    switch (vcfTypeUsed) {
       case VCF_LR:
        {
         double b_noiseout;

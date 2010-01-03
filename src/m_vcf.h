@@ -27,18 +27,15 @@ class M_vcf : public Module
     PolyArr<double[5]> in, buf;
    
 
-    int vcfType;
+    int vcfType, vcfTypeUsed;
     Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp, *port_M_lin, *port_out;
-  public: 
-    float **inData, **resonanceData, **freqData, **linFMData, **expFMData;       
                             
+    void generateCycle();
+    void initBuf();
+
   public:
     M_vcf(QWidget* parent=0);
                                       
-    void generateCycle();
-
-  public slots:
-    void initBuf(int index);
 };
   
 #endif
