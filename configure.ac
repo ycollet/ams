@@ -67,13 +67,29 @@ AC_CHECK_LIB([QtOpenGL], [main], ,
              [AC_MSG_ERROR(QtOpenGL is required)])
 AC_CHECK_LIB([asound], [snd_pcm_open], ,
              [AC_MSG_ERROR(asound is required)])
-AC_CHECK_LIB([clalsadrv], [main], ,
-             [AC_MSG_ERROR(clalsadrv is required)])
 AC_CHECK_LIB([jack], [jack_client_new], ,
              [AC_MSG_ERROR(jack is required)])
 AC_CHECK_LIB([pthread], [pthread_create], ,
              [AC_MSG_ERROR(pthread is required)])
 AC_CHECK_LIB([m], [roundf], , AC_MSG_ERROR([required libm missing]))
+AC_CHECK_LIB([clalsadrv], [main], ,
+             [AC_MSG_ERROR(clalsadrv is required)])
+
+dnl check for clalsadrv library version
+AC_LANG_PUSH(C++)
+saved_libs="$LDFLAGS"
+LDFLAGS="$LDFLAGS -lclalsadrv"
+AC_MSG_CHECKING([for API 2.0.0 version of libclalsadrv])
+AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM([#include <clalsadrv.h>],
+    [Alsa_driver ad = Alsa_driver("play", "capt","ctrl", 0, 0, 0)])],
+    [HAVE_CLALSADRV_API2=1] [AC_SUBST(HAVE_CLALSADRV_API2)]
+    [AC_MSG_RESULT([yes])],
+    [AC_MSG_RESULT([no])])
+
+AC_LANG_POP(C++)
+LDFLAGS="$saved_libs"
+
 
 PKG_CHECK_MODULES(QT, QtCore QtGui >= 4.2.0, HAVE_QT4="yes", HAVE_QT4="no")
 if test "x$HAVE_QT4" = "xyes"; then

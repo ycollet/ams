@@ -3296,7 +3296,7 @@ Save changes?</source>
         <translation>&amp;Inverser Signe MIDI</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="511"/>
+        <location filename="../midiwidget.cpp" line="512"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation>Ceci effacera tous les presets pour cette configuration. Continuer?</translation>
     </message>

@@ -1,3 +1,7 @@
+2010-10-24 Guido Scholz <guido.scholz@bayernline.de>
+	* configure.ac, src/synthdata.cpp: Basic support for libclalsadrv
+	API version 2.0.0.
+
 2010-01-03 Karsten Wiese <fzuuzf@googlemail.com>
 	* src/m_dynamicwaves.*, src/m_vcf.*:
 	Replace 2D [MAXPOLY] arrays by PolyArr<> to ensure initialization.

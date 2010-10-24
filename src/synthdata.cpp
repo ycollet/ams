@@ -355,7 +355,12 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     ncapt &= ~1;
     nplay &= ~1;
 
-    alsa_handle = new Alsa_driver (name, fsamp, frsize, nfrags, nplay > 0, ncapt > 0, false);
+#ifdef HAVE_CLALSADRV_API2
+    alsa_handle = new Alsa_driver(name, name, 0, fsamp, frsize, nfrags);
+#else
+    alsa_handle = new Alsa_driver(name, fsamp, frsize, nfrags,
+            nplay > 0, ncapt > 0, false);
+#endif
     if (alsa_handle->stat () < 0)
     {
         fprintf (stderr, "Can't connect to ALSA\n");

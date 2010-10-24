@@ -3282,7 +3282,7 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="511"/>
+        <location filename="../midiwidget.cpp" line="512"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
