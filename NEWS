@@ -2,6 +2,7 @@ ams-2.0.2 (201?-??-??)
 
   Fixed Bugs
     o armel compile error (debian #570848)
+    o Prevent crash if jack handle is NULL (lp #553366)
 
   New Features
     o SIGUSR1 handler added to enable LADI session handling on
