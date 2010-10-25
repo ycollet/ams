@@ -537,15 +537,34 @@ int SynthData::initJack (int ncapt, int nplay)
     return 0;
 }
 
-int SynthData::closeJack ()
+int SynthData::closeJack()
 {
+    int result;
+
+    if (jack_handle == NULL)
+        return 0;
+
     qWarning("%s", QObject::tr("Closing JACK...").toUtf8().constData());
-    jack_deactivate (jack_handle);
-    for (int i = 0; i < play_ports; i++)
-        jack_port_unregister(jack_handle, jack_out[i]);
-    for (int i = 0; i < capt_ports; i++)
-        jack_port_unregister(jack_handle, jack_in[i]);
-    jack_client_close(jack_handle);
+    
+    result = jack_deactivate(jack_handle);
+    if (result != 0) {
+        qWarning("JACK deactivation failed: %d.", result);
+        return 0;
+    }
+    
+    for (int i = 0; i < play_ports; i++) {
+        result = jack_port_unregister(jack_handle, jack_out[i]);
+        qWarning("JACK output port %d unregister failed: %d.", i, result);
+    }
+    for (int i = 0; i < capt_ports; i++) {
+        result = jack_port_unregister(jack_handle, jack_in[i]);
+        qWarning("JACK input port %d unregister failed: %d.", i, result);
+    }
+
+    result = jack_client_close(jack_handle);
+    if (result != 0) {
+        qWarning("JACK client close failed: %d.", result);
+    }
     return 0;
 }
 

@@ -2,6 +2,8 @@
 	* src/function.*, src/canvasfunction.*: Replace std::min/max by
 	generic Qt functions qMin/qMax; this should fix armel compile
 	error (reported for debian #570848).
+	* src/synthdata.cpp: Handle JACK close functions more carefully
+	with extended error messages.
 
 2010-10-24 Guido Scholz <guido.scholz@bayernline.de>
 	* configure.ac, src/synthdata.cpp: Basic support for libclalsadrv
@@ -16,7 +18,7 @@
 	Prevents click on filtertype switching.
 	
 2010-01-02 Karsten Wiese <fzuuzf@googlemail.com>
-	* template <typename tn> class PolyArr;
+	* module.h: template <typename tn> class PolyArr;
 	Replace simple [MAXPOLY] arrays by it to ensure initialization.
 
 2010-01-01 Karsten Wiese <fzuuzf@googlemail.com>

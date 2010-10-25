@@ -3742,7 +3742,7 @@ Save changes?</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="542"/>
+        <location filename="../synthdata.cpp" line="547"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>
