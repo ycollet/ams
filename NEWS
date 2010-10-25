@@ -1,9 +1,11 @@
 ams-2.0.2 (201?-??-??)
 
   Fixed Bugs
-    o
+    o armel compile error (debian #570848)
 
   New Features
+    o SIGUSR1 handler added to enable LADI session handling on
+      application level 1.
     o Basic support for libclalsadrv API version 2.0.0
 
   General Changes

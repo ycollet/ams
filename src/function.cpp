@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cmath>
 #include <qwidget.h>
 #include <qstring.h>
 #include <qpainter.h>
@@ -15,9 +13,13 @@
 #include <QPolygon>
 #include <QResizeEvent>
 #include <QMouseEvent>
-#include "function.h"
 #include <QGraphicsScene>
+
+#include "function.h"
 #include "canvasfunction.h"
+
+static const qreal SCALE = 5.0 * FUNCTION_SCALE;
+
 
 Function::Function(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &point, int p_pointCount, QWidget *parent, const char *name) 
   : QGraphicsView(new QGraphicsScene(), parent)
@@ -144,7 +146,7 @@ void Function::drawBackground(QPainter *painter, const QRectF &rect)
   {
     qreal y = ceil(rect.topLeft().y() * zoom / FUNCTION_SCALE);
     y *= FUNCTION_SCALE / zoom;
-    QLineF l(std::max(-5.0 * FUNCTION_SCALE, rect.topLeft().x()), y, std::min(5.0 * FUNCTION_SCALE, rect.topRight().x()), y);
+    QLineF l(qMax(-SCALE, rect.topLeft().x()), y, qMin(SCALE, rect.topRight().x()), y);
     while (l.y1() < rect.bottomLeft().y()) {
       painter->drawLine(l);
       painter->drawText(l.p1(), s.setNum(l.y1() / FUNCTION_SCALE));
@@ -154,13 +156,13 @@ void Function::drawBackground(QPainter *painter, const QRectF &rect)
   {
     qreal x = ceil(rect.topLeft().x() * zoom / FUNCTION_SCALE);
     x *= FUNCTION_SCALE / zoom;
-    QLineF l(x, std::max(-5.0 * FUNCTION_SCALE, rect.topLeft().y()), x, std::min(5.0 * FUNCTION_SCALE, rect.bottomLeft().y()));
+    QLineF l(x, qMax(-SCALE, rect.topLeft().y()), x, qMin(SCALE, rect.bottomLeft().y()));
     while (l.x1() < rect.bottomRight().x()) {
       painter->drawLine(l);
       painter->drawText(l.p1(), s.setNum(l.x1() / FUNCTION_SCALE));
-      std::cout << l.x1() << std::endl;
+      //std::cout << l.x1() << std::endl;
       l.translate((qreal)FUNCTION_SCALE / zoom, 0);
-      std::cout << l.x1() << std::endl;
+      //std::cout << l.x1() << std::endl;
     }
   }
 }
@@ -388,8 +390,8 @@ void Function::updateScale()
 #include <iostream>
 void Function::setPoint(int f_index, int p_index, int x, int y)
 {
-  std::cout << __PRETTY_FUNCTION__ << f_index << " " << p_index << " " <<
-    x << ", " << y << std::endl;
+  /*std::cout << __PRETTY_FUNCTION__ << f_index << " " << p_index << " " <<
+    x << ", " << y << std::endl;*/
 
   FunctionPointT &pf = point[f_index][p_index];
   pf.x = (float)(x - FUNCTION_CENTER_X) / FUNCTION_SCALE;

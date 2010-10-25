@@ -1,13 +1,13 @@
 #ifndef CANVASFUNCTION_H
 #define CANVASFUNCTION_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <qcolor.h>
 #include <QVector>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
+
 #include "function.h"
+
 
 class CanvasPoint: public QGraphicsEllipseItem {
   class CanvasFunction &canvasFunction;

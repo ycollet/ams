@@ -1,13 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <qpoint.h>
 #include <qbrush.h>
 #include <qpen.h>
-#include <algorithm>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+
 #include "function.h"
 #include "canvasfunction.h"
+
+static const qreal SCALE = 5.0 * FUNCTION_SCALE;
+
 
 CanvasPoint::CanvasPoint(class CanvasFunction &canvasFunction, int p)
   : QGraphicsEllipseItem(-0.07 * FUNCTION_SCALE, -0.07 * FUNCTION_SCALE,
@@ -34,19 +35,19 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
   qreal x = event->scenePos().x();
   qreal y = event->scenePos().y();
 
-  x = std::min(x, 5.0 * FUNCTION_SCALE);
-  x = std::max(x, -5.0 * FUNCTION_SCALE);
-  y = std::min(y, 5.0 * FUNCTION_SCALE);
-  y = std::max(y, -5.0 * FUNCTION_SCALE);
+  x = qMin(x, SCALE);
+  x = qMax(x, -SCALE);
+  y = qMin(y, SCALE);
+  y = qMax(y, -SCALE);
 
   switch (*function.mode) {
   case 0:
     {
       if (p > 0)
-	x = std::max(x, canvasPoints.at(p - 1)->scenePos().x());
+	x = qMax(x, canvasPoints.at(p - 1)->scenePos().x());
       
       if (p < function.pointCount - 1)
-	x = std::min(x, canvasPoints.at(p + 1)->scenePos().x());
+	x = qMin(x, canvasPoints.at(p + 1)->scenePos().x());
       
       QPointF newPos(x, y);
       setPoint(p, newPos);
@@ -58,8 +59,8 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
       for (int _p = 0; _p < function.pointCount; ++_p) {
 	QPointF newPos = canvasPoints.at(_p)->scenePos();
 	newPos.setX(newPos.x() + delta);
-	newPos.setX(std::min(newPos.x(), 5.0 * FUNCTION_SCALE));
-	newPos.setX(std::max(newPos.x(), -5.0 * FUNCTION_SCALE));
+	newPos.setX(qMin(newPos.x(), SCALE));
+	newPos.setX(qMax(newPos.x(), -SCALE));
 	setPoint(_p, newPos);
       }
     } break;
@@ -69,8 +70,8 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
       for (int _p = 0; _p < function.pointCount; ++_p) {
 	QPointF newPos = canvasPoints.at(_p)->scenePos();
 	newPos.setY(newPos.y() + delta);
-	newPos.setY(std::min(newPos.y(), 5.0 * FUNCTION_SCALE));
-	newPos.setY(std::max(newPos.y(), -5.0 * FUNCTION_SCALE));
+	newPos.setY(qMin(newPos.y(), SCALE));
+	newPos.setY(qMax(newPos.y(), -SCALE));
 	setPoint(_p, newPos);
       }
     } break;
@@ -80,8 +81,8 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
       for (int _p = 0; _p < function.pointCount; ++_p) {
 	QPointF newPos = canvasPoints.at(_p)->scenePos();
 	newPos.setX(pos0[_p].x() * delta);
-	newPos.setX(std::min(newPos.x(), 5.0 * FUNCTION_SCALE));
-	newPos.setX(std::max(newPos.x(), -5.0 * FUNCTION_SCALE));
+	newPos.setX(qMin(newPos.x(), SCALE));
+	newPos.setX(qMax(newPos.x(), -SCALE));
 	setPoint(_p, newPos);
       }
     } break;
@@ -91,8 +92,8 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
       for (int _p = 0; _p < function.pointCount; ++_p) {
 	QPointF newPos = canvasPoints.at(_p)->scenePos();
 	newPos.setY(pos0[_p].y() * delta);
-	newPos.setY(std::min(newPos.y(), 5.0 * FUNCTION_SCALE));
-	newPos.setY(std::max(newPos.y(), -5.0 * FUNCTION_SCALE));
+	newPos.setY(qMin(newPos.y(), SCALE));
+	newPos.setY(qMax(newPos.y(), -SCALE));
 	setPoint(_p, newPos);
       }
     } break;
@@ -149,8 +150,8 @@ CanvasFunction::~CanvasFunction() {
 void CanvasFunction::setPoint(int p)
 {
   canvasPoints.at(p)->setPos(function.point[index][p]);
-  std::cout << __PRETTY_FUNCTION__ << index << "[" << p << "] = " <<
-    function.point[index][p].x << ", " << function.point[index][p].y  <<std::endl;
+  /*std::cout << __PRETTY_FUNCTION__ << index << "[" << p << "] = " <<
+    function.point[index][p].x << ", " << function.point[index][p].y <<std::endl;*/
 
   if (p > 0)
     canvasLines.at(p - 1)->setLine(QLineF(function.point[index][p - 1], function.point[index][p]));

@@ -1,9 +1,6 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
 #include <qlabel.h>
@@ -15,23 +12,24 @@
 #include <qmatrix.h>
 #include <QResizeEvent>
 #include <QMouseEvent>
+
 #include "synthdata.h"
 #include "canvas.h"
 
-#define FUNCTION_MINIMUM_WIDTH        550
-#define FUNCTION_MINIMUM_HEIGHT       350
-#define MAX_FUNCTIONS                   4
-#define MAX_POINTS                     11
-#define FUNCTION_WIDTH              10000 // Function points range from 0 to 10000.
-#define FUNCTION_HEIGHT             10000 // Width == Height 
-#define FUNCTION_SCALE               1000 // 1000 in point coordinates correspond to 1 V
-#define FUNCTION_CENTER_X            5000 // Origin of the point coordinate system. This Origin
-#define FUNCTION_CENTER_Y            5000 // is subtracted from the point coordinate to get negative CVs.
-#define FUNCTION_BORDER_L              50
-#define FUNCTION_BORDER_R              35
-#define FUNCTION_BORDER_B              35
-#define FUNCTION_BORDER_T              40
-#define FUNCTION_GRID                1000
+#define FUNCTION_MINIMUM_WIDTH    550
+#define FUNCTION_MINIMUM_HEIGHT   350
+#define MAX_FUNCTIONS               4
+#define MAX_POINTS                 11
+#define FUNCTION_WIDTH          10000 // Function points range from 0 to 10000.
+#define FUNCTION_HEIGHT         10000 // Width == Height 
+#define FUNCTION_SCALE           1000 // 1000 in point coordinates correspond to 1 V
+#define FUNCTION_CENTER_X        5000 // Origin of the point coordinate system. This Origin
+#define FUNCTION_CENTER_Y        5000 // is subtracted from the point coordinate to get negative CVs.
+#define FUNCTION_BORDER_L          50
+#define FUNCTION_BORDER_R          35
+#define FUNCTION_BORDER_B          35
+#define FUNCTION_BORDER_T          40
+#define FUNCTION_GRID            1000
 
 #define FUNCTION_COLOR_1 0xF02020
 #define FUNCTION_COLOR_2 0xF0F000

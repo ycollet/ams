@@ -39,7 +39,7 @@
 <context>
     <name>Function</name>
     <message>
-        <location filename="../function.cpp" line="65"/>
+        <location filename="../function.cpp" line="67"/>
         <source>Out %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1985,78 +1985,78 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="33"/>
+        <location filename="../m_vcf.cpp" line="34"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="34"/>
+        <location filename="../m_vcf.cpp" line="35"/>
         <source>Freq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="35"/>
+        <location filename="../m_vcf.cpp" line="36"/>
         <source>Exp. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="36"/>
+        <location filename="../m_vcf.cpp" line="37"/>
         <source>Lin. FM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="37"/>
+        <location filename="../m_vcf.cpp" line="38"/>
         <location filename="../m_vcf.cpp" line="56"/>
         <source>Resonance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="39"/>
+        <location filename="../m_vcf.cpp" line="40"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="42"/>
+        <location filename="../m_vcf.cpp" line="43"/>
         <source>Resonant Lowpass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="43"/>
+        <location filename="../m_vcf.cpp" line="44"/>
         <source>Lowpass</source>
         <translation>Tiefpass</translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="44"/>
+        <location filename="../m_vcf.cpp" line="45"/>
         <source>Highpass</source>
         <translation>Hochpass</translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="45"/>
+        <location filename="../m_vcf.cpp" line="46"/>
         <source>Bandpass I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="46"/>
+        <location filename="../m_vcf.cpp" line="47"/>
         <source>Bandpass II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="47"/>
+        <location filename="../m_vcf.cpp" line="48"/>
         <source>Notch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="48"/>
+        <location filename="../m_vcf.cpp" line="49"/>
         <source>24 dB Lowpass I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="49"/>
+        <location filename="../m_vcf.cpp" line="50"/>
         <source>24 dB Lowpass II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vcf.cpp" line="50"/>
+        <location filename="../m_vcf.cpp" line="51"/>
         <source>VCF Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3282,7 +3282,7 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="512"/>
+        <location filename="../midiwidget.cpp" line="511"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3677,32 +3677,32 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="393"/>
+        <location filename="../synthdata.cpp" line="398"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="400"/>
+        <location filename="../synthdata.cpp" line="405"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="409"/>
+        <location filename="../synthdata.cpp" line="414"/>
         <source>Closing ALSA...</source>
         <translation>Schließe ALSA-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="502"/>
+        <location filename="../synthdata.cpp" line="507"/>
         <source>Can&apos;t connect to JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="525"/>
+        <location filename="../synthdata.cpp" line="530"/>
         <source>Can&apos;t activate JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="537"/>
+        <location filename="../synthdata.cpp" line="542"/>
         <source>Closing JACK...</source>
         <translation>Schließe JACK-Verbindung...</translation>
     </message>
