@@ -1,9 +1,11 @@
 ams-2.0.2 (201?-??-??)
 
   Fixed Bugs
+    o linker error "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'"
+      on Fedora 13.
+    o crash on using looped signal paths
     o armel compile error (debian #570848)
     o Prevent crash if jack handle is NULL (lp #553366)
-    o crash on using looped signal paths
 
   New Features
     o SIGUSR1 handler added to enable LADI session handling on

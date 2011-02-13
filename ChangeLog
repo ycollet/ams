@@ -1,4 +1,6 @@
 2011-02-13 Karsten Wiese <fzuuzf@googlemail.com>
+	* configure.ac: check for libdl.
+	Fixes "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'" on Fedora 13.
 	* src/module.cpp: set cycleReady = true; before calling generateCycle();
 	to enable looped signal paths.
 
