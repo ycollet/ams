@@ -1,3 +1,7 @@
+2011-02-13 Karsten Wiese <fzuuzf@googlemail.com>
+	* src/module.cpp: set cycleReady = true; before calling generateCycle();
+	to enable looped signal paths.
+
 2010-10-25 Guido Scholz <guido.scholz@bayernline.de>
 	* src/function.*, src/canvasfunction.*: Replace std::min/max by
 	generic Qt functions qMin/qMax; this should fix armel compile

@@ -359,8 +359,8 @@ void Module::getColors(void)
 float **Module::getData(int index)
 {
     if (!cycleReady) {
-        generateCycle();
         cycleReady = true;
+        generateCycle();
     }
     return data[index];
 }
