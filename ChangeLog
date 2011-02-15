@@ -1,3 +1,6 @@
+2011-02-15 Karsten Wiese <fzuuzf@googlemail.com>
+	* SynthData::closeJack(): jack_client_close() suffices to exit jack.
+
 2011-02-13 Karsten Wiese <fzuuzf@googlemail.com>
 	* configure.ac: check for libdl.
 	Fixes "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'" on Fedora 13.
