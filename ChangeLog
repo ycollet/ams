@@ -1,3 +1,6 @@
+2012-01-21 Guido Scholz <guido.scholz@bayernline.de>
+	* configure.ac: Add check for ladspa.h.
+
 2011-02-15 Karsten Wiese <fzuuzf@googlemail.com>
 	* SynthData::closeJack(): jack_client_close() suffices to exit jack.
 

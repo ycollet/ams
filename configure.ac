@@ -149,6 +149,8 @@ AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_STAT
 AC_CHECK_FUNCS([floor ftruncate getcwd memset mkdir pow rint select sqrt])
 
+AC_CHECK_HEADER([ladspa.h], ,
+                [AC_MSG_ERROR(essential header file is missing)])
 
 # Check for ladspa plugins path
 AC_ARG_WITH(ladspa-path,
