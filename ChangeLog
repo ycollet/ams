@@ -2,6 +2,8 @@
 	* configure.ac: Add check for ladspa.h, check for dlopen in
 	libdl.
 	* src/Makefile.am: Improve handling of CXXFLAGS variables.
+	* src/modularsynth.cpp: Apply patch from Sebastien Alaiwan to
+	improve port selection handling.
 
 2011-02-15 Karsten Wiese <fzuuzf@googlemail.com>
 	* SynthData::closeJack(): jack_client_close() suffices to exit jack.

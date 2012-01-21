@@ -1053,11 +1053,7 @@ void ModularSynth::portSelected(Port* p)
         p->setHighlighted(false);
         selectedPort = NULL;
     }
-    else if (selectedPort->module == p->module) {
-        qApp->beep();
-    }
-    else if (((selectedPort->isInPort()) && (!p->isInPort()))
-            || ((p->isInPort()) && (!selectedPort->isInPort()))) {
+    else if (selectedPort->isInPort() != p->isInPort() && selectedPort->module != p->module) {
         selectedPort->connectTo(p);
         p->connectTo(selectedPort);
         p->setHighlighted(false);
@@ -1065,8 +1061,11 @@ void ModularSynth::portSelected(Port* p)
         selectedPort = NULL;
         redrawPortConnections();
     }
-    else
-        qApp->beep();
+    else {
+      selectedPort->setHighlighted(false);
+      selectedPort = p;
+      selectedPort->setHighlighted(true);
+    }
 }
 
 void ModularSynth::deleteModule() {
