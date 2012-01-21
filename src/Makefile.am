@@ -247,8 +247,7 @@ EXTRA_DIST = ams.pro $(translations)
 # all generated files to be removed by "make clean"
 CLEANFILES = $(nodist_ams_SOURCES) $(translations_DATA)
 
-AM_LDFLAGS = @QT_LIBS@
-AM_CXXFLAGS = @QT_CXXFLAGS@ @AMS_CXXFLAGS@
+ams_CXXFLAGS = $(QT_CXXFLAGS) $(AMS_CXXFLAGS)
 DEFS = -D_REENTRANT -DLADSPA_PATH=\"$(LADSPA_PATH)\" -DTRANSLATIONSDIR=\"$(translationsdir)\" @DEFS@
 
 # rule for moc-file generation

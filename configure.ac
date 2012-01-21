@@ -74,7 +74,7 @@ AC_CHECK_LIB([pthread], [pthread_create], ,
 AC_CHECK_LIB([m], [roundf], , AC_MSG_ERROR([required libm missing]))
 AC_CHECK_LIB([clalsadrv], [main], ,
              [AC_MSG_ERROR(clalsadrv is required)])
-AC_CHECK_LIB([dl], [main], ,
+AC_CHECK_LIB([dl], [dlopen], ,
              [AC_MSG_ERROR(libdl is required)])
 
 dnl check for clalsadrv library version
