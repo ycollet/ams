@@ -35,7 +35,7 @@ class PrefWidget : public QWidget
 
     QVBoxLayout vBox;
     QTabWidget *tabWidget;
-    QString loadPath, savePath;
+    QString colorPath, patchPath;
     QWidget *colorBackgroundLabel, *colorModuleBackgroundLabel,
             *colorModuleBorderLabel, *colorModuleFontLabel,
 	    *colorCableLabel, *colorJackLabel;
@@ -73,8 +73,8 @@ class PrefWidget : public QWidget
     void browseSave();
     void updateMidiMode(int);
     void updateEditingMode(int);
-    void loadPathUpdate();
-    void savePathUpdate();
+    void colorPathUpdate();
+    void patchPathUpdate();
 };
   
 

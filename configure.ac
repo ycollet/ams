@@ -162,6 +162,21 @@ AC_ARG_WITH(ladspa-path,
   [LADSPA_PATH="/usr/lib/ladspa:/usr/local/lib/ladspa"])
 AC_SUBST(LADSPA_PATH)
 
+dnl JACK session
+AC_ARG_ENABLE(jack-session,
+    [AS_HELP_STRING(--disable-jack-session, [Disable JACK session support])],
+    [jack_session=$enableval],
+    [jack_session=yes])
+
+if test "$jack_session" != "no"; then
+    AC_CHECK_HEADER(jack/session.h, jack_session_found="yes",
+                    jack_session_found="no")
+    if test "$jack_session_found" = "yes"; then
+        AC_DEFINE(JACK_SESSION, 1,
+                  [Define to enable JACK session support])
+        fi
+    fi
+
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([demos/Makefile])

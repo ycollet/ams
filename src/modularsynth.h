@@ -86,10 +86,10 @@ public:
     }
     void moveAllBoxes(const QPoint &delta);
     bool isModified();
-    QString getLoadPath();
-    void setLoadPath(const QString& sp);
-    QString getSavePath();
-    void setSavePath(const QString& sp);
+    QString getColorPath();
+    void setColorPath(const QString& sp);
+    QString getPatchPath();
+    void setPatchPath(const QString& sp);
     int getSynthDataPoly();
     QSize sizeHint() const;
 

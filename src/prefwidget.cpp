@@ -34,6 +34,8 @@ PrefWidget::PrefWidget(): vBox(this)
     setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
     vBox.setMargin(10);
     vBox.setSpacing(5);
+    colorPath = QDir::homePath();
+    patchPath = colorPath;
 
     recallColors();
 
@@ -108,30 +110,30 @@ PrefWidget::PrefWidget(): vBox(this)
             this, SLOT(updateMidiMode(int)));                
 
     pathBox->addStretch();
-    QHBoxLayout *loadPathBox = new QHBoxLayout();
-    pathBox->addLayout(loadPathBox);
+    QHBoxLayout *colorPathBox = new QHBoxLayout();
+    pathBox->addLayout(colorPathBox);
     QLabel *loadLabel = new QLabel(tr("&Load Path:"));
-    loadPathBox->addWidget(loadLabel);
+    colorPathBox->addWidget(loadLabel);
     loadEdit = new QLineEdit();
     pathBox->addWidget(loadEdit);
-    loadEdit->setText(loadPath);
+    loadEdit->setText(colorPath);
     loadLabel->setBuddy(loadEdit);
     QPushButton *browseLoadButton = new QPushButton(tr("&Browse..."));
-    loadPathBox->addStretch();
-    loadPathBox->addWidget(browseLoadButton);
+    colorPathBox->addStretch();
+    colorPathBox->addWidget(browseLoadButton);
 
     pathBox->addStretch();
-    QHBoxLayout *savePathBox = new QHBoxLayout();
-    pathBox->addLayout(savePathBox);
+    QHBoxLayout *patchPathBox = new QHBoxLayout();
+    pathBox->addLayout(patchPathBox);
     QLabel *saveLabel = new QLabel(tr("&Save Path:"));
-    savePathBox->addWidget(saveLabel);
+    patchPathBox->addWidget(saveLabel);
     saveEdit = new QLineEdit();
     pathBox->addWidget(saveEdit);
-    saveEdit->setText(savePath);
+    saveEdit->setText(patchPath);
     saveLabel->setBuddy(saveEdit);
     QPushButton *browseSaveButton = new QPushButton(tr("Bro&wse..."));
-    savePathBox->addStretch();
-    savePathBox->addWidget(browseSaveButton);
+    patchPathBox->addStretch();
+    patchPathBox->addWidget(browseSaveButton);
 
     pathBox->addStretch();
 
@@ -140,13 +142,13 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(browseSaveButton, SIGNAL(clicked()),
             this, SLOT(browseSave()));
     QObject::connect(loadEdit, SIGNAL(lostFocus()),
-            this, SLOT(loadPathUpdate()));
+            this, SLOT(colorPathUpdate()));
     QObject::connect(loadEdit, SIGNAL(returnPressed()),
-            this, SLOT(loadPathUpdate()));
+            this, SLOT(colorPathUpdate()));
     QObject::connect(saveEdit, SIGNAL(lostFocus()),
-            this, SLOT(savePathUpdate()));
+            this, SLOT(patchPathUpdate()));
     QObject::connect(saveEdit, SIGNAL(returnPressed()),
-            this, SLOT(savePathUpdate()));
+            this, SLOT(patchPathUpdate()));
 
     QHBoxLayout *editingModeSelectorBox = new QHBoxLayout();
     editingBox->addLayout(editingModeSelectorBox);
@@ -227,19 +229,19 @@ void PrefWidget::loadPref(QString& line)
         midiControllerMode = line.section(' ', 1, 1).toInt();
         synthdata->midiControllerMode = midiControllerMode;
     }       
-    else if (line.startsWith("LoadPath")) {
-        loadPath = line.section(' ', 1); 
-        if (loadPath.isEmpty())
-            loadPath = QDir::homePath();
-        loadEdit->setText(loadPath);
-        synthdata->loadPath = loadPath;
+    else if (line.startsWith("ColorPath")) {
+        colorPath = line.section(' ', 1); 
+        if (colorPath.isEmpty())
+            colorPath = QDir::homePath();
+        loadEdit->setText(colorPath);
+        synthdata->colorPath = colorPath;
     }       
-    else if (line.startsWith("SavePath")) {
-        savePath = line.section(' ', 1); 
-        if (savePath.isEmpty())
-            savePath = QDir::homePath();
-        saveEdit->setText(savePath);
-        synthdata->savePath = savePath;
+    else if (line.startsWith("PatchPath")) {
+        patchPath = line.section(' ', 1); 
+        if (patchPath.isEmpty())
+            patchPath = QDir::homePath();
+        saveEdit->setText(patchPath);
+        synthdata->patchPath = patchPath;
     }       
     else if (line.startsWith("EditingFlags")) {
 	synthdata->editingFlags.f = line.section(' ', 1).toInt();
@@ -275,8 +277,8 @@ void PrefWidget::savePref(QTextStream& rctext)
         << synthdata->colorCable.green() << " "
         << synthdata->colorCable.blue() << "\n";
     rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
-    rctext << "LoadPath " << synthdata->loadPath << "\n";
-    rctext << "SavePath " << synthdata->savePath << "\n";
+    rctext << "ColorPath " << synthdata->colorPath << "\n";
+    rctext << "PatchPath " << synthdata->patchPath << "\n";
     rctext << "EditingFlags " << synthdata->editingFlags.f << "\n";
 }                             
 
@@ -305,8 +307,8 @@ void PrefWidget::refreshColors() {
   colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
   midiModeComboBox->setCurrentIndex(midiControllerMode);
   editingModeComboBox->setCurrentIndex(editingMode);
-  loadEdit->setText(loadPath);
-  saveEdit->setText(savePath);
+  loadEdit->setText(colorPath);
+  saveEdit->setText(patchPath);
 }
 
 void PrefWidget::recallColors() {
@@ -319,8 +321,8 @@ void PrefWidget::recallColors() {
   colorJack = synthdata->colorJack;
   midiControllerMode = synthdata->midiControllerMode;
   editingMode = synthdata->editingFlags.crossTopLeft();
-  loadPath = synthdata->loadPath;
-  savePath = synthdata->savePath;
+  colorPath = synthdata->colorPath;
+  patchPath = synthdata->patchPath;
 }
 void PrefWidget::defaultcolorClicked()
 {
@@ -343,8 +345,8 @@ void PrefWidget::storeColors() {
   synthdata->colorJack = colorJack;
   synthdata->midiControllerMode = midiControllerMode;
   synthdata->editingFlags.setCrossTopLeft(editingMode);
-  synthdata->loadPath = loadPath;
-  synthdata->savePath = savePath;
+  synthdata->colorPath = colorPath;
+  synthdata->patchPath = patchPath;
 }
 
 void PrefWidget::colorBackgroundClicked() {
@@ -427,32 +429,32 @@ void PrefWidget::browseLoad() {
 
   QString qs;
 
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose Load Path"), loadPath);
+  qs = QFileDialog::getExistingDirectory(this, tr("Choose color path"), colorPath);
   if (qs.isEmpty())
     return;
 
-  loadPath = qs;
-  loadEdit->setText(loadPath);
+  colorPath = qs;
+  loadEdit->setText(colorPath);
 }
 
 void PrefWidget::browseSave() {
 
   QString qs;
 
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose Save Path"), savePath);
+  qs = QFileDialog::getExistingDirectory(this, tr("Choose patch path"), patchPath);
   if (qs.isEmpty())
     return;
 
-  savePath = qs;
-  saveEdit->setText(savePath);
+  patchPath = qs;
+  saveEdit->setText(patchPath);
 }
 
-void PrefWidget::loadPathUpdate() {
+void PrefWidget::colorPathUpdate() {
 
-  loadPath = loadEdit->text();
+  colorPath = loadEdit->text();
 }
   
-void PrefWidget::savePathUpdate() {
+void PrefWidget::patchPathUpdate() {
 
-  savePath = saveEdit->text();
+  patchPath = saveEdit->text();
 }

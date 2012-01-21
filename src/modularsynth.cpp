@@ -1141,7 +1141,7 @@ void ModularSynth::loadColors() {
     char sc[2048];
 
     config_fn = QFileDialog::getOpenFileName(this, tr("Load Colors"),
-            synthdata->loadPath, tr("AlsaModularSynth Color files") +
+            synthdata->colorPath, tr("AlsaModularSynth color files") +
             " (*" + COLOREXT + ")");
     if (config_fn.isEmpty())
         return;
@@ -1151,6 +1151,9 @@ void ModularSynth::loadColors() {
                 tr("Could not open file."));
     }
     else {
+        /*remember last used directory for color files*/
+        setColorPath(config_fn.left(config_fn.lastIndexOf('/')));
+
         while (Fscanf(f, "%s", sc) != EOF) {
             qs = QString(sc);
             if (qs.contains("ColorBackground", Qt::CaseInsensitive)) {
@@ -1183,7 +1186,7 @@ void ModularSynth::saveColors() {
     QString config_fn, qs;
 
     config_fn = QFileDialog::getSaveFileName(this, tr("Save Colors"),
-            synthdata->savePath, tr("AlsaModularSynth Color files") + 
+            synthdata->colorPath, tr("AlsaModularSynth color files") + 
             " (*" + COLOREXT + ")");
     if (config_fn.isEmpty())
         return;
@@ -1197,6 +1200,9 @@ void ModularSynth::saveColors() {
                 tr("Could not save file."));
     }
     else {
+        /*remember last used directory for color files*/
+        setColorPath(config_fn.left(config_fn.lastIndexOf('/')));
+
         fprintf(f, "ColorBackground %d %d %d\n",
                 synthdata->colorBackground.red(),
                 synthdata->colorBackground.green(),
@@ -2109,24 +2115,24 @@ bool ModularSynth::isModified()
    return modified;
 }
 
-QString ModularSynth::getLoadPath()
+QString ModularSynth::getColorPath()
 {
-    return synthdata->loadPath;
+    return synthdata->colorPath;
 }
 
-void ModularSynth::setLoadPath(const QString& sp)
+void ModularSynth::setColorPath(const QString& sp)
 {
-    synthdata->loadPath = sp;
+    synthdata->colorPath = sp;
 }
 
-QString ModularSynth::getSavePath()
+QString ModularSynth::getPatchPath()
 {
-    return synthdata->savePath;
+    return synthdata->patchPath;
 }
 
-void ModularSynth::setSavePath(const QString& sp)
+void ModularSynth::setPatchPath(const QString& sp)
 {
-    synthdata->savePath = sp;
+    synthdata->patchPath = sp;
 }
 
 Module* ModularSynth::getModuleWithId(int id)

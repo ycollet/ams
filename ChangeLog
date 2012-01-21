@@ -4,6 +4,9 @@
 	* src/Makefile.am: Improve handling of CXXFLAGS variables.
 	* src/modularsynth.cpp: Apply patch from Sebastien Alaiwan to
 	improve port selection handling.
+	* src/modularsynth.*, src/prefwidget.*, src/synthdata.*,
+	src/mainwindow.cpp: Separate handling of color scheme directory
+	from patch file directoy.
 
 2011-02-15 Karsten Wiese <fzuuzf@googlemail.com>
 	* SynthData::closeJack(): jack_client_close() suffices to exit jack.

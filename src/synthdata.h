@@ -90,7 +90,7 @@ class SynthData
     QList<LadspaLib> ladspaLib;
   //    LADSPA_Descriptor_Function ladspa_dsc_func_list[MAX_SO];
   //    QString ladspa_lib_name[MAX_SO];
-    QString loadPath, savePath, rcPath;
+    QString colorPath, patchPath, rcPath;
     class MidiWidget *midiWidget;
     class GuiWidget *guiWidget;
     QString name;

@@ -174,7 +174,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   if (mso.havePresetPath) {
     qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
             .toUtf8().constData()); 
-    modularSynth->setLoadPath(mso.presetPath);
+    modularSynth->setPatchPath(mso.presetPath);
   }
   modularSynth->go(mso.forceJack, mso.forceAlsa);
 
@@ -267,8 +267,8 @@ int MainWindow::querySaveChanges()
 void MainWindow::chooseFile()
 {
     QString fn = QFileDialog::getOpenFileName(this,
-        tr("Open patch file"), modularSynth->getLoadPath(),
-        tr("Patch files") + " (*" + PATCHEXT + ")");
+        tr("Open patch file"), modularSynth->getPatchPath(),
+        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
 
     if (fn.isEmpty())
         return;
@@ -334,7 +334,7 @@ void MainWindow::openFile(const QString& fn)
         return;
     }
 
-    modularSynth->setLoadPath(fn.left(fn.lastIndexOf('/')));
+    modularSynth->setPatchPath(fn.left(fn.lastIndexOf('/')));
     fileName = fn;
     QTextStream ts(&f);
     ts.setCodec("UTF-8");
@@ -379,15 +379,15 @@ bool MainWindow::saveFile()
 void MainWindow::fileSaveAs()
 {
     QString fn = QFileDialog::getSaveFileName(this,
-            tr("Save patch file"), modularSynth->getSavePath(),
-            tr("Patch files") + " (*" + PATCHEXT + ")");
+            tr("Save patch file"), modularSynth->getPatchPath(),
+            tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
 
     if (!fn.isEmpty()) {
         /*check for file extension*/
         if (!fn.endsWith(PATCHEXT))
             fn.append(PATCHEXT);
 
-        modularSynth->setSavePath(fn.left(fn.lastIndexOf('/')));
+        modularSynth->setPatchPath(fn.left(fn.lastIndexOf('/')));
 
         fileName = fn;
         saveFile();

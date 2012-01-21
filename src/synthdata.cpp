@@ -72,8 +72,8 @@ SynthData::SynthData(const QString &synthName, int poly, float edge)
   sustainFlag = false;
   midiChannel = -1;
   midiControllerMode = 0;
-  loadPath = "";
-  savePath = "";
+  colorPath = "";
+  patchPath = "";
   rcPath = "";
 
   exp_data = (float *)malloc(EXP_TABLE_LEN * sizeof(float));

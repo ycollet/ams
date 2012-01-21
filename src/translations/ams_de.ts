@@ -5,7 +5,7 @@
     <name></name>
     <message>
         <source>Load Colors</source>
-        <translation type="obsolete">Farben lasen</translation>
+        <translation type="obsolete">Farben laden</translation>
     </message>
     <message>
         <source>Could not open file.</source>
@@ -92,7 +92,7 @@
     <message>
         <location filename="../ladspadialog.cpp" line="182"/>
         <source>Create &amp;Poly Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Erzeuge &amp;Poly Plugin</translation>
     </message>
     <message>
         <location filename="../ladspadialog.cpp" line="219"/>
@@ -108,6 +108,14 @@
         <location filename="../ladspadialog.cpp" line="221"/>
         <source>Copyright: </source>
         <translation>Copyright: </translation>
+    </message>
+</context>
+<context>
+    <name>LadspaModel</name>
+    <message>
+        <location filename="../ladspadialog.cpp" line="47"/>
+        <source>Available Ladspa Plugins</source>
+        <translation>Verfügbare Ladspa Plugins</translation>
     </message>
 </context>
 <context>
@@ -3135,12 +3143,6 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="271"/>
-        <location filename="../mainwindow.cpp" line="383"/>
-        <source>Patch files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="332"/>
         <source>Could not read file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
@@ -3169,6 +3171,12 @@ Save changes?</source>
         <location filename="../mainwindow.cpp" line="148"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="271"/>
+        <location filename="../mainwindow.cpp" line="383"/>
+        <source>AlsaModularSynth patch files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="421"/>
@@ -3327,7 +3335,7 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="115"/>
         <source>AlsaModularSynth Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>AlsaModularSynth Einstellungen</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1143"/>
@@ -3335,23 +3343,19 @@ Save changes?</source>
         <translation type="unfinished">Farben lasen</translation>
     </message>
     <message>
-        <source>AlsaModularSynth Color files (*.acs)</source>
-        <translation type="obsolete">Farbschemadateien (*.acs)</translation>
-    </message>
-    <message>
         <location filename="../modularsynth.cpp" line="1151"/>
         <source>Could not open file.</source>
-        <translation type="unfinished">Konnte Datei nicht öffnen.</translation>
+        <translation>Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1185"/>
+        <location filename="../modularsynth.cpp" line="1188"/>
         <source>Save Colors</source>
-        <translation type="unfinished">Farben speichern</translation>
+        <translation>Farben speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1197"/>
+        <location filename="../modularsynth.cpp" line="1200"/>
         <source>Could not save file.</source>
-        <translation type="unfinished">Konnte Datei nicht speichern.</translation>
+        <translation>Konnte Datei nicht speichern.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="304"/>
@@ -3360,27 +3364,27 @@ Save changes?</source>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1144"/>
-        <location filename="../modularsynth.cpp" line="1186"/>
-        <source>AlsaModularSynth Color files</source>
-        <translation type="unfinished"></translation>
+        <location filename="../modularsynth.cpp" line="1189"/>
+        <source>AlsaModularSynth color files</source>
+        <translation>AlsaModularSynth Farbschemadateien</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1276"/>
+        <location filename="../modularsynth.cpp" line="1282"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1282"/>
+        <location filename="../modularsynth.cpp" line="1288"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1499"/>
+        <location filename="../modularsynth.cpp" line="1505"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1756"/>
+        <location filename="../modularsynth.cpp" line="1762"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3470,137 +3474,137 @@ Save changes?</source>
 <context>
     <name>PrefWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="52"/>
+        <location filename="../prefwidget.cpp" line="54"/>
         <source>&amp;Colors</source>
         <translation>&amp;Farben</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="53"/>
+        <location filename="../prefwidget.cpp" line="55"/>
         <source>&amp;MIDI</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="54"/>
+        <location filename="../prefwidget.cpp" line="56"/>
         <source>&amp;Paths</source>
         <translation>&amp;Pfade</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="61"/>
+        <location filename="../prefwidget.cpp" line="63"/>
         <source>Background Color</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="65"/>
+        <location filename="../prefwidget.cpp" line="67"/>
         <source>Module Background Color</source>
         <translation>Modulhintergrund</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="69"/>
+        <location filename="../prefwidget.cpp" line="71"/>
         <source>Module Border Color</source>
         <translation>Modulum&amp;randung</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="73"/>
+        <location filename="../prefwidget.cpp" line="75"/>
         <source>Module Font Color</source>
         <translation>Schrift</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="77"/>
+        <location filename="../prefwidget.cpp" line="79"/>
         <source>Cable Color</source>
         <translation>Kabel</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="81"/>
+        <location filename="../prefwidget.cpp" line="83"/>
         <source>Jack Color</source>
         <translation>Stecker</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="85"/>
+        <location filename="../prefwidget.cpp" line="87"/>
         <source>&amp;Default colors</source>
         <translation>&amp;Voreinstellung</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="94"/>
+        <location filename="../prefwidget.cpp" line="96"/>
         <source>M&amp;IDI Controller Mode: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="98"/>
+        <location filename="../prefwidget.cpp" line="100"/>
         <source>Avoid Parameter Jumps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="99"/>
+        <location filename="../prefwidget.cpp" line="101"/>
         <source>Init MIDI Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="100"/>
+        <location filename="../prefwidget.cpp" line="102"/>
         <source>Follow MIDI Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="113"/>
+        <location filename="../prefwidget.cpp" line="115"/>
         <source>&amp;Load Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="119"/>
+        <location filename="../prefwidget.cpp" line="121"/>
         <source>&amp;Browse...</source>
         <translation>&amp;Wählen...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="126"/>
+        <location filename="../prefwidget.cpp" line="128"/>
         <source>&amp;Save Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="132"/>
+        <location filename="../prefwidget.cpp" line="134"/>
         <source>Bro&amp;wse...</source>
         <translation>W&amp;ählen...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="170"/>
+        <location filename="../prefwidget.cpp" line="172"/>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="173"/>
+        <location filename="../prefwidget.cpp" line="175"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="176"/>
+        <location filename="../prefwidget.cpp" line="178"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="430"/>
-        <source>Choose Load Path</source>
+        <location filename="../prefwidget.cpp" line="432"/>
+        <source>Choose color path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="442"/>
-        <source>Choose Save Path</source>
+        <location filename="../prefwidget.cpp" line="444"/>
+        <source>Choose patch path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="55"/>
+        <location filename="../prefwidget.cpp" line="57"/>
         <source>&amp;Editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="154"/>
+        <location filename="../prefwidget.cpp" line="156"/>
         <source>Box movement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="157"/>
+        <location filename="../prefwidget.cpp" line="159"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="158"/>
+        <location filename="../prefwidget.cpp" line="160"/>
         <source>No topleft border</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3652,27 +3656,27 @@ Save changes?</source>
         <translation type="obsolete">Keine Verbindung möglich.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1792"/>
+        <location filename="../modularsynth.cpp" line="1798"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1808"/>
+        <location filename="../modularsynth.cpp" line="1814"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1823"/>
+        <location filename="../modularsynth.cpp" line="1829"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1832"/>
+        <location filename="../modularsynth.cpp" line="1838"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1898"/>
+        <location filename="../modularsynth.cpp" line="1904"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
