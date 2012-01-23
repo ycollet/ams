@@ -101,7 +101,11 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   portPopup = new PopupMenu(this);
   aboutWidget = new QMessageBox(parent); 
 
-  synthdata = new SynthData(mso.synthName, mso.poly, mso.edge);
+  synthdata = new SynthData(this, mso);
+#ifdef JACK_SESSION
+  connect(synthdata, SIGNAL(jackSessionEvent(int)),
+          parent, SLOT(handleJackSessionEvent(int)));
+#endif
 
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle(tr("AlsaModularSynth Control Center"));
@@ -2163,3 +2167,9 @@ TextEdit* ModularSynth::getTextEditAt(int idx)
     return te;
 }
 
+#ifdef JACK_SESSION
+QString ModularSynth::getJackSessionFilename() const
+{
+    return synthdata->getJackSessionFilename();
+}
+#endif

@@ -19,6 +19,8 @@
 #include <QMouseEvent>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
+
+#include "config.h"
 #include "main.h"
 #include "synthdata.h"
 #include "module.h"
@@ -92,6 +94,9 @@ public:
     void setPatchPath(const QString& sp);
     int getSynthDataPoly();
     QSize sizeHint() const;
+#ifdef JACK_SESSION
+    QString getJackSessionFilename() const;
+#endif
 
   protected:
     class QAbstractScrollArea *scrollArea() {

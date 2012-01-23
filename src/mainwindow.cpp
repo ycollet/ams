@@ -29,6 +29,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   /*make sure the window destructor is called on program exit*/
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowIcon(QPixmap(ams_32_xpm));
+  setObjectName("MainWindow");
   fileName = "";
   rcFd = mso.rcFd;
 
@@ -521,3 +522,25 @@ void MainWindow::appendRecentlyOpenedFile(const QString &fn, QStringList &lst)
     lst.append(fi.absoluteFilePath());
 }
 
+#ifdef JACK_SESSION
+void MainWindow::handleJackSessionEvent(SynthData::jackSessionAction jsa)
+{
+    qWarning("JACK session action: %d", jsa);
+
+    switch (jsa) {
+        case -1:
+            qApp->closeAllWindows();
+            break;
+        case SynthData::jsaSave:
+        case SynthData::jsaSaveAndQuit:
+            fileName = modularSynth->getJackSessionFilename();
+            updateWindowTitle();
+            if (!saveFile())
+                qCritical("JACK session save file error");
+            break;
+        default:
+            qWarning("Unsupported JACK session action: %d", jsa);
+            break;
+    }
+}
+#endif

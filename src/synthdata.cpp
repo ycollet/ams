@@ -2,12 +2,14 @@
 #include <sys/resource.h> 
 #include <stdio.h>
 #include <stdlib.h>
+#include <QApplication>
 #include <qobject.h>
 #include <qstring.h>
 #include <QFont>
 #include <QObject>
 #include <math.h>
 #include <pthread.h>
+
 #include "guiwidget.h"
 #include "midiwidget.h"
 #include "synthdata.h"
@@ -33,20 +35,29 @@ union uf {
   float f;
   unsigned u;
 };
+
 float SynthData::exp2_data[EXP2_BUF_LEN];
 
-SynthData::SynthData(const QString &synthName, int poly, float edge)
-  : setAllNotesOff(false)
-  , edge(edge)
-  , poly(poly)
+#ifdef JACK_SESSION
+static const char JSFILENAME[] = "file.ams";
+#endif
+
+
+SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
+  : QObject(parent)
+  , setAllNotesOff(false)
+  , synthoptions(&mso)
+  , edge(mso.edge)
+  , poly(mso.poly)
   , port_sem(1)
-  , name(synthName)
+  , name(mso.synthName)
   , bigFont("Helvetica", 10)
   , smallFont("Helvetica", 8)
   , activeMidiControllers(NULL)
   , framesDone(0)
   , framesGUIPinged(0)
 {
+  setObjectName("SynthData");
   if (pthread_mutex_init(&rtMutex, NULL) < 0) {
     StdErr << __PRETTY_FUNCTION__ << ": pthread_mutex_init() failed" << endl;
     exit(-1);
@@ -167,6 +178,11 @@ SynthData::SynthData(const QString &synthName, int poly, float edge)
   colorPortFont2 = QColor(255, 240, 140);
   colorCable = QColor(180, 180, 180);
   colorJack = QColor(250, 200, 50);
+
+#ifdef JACK_SESSION
+    jsession_ev = NULL;
+    js_filename = "";
+#endif
 }
 
 void SynthData::initVoices()
@@ -501,13 +517,26 @@ int SynthData::initJack (int ncapt, int nplay)
     capt_ports = ncapt & ~1;
     if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
     if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
+
+#ifdef JACK_SESSION
+    if (synthoptions->global_jack_session_uuid.isEmpty())
+        jack_handle = jack_client_open(name.toLatin1().constData(),
+                JackNullOption, NULL);
+    else
+        jack_handle = jack_client_open(name.toLatin1().constData(),
+                JackSessionID, NULL,
+                synthoptions->global_jack_session_uuid.constData());
+#else
     jack_handle = jack_client_open(name.toLatin1().constData(),
-				   JackNullOption, NULL);
+            JackNullOption, NULL);
+
+#endif
+
     if (!jack_handle) {
-        qWarning("%s", QObject::tr("Can't connect to JACK").toUtf8().constData());
+        qWarning("%s", QObject::tr("Can't connect to JACK")
+                .toUtf8().constData());
         return -ENODEV;
     }
-
     jack_set_process_callback (jack_handle, jack_static_callback, (void *)this);
  
     rate = jack_get_sample_rate (jack_handle);
@@ -517,17 +546,34 @@ int SynthData::initJack (int ncapt, int nplay)
     for (int i = 0; i < play_ports; i++)
     {
         qs.sprintf("out_%d", i);
-        jack_out [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+        jack_out [i] = jack_port_register(jack_handle,
+                qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE,
+                JackPortIsOutput, 0);
     }
     for (int i = 0; i < capt_ports; i++)
     {
         qs.sprintf("in_%d", i);
-        jack_in [i] = jack_port_register (jack_handle, qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
+        jack_in [i] = jack_port_register (jack_handle,
+                qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE,
+                JackPortIsInput, 0);
     }
+
+#ifdef JACK_SESSION
+    /*register jack session callback*/
+    int result = 0;
+    if (jack_set_session_callback)
+        result = jack_set_session_callback(jack_handle,
+                jack_session_static_callback, (void *) this );
+    if (result != 0)
+        qWarning("JACK session callback registration failed: %d", result);
+    else
+        qWarning("JACK session callback registration success");
+#endif
 
     if (jack_activate (jack_handle))
     {
-        qWarning("%s", QObject::tr("Can't activate JACK").toUtf8().constData());
+        qWarning("%s", QObject::tr("Can't activate JACK")
+                .toUtf8().constData());
         exit (1);
     }
 
@@ -550,6 +596,73 @@ int SynthData::closeJack()
 
     return 0;
 }
+
+
+#ifdef JACK_SESSION
+void SynthData::jack_session_static_callback(jack_session_event_t *ev,
+        void *arg)
+{
+    ((SynthData*) arg)->jack_session_callback(ev);
+}
+
+
+void SynthData::jack_session_callback(jack_session_event_t *ev)
+{
+    jsession_ev = ev;
+    jack_session_event();
+}
+
+
+bool SynthData::jack_session_event()
+{
+    if (jsession_ev == NULL) {
+        qCritical("%s", QObject::tr("No JACK session event set.")
+                .toUtf8().constData());
+        return false;
+    }
+
+    /* assemble new patch file name*/
+    js_filename = jsession_ev->session_dir;
+    js_filename += JSFILENAME;
+
+    /* send mainwindow an action message */
+    switch (jsession_ev->type) {
+        case JackSessionSave:
+            emit jackSessionEvent(jsaSave);
+            break;
+        case JackSessionSaveAndQuit:
+            emit jackSessionEvent(jsaSaveAndQuit);
+            break;
+        default:
+            qWarning("Unsupported JACK session type: %d",
+                    jsession_ev->type);
+            break;
+    }
+
+    /* assemble ams start command line */
+    QString command = PACKAGE " \"${SESSION_DIR}\"";
+    command.append(JSFILENAME);
+    command.append(" -U ");
+    command.append(jsession_ev->client_uuid);
+
+    jsession_ev->command_line = strdup(command.toAscii());
+    jack_session_reply(jack_handle, jsession_ev);
+
+    /* prepare application quit if requested by jack */
+    if (jsession_ev->type == JackSessionSaveAndQuit)
+        emit jackSessionEvent(jsaAppQuit);
+
+    jack_session_event_free(jsession_ev);
+
+    return false;
+}
+
+
+QString SynthData::getJackSessionFilename() const
+{
+    return js_filename;
+}
+#endif
 
 
 int SynthData::jack_static_callback (jack_nframes_t nframes, void *arg)

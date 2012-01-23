@@ -6,6 +6,8 @@
 
 #include <alsa/asoundlib.h>
 #include <QString>
+#include "config.h"
+
 
 struct ModularSynthOptions {
     QString synthName;
@@ -26,6 +28,9 @@ struct ModularSynthOptions {
     bool forceAlsa;
     float edge;
     int verbose;
+#ifdef JACK_SESSION
+    QString global_jack_session_uuid;
+#endif
 };
 
 #endif    // MSOPTIONS_H

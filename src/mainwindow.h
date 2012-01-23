@@ -9,6 +9,7 @@
 #include <QSocketNotifier>
 #include <QStringList>
 
+#include "config.h"
 #include "modularsynth.h"
 #include "msoptions.h"
 
@@ -44,6 +45,11 @@ private slots:
     void helpAboutQt();
     void recentFileActivated(QAction*);
     void setupRecentFilesMenu();
+
+#ifdef JACK_SESSION
+public slots:
+    void handleJackSessionEvent(SynthData::jackSessionAction);
+#endif
 
 public:
   MainWindow(const ModularSynthOptions&);

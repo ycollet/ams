@@ -31,6 +31,9 @@ static struct option options[] =
          {"presetpath", 1, 0, 'd'},
          {"nogui", 0, 0, 'n'},
          {"jack", 0, 0, 'J'},
+#ifdef JACK_SESSION
+         {"jack_session_uuid", 1, 0, 'U' },
+#endif
          {"alsa", 0, 0, 'A'},
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
@@ -40,7 +43,6 @@ static struct option options[] =
 
 QTextStream StdOut(stdout);
 QTextStream StdErr(stderr);
-
 
 
 QString amsRcPath(const QString &synthName)
@@ -151,6 +153,9 @@ int main(int argc, char *argv[])
   msoptions.forceJack = false;
   msoptions.forceAlsa = false;
   msoptions.verbose = 0;
+#ifdef JACK_SESSION
+  msoptions.global_jack_session_uuid = "";
+#endif
 
   while ((getopt_return = getopt_long(argc, argv, "hnJjAab:p:f:e:c:l:d:r:i:o:vN:",
 				      options, &option_index)) >= 0) {
@@ -200,6 +205,11 @@ int main(int argc, char *argv[])
     case 'o': 
         msoptions.nplay = atoi(optarg);
         break;
+#ifdef JACK_SESSION
+    case 'U': 
+        msoptions.global_jack_session_uuid = QString(optarg);
+        break;
+#endif
     case 'v':
       msoptions.verbose++;
       break;
@@ -222,6 +232,9 @@ int main(int argc, char *argv[])
         printf("  -l, --preset <file>           Preset file\n");
         printf("  -d, --presetpath <path>       Preset path\n");
         printf("  -n, --nogui                   Start without GUI\n");
+#ifdef JACK_SESSION
+        printf("  -U, --jack_session_uuid       JACK session UUID\n");
+#endif
         printf("  -v,				verbose\n");
         printf("  -N, --name <name>             ALSASEQ/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);

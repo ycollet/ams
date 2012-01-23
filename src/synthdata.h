@@ -13,11 +13,20 @@
 #include <ladspa.h>
 #include <clalsadrv.h>
 #include <jack/jack.h>
+
+#include "config.h"
+
+#ifdef JACK_SESSION
+#include <jack/session.h>
+#endif
+
 #include "macros.h"
 #include "main.h"
 #include "midicontroller.h"
+#include "msoptions.h"
 #include "ringbuffer.h"
 #include "notelist.h"
+
 
 extern QTextStream StdErr;
 extern QTextStream StdOut;
@@ -30,8 +39,10 @@ struct LadspaLib {
 #define EXP2_DEPTH 15
 #define EXP2_BUF_LEN (1<<EXP2_DEPTH)
  
-class SynthData
+class SynthData: public QObject
 {
+    Q_OBJECT
+
     int  play_ports;
     int  capt_ports;
     void *play_mods [MAX_PLAY_PORTS / 2];
@@ -44,6 +55,11 @@ class SynthData
     jack_port_t *jack_in  [MAX_CAPT_PORTS];
     jack_port_t *jack_out [MAX_PLAY_PORTS];
     bool setAllNotesOff;
+    const ModularSynthOptions* synthoptions;
+#ifdef JACK_SESSION
+    jack_session_event_t *jsession_ev;
+    QString js_filename;
+#endif
 
   public:
     bool withAlsa;
@@ -105,6 +121,7 @@ class SynthData
     QColor colorCable;
     QColor colorJack;
     QFont bigFont, smallFont;
+    
     struct EditingFlags {
 	enum {
 	    CrossTopLeft = 1,
@@ -119,6 +136,14 @@ class SynthData
 		f |= CrossTopLeft;
 	}
     } editingFlags;
+
+#ifdef JACK_SESSION
+    enum jackSessionAction {
+        jsaAppQuit = -1,
+        jsaSave,
+        jsaSaveAndQuit
+    };
+#endif
 
     pthread_mutex_t rtMutex;
     QList<MidiController> *activeMidiControllers;
@@ -148,7 +173,7 @@ class SynthData
     MidiControllerContext* getMidiControllerContext(snd_seq_event_t*);
 
 public:
-  SynthData(const QString &name, int p_poly, float p_edge);
+  SynthData(QObject* parent, const ModularSynthOptions& mso);
   void stopPCM();
   ~SynthData();
 
@@ -177,9 +202,19 @@ public:
 
   int initJack (int ncapt, int nplay);
   int closeJack();
+
+#ifdef JACK_SESSION
+    static void jack_session_static_callback(jack_session_event_t *ev,
+            void *arg);
+    void jack_session_callback(jack_session_event_t *ev);
+    bool jack_session_event();
+    QString getJackSessionFilename() const;
+signals:
+    void jackSessionEvent(int);
+#endif
 };
 
 extern SynthData *synthdata;
  
 #endif
-      
+ 

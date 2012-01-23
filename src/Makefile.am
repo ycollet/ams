@@ -69,6 +69,7 @@ nodist_ams_SOURCES = \
 	port_popup_moc.cpp \
 	prefwidget_moc.cpp \
 	scopescreen_moc.cpp \
+	synthdata_moc.cpp \
 	textedit_moc.cpp
 
 
