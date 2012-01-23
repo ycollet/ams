@@ -1,6 +1,7 @@
 2012-01-23 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.*, src/prefwidget.*, src/synthdata.*,
-	src/mainwindow.*: Add basic support for JACK session handling.
+	src/mainwindow.*, src/main.cpp, src/msoptions.h, src/Makefile.am:
+	Add basic support for JACK session handling.
 
 2012-01-21 Guido Scholz <guido.scholz@bayernline.de>
 	* configure.ac: Add check for ladspa.h, check for dlopen in
