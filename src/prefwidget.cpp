@@ -34,6 +34,8 @@ PrefWidget::PrefWidget(): vBox(this)
     setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
     vBox.setMargin(10);
     vBox.setSpacing(5);
+    
+    /*set default path values*/
     colorPath = QDir::homePath();
     patchPath = colorPath;
 
@@ -56,31 +58,33 @@ PrefWidget::PrefWidget(): vBox(this)
     tabWidget->addTab(pathWidget, tr("&Paths"));
     tabWidget->addTab(editingWidget, tr("&Editing"));
 
+
+    /*Color tab*/
     QGridLayout *colorLayout = new QGridLayout();
     colorBox->addLayout(colorLayout);
 
     // QLabel *label1 = new QLabel("Background Color", colorGridWidget);
-    colorBackgroundLabel = new ColorWidget(tr("Background Color"),
+    colorBackgroundLabel = new ColorWidget(tr("Background color"),
             colorLayout, colorBackground, 1, this,
             SLOT(colorBackgroundClicked()));
 
-    colorModuleBackgroundLabel = new ColorWidget(tr("Module Background Color"),
+    colorModuleBackgroundLabel = new ColorWidget(tr("Module Background color"),
             colorLayout, colorModuleBackground, 3, this,
             SLOT(colorModuleBackgroundClicked()));
 
-    colorModuleBorderLabel = new ColorWidget(tr("Module Border Color"),
+    colorModuleBorderLabel = new ColorWidget(tr("Module Border color"),
             colorLayout, colorModuleBorder, 5, this,
             SLOT(colorModuleBorderClicked()));
 
-    colorModuleFontLabel = new ColorWidget(tr("Module Font Color"),
+    colorModuleFontLabel = new ColorWidget(tr("Module font color"),
             colorLayout, colorModuleFont, 7, this,
             SLOT(colorModuleFontClicked()));
 
-    colorCableLabel = new ColorWidget(tr("Cable Color"),
+    colorCableLabel = new ColorWidget(tr("Cable color"),
             colorLayout, colorCable, 9, this,
             SLOT(colorCableClicked()));
 
-    colorJackLabel = new ColorWidget(tr("Jack Color"),
+    colorJackLabel = new ColorWidget(tr("Jack color"),
             colorLayout, colorJack, 11, this,
             SLOT(colorJackClicked()));
 
@@ -89,17 +93,19 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(defaultColorButton, SIGNAL(clicked()), this,
             SLOT(defaultcolorClicked()));
 
+    colorBox->addStretch();
+
+    
+    /*Midi tab*/
     QHBoxLayout *midiModeSelectorBox = new QHBoxLayout();
     midiBox->addLayout(midiModeSelectorBox);
-    //  new QWidget(midiModeSelectorBox);
-    midiModeSelectorBox->addStretch();
-    QLabel *midiModeLabel = new QLabel(tr("M&IDI Controller Mode: "));
+    QLabel *midiModeLabel = new QLabel(tr("M&IDI controller mode: "));
     midiModeSelectorBox->addWidget(midiModeLabel);
-    //  new QWidget(midiModeSelectorBox);
+    midiModeSelectorBox->addStretch();
     QStringList midiModeNames;
-    midiModeNames << tr("Avoid Parameter Jumps");
-    midiModeNames << tr("Init MIDI Controller");
-    midiModeNames << tr("Follow MIDI Controller");
+    midiModeNames << tr("Avoid parameter jumps");
+    midiModeNames << tr("Init MIDI controller");
+    midiModeNames << tr("Follow MIDI controller");
     midiModeComboBox = new QComboBox();
     midiModeSelectorBox->addWidget(midiModeComboBox);
     midiModeLabel->setBuddy(midiModeComboBox);
@@ -109,38 +115,41 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)),
             this, SLOT(updateMidiMode(int)));                
 
-    pathBox->addStretch();
+    midiBox->addStretch();
+
+    /*Path tab*/
     QHBoxLayout *colorPathBox = new QHBoxLayout();
     pathBox->addLayout(colorPathBox);
-    QLabel *loadLabel = new QLabel(tr("&Load Path:"));
+    QLabel *loadLabel = new QLabel(tr("&Color path:"));
     colorPathBox->addWidget(loadLabel);
     loadEdit = new QLineEdit();
     pathBox->addWidget(loadEdit);
     loadEdit->setText(colorPath);
     loadLabel->setBuddy(loadEdit);
-    QPushButton *browseLoadButton = new QPushButton(tr("&Browse..."));
+    QPushButton *browseColorButton = new QPushButton(tr("&Browse..."));
     colorPathBox->addStretch();
-    colorPathBox->addWidget(browseLoadButton);
+    colorPathBox->addWidget(browseColorButton);
 
-    pathBox->addStretch();
+    pathBox->addSpacing(10);
+
     QHBoxLayout *patchPathBox = new QHBoxLayout();
     pathBox->addLayout(patchPathBox);
-    QLabel *saveLabel = new QLabel(tr("&Save Path:"));
+    QLabel *saveLabel = new QLabel(tr("&Patch path:"));
     patchPathBox->addWidget(saveLabel);
     saveEdit = new QLineEdit();
     pathBox->addWidget(saveEdit);
     saveEdit->setText(patchPath);
     saveLabel->setBuddy(saveEdit);
-    QPushButton *browseSaveButton = new QPushButton(tr("Bro&wse..."));
+    QPushButton *browsePatchButton = new QPushButton(tr("Bro&wse..."));
     patchPathBox->addStretch();
-    patchPathBox->addWidget(browseSaveButton);
+    patchPathBox->addWidget(browsePatchButton);
 
     pathBox->addStretch();
 
-    QObject::connect(browseLoadButton, SIGNAL(clicked()),
-            this, SLOT(browseLoad()));
-    QObject::connect(browseSaveButton, SIGNAL(clicked()),
-            this, SLOT(browseSave()));
+    QObject::connect(browseColorButton, SIGNAL(clicked()),
+            this, SLOT(browseColor()));
+    QObject::connect(browsePatchButton, SIGNAL(clicked()),
+            this, SLOT(browsePatch()));
     QObject::connect(loadEdit, SIGNAL(lostFocus()),
             this, SLOT(colorPathUpdate()));
     QObject::connect(loadEdit, SIGNAL(returnPressed()),
@@ -150,11 +159,12 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(saveEdit, SIGNAL(returnPressed()),
             this, SLOT(patchPathUpdate()));
 
+    /*Editing tab*/
     QHBoxLayout *editingModeSelectorBox = new QHBoxLayout();
     editingBox->addLayout(editingModeSelectorBox);
-    editingModeSelectorBox->addStretch();
     QLabel *editingModeLabel = new QLabel(tr("Box movement:"));
     editingModeSelectorBox->addWidget(editingModeLabel);
+    editingModeSelectorBox->addStretch();
     QStringList editingModeNames;
     editingModeNames << tr("Standard");
     editingModeNames << tr("No topleft border");
@@ -164,20 +174,20 @@ PrefWidget::PrefWidget(): vBox(this)
     editingModeComboBox->addItems(editingModeNames);
     QObject::connect(editingModeComboBox, SIGNAL(highlighted(int)),
             this, SLOT(updateEditingMode(int)));                
+    editingBox->addStretch();
 
 
+    /*Button line*/
     QHBoxLayout *buttonContainer = new QHBoxLayout();
-    vBox.addLayout(buttonContainer);
     buttonContainer->addStretch();
+    vBox.addLayout(buttonContainer);
     QPushButton *applyButton = new QPushButton(tr("&Apply"));
     buttonContainer->addWidget(applyButton);
-    buttonContainer->addStretch();
     QPushButton *okButton = new QPushButton(tr("OK"));
     buttonContainer->addWidget(okButton);
-    buttonContainer->addStretch();
     QPushButton *cancelButton = new QPushButton(tr("Cancel"));
     buttonContainer->addWidget(cancelButton);
-    buttonContainer->addStretch();
+
     QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
     QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(applyPref()));  
     QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
@@ -425,11 +435,12 @@ void PrefWidget::updateEditingMode(int mode)
   editingMode = mode;
 }
 
-void PrefWidget::browseLoad() {
+void PrefWidget::browseColor() {
 
   QString qs;
 
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose color path"), colorPath);
+  qs = QFileDialog::getExistingDirectory(this, tr("Choose color path"),
+          colorPath);
   if (qs.isEmpty())
     return;
 
@@ -437,11 +448,12 @@ void PrefWidget::browseLoad() {
   loadEdit->setText(colorPath);
 }
 
-void PrefWidget::browseSave() {
+void PrefWidget::browsePatch() {
 
   QString qs;
 
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose patch path"), patchPath);
+  qs = QFileDialog::getExistingDirectory(this, tr("Choose patch path"),
+          patchPath);
   if (qs.isEmpty())
     return;
 

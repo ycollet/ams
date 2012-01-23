@@ -69,8 +69,8 @@ class PrefWidget : public QWidget
     void colorCableClicked();
     void defaultcolorClicked();
     void colorJackClicked();
-    void browseLoad();
-    void browseSave();
+    void browseColor();
+    void browsePatch();
     void updateMidiMode(int);
     void updateEditingMode(int);
     void colorPathUpdate();

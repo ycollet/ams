@@ -2,6 +2,8 @@
 	* src/modularsynth.*, src/prefwidget.*, src/synthdata.*,
 	src/mainwindow.*, src/main.cpp, src/msoptions.h, src/Makefile.am:
 	Add basic support for JACK session handling.
+	* src/prefwidget.cpp: Improve widget alignment in preferences
+	dialog.
 
 2012-01-21 Guido Scholz <guido.scholz@bayernline.de>
 	* configure.ac: Add check for ladspa.h, check for dlopen in
