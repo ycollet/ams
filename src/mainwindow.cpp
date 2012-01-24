@@ -523,7 +523,7 @@ void MainWindow::appendRecentlyOpenedFile(const QString &fn, QStringList &lst)
 }
 
 #ifdef JACK_SESSION
-void MainWindow::handleJackSessionEvent(SynthData::jackSessionAction jsa)
+void MainWindow::handleJackSessionEvent(int jsa)
 {
     qWarning("JACK session action: %d", jsa);
 

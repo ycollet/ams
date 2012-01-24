@@ -48,7 +48,7 @@ private slots:
 
 #ifdef JACK_SESSION
 public slots:
-    void handleJackSessionEvent(SynthData::jackSessionAction);
+    void handleJackSessionEvent(int);
 #endif
 
 public:
