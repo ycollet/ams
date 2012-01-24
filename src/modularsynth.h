@@ -197,7 +197,7 @@ public:
     void loadColors();
     void saveColors();
     void allVoicesOff();
-    void loadPreferences(QString&);
+    void loadPreference(QString&);
     void savePreferences(QTextStream&);
     void refreshColors();
     void redrawPortConnections();

@@ -2052,16 +2052,15 @@ void ModularSynth::allVoicesOff()
   synthdata->allNotesOff();
 }
 
-void ModularSynth::loadPreferences(QString& line)
+void ModularSynth::loadPreference(QString& line)
 {
-    prefWidget->loadPref(line);
-    refreshColors();
+    prefWidget->loadPreference(line);
 }
 
 
 void ModularSynth::savePreferences(QTextStream& ts)
 {
-    prefWidget->savePref(ts);
+    prefWidget->savePreferences(ts);
 }
 
 

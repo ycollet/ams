@@ -443,9 +443,10 @@ void MainWindow::readConfig()
         if (s.startsWith("RecentFile"))
             appendRecentlyOpenedFile(s.section(' ', 1), recentFiles);
         else
-            modularSynth->loadPreferences(s);
+            modularSynth->loadPreference(s);
     }
     file.close();
+    
     modularSynth->refreshColors();
 }
 

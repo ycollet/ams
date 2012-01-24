@@ -31,7 +31,6 @@
 
 PrefWidget::PrefWidget(): vBox(this)
 {
-    setGeometry(0, 0, PREF_DEFAULT_WIDTH, PREF_DEFAULT_HEIGHT);
     vBox.setMargin(10);
     vBox.setSpacing(5);
     
@@ -193,8 +192,8 @@ PrefWidget::PrefWidget(): vBox(this)
     QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
 }
 
-
-void PrefWidget::loadPref(QString& line)
+/*load one _preference_ per line*/
+void PrefWidget::loadPreference(QString& line)
 {
     int r, g, b;
 
@@ -260,7 +259,8 @@ void PrefWidget::loadPref(QString& line)
 }
 
 
-void PrefWidget::savePref(QTextStream& rctext)
+/*save the _complete_ preferences set*/
+void PrefWidget::savePreferences(QTextStream& rctext)
 {
     rctext << "ColorBackground "
         << synthdata->colorBackground.red() << " "
@@ -334,6 +334,7 @@ void PrefWidget::recallColors() {
   colorPath = synthdata->colorPath;
   patchPath = synthdata->patchPath;
 }
+
 void PrefWidget::defaultcolorClicked()
 {
   colorBackground = QColor(COLOR_MAINWIN_BG);
@@ -344,6 +345,7 @@ void PrefWidget::defaultcolorClicked()
   colorJack = QColor(250, 200, 50);
   refreshColors();
 }
+
 void PrefWidget::storeColors() {
 
   synthdata->colorBackground = colorBackground;

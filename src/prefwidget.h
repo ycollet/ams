@@ -50,8 +50,8 @@ class PrefWidget : public QWidget
    
   public:
     PrefWidget();
-    void loadPref(QString&);
-    void savePref(QTextStream&);
+    void loadPreference(QString&);
+    void savePreferences(QTextStream&);
 
   signals:
     void prefChanged();
