@@ -448,6 +448,7 @@ void MainWindow::readConfig()
     file.close();
     
     modularSynth->refreshColors();
+    modularSynth->setPreferencesWidgetColors();
 }
 
 void MainWindow::writeConfig()

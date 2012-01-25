@@ -52,6 +52,7 @@ class PrefWidget : public QWidget
     PrefWidget();
     void loadPreference(QString&);
     void savePreferences(QTextStream&);
+    void recallColors();
 
   signals:
     void prefChanged();
@@ -60,7 +61,6 @@ class PrefWidget : public QWidget
     void submitPref();
     void applyPref();
     void refreshColors();
-    void recallColors();
     void storeColors();
     void colorBackgroundClicked();
     void colorModuleBackgroundClicked();

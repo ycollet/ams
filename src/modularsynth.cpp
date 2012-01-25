@@ -94,6 +94,7 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   , paintFastly(false)
   , _zoomFactor(1.0)
 {
+  setAutoFillBackground(true);
   modified = false;
   dragWidget = NULL;
   selectedPort = NULL;
@@ -1179,8 +1180,13 @@ void ModularSynth::loadColors() {
                 setColor(f, synthdata->colorCable);
             }        
         }      
-        updateColors();
         fclose(f);
+
+        /*some defaults*/
+        synthdata->colorPortFont1 = synthdata->colorModuleFont;
+        synthdata->colorPortFont2 = QColor(255, 240, 140);
+        refreshColors();
+        setPreferencesWidgetColors();
     }        
 }
 
@@ -2070,30 +2076,31 @@ void ModularSynth::showContextMenu(const QPoint& pos) {
 }
 
 
+void ModularSynth::setPreferencesWidgetColors()
+{
+  prefWidget->recallColors();
+  prefWidget->refreshColors();
+}
+
+
 void ModularSynth::refreshColors() {
 
-  for (int l1 = 0; l1 < listModule.count(); ++l1) {
-      Module* m = listModule[l1];
-      if (m != NULL)
-          m->getColors();
-  }      
-  prefWidget->refreshColors();
+    for (int l1 = 0; l1 < listModule.count(); ++l1) {
+        Module* m = listModule[l1];
+        if (m != NULL) {
+            /*redraw modules*/
+            m->getColors();
+        }
+    }
 
-  QPalette p = palette();
-  p.setColor(backgroundRole(), synthdata->colorBackground);
-  setAutoFillBackground(true);
-  setPalette(p);
-  update();
+    /*FIXME: how to redraw cables and jacks?*/
+    /*redraw synth background*/
+    QPalette pal = palette();
+    pal.setColor(backgroundRole(), synthdata->colorBackground);
+    setPalette(pal);
+    update();
 }
 
-
-void ModularSynth::updateColors()
-{
-  synthdata->colorPortFont1 = synthdata->colorModuleFont;
-  synthdata->colorPortFont2 = QColor(255, 240, 140);
-  prefWidget->recallColors();
-  refreshColors();
-}
 
 void ModularSynth::moveAllBoxes(const QPoint &delta)
 {

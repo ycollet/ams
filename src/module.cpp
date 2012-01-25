@@ -33,11 +33,7 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
   synthdata->incModuleCount();
   moduleID = synthdata->getModuleID();
   getColors();
-//   colorBackground = synthdata->colorModuleBackground;
-//   colorBorder = synthdata->colorModuleBorder;
-//   colorFont = synthdata->colorModuleFont;
   synthdata->moduleList.append(this);
-//   setPalette(QPalette(colorBackground, colorBackground));
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH,
           MODULE_DEFAULT_HEIGHT);
 

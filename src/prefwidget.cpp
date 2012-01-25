@@ -63,27 +63,27 @@ PrefWidget::PrefWidget(): vBox(this)
     colorBox->addLayout(colorLayout);
 
     // QLabel *label1 = new QLabel("Background Color", colorGridWidget);
-    colorBackgroundLabel = new ColorWidget(tr("Background color"),
+    colorBackgroundLabel = new ColorWidget(tr("Background"),
             colorLayout, colorBackground, 1, this,
             SLOT(colorBackgroundClicked()));
 
-    colorModuleBackgroundLabel = new ColorWidget(tr("Module Background color"),
+    colorModuleBackgroundLabel = new ColorWidget(tr("Module background"),
             colorLayout, colorModuleBackground, 3, this,
             SLOT(colorModuleBackgroundClicked()));
 
-    colorModuleBorderLabel = new ColorWidget(tr("Module Border color"),
+    colorModuleBorderLabel = new ColorWidget(tr("Module border"),
             colorLayout, colorModuleBorder, 5, this,
             SLOT(colorModuleBorderClicked()));
 
-    colorModuleFontLabel = new ColorWidget(tr("Module font color"),
+    colorModuleFontLabel = new ColorWidget(tr("Module font"),
             colorLayout, colorModuleFont, 7, this,
             SLOT(colorModuleFontClicked()));
 
-    colorCableLabel = new ColorWidget(tr("Cable color"),
+    colorCableLabel = new ColorWidget(tr("Cables"),
             colorLayout, colorCable, 9, this,
             SLOT(colorCableClicked()));
 
-    colorJackLabel = new ColorWidget(tr("Jack color"),
+    colorJackLabel = new ColorWidget(tr("Jacks"),
             colorLayout, colorJack, 11, this,
             SLOT(colorJackClicked()));
 
@@ -202,37 +202,45 @@ void PrefWidget::loadPreference(QString& line)
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorBackground = QColor(r, g, b);
+        colorBackground = synthdata->colorBackground;
+
     }        
     else if (line.startsWith("ColorModuleBackground")) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBackground = QColor(r, g, b);
+        colorModuleBackground = synthdata->colorModuleBackground;
     }        
     else if (line.startsWith("ColorModuleBorder")) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBorder = QColor(r, g, b);
+        colorModuleBorder = synthdata->colorModuleBorder;
     }        
     else if (line.startsWith("ColorModuleFont")) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleFont = QColor(r, g, b);
+        colorModuleFont = synthdata->colorModuleFont;
         synthdata->colorPortFont1 = QColor(r, g, b);
+        colorPortFont1 = synthdata->colorPortFont1;
     }        
     else if (line.startsWith("ColorJack")) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorJack = QColor(r, g, b);
+        colorJack = synthdata->colorJack;
     }        
     else if (line.startsWith("ColorCable")) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorCable = QColor(r, g, b);
+        colorCable = synthdata->colorCable;
     }       
     else if (line.startsWith("MidiControllerMode")) {
         midiControllerMode = line.section(' ', 1, 1).toInt();

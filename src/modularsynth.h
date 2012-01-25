@@ -77,9 +77,10 @@ class ModularSynth : public QWidget
     void showContextMenu(const QPoint&);
             
 public:
-  ModularSynth(QWidget* parent, const ModularSynthOptions&);
-  ~ModularSynth();
+    ModularSynth(QWidget* parent, const ModularSynthOptions&);
+    ~ModularSynth();
 
+    void setPreferencesWidgetColors();
     bool clearConfig(bool restart);
     QMenu *contextMenu;
     int go(bool forceJack, bool forceAlsa);
@@ -201,7 +202,6 @@ public:
     void savePreferences(QTextStream&);
     void refreshColors();
     void redrawPortConnections();
-    void updateColors();
 };
 
   
