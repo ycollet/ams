@@ -177,6 +177,14 @@ PrefWidget::PrefWidget(): vBox(this)
 
 
     /*Button line*/
+    /*
+       buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
+       QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
+       connect(buttonBox, SIGNAL(accepted()), this, SLOT(submitPref()));
+       connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
+       connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
+*/
+
     QHBoxLayout *buttonContainer = new QHBoxLayout();
     buttonContainer->addStretch();
     vBox.addLayout(buttonContainer);

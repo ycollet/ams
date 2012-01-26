@@ -349,6 +349,10 @@ void Module::getColors(void)
       port->setPalette(QPalette(
                   synthdata->colorModuleBackground,
                   synthdata->colorModuleBackground));
+      if (port->isInPort())
+          port->cableColor = synthdata->colorCable;
+      else
+          port->jackColor= synthdata->colorJack;
   }
 }
 

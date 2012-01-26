@@ -2093,8 +2093,7 @@ void ModularSynth::refreshColors() {
         }
     }
 
-    /*FIXME: how to redraw cables and jacks?*/
-    /*redraw synth background*/
+    /*redraw synth background, cables and jacks*/
     QPalette pal = palette();
     pal.setColor(backgroundRole(), synthdata->colorBackground);
     setPalette(pal);

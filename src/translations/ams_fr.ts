@@ -3604,27 +3604,27 @@ Save changes?</source>
         <translation>E&amp;xplorer...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="183"/>
+        <location filename="../prefwidget.cpp" line="191"/>
         <source>&amp;Apply</source>
         <translation>&amp;Appliquer</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="185"/>
+        <location filename="../prefwidget.cpp" line="193"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="187"/>
+        <location filename="../prefwidget.cpp" line="195"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="452"/>
+        <location filename="../prefwidget.cpp" line="460"/>
         <source>Choose color path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="465"/>
+        <location filename="../prefwidget.cpp" line="473"/>
         <source>Choose patch path</source>
         <translation type="unfinished"></translation>
     </message>
