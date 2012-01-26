@@ -1,3 +1,7 @@
+2012-01-26 Guido Scholz <guido.scholz@bayernline.de>
+	* src/modularsynth.*, src/module.cpp, src/prefwidget.*:
+	Fix preferences dialog to show current color setup.
+
 2012-01-23 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.*, src/prefwidget.*, src/synthdata.*,
 	src/mainwindow.*, src/main.cpp, src/msoptions.h, src/Makefile.am:
