@@ -569,7 +569,7 @@
     <message>
         <location filename="../m_function.cpp" line="64"/>
         <source>Reset</source>
-        <translation>Zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="65"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../m_lfo.cpp" line="36"/>
         <source>Reset</source>
-        <translation>Zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="38"/>
