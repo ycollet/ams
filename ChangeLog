@@ -1,3 +1,15 @@
+2012-01-31 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.*, src/modularsynth.*, src/prefwidget.*:
+	Rewrite preferences widget to fix colorwidget memory leak and
+	use OOP style for data access. Realize choices for MIDI and editing
+	options with RadioButtons. Add options for saving window geometry
+	and hiding recently used files menu. Remove path edit lines;
+	this feature is handled automatically.
+
+2012-01-30 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.cpp:
+	Fix broken Yes/No/Cancel response on program exit.
+
 2012-01-26 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.*, src/module.cpp, src/prefwidget.*:
 	Fix preferences dialog to show current color setup.
@@ -14,7 +26,7 @@
 	libdl.
 	* src/Makefile.am: Improve handling of CXXFLAGS variables.
 	* src/modularsynth.cpp: Apply patch from Sebastien Alaiwan to
-	improve port selection handling.
+	improve module port selection handling.
 	* src/modularsynth.*, src/prefwidget.*, src/synthdata.*,
 	src/mainwindow.cpp: Separate handling of color scheme directory
 	from patch file directoy.

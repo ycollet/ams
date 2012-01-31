@@ -18,4 +18,3 @@ class ColorWidget: public QWidget
             PrefWidget*, const char *);
 };
 
-

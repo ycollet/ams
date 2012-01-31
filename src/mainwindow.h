@@ -12,19 +12,23 @@
 #include "config.h"
 #include "modularsynth.h"
 #include "msoptions.h"
+#include "prefwidget.h"
+
 
 class MainWindow: public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
-  static int pipeFd[2];
-  static void sighandler(int);
-
-private:
+    static int pipeFd[2];
+    static void sighandler(int);
+    bool restoregeometry;
+    bool hiderecentfiles;
     int rcFd;
     QString fileName;
     QStringList recentFiles;
     ModularSynth *modularSynth;
     QMenu* fileRecentlyOpenedFiles;
+    PrefWidget* prefDialog;
+
     bool saveFile();
     void newFile();
     void openFile(const QString&);
@@ -45,6 +49,8 @@ private slots:
     void helpAboutQt();
     void recentFileActivated(QAction*);
     void setupRecentFilesMenu();
+    void applyPreferences();
+    void displayPreferences();
 
 #ifdef JACK_SESSION
 public slots:

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <QGroupBox>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
@@ -68,7 +67,6 @@ GuiWidget::GuiWidget(QWidget* parent, const char *name)
 
 int GuiWidget::addFrame(const QString &frameName)
 {
-    //  printf("Adding frame %s.\n", frameName.latin1());
     if (!currentTab)
         return -1;
 
@@ -88,7 +86,6 @@ int GuiWidget::addFrame(const QString &frameName)
 
 int GuiWidget::setFrame(int index) {
 
-    //  fprintf(stderr, "Setting frame index %d.\n", index);  
     GuiFrame* gf = getGuiFrame(index);
     if (gf != NULL)
         currentGroupBox = gf->frameBox;
@@ -179,7 +176,6 @@ int GuiWidget::setCurrentPreset(int presetNum, bool rt)
                 mcb->setValRT(value);
                 synthdata->mcSet.put(mcb);
             } else {
-                // StdOut << currentPreset << " " << mcb->name << " " << index << " " << value << " " << endl;
                 mcb->setVal(value, NULL);
             }
         }

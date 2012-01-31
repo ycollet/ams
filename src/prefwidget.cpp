@@ -1,490 +1,422 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h> 
-#include <qsplitter.h>
+#include <qstringlist.h>
+#include <qcheckbox.h>
+#include <qradiobutton.h>
+#include <qgroupbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <QFileDialog>
-#include <qradiobutton.h>
 #include <qcolordialog.h>
 #include <qcombobox.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qdialog.h>
-#include <qregexp.h> 
-#include <qlayout.h> 
+#include <qlayout.h>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QGridLayout>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
 
-#include "colorwidget.h"
 #include "synthdata.h"
 #include "prefwidget.h"
 
 
 
-PrefWidget::PrefWidget(): vBox(this)
+PrefWidget::PrefWidget(QWidget* parent): QDialog(parent)
 {
-    vBox.setMargin(10);
-    vBox.setSpacing(5);
-    
-    /*set default path values*/
-    colorPath = QDir::homePath();
-    patchPath = colorPath;
+    setWindowTitle(tr("Edit preferences"));
+    tabWidget = new QTabWidget(this);
 
-    recallColors();
+    setupColorTab();
+    setupMidiTab();
+    setupEditingTab();
 
-    tabWidget = new QTabWidget();
-    vBox.addWidget(tabWidget);
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(
+            QDialogButtonBox::Ok |
+            QDialogButtonBox::Cancel |
+            QDialogButtonBox::Apply);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-    QWidget *colorWidget = new QWidget();
+    QPushButton* applyButton = buttonBox->button(QDialogButtonBox::Apply);
+    connect(applyButton, SIGNAL(pressed()), this, SIGNAL(prefChanged()));
+
+    QBoxLayout* baseLayout = new QVBoxLayout();
+    baseLayout->addWidget(tabWidget);
+    baseLayout->addWidget(buttonBox);
+    setLayout(baseLayout);
+}
+
+
+void PrefWidget::setupColorTab()
+{
+    QWidget *colorWidget = new QWidget(this);
     QVBoxLayout *colorBox = new QVBoxLayout(colorWidget);
-    QWidget *midiWidget = new QWidget();
-    QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
-    QWidget *pathWidget = new QWidget();
-    QVBoxLayout *pathBox = new QVBoxLayout(pathWidget);
-    QWidget *editingWidget = new QWidget();
-    QVBoxLayout *editingBox = new QVBoxLayout(editingWidget);
-
-    tabWidget->addTab(colorWidget, tr("&Colors"));
-    tabWidget->addTab(midiWidget, tr("&MIDI"));
-    tabWidget->addTab(pathWidget, tr("&Paths"));
-    tabWidget->addTab(editingWidget, tr("&Editing"));
 
 
-    /*Color tab*/
-    QGridLayout *colorLayout = new QGridLayout();
-    colorBox->addLayout(colorLayout);
-
-    // QLabel *label1 = new QLabel("Background Color", colorGridWidget);
-    colorBackgroundLabel = new ColorWidget(tr("Background"),
-            colorLayout, colorBackground, 1, this,
+    QLabel* label = new QLabel(tr("&Background"));
+    colorBackgroundLabel = new QLabel();
+    colorBackgroundLabel->setMinimumWidth(80);
+    colorBackgroundLabel->setAutoFillBackground(true);
+    colorBackgroundLabel->setPalette(Qt::black);
+    QPushButton* button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorBackgroundClicked()));
+    label->setBuddy(button);
 
-    colorModuleBackgroundLabel = new ColorWidget(tr("Module background"),
-            colorLayout, colorModuleBackground, 3, this,
+    QHBoxLayout* lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorBackgroundLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
+    label = new QLabel(tr("&Module background"));
+    colorModuleBackgroundLabel = new QLabel();
+    colorModuleBackgroundLabel->setMinimumWidth(80);
+    colorModuleBackgroundLabel->setAutoFillBackground(true);
+    colorModuleBackgroundLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorModuleBackgroundClicked()));
+    label->setBuddy(button);
 
-    colorModuleBorderLabel = new ColorWidget(tr("Module border"),
-            colorLayout, colorModuleBorder, 5, this,
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorModuleBackgroundLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
+    label = new QLabel(tr("M&odule border"));
+    colorModuleBorderLabel = new QLabel();
+    colorModuleBorderLabel->setMinimumWidth(80);
+    colorModuleBorderLabel->setAutoFillBackground(true);
+    colorModuleBorderLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorModuleBorderClicked()));
+    label->setBuddy(button);
 
-    colorModuleFontLabel = new ColorWidget(tr("Module font"),
-            colorLayout, colorModuleFont, 7, this,
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorModuleBorderLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
+    label = new QLabel(tr("Module &font"));
+    colorModuleFontLabel = new QLabel();
+    colorModuleFontLabel->setMinimumWidth(80);
+    colorModuleFontLabel->setAutoFillBackground(true);
+    colorModuleFontLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorModuleFontClicked()));
+    label->setBuddy(button);
 
-    colorCableLabel = new ColorWidget(tr("Cables"),
-            colorLayout, colorCable, 9, this,
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorModuleFontLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
+    label = new QLabel(tr("&Cables"));
+    colorCableLabel = new QLabel();
+    colorCableLabel->setMinimumWidth(80);
+    colorCableLabel->setAutoFillBackground(true);
+    colorCableLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorCableClicked()));
+    label->setBuddy(button);
 
-    colorJackLabel = new ColorWidget(tr("Jacks"),
-            colorLayout, colorJack, 11, this,
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorCableLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
+    label = new QLabel(tr("&Jacks"));
+    colorJackLabel = new QLabel();
+    colorJackLabel->setMinimumWidth(80);
+    colorJackLabel->setAutoFillBackground(true);
+    colorJackLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
             SLOT(colorJackClicked()));
+    label->setBuddy(button);
+
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorJackLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
 
     QPushButton *defaultColorButton = new QPushButton(tr("&Default colors"));
-    colorLayout->addWidget(defaultColorButton, 12, 1);
-    QObject::connect(defaultColorButton, SIGNAL(clicked()), this,
+    connect(defaultColorButton, SIGNAL(clicked()), this,
             SLOT(defaultcolorClicked()));
+
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(defaultColorButton);
+    lineLayout->addStretch();
+    colorBox->addLayout(lineLayout);
 
     colorBox->addStretch();
 
-    
-    /*Midi tab*/
-    QHBoxLayout *midiModeSelectorBox = new QHBoxLayout();
-    midiBox->addLayout(midiModeSelectorBox);
-    QLabel *midiModeLabel = new QLabel(tr("M&IDI controller mode: "));
-    midiModeSelectorBox->addWidget(midiModeLabel);
-    midiModeSelectorBox->addStretch();
-    QStringList midiModeNames;
-    midiModeNames << tr("Avoid parameter jumps");
-    midiModeNames << tr("Init MIDI controller");
-    midiModeNames << tr("Follow MIDI controller");
-    midiModeComboBox = new QComboBox();
-    midiModeSelectorBox->addWidget(midiModeComboBox);
-    midiModeLabel->setBuddy(midiModeComboBox);
-    //  new QWidget(midiModeSelectorBox);
-    midiModeComboBox->addItems(midiModeNames);
-    midiModeComboBox->setCurrentIndex(midiControllerMode);
-    QObject::connect(midiModeComboBox, SIGNAL(highlighted(int)),
-            this, SLOT(updateMidiMode(int)));                
+
+    tabWidget->addTab(colorWidget, tr("&Colors"));
+}
+
+
+void PrefWidget::setupMidiTab()
+{
+    QWidget *midiWidget = new QWidget(this);
+    QVBoxLayout *midiBox = new QVBoxLayout(midiWidget);
+
+    /*MIDI mode radio buttons*/
+    QGroupBox *midiModeGroup = new QGroupBox(tr("MIDI controller mode"));
+    midiModeButtons = new QButtonGroup();
+
+    QRadioButton *jumpsRadioButton = new QRadioButton(
+            tr("&Avoid parameter jumps"));
+    jumpsRadioButton->setChecked (true);
+    midiModeButtons->addButton(jumpsRadioButton, 0); //FIXME: MAGIC
+
+    QRadioButton *initRadioButton = new QRadioButton(
+            tr("&Init MIDI controller"));
+    midiModeButtons->addButton(initRadioButton, 1); //FIXME: MAGIC
+
+    QRadioButton *followRadioButton = new QRadioButton(
+            tr("&Follow MIDI controller"));
+    midiModeButtons->addButton(followRadioButton, 2); //FIXME: MAGIC
+
+    QVBoxLayout *midiModeLayout = new QVBoxLayout;
+    midiModeLayout->addWidget(jumpsRadioButton);
+    midiModeLayout->addWidget(initRadioButton);
+    midiModeLayout->addWidget(followRadioButton);
+    midiModeGroup->setLayout(midiModeLayout);
+    midiBox->addWidget(midiModeGroup);
 
     midiBox->addStretch();
 
-    /*Path tab*/
-    QHBoxLayout *colorPathBox = new QHBoxLayout();
-    pathBox->addLayout(colorPathBox);
-    QLabel *loadLabel = new QLabel(tr("&Color path:"));
-    colorPathBox->addWidget(loadLabel);
-    loadEdit = new QLineEdit();
-    pathBox->addWidget(loadEdit);
-    loadEdit->setText(colorPath);
-    loadLabel->setBuddy(loadEdit);
-    QPushButton *browseColorButton = new QPushButton(tr("&Browse..."));
-    colorPathBox->addStretch();
-    colorPathBox->addWidget(browseColorButton);
 
-    pathBox->addSpacing(10);
+    tabWidget->addTab(midiWidget, tr("&MIDI"));
+}
 
-    QHBoxLayout *patchPathBox = new QHBoxLayout();
-    pathBox->addLayout(patchPathBox);
-    QLabel *saveLabel = new QLabel(tr("&Patch path:"));
-    patchPathBox->addWidget(saveLabel);
-    saveEdit = new QLineEdit();
-    pathBox->addWidget(saveEdit);
-    saveEdit->setText(patchPath);
-    saveLabel->setBuddy(saveEdit);
-    QPushButton *browsePatchButton = new QPushButton(tr("Bro&wse..."));
-    patchPathBox->addStretch();
-    patchPathBox->addWidget(browsePatchButton);
 
-    pathBox->addStretch();
+/*Editing tab*/
+void PrefWidget::setupEditingTab()
+{
+    QWidget *editingWidget = new QWidget(this);
+    QVBoxLayout *editingBox = new QVBoxLayout(editingWidget);
 
-    QObject::connect(browseColorButton, SIGNAL(clicked()),
-            this, SLOT(browseColor()));
-    QObject::connect(browsePatchButton, SIGNAL(clicked()),
-            this, SLOT(browsePatch()));
-    QObject::connect(loadEdit, SIGNAL(lostFocus()),
-            this, SLOT(colorPathUpdate()));
-    QObject::connect(loadEdit, SIGNAL(returnPressed()),
-            this, SLOT(colorPathUpdate()));
-    QObject::connect(saveEdit, SIGNAL(lostFocus()),
-            this, SLOT(patchPathUpdate()));
-    QObject::connect(saveEdit, SIGNAL(returnPressed()),
-            this, SLOT(patchPathUpdate()));
+    /*Module movement mode radio buttons*/
+    QGroupBox *moduleMoveGroup = new QGroupBox(tr("Module movement"));
+    moduleMoveButtons = new QButtonGroup();
 
-    /*Editing tab*/
-    QHBoxLayout *editingModeSelectorBox = new QHBoxLayout();
-    editingBox->addLayout(editingModeSelectorBox);
-    QLabel *editingModeLabel = new QLabel(tr("Box movement:"));
-    editingModeSelectorBox->addWidget(editingModeLabel);
-    editingModeSelectorBox->addStretch();
-    QStringList editingModeNames;
-    editingModeNames << tr("Standard");
-    editingModeNames << tr("No topleft border");
-    editingModeComboBox = new QComboBox();
-    editingModeSelectorBox->addWidget(editingModeComboBox);
-    editingModeLabel->setBuddy(midiModeComboBox);
-    editingModeComboBox->addItems(editingModeNames);
-    QObject::connect(editingModeComboBox, SIGNAL(highlighted(int)),
-            this, SLOT(updateEditingMode(int)));                
+    QRadioButton *standardRadioButton = new QRadioButton(
+            tr("&Standard"));
+    standardRadioButton->setChecked (true);
+    moduleMoveButtons->addButton(standardRadioButton, 0); //FIXME: MAGIC
+
+    QRadioButton *noborderRadioButton = new QRadioButton(
+            tr("&No topleft border"));
+    moduleMoveButtons->addButton(noborderRadioButton, 1); //FIXME: MAGIC
+
+    QVBoxLayout *moduleMoveLayout = new QVBoxLayout;
+    moduleMoveLayout->addWidget(standardRadioButton);
+    moduleMoveLayout->addWidget(noborderRadioButton);
+    moduleMoveGroup->setLayout(moduleMoveLayout);
+    editingBox->addWidget(moduleMoveGroup);
+
+    /*checkboxes*/
+    rememberGeometry = new QCheckBox(tr("&Remember window geometry"));
+    rememberGeometry->setToolTip(tr("Save and restore main window "
+                "position and size for next ams session."));
+    editingBox->addWidget(rememberGeometry);
+
+    hideRecentFiles = new QCheckBox(tr("&Hide recently used files"));
+    hideRecentFiles->setToolTip(tr("Do not show list of recently used "
+                "files in file menu."));
+    editingBox->addWidget(hideRecentFiles);
+
     editingBox->addStretch();
 
-
-    /*Button line*/
-    /*
-       buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
-       QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
-       connect(buttonBox, SIGNAL(accepted()), this, SLOT(submitPref()));
-       connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
-       connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
-*/
-
-    QHBoxLayout *buttonContainer = new QHBoxLayout();
-    buttonContainer->addStretch();
-    vBox.addLayout(buttonContainer);
-    QPushButton *applyButton = new QPushButton(tr("&Apply"));
-    buttonContainer->addWidget(applyButton);
-    QPushButton *okButton = new QPushButton(tr("OK"));
-    buttonContainer->addWidget(okButton);
-    QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-    buttonContainer->addWidget(cancelButton);
-
-    QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(submitPref()));  
-    QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(applyPref()));  
-    QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));  
+    tabWidget->addTab(editingWidget, tr("&Editing"));
 }
 
-/*load one _preference_ per line*/
-void PrefWidget::loadPreference(QString& line)
-{
-    int r, g, b;
-
-    if (line.startsWith("ColorBackground")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorBackground = QColor(r, g, b);
-        colorBackground = synthdata->colorBackground;
-
-    }        
-    else if (line.startsWith("ColorModuleBackground")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorModuleBackground = QColor(r, g, b);
-        colorModuleBackground = synthdata->colorModuleBackground;
-    }        
-    else if (line.startsWith("ColorModuleBorder")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorModuleBorder = QColor(r, g, b);
-        colorModuleBorder = synthdata->colorModuleBorder;
-    }        
-    else if (line.startsWith("ColorModuleFont")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorModuleFont = QColor(r, g, b);
-        colorModuleFont = synthdata->colorModuleFont;
-        synthdata->colorPortFont1 = QColor(r, g, b);
-        colorPortFont1 = synthdata->colorPortFont1;
-    }        
-    else if (line.startsWith("ColorJack")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorJack = QColor(r, g, b);
-        colorJack = synthdata->colorJack;
-    }        
-    else if (line.startsWith("ColorCable")) {
-        r = line.section(' ', 1, 1).toInt();
-        g = line.section(' ', 2, 2).toInt();
-        b = line.section(' ', 3, 3).toInt();
-        synthdata->colorCable = QColor(r, g, b);
-        colorCable = synthdata->colorCable;
-    }       
-    else if (line.startsWith("MidiControllerMode")) {
-        midiControllerMode = line.section(' ', 1, 1).toInt();
-        synthdata->midiControllerMode = midiControllerMode;
-    }       
-    else if (line.startsWith("ColorPath")) {
-        colorPath = line.section(' ', 1); 
-        if (colorPath.isEmpty())
-            colorPath = QDir::homePath();
-        loadEdit->setText(colorPath);
-        synthdata->colorPath = colorPath;
-    }       
-    else if (line.startsWith("PatchPath")) {
-        patchPath = line.section(' ', 1); 
-        if (patchPath.isEmpty())
-            patchPath = QDir::homePath();
-        saveEdit->setText(patchPath);
-        synthdata->patchPath = patchPath;
-    }       
-    else if (line.startsWith("EditingFlags")) {
-	synthdata->editingFlags.f = line.section(' ', 1).toInt();
-	editingMode = synthdata->editingFlags.crossTopLeft();
-    }       
-}
-
-
-/*save the _complete_ preferences set*/
-void PrefWidget::savePreferences(QTextStream& rctext)
-{
-    rctext << "ColorBackground "
-        << synthdata->colorBackground.red() << " "
-        << synthdata->colorBackground.green() << " "
-        << synthdata->colorBackground.blue() << "\n";
-    rctext << "ColorModuleBackground "
-        << synthdata->colorModuleBackground.red() << " "
-        << synthdata->colorModuleBackground.green() << " "
-        << synthdata->colorModuleBackground.blue() << "\n";
-    rctext << "ColorModuleBorder "
-        << synthdata->colorModuleBorder.red() << " "
-        << synthdata->colorModuleBorder.green() << " "
-        << synthdata->colorModuleBorder.blue() << "\n";
-    rctext << "ColorModuleFont "
-        << synthdata->colorModuleFont.red() << " "
-        << synthdata->colorModuleFont.green() << " "
-        << synthdata->colorModuleFont.blue() << "\n";
-    rctext << "ColorJack "
-        << synthdata->colorJack.red() << " "
-        << synthdata->colorJack.green() << " "
-        << synthdata->colorJack.blue() << "\n";
-    rctext << "ColorCable "
-        << synthdata->colorCable.red() << " "
-        << synthdata->colorCable.green() << " "
-        << synthdata->colorCable.blue() << "\n";
-    rctext << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
-    rctext << "ColorPath " << synthdata->colorPath << "\n";
-    rctext << "PatchPath " << synthdata->patchPath << "\n";
-    rctext << "EditingFlags " << synthdata->editingFlags.f << "\n";
-}                             
-
-void PrefWidget::submitPref()
-{
-  applyPref();
-  close();
-}
-
-void PrefWidget::applyPref() {
-
-  storeColors();
-  emit prefChanged();
-}
-
-void PrefWidget::refreshColors() {
-
-  colorBackgroundLabel->setPalette(QPalette(colorBackground, colorBackground));  
-  colorModuleBackgroundLabel->setPalette(QPalette(
-              colorModuleBackground, colorModuleBackground));  
-  colorModuleBorderLabel->setPalette(QPalette(
-              colorModuleBorder, colorModuleBorder));  
-  colorModuleFontLabel->setPalette(QPalette(
-              colorModuleFont, colorModuleFont));  
-  colorCableLabel->setPalette(QPalette(colorCable, colorCable));  
-  colorJackLabel->setPalette(QPalette(colorJack, colorJack));  
-  midiModeComboBox->setCurrentIndex(midiControllerMode);
-  editingModeComboBox->setCurrentIndex(editingMode);
-  loadEdit->setText(colorPath);
-  saveEdit->setText(patchPath);
-}
-
-void PrefWidget::recallColors() {
-
-  colorBackground = synthdata->colorBackground;
-  colorModuleBackground = synthdata->colorModuleBackground; 
-  colorModuleBorder = synthdata->colorModuleBorder;
-  colorModuleFont = synthdata->colorModuleFont;
-  colorCable = synthdata->colorCable;
-  colorJack = synthdata->colorJack;
-  midiControllerMode = synthdata->midiControllerMode;
-  editingMode = synthdata->editingFlags.crossTopLeft();
-  colorPath = synthdata->colorPath;
-  patchPath = synthdata->patchPath;
-}
 
 void PrefWidget::defaultcolorClicked()
 {
-  colorBackground = QColor(COLOR_MAINWIN_BG);
-  colorModuleBackground = QColor(COLOR_MODULE_BG);
-  colorModuleBorder = QColor(195, 195, 195);
-  colorModuleFont = QColor(255, 255, 255);
-  colorCable = QColor(180, 180, 180);
-  colorJack = QColor(250, 200, 50);
-  refreshColors();
+    colorBackgroundLabel->setPalette(QColor(COLOR_MAINWIN_BG));
+    colorModuleBackgroundLabel->setPalette(QColor(COLOR_MODULE_BG));
+    colorModuleBorderLabel->setPalette(QColor(195, 195, 195));
+    colorModuleFontLabel->setPalette(QColor(255, 255, 255));
+    colorCableLabel->setPalette(QColor(180, 180, 180));
+    colorJackLabel->setPalette(QColor(250, 200, 50));
 }
 
-void PrefWidget::storeColors() {
-
-  synthdata->colorBackground = colorBackground;
-  synthdata->colorModuleBackground = colorModuleBackground;
-  synthdata->colorModuleBorder = colorModuleBorder;
-  synthdata->colorModuleFont = colorModuleFont;
-  synthdata->colorPortFont1 = colorModuleFont;
-  synthdata->colorCable = colorCable;
-  synthdata->colorJack = colorJack;
-  synthdata->midiControllerMode = midiControllerMode;
-  synthdata->editingFlags.setCrossTopLeft(editingMode);
-  synthdata->colorPath = colorPath;
-  synthdata->patchPath = patchPath;
-}
-
-void PrefWidget::colorBackgroundClicked() {
-
-  QColor tmp;
-  
-  tmp = QColorDialog::getColor(colorBackground);
-  if (tmp.isValid()) {
-    colorBackground = tmp;
-    refreshColors();
-  }
-}
-
-void PrefWidget::colorModuleBackgroundClicked() {
-
-  QColor tmp;
-
-  tmp = QColorDialog::getColor(colorModuleBackground);
-  if (tmp.isValid()) {
-    colorModuleBackground = tmp;
-    refreshColors();
-  }
-}
-
-void PrefWidget::colorModuleBorderClicked() {
-
-  QColor tmp;
-
-  tmp = QColorDialog::getColor(colorModuleBorder);
-  if (tmp.isValid()) {       
-    colorModuleBorder = tmp;
-    refreshColors();
-  }
-}
-
-void PrefWidget::colorModuleFontClicked() {
-
-  QColor tmp;
-
-  tmp = QColorDialog::getColor(colorModuleFont);
-  if (tmp.isValid()) {       
-    colorModuleFont = tmp;    
-    refreshColors();
-  }
-}
-
-void PrefWidget::colorCableClicked() {
-
-  QColor tmp;
-
-  tmp = QColorDialog::getColor(synthdata->colorCable);
-  if (tmp.isValid()) {       
-    colorCable = tmp;    
-    refreshColors();
-  }
-}
-
-void PrefWidget::colorJackClicked() {
-
-  QColor tmp;
-
-  tmp = QColorDialog::getColor(synthdata->colorJack);
-  if (tmp.isValid()) {       
-    colorJack = tmp;    
-    refreshColors();
-  }
-}
-
-void PrefWidget::updateMidiMode(int mode) {
-
-  midiControllerMode = mode;
-}
-
-void PrefWidget::updateEditingMode(int mode)
+void PrefWidget::colorBackgroundClicked()
 {
-  editingMode = mode;
+    QColor tmp;
+
+    tmp = QColorDialog::getColor(getBackgroundColor());
+    if (tmp.isValid())
+        colorBackgroundLabel->setPalette(tmp);
 }
 
-void PrefWidget::browseColor() {
+void PrefWidget::colorModuleBackgroundClicked()
+{
+    QColor tmp;
 
-  QString qs;
-
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose color path"),
-          colorPath);
-  if (qs.isEmpty())
-    return;
-
-  colorPath = qs;
-  loadEdit->setText(colorPath);
+    tmp = QColorDialog::getColor(getModuleBackgroundColor());
+    if (tmp.isValid())
+        colorModuleBackgroundLabel->setPalette(tmp);
 }
 
-void PrefWidget::browsePatch() {
+void PrefWidget::colorModuleBorderClicked()
+{
+    QColor tmp;
 
-  QString qs;
-
-  qs = QFileDialog::getExistingDirectory(this, tr("Choose patch path"),
-          patchPath);
-  if (qs.isEmpty())
-    return;
-
-  patchPath = qs;
-  saveEdit->setText(patchPath);
+    tmp = QColorDialog::getColor(getModuleBorderColor());
+    if (tmp.isValid())
+        colorModuleBorderLabel->setPalette(tmp);
 }
 
-void PrefWidget::colorPathUpdate() {
+void PrefWidget::colorModuleFontClicked()
+{
+    QColor tmp;
 
-  colorPath = loadEdit->text();
+    tmp = QColorDialog::getColor(getModuleFontColor());
+    if (tmp.isValid())
+        colorModuleFontLabel->setPalette(tmp);
 }
-  
-void PrefWidget::patchPathUpdate() {
 
-  patchPath = saveEdit->text();
+void PrefWidget::colorCableClicked()
+{
+    QColor tmp;
+
+    tmp = QColorDialog::getColor(getCableColor());
+    if (tmp.isValid())
+        colorCableLabel->setPalette(tmp);
+}
+
+void PrefWidget::colorJackClicked()
+{
+    QColor tmp;
+
+    tmp = QColorDialog::getColor(getJackColor());
+    if (tmp.isValid())
+        colorJackLabel->setPalette(tmp);    
+}
+
+void PrefWidget::setMidiControllerMode(int mode)
+{
+    QAbstractButton* button = midiModeButtons->button(mode);
+    if (button != NULL)
+        button->setChecked(true);
+}
+
+int PrefWidget::getMidiControllerMode()
+{
+    return midiModeButtons->checkedId();
+}
+
+void PrefWidget::setModuleMoveMode(int mode)
+{
+    QAbstractButton* button = moduleMoveButtons->button(mode);
+    if (button != NULL)
+        button->setChecked(true);
+}
+
+int PrefWidget::getModuleMoveMode()
+{
+    return moduleMoveButtons->checkedId();
+}
+
+
+void PrefWidget::setRememberGeometry(bool remember)
+{
+    rememberGeometry->setChecked(remember);
+}
+
+bool PrefWidget::getRememberGeometry()
+{
+    return rememberGeometry->isChecked();
+}
+
+void PrefWidget::setHideRecentFiles(bool hide)
+{
+    hideRecentFiles->setChecked(hide);
+}
+
+bool PrefWidget::getHideRecentFiles()
+{
+    return hideRecentFiles->isChecked();
+}
+
+void PrefWidget::setBackgroundColor(QColor color)
+{
+    colorBackgroundLabel->setPalette(color);
+}
+
+QColor PrefWidget::getBackgroundColor()
+{
+    return colorBackgroundLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setModuleBackgroundColor(QColor color)
+{
+    colorModuleBackgroundLabel->setPalette(color);
+}
+
+QColor PrefWidget::getModuleBackgroundColor()
+{
+    return colorModuleBackgroundLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setModuleBorderColor(QColor color)
+{
+    colorModuleBorderLabel->setPalette(color);
+}
+
+QColor PrefWidget::getModuleBorderColor()
+{
+    return colorModuleBorderLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setModuleFontColor(QColor color)
+{
+    colorModuleFontLabel->setPalette(color);
+}
+
+QColor PrefWidget::getModuleFontColor()
+{
+    return colorModuleFontLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setCableColor(QColor color)
+{
+    colorCableLabel->setPalette(color);
+}
+
+QColor PrefWidget::getCableColor()
+{
+    return colorCableLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setJackColor(QColor color)
+{
+    colorJackLabel->setPalette(color);
+}
+
+QColor PrefWidget::getJackColor()
+{
+    return colorJackLabel->palette().color(QPalette::Background);
 }

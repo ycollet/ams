@@ -31,8 +31,6 @@
 #define MAX_ANALOGUE_DRIVER_OUT     6      
 
 // Appearance
-#define DEFAULT_WIDTH             750
-#define DEFAULT_HEIGHT            550
 #define SYNTH_DEFAULT_WIDTH       750
 #define SYNTH_DEFAULT_HEIGHT      500
 #define SYNTH_MINIMUM_WIDTH       200
@@ -65,8 +63,6 @@
 #define EXP_TABLE_LEN           32768
 
 // Appearance
-#define DEFAULT_WIDTH             750
-#define DEFAULT_HEIGHT            550
 #define SYNTH_DEFAULT_WIDTH       750
 #define SYNTH_DEFAULT_HEIGHT      500
 #define SYNTH_MINIMUM_WIDTH       200

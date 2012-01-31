@@ -78,7 +78,6 @@ ams_SOURCES = \
 	box.cpp \
 	canvas.cpp \
 	canvasfunction.cpp \
-	colorwidget.cpp \
 	configdialog.cpp \
 	envelope.cpp \
 	function.cpp \
@@ -156,7 +155,6 @@ noinst_HEADERS = \
 	box.h \
 	canvas.h \
 	canvasfunction.h \
-	colorwidget.h \
 	configdialog.h \
 	envelope.h \
 	function.h \

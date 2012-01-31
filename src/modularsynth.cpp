@@ -74,7 +74,6 @@
 #include "m_function.h"
 #include "m_vcdoubledecay.h"
 #include "m_mphlfo.h"
-#include "prefwidget.h"
 #include "config.h"
 
 static const char COLOREXT[] = ".acs";
@@ -116,13 +115,8 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   guiWidget->setWindowTitle(tr("AlsaModularSynth Parameter View"));
   synthdata->guiWidget = guiWidget;
   
-  prefWidget = new PrefWidget();
-  prefWidget->setWindowTitle(tr("AlsaModularSynth Preferences"));
-  QObject::connect(prefWidget, SIGNAL(prefChanged()),
-                   this, SLOT(refreshColors()));
-
   ladspaDialog = new LadspaDialog();
-  QObject::connect(static_cast<QWidget *>(ladspaDialog),
+  connect(static_cast<QWidget *>(ladspaDialog),
 		   SIGNAL(createLadspaModule(int, int, bool, bool)),
                    this, SLOT(newM_ladspa(int, int, bool, bool)));
 
@@ -137,7 +131,7 @@ ModularSynth::~ModularSynth()
   synthdata->midiWidget->clearAllClicked();
 
   guiWidget->close();
-  prefWidget->close();
+  //prefWidget->close();
   midiWidget->close();
   delete synthdata;
 }
@@ -352,10 +346,10 @@ void ModularSynth::displayParameterView() {
   guiWidget->raise();
 }
 
-void ModularSynth::displayPreferences() {
-
-  prefWidget->show();
-  prefWidget->raise();
+void ModularSynth::displayPreferences()
+{
+    /*prefWidget->show();
+    prefWidget->raise();*/
 }
 
 void ModularSynth::displayLadspaPlugins() {
@@ -2060,13 +2054,99 @@ void ModularSynth::allVoicesOff()
 
 void ModularSynth::loadPreference(QString& line)
 {
-    prefWidget->loadPreference(line);
+    int r, g, b;
+
+    if (line.startsWith("ColorBackground")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorBackground = QColor(r, g, b);
+
+    }        
+    else if (line.startsWith("ColorModuleBackground")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleBackground = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorModuleBorder")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleBorder = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorModuleFont")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorModuleFont = QColor(r, g, b);
+        synthdata->colorPortFont1 = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorJack")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorJack = QColor(r, g, b);
+    }        
+    else if (line.startsWith("ColorCable")) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorCable = QColor(r, g, b);
+    }       
+    else if (line.startsWith("MidiControllerMode")) {
+        synthdata->midiControllerMode = line.section(' ', 1, 1).toInt();
+    }       
+    else if (line.startsWith("ColorPath")) {
+        if (line.section(' ', 1).isEmpty() )
+            synthdata->colorPath = QDir::homePath();
+        else
+            synthdata->colorPath = line.section(' ', 1);
+    }       
+    else if (line.startsWith("PatchPath")) {
+        if (line.section(' ', 1).isEmpty())
+            synthdata->patchPath = QDir::homePath();
+        else
+            synthdata->patchPath = line.section(' ', 1);
+    }       
+    else if (line.startsWith("EditingFlags")) {
+	synthdata->editingFlags.f = line.section(' ', 1).toInt();
+    }       
 }
 
 
 void ModularSynth::savePreferences(QTextStream& ts)
 {
-    prefWidget->savePreferences(ts);
+    ts << "ColorBackground "
+        << synthdata->colorBackground.red() << " "
+        << synthdata->colorBackground.green() << " "
+        << synthdata->colorBackground.blue() << "\n";
+    ts << "ColorModuleBackground "
+        << synthdata->colorModuleBackground.red() << " "
+        << synthdata->colorModuleBackground.green() << " "
+        << synthdata->colorModuleBackground.blue() << "\n";
+    ts << "ColorModuleBorder "
+        << synthdata->colorModuleBorder.red() << " "
+        << synthdata->colorModuleBorder.green() << " "
+        << synthdata->colorModuleBorder.blue() << "\n";
+    ts << "ColorModuleFont "
+        << synthdata->colorModuleFont.red() << " "
+        << synthdata->colorModuleFont.green() << " "
+        << synthdata->colorModuleFont.blue() << "\n";
+    ts << "ColorJack "
+        << synthdata->colorJack.red() << " "
+        << synthdata->colorJack.green() << " "
+        << synthdata->colorJack.blue() << "\n";
+    ts << "ColorCable "
+        << synthdata->colorCable.red() << " "
+        << synthdata->colorCable.green() << " "
+        << synthdata->colorCable.blue() << "\n";
+    ts << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
+    ts << "ColorPath " << synthdata->colorPath << "\n";
+    ts << "PatchPath " << synthdata->patchPath << "\n";
+    ts << "EditingFlags " << synthdata->editingFlags.f << "\n";
+
+    refreshColors();
 }
 
 
@@ -2078,8 +2158,8 @@ void ModularSynth::showContextMenu(const QPoint& pos) {
 
 void ModularSynth::setPreferencesWidgetColors()
 {
-  prefWidget->recallColors();
-  prefWidget->refreshColors();
+  //prefWidget->recallColors();
+  //prefWidget->refreshColors();
 }
 
 
@@ -2178,3 +2258,83 @@ QString ModularSynth::getJackSessionFilename() const
     return synthdata->getJackSessionFilename();
 }
 #endif
+
+QColor ModularSynth::getBackgroundColor() const
+{
+    return synthdata->colorBackground;
+}
+
+void ModularSynth::setBackgroundColor(QColor color)
+{
+    synthdata->colorBackground = color;
+}
+
+QColor ModularSynth::getModuleBackgroundColor() const
+{
+    return synthdata->colorModuleBackground;
+}
+
+void ModularSynth::setModuleBackgroundColor(QColor color)
+{
+    synthdata->colorModuleBackground = color;
+}
+
+QColor ModularSynth::getModuleBorderColor() const
+{
+    return synthdata->colorModuleBorder;
+}
+
+void ModularSynth::setModuleBorderColor(QColor color)
+{
+    synthdata->colorModuleBorder = color;
+}
+
+QColor ModularSynth::getModuleFontColor() const
+{
+    return synthdata->colorModuleFont;
+}
+
+void ModularSynth::setModuleFontColor(QColor color)
+{
+    synthdata->colorModuleFont = color;
+}
+
+QColor ModularSynth::getCableColor() const
+{
+    return synthdata->colorCable;
+}
+
+void ModularSynth::setCableColor(QColor color)
+{
+    synthdata->colorCable = color;
+}
+
+QColor ModularSynth::getJackColor() const
+{
+    return synthdata->colorJack;
+}
+
+void ModularSynth::setJackColor(QColor color)
+{
+    synthdata->colorJack = color;
+}
+
+int ModularSynth::getMidiControllerMode()
+{
+    return synthdata->midiControllerMode;
+}
+
+void ModularSynth::setMidiControllerMode(int mode)
+{
+    synthdata->midiControllerMode = mode;
+}
+
+int ModularSynth::getModuleMoveMode()
+{
+    return synthdata->editingFlags.crossTopLeft();
+}
+
+void ModularSynth::setModuleMoveMode(int mode)
+{
+    synthdata->editingFlags.setCrossTopLeft(mode);
+}

@@ -12,13 +12,25 @@
 #define APPNAME  "AlsaModularSynth"
 #define PATCHEXT ".ams"
 
+/*string constants for user settings file*/
+static const char CF_HIDERECENTFILES[] = "HideRecentFiles";
+static const char CF_RECENTFILE[] = "RecentFile";
+static const char CF_RESTOREGEOMETRY[] = "RestoreGeometry";
+static const char CF_GEOMETRY[] = "Geometry";
+
+/*constants for window geometry*/
+enum {
+    DEFAULT_WIDTH = 750,
+    DEFAULT_HEIGHT = 550
+};
+
 
 class ScrollArea: public QScrollArea {
-  void resizeEvent(QResizeEvent *ev)
-  {
-    QScrollArea::resizeEvent(ev);
-    widget()->adjustSize();
-  }
+    void resizeEvent(QResizeEvent *ev)
+    {
+        QScrollArea::resizeEvent(ev);
+        widget()->adjustSize();
+    }
 };
 
 
@@ -31,6 +43,10 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   setWindowIcon(QPixmap(ams_32_xpm));
   setObjectName("MainWindow");
   fileName = "";
+  restoregeometry = true;
+  hiderecentfiles = false;
+  prefDialog = NULL;
+  resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
   rcFd = mso.rcFd;
 
   /*init synthesizer*/
@@ -141,7 +157,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           SLOT(displayMidiController()));
   midiMenu->addAction(tr("&Parameter View..."), modularSynth,
           SLOT(displayParameterView()));
-  midiMenu->addAction(tr("Pre&ferences..."), modularSynth,
+  midiMenu->addAction(tr("Pre&ferences..."), this,
           SLOT(displayPreferences()));
 
   helpMenu->addAction(tr("&About AlsaModularSynth..."), modularSynth,
@@ -196,6 +212,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 MainWindow::~MainWindow()
 {
     qWarning("%s", QObject::tr("Closing synthesizer...").toUtf8().constData());
+    modularSynth->clearConfig(false);
     writeConfig();
 
     // remove file lock
@@ -260,8 +277,8 @@ int MainWindow::querySaveChanges()
         queryStr = tr("File '%1' was changed.\n"
                 "Save changes?").arg(fileName);
     
-    return QMessageBox::warning(this, tr("Save changes"),
-            queryStr, tr("&Yes"), tr("&No"), tr("Cancel"));
+    return QMessageBox::warning(this, tr("Save changes"), queryStr,
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 }
 
 
@@ -307,14 +324,14 @@ bool MainWindow::isSave()
     if (isModified()) {
         int choice = querySaveChanges();
         switch (choice) {
-            case 0: //Yes
+            case QMessageBox::Yes:
                 if (saveFile())
                     result = true;
                 break;
-            case 1: //No
+            case QMessageBox::No:
                 result = true;
                 break;
-            case 2: //Cancel
+            case QMessageBox::Cancel:
             default:
                 break;
         }
@@ -410,10 +427,9 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-  if (isSave()) {
-    modularSynth->clearConfig(false);
+  if (isSave())
     e->accept();
-  } else 
+  else 
     e->ignore();
 }
 
@@ -440,8 +456,22 @@ void MainWindow::readConfig()
 
     while (!ts.atEnd()) {
         s = ts.readLine(); 
-        if (s.startsWith("RecentFile"))
+        if (s.startsWith(CF_RECENTFILE))
             appendRecentlyOpenedFile(s.section(' ', 1), recentFiles);
+        else if (s.startsWith(CF_RESTOREGEOMETRY))
+               restoregeometry = s.section(' ', 1, 1).toInt();
+        else if (s.startsWith(CF_GEOMETRY) && restoregeometry) {
+                QStringList tokens = s.split(' ');
+                if (tokens.count() < 5) {
+                    qWarning("Geometry parameterlist too short.");
+                    continue;
+                }
+                int x = tokens[1].toInt();
+                int y = tokens[2].toInt();
+                int width = tokens[3].toInt();
+                int height = tokens[4].toInt();
+                this->setGeometry(x, y, width, height);
+            }
         else
             modularSynth->loadPreference(s);
     }
@@ -473,9 +503,17 @@ void MainWindow::writeConfig()
     if (recentFiles.count() > 0) {
         QStringList::Iterator it = recentFiles.begin();
         for (; it != recentFiles.end(); ++it) {
-            ts << "RecentFile " << *it << endl;
+            ts << CF_RECENTFILE << ' ' << *it << endl;
         }
     }
+    ts << CF_RESTOREGEOMETRY << ' ' << restoregeometry << endl;
+    if (!this->isFullScreen()) 
+        ts << CF_GEOMETRY << ' '
+            << this->geometry().x() << ' '
+            << this->geometry().y() << ' '
+            << this->geometry().width() << ' '
+            << this->geometry().height() << endl;
+
     file.close();
 }
 
@@ -483,7 +521,7 @@ void MainWindow::setupRecentFilesMenu()
 {
     fileRecentlyOpenedFiles->clear();
 
-    if (recentFiles.count() > 0) {
+    if (!hiderecentfiles && (recentFiles.count() > 0)) {
         fileRecentlyOpenedFiles->setEnabled(true);
         QStringList::Iterator it = recentFiles.begin();
         for (; it != recentFiles.end(); ++it) {
@@ -546,3 +584,64 @@ void MainWindow::handleJackSessionEvent(int jsa)
     }
 }
 #endif
+
+
+/*show preferences dialog*/
+void MainWindow::displayPreferences()
+{
+    if (prefDialog == NULL) {
+        prefDialog = new PrefWidget(this);
+
+        connect(prefDialog, SIGNAL(prefChanged()),
+                this, SLOT(applyPreferences()));
+    }
+    prefDialog->show();
+    prefDialog->raise();
+    prefDialog->activateWindow();
+
+    prefDialog->setRememberGeometry(restoregeometry);
+    prefDialog->setHideRecentFiles(hiderecentfiles);
+
+    prefDialog->setBackgroundColor(modularSynth->getBackgroundColor());
+    prefDialog->setModuleBackgroundColor(
+            modularSynth->getModuleBackgroundColor());
+    prefDialog->setModuleBorderColor(modularSynth->getModuleBorderColor());
+    prefDialog->setModuleFontColor(modularSynth->getModuleFontColor());
+    prefDialog->setCableColor(modularSynth->getCableColor());
+    prefDialog->setJackColor(modularSynth->getJackColor());
+    prefDialog->setMidiControllerMode(modularSynth->getMidiControllerMode());
+    prefDialog->setModuleMoveMode(modularSynth->getModuleMoveMode());
+
+    if (prefDialog->exec() == QDialog::Accepted)
+        applyPreferences();
+}
+
+/*get prefered settings from dialog and apply changes*/
+void MainWindow::applyPreferences()
+{
+    if (prefDialog == NULL)
+        return;
+
+    /*colors*/
+    modularSynth->setBackgroundColor(prefDialog->getBackgroundColor());
+    modularSynth->setModuleBackgroundColor(
+            prefDialog->getModuleBackgroundColor());
+    modularSynth->setModuleBorderColor(prefDialog->getModuleBorderColor());
+    modularSynth->setModuleFontColor(prefDialog->getModuleFontColor());
+    modularSynth->setCableColor(prefDialog->getCableColor());
+    modularSynth->setJackColor(prefDialog->getJackColor());
+
+    /*midi*/
+    modularSynth->setMidiControllerMode(prefDialog->getMidiControllerMode());
+
+    /*editing*/
+    modularSynth->setModuleMoveMode(prefDialog->getModuleMoveMode());
+    restoregeometry = prefDialog->getRememberGeometry();
+    if (prefDialog->getHideRecentFiles() != hiderecentfiles) {
+        hiderecentfiles = prefDialog->getHideRecentFiles();
+        setupRecentFilesMenu();
+    }
+
+    /*at least*/
+    modularSynth->refreshColors();
+}

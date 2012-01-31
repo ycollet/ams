@@ -429,6 +429,7 @@ int SynthData::closeAlsa ()
 {
     qWarning("%s", QObject::tr("Closing ALSA...").toUtf8().constData());
     withAlsa = false;
+    //TODO: check pthread_join(alsa_thread, &thr_result);
     sleep (1);
     delete alsa_handle;
     return 0;

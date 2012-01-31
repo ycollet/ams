@@ -1,67 +1,73 @@
+/**
+ * preferences dialog of AMS 
+ */
+
 #ifndef PREFWIDGET_H
 #define PREFWIDGET_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-#include <qspinbox.h>
-#include <qradiobutton.h>
 #include <qpushbutton.h>
+#include <qbuttongroup.h>
 #include <qdialog.h>
 #include <qcombobox.h>
-#include <qstringlist.h>
 #include <qlineedit.h>
-#include <qfile.h>
 #include <qtabwidget.h>
 #include <QTextStream>
-#include <QVBoxLayout>
 
 #include <alsa/asoundlib.h>
-#include "synthdata.h"
 
-#define PREF_DEFAULT_WIDTH  300
-#define PREF_DEFAULT_HEIGHT 300
-/** preferences menue of AMS 
- *
- */ 
-class PrefWidget : public QWidget
+
+class PrefWidget : public QDialog
 {
     Q_OBJECT
 
-    QVBoxLayout vBox;
     QTabWidget *tabWidget;
-    QString colorPath, patchPath;
-    QWidget *colorBackgroundLabel, *colorModuleBackgroundLabel,
-            *colorModuleBorderLabel, *colorModuleFontLabel,
-	    *colorCableLabel, *colorJackLabel;
-    QColor colorBackground, colorModuleBackground,
-           colorModuleBorder, colorModuleFont, colorPortFont1, colorPortFont2;
-    QColor colorCable, colorJack;
-    QComboBox *midiModeComboBox,
-	      *editingModeComboBox;
-    QLineEdit *loadEdit, *saveEdit;
-    int	midiControllerMode,
-	editingMode;
+    QLabel *colorBackgroundLabel;
+    QLabel *colorModuleBackgroundLabel;
+    QLabel *colorModuleBorderLabel;
+    QLabel *colorModuleFontLabel;
+    QLabel *colorCableLabel;
+    QLabel *colorJackLabel;
+
+    QButtonGroup* midiModeButtons;
+    QButtonGroup* moduleMoveButtons;
+    QCheckBox* rememberGeometry;
+    QCheckBox* hideRecentFiles;
    
+    void setupColorTab();
+    void setupMidiTab();
+    void setupEditingTab();
+
   public:
-    PrefWidget();
-    void loadPreference(QString&);
-    void savePreferences(QTextStream&);
-    void recallColors();
+    PrefWidget(QWidget* parent = 0);
+    void setBackgroundColor(QColor);
+    void setModuleBackgroundColor(QColor);
+    void setModuleBorderColor(QColor);
+    void setModuleFontColor(QColor);
+    void setCableColor(QColor);
+    void setJackColor(QColor);
+    QColor getBackgroundColor();
+    QColor getModuleBackgroundColor();
+    QColor getModuleBorderColor();
+    QColor getModuleFontColor();
+    QColor getCableColor();
+    QColor getJackColor();
+    void setMidiControllerMode(int);
+    int getMidiControllerMode();
+    void setModuleMoveMode(int);
+    int getModuleMoveMode();
+    void setRememberGeometry(bool remember);
+    bool getRememberGeometry();
+    void setHideRecentFiles(bool hide);
+    bool getHideRecentFiles();
 
   signals:
     void prefChanged();
 
   public slots:
-    void submitPref();
-    void applyPref();
-    void refreshColors();
-    void storeColors();
     void colorBackgroundClicked();
     void colorModuleBackgroundClicked();
     void colorModuleBorderClicked();
@@ -69,12 +75,6 @@ class PrefWidget : public QWidget
     void colorCableClicked();
     void defaultcolorClicked();
     void colorJackClicked();
-    void browseColor();
-    void browsePatch();
-    void updateMidiMode(int);
-    void updateEditingMode(int);
-    void colorPathUpdate();
-    void patchPathUpdate();
 };
   
 

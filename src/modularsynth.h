@@ -49,7 +49,7 @@ class ModularSynth : public QWidget
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
     class GuiWidget *guiWidget;
-    class PrefWidget *prefWidget;
+    //class PrefWidget *prefWidget;
     bool loadingPatch;
     QString pcmname;
     unsigned int fsamp;
@@ -98,6 +98,22 @@ public:
 #ifdef JACK_SESSION
     QString getJackSessionFilename() const;
 #endif
+    QColor getBackgroundColor() const;
+    QColor getModuleBackgroundColor() const;
+    QColor getModuleBorderColor() const;
+    QColor getModuleFontColor() const;
+    QColor getCableColor() const;
+    QColor getJackColor() const;
+    void setBackgroundColor(QColor color);
+    void setModuleBackgroundColor(QColor color);
+    void setModuleBorderColor(QColor color);
+    void setModuleFontColor(QColor color);
+    void setCableColor(QColor color);
+    void setJackColor(QColor color);
+    int getMidiControllerMode();
+    void setMidiControllerMode(int mode);
+    int getModuleMoveMode();
+    void setModuleMoveMode(int mode);
 
   protected:
     class QAbstractScrollArea *scrollArea() {

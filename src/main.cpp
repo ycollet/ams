@@ -253,7 +253,6 @@ int main(int argc, char *argv[])
 
   MainWindow* top = new MainWindow(msoptions);
   Q_CHECK_PTR(top);
-  top->resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
   return app.exec();
 }
