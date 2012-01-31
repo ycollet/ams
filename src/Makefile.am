@@ -6,7 +6,6 @@ bin_PROGRAMS = ams
 nodist_ams_SOURCES = \
 	box_moc.cpp \
 	canvas_moc.cpp \
-	colorwidget_moc.cpp \
 	configdialog_moc.cpp \
 	function_moc.cpp \
 	guiwidget_moc.cpp \
