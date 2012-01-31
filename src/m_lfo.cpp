@@ -73,6 +73,7 @@ void M_lfo::generateCycle() {
           dt[l1] = dt0;
           r[l1] = -1;
           si[l1] = 0;
+          sa[l1] = -1;
         }
         if (trigger[l1] && (triggerData[l1][l2] < 0.5)) {
           trigger[l1] = false;

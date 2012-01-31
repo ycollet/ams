@@ -5,6 +5,9 @@
 	options with RadioButtons. Add options for saving window geometry
 	and hiding recently used files menu. Remove path edit lines;
 	this feature is handled automatically.
+	* src/m_lfo.cpp: Fix triggered reset of LFO saw signals; patch
+	provided by Bill Yerazunis.
+
 
 2012-01-30 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp:
