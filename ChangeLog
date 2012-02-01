@@ -1,3 +1,8 @@
+2012-02-01 Guido Scholz <guido.scholz@bayernline.de>
+	* configure.ac, src/synthdata.*:
+	Add support for libzita-alsa-pcmi as an alternative for
+	libclalsadrv.
+
 2012-01-31 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.*, src/modularsynth.*, src/prefwidget.*:
 	Rewrite preferences widget to fix colorwidget memory leak and

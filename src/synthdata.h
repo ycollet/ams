@@ -11,11 +11,16 @@
 #include <QSemaphore>
 #include <QTextStream>
 #include <ladspa.h>
-#include <clalsadrv.h>
 #include <jack/jack.h>
 
 #include "config.h"
 
+#ifdef HAVE_LIBZITA_ALSA_PCMI
+#include <zita-alsa-pcmi.h>
+#endif
+#ifdef HAVE_LIBCLALSADRV
+#include <clalsadrv.h>
+#endif
 #ifdef JACK_SESSION
 #include <jack/session.h>
 #endif
@@ -48,7 +53,11 @@ class SynthData: public QObject
     void *play_mods [MAX_PLAY_PORTS / 2];
     void *capt_mods [MAX_CAPT_PORTS / 2];
 
+#ifdef HAVE_LIBCLALSADRV
     Alsa_driver *alsa_handle;
+#else
+    Alsa_pcmi *alsa_handle;
+#endif
     pthread_t    alsa_thread;
  
     jack_client_t *jack_handle;

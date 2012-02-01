@@ -3793,37 +3793,37 @@ Save changes?</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="414"/>
+        <location filename="../synthdata.cpp" line="418"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation>Echec d&apos;établir un fil ALSA avec priorité RT</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="421"/>
+        <location filename="../synthdata.cpp" line="425"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation>Echec d&apos;établir un fil ALSA</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="430"/>
+        <location filename="../synthdata.cpp" line="434"/>
         <source>Closing ALSA...</source>
         <translation>Fermeture d&apos;ALSA...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="537"/>
+        <location filename="../synthdata.cpp" line="541"/>
         <source>Can&apos;t connect to JACK</source>
         <translation>Echec de connexion à JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="576"/>
+        <location filename="../synthdata.cpp" line="580"/>
         <source>Can&apos;t activate JACK</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="592"/>
+        <location filename="../synthdata.cpp" line="596"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="620"/>
+        <location filename="../synthdata.cpp" line="624"/>
         <source>No JACK session event set.</source>
         <translation type="unfinished"></translation>
     </message>

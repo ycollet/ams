@@ -3623,37 +3623,37 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="414"/>
+        <location filename="../synthdata.cpp" line="418"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="421"/>
+        <location filename="../synthdata.cpp" line="425"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="430"/>
+        <location filename="../synthdata.cpp" line="434"/>
         <source>Closing ALSA...</source>
         <translation>Schließe ALSA-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="537"/>
+        <location filename="../synthdata.cpp" line="541"/>
         <source>Can&apos;t connect to JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="576"/>
+        <location filename="../synthdata.cpp" line="580"/>
         <source>Can&apos;t activate JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="592"/>
+        <location filename="../synthdata.cpp" line="596"/>
         <source>Closing JACK...</source>
         <translation>Schließe JACK-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="620"/>
+        <location filename="../synthdata.cpp" line="624"/>
         <source>No JACK session event set.</source>
         <translation type="unfinished"></translation>
     </message>

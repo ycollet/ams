@@ -16,6 +16,20 @@ AC_PROG_LN_S
 AC_PROG_RANLIB
 PKG_PROG_PKG_CONFIG
 
+# Checks for header files.
+AC_HEADER_STDC
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SSIZE_T
+AC_STRUCT_TM
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_STAT
 
 dnl set basic compiler flags
 AMS_CORE_CXXFLAGS="-Wall"
@@ -71,11 +85,17 @@ AC_CHECK_LIB([jack], [jack_client_new], ,
              [AC_MSG_ERROR(jack is required)])
 AC_CHECK_LIB([pthread], [pthread_create], ,
              [AC_MSG_ERROR(pthread is required)])
-AC_CHECK_LIB([m], [roundf], , AC_MSG_ERROR([required libm missing]))
-AC_CHECK_LIB([clalsadrv], [main], ,
-             [AC_MSG_ERROR(clalsadrv is required)])
+AC_CHECK_LIB([m], [roundf], ,
+             [AC_MSG_ERROR([required libm missing])])
 AC_CHECK_LIB([dl], [dlopen], ,
              [AC_MSG_ERROR(libdl is required)])
+
+dnl first check for libzita-alsa-pcmi, if not found check for libclalsadrv
+AC_CHECK_LIB([zita-alsa-pcmi], [main], ,
+             [AC_MSG_WARN([libzita-alsa-pcmi not found, trying libclalsadrv...])])
+if test "x$ac_cv_lib_zita_alsa_pcmi_main" = "xno"; then
+AC_CHECK_LIB([clalsadrv], [main], ,
+             [AC_MSG_ERROR(clalsadrv is required)])
 
 dnl check for clalsadrv library version
 AC_LANG_PUSH(C++)
@@ -89,8 +109,9 @@ AC_LINK_IFELSE(
     [AC_MSG_RESULT([yes])],
     [AC_MSG_RESULT([no])])
 
-AC_LANG_POP(C++)
 LDFLAGS="$saved_libs"
+AC_LANG_POP(C++)
+fi
 
 
 PKG_CHECK_MODULES(QT, QtCore QtGui >= 4.2.0, HAVE_QT4="yes", HAVE_QT4="no")
@@ -133,22 +154,10 @@ if test "x$LRELEASE" = "xno" ; then
     [cannot find 'lrelease', please install the Qt4 development tools package.])
 fi
 
-# Checks for header files.
-AC_HEADER_STDC
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
-AC_C_INLINE
-AC_TYPE_SSIZE_T
-AC_STRUCT_TM
-
-# Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_SELECT_ARGTYPES
-AC_FUNC_STAT
+# Checks for special library functions.
 AC_CHECK_FUNCS([floor ftruncate getcwd memset mkdir pow rint select sqrt])
 
+# Check for ladspa
 AC_CHECK_HEADER([ladspa.h], ,
                 [AC_MSG_ERROR(essential header file is missing)])
 

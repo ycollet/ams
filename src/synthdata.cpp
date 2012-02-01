@@ -1,14 +1,12 @@
 #include <sys/time.h> 
 #include <sys/resource.h> 
-#include <stdio.h>
-#include <stdlib.h>
+#include <math.h>
+#include <pthread.h>
 #include <QApplication>
 #include <qobject.h>
 #include <qstring.h>
 #include <QFont>
 #include <QObject>
-#include <math.h>
-#include <pthread.h>
 
 #include "guiwidget.h"
 #include "midiwidget.h"
@@ -371,13 +369,19 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     ncapt &= ~1;
     nplay &= ~1;
 
-#ifdef HAVE_CLALSADRV_API2
+#ifdef HAVE_LIBCLALSADRV
+  #ifdef HAVE_CLALSADRV_API2
     alsa_handle = new Alsa_driver(name, name, 0, fsamp, frsize, nfrags);
-#else
+  #else
     alsa_handle = new Alsa_driver(name, fsamp, frsize, nfrags,
             nplay > 0, ncapt > 0, false);
-#endif
+  #endif
     if (alsa_handle->stat () < 0)
+#else
+    /*libzita-alsa-pcmi*/
+    alsa_handle = new Alsa_pcmi(name, name, 0, fsamp, frsize, nfrags, 0);
+    if (alsa_handle->state() < 0)
+#endif
     {
         fprintf (stderr, "Can't connect to ALSA\n");
         return -ENODEV;
