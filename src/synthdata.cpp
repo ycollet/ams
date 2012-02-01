@@ -371,7 +371,8 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
 
 #ifdef HAVE_LIBCLALSADRV
   #ifdef HAVE_CLALSADRV_API2
-    alsa_handle = new Alsa_driver(name, name, 0, fsamp, frsize, nfrags);
+    alsa_handle = new Alsa_driver(nplay ? name : 0, ncapt ? name : 0, 0,
+            fsamp, frsize, nfrags);
   #else
     alsa_handle = new Alsa_driver(name, fsamp, frsize, nfrags,
             nplay > 0, ncapt > 0, false);
@@ -379,7 +380,8 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
     if (alsa_handle->stat () < 0)
 #else
     /*libzita-alsa-pcmi*/
-    alsa_handle = new Alsa_pcmi(name, name, 0, fsamp, frsize, nfrags, 0);
+    alsa_handle = new Alsa_pcmi(nplay ? name : 0, ncapt ? name : 0, 0,
+            fsamp, frsize, nfrags, 0);
     if (alsa_handle->state() < 0)
 #endif
     {
