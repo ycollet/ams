@@ -220,13 +220,13 @@ int main(int argc, char *argv[])
 	printf("%s\n\n", aboutText);
 	printf("Usage:\tams [OPTION]... [PRESETFILE]\n\nOptions:\n");
         printf("  -J, --jack                    Force JACK\n");
-        printf("    -i, --in <num>                Number of JACK input ports\n");
-        printf("    -o, --out <num>               Number of JACK output ports\n");
         printf("  -A, --alsa                    Force ALSA\n");
         printf("    -c, --soundcard <plug>        Soundcard [%s]\n", DEFAULT_PCMNAME);
         printf("    -b, --periodsize <frames>     Periodsize [%d]\n", DEFAULT_PERIODSIZE);
         printf("    -f, --frag <num>              Number of fragments [%d]\n", DEFAULT_PERIODS);
         printf("    -r, --rate <samples/s>        Samplerate [%d]\n", DEFAULT_RATE);
+        printf("  -i, --in <num>                Number of Alsa/JACK input ports\n");
+        printf("  -o, --out <num>               Number of Alsa/JACK output ports\n");
         printf("  -p, --poly <num>              Polyphony [1]\n");
         printf("  -e, --edge <0..10>            VCO Edge [1.0]\n");
         printf("  -l, --preset <file>           Preset file\n");
