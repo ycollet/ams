@@ -26,8 +26,9 @@ static struct option options[] =
          {"rate", 1, 0, 'r'},   
          {"edge", 1, 0, 'e'},   
          {"help", 0, 0, 'h'},
+         {"verbose", 0, 0, 'v'},
+         {"version", 0, 0, 'V'},
          {"soundcard", 1, 0, 'c'},
-         {"preset", 1, 0, 'l'},
          {"presetpath", 1, 0, 'd'},
          {"nogui", 0, 0, 'n'},
          {"jack", 0, 0, 'J'},
@@ -157,8 +158,9 @@ int main(int argc, char *argv[])
   msoptions.global_jack_session_uuid = "";
 #endif
 
-  while ((getopt_return = getopt_long(argc, argv, "hnJjAab:p:f:e:c:l:d:r:i:o:vN:",
-				      options, &option_index)) >= 0) {
+  while ((getopt_return = getopt_long(argc, argv,
+                  "hnJjAab:p:f:e:c:d:r:i:o:vVN:",
+                  options, &option_index)) >= 0) {
     switch(getopt_return) {
     case 'p': 
         msoptions.poly = atoi(optarg);
@@ -207,11 +209,15 @@ int main(int argc, char *argv[])
         break;
 #endif
     case 'v':
-      msoptions.verbose++;
-      break;
+        msoptions.verbose++;
+        break;
+    case 'V':
+        printf("%s\n", aboutText);
+        exit(EXIT_SUCCESS);
+        break;
     case 'N':
-      msoptions.synthName += optarg;
-      break;
+        msoptions.synthName += optarg;
+        break;
     case 'h':
 	printf("%s\n\n", aboutText);
 	printf("Usage:\tams [OPTION]... [PRESETFILE]\n\nOptions:\n");
@@ -230,7 +236,8 @@ int main(int argc, char *argv[])
 #ifdef JACK_SESSION
         printf("  -U, --jack_session_uuid       JACK session UUID\n");
 #endif
-        printf("  -v,				verbose\n");
+        printf("  -v				verbose\n");
+        printf("  -V, --version			Display program version information\n");
         printf("  -N, --name <name>             Alsa/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
         break;

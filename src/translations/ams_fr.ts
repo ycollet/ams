@@ -3698,22 +3698,22 @@ Save changes?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="66"/>
+        <location filename="../main.cpp" line="67"/>
         <source>Could not create ams home directory.</source>
         <translation>Echec de création du repertoire ams home.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="78"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Ooops in %1 at %2</source>
         <translation>Ooops dans %1 à %2</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="98"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation>Nom du client &apos;%1&apos; déjà occupé.</translation>
     </message>

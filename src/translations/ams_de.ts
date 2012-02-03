@@ -3554,7 +3554,7 @@ Save changes?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="89"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Ooops in %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3658,17 +3658,17 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="66"/>
+        <location filename="../main.cpp" line="67"/>
         <source>Could not create ams home directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="98"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="77"/>
+        <location filename="../main.cpp" line="78"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
