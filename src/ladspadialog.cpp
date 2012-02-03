@@ -91,8 +91,7 @@ LadspaDialog::LadspaDialog()
   vbox.setSpacing(10);
   const char *_lp = getenv("LADSPA_PATH");
   if (!_lp) {
-    qWarning("You did not set the environment variable LADSPA_PATH.");
-    qWarning("Assuming LADSPA_PATH=" LADSPA_PATH);
+    qWarning("LADSPA_PATH not set, assuming LADSPA_PATH=" LADSPA_PATH);
     ladspapath = LADSPA_PATH;
   } else {
     ladspapath = _lp;

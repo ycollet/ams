@@ -48,6 +48,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   prefDialog = NULL;
   resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
   rcFd = mso.rcFd;
+  synthoptions = &mso;
 
   /*init synthesizer*/
   modularSynth = new ModularSynth(this, mso);
@@ -189,7 +190,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   updateWindowTitle();
 
   if (mso.havePresetPath) {
-    qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
+    if (mso.verbose)
+        qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
             .toUtf8().constData()); 
     modularSynth->setPatchPath(mso.presetPath);
   }
@@ -197,7 +199,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 
   // autoload patch file
   if (mso.havePreset) {
-    qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
+    if (mso.verbose)
+        qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
             .toUtf8().constData()); 
     openFile(mso.presetName);
   }
@@ -211,7 +214,9 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 
 MainWindow::~MainWindow()
 {
-    qWarning("%s", QObject::tr("Closing synthesizer...").toUtf8().constData());
+    if (synthoptions->verbose)
+        qWarning("%s", QObject::tr("Closing synthesizer...")
+                .toUtf8().constData());
     modularSynth->clearConfig(false);
     writeConfig();
 
@@ -565,7 +570,8 @@ void MainWindow::appendRecentlyOpenedFile(const QString &fn, QStringList &lst)
 #ifdef JACK_SESSION
 void MainWindow::handleJackSessionEvent(int jsa)
 {
-    qWarning("JACK session action: %d", jsa);
+    if (synthoptions->verbose)
+        qWarning("JACK session action: %d", jsa);
 
     switch (jsa) {
         case -1:

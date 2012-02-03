@@ -574,7 +574,8 @@ int SynthData::initJack (int ncapt, int nplay)
     if (result != 0)
         qWarning("JACK session callback registration failed: %d", result);
     else
-        qWarning("JACK session callback registration success");
+        if (synthoptions->verbose == 1)
+            qWarning("JACK session callback registration success");
 #endif
 
     if (jack_activate (jack_handle))
@@ -584,7 +585,8 @@ int SynthData::initJack (int ncapt, int nplay)
         exit (1);
     }
 
-    qWarning("Connected to JACK with %d inputs and %d outputs",
+    if (synthoptions->verbose == 1)
+        qWarning("Connected to JACK with %d inputs and %d outputs",
             capt_ports, play_ports); 
 
     return 0;
@@ -595,7 +597,8 @@ int SynthData::closeJack()
     if (!jack_handle)
         return 0;
 
-    qWarning("%s", QObject::tr("Closing JACK...").toUtf8().constData());
+    if (synthoptions->verbose == 1)
+        qWarning("%s", QObject::tr("Closing JACK...").toUtf8().constData());
     
     int result = jack_client_close(jack_handle);
     if (result)

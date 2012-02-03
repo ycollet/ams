@@ -28,6 +28,7 @@ class MainWindow: public QMainWindow {
     ModularSynth *modularSynth;
     QMenu* fileRecentlyOpenedFiles;
     PrefWidget* prefDialog;
+    const ModularSynthOptions* synthoptions;
 
     bool saveFile();
     void newFile();

@@ -1,6 +1,7 @@
 2012-02-03 Guido Scholz <guido.scholz@bayernline.de>
 	* main.cpp: Remove obsolete commandline option -l (preset file).
 	Add commandline option for program version (--version).
+	Enable --verbose option to make startup more quiet.
 
 2012-02-02 Guido Scholz <guido.scholz@bayernline.de>
 	* main.cpp: Reorganize commandline options for input and output to
