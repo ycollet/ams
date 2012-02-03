@@ -1,7 +1,13 @@
+2012-02-03 Guido Scholz <guido.scholz@bayernline.de>
+	* main.cpp: Remove obsolete commandline option -l (preset file).
+
+2012-02-02 Guido Scholz <guido.scholz@bayernline.de>
+	* main.cpp: Reorganize commandline options for input and output to
+	be valid for Alsa and JACK.
+
 2012-02-01 Guido Scholz <guido.scholz@bayernline.de>
-	* configure.ac, src/synthdata.*:
-	Add support for libzita-alsa-pcmi as an alternative for
-	libclalsadrv.
+	* configure.ac, src/synthdata.*: Add support for libzita-alsa-pcmi
+	 as an alternative for libclalsadrv.
 
 2012-01-31 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.*, src/modularsynth.*, src/prefwidget.*:

@@ -102,7 +102,7 @@ int makeSynthName(QString &name)
 
 int main(int argc, char *argv[])  
 {
-  char aboutText[] = AMS_LONGNAME " " VERSION " (c)2002-2009";
+  char aboutText[] = AMS_LONGNAME " " VERSION;
   /*                 "\nby Matthias Nagorni and Fons Adriaensen\n"
                      "(c)2002-2003 SuSE AG Nuremberg\n"
                      "(c)2003 Fons Adriaensen\n"
@@ -178,10 +178,6 @@ int main(int argc, char *argv[])
     case 'c': 
         msoptions.pcmname = optarg;
         break; 
-    case 'l': 
-        msoptions.presetName = optarg;
-        msoptions.havePreset = true;
-        break; 
     case 'd': 
         msoptions.presetPath = optarg;
         msoptions.havePresetPath = true;
@@ -229,22 +225,21 @@ int main(int argc, char *argv[])
         printf("  -o, --out <num>               Number of Alsa/JACK output ports\n");
         printf("  -p, --poly <num>              Polyphony [1]\n");
         printf("  -e, --edge <0..10>            VCO Edge [1.0]\n");
-        printf("  -l, --preset <file>           Preset file\n");
-        printf("  -d, --presetpath <path>       Preset path\n");
+        printf("  -d, --presetdir <dir>         Preset directory\n");
         printf("  -n, --nogui                   Start without GUI\n");
 #ifdef JACK_SESSION
         printf("  -U, --jack_session_uuid       JACK session UUID\n");
 #endif
         printf("  -v,				verbose\n");
-        printf("  -N, --name <name>             ALSASEQ/JACK clientname, windowtitle\n\n");
+        printf("  -N, --name <name>             Alsa/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
         break;
     }
   }
 
-  if (!msoptions.havePreset && optind < argc){
-    msoptions.presetName = argv[optind];
-    msoptions.havePreset = true;
+  if (optind < argc){
+      msoptions.presetName = argv[optind];
+      msoptions.havePreset = true;
   }
 
   msoptions.rcFd = makeSynthName(msoptions.synthName);
