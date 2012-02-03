@@ -669,52 +669,52 @@
 <context>
     <name>M_lfo</name>
     <message>
-        <location filename="../m_lfo.cpp" line="24"/>
+        <location filename="../m_lfo.cpp" line="44"/>
         <source>LFO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="36"/>
+        <location filename="../m_lfo.cpp" line="56"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="38"/>
+        <location filename="../m_lfo.cpp" line="58"/>
         <source>Sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="39"/>
+        <location filename="../m_lfo.cpp" line="59"/>
         <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="40"/>
+        <location filename="../m_lfo.cpp" line="60"/>
         <source>Saw Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="41"/>
+        <location filename="../m_lfo.cpp" line="61"/>
         <source>Saw Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="42"/>
+        <location filename="../m_lfo.cpp" line="62"/>
         <source>Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="43"/>
+        <location filename="../m_lfo.cpp" line="63"/>
         <source>S &amp; H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="45"/>
+        <location filename="../m_lfo.cpp" line="65"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_lfo.cpp" line="46"/>
+        <location filename="../m_lfo.cpp" line="66"/>
         <source>Phi0</source>
         <translation type="unfinished"></translation>
     </message>

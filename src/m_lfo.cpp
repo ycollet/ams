@@ -20,6 +20,26 @@
 #include "m_lfo.h"
 #include "port.h"
 
+/*
+
+   1.0  |      +
+        |     + +
+        |    +   +
+        |   +     +
+        |  +       +
+        | +         +
+     t  |+-----------+-----------+--->
+        |             +         +
+        |              +       +
+        |               +     +
+        |                +   +
+        |                 + +
+  -1.0  |                  +
+
+ State   |  0  |  1  |  2  |  3  |
+
+*/
+
 M_lfo::M_lfo(QWidget* parent) 
   : Module(M_type_lfo, 6, parent, tr("LFO"))
   , wave_period((double)synthdata->rate / (16.0 * freq))
@@ -54,11 +74,12 @@ void M_lfo::generateCycle() {
   double ldsi, ldsa, ldt, ldr, ldsh, dt0, dsa;
 
     float **triggerData = port_M_trigger->getinputdata();
-    
+   /* 
     wave_period = (double)synthdata->rate / (16.0 * freq); 
     dsa = 2.0 / wave_period;
     dt0 = 4.0 / wave_period;
     phi0i = (int)(phi0 / 6.283 * wave_period);
+    */
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       len = synthdata->cyclesize;
       l2 = -1;
@@ -66,6 +87,14 @@ void M_lfo::generateCycle() {
       do {
         k = (len > 24) ? 16 : len;
         l2 += k;
+
+        /*update frequency change on every pass*/
+        wave_period = (double)synthdata->rate / (16.0 * freq); 
+        dsa = 2.0 / wave_period;
+        dt0 = 4.0 / wave_period;
+        phi0i = (int)(phi0 / 6.283 * wave_period);
+
+
         if (!trigger[l1] && (triggerData[l1][l2] > 0.5)) {
           trigger[l1] = true;
           t[l1] = 0;
@@ -97,6 +126,12 @@ void M_lfo::generateCycle() {
         si[l1] = (state[l1] < 2) ? t[l1] * (2.0 - t[l1]) : t[l1] * (2.0 + t[l1]);
         sa[l1] += dsa;
         t[l1] += dt[l1];
+
+        if (state[l1] == 1 || state[l1] == 2)
+            dt[l1] = -dt0;
+        else
+            dt[l1] = dt0;
+
         len -= k;
         ldsi = (si[l1] - old_si[l1]) / (double)k;
         ldsa = (sa[l1] - old_sa[l1]) / (double)k;

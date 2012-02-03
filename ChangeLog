@@ -3,6 +3,8 @@
 	Add commandline option for program version (--version).
 	* src/mainwindow.*, src/ladspadialog.cpp, src/synthdata.cpp: Enable
 	"--verbose" commandline option to make startup more quiet.
+	* src/m_lfo.cpp: Fix frequency update of LFO, patch provided by 
+	Bill Yerazunis.
 
 2012-02-02 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp: Reorganize commandline options for input and output to
