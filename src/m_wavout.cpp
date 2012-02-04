@@ -41,20 +41,20 @@ M_wavout::M_wavout(QWidget* parent)
   port_in[1] = new Port("In 1", PORT_IN, 1, this);          
 
   configDialog->initTabWidget();
-  QVBoxLayout *fileTab = configDialog->addVBoxTab(tr("File"));
-  QVBoxLayout *recordTab = configDialog->addVBoxTab(tr("Record"));
-  QVBoxLayout *gainTab = configDialog->addVBoxTab(tr("Gain"));
-  configDialog->addLineEdit("File:", fileTab);
+  QVBoxLayout *fileTab = configDialog->addVBoxTab(tr("&File"));
+  QVBoxLayout *recordTab = configDialog->addVBoxTab(tr("&Record"));
+  QVBoxLayout *gainTab = configDialog->addVBoxTab(tr("&Gain"));
+  configDialog->addLineEdit("Fi&le:", fileTab);
   hbox1 = configDialog->addHBox(fileTab);
   configDialog->addLabel(tr("Time: 0:00:00        "), recordTab);
   configDialog->labelList.at(0)->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
   MidiControllableDoOnce *do0 = configDialog->addPushButton(
-          tr("&New File"), hbox1);
+          tr("&New file"), hbox1);
   MidiControllableDoOnce *do1 = configDialog->addPushButton(
-          tr("&Overwrite Current File"), hbox1);
+          tr("&Overwrite current file"), hbox1);
   hbox2 = configDialog->addHBox(recordTab);
   MidiControllableDoOnce *do2 = configDialog->addPushButton(
-          tr("&Record"), hbox2);
+          tr("Re&cord"), hbox2);
   MidiControllableDoOnce *do3 = configDialog->addPushButton(
           tr("&Stop"), hbox2);  
   QObject::connect(do0, SIGNAL(triggered()), this, SLOT(openBrowser())); 
@@ -63,9 +63,9 @@ M_wavout::M_wavout(QWidget* parent)
   QObject::connect(do3, SIGNAL(triggered()), this, SLOT(stopClicked())); 
   configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
   configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
-  configDialog->addSlider(tr("&Gain"), gain, 0, 1, false, gainTab);
-  configDialog->addSlider(tr("Volume 1"), mixer_gain[0], 0, 1, false, gainTab);
-  configDialog->addSlider(tr("Volume 2"), mixer_gain[1], 0, 1, false, gainTab);
+  configDialog->addSlider(tr("G&ain"), gain, 0, 1, false, gainTab);
+  configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false, gainTab);
+  configDialog->addSlider(tr("V&olume 2"), mixer_gain[1], 0, 1, false, gainTab);
   QStringList agcNames;
   agcNames << tr("Disbled") << tr("Enabled");
   configDialog->addComboBox(tr("&Automatic Gain Control"), agc,

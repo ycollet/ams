@@ -28,6 +28,8 @@ MidiSliderBase::MidiSliderBase(MidiControllableBase &mcAble, Qt::Orientation ori
   mcAbleChanged();
   QObject::connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
   sliderBox->addWidget(&slider);
+
+  nameLabel.setBuddy(&slider);
 }
 
 void MidiSliderBase::valueChanged(int value)

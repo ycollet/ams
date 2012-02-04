@@ -24,6 +24,7 @@ MidiComboBox::MidiComboBox(MidiControllableNames &mcAble)
   mcAbleChanged();
   QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)),
 		   this, SLOT(valueChanged(int)));
+  nameLabel.setBuddy(comboBox);
 }
 
 MidiGUIcomponent *MidiComboBox::createTwin()

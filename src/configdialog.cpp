@@ -102,8 +102,7 @@ MidiComboBox *ConfigDialog::addComboBox(const QString &name, int &valueRef, cons
   MidiControllableNames * mcAble =
     new MidiControllableNames(module, name, valueRef, itemNames);
  
-  MidiComboBox *midiComboBox =
-    new MidiComboBox(*mcAble);
+  MidiComboBox *midiComboBox = new MidiComboBox(*mcAble);
   insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
 
   midiComboBoxList.append(midiComboBox);
@@ -248,6 +247,7 @@ int ConfigDialog::addLineEdit(const char *Name, QBoxLayout *layout) {
   lineEdit = new QLineEdit();
   lineEditList.append(lineEdit);
   line->addWidget(lineEdit);
+  nameLabel->setBuddy(lineEdit);
 
   return 0;
 }

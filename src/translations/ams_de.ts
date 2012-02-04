@@ -2608,37 +2608,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="44"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_wavout.cpp" line="45"/>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_wavout.cpp" line="46"/>
-        <source>Gain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../m_wavout.cpp" line="49"/>
         <source>Time: 0:00:00        </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="52"/>
-        <source>&amp;New File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_wavout.cpp" line="54"/>
-        <source>&amp;Overwrite Current File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_wavout.cpp" line="57"/>
+        <location filename="../m_wavout.cpp" line="45"/>
         <source>&amp;Record</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2648,18 +2623,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="66"/>
+        <location filename="../m_wavout.cpp" line="46"/>
         <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../m_wavout.cpp" line="44"/>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Datei</translation>
+    </message>
+    <message>
+        <location filename="../m_wavout.cpp" line="52"/>
+        <source>&amp;New file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_wavout.cpp" line="54"/>
+        <source>&amp;Overwrite current file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_wavout.cpp" line="57"/>
+        <source>Re&amp;cord</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_wavout.cpp" line="66"/>
+        <source>G&amp;ain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../m_wavout.cpp" line="67"/>
-        <source>Volume 1</source>
+        <source>&amp;Volume 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="68"/>
-        <source>Volume 2</source>
+        <source>V&amp;olume 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

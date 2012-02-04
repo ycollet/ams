@@ -1,3 +1,8 @@
+2012-02-04 Guido Scholz <guido.scholz@bayernline.de>
+	* src/midisliderbase.cpp, src/midicombobox.cpp,
+	src/configdialog.cpp: Enable keyboard shortcuts for GUI items.
+	* src/m_wavout.cpp: Add keyboard shortcuts for GUI items.
+
 2012-02-03 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp: Remove obsolete commandline option -l (preset file).
 	Add commandline option for program version (--version).
