@@ -26,13 +26,13 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   qs.sprintf(" -> Out %2d", port + 1);
   port_in[1] = new Port(qs, PORT_IN, 1, this);          
 
-  configDialog->addSlider(tr("Gain"), gain, 0, 1, false);
-  configDialog->addSlider(tr("Volume 1"), mixer_gain[0], 0, 1, false);
-  configDialog->addSlider(tr("Volume 2"), mixer_gain[1], 0, 1, false);
+  configDialog->addSlider(tr("&Gain"), gain, 0, 1, false);
+  configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false);
+  configDialog->addSlider(tr("V&olume 2"), mixer_gain[1], 0, 1, false);
   QStringList agcNames;
   agcNames << tr("Disabled") << tr("Per Cycle") << tr("Keep")
       << tr("Reevaluate");
-  configDialog->addComboBox(tr("Automatic Gain Control"), agc, agcNames);
+  configDialog->addComboBox(tr("&Automatic Gain Control"), agc, agcNames);
   if (synthdata->withAlsa) {
     pcmdata[0] = new float[2 * synthdata->periodsize];
     pcmdata[1] = pcmdata[0] + synthdata->periodsize;

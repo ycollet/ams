@@ -1,7 +1,11 @@
 2012-02-04 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midisliderbase.cpp, src/midicombobox.cpp,
 	src/configdialog.cpp: Enable keyboard shortcuts for GUI items.
-	* src/m_wavout.cpp: Add keyboard shortcuts for GUI items.
+	* src/m_wavout.cpp, src/m_pcmout.cpp, src/m_pcmin.cpp, src/m_ad.cpp,
+	src/m_delay.cpp, src/m_amp.cpp, src/m_advenv.cpp, src/m_env,
+	m_advmcv.cpp, src/m_conv.cpp, src/m_dynamicwaves.cpp, src/m_lfo.cpp
+	src/m_function.cpp, src/m_mcv.cpp, src/m_midiout.cpp: Add
+	keyboard shortcuts for config dialog items.
 
 2012-02-03 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp: Remove obsolete commandline option -l (preset file).

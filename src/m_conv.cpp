@@ -37,8 +37,8 @@ M_conv::M_conv(QWidget* parent)
   convModeNames << tr("V/Octave --> Hz");
   convModeNames << tr("V/Octave --> 0..1, 1=rate/2");
   convModeNames << tr("V/Octave --> 0..1, 1=20000 Hz");
-  configDialog->addComboBox(tr("Conversion Mode "), convMode, convModeNames);
-  configDialog->addIntSlider(tr("Octave Offset"), octave, -3, 3);
+  configDialog->addComboBox(tr("&Conversion mode "), convMode, convModeNames);
+  configDialog->addIntSlider(tr("&Octave offset"), octave, -3, 3);
 }
 
 void M_conv::generateCycle() {

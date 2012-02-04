@@ -45,22 +45,22 @@ M_ad::M_ad(int outCount, QWidget* parent)
   driftCount = 0;
   bypass = 0;
   configDialog->initTabWidget();
-  QVBoxLayout *paramTab = configDialog->addVBoxTab(tr("Parameter"));
+  QVBoxLayout *paramTab = configDialog->addVBoxTab(tr("&Parameter"));
 
-  configDialog->addSlider(tr("Detune Amplitude"), detune_amp, 0,
+  configDialog->addSlider(tr("Detune &Amplitude"), detune_amp, 0,
           0.084, true, paramTab);
-  configDialog->addSlider(tr("Detune Modulation"), detune_mod, 0.01,
+  configDialog->addSlider(tr("Detune &Modulation"), detune_mod, 0.01,
           1, true, paramTab);
-  configDialog->addSlider(tr("Detune Rate"), detune_rate, 0.01,
+  configDialog->addSlider(tr("Detune &Rate"), detune_rate, 0.01,
           10, true, paramTab);
-  configDialog->addSlider(tr("Drift Amplitude"), drift_amp, 0,
+  configDialog->addSlider(tr("Drift &Amplitude"), drift_amp, 0,
           0.084, true, paramTab);
-  configDialog->addSlider(tr("Drift Modulation"), drift_mod, 0.01,
+  configDialog->addSlider(tr("Drift &Modulation"), drift_mod, 0.01,
           1, true, paramTab);
-  configDialog->addSlider(tr("Drift Rate"), drift_rate, 0.01,
+  configDialog->addSlider(tr("Dri&ft Rate"), drift_rate, 0.01,
           10, true, paramTab);  
 
-  QVBoxLayout *displayTab = configDialog->addVBoxTab(tr("Display"));
+  QVBoxLayout *displayTab = configDialog->addVBoxTab(tr("&Display"));
   for (l1 = 0 ; l1 < 2; l1++) {
     voice[l1] = (synthdata->poly > 1) ? l1 : 0;
     QStringList voiceNames;
@@ -68,14 +68,14 @@ M_ad::M_ad(int outCount, QWidget* parent)
       qs.sprintf("%d", l2);
       voiceNames << qs;
     }
-    configDialog->addComboBox(tr("Voice"), voice[l1], voiceNames, displayTab);
+    configDialog->addComboBox(tr("&Voice"), voice[l1], voiceNames, displayTab);
     QObject::connect(configDialog->midiComboBoxList.at(l1)->comboBox, 
                      SIGNAL(highlighted(int)), this, SLOT(updateVoices(int)));
-    qs = tr("Detune %1").arg(l1);
+    qs = tr("D&etune %1").arg(l1);
     configDialog->addLabel(qs, displayTab);                                    
     detuneBox[l1] = configDialog->addHBox(displayTab);                          
     configDialog->addLabel(" 0.000 ", detuneBox[l1]);
-    qs = tr("Drift %1").arg(l1);
+    qs = tr("Dr&ift %1").arg(l1);
     configDialog->addLabel(qs, displayTab);
     driftBox[l1] = configDialog->addHBox(displayTab);
     for (l2 = 0; l2 < outCount; l2++) {
@@ -85,9 +85,9 @@ M_ad::M_ad(int outCount, QWidget* parent)
 
   tuneBox = configDialog->addHBox();  
   MidiControllableDoOnce * do0 = configDialog->addPushButton(
-          tr("Autotune"), tuneBox);
+          tr("Auto&tune"), tuneBox);
   QObject::connect(do0, SIGNAL(triggered()), this, SLOT(autoTune()));
-  configDialog->addCheckBox(tr("Bypass"), bypass, tuneBox);                       
+  configDialog->addCheckBox(tr("B&ypass"), bypass, tuneBox);                       
 
   timer = new QTimer(this);   
   QObject::connect(timer, SIGNAL(timeout()),

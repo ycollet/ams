@@ -42,8 +42,8 @@ M_mcv::M_mcv(QWidget* parent)
   pitch = 0;
   pitchbend = 0;
   configDialog->addComboBox(" ", channel, channelNames)->hide();
-  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
-  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("&Note offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("&Pitch"), pitchbend, -1, 1);
 }
 
 void M_mcv::generateCycle()

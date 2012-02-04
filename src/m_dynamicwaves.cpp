@@ -69,67 +69,67 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   configDialog->initTabWidget();
   QStringList waveFormNames;
   waveFormNames << "Sine" << "Saw" << "Tri" << "Rect" << "Saw 2";
-  QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune / Modulation");
+  QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune/&Modulation");
   MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(oscCount, &timeScale, attack[0], sustain, release[0], generalTab);
-  configDialog->addIntSlider("Octave", octave, 0, 6, generalTab);
-  configDialog->addSlider("Tune", tune, 0, 1, false, generalTab);
-  configDialog->addSlider("Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
-  configDialog->addSlider("Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
-  configDialog->addSlider("Timescale", timeScale, 0.1, 10, false, generalTab);
+  configDialog->addIntSlider("&Octave", octave, 0, 6, generalTab);
+  configDialog->addSlider("&Tune", tune, 0, 1, false, generalTab);
+  configDialog->addSlider("&Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider("&Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
+  configDialog->addSlider("&Timescale", timeScale, 0.1, 10, false, generalTab);
 
-  QVBoxLayout *mixTab = configDialog->addVBoxTab("Mixer");
+  QVBoxLayout *mixTab = configDialog->addVBoxTab("Mi&xer");
   for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Volume %d", l1);
+    qs.sprintf("Volume &%d", l1);
     configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
   }
 
   for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Osc %d", l1);
+    qs.sprintf("Osc &%d", l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
-    qs.sprintf("Wave Form %d", l1);
+    qs.sprintf("Wave &form %d", l1);
     configDialog->addComboBox(qs, waveForm[l1], waveFormNames, oscTab[l1]);
-    qs.sprintf("Octave %d", l1);
+    qs.sprintf("&Octave %d", l1);
     configDialog->addIntSlider(qs, osc_octave[l1], 0, 3, oscTab[l1]);
-    qs.sprintf("Tune %d", l1);
+    qs.sprintf("&Tune %d", l1);
     configDialog->addSlider(qs, osc_tune[l1], 0, 1, false, oscTab[l1]);
-    qs.sprintf("Harmonic %d", l1);
+    qs.sprintf("&Harmonic %d", l1);
     configDialog->addIntSlider(qs, harmonic[l1], 1, 16, oscTab[l1]);
-    qs.sprintf("Subharmonic %d", l1);
+    qs.sprintf("&Subharmonic %d", l1);
     configDialog->addIntSlider(qs, subharmonic[l1], 1, 16, oscTab[l1]);
-    qs.sprintf("Phi0 %d", l1);
+    qs.sprintf("&Phi0 %d", l1);
     configDialog->addSlider(qs, phi0[l1], 0, 6.283, false, oscTab[l1]);
   }
   int multiEnvFromListen = midiControllables.count();
   for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Envelope %d", l1);
+    qs.sprintf("&Envelope %d", l1);
     envelopeTab[l1] = configDialog->addVBoxTab(qs);
-    qs.sprintf("Delay %d", l1);
+    qs.sprintf("&Delay %d", l1);
     configDialog->addSlider(qs, attack[0][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Time 0 %d", l1);
+    qs.sprintf("Attack &Time 0 %d", l1);
     configDialog->addSlider(qs, attack[1][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Level 0 %d", l1);
+    qs.sprintf("Attack &Level 0 %d", l1);
     configDialog->addSlider(qs, attack[2][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Time 1 %d", l1);
+    qs.sprintf("Attack T&ime 1 %d", l1);
     configDialog->addSlider(qs, attack[3][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Level 1 %d", l1);
+    qs.sprintf("Attack Le&vel 1 %d", l1);
     configDialog->addSlider(qs, attack[4][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Time 2 %d", l1);
+    qs.sprintf("Attack Ti&me 2 %d", l1);
     configDialog->addSlider(qs, attack[5][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Level 2 %d", l1);
+    qs.sprintf("Att&ack Level 2 %d", l1);
     configDialog->addSlider(qs, attack[6][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Attack Time 3 %d", l1);
+    qs.sprintf("Atta&ck Time 3 %d", l1);
     configDialog->addSlider(qs, attack[7][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Sustain %d", l1);
+    qs.sprintf("Susta&in %d", l1);
     configDialog->addSlider(qs, sustain[l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Release Time 0 %d", l1);
+    qs.sprintf("Re&lease Time 0 %d", l1);
     configDialog->addSlider(qs, release[0][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Release Level 0 %d", l1);
+    qs.sprintf("R&elease &Level 0 %d", l1);
     configDialog->addSlider(qs, release[1][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Release Time 1 %d", l1);
+    qs.sprintf("Release &Time 1 %d", l1);
     configDialog->addSlider(qs, release[2][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Release Level 1 %d", l1);
+    qs.sprintf("Release &Level 1 %d", l1);
     configDialog->addSlider(qs, release[3][l1], 0, 1, false, envelopeTab[l1]);
-    qs.sprintf("Release Time 2 %d", l1);
+    qs.sprintf("Release &Time 2 %d", l1);
     configDialog->addSlider(qs, release[4][l1], 0, 1, false, envelopeTab[l1]);
   }
   multiEnv->listenTo(this, multiEnvFromListen);

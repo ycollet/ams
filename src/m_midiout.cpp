@@ -41,29 +41,29 @@ M_midiout::M_midiout(QWidget* parent)
 
   configDialog->initTabWidget();
   QVBoxLayout *gainTab = configDialog->addVBoxTab(
-          tr("Gain / Offset / Trigger Level"));
-  QVBoxLayout *midiTab = configDialog->addVBoxTab(tr("MIDI Settings"));
+          tr("&Gain/Offset/Trigger level"));
+  QVBoxLayout *midiTab = configDialog->addVBoxTab(tr("MIDI &Settings"));
   QStringList channelNames;
   for (l1 = 0; l1 < 16; l1++) {
     qs.sprintf("%4d", l1);
     channelNames << qs;
   }
   channel = 0;
-  configDialog->addComboBox(tr("MIDI Channel"), channel, channelNames, midiTab);
-  configDialog->addSlider(tr("Gain 0"), mixer_gain[0], 0, 10, false, gainTab);
-  configDialog->addSlider(tr("Gain 1"), mixer_gain[1], 0, 10, false, gainTab);
-  configDialog->addIntSlider(tr("Offset 0"), offset[0], 0, 127, gainTab);
-  configDialog->addIntSlider(tr("Offset 1"), offset[1], 0, 127, gainTab);
+  configDialog->addComboBox(tr("MIDI &channel"), channel, channelNames, midiTab);
+  configDialog->addSlider(tr("G&ain 0"), mixer_gain[0], 0, 10, false, gainTab);
+  configDialog->addSlider(tr("Ga&in 1"), mixer_gain[1], 0, 10, false, gainTab);
+  configDialog->addIntSlider(tr("&Offset 0"), offset[0], 0, 127, gainTab);
+  configDialog->addIntSlider(tr("O&ffset 1"), offset[1], 0, 127, gainTab);
   QStringList midiNames;
   midiNames <<
     tr("In 0/1: Controller") <<
     tr("In 0: Controller In 1: Pitchbend") <<
     tr("In 0/1: Note") <<
     tr("In 0: Note, In 1: Velocity");
-  configDialog->addComboBox(tr("MIDI Event Type"), midiMode, midiNames, midiTab);
-  configDialog->addIntSlider(tr("Controller 0"), controller[0], 0, 127, midiTab);
-  configDialog->addIntSlider(tr("Controller 1"), controller[1], 0, 127, midiTab);
-  configDialog->addSlider(tr("Trigger Level"), triggerLevel, 0, 10, false, gainTab);
+  configDialog->addComboBox(tr("MIDI &event type"), midiMode, midiNames, midiTab);
+  configDialog->addIntSlider(tr("C&ontroller 0"), controller[0], 0, 127, midiTab);
+  configDialog->addIntSlider(tr("Co&ntroller 1"), controller[1], 0, 127, midiTab);
+  configDialog->addSlider(tr("Tri&gger level"), triggerLevel, 0, 10, false, gainTab);
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     for (l2 = 0; l2 < 2; l2++) {
       triggeredNote[l2][l1] = 0;

@@ -29,7 +29,7 @@ M_amp::M_amp(QWidget* parent)
   cv.out_off = 55;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   gain = 1;
-  configDialog->addSlider(tr("Gain"), gain, -10, 10);
+  configDialog->addSlider(tr("&Gain"), gain, -10, 10);
 }
 
 void M_amp::generateCycle() {

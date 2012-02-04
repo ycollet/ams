@@ -99,67 +99,84 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Voice</source>
+        <translation type="obsolete">Stimme</translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="48"/>
+        <source>&amp;Parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../m_ad.cpp" line="50"/>
-        <source>Detune Amplitude</source>
+        <source>Detune &amp;Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="52"/>
-        <source>Detune Modulation</source>
+        <source>Detune &amp;Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="54"/>
-        <source>Detune Rate</source>
+        <source>Detune &amp;Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="56"/>
-        <source>Drift Amplitude</source>
+        <source>Drift &amp;Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="58"/>
-        <source>Drift Modulation</source>
+        <source>Drift &amp;Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="60"/>
-        <source>Drift Rate</source>
+        <source>Dri&amp;ft Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="63"/>
-        <source>Display</source>
+        <source>&amp;Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="71"/>
-        <source>Voice</source>
-        <translation>Stimme</translation>
+        <source>&amp;Voice</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="74"/>
+        <source>D&amp;etune %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="78"/>
+        <source>Dr&amp;ift %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="88"/>
+        <source>Auto&amp;tune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_ad.cpp" line="90"/>
+        <source>B&amp;ypass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../m_ad.cpp" line="172"/>
         <location filename="../m_ad.cpp" line="176"/>
         <source>Detune %1</source>
         <translation>Verstimmung %1</translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="78"/>
         <location filename="../m_ad.cpp" line="174"/>
         <location filename="../m_ad.cpp" line="178"/>
         <source>Drift %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_ad.cpp" line="88"/>
-        <source>Autotune</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_ad.cpp" line="90"/>
-        <source>Bypass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -170,11 +187,6 @@
     <message>
         <location filename="../m_ad.cpp" line="27"/>
         <source>CV Out %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_ad.cpp" line="48"/>
-        <source>Parameter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -202,102 +214,102 @@
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="53"/>
-        <source>Time Scale / Sustain / Delay</source>
+        <source>Time &amp;Scale/Sustain/Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="54"/>
-        <source>Attack Time</source>
+        <source>&amp;Attack Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="55"/>
-        <source>Attack Level</source>
+        <source>Attack &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="56"/>
-        <source>Release Time</source>
+        <source>&amp;Release Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="57"/>
-        <source>Release Level</source>
+        <source>Release Le&amp;vel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="58"/>
-        <source>Time Scale</source>
+        <source>Ti&amp;me Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="60"/>
-        <source>Sustain</source>
+        <source>S&amp;ustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="62"/>
-        <source>Delay</source>
+        <source>Dela&amp;y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="64"/>
-        <source>Attack Time 0</source>
+        <source>Attack Time &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="66"/>
-        <source>Attack Level 0</source>
+        <source>Attack Level &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="68"/>
-        <source>Attack Time 1</source>
+        <source>Attack Time &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="70"/>
-        <source>Attack Level 1</source>
+        <source>Attack Level &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="72"/>
-        <source>Attack Time 2</source>
+        <source>Attack Time &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="74"/>
-        <source>Attack Level 2</source>
+        <source>Attack Level &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="76"/>
-        <source>Attack Time 3</source>
+        <source>Attack Time &amp;3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="78"/>
-        <source>Release Time 0</source>
+        <source>Release Time &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="80"/>
-        <source>Release Level 0</source>
+        <source>Release Level &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="82"/>
-        <source>Release Time 1</source>
+        <source>Release Time &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="84"/>
-        <source>Release Level 1</source>
+        <source>Release Level &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advenv.cpp" line="86"/>
-        <source>Release Time 2</source>
+        <source>Release Time &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -340,18 +352,22 @@
     </message>
     <message>
         <location filename="../m_advmcv.cpp" line="35"/>
-        <location filename="../m_advmcv.cpp" line="58"/>
         <source>Controller %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advmcv.cpp" line="55"/>
-        <source>Note Offset</source>
+        <source>&amp;Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_advmcv.cpp" line="56"/>
-        <source>Pitch</source>
+        <source>&amp;Pitch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_advmcv.cpp" line="58"/>
+        <source>Controller &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -374,7 +390,7 @@
     </message>
     <message>
         <location filename="../m_amp.cpp" line="32"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -402,12 +418,12 @@
     </message>
     <message>
         <location filename="../m_conv.cpp" line="40"/>
-        <source>Conversion Mode </source>
+        <source>&amp;Conversion mode </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_conv.cpp" line="41"/>
-        <source>Octave Offset</source>
+        <source>&amp;Octave offset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -423,7 +439,6 @@
     <name>M_delay</name>
     <message>
         <location filename="../m_delay.cpp" line="23"/>
-        <location filename="../m_delay.cpp" line="33"/>
         <source>Delay</source>
         <translation type="unfinished"></translation>
     </message>
@@ -435,6 +450,11 @@
     <message>
         <location filename="../m_delay.cpp" line="31"/>
         <source>Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_delay.cpp" line="33"/>
+        <source>&amp;Delay</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -475,47 +495,47 @@
     </message>
     <message>
         <location filename="../m_env.cpp" line="35"/>
-        <source>ADSR</source>
+        <source>&amp;ADSR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="37"/>
-        <source>Delay / Hold / Time Scale</source>
+        <source>&amp;Delay/Hold/Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="38"/>
-        <source>Delay</source>
+        <source>De&amp;lay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="39"/>
-        <source>Attack</source>
+        <source>At&amp;tack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="40"/>
-        <source>Hold</source>
+        <source>H&amp;old</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="41"/>
-        <source>Decay</source>
+        <source>De&amp;cay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="42"/>
-        <source>Sustain</source>
+        <source>&amp;Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="43"/>
-        <source>Release</source>
+        <source>&amp;Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_env.cpp" line="44"/>
-        <source>Time Scale</source>
+        <source>T&amp;ime Scale</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -577,24 +597,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="74"/>
-        <source>                       Mouse X: _____ Y: _____</source>
+        <location filename="../m_function.cpp" line="73"/>
+        <source>Mouse X: _____ Y: _____</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_function.cpp" line="75"/>
+        <source>&amp;Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="76"/>
-        <source>Mode</source>
-        <translation>Modus</translation>
+        <source>&amp;Edit function</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="77"/>
-        <source>Edit Function</source>
+        <source>&amp;Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="78"/>
-        <source>Zoom</source>
-        <translation type="unfinished"></translation>
+        <source>Mode</source>
+        <translation type="obsolete">Modus</translation>
     </message>
 </context>
 <context>
@@ -672,12 +696,12 @@
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="65"/>
-        <source>Frequency</source>
+        <source>&amp;Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="66"/>
-        <source>Phi0</source>
+        <source>&amp;Phi0</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -710,12 +734,12 @@
     </message>
     <message>
         <location filename="../m_mcv.cpp" line="45"/>
-        <source>Note Offset</source>
+        <source>&amp;Note offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_mcv.cpp" line="46"/>
-        <source>Pitch</source>
+        <source>&amp;Pitch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -743,37 +767,57 @@
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="44"/>
-        <source>Gain / Offset / Trigger Level</source>
+        <source>&amp;Gain/Offset/Trigger level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="45"/>
-        <source>MIDI Settings</source>
+        <source>MIDI &amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="52"/>
-        <source>MIDI Channel</source>
+        <source>MIDI &amp;channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="53"/>
-        <source>Gain 0</source>
+        <source>G&amp;ain 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="54"/>
-        <source>Gain 1</source>
+        <source>Ga&amp;in 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="55"/>
-        <source>Offset 0</source>
+        <source>&amp;Offset 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="56"/>
-        <source>Offset 1</source>
+        <source>O&amp;ffset 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_midiout.cpp" line="63"/>
+        <source>MIDI &amp;event type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_midiout.cpp" line="64"/>
+        <source>C&amp;ontroller 0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_midiout.cpp" line="65"/>
+        <source>Co&amp;ntroller 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_midiout.cpp" line="66"/>
+        <source>Tri&amp;gger level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -794,26 +838,6 @@
     <message>
         <location filename="../m_midiout.cpp" line="62"/>
         <source>In 0: Note, In 1: Velocity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_midiout.cpp" line="63"/>
-        <source>MIDI Event Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_midiout.cpp" line="64"/>
-        <source>Controller 0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_midiout.cpp" line="65"/>
-        <source>Controller 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_midiout.cpp" line="66"/>
-        <source>Trigger Level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -968,17 +992,17 @@
     </message>
     <message>
         <location filename="../m_pcmin.cpp" line="37"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_pcmin.cpp" line="38"/>
-        <source>Volume 1</source>
+        <source>&amp;Volume 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_pcmin.cpp" line="39"/>
-        <source>Volume 2</source>
+        <source>V&amp;olume 2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -991,17 +1015,17 @@
     </message>
     <message>
         <location filename="../m_pcmout.cpp" line="29"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_pcmout.cpp" line="30"/>
-        <source>Volume 1</source>
+        <source>&amp;Volume 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_pcmout.cpp" line="31"/>
-        <source>Volume 2</source>
+        <source>V&amp;olume 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1027,7 +1051,7 @@
     </message>
     <message>
         <location filename="../m_pcmout.cpp" line="35"/>
-        <source>Automatic Gain Control</source>
+        <source>&amp;Automatic Gain Control</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

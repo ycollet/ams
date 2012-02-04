@@ -62,8 +62,8 @@ M_lfo::M_lfo(QWidget* parent)
   port_rect = new Port(tr("Rectangle"), PORT_OUT, 4, this);          
   port_sh = new Port(tr("S & H"), PORT_OUT, 5, this);          
 
-  configDialog->addSlider(tr("Frequency"), freq, 0, 100, true);
-  configDialog->addSlider(tr("Phi0"), phi0, 0, 6.283);
+  configDialog->addSlider(tr("&Frequency"), freq, 0, 100, true);
+  configDialog->addSlider(tr("&Phi0"), phi0, 0, 6.283);
   tm = time(NULL) % 1000000;
   srand(abs(tm - 10000 * (tm % 100)));
 }

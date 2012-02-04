@@ -70,17 +70,17 @@ M_function::M_function(int p_functionCount, QWidget* parent)
     editNames << qs;
   }
   hbox = configDialog->addHBox();
-  configDialog->addLabel(
-          tr("                       Mouse X: _____ Y: _____"), hbox);
+  configDialog->addLabel(tr("Mouse X: _____ Y: _____"), hbox);
   hbox = configDialog->addHBox();
-  configDialog->addComboBox(tr("Mode"), mode, modeNames, hbox);
-  configDialog->addComboBox(tr("Edit Function"), editIndex, editNames, hbox);
-  configDialog->addComboBox(tr("Zoom"), zoomIndex, zoomNames, hbox);
-  QObject::connect(configDialog->midiComboBoxList.at(2)->comboBox, SIGNAL(currentIndexChanged(int)),
-                   this, SLOT(updateZoom(int)));
-  QObject::connect(configDialog->midiComboBoxList.at(1)->comboBox, SIGNAL(currentIndexChanged(int)),
-                   configDialog->functionList.at(0), SLOT(highlightFunction(int)));
-  QObject::connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
+  configDialog->addComboBox(tr("&Mode"), mode, modeNames, hbox);
+  configDialog->addComboBox(tr("&Edit function"), editIndex, editNames, hbox);
+  configDialog->addComboBox(tr("&Zoom"), zoomIndex, zoomNames, hbox);
+  connect(configDialog->midiComboBoxList.at(2)->comboBox,
+          SIGNAL(currentIndexChanged(int)), this, SLOT(updateZoom(int)));
+  connect(configDialog->midiComboBoxList.at(1)->comboBox,
+          SIGNAL(currentIndexChanged(int)),
+          configDialog->functionList.at(0), SLOT(highlightFunction(int)));
+  connect(configDialog->functionList.at(0), SIGNAL(mousePos(int, int)),
                    this, SLOT(updateMouseLabels(int, int)));
 }
 
@@ -135,7 +135,7 @@ void M_function::updateMouseLabels(int x, int y) {
 
   QString qs;
 
-  qs.sprintf("                       Mouse X: %6.3f  Y: %6.3f",
+  qs.sprintf("Mouse X: %6.3f  Y: %6.3f",
           (float)(x-FUNCTION_CENTER_X)/(float)FUNCTION_SCALE,
           (float)(FUNCTION_CENTER_Y-y)/(float)FUNCTION_SCALE);
   configDialog->labelList.at(0)->setText(qs);

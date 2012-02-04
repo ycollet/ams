@@ -30,7 +30,7 @@ M_delay::M_delay(QWidget* parent)
   cv.out_off = 55;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider(tr("Delay"), delay, 0, 10);
+  configDialog->addSlider(tr("&Delay"), delay, 0, 10);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     buf[l1] = (float *)malloc(MAX_DELAY_FRAMES * sizeof(float));

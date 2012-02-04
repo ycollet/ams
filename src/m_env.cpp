@@ -32,16 +32,16 @@ M_env::M_env(QWidget* parent)
   port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);          
 
   configDialog->initTabWidget();
-  QVBoxLayout *adsrTab = configDialog->addVBoxTab(tr("ADSR"));
+  QVBoxLayout *adsrTab = configDialog->addVBoxTab(tr("&ADSR"));
   QVBoxLayout *delayTab = configDialog->addVBoxTab(
-          tr("Delay / Hold / Time Scale"));
-  configDialog->addSlider(tr("Delay"), delay, 0, 1, false, delayTab);
-  configDialog->addSlider(tr("Attack"), attack, 0, 1, false, adsrTab);
-  configDialog->addSlider(tr("Hold"), hold, 0, 1, false, delayTab);
-  configDialog->addSlider(tr("Decay"), decay, 0, 1, false, adsrTab);
-  configDialog->addSlider(tr("Sustain"), sustain, 0, 1, false, adsrTab);
-  configDialog->addSlider(tr("Release"), release, 0, 1, false, adsrTab);
-  configDialog->addSlider(tr("Time Scale"), timeScale, 0.1, 10, false, delayTab);
+          tr("&Delay/Hold/Time Scale"));
+  configDialog->addSlider(tr("De&lay"), delay, 0, 1, false, delayTab);
+  configDialog->addSlider(tr("At&tack"), attack, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("H&old"), hold, 0, 1, false, delayTab);
+  configDialog->addSlider(tr("De&cay"), decay, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("&Sustain"), sustain, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("&Release"), release, 0, 1, false, adsrTab);
+  configDialog->addSlider(tr("T&ime Scale"), timeScale, 0.1, 10, false, delayTab);
 
   configDialog->addEnvelope(*dynamic_cast<MidiControllableFloat *>(midiControllables.at(0)),
 			    *dynamic_cast<MidiControllableFloat *>(midiControllables.at(1)),

@@ -52,10 +52,10 @@ M_advmcv::M_advmcv(QWidget* parent)
     controller_num[l2] = 0;
   }
 //  configDialog->addComboBox(0, " ", &channel, channelNames->count(), channelNames);
-  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
-  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("&Note Offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("&Pitch"), pitchbend, -1, 1);
   for (l1 = 0; l1 < MODULE_ADVMCV_CONTROLLER_PORTS; l1++) {
-    qs = tr("Controller %1").arg(l1);
+    qs = tr("Controller &%1").arg(l1);
     configDialog->addIntSlider(qs, controller_num[l1], 0, 127);
   }
 }
