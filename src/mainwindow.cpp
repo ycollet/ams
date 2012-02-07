@@ -615,8 +615,12 @@ void MainWindow::displayPreferences()
     prefDialog->setModuleFontColor(modularSynth->getModuleFontColor());
     prefDialog->setCableColor(modularSynth->getCableColor());
     prefDialog->setJackColor(modularSynth->getJackColor());
+
     prefDialog->setMidiControllerMode(modularSynth->getMidiControllerMode());
+    
     prefDialog->setModuleMoveMode(modularSynth->getModuleMoveMode());
+    prefDialog->setEnableModuleGrid(modularSynth->getEnableModuleGrid());
+    prefDialog->setGridMesh(modularSynth->getModuleGrid());
 
     if (prefDialog->exec() == QDialog::Accepted)
         applyPreferences();
@@ -642,6 +646,8 @@ void MainWindow::applyPreferences()
 
     /*editing*/
     modularSynth->setModuleMoveMode(prefDialog->getModuleMoveMode());
+    modularSynth->setEnableModuleGrid(prefDialog->getEnableModuleGrid());
+    modularSynth->setModuleGrid(prefDialog->getGridMesh());
     restoregeometry = prefDialog->getRememberGeometry();
     if (prefDialog->getHideRecentFiles() != hiderecentfiles) {
         hiderecentfiles = prefDialog->getHideRecentFiles();

@@ -9,6 +9,7 @@
 #include <qstring.h>
 #include <qcheckbox.h>  
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qpushbutton.h>
 #include <qbuttongroup.h>
 #include <qdialog.h>
@@ -34,6 +35,9 @@ class PrefWidget : public QDialog
 
     QButtonGroup* midiModeButtons;
     QButtonGroup* moduleMoveButtons;
+    QCheckBox* enableGrid;
+    QLabel *gridMeshLabel;
+    QLineEdit* gridMeshEditline;
     QCheckBox* rememberGeometry;
     QCheckBox* hideRecentFiles;
    
@@ -59,6 +63,10 @@ class PrefWidget : public QDialog
     int getMidiControllerMode();
     void setModuleMoveMode(int);
     int getModuleMoveMode();
+    void setEnableModuleGrid(bool hide);
+    bool getEnableModuleGrid();
+    void setGridMesh(int mesh);
+    int getGridMesh();
     void setRememberGeometry(bool remember);
     bool getRememberGeometry();
     void setHideRecentFiles(bool hide);
@@ -75,6 +83,7 @@ class PrefWidget : public QDialog
     void colorCableClicked();
     void defaultcolorClicked();
     void colorJackClicked();
+    void enableGridToggled(bool checked);
 };
   
 

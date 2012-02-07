@@ -92,6 +92,8 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   , verbose(mso.verbose)
   , paintFastly(false)
   , _zoomFactor(1.0)
+  , enablemodulegrid(true)
+  , modulegrid(20)
 {
   setAutoFillBackground(true);
   modified = false;
@@ -225,6 +227,7 @@ void ModularSynth::mouseMoveEvent(QMouseEvent *ev)
 
     bool crossTopLeft = synthdata->editingFlags.crossTopLeft();
     QPoint delta = ev->globalPos() - lastMousePos;
+
     lastMousePos = ev->globalPos();
     QPoint newPos = dragWidget->pos() + delta;
 
@@ -261,10 +264,30 @@ void ModularSynth::mouseMoveEvent(QMouseEvent *ev)
 
 void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
 {
+    int delta;
+
     switch (ev->button()) {
         case Qt::LeftButton:
-            if (dragWidget != NULL)
+            if (dragWidget != NULL) {
+
+                if (enablemodulegrid) { 
+                    QPoint position = dragWidget->pos();
+               
+                    delta = position.x() % modulegrid;
+                    position.setX((position.x() / modulegrid) * modulegrid);
+                    if (delta >= (modulegrid/2))
+                        position.rx() += modulegrid;
+
+                    delta = position.y() % modulegrid;
+                    position.setY((position.y() / modulegrid) * modulegrid);
+                    if (delta >= (modulegrid/2))
+                        position.ry() += modulegrid;
+
+                    dragWidget->move(position);
+                }
+
                 dragWidget = NULL;
+            }
             setPaintFastly(false);
             update();
             ev->accept();
@@ -344,12 +367,6 @@ void ModularSynth::displayParameterView() {
 
   guiWidget->show();
   guiWidget->raise();
-}
-
-void ModularSynth::displayPreferences()
-{
-    /*prefWidget->show();
-    prefWidget->raise();*/
 }
 
 void ModularSynth::displayLadspaPlugins() {
@@ -2112,6 +2129,12 @@ void ModularSynth::loadPreference(QString& line)
     else if (line.startsWith("EditingFlags")) {
 	synthdata->editingFlags.f = line.section(' ', 1).toInt();
     }       
+    else if (line.startsWith("EnableGrid")) {
+	enablemodulegrid = line.section(' ', 1).toInt();
+    }       
+    else if (line.startsWith("GridMeshSize")) {
+	modulegrid = line.section(' ', 1).toInt();
+    }       
 }
 
 
@@ -2145,6 +2168,8 @@ void ModularSynth::savePreferences(QTextStream& ts)
     ts << "ColorPath " << synthdata->colorPath << "\n";
     ts << "PatchPath " << synthdata->patchPath << "\n";
     ts << "EditingFlags " << synthdata->editingFlags.f << "\n";
+    ts << "EnableGrid " << enablemodulegrid << endl;
+    ts << "GridMeshSize " << modulegrid << endl;
 
     refreshColors();
 }
@@ -2337,4 +2362,24 @@ int ModularSynth::getModuleMoveMode()
 void ModularSynth::setModuleMoveMode(int mode)
 {
     synthdata->editingFlags.setCrossTopLeft(mode);
+}
+
+int ModularSynth::getModuleGrid()
+{
+    return modulegrid;
+}
+
+void ModularSynth::setModuleGrid(int grid)
+{
+    modulegrid = grid;
+}
+
+bool ModularSynth::getEnableModuleGrid()
+{
+    return enablemodulegrid;
+}
+
+void ModularSynth::setEnableModuleGrid(bool enable)
+{
+    enablemodulegrid = enable;
 }

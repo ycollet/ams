@@ -235,6 +235,36 @@ void PrefWidget::setupEditingTab()
     moduleMoveGroup->setLayout(moduleMoveLayout);
     editingBox->addWidget(moduleMoveGroup);
 
+    /*Module movement mode radio buttons*/
+    QGroupBox *modulePositionGroup = new QGroupBox(tr("Module position"));
+
+    enableGrid = new QCheckBox(
+            tr("Enable module &position grid"));
+    connect(enableGrid, SIGNAL(toggled(bool)),
+            this, SLOT(enableGridToggled(bool)));
+
+    gridMeshLabel = new QLabel(tr("&Grid mesh size"));
+    gridMeshEditline = new QLineEdit();
+    gridMeshEditline->setMaxLength(3);
+    QIntValidator* meshValidator = new QIntValidator(2, 200,
+                            gridMeshEditline);
+    gridMeshEditline->setValidator(meshValidator);
+    gridMeshEditline->setToolTip(
+            tr("Valid mesh size range is %1 to %2 pixel")
+            .arg(meshValidator->bottom())
+            .arg(meshValidator->top()));
+    gridMeshLabel->setBuddy(gridMeshEditline);
+
+    QHBoxLayout* gridMeshLayout = new QHBoxLayout();
+    gridMeshLayout->addWidget(gridMeshLabel);
+    gridMeshLayout->addWidget(gridMeshEditline);
+
+    QVBoxLayout *modulePositionLayout = new QVBoxLayout;
+    modulePositionLayout->addWidget(enableGrid);
+    modulePositionLayout->addLayout(gridMeshLayout);
+    modulePositionGroup->setLayout(modulePositionLayout);
+    editingBox->addWidget(modulePositionGroup);
+
     /*checkboxes*/
     rememberGeometry = new QCheckBox(tr("&Remember window geometry"));
     rememberGeometry->setToolTip(tr("Save and restore main window "
@@ -341,6 +371,26 @@ int PrefWidget::getModuleMoveMode()
 }
 
 
+void PrefWidget::setEnableModuleGrid(bool enable)
+{
+    enableGrid->setChecked(enable);
+}
+
+bool PrefWidget::getEnableModuleGrid()
+{
+    return enableGrid->isChecked();
+}
+
+void PrefWidget::setGridMesh(int mesh)
+{
+    gridMeshEditline->setText(QString::number(mesh));
+}
+
+int PrefWidget::getGridMesh()
+{
+    return gridMeshEditline->text().toInt();
+}
+
 void PrefWidget::setRememberGeometry(bool remember)
 {
     rememberGeometry->setChecked(remember);
@@ -419,4 +469,10 @@ void PrefWidget::setJackColor(QColor color)
 QColor PrefWidget::getJackColor()
 {
     return colorJackLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::enableGridToggled(bool checked)
+{
+    gridMeshLabel->setEnabled(checked);
+    gridMeshEditline->setEnabled(checked);
 }

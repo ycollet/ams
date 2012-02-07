@@ -49,7 +49,6 @@ class ModularSynth : public QWidget
     LadspaDialog *ladspaDialog;
     MidiWidget *midiWidget;
     class GuiWidget *guiWidget;
-    //class PrefWidget *prefWidget;
     bool loadingPatch;
     QString pcmname;
     unsigned int fsamp;
@@ -62,6 +61,9 @@ class ModularSynth : public QWidget
     double _zoomFactor;
     QPoint newBoxPos;
     QPoint lastMousePos;
+    bool enablemodulegrid;
+    int modulegrid;
+
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
     snd_seq_t *open_seq(); 
@@ -114,6 +116,10 @@ public:
     void setMidiControllerMode(int mode);
     int getModuleMoveMode();
     void setModuleMoveMode(int mode);
+    int getModuleGrid();
+    void setModuleGrid(int grid);
+    bool getEnableModuleGrid();
+    void setEnableModuleGrid(bool enable);
 
   protected:
     class QAbstractScrollArea *scrollArea() {
@@ -135,7 +141,6 @@ public:
     void displayAbout();
     void displayMidiController();
     void displayParameterView();
-    void displayPreferences();
     void displayLadspaPlugins();
     void midiAction(int fd);
     void startSynth();

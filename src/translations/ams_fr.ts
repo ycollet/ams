@@ -3381,12 +3381,12 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="111"/>
+        <location filename="../modularsynth.cpp" line="113"/>
         <source>AlsaModularSynth Control Center</source>
         <translation>Centre de Contrôle AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="115"/>
+        <location filename="../modularsynth.cpp" line="117"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>Vue Paramètres AlsaModularSynth</translation>
     </message>
@@ -3395,12 +3395,12 @@ Save changes?</source>
         <translation type="obsolete">Préférences AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="303"/>
+        <location filename="../modularsynth.cpp" line="326"/>
         <source>About </source>
         <translation>A propos de</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1142"/>
+        <location filename="../modularsynth.cpp" line="1159"/>
         <source>Load Colors</source>
         <translation type="unfinished">Charger Couleurs</translation>
     </message>
@@ -3409,43 +3409,43 @@ Save changes?</source>
         <translation type="obsolete">Fichiers Couleurs AlsaModularSynth (*.acs)</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1143"/>
-        <location filename="../modularsynth.cpp" line="1193"/>
+        <location filename="../modularsynth.cpp" line="1160"/>
+        <location filename="../modularsynth.cpp" line="1210"/>
         <source>AlsaModularSynth color files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1150"/>
+        <location filename="../modularsynth.cpp" line="1167"/>
         <source>Could not open file.</source>
         <translation type="unfinished">Echec d&apos;ouverture du fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1192"/>
+        <location filename="../modularsynth.cpp" line="1209"/>
         <source>Save Colors</source>
         <translation type="unfinished">Enregistrer Couleurs</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1204"/>
+        <location filename="../modularsynth.cpp" line="1221"/>
         <source>Could not save file.</source>
         <translation type="unfinished">Echec d&apos;enregistrement fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1292"/>
+        <location filename="../modularsynth.cpp" line="1309"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished">Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1509"/>
+        <location filename="../modularsynth.cpp" line="1526"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
         <translation type="unfinished">Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1766"/>
+        <location filename="../modularsynth.cpp" line="1783"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished">Tag controleur MIDI inconnu détecté: %1</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1286"/>
+        <location filename="../modularsynth.cpp" line="1303"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3610,12 +3610,12 @@ Save changes?</source>
         <translation type="obsolete">Préférences AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="239"/>
+        <location filename="../prefwidget.cpp" line="269"/>
         <source>&amp;Remember window geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="240"/>
+        <location filename="../prefwidget.cpp" line="270"/>
         <source>Save and restore main window position and size for next ams session.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3644,7 +3644,7 @@ Save changes?</source>
         <translation type="obsolete">Choisir le chemin d&apos;enregistrement</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="251"/>
+        <location filename="../prefwidget.cpp" line="281"/>
         <source>&amp;Editing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3714,12 +3714,32 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="244"/>
+        <location filename="../prefwidget.cpp" line="239"/>
+        <source>Module position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="242"/>
+        <source>Enable module &amp;position grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="246"/>
+        <source>&amp;Grid mesh size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="253"/>
+        <source>Valid mesh size range is %1 to %2 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="274"/>
         <source>&amp;Hide recently used files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="245"/>
+        <location filename="../prefwidget.cpp" line="275"/>
         <source>Do not show list of recently used files in file menu.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3782,57 +3802,57 @@ Save changes?</source>
         <translation>Echec de déverouillage du fichier de préférences.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="283"/>
+        <location filename="../modularsynth.cpp" line="306"/>
         <source>Alsa MIDI wont work!</source>
         <translation>ALSA MIDI ne fonctionnera pas!</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="373"/>
+        <location filename="../modularsynth.cpp" line="390"/>
         <source>Error opening ALSA sequencer.</source>
         <translation>Erreur d&apos;ouverture du séquenceur ALSA.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="385"/>
+        <location filename="../modularsynth.cpp" line="402"/>
         <source>Error creating sequencer write port.</source>
         <translation>Erreur de création du port d&apos;écriture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="394"/>
+        <location filename="../modularsynth.cpp" line="411"/>
         <source>Error creating sequencer read port.</source>
         <translation>Erreur de création du port de lecture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="972"/>
+        <location filename="../modularsynth.cpp" line="989"/>
         <source>All available output ports are in use</source>
         <translation>Tous les ports de sortie disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="990"/>
+        <location filename="../modularsynth.cpp" line="1007"/>
         <source>All available input ports are in use</source>
         <translation>Tous les ports d&apos;entrée disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1802"/>
+        <location filename="../modularsynth.cpp" line="1819"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation>Titre pour l&apos;onglet &apos;%1&apos; introuvable.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1818"/>
+        <location filename="../modularsynth.cpp" line="1835"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation>Données pour le cadre &apos;%1&apos; non trouvées.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1833"/>
+        <location filename="../modularsynth.cpp" line="1850"/>
         <source>No parameter values found.</source>
         <translation>Valeurs de paramètre introuvables.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1842"/>
+        <location filename="../modularsynth.cpp" line="1859"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation>Nom du paramètre &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1908"/>
+        <location filename="../modularsynth.cpp" line="1925"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>

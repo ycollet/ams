@@ -1,4 +1,6 @@
 2012-02-07 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.cpp, src/modularsynth.*, src/prefwidget.*: Add
+	preferences option for module position grid.
 	* src/m_scmcv.cpp, src/m_sh.cpp, src/m_ringmod.cpp,src/m_mix.cpp,
 	src/m_mphlfo.cpp, src/m_mphlfo.cpp, src/m_noise.cpp,
 	src/m_noise2.cpp, src/m_quantizer.cpp, src/m_seq.cpp,
