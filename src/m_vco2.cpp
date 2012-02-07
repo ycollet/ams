@@ -46,7 +46,7 @@ M_vco2::M_vco2(QWidget* parent)
   */
 
   configDialog->initTabWidget();
-  QVBoxLayout *freqTab = configDialog->addVBoxTab(tr("Frequency"));
+  QVBoxLayout *freqTab = configDialog->addVBoxTab(tr("&Frequency"));
   QStringList waveFormNames;
   waveFormNames << tr("Sine");
   waveFormNames << tr("Triangle");
@@ -55,22 +55,22 @@ M_vco2::M_vco2(QWidget* parent)
   waveFormNames << tr("Aux Saw");
   waveFormNames << tr("Aux Saw 1");
   waveFormNames << tr("Aux Saw 2");
-  configDialog->addComboBox(tr("Wave Form"), waveForm, waveFormNames, freqTab);
-  configDialog->addIntSlider(tr("Octave"), octave, 0, 6, freqTab);
-  configDialog->addSlider(tr("Tune"), freq, 0, 1, false, freqTab);
-  configDialog->addIntSlider(tr("Harmonic"), harmonic, 1, 16, freqTab);
-  configDialog->addIntSlider(tr("Subharmonic"), subharmonic, 1, 16, freqTab);
+  configDialog->addComboBox(tr("&Wave Form"), waveForm, waveFormNames, freqTab);
+  configDialog->addIntSlider(tr("&Octave"), octave, 0, 6, freqTab);
+  configDialog->addSlider(tr("&Tune"), freq, 0, 1, false, freqTab);
+  configDialog->addIntSlider(tr("&Harmonic"), harmonic, 1, 16, freqTab);
+  configDialog->addIntSlider(tr("&Subharmonic"), subharmonic, 1, 16, freqTab);
 
-  QVBoxLayout *pulseTab = configDialog->addVBoxTab(tr("Pulse Width / Phase"));
-  configDialog->addSlider(tr("PW"), pw0, 0.1, 0.9, false, pulseTab);
-  configDialog->addSlider(tr("PW Gain"), pwGain, 0, 1, false, pulseTab);
-  configDialog->addSlider(tr("Phi0"), phi0, 0, 6.283, false, pulseTab);
+  QVBoxLayout *pulseTab = configDialog->addVBoxTab(tr("&Pulse width/Phase"));
+  configDialog->addSlider(tr("P&W"), pw0, 0.1, 0.9, false, pulseTab);
+  configDialog->addSlider(tr("PW 6Gain"), pwGain, 0, 1, false, pulseTab);
+  configDialog->addSlider(tr("&Phi0"), phi0, 0, 6.283, false, pulseTab);
 
   QVBoxLayout *modulationTab = configDialog->addVBoxTab(
-          tr("Modulation / Aux Waveform"));
-  configDialog->addSlider(tr("Exp. FM Gain"), vcoExpFMGain, 0, 10,
+          tr("&Modulation/Aux Waveform"));
+  configDialog->addSlider(tr("&Exp. FM Gain"), vcoExpFMGain, 0, 10,
           false, modulationTab);
-  configDialog->addSlider(tr("Lin. FM Gain"), vcoLinFMGain, 0, 10,
+  configDialog->addSlider(tr("&Lin. FM Gain"), vcoLinFMGain, 0, 10,
           false, modulationTab);
 }
 

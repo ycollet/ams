@@ -39,14 +39,14 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
 
   configDialog->initTabWidget();
   QVBoxLayout *generalTab = configDialog->addVBoxTab(
-          tr("Pitch Offset / Tempo / Gate Time"));
+          tr("Pitch offset/&Tempo/Gate time"));
   int seqLen_8 = (seqLen + 7) / 8;
   for (l1 = 0; l1 < seqLen_8; l1++) {
-    sprintf(str, "Pitch %d", l1);
+    sprintf(str, "&Pitch %d", l1);
     pitchTab[l1] = configDialog->addVBoxTab(str);
-    sprintf(str, "Gate %d", l1);
+    sprintf(str, "&Gate %d", l1);
     gateTab[l1] = configDialog->addVBoxTab(str);
-    sprintf(str, "Velocity %d", l1);
+    sprintf(str, "&Velocity %d", l1);
     velocityTab[l1] = configDialog->addVBoxTab(str);
   }
   seq_gate = 0;
@@ -60,22 +60,22 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   triggerOut = false;
   bpm = 120;
   pitch_ofs = 32;
-  configDialog->addIntSlider("Pitch Offset", pitch_ofs, 0, 63, generalTab);
-  configDialog->addIntSlider("Beats per minute", bpm, 3, 300, generalTab);
+  configDialog->addIntSlider("&Pitch offset", pitch_ofs, 0, 63, generalTab);
+  configDialog->addIntSlider("&Beats per minute", bpm, 3, 300, generalTab);
   QStringList noteLenNames;
   noteLenNames << "1" << "3/4" << "1/2" << "1/4";
-  configDialog->addComboBox("Gate time", note_len, noteLenNames, generalTab);
+  configDialog->addComboBox("&Gate time", note_len, noteLenNames, generalTab);
   for (l1 = 0; l1 < seqLen; l1++) {
     pitch[l1] = 31;
     velocity[l1] = 63;
     gate[l1] = 0;
   }
   for (l1 = 0; l1 < seqLen; l1++) {
-    sprintf(str, "Gate %d", l1);
+    sprintf(str, "Gate &%d", l1);
     configDialog->addCheckBox(str, gate[l1], gateTab[l1 / 8]);
-    sprintf(str, "Pitch %d", l1);
+    sprintf(str, "Pitch &%d", l1);
     configDialog->addIntSlider(str, pitch[l1], 0, 64, pitchTab[l1 / 8]);
-    sprintf(str, "Velocity %d", l1);
+    sprintf(str, "Velocity &%d", l1);
     configDialog->addIntSlider(str, velocity[l1], 0, 127, velocityTab[l1 / 8]);
   } 
 }

@@ -30,7 +30,7 @@ M_sh::M_sh(QWidget* parent)
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   port_gate = new Port(tr("Gate"), PORT_OUT, 1, this);          
   triggerLevel = 0.5;
-  configDialog->addSlider(tr("Trigger Level"), triggerLevel, 0, 10);
+  configDialog->addSlider(tr("&Trigger Level"), triggerLevel, 0, 10);
   sample = 0;
   gate = false;
 }

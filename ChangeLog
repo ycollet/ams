@@ -1,3 +1,14 @@
+2012-02-07 Guido Scholz <guido.scholz@bayernline.de>
+	* src/m_scmcv.cpp, src/m_sh.cpp, src/m_ringmod.cpp,src/m_mix.cpp,
+	src/m_mphlfo.cpp, src/m_mphlfo.cpp, src/m_noise.cpp,
+	src/m_noise2.cpp, src/m_quantizer.cpp, src/m_seq.cpp,
+	src/m_slew.cpp, src/m_scope.cpp, src/m_stereomix.cpp,
+	src/m_vcdoubledecay.cpp, src/m_vcenv.cpp, src/m_vco2.cpp,
+	src/m_vcorgan.cpp, src/m_vcpanning.cpp, src/m_vcswitch.cpp,
+	src/m_vquant.cpp, src/m_cvs.cpp, src/m_vca.cpp,
+	src/m_vco.cpp, src/m_vcenv2.cpp, src/m_vcf.cpp: Add
+	keyboard shortcuts for config dialog items.
+
 2012-02-04 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midisliderbase.cpp, src/midicombobox.cpp,
 	src/configdialog.cpp: Enable keyboard shortcuts for GUI items.

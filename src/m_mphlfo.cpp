@@ -41,13 +41,13 @@ M_mphlfo::M_mphlfo(QWidget* parent)
   mode = 0;
   d_tri = 4.0 * freq / (double)synthdata->rate;
   d_saw = 0.5 * d_tri;
-  configDialog->addSlider(tr("Frequency (Hz)"), freq, 0.01, 20, true);
-  configDialog->addSlider(tr("Gain Saw"), gain_saw, 0.01, 5, true);
-  configDialog->addSlider(tr("Gain Triangle"), gain_tri, 0.01, 5, true);
+  configDialog->addSlider(tr("&Frequency (Hz)"), freq, 0.01, 20, true);
+  configDialog->addSlider(tr("Gain &Saw"), gain_saw, 0.01, 5, true);
+  configDialog->addSlider(tr("Gain &Triangle"), gain_tri, 0.01, 5, true);
   QStringList modeNames;
   modeNames << tr("Saw Up") << tr("Saw Down")
       << tr("Saw Up (0..135) / Saw Down (180..315)");
-  configDialog->addComboBox(tr("Saw Mode"), mode, modeNames);
+  configDialog->addComboBox(tr("Saw &Mode"), mode, modeNames);
 }
 
 void M_mphlfo::generateCycle() {

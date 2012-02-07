@@ -46,7 +46,7 @@ M_quantizer::M_quantizer(QWidget* parent)
     tr("Major 6 Chord") <<
     tr("Minor 6 Chord") <<
     tr("Pentatonic");
-  configDialog->addComboBox(tr("Quantization"), quantum, quantumNames);
+  configDialog->addComboBox(tr("&Quantization"), quantum, quantumNames);
 
   for (l1 = 0; l1 < 12; l1++) {
     lut[0][l1] = l1;

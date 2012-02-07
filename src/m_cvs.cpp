@@ -34,9 +34,9 @@ M_cvs::M_cvs(QWidget* parent)
   for (l1 = 0; l1 < MODULE_CVS_CV_COUNT; l1++) {
     cv[l1] = 0;
     cv_fine[l1] = 0;
-    qs.sprintf("CV %d", l1);
+    qs.sprintf("&CV %d", l1);
     configDialog->addSlider(qs, cv[l1], 0, 5);
-    qs.sprintf("CV %d Fine", l1); 
+    qs.sprintf("CV %d &Fine", l1); 
     configDialog->addSlider(qs, cv_fine[l1], -0.5, 0.5);
   }
 }

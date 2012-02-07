@@ -36,11 +36,11 @@ M_vca::M_vca(bool p_expMode, QWidget* parent)
   cv.out_off = 115;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider(tr("Gain"), gain1, 0, 1);
-  configDialog->addSlider(tr("Gain 1"), gain2, 0, 1);
-  configDialog->addSlider(tr("In 0"), in1, 0, 2);
-  configDialog->addSlider(tr("In 1"), in2, 0, 2);
-  configDialog->addSlider(tr("Output level"), out, 0, 2);
+  configDialog->addSlider(tr("&Gain"), gain1, 0, 1);
+  configDialog->addSlider(tr("G&ain 1"), gain2, 0, 1);
+  configDialog->addSlider(tr("In &0"), in1, 0, 2);
+  configDialog->addSlider(tr("In &1"), in2, 0, 2);
+  configDialog->addSlider(tr("&Output level"), out, 0, 2);
 }
 
 void M_vca::generateCycle() {

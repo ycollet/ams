@@ -880,17 +880,17 @@
     </message>
     <message>
         <location filename="../m_mix.cpp" line="32"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_mix.cpp" line="38"/>
+        <source>Volume &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_mix.cpp" line="34"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_mix.cpp" line="38"/>
-        <source>Volume %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -908,17 +908,17 @@
     </message>
     <message>
         <location filename="../m_mphlfo.cpp" line="44"/>
-        <source>Frequency (Hz)</source>
+        <source>&amp;Frequency (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_mphlfo.cpp" line="45"/>
-        <source>Gain Saw</source>
+        <source>Gain &amp;Saw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_mphlfo.cpp" line="46"/>
-        <source>Gain Triangle</source>
+        <source>Gain &amp;Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -938,7 +938,7 @@
     </message>
     <message>
         <location filename="../m_mphlfo.cpp" line="50"/>
-        <source>Saw Mode</source>
+        <source>Saw &amp;Mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -966,12 +966,12 @@
     </message>
     <message>
         <location filename="../m_noise.cpp" line="41"/>
-        <source>Random Rate</source>
+        <source>Random &amp;Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_noise.cpp" line="42"/>
-        <source>Random Level</source>
+        <source>Random &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -999,17 +999,17 @@
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="45"/>
-        <source>Noise Type</source>
+        <source>&amp;Noise Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="46"/>
-        <source>Random Rate</source>
+        <source>Random &amp;Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="47"/>
-        <source>Random Level</source>
+        <source>Random &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1169,7 +1169,7 @@
     </message>
     <message>
         <location filename="../m_quantizer.cpp" line="49"/>
-        <source>Quantization</source>
+        <source>&amp;Quantization</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1197,7 +1197,7 @@
     </message>
     <message>
         <location filename="../m_ringmod.cpp" line="34"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1230,42 +1230,42 @@
     </message>
     <message>
         <location filename="../m_scmcv.cpp" line="59"/>
-        <source>Scale Offset</source>
+        <source>&amp;Scale Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scmcv.cpp" line="60"/>
-        <source>Note Offset</source>
+        <source>&amp;Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scmcv.cpp" line="61"/>
-        <source>Pitch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_scmcv.cpp" line="63"/>
-        <location filename="../m_scmcv.cpp" line="172"/>
-        <source>   Scale: </source>
+        <source>&amp;Pitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scmcv.cpp" line="65"/>
-        <source>Load Scale</source>
+        <source>&amp;Load Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="152"/>
+        <location filename="../m_scmcv.cpp" line="63"/>
+        <location filename="../m_scmcv.cpp" line="171"/>
+        <source>   Scale: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_scmcv.cpp" line="151"/>
         <source>Load Scala</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="153"/>
+        <location filename="../m_scmcv.cpp" line="152"/>
         <source>Scala files (*.scl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="168"/>
+        <location filename="../m_scmcv.cpp" line="167"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1274,7 +1274,6 @@
     <name>M_scope</name>
     <message>
         <location filename="../m_scope.cpp" line="28"/>
-        <location filename="../m_scope.cpp" line="49"/>
         <source>Scope</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1289,18 +1288,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../m_scope.cpp" line="49"/>
+        <source>&amp;Scope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../m_scope.cpp" line="55"/>
-        <source>Time Scale</source>
+        <source>T&amp;ime Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="57"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="58"/>
-        <source>Trigger</source>
+        <source>&amp;Trigger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_scope.cpp" line="64"/>
+        <source>&amp;Refresh Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_scope.cpp" line="70"/>
+        <source>Trigger &amp;Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_scope.cpp" line="72"/>
+        <source>Trigger &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1319,11 +1338,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scope.cpp" line="64"/>
-        <source>Refresh Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../m_scope.cpp" line="69"/>
         <source>Rising</source>
         <translation type="unfinished"></translation>
@@ -1331,16 +1345,6 @@
     <message>
         <location filename="../m_scope.cpp" line="69"/>
         <source>Falling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_scope.cpp" line="70"/>
-        <source>Trigger Edge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_scope.cpp" line="72"/>
-        <source>Trigger Level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1378,22 +1382,22 @@
     </message>
     <message>
         <location filename="../m_scquantizer.cpp" line="43"/>
-        <source>Note Offset</source>
+        <source>&amp;Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_scquantizer.cpp" line="46"/>
-        <location filename="../m_scquantizer.cpp" line="199"/>
+        <location filename="../m_scquantizer.cpp" line="198"/>
         <source>   Scale: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scquantizer.cpp" line="180"/>
+        <location filename="../m_scquantizer.cpp" line="179"/>
         <source>Load Scala</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scquantizer.cpp" line="195"/>
+        <location filename="../m_scquantizer.cpp" line="194"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1428,7 +1432,7 @@
     </message>
     <message>
         <location filename="../m_seq.cpp" line="42"/>
-        <source>Pitch Offset / Tempo / Gate Time</source>
+        <source>Pitch offset/&amp;Tempo/Gate time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1461,7 +1465,7 @@
     </message>
     <message>
         <location filename="../m_sh.cpp" line="33"/>
-        <source>Trigger Level</source>
+        <source>&amp;Trigger Level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1484,12 +1488,12 @@
     </message>
     <message>
         <location filename="../m_slew.cpp" line="33"/>
-        <source>Time Up</source>
+        <source>Time &amp;Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_slew.cpp" line="34"/>
-        <source>Time Down</source>
+        <source>Time &amp;Down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1648,32 +1652,32 @@
     </message>
     <message>
         <location filename="../m_stereomix.cpp" line="117"/>
-        <source>Master Volume</source>
+        <source>M&amp;aster Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_stereomix.cpp" line="125"/>
+        <source>&amp;Mute %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_stereomix.cpp" line="128"/>
+        <source>&amp;Solo %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_stereomix.cpp" line="131"/>
+        <source>&amp;Volume %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_stereomix.cpp" line="137"/>
+        <source>&amp;Pan %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_stereomix.cpp" line="120"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_stereomix.cpp" line="125"/>
-        <source>Mute %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_stereomix.cpp" line="128"/>
-        <source>Solo %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_stereomix.cpp" line="131"/>
-        <source>Volume %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_stereomix.cpp" line="137"/>
-        <source>Pan %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1696,19 +1700,16 @@
     </message>
     <message>
         <location filename="../m_vca.cpp" line="33"/>
-        <location filename="../m_vca.cpp" line="40"/>
         <source>Gain 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="34"/>
-        <location filename="../m_vca.cpp" line="41"/>
         <source>In 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="35"/>
-        <location filename="../m_vca.cpp" line="42"/>
         <source>In 1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1719,12 +1720,27 @@
     </message>
     <message>
         <location filename="../m_vca.cpp" line="39"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vca.cpp" line="40"/>
+        <source>G&amp;ain 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vca.cpp" line="41"/>
+        <source>In &amp;0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vca.cpp" line="42"/>
+        <source>In &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="43"/>
-        <source>Output level</source>
+        <source>&amp;Output level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1777,52 +1793,52 @@
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="47"/>
-        <source>Attack Offset</source>
+        <source>&amp;Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="48"/>
-        <source>Decay Offset</source>
+        <source>&amp;Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="49"/>
-        <source>Sustain Offset</source>
+        <source>&amp;Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="50"/>
-        <source>Ratio Offset</source>
+        <source>&amp;Ratio Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="51"/>
-        <source>Release Offset</source>
+        <source>R&amp;elease Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="52"/>
-        <source>Attack Gain</source>
+        <source>A&amp;ttack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="53"/>
-        <source>Decay Gain</source>
+        <source>D&amp;ecay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="54"/>
-        <source>Sustain Gain</source>
+        <source>S&amp;ustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="55"/>
-        <source>Ratio Gain</source>
+        <source>Rat&amp;io Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="56"/>
-        <source>Release Gain</source>
+        <source>Re&amp;lease Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1870,47 +1886,52 @@
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="46"/>
-        <source>Attack Offset</source>
+        <source>&amp;Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="47"/>
-        <source>Decay Offset</source>
+        <source>&amp;Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="48"/>
-        <source>Sustain Offset</source>
+        <source>&amp;Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="49"/>
-        <source>Release Offset</source>
+        <source>&amp;Release Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="50"/>
-        <source>Attack Gain</source>
+        <source>A&amp;ttack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="51"/>
-        <source>Decay Gain</source>
+        <source>D&amp;ecay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="52"/>
-        <source>Sustain Gain</source>
+        <source>S&amp;ustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="53"/>
-        <source>Release Gain</source>
+        <source>Re&amp;lease Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="58"/>
-        <source>Time Scale</source>
+        <source>T&amp;ime Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vcenv.cpp" line="62"/>
+        <source>De&amp;cay/Release mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1921,11 +1942,6 @@
     <message>
         <location filename="../m_vcenv.cpp" line="61"/>
         <source>Exponential</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vcenv.cpp" line="62"/>
-        <source>Decay/Release Mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1973,42 +1989,42 @@
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="45"/>
-        <source>Attack Offset</source>
+        <source>&amp;Attack Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="46"/>
-        <source>Decay Offset</source>
+        <source>&amp;Decay Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="47"/>
-        <source>Sustain Offset</source>
+        <source>&amp;Sustain Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="48"/>
-        <source>Release Offset</source>
+        <source>&amp;Release Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="49"/>
-        <source>Attack Gain</source>
+        <source>A&amp;ttack Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="50"/>
-        <source>Decay Gain</source>
+        <source>D&amp;ecay Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="51"/>
-        <source>Sustain Gain</source>
+        <source>S&amp;ustain Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="52"/>
-        <source>Release Gain</source>
+        <source>Re&amp;lease Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2041,7 +2057,6 @@
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="38"/>
-        <location filename="../m_vcf.cpp" line="56"/>
         <source>Resonance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2092,32 +2107,37 @@
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="51"/>
-        <source>VCF Type</source>
+        <source>&amp;VCF type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="52"/>
-        <source>Input Gain</source>
+        <source>&amp;Input gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="53"/>
-        <source>Frequency</source>
+        <source>&amp;Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="54"/>
-        <source>Exp. FM Gain</source>
+        <source>&amp;Exp. FM gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="55"/>
-        <source>Lin. FM Gain</source>
+        <source>&amp;Lin. FM gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vcf.cpp" line="56"/>
+        <source>6Resonance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="57"/>
-        <source>Resonance Gain</source>
+        <source>Resonance &amp;gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2145,7 +2165,6 @@
     </message>
     <message>
         <location filename="../m_vco.cpp" line="40"/>
-        <location filename="../m_vco.cpp" line="57"/>
         <source>PW</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2177,47 +2196,67 @@
     </message>
     <message>
         <location filename="../m_vco.cpp" line="50"/>
-        <source>Frequency</source>
+        <source>&amp;Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="51"/>
-        <source>Octave</source>
+        <source>&amp;Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="52"/>
-        <source>Tune</source>
+        <source>&amp;Tune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="53"/>
-        <source>Harmonic</source>
+        <source>&amp;Harmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="54"/>
-        <source>Subharmonic</source>
+        <source>&amp;Subharmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="56"/>
-        <source>Pulse Width / Phase</source>
+        <source>&amp;Pulse width/Phase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vco.cpp" line="57"/>
+        <source>P&amp;W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="58"/>
-        <source>PW Gain</source>
+        <source>PW &amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="59"/>
-        <source>Phi0</source>
+        <source>&amp;Phi0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="61"/>
-        <source>Modulation / Aux Waveform</source>
+        <source>&amp;Modulation/Aux Waveform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vco.cpp" line="66"/>
+        <source>&amp;Aux Wave Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vco.cpp" line="67"/>
+        <source>&amp;Exp. FM Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vco.cpp" line="68"/>
+        <source>&amp;Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2228,21 +2267,6 @@
     <message>
         <location filename="../m_vco.cpp" line="65"/>
         <source>Saw 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vco.cpp" line="66"/>
-        <source>Aux Wave Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vco.cpp" line="67"/>
-        <source>Exp. FM Gain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vco.cpp" line="68"/>
-        <source>Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2270,7 +2294,6 @@
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="37"/>
-        <location filename="../m_vco2.cpp" line="65"/>
         <source>PW</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2281,7 +2304,7 @@
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="49"/>
-        <source>Frequency</source>
+        <source>&amp;Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2321,57 +2344,62 @@
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="58"/>
-        <source>Wave Form</source>
+        <source>&amp;Wave Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="59"/>
-        <source>Octave</source>
+        <source>&amp;Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="60"/>
-        <source>Tune</source>
+        <source>&amp;Tune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="61"/>
-        <source>Harmonic</source>
+        <source>&amp;Harmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="62"/>
-        <source>Subharmonic</source>
+        <source>&amp;Subharmonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="64"/>
-        <source>Pulse Width / Phase</source>
+        <source>&amp;Pulse width/Phase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vco2.cpp" line="65"/>
+        <source>P&amp;W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="66"/>
-        <source>PW Gain</source>
+        <source>PW 6Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="67"/>
-        <source>Phi0</source>
+        <source>&amp;Phi0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="70"/>
-        <source>Modulation / Aux Waveform</source>
+        <source>&amp;Modulation/Aux Waveform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="71"/>
-        <source>Exp. FM Gain</source>
+        <source>&amp;Exp. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="73"/>
-        <source>Lin. FM Gain</source>
+        <source>&amp;Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2429,84 +2457,84 @@
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="50"/>
-        <source>Tune / Modulation</source>
+        <source>&amp;Tune/Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="51"/>
-        <source>Octave</source>
+        <source>&amp;Octave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="52"/>
-        <source>Tune</source>
+        <source>T&amp;une</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="53"/>
-        <source>Exp. FM Gain</source>
+        <source>&amp;Exp. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="54"/>
-        <source>Lin. FM Gain</source>
+        <source>&amp;Lin. FM Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="57"/>
-        <source>Mixer</source>
+        <source>&amp;Mixer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="59"/>
         <location filename="../m_vcorgan.cpp" line="66"/>
         <location filename="../m_vcorgan.cpp" line="68"/>
-        <source>Volume %1</source>
+        <source>Volume &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="63"/>
-        <source>Mixer 0-3</source>
+        <source>M&amp;ixer 0-3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="64"/>
-        <source>Mixer 4-7</source>
+        <source>Mi&amp;xer 4-7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="73"/>
-        <source>Osc %1</source>
+        <source>&amp;Osc %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="75"/>
-        <source>Wave Form %1</source>
+        <source>&amp;Wave Form %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="77"/>
-        <source>Octave %1</source>
+        <source>O&amp;ctave %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="79"/>
-        <source>Tune %1</source>
+        <source>T&amp;une %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="81"/>
-        <source>Harmonic %1</source>
+        <source>&amp;Harmonic %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="83"/>
-        <source>Subharmonic %1</source>
+        <source>&amp;Subharmonic %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="85"/>
-        <source>Phi0 %1</source>
+        <source>&amp;Phi0 %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2529,12 +2557,12 @@
     </message>
     <message>
         <location filename="../m_vcpanning.cpp" line="65"/>
-        <source>Pan Offset</source>
+        <source>Pan &amp;offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_vcpanning.cpp" line="66"/>
-        <source>Pan Gain</source>
+        <source>Pan &amp;gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2574,7 +2602,7 @@
     </message>
     <message>
         <location filename="../m_vcpanning.cpp" line="76"/>
-        <source>Panning Mode</source>
+        <source>Panning &amp;mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2617,7 +2645,7 @@
     </message>
     <message>
         <location filename="../m_vcswitch.cpp" line="36"/>
-        <source>Switch Level</source>
+        <source>&amp;Switch level</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2640,7 +2668,7 @@
     </message>
     <message>
         <location filename="../m_vquant.cpp" line="32"/>
-        <source>Gain</source>
+        <source>&amp;Gain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

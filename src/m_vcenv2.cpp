@@ -42,14 +42,14 @@ M_vcenv2::M_vcenv2(QWidget* parent)
   dGain = 1.0;
   sGain = 1.0;
   rGain = 1.0;
-  configDialog->addSlider(tr("Attack Offset"), a0, -8, 8);
-  configDialog->addSlider(tr("Decay Offset"), d0, -8, 8);
-  configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);
-  configDialog->addSlider(tr("Release Offset"), r0, -8, 8);
-  configDialog->addSlider(tr("Attack Gain"), aGain, -8, 8);
-  configDialog->addSlider(tr("Decay Gain"), dGain, -8, 8);
-  configDialog->addSlider(tr("Sustain Gain"), sGain, 0, 1);
-  configDialog->addSlider(tr("Release Gain"), rGain, -8, 8);
+  configDialog->addSlider(tr("&Attack Offset"), a0, -8, 8);
+  configDialog->addSlider(tr("&Decay Offset"), d0, -8, 8);
+  configDialog->addSlider(tr("&Sustain Offset"), s0, 0, 1);
+  configDialog->addSlider(tr("&Release Offset"), r0, -8, 8);
+  configDialog->addSlider(tr("A&ttack Gain"), aGain, -8, 8);
+  configDialog->addSlider(tr("D&ecay Gain"), dGain, -8, 8);
+  configDialog->addSlider(tr("S&ustain Gain"), sGain, 0, 1);
+  configDialog->addSlider(tr("Re&lease Gain"), rGain, -8, 8);
 }
 
 void M_vcenv2::generateCycle() {

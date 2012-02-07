@@ -30,8 +30,8 @@ M_slew::M_slew(QWidget* parent)
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
   timeUp = 0.5;
   timeDown = 0.5;
-  configDialog->addSlider(tr("Time Up"), timeUp, 0, 10);
-  configDialog->addSlider(tr("Time Down"), timeDown, 0, 10);
+  configDialog->addSlider(tr("Time &Up"), timeUp, 0, 10);
+  configDialog->addSlider(tr("Time &Down"), timeDown, 0, 10);
 }
 
 void M_slew::generateCycle() {

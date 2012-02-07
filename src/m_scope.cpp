@@ -46,34 +46,34 @@ M_scope::M_scope(QWidget* parent)
   zoom = 1;
   timeScale = 100;
   configDialog->setAddStretch(-1);
-  QVBoxLayout *scopeTab = configDialog->addVBoxTab(tr("Scope"));
+  QVBoxLayout *scopeTab = configDialog->addVBoxTab(tr("&Scope"));
   configDialog->setAddStretch(-1);
   //  scopeTab->setMinimumHeight(200);
   configDialog->addScopeScreen(timeScale, mode, edge, triggerMode, 
                                triggerThrs, zoom, scopeTab);
 
-  configDialog->addSlider(tr("Time Scale"), timeScale, 10, 1000, false,
+  configDialog->addSlider(tr("T&ime Scale"), timeScale, 10, 1000, false,
           scopeTab);
-  configDialog->addSlider(tr("Gain"), zoom, 0.1, 10, false, scopeTab);
-  QVBoxLayout *triggerTab = configDialog->addVBoxTab(tr("Trigger"));
+  configDialog->addSlider(tr("&Gain"), zoom, 0.1, 10, false, scopeTab);
+  QVBoxLayout *triggerTab = configDialog->addVBoxTab(tr("&Trigger"));
   configDialog->setAddStretch(1);
   hbox = configDialog->addHBox(triggerTab);
   configDialog->setAddStretch(0);
   QStringList triggerModeNames;
   triggerModeNames << tr("Continuous") << tr("Triggered") << tr("Single");
-  configDialog->addComboBox(tr("Refresh Mode"), triggerMode,
+  configDialog->addComboBox(tr("&Refresh Mode"), triggerMode,
           triggerModeNames, hbox);
   QObject::connect(configDialog->midiComboBoxList.at(0)->comboBox,
           SIGNAL(highlighted(int)), this, SLOT(updateTriggerMode(int)));
   QStringList edgeNames;
   edgeNames << tr("Rising") << tr("Falling");
-  configDialog->addComboBox(tr("Trigger Edge"), edge, edgeNames, hbox);
+  configDialog->addComboBox(tr("Trigger &Edge"), edge, edgeNames, hbox);
   configDialog->setAddStretch(1);
-  configDialog->addSlider(tr("Trigger Level"), triggerThrs, -1, 1,
+  configDialog->addSlider(tr("Trigger &Level"), triggerThrs, -1, 1,
           false, triggerTab);
   //!!  configDialog->addPushButton("Trigger", (void (Module::*)())&M_scope::singleShot, triggerTab);
-  //  QObject::connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
-  //                   configDialog->scopeScreenList.at(0), SLOT(singleShot()));
+  //  connect(configDialog->midiPushButtonList.at(0), SIGNAL(clicked()),
+  //                  configDialog->scopeScreenList.at(0), SLOT(singleShot()));
 
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));

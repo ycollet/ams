@@ -38,8 +38,8 @@ M_noise::M_noise(QWidget* parent)
   port_pink = new Port(tr("Pink"), PORT_OUT, 1, this);          
   port_random = new Port(tr("Random"), PORT_OUT, 2, this);          
 
-  configDialog->addSlider(tr("Random Rate"), rate, 0, 10);
-  configDialog->addSlider(tr("Random Level"), level, 0, 1);
+  configDialog->addSlider(tr("Random &Rate"), rate, 0, 10);
+  configDialog->addSlider(tr("Random &Level"), level, 0, 1);
   r = 0;
   for (l2 = 0; l2 < 3; ++l2) {
     buf[l2] = 0;

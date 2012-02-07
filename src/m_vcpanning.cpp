@@ -62,8 +62,8 @@ M_vcpanning::M_vcpanning(QWidget* parent)
   }  
   panGain = 0.0;
   panOffset = 0.0;
-  configDialog->addSlider(tr("Pan Offset"), panOffset, -1, 1);
-  configDialog->addSlider(tr("Pan Gain"), panGain, 0, 2);
+  configDialog->addSlider(tr("Pan &offset"), panOffset, -1, 1);
+  configDialog->addSlider(tr("Pan &gain"), panGain, 0, 2);
   QStringList panModeNames;
   panModeNames <<
     tr("VC control") <<
@@ -73,7 +73,7 @@ M_vcpanning::M_vcpanning(QWidget* parent)
     tr("Sort by pitch, Low <--> High") <<
     tr("Sort by pitch, High <--> Low") <<
     tr("Mono");
-  configDialog->addComboBox(tr("Panning Mode"), panMode, panModeNames);
+  configDialog->addComboBox(tr("Panning &mode"), panMode, panModeNames);
 }
 
 void M_vcpanning::generateCycle() {

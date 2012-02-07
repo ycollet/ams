@@ -40,7 +40,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);          
   base = 0;
   lastbase = 12;
-  configDialog->addIntSlider(tr("Note Offset"), base, -36, 36);
+  configDialog->addIntSlider(tr("&Note Offset"), base, -36, 36);
 
   sclname = "No_Scale_loaded";
   configDialog->addLabel(tr("   Scale: ") + sclname);
@@ -58,8 +58,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   scale_lut_length = 12;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {
-    qWarning("\nYou did not set the environment variable SCALA_PATH.");
-    qWarning("Assuming SCALA_PATH=/usr/share/scala");
+    qWarning("\nSCALA_PATH not set, assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;

@@ -48,13 +48,13 @@ b_noise = 19.1919191919191919191919191919191919191919;
   vcfTypeNames << tr("Notch");
   vcfTypeNames << tr("24 dB Lowpass I");
   vcfTypeNames << tr("24 dB Lowpass II");
-  configDialog->addComboBox(tr("VCF Type"), vcfType, vcfTypeNames);
-  configDialog->addSlider(tr("Input Gain"), gain, 0, 10);
-  configDialog->addSlider(tr("Frequency"), freq, 0, 10);
-  configDialog->addSlider(tr("Exp. FM Gain"), vcfExpFMGain, 0, 10);
-  configDialog->addSlider(tr("Lin. FM Gain"), vcfLinFMGain, 0, 10);
-  configDialog->addSlider(tr("Resonance"), resonance, 0.01, 1);
-  configDialog->addSlider(tr("Resonance Gain"), resonanceGain, 0, 1);
+  configDialog->addComboBox(tr("&VCF type"), vcfType, vcfTypeNames);
+  configDialog->addSlider(tr("&Input gain"), gain, 0, 10);
+  configDialog->addSlider(tr("&Frequency"), freq, 0, 10);
+  configDialog->addSlider(tr("&Exp. FM gain"), vcfExpFMGain, 0, 10);
+  configDialog->addSlider(tr("&Lin. FM gain"), vcfLinFMGain, 0, 10);
+  configDialog->addSlider(tr("6Resonance"), resonance, 0.01, 1);
+  configDialog->addSlider(tr("Resonance &gain"), resonanceGain, 0, 1);
 }
 
 void M_vcf::initBuf()

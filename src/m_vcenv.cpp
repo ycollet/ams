@@ -43,23 +43,23 @@ M_vcenv::M_vcenv(QWidget* parent)
   rGain = 0.0;
   timeScale = 1;
   decayReleaseMode = 1;
-  configDialog->addSlider(tr("Attack Offset"), a0, 0, 1);
-  configDialog->addSlider(tr("Decay Offset"), d0, 0, 1);
-  configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);
-  configDialog->addSlider(tr("Release Offset"), r0, 0, 1);
-  configDialog->addSlider(tr("Attack Gain"), aGain, -1, 1);
-  configDialog->addSlider(tr("Decay Gain"), dGain, -1, 1);
-  configDialog->addSlider(tr("Sustain Gain"), sGain, -1, 1);
-  configDialog->addSlider(tr("Release Gain"), rGain, -1, 1);
+  configDialog->addSlider(tr("&Attack Offset"), a0, 0, 1);
+  configDialog->addSlider(tr("&Decay Offset"), d0, 0, 1);
+  configDialog->addSlider(tr("&Sustain Offset"), s0, 0, 1);
+  configDialog->addSlider(tr("&Release Offset"), r0, 0, 1);
+  configDialog->addSlider(tr("A&ttack Gain"), aGain, -1, 1);
+  configDialog->addSlider(tr("D&ecay Gain"), dGain, -1, 1);
+  configDialog->addSlider(tr("S&ustain Gain"), sGain, -1, 1);
+  configDialog->addSlider(tr("Re&lease Gain"), rGain, -1, 1);
   QStringList timeScaleNames;
   timeScaleNames << " 0.1 s";
   timeScaleNames << " 1.0 s";
   timeScaleNames << "10.0 s";
-  configDialog->addComboBox(tr("Time Scale"), timeScale, timeScaleNames);
+  configDialog->addComboBox(tr("T&ime Scale"), timeScale, timeScaleNames);
   QStringList decayReleaseModeNames;
   decayReleaseModeNames << tr("Linear");
   decayReleaseModeNames << tr("Exponential");
-  configDialog->addComboBox(tr("Decay/Release Mode"), decayReleaseMode,
+  configDialog->addComboBox(tr("De&cay/Release mode"), decayReleaseMode,
           decayReleaseModeNames);
 }
 

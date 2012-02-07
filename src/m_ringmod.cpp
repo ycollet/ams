@@ -31,7 +31,7 @@ M_ringmod::M_ringmod(QWidget* parent)
   cv.out_off = 70;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
 
-  configDialog->addSlider(tr("Gain"), gain, 0, 5);
+  configDialog->addSlider(tr("&Gain"), gain, 0, 5);
 }
 
 int M_ringmod::setGain(float p_gain) {
@@ -49,8 +49,8 @@ void M_ringmod::generateCycle() {
   int l1;
   unsigned int l2;
 
-    vcoData1 = port_M_vco1->getinputdata ();
-    vcoData2 = port_M_vco2->getinputdata ();
+    vcoData1 = port_M_vco1->getinputdata();
+    vcoData2 = port_M_vco2->getinputdata();
 
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {

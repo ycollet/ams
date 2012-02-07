@@ -44,16 +44,16 @@ M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
   sGain = 1.0;
   rlGain = 1.0;
   rGain = 1.0;
-  configDialog->addSlider(tr("Attack Offset"), a0, -8, 8);
-  configDialog->addSlider(tr("Decay Offset"), d0, -8, 8);
-  configDialog->addSlider(tr("Sustain Offset"), s0, 0, 1);
-  configDialog->addSlider(tr("Ratio Offset"), r0, 0, 1);
-  configDialog->addSlider(tr("Release Offset"), rl0, -8, 8);
-  configDialog->addSlider(tr("Attack Gain"), aGain, -8, 8);
-  configDialog->addSlider(tr("Decay Gain"), dGain, -8, 8);
-  configDialog->addSlider(tr("Sustain Gain"), sGain, 0, 1);
-  configDialog->addSlider(tr("Ratio Gain"), rGain, 0, 1);
-  configDialog->addSlider(tr("Release Gain"), rlGain, -8, 8);
+  configDialog->addSlider(tr("&Attack Offset"), a0, -8, 8);
+  configDialog->addSlider(tr("&Decay Offset"), d0, -8, 8);
+  configDialog->addSlider(tr("&Sustain Offset"), s0, 0, 1);
+  configDialog->addSlider(tr("&Ratio Offset"), r0, 0, 1);
+  configDialog->addSlider(tr("R&elease Offset"), rl0, -8, 8);
+  configDialog->addSlider(tr("A&ttack Gain"), aGain, -8, 8);
+  configDialog->addSlider(tr("D&ecay Gain"), dGain, -8, 8);
+  configDialog->addSlider(tr("S&ustain Gain"), sGain, 0, 1);
+  configDialog->addSlider(tr("Rat&io Gain"), rGain, 0, 1);
+  configDialog->addSlider(tr("Re&lease Gain"), rlGain, -8, 8);
 }
 
 void M_vcdoubledecay::generateCycle() {

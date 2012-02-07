@@ -29,7 +29,7 @@ M_vquant::M_vquant(QWidget* parent)
   cv.out_off = 55;
   port_quant = new Port(tr("Out"), PORT_OUT, 0, this);          
   gain = 1.0;
-  configDialog->addSlider(tr("Gain"), gain, 0, 10);
+  configDialog->addSlider(tr("&Gain"), gain, 0, 10);
 }
 
 void M_vquant::generateCycle() {

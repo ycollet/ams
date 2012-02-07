@@ -42,9 +42,9 @@ M_noise2::M_noise2(QWidget* parent)
 
   QStringList noiseNames;
   noiseNames << tr("White") << tr("Random") << tr("Pink");
-  configDialog->addComboBox(tr("Noise Type"), NoiseType, noiseNames);
-  configDialog->addSlider(tr("Random Rate"), rate, 0, 10);
-  configDialog->addSlider(tr("Random Level"), level, 0, 1);
+  configDialog->addComboBox(tr("&Noise Type"), NoiseType, noiseNames);
+  configDialog->addSlider(tr("Random &Rate"), rate, 0, 10);
+  configDialog->addSlider(tr("Random &Level"), level, 0, 1);
   r = 0;
   for (l2 = 0; l2 < 3; ++l2) {
     buf[l2] = 0;

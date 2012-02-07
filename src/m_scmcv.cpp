@@ -56,19 +56,18 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
   configDialog->addComboBox(" ", channel, channelNames);
-  configDialog->addIntSlider(tr("Scale Offset"), base, -60, 60);
-  configDialog->addIntSlider(tr("Note Offset"), pitch, -36, 36);
-  configDialog->addSlider(tr("Pitch"), pitchbend, -1, 1);
+  configDialog->addIntSlider(tr("&Scale Offset"), base, -60, 60);
+  configDialog->addIntSlider(tr("&Note Offset"), pitch, -36, 36);
+  configDialog->addSlider(tr("&Pitch"), pitchbend, -1, 1);
   sclname = "No_Scale_loaded";
   configDialog->addLabel(tr("   Scale: ") + sclname);
   configDialog->addLabel("   ");
-  MidiControllableDoOnce * doO = configDialog->addPushButton(tr("Load Scale"));
+  MidiControllableDoOnce * doO = configDialog->addPushButton(tr("&Load Scale"));
   QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser())); 
   fileDialog = NULL;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {
-    qWarning("\nYou did not set the environment variable SCALA_PATH.");
-    qWarning("Assuming SCALA_PATH=/usr/share/scala");
+    qWarning("\nSCALA_PATH not set, assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";   
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;
