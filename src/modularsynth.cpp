@@ -74,6 +74,7 @@
 #include "m_function.h"
 #include "m_vcdoubledecay.h"
 #include "m_mphlfo.h"
+#include "m_v8sequencer.h"
 #include "config.h"
 
 static const char COLOREXT[] = ".acs";
@@ -592,6 +593,13 @@ void ModularSynth::newM_seq_24() {
 void ModularSynth::newM_seq_32() {
 
     newM_seq(32);
+}
+
+void ModularSynth::newM_v8sequencer()
+{
+    M_v8sequencer *m = new M_v8sequencer(this);
+    if (m != NULL)
+        initNewModule(m);
 }
 
 void ModularSynth::newM_vcorgan(int oscCount) {
@@ -1462,6 +1470,9 @@ void ModularSynth::load(QTextStream& ts)
               break;
           case M_type_spectrum:
               newM_spectrum(); 
+              break;
+          case M_type_v8sequencer:
+              newM_v8sequencer(); 
               break;
       }
 

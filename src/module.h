@@ -68,7 +68,8 @@ enum M_typeEnum {
   M_type_ad,
   M_type_mphlfo,
   M_type_noise2,
-  M_type_vco2
+  M_type_vco2,
+  M_type_v8sequencer
 };
 
 /*forward declarations*/

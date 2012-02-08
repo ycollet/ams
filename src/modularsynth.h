@@ -152,6 +152,7 @@ public:
     void newM_seq_16();
     void newM_seq_24();
     void newM_seq_32();
+    void newM_v8sequencer();
     void newM_env();
     void newM_vcenv();
     void newM_vcenv2();

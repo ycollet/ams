@@ -1,3 +1,8 @@
+2012-02-08 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.cpp, src/modularsynth.*, src/module.h,
+	src/m_v8sequencer.h, m_v8sequencer.cpp: Add new V8 Sequencer 
+	module by Bill Yerazunis.
+
 2012-02-07 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp, src/modularsynth.*, src/prefwidget.*: Add
 	preferences option for module position grid.

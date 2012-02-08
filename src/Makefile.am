@@ -41,6 +41,7 @@ nodist_ams_SOURCES = \
 	m_slew_moc.cpp \
 	m_spectrum_moc.cpp \
 	m_stereomix_moc.cpp \
+        m_v8sequencer_moc.cpp \
 	m_vca_moc.cpp \
 	m_vcdoubledecay_moc.cpp \
 	m_vcenv_moc.cpp \
@@ -114,6 +115,7 @@ ams_SOURCES = \
 	m_slew.cpp \
 	m_spectrum.cpp \
 	m_stereomix.cpp \
+        m_v8sequencer.cpp \
 	m_vca.cpp \
 	m_vcdoubledecay.cpp \
 	m_vcenv.cpp \
@@ -191,6 +193,7 @@ noinst_HEADERS = \
 	m_slew.h \
 	m_spectrum.h \
 	m_stereomix.h \
+        m_v8sequencer.h \
 	m_vca.h \
 	m_vcdoubledecay.h \
 	m_vcenv.h \

@@ -131,6 +131,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModulePopup->addAction(tr("SEQ 16"), modularSynth, SLOT(newM_seq_16()));
   newModulePopup->addAction(tr("SEQ 24"), modularSynth, SLOT(newM_seq_24()));
   newModulePopup->addAction(tr("SEQ 32"), modularSynth, SLOT(newM_seq_32()));
+  newModulePopup->addAction(tr("V8 Sequencer"), modularSynth,
+          SLOT(newM_v8sequencer()));
   newModulePopup->addAction(tr("Slew Limiter"), modularSynth, SLOT(newM_slew()));
   newModulePopup->addAction(tr("Spectrum View"), modularSynth, SLOT(newM_spectrum()));
   newModulePopup->addAction(tr("Stereo Mixer 2"), modularSynth, SLOT(newM_stereomix_2()));
