@@ -1,19 +1,44 @@
-ams-2.0.2 (201?-??-??)
+ams-2.1.0 (2012-??-??)
 
   Fixed Bugs
-    o linker error "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'"
+    o Linker error "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'"
       on Fedora 13.
-    o crash on using looped signal paths
-    o armel compile error (debian #570848)
+    o Crash on using looped signal paths
+    o Armel compile error (debian #570848)
     o Prevent crash if jack handle is NULL (lp #553366)
+    o Fix preferences dialog to show current color setup
+    o Fix broken Yes/No/Cancel response on program exit
+    o Fix memory leak in preferences widget
+    o Fix triggered reset of LFO saw signals, patch provided by Bill
+      Yerazunis
+    o Reorganized commandline options for input and output to
+      be valid for Alsa and JACK
+    o 
+
 
   New Features
     o SIGUSR1 handler added to enable LADI session handling on
       application level 1.
     o Basic support for libclalsadrv API version 2.0.0
+    o Improved port selection handling, patch provided by Sebastien
+      Alaiwan
+    o Support for JACK session handling
+    o Rewritten preferences dialog
+    o New option for saving window geometry (session handling)
+    o New option hiding recently used files menu (keep secrets)
+    o Support for libzita-alsa-pcmi as an alternative for libclalsadrv
+    o Add keyboard shortcuts for module configuration dialogs
+    o New option for module position grid (snap to grid)
+    o New V8 Sequencer module, provided by Bill Yerazunis
+    o 
 
   General Changes
-    o
+    o Separate handling of color scheme directory from patch file
+      directoy.
+    o Improved handling of CXXFLAGS variables
+    o Add check for Ladspa header file.
+    o Obsolete commandline option -l (preset file) removed
+    o New commandline option for program version (--version)
 
 
 

@@ -39,7 +39,7 @@
 
 2012-02-01 Guido Scholz <guido.scholz@bayernline.de>
 	* configure.ac, src/synthdata.*: Add support for libzita-alsa-pcmi
-	 as an alternative for libclalsadrv.
+	as an alternative for libclalsadrv.
 
 2012-01-31 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.*, src/modularsynth.*, src/prefwidget.*:
