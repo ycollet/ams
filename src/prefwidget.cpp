@@ -235,7 +235,7 @@ void PrefWidget::setupEditingTab()
     moduleMoveGroup->setLayout(moduleMoveLayout);
     editingBox->addWidget(moduleMoveGroup);
 
-    /*Module movement mode radio buttons*/
+    /*Module position grid*/
     QGroupBox *modulePositionGroup = new QGroupBox(tr("Module position"));
 
     enableGrid = new QCheckBox(
@@ -246,7 +246,7 @@ void PrefWidget::setupEditingTab()
     gridMeshLabel = new QLabel(tr("&Grid mesh size"));
     gridMeshEditline = new QLineEdit();
     gridMeshEditline->setMaxLength(3);
-    QIntValidator* meshValidator = new QIntValidator(2, 200,
+    QIntValidator* meshValidator = new QIntValidator(2, 200,  //MAGIC
                             gridMeshEditline);
     gridMeshEditline->setValidator(meshValidator);
     gridMeshEditline->setToolTip(
