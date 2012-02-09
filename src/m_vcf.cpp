@@ -53,7 +53,7 @@ b_noise = 19.1919191919191919191919191919191919191919;
   configDialog->addSlider(tr("&Frequency"), freq, 0, 10);
   configDialog->addSlider(tr("&Exp. FM gain"), vcfExpFMGain, 0, 10);
   configDialog->addSlider(tr("&Lin. FM gain"), vcfLinFMGain, 0, 10);
-  configDialog->addSlider(tr("6Resonance"), resonance, 0.01, 1);
+  configDialog->addSlider(tr("&Resonance"), resonance, 0.01, 1);
   configDialog->addSlider(tr("Resonance &gain"), resonanceGain, 0, 1);
 }
 

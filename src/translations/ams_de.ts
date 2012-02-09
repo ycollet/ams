@@ -1654,340 +1654,362 @@
 <context>
     <name>M_v8sequencer</name>
     <message>
-        <location filename="../m_v8sequencer.cpp" line="24"/>
+        <location filename="../m_v8sequencer.cpp" line="45"/>
         <source>V8 Seq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_v8sequencer.cpp" line="30"/>
-        <source>Step</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="31"/>
-        <source>Direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="32"/>
-        <source>+ 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="33"/>
-        <source>- 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="34"/>
-        <source>Daisy 0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="35"/>
-        <source>Daisy 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="36"/>
-        <source>StateIn</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="37"/>
-        <source>TrigIn</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="38"/>
-        <location filename="../m_v8sequencer.cpp" line="56"/>
-        <source>S 0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="39"/>
-        <location filename="../m_v8sequencer.cpp" line="57"/>
-        <source>S 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="40"/>
-        <location filename="../m_v8sequencer.cpp" line="58"/>
-        <source>S 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="41"/>
-        <location filename="../m_v8sequencer.cpp" line="59"/>
-        <source>S 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="42"/>
-        <location filename="../m_v8sequencer.cpp" line="60"/>
-        <source>S 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="43"/>
-        <location filename="../m_v8sequencer.cpp" line="61"/>
-        <source>S 5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="44"/>
-        <location filename="../m_v8sequencer.cpp" line="62"/>
-        <source>S 6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="45"/>
-        <location filename="../m_v8sequencer.cpp" line="63"/>
-        <source>S 7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="48"/>
-        <source>Out 0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="49"/>
-        <source>Out 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="50"/>
-        <source>Out 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../m_v8sequencer.cpp" line="51"/>
-        <source>Out 3</source>
+        <source>In 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="52"/>
-        <source>Aux 0</source>
+        <source>In 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="53"/>
-        <source>Aux 1</source>
+        <source>In 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="54"/>
-        <source>State</source>
+        <source>In 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="55"/>
-        <source>Trig</source>
+        <location filename="../m_v8sequencer.cpp" line="75"/>
+        <source>A State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="56"/>
+        <location filename="../m_v8sequencer.cpp" line="76"/>
+        <source>A Trig</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="57"/>
+        <source>Step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="58"/>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="59"/>
+        <source>+ 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="60"/>
+        <source>- 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="61"/>
+        <location filename="../m_v8sequencer.cpp" line="81"/>
+        <source>S 0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="62"/>
+        <location filename="../m_v8sequencer.cpp" line="82"/>
+        <source>S 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="63"/>
+        <location filename="../m_v8sequencer.cpp" line="83"/>
+        <source>S 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="64"/>
+        <location filename="../m_v8sequencer.cpp" line="84"/>
+        <source>S 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="65"/>
+        <location filename="../m_v8sequencer.cpp" line="85"/>
+        <source>S 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="66"/>
+        <location filename="../m_v8sequencer.cpp" line="86"/>
+        <source>S 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="67"/>
+        <location filename="../m_v8sequencer.cpp" line="87"/>
+        <source>S 6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="68"/>
+        <location filename="../m_v8sequencer.cpp" line="88"/>
+        <source>S 7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="71"/>
+        <source>Out 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="72"/>
-        <source>Wrap from max to zero</source>
+        <source>Out 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="73"/>
-        <source>Wrap from zero to max</source>
+        <source>Out 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="74"/>
-        <source>Max States</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="76"/>
-        <source>1v/step from 0v</source>
+        <source>Out 3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="77"/>
-        <source>1v/12 steps from 0v</source>
+        <source>Aux 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="78"/>
-        <source>2v/Max States steps from -1v</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="79"/>
-        <source>2v/MaxS from -1v, daisychain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="80"/>
-        <source>State IO Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="84"/>
-        <source>Out0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="85"/>
-        <source>Out1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="86"/>
-        <source>Out2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="87"/>
-        <source>Out3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="91"/>
-        <source>0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="92"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="93"/>
-        <source>2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="94"/>
-        <source>3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="95"/>
-        <source>4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="96"/>
-        <source>5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="97"/>
-        <source>6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="98"/>
-        <source>7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="100"/>
-        <source>0,1,2,3,4,5,6,7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="101"/>
-        <source>0,1,2,3,0,1,2,3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="102"/>
-        <source>0,2,4,6,0,2,4,6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="103"/>
-        <source>0,1,0,1,0,1,0,1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="104"/>
-        <source>0,2,0,2,0,2,0,2</source>
+        <source>Aux 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="105"/>
-        <source>0,3,0,3,0,3,0,3</source>
+        <source>Max States</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_v8sequencer.cpp" line="106"/>
-        <source>7,6,5,4,3,2,1,0</source>
+        <location filename="../m_v8sequencer.cpp" line="79"/>
+        <source>Gate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="80"/>
+        <source>Pulse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="99"/>
+        <source>Use step/direction and forward/backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="100"/>
+        <source>Use external analog input on StateIn input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="102"/>
+        <source>Internal vs. External State Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="107"/>
-        <source>3,2,1,0,3,2,1,0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="108"/>
-        <source>6,4,2,0,6,4,2,0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="109"/>
-        <source>Aux 0 source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_v8sequencer.cpp" line="110"/>
-        <source>Aux 0 offset</source>
+        <source>This Seq S0 ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="111"/>
-        <source>Aux 0 mapping</source>
+        <source>Out0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="112"/>
-        <source>Aux 1 source</source>
+        <source>Out1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="113"/>
-        <source>Aux 1 offset</source>
+        <source>Out2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="114"/>
-        <source>Aux 1 mapping</source>
+        <source>Out3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="118"/>
+        <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="119"/>
-        <source>Out 0 S%1</source>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="120"/>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="121"/>
+        <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="122"/>
-        <source>Out 1 S%1</source>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="123"/>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="124"/>
+        <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="125"/>
-        <source>Update Out 2</source>
+        <source>7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="127"/>
+        <source>0,1,2,3,4,5,6,7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="128"/>
-        <source>Out 2 S%1</source>
+        <source>0,1,2,3,0,1,2,3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="129"/>
+        <source>0,2,4,6,0,2,4,6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="130"/>
+        <source>0,1,0,1,0,1,0,1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="131"/>
-        <source>Update Out 3</source>
+        <source>0,2,0,2,0,2,0,2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="132"/>
+        <source>0,3,0,3,0,3,0,3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="133"/>
+        <source>7,6,5,4,3,2,1,0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="134"/>
+        <source>3,2,1,0,3,2,1,0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="135"/>
+        <source>6,4,2,0,6,4,2,0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="137"/>
+        <source>Aux 0 source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="139"/>
+        <source>Aux 0 offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="141"/>
+        <source>Aux 0 mapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="143"/>
+        <source>Aux 1 source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="145"/>
+        <source>Aux 1 offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="147"/>
+        <source>Aux 1 mapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="151"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="152"/>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="153"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="154"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="158"/>
+        <source>Step S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="161"/>
+        <source>Out 0 S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="166"/>
+        <source>Out 1 S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="170"/>
+        <source>WrEna 2 S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="177"/>
+        <source>WrEna 3 S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="173"/>
+        <source>Out 2 S%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_v8sequencer.cpp" line="180"/>
         <source>Out 3 S%1</source>
         <translation type="unfinished"></translation>
     </message>

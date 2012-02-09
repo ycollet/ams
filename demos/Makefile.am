@@ -94,4 +94,7 @@ dist_demosdata_DATA = \
 	sequence02c.ams \
 	sequence03.ams \
 	sequence03b.ams \
-	SineSolo.ams
+	SineSolo.ams \
+	v8_seq_demo_1.ams \
+	v8_seq_demo_2.ams \
+	v8_seq_demo_3.ams

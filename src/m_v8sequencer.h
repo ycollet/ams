@@ -23,19 +23,19 @@
 
 
 #define MODULE_V8SEQUENCER_WIDTH                 90
-#define MODULE_V8SEQUENCER_HEIGHT                360
+#define MODULE_V8SEQUENCER_HEIGHT                400
 #define MODULE_V8SEQUENCER_STATES                8
 
 class M_v8sequencer : public Module
 {
   Q_OBJECT 
 
-  int state[MAXPOLY], oldstate[MAXPOLY];
+  int state[MAXPOLY];
+  int stateaction[MODULE_V8SEQUENCER_STATES];
   int maxstate;
-  float daisychain;
-  int stateIOFormat;
+  int myfirststate;
   int aux0src, aux1src, aux0offset, aux1offset, aux0map, aux1map;
-  float wrapmaxtozero, wrapzerotomax;
+  int int_ext_mode;
   float oldstep[MAXPOLY], oldforward[MAXPOLY], 
     oldbackward[MAXPOLY], oldseqtrig[MAXPOLY];
   float oldout0[MAXPOLY], oldout1[MAXPOLY], 
@@ -49,7 +49,7 @@ class M_v8sequencer : public Module
   //        Input port - direct jump-to
   Port *port_M_seqstate, *port_M_seqtrig;
   //        Input ports for daisy-chaining sequencer blocks
-  Port *port_M_daisy0, *port_M_daisy1;
+  Port *port_M_in0, *port_M_in1, *port_M_in2, *port_M_in3;
   //        Input ports for jump-to control
   Port *port_M_s0, *port_M_s1, *port_M_s2, *port_M_s3,
        *port_M_s4, *port_M_s5, *port_M_s6, *port_M_s7;
@@ -57,31 +57,18 @@ class M_v8sequencer : public Module
   Port *port_out0, *port_out1, *port_out2, *port_out3;
   Port *port_seqstate, *port_seqtrig;
   Port *port_aux0, *port_aux1;
+  Port *port_gate, *port_pulse;
   Port *port_state0, *port_state1, *port_state2, *port_state3,
        *port_state4, *port_state5, *port_state6, *port_state7;
-  //        Output ports for 3D sequencer outputs (consider the cube vertices)
-  //        
-  //            1---------2
-  //           /|        /|
-  //          / |       / |
-  //         /  |      /  |
-  //        3---------4   |
-  //        |   |     |   |
-  //        |   5-----|---6
-  //        |  /      |  /
-  //        | /       | /
-  //        |/        |/
-  //        7---------8
-  //
-  //       and we project the actual sequencer state to whichever direction
-  //       we choose.
 
+  //    The input vectors (these get pointed to the senders)
   public: 
      float **m_step, **m_direction, **m_forward, **m_backward, 
        **m_seqstate, **m_seqtrig;
-     float **m_daisy0, **m_daisy1;
+     float **m_in0, **m_in1, **m_in2, **m_in3;
      float **m_s0, **m_s1, **m_s2, **m_s3, **m_s4, **m_s5, **m_s6, **m_s7;
     
+     //     the per-state sliders and checkboxes
     float 
       out0[MODULE_V8SEQUENCER_STATES], out1[MODULE_V8SEQUENCER_STATES], 
       out2[MODULE_V8SEQUENCER_STATES], sticky2[MODULE_V8SEQUENCER_STATES], 

@@ -63,7 +63,7 @@ enum M_typeEnum {
   M_type_vcpanning,
   M_type_vcenv2,
   M_type_vcdoubledecay,
-  M_type_vquant,
+  M_type_vquant,        // 40
   M_type_amp,
   M_type_ad,
   M_type_mphlfo,
