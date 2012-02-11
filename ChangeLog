@@ -1,6 +1,6 @@
 2012-02-11 Guido Scholz <guido.scholz@bayernline.de>
-	* src/main.cpp, src/synthdata.*, modularsynth.cpp: Add support
-	for separate ALSA capture and playback devices.
+	* src/main.cpp, src/synthdata.*, modularsynth.*, src/msoptions.h:
+	Add support for separate ALSA capture and playback devices.
 
 2012-02-10 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp: Add new menu item to open demo patch files
