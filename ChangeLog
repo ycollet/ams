@@ -1,3 +1,7 @@
+2012-02-10 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.cpp: Add new menu item to open demo patch files
+	directly.
+
 2012-02-09 Guido Scholz <guido.scholz@bayernline.de>
 	* src/module.h, src/m_v8sequencer.h, m_v8sequencer.cpp: Update
 	V8 Sequencer module by Bill Yerazunis.

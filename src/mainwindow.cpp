@@ -71,6 +71,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           Qt::CTRL + Qt::Key_N);
   filePopup->addAction(tr("&Open..."), this, SLOT(fileOpen()),
           Qt::CTRL + Qt::Key_O);
+  filePopup->addAction(tr("Open &demo..."), this, SLOT(fileOpenDemo()),
+          Qt::CTRL + Qt::Key_D);
   fileRecentlyOpenedFiles = filePopup->addMenu(tr("&Recently opened files"));
   filePopup->addAction(tr("&Save"), this, SLOT(fileSave()),
           Qt::CTRL + Qt::Key_S);
@@ -302,6 +304,19 @@ void MainWindow::chooseFile()
 }
 
 
+void MainWindow::chooseDemoFile()
+{
+    QString fn = QFileDialog::getOpenFileName(this,
+        tr("Open demo patch file"), DEMOFILEPATH,
+        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
+
+    if (fn.isEmpty())
+        return;
+    else
+        openFile(fn);
+}
+
+
 void MainWindow::fileNew()
 {           
     if (isSave())
@@ -321,6 +336,13 @@ void MainWindow::fileOpen()
 {
     if (isSave())
         chooseFile();
+}
+
+
+void MainWindow::fileOpenDemo()
+{
+    if (isSave())
+        chooseDemoFile();
 }
 
 
