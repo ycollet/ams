@@ -3760,12 +3760,12 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="114"/>
+        <location filename="../modularsynth.cpp" line="115"/>
         <source>AlsaModularSynth Control Center</source>
         <translation>Centre de Contrôle AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="118"/>
+        <location filename="../modularsynth.cpp" line="119"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>Vue Paramètres AlsaModularSynth</translation>
     </message>
@@ -4141,22 +4141,22 @@ Save changes?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="67"/>
+        <location filename="../main.cpp" line="71"/>
         <source>Could not create ams home directory.</source>
         <translation>Echec de création du repertoire ams home.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="82"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="90"/>
+        <location filename="../main.cpp" line="94"/>
         <source>Ooops in %1 at %2</source>
         <translation>Ooops dans %1 à %2</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="98"/>
+        <location filename="../main.cpp" line="102"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation>Nom du client &apos;%1&apos; déjà occupé.</translation>
     </message>
@@ -4236,37 +4236,37 @@ Save changes?</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="420"/>
+        <location filename="../synthdata.cpp" line="440"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation>Echec d&apos;établir un fil ALSA avec priorité RT</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="427"/>
+        <location filename="../synthdata.cpp" line="447"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation>Echec d&apos;établir un fil ALSA</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="436"/>
+        <location filename="../synthdata.cpp" line="456"/>
         <source>Closing ALSA...</source>
         <translation>Fermeture d&apos;ALSA...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="543"/>
+        <location filename="../synthdata.cpp" line="563"/>
         <source>Can&apos;t connect to JACK</source>
         <translation>Echec de connexion à JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="583"/>
+        <location filename="../synthdata.cpp" line="603"/>
         <source>Can&apos;t activate JACK</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="601"/>
+        <location filename="../synthdata.cpp" line="621"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="629"/>
+        <location filename="../synthdata.cpp" line="649"/>
         <source>No JACK session event set.</source>
         <translation type="unfinished"></translation>
     </message>

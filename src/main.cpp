@@ -29,6 +29,10 @@ static struct option options[] =
          {"verbose", 0, 0, 'v'},
          {"version", 0, 0, 'V'},
          {"soundcard", 1, 0, 'c'},
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+         {"capture", 1, 0, 'C'},
+         {"playback", 1, 0, 'P'},
+#endif
          {"presetpath", 1, 0, 'd'},
          {"nogui", 0, 0, 'n'},
          {"jack", 0, 0, 'J'},
@@ -139,6 +143,8 @@ int main(int argc, char *argv[])
 
   msoptions.synthName = "ams";
   msoptions.pcmname = DEFAULT_PCMNAME;
+  msoptions.cname = "";
+  msoptions.pname = "";
   msoptions.frsize = DEFAULT_PERIODSIZE;
   msoptions.fsamp = DEFAULT_RATE;
   msoptions.ncapt = DEFAULT_CAPT_PORTS;
@@ -159,7 +165,14 @@ int main(int argc, char *argv[])
 #endif
 
   while ((getopt_return = getopt_long(argc, argv,
-                  "hnJjAab:p:f:e:c:d:r:i:o:vVN:",
+                  "hnJjAab:p:f:e:c:d:r:i:o:vVN:"
+#ifdef JACK_SESSION
+                  "U:"
+#endif
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+                  "C:P:"
+#endif
+                  ,
                   options, &option_index)) >= 0) {
     switch(getopt_return) {
     case 'p': 
@@ -180,6 +193,14 @@ int main(int argc, char *argv[])
     case 'c': 
         msoptions.pcmname = optarg;
         break; 
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+    case 'C': 
+        msoptions.cname = optarg;
+        break; 
+    case 'P': 
+        msoptions.pname = optarg;
+        break; 
+#endif
     case 'd': 
         msoptions.presetPath = optarg;
         msoptions.havePresetPath = true;
@@ -224,11 +245,15 @@ int main(int argc, char *argv[])
         printf("  -J, --jack                    Force JACK\n");
         printf("  -A, --alsa                    Force ALSA\n");
         printf("    -c, --soundcard <plug>        Soundcard [%s]\n", DEFAULT_PCMNAME);
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+        printf("    -C, --capture <device>        Capture device\n");
+        printf("    -P, --playback <device>       Playback device\n");
+#endif
         printf("    -b, --periodsize <frames>     Periodsize [%d]\n", DEFAULT_PERIODSIZE);
         printf("    -f, --frag <num>              Number of fragments [%d]\n", DEFAULT_PERIODS);
         printf("    -r, --rate <samples/s>        Samplerate [%d]\n", DEFAULT_RATE);
-        printf("  -i, --in <num>                Number of Alsa/JACK input ports\n");
-        printf("  -o, --out <num>               Number of Alsa/JACK output ports\n");
+        printf("  -i, --in <num>                Number of ALSA/JACK input ports\n");
+        printf("  -o, --out <num>               Number of ALSA/JACK output ports\n");
         printf("  -p, --poly <num>              Polyphony [1]\n");
         printf("  -e, --edge <0..10>            VCO Edge [1.0]\n");
         printf("  -d, --presetdir <dir>         Preset directory\n");
@@ -238,11 +263,21 @@ int main(int argc, char *argv[])
 #endif
         printf("  -v				verbose\n");
         printf("  -V, --version			Display program version information\n");
-        printf("  -N, --name <name>             Alsa/JACK clientname, windowtitle\n\n");
+        printf("  -N, --name <name>             ALSA/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
         break;
     }
   }
+
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+  if (msoptions.cname.isEmpty() && msoptions.pname.isEmpty()) {
+      msoptions.cname = msoptions.pcmname;
+      msoptions.pname = msoptions.pcmname;
+  }
+#else
+  msoptions.cname = msoptions.pcmname;
+  msoptions.pname = msoptions.pcmname;
+#endif
 
   if (optind < argc){
       msoptions.presetName = argv[optind];

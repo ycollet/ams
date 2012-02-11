@@ -360,10 +360,11 @@ void SynthData::set_play_mod(unsigned int k, void *M)
     play_mods[k] = M;
 }
 
-int SynthData::initAlsa (const char *name, unsigned int fsamp,
-        snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt, int nplay)
+int SynthData::initAlsa(const QString& cname, const QString& pname,
+        unsigned int fsamp, snd_pcm_uframes_t frsize,
+        unsigned int nfrags, int ncapt, int nplay)
 {
-    pthread_attr_t     attr;
+    pthread_attr_t attr;
 
     withAlsa = true;
     ncapt &= ~1;
@@ -371,31 +372,50 @@ int SynthData::initAlsa (const char *name, unsigned int fsamp,
 
 #ifdef HAVE_LIBCLALSADRV
   #ifdef HAVE_CLALSADRV_API2
-    alsa_handle = new Alsa_driver(nplay ? name : 0, ncapt ? name : 0, 0,
-            fsamp, frsize, nfrags);
+    alsa_handle = new Alsa_driver(
+            (nplay > 0 && !pname.isEmpty()) ? pname.toLocal8Bit().constData() : 0,
+            (ncapt > 0 && !cname.isEmpty()) ? cname.toLocal8Bit().constData() : 0,
+            0, fsamp, frsize, nfrags);
   #else
-    alsa_handle = new Alsa_driver(name, fsamp, frsize, nfrags,
-            nplay > 0, ncapt > 0, false);
+    alsa_handle = new Alsa_driver(pname.toLocal8Bit().constData(), fsamp,
+            frsize, nfrags, nplay > 0, ncapt > 0, false);
   #endif
     if (alsa_handle->stat () < 0)
 #else
     /*libzita-alsa-pcmi*/
-    alsa_handle = new Alsa_pcmi(nplay ? name : 0, ncapt ? name : 0, 0,
-            fsamp, frsize, nfrags, 0);
+    alsa_handle = new Alsa_pcmi(
+            (nplay > 0 && !pname.isEmpty()) ? pname.toLocal8Bit().constData() : 0,
+            (ncapt > 0 && !cname.isEmpty()) ? cname.toLocal8Bit().constData() : 0,
+            0, fsamp, frsize, nfrags, 0);
     if (alsa_handle->state() < 0)
 #endif
     {
-        fprintf (stderr, "Can't connect to ALSA\n");
+        qCritical("Can't connect to ALSA");
         return -ENODEV;
     } 
-    capt_ports = alsa_handle->ncapt ();
-    play_ports = alsa_handle->nplay ();
-    if (capt_ports > ncapt) capt_ports = ncapt;
-    if (play_ports > nplay) play_ports = nplay;
-    if (capt_ports > MAX_CAPT_PORTS) capt_ports = MAX_CAPT_PORTS;
-    if (play_ports > MAX_PLAY_PORTS) play_ports = MAX_PLAY_PORTS;
+    capt_ports = alsa_handle->ncapt();
+    play_ports = alsa_handle->nplay();
+    if (capt_ports > ncapt)
+        capt_ports = ncapt;
+    if (play_ports > nplay)
+        play_ports = nplay;
+    if (capt_ports > MAX_CAPT_PORTS)
+        capt_ports = MAX_CAPT_PORTS;
+    if (play_ports > MAX_PLAY_PORTS)
+        play_ports = MAX_PLAY_PORTS;
 
-    fprintf (stderr, "ALSA device %s opened with %d inputs and %d outputs\n", name, capt_ports, play_ports); 
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+    if (capt_ports > 0)
+        qWarning("ALSA capture device \"%s\" opened with %d inputs",
+                cname.toUtf8().constData(), capt_ports); 
+    if (play_ports > 0)
+        qWarning("ALSA playback device \"%s\" opened with %d outputs",
+                pname.toUtf8().constData(), play_ports); 
+#else
+    qWarning("ALSA device \"%s\" opened with %d inputs "
+            "and %d outputs",
+            pname.toUtf8().constData(), capt_ports, play_ports); 
+#endif
 
     rate = fsamp;
     periodsize = frsize;

@@ -50,7 +50,8 @@ class ModularSynth : public QWidget
     MidiWidget *midiWidget;
     class GuiWidget *guiWidget;
     bool loadingPatch;
-    QString pcmname;
+    QString cname;
+    QString pname;
     unsigned int fsamp;
     snd_pcm_uframes_t frsize;
     unsigned int nfrags;

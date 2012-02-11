@@ -84,7 +84,8 @@ SynthData *synthdata;
 
 ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso) 
   : QWidget(parent)
-  , pcmname(mso.pcmname)
+  , cname(mso.cname)
+  , pname(mso.pname)
   , fsamp(mso.fsamp)
   , frsize(mso.frsize)
   , nfrags(mso.nfrags)
@@ -125,7 +126,6 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
 
   setPalette(QPalette(QColor(240, 240, 255), QColor(240, 240, 255)));
   loadingPatch = false;
-
 }
 
 ModularSynth::~ModularSynth()
@@ -311,8 +311,8 @@ int ModularSynth::go(bool forceJack, bool forceAlsa)
     int err = forceAlsa ? -1 : synthdata->initJack(ncapt, nplay);
 
     if (err < 0 && !forceJack)
-	err = synthdata->initAlsa(pcmname.toLocal8Bit(),
-				  fsamp, frsize, nfrags, ncapt, nplay);
+        err = synthdata->initAlsa(cname, pname,
+                fsamp, frsize, nfrags, ncapt, nplay);
 
     if (err < 0)
 	exit(err);

@@ -204,9 +204,9 @@ public:
   void set_capt_mod(unsigned int k, void *M);
   void set_play_mod(unsigned int k, void *M);
 
-  int initAlsa (const char *name, unsigned int fsamp,
-		snd_pcm_uframes_t frsize, unsigned int nfrags, int ncapt,
-		int nplay);
+  int initAlsa (const QString& cname, const QString& pname,
+          unsigned int fsamp, snd_pcm_uframes_t frsize,
+          unsigned int nfrags, int ncapt, int nplay);
   int closeAlsa();
 
   int initJack (int ncapt, int nplay);

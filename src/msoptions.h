@@ -12,6 +12,8 @@
 struct ModularSynthOptions {
     QString synthName;
     QString pcmname;
+    QString cname;
+    QString pname;
     QString presetName;
     QString presetPath;
     snd_pcm_uframes_t frsize;
