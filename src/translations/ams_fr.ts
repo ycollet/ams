@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr">
 <context>
-    <name></name>
-    <message>
-        <source>Load Colors</source>
-        <translation type="obsolete">Charger Couleurs</translation>
-    </message>
-    <message>
-        <source>Could not open file.</source>
-        <translation type="obsolete">Echec d&apos;ouverture du fichier.</translation>
-    </message>
-    <message>
-        <source>Save Colors</source>
-        <translation type="obsolete">Enregistrer Couleurs</translation>
-    </message>
-    <message>
-        <source>Could not save file.</source>
-        <translation type="obsolete">Echec d&apos;enregistrement fichier.</translation>
-    </message>
-    <message>
-        <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
-        <translation type="obsolete">Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
-    </message>
-    <message>
-        <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
-        <translation type="obsolete">Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
-    </message>
-    <message>
-        <source>Unknown MIDI controller tag found: %1</source>
-        <translation type="obsolete">Tag controleur MIDI inconnu détecté: %1</translation>
-    </message>
-</context>
-<context>
-    <name>ColorWidget</name>
-    <message>
-        <source>Change...</source>
-        <translation type="obsolete">Changer...</translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <location filename="../configdialog.cpp" line="34"/>
@@ -52,7 +14,7 @@
     <message>
         <location filename="../function.cpp" line="67"/>
         <source>Out %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortie %1</translation>
     </message>
 </context>
 <context>
@@ -126,7 +88,7 @@
     <message>
         <location filename="../ladspadialog.cpp" line="47"/>
         <source>Available Ladspa Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Greffons Ladspa disponibles</translation>
     </message>
 </context>
 <context>
@@ -410,7 +372,7 @@
     <message>
         <location filename="../m_amp.cpp" line="23"/>
         <source>Amplifier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ampli</translation>
     </message>
     <message>
         <location filename="../m_amp.cpp" line="28"/>
@@ -664,12 +626,12 @@
     <message>
         <location filename="../m_ladspa.cpp" line="27"/>
         <source>Poly </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../m_ladspa.cpp" line="99"/>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nom: </translation>
     </message>
     <message>
         <location filename="../m_ladspa.cpp" line="100"/>
@@ -1441,7 +1403,7 @@
     <message>
         <location filename="../m_sh.cpp" line="23"/>
         <source>Sample &amp; Hold</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../m_sh.cpp" line="28"/>
@@ -1474,7 +1436,7 @@
     <message>
         <location filename="../m_slew.cpp" line="23"/>
         <source>Slew Limiter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> </translation>
     </message>
     <message>
         <location filename="../m_slew.cpp" line="28"/>
@@ -3169,7 +3131,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="74"/>
         <source>Open &amp;demo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir fichier &amp;demo...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="76"/>
@@ -3219,7 +3181,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="95"/>
         <source>Amplifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Ampli</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="96"/>
@@ -3571,19 +3533,7 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="310"/>
         <source>Open demo patch file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation type="obsolete">&amp;Oui</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation type="obsolete">&amp;Non</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Annuler</translation>
+        <translation>Ouvrir un fichier de démonstration</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="297"/>
@@ -3595,11 +3545,7 @@ Save changes?</source>
         <location filename="../mainwindow.cpp" line="311"/>
         <location filename="../mainwindow.cpp" line="430"/>
         <source>AlsaModularSynth patch files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Patch files</source>
-        <translation type="obsolete">Fichiers patch</translation>
+        <translation>Fichier patch AlsaModularSynth</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="379"/>
@@ -3635,10 +3581,6 @@ Save changes?</source>
 <context>
     <name>MidiControllerModel</name>
     <message>
-        <source>type: %1 channel: %2 param: %3</source>
-        <translation type="obsolete">type: %1 canal: %2 param: %3</translation>
-    </message>
-    <message>
         <location filename="../midiwidget.cpp" line="77"/>
         <source>Module</source>
         <translation>Module</translation>
@@ -3646,12 +3588,12 @@ Save changes?</source>
     <message>
         <location filename="../midiwidget.cpp" line="78"/>
         <source>MIDI Controller / Parameter</source>
-        <translation>Controleur MIDI / Paramètre</translation>
+        <translation>Contrôleur MIDI / Paramètre</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="64"/>
         <source>Type: %1 Channel: %2 Param: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Type: %1 Canal: %2 Param: %3</translation>
     </message>
 </context>
 <context>
@@ -3760,18 +3702,14 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="115"/>
+        <location filename="../modularsynth.cpp" line="114"/>
         <source>AlsaModularSynth Control Center</source>
         <translation>Centre de Contrôle AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="119"/>
+        <location filename="../modularsynth.cpp" line="118"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>Vue Paramètres AlsaModularSynth</translation>
-    </message>
-    <message>
-        <source>AlsaModularSynth Preferences</source>
-        <translation type="obsolete">Préférences AlsaModularSynth</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="327"/>
@@ -3781,52 +3719,48 @@ Save changes?</source>
     <message>
         <location filename="../modularsynth.cpp" line="1167"/>
         <source>Load Colors</source>
-        <translation type="unfinished">Charger Couleurs</translation>
-    </message>
-    <message>
-        <source>AlsaModularSynth Color files (*.acs)</source>
-        <translation type="obsolete">Fichiers Couleurs AlsaModularSynth (*.acs)</translation>
+        <translation>Charger les couleurs</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1168"/>
         <location filename="../modularsynth.cpp" line="1218"/>
         <source>AlsaModularSynth color files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers couleurs AlsaModularSynth (*.acs)</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1175"/>
         <source>Could not open file.</source>
-        <translation type="unfinished">Echec d&apos;ouverture du fichier.</translation>
+        <translation>Echec d&apos;ouverture du fichier.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1217"/>
         <source>Save Colors</source>
-        <translation type="unfinished">Enregistrer Couleurs</translation>
+        <translation>Enregistrer les couleurs</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1229"/>
         <source>Could not save file.</source>
-        <translation type="unfinished">Echec d&apos;enregistrement fichier.</translation>
+        <translation>Echec d&apos;enregistrement fichier.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1317"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
-        <translation type="unfinished">Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
+        <translation>Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1537"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
-        <translation type="unfinished">Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
+        <translation>Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1794"/>
         <source>Unknown MIDI controller tag found: %1</source>
-        <translation type="unfinished">Tag controleur MIDI inconnu détecté: %1</translation>
+        <translation>Controleur MIDI inconnu détecté: %1</translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1311"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement du plugin LADSPA &quot;%1&quot; de la bibliothèque &quot;%2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -3855,12 +3789,12 @@ Save changes?</source>
     <message>
         <location filename="../multi_envelope.cpp" line="23"/>
         <source>Multi Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../multi_envelope.cpp" line="91"/>
         <source>Env. %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -3924,118 +3858,34 @@ Save changes?</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <source>&amp;Paths</source>
-        <translation type="obsolete">&amp;Chemins</translation>
-    </message>
-    <message>
-        <source>Background Color</source>
-        <translation type="obsolete">Couleur de Fond</translation>
-    </message>
-    <message>
-        <source>Module Background Color</source>
-        <translation type="obsolete">Fond des Modules</translation>
-    </message>
-    <message>
-        <source>Module Border Color</source>
-        <translation type="obsolete">Cadre des Modules</translation>
-    </message>
-    <message>
-        <source>Module Font Color</source>
-        <translation type="obsolete">Police des Modules</translation>
-    </message>
-    <message>
-        <source>Cable Color</source>
-        <translation type="obsolete">Couleur des Cables</translation>
-    </message>
-    <message>
-        <source>Jack Color</source>
-        <translation type="obsolete">Couleur des Jacks</translation>
-    </message>
-    <message>
         <location filename="../prefwidget.cpp" line="161"/>
         <source>&amp;Default colors</source>
         <translation>Couleurs &amp;Standards</translation>
     </message>
     <message>
-        <source>M&amp;IDI Controller Mode: </source>
-        <translation type="obsolete">Mode Controleur M&amp;IDI:</translation>
-    </message>
-    <message>
-        <source>Avoid Parameter Jumps</source>
-        <translation type="obsolete">Eviter les sauts de paramètres</translation>
-    </message>
-    <message>
-        <source>Init MIDI Controller</source>
-        <translation type="obsolete">Initialiser le controleur MIDI</translation>
-    </message>
-    <message>
-        <source>Follow MIDI Controller</source>
-        <translation type="obsolete">Suivre le controleur MIDI</translation>
-    </message>
-    <message>
-        <source>&amp;Load Path:</source>
-        <translation type="obsolete">Chemin de &amp;chargement:</translation>
-    </message>
-    <message>
-        <source>&amp;Browse...</source>
-        <translation type="obsolete">&amp;Explorer...</translation>
-    </message>
-    <message>
-        <source>&amp;Save Path:</source>
-        <translation type="obsolete">Chemin d&apos;&amp;enregistrement:</translation>
-    </message>
-    <message>
-        <source>AlsaModularSynth Preferences</source>
-        <translation type="obsolete">Préférences AlsaModularSynth</translation>
-    </message>
-    <message>
         <location filename="../prefwidget.cpp" line="269"/>
         <source>&amp;Remember window geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Garder la géométrie de la fenêtre en mémoire</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="270"/>
         <source>Save and restore main window position and size for next ams session.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bro&amp;wse...</source>
-        <translation type="obsolete">E&amp;xplorer...</translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="obsolete">&amp;Appliquer</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="obsolete">OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Annuler</translation>
-    </message>
-    <message>
-        <source>Choose Load Path</source>
-        <translation type="obsolete">Choisir le chemin de chargement</translation>
-    </message>
-    <message>
-        <source>Choose Save Path</source>
-        <translation type="obsolete">Choisir le chemin d&apos;enregistrement</translation>
+        <translation>Sauvegarder et restaurer la position et la taille de la fenêtre principale à la prochaine session ams.</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="281"/>
         <source>&amp;Editing</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Editer</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="28"/>
         <source>Edit preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Editer les préférences</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="58"/>
         <source>&amp;Background</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Arrière plan</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="63"/>
@@ -4045,118 +3895,118 @@ Save changes?</source>
         <location filename="../prefwidget.cpp" line="131"/>
         <location filename="../prefwidget.cpp" line="148"/>
         <source>Change...</source>
-        <translation type="unfinished">Changer...</translation>
+        <translation>Changer...</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="75"/>
         <source>&amp;Module background</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Arrière plan des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="92"/>
         <source>M&amp;odule border</source>
-        <translation type="unfinished"></translation>
+        <translation>B&amp;ordure des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="109"/>
         <source>Module &amp;font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Police des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="126"/>
         <source>&amp;Cables</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="143"/>
         <source>&amp;Jacks</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;nnecteurs</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="183"/>
         <source>MIDI controller mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode contrôleurs MIDI</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="187"/>
         <source>&amp;Avoid parameter jumps</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Eviter les sauts de paramètres</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="192"/>
         <source>&amp;Init MIDI controller</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Initialiser le controleur MIDI</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="196"/>
         <source>&amp;Follow MIDI controller</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Suivre le controleur MIDI</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="239"/>
         <source>Module position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="242"/>
         <source>Enable module &amp;position grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la grille de &amp;position des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="246"/>
         <source>&amp;Grid mesh size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de la &amp;grille</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="253"/>
         <source>Valid mesh size range is %1 to %2 pixel</source>
-        <translation type="unfinished"></translation>
+        <translation>Les tailles de grille sont valides entre %1 et %2 pixels</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="274"/>
         <source>&amp;Hide recently used files</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cacher les fichiers récemment utilisés</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="275"/>
         <source>Do not show list of recently used files in file menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne pas montrer la liste des fichiers récemment utilisés dans le menu.</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="220"/>
         <source>Module movement</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacement des modules</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="224"/>
         <source>&amp;Standard</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="229"/>
         <source>&amp;No topleft border</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pas de bordure en haut à gauche</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="71"/>
+        <location filename="../main.cpp" line="67"/>
         <source>Could not create ams home directory.</source>
         <translation>Echec de création du repertoire ams home.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="78"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Ooops in %1 at %2</source>
         <translation>Ooops dans %1 à %2</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
+        <location filename="../main.cpp" line="98"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation>Nom du client &apos;%1&apos; déjà occupé.</translation>
     </message>
@@ -4236,39 +4086,39 @@ Save changes?</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="440"/>
+        <location filename="../synthdata.cpp" line="420"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation>Echec d&apos;établir un fil ALSA avec priorité RT</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="447"/>
+        <location filename="../synthdata.cpp" line="427"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation>Echec d&apos;établir un fil ALSA</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="456"/>
+        <location filename="../synthdata.cpp" line="436"/>
         <source>Closing ALSA...</source>
         <translation>Fermeture d&apos;ALSA...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="563"/>
+        <location filename="../synthdata.cpp" line="543"/>
         <source>Can&apos;t connect to JACK</source>
         <translation>Echec de connexion à JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="603"/>
+        <location filename="../synthdata.cpp" line="583"/>
         <source>Can&apos;t activate JACK</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="621"/>
+        <location filename="../synthdata.cpp" line="601"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="649"/>
+        <location filename="../synthdata.cpp" line="629"/>
         <source>No JACK session event set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Evênement JACK session non-défini.</translation>
     </message>
 </context>
 <context>

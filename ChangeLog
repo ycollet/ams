@@ -1,3 +1,7 @@
+2012-02-12 Guido Scholz <guido.scholz@bayernline.de>
+	* src/translations/ams_fr.ts:
+	Update French translation, provided by Frank Kober.
+
 2012-02-11 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp, src/synthdata.*, modularsynth.*, src/msoptions.h:
 	Add support for separate ALSA capture and playback devices.
