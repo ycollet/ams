@@ -26,7 +26,7 @@ M_mcv::M_mcv(QWidget* parent)
   QString qs;
   int l1;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MCV_WIDTH, MODULE_MCV_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_MCV_HEIGHT);
   port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
   port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
   port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          

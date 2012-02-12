@@ -25,7 +25,7 @@ M_inv::M_inv(QWidget* parent)
   QString qs;
 
   M_type = M_type_inv;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_INV_WIDTH, MODULE_INV_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_INV_HEIGHT);
   port_M_in = new Port("In", PORT_IN, 0, this); 
   cv.out_off = 55;
   port_out = new Port("Out", PORT_OUT, 0, this);          

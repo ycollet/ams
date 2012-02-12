@@ -4,7 +4,7 @@
 #include "module.h"
 
 
-#define MODULE_VCENV_WIDTH                110
+#define MODULE_VCENV_WIDTH                100
 #define MODULE_VCENV_HEIGHT               175
 
 class M_vcenv : public Module

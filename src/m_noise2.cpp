@@ -33,7 +33,7 @@ M_noise2::M_noise2(QWidget* parent)
   NoiseType=WHITE; 
   randmax = 2.0f / (float)RAND_MAX;
   
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE2_WIDTH, MODULE_NOISE2_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_NOISE2_HEIGHT);
   port_white = new Port("Out", PORT_OUT, 0, this);          
  /*
   port_pink = new Port("Pink", PORT_OUT, 1, this, synthdata);          

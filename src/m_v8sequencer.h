@@ -22,7 +22,6 @@
 #include "module.h"
 
 
-#define MODULE_V8SEQUENCER_WIDTH                 90
 #define MODULE_V8SEQUENCER_HEIGHT                400
 #define MODULE_V8SEQUENCER_STATES                8
 

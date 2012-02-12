@@ -13,7 +13,7 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
 {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_PCMOUT_WIDTH, MODULE_PCMOUT_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_PCMOUT_HEIGHT);
   gain = 0.5;
   ag = 1.0;
   mixer_gain[0] = 0.5;

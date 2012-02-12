@@ -24,7 +24,6 @@
 
 #ifndef OUTDATED_CODE
 
-#define MODULE_SPECTRUM_WIDTH                 90
 #define MODULE_SPECTRUM_HEIGHT                80
 
 class M_spectrum : public Module
@@ -41,7 +40,6 @@ public:
 
 #else  // OUTDATED_CODE
 
-#define MODULE_SPECTRUM_WIDTH                 90
 #define MODULE_SPECTRUM_HEIGHT                80
 
 class M_spectrum : public Module

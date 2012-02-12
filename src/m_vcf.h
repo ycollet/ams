@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_VCF_WIDTH                 90
 #define MODULE_VCF_HEIGHT               155
 #define MIN_FREQ                         20
 #define MAX_FREQ                      20000

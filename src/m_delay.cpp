@@ -25,7 +25,7 @@ M_delay::M_delay(QWidget* parent)
   QString qs;
   int l1;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DELAY_WIDTH, MODULE_DELAY_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DELAY_HEIGHT);
   port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);          

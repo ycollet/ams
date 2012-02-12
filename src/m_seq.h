@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_SEQ_WIDTH                 90
 #define MODULE_SEQ_HEIGHT               140
 #define MODULE_SEQ_MAX_LEN               32
 

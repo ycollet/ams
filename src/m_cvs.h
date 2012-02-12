@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_CVS_WIDTH                 90
 #define MODULE_CVS_HEIGHT               120
 #define MODULE_CVS_CV_COUNT               4
 

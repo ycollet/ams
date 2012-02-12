@@ -17,7 +17,7 @@ M_env::M_env(QWidget* parent)
 {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_ENV_WIDTH, MODULE_ENV_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_ENV_HEIGHT);
   delay = 0;
   attack = 0.05;
   hold = 0.02;

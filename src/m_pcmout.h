@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_PCMOUT_WIDTH                 90
 #define MODULE_PCMOUT_HEIGHT                80
 
 

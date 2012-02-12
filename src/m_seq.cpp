@@ -29,7 +29,7 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   QVBoxLayout *pitchTab[4], *gateTab[4], *velocityTab[4];
 
   seqLen = p_seqLen;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SEQ_WIDTH, MODULE_SEQ_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SEQ_HEIGHT);
   port_trigger = new Port(tr("Trigger"), PORT_IN, 0, this);
   cv.out_off = 55;
   port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          

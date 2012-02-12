@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_NOISE_WIDTH                100
 #define MODULE_NOISE_HEIGHT               100
 
 class M_noise : public Module

@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_AMP_WIDTH                 90
 #define MODULE_AMP_HEIGHT                80
 
 class M_amp : public Module

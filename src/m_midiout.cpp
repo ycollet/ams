@@ -26,7 +26,7 @@ M_midiout::M_midiout(QWidget* parent)
   QString qs;
   int l1, l2;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_MIDIOUT_WIDTH, MODULE_MIDIOUT_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_MIDIOUT_HEIGHT);
   mixer_gain[0] = 1.0;
   mixer_gain[1] = 1.0;
   midiMode = 0;

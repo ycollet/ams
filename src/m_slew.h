@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_SLEW_WIDTH                 90
 #define MODULE_SLEW_HEIGHT                75
 
 class M_slew : public Module

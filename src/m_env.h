@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_ENV_WIDTH                100
 #define MODULE_ENV_HEIGHT               120
 #define ENVELOPE_RESPONSE               256
 

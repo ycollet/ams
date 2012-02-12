@@ -33,7 +33,7 @@ M_noise::M_noise(QWidget* parent)
   
   randmax = 2.0 / (double)RAND_MAX;
   
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_NOISE_WIDTH, MODULE_NOISE_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_NOISE_HEIGHT);
   port_white = new Port(tr("White"), PORT_OUT, 0, this);          
   port_pink = new Port(tr("Pink"), PORT_OUT, 1, this);          
   port_random = new Port(tr("Random"), PORT_OUT, 2, this);          

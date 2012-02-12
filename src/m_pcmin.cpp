@@ -26,7 +26,7 @@ M_pcmin::M_pcmin(QWidget* parent, int port)
  {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_PCMIN_WIDTH, MODULE_PCMIN_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_PCMIN_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;

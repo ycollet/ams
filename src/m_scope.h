@@ -5,7 +5,6 @@
 #include "module.h"
 
 
-#define MODULE_SCOPE_WIDTH                 90
 #define MODULE_SCOPE_HEIGHT                80
 
 class M_scope : public Module

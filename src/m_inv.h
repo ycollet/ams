@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_INV_WIDTH                 90
 #define MODULE_INV_HEIGHT                80
 
 class M_inv : public Module

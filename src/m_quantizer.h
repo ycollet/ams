@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_QUANTIZER_WIDTH                 90
 #define MODULE_QUANTIZER_HEIGHT               140
 #define MAX_LUT                                11
 

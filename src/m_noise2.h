@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_NOISE2_WIDTH                90
 #define MODULE_NOISE2_HEIGHT               75
 
 enum Noises {WHITE,RAND,PINK};

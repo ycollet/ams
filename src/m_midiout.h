@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_MIDIOUT_WIDTH                 90
 #define MODULE_MIDIOUT_HEIGHT               100
 
 class M_midiout : public Module

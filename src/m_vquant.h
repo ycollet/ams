@@ -3,7 +3,6 @@
 
 #include "module.h"
 
-#define MODULE_VQUANT_WIDTH                100
 #define MODULE_VQUANT_HEIGHT                80
 
 class M_vquant : public Module

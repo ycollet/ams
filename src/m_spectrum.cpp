@@ -8,7 +8,7 @@ M_spectrum::M_spectrum(QWidget* parent)
 {
   QString qs;
  
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SPECTRUM_HEIGHT);
 
   port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
   port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          

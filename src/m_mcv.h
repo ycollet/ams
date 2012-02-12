@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_MCV_WIDTH                 90
 #define MODULE_MCV_HEIGHT               120
 
 class M_mcv : public Module

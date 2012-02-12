@@ -5,7 +5,6 @@
 #include "module.h"
 
 
-#define MODULE_SCQUANTIZER_WIDTH                 90
 #define MODULE_SCQUANTIZER_HEIGHT               140
 
 class M_scquantizer : public Module

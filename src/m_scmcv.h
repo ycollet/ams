@@ -5,7 +5,6 @@
 #include "module.h"
 
 
-#define MODULE_SCMCV_WIDTH                 90
 #define MODULE_SCMCV_HEIGHT               120
 #define MODULE_SCMCV_RESPONSE              32
 

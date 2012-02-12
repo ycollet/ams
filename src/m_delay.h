@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_DELAY_WIDTH                 90
 #define MODULE_DELAY_HEIGHT                75
 #define MAX_DELAY_FRAMES                16384
 

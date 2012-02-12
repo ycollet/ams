@@ -24,7 +24,7 @@ M_vquant::M_vquant(QWidget* parent)
 {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VQUANT_WIDTH, MODULE_VQUANT_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_VQUANT_HEIGHT);
   port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   cv.out_off = 55;
   port_quant = new Port(tr("Out"), PORT_OUT, 0, this);          

@@ -46,7 +46,7 @@ M_v8sequencer::M_v8sequencer(QWidget* parent)
 {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_V8SEQUENCER_WIDTH, MODULE_V8SEQUENCER_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_V8SEQUENCER_HEIGHT);
 
   port_M_in0 = new Port (tr("In 0"), PORT_IN, 0, this);
   port_M_in1 = new Port (tr("In 1"), PORT_IN, 1, this);

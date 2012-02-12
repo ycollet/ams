@@ -5,7 +5,6 @@
 #include "module.h"
 
 
-#define MODULE_WAVOUT_WIDTH                 90
 #define MODULE_WAVOUT_HEIGHT                80
 
 class M_wavout : public Module

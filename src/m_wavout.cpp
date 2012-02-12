@@ -31,7 +31,7 @@ M_wavout::M_wavout(QWidget* parent)
   QString qs;
   QHBoxLayout *hbox1, *hbox2;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_WAVOUT_WIDTH, MODULE_WAVOUT_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_WAVOUT_HEIGHT);
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;

@@ -20,7 +20,7 @@ M_vcf::M_vcf(QWidget* parent)
 {
   QString qs;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCF_WIDTH, MODULE_VCF_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_VCF_HEIGHT);
   gain = 1.0;
   freq = 5;
   resonance = 0.8;

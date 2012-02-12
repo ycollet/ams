@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_PCMIN_WIDTH                 90
 #define MODULE_PCMIN_HEIGHT                80
 
 class M_pcmin : public Module

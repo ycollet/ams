@@ -4,7 +4,6 @@
 #include "module.h"
 
 
-#define MODULE_CONV_WIDTH                100
 #define MODULE_CONV_HEIGHT                75
 
 class M_conv : public Module

@@ -31,7 +31,7 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   QString qs;
   int l1;
 
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SCQUANTIZER_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
   port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
   port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this); 
   port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this); 
