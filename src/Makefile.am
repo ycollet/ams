@@ -243,7 +243,7 @@ translations_DATA = \
 	translations/ams_fr.qm
 
 # misc files which are distributed but not installed
-EXTRA_DIST = ams.pro $(translations)
+EXTRA_DIST = $(translations)
 
 # all generated files to be removed by "make clean"
 CLEANFILES = $(nodist_ams_SOURCES) $(translations_DATA)
