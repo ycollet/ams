@@ -1,3 +1,10 @@
+2012-02-13 Guido Scholz <guido.scholz@bayernline.de>
+	* src/module.h, src/m_analogmemory.h, src/m_analogmemory.cpp,
+	src/bitgrind.h, src/m_bitgrind.cpp, src/m_hysteresis.cpp,
+	src/m_hysteresis.h, src/m_vcdelay.h, src/m_vcdelay.cpp: Add
+	analog memory, bit grinder, hysteresis and VC delay modules
+	provided by Bill Yerazunis.
+
 2012-02-12 Guido Scholz <guido.scholz@bayernline.de>
 	* src/translations/ams_fr.ts:
 	Update French translation, provided by Frank Kober.
@@ -11,7 +18,7 @@
 	directly.
 
 2012-02-09 Guido Scholz <guido.scholz@bayernline.de>
-	* src/module.h, src/m_v8sequencer.h, m_v8sequencer.cpp: Update
+	* src/module.h, src/m_v8sequencer.h, src/m_v8sequencer.cpp: Update
 	V8 Sequencer module by Bill Yerazunis.
 	* demos/v8_seq_demo_[123].ams: Add example patches for V8 Sequencer,
 	provided by Bill Yerazunis.

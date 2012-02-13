@@ -69,7 +69,11 @@ enum M_typeEnum {
   M_type_mphlfo,
   M_type_noise2,
   M_type_vco2,
-  M_type_v8sequencer
+  M_type_v8sequencer,
+  M_type_analogmemory,
+  M_type_bitgrind,
+  M_type_hysteresis,
+  M_type_vcdelay        // 50
 };
 
 /*forward declarations*/

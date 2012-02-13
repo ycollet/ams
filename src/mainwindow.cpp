@@ -96,8 +96,12 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModulePopup->addAction(tr("Analog Driver (2 Out)"), modularSynth, SLOT(newM_ad_2()));
   newModulePopup->addAction(tr("Analog Driver (4 Out)"), modularSynth, SLOT(newM_ad_4()));
   newModulePopup->addAction(tr("Analog Driver (6 Out)"), modularSynth, SLOT(newM_ad_6()));
+  newModulePopup->addAction(tr("Analog Memory"), modularSynth,
+          SLOT(newM_analogmemory()));
   newModulePopup->addAction(tr("Advanced ENV"), modularSynth, SLOT(newM_advenv()));
   newModulePopup->addAction(tr("Advanced MCV"), modularSynth, SLOT(newM_advmcv()));
+  newModulePopup->addAction(tr("Bit Grinder"), modularSynth,
+          SLOT(newM_bitgrind()));
   newModulePopup->addAction(tr("Comment"), modularSynth, SLOT(new_textEdit()));
   newModulePopup->addAction(tr("Converter"), modularSynth, SLOT(newM_conv()));
   newModulePopup->addAction(tr("CVS"), modularSynth, SLOT(newM_cvs()));
@@ -109,6 +113,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModulePopup->addAction(tr("Function 1 --> 1"), modularSynth, SLOT(newM_function_1()));
   newModulePopup->addAction(tr("Function 1 --> 2"), modularSynth, SLOT(newM_function_2()));
   newModulePopup->addAction(tr("Function 1 --> 4"), modularSynth, SLOT(newM_function_4()));
+  newModulePopup->addAction(tr("Hysteresis"), modularSynth,
+          SLOT(newM_hysteresis()));
   newModulePopup->addAction(tr("INV"), modularSynth, SLOT(newM_inv()));
   newModulePopup->addAction(tr("LFO"), modularSynth, SLOT(newM_lfo()));
   newModulePopup->addAction(tr("MCV"), modularSynth, SLOT(newM_mcv()));
@@ -140,6 +146,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModulePopup->addAction(tr("Stereo Mixer 2"), modularSynth, SLOT(newM_stereomix_2()));
   newModulePopup->addAction(tr("Stereo Mixer 4"), modularSynth, SLOT(newM_stereomix_4())); 
   newModulePopup->addAction(tr("Stereo Mixer 8"), modularSynth, SLOT(newM_stereomix_8())); 
+  newModulePopup->addAction(tr("VC Delay"), modularSynth,
+          SLOT(newM_vcdelay()));
   newModulePopup->addAction(tr("VC Double Decay"), modularSynth, SLOT(newM_vcdoubledecay()));
   newModulePopup->addAction(tr("VC Envelope"), modularSynth, SLOT(newM_vcenv()));
   newModulePopup->addAction(tr("VC Envelope II"), modularSynth, SLOT(newM_vcenv2()));

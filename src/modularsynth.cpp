@@ -31,50 +31,54 @@
 #include "midicontroller.h"
 #include "ladspadialog.h"
 #include "textedit.h"
-#include "m_spectrum.h"
-#include "m_vco.h"
-#include "m_vco2.h"
-#include "m_vca.h"
-#include "m_delay.h"
-#include "m_seq.h"
-#include "m_env.h"
-#include "m_vcenv.h"
-#include "m_vcenv2.h"
-#include "m_advenv.h"
-#include "m_mcv.h"
-#include "m_advmcv.h"
-#include "m_scmcv.h"
-#include "m_ringmod.h"
-#include "m_mix.h"
-#include "m_stereomix.h"
-#include "m_pcmout.h"
-#include "m_pcmin.h"
-#include "m_wavout.h"
-#include "m_lfo.h"
-#include "m_noise.h"
-#include "m_noise2.h"
-#include "m_ladspa.h"
-#include "m_vcf.h"
-#include "m_inv.h"
-#include "m_amp.h"
 #include "m_ad.h"
-#include "m_vquant.h"
+#include "m_advenv.h"
+#include "m_advmcv.h"
+#include "m_amp.h"
+#include "m_analogmemory.h"
+#include "m_bitgrind.h"
 #include "m_conv.h"
 #include "m_cvs.h"
-#include "m_vcswitch.h"
-#include "m_slew.h"
-#include "m_sh.h"
-#include "m_vcpanning.h"
-#include "m_midiout.h"
-#include "m_scope.h"
-#include "m_vcorgan.h"
+#include "m_delay.h"
 #include "m_dynamicwaves.h"
-#include "m_quantizer.h"
-#include "m_scquantizer.h"
+#include "m_env.h"
 #include "m_function.h"
-#include "m_vcdoubledecay.h"
+#include "m_hysteresis.h"
+#include "m_inv.h"
+#include "m_ladspa.h"
+#include "m_lfo.h"
+#include "m_mcv.h"
+#include "m_midiout.h"
+#include "m_mix.h"
 #include "m_mphlfo.h"
+#include "m_noise2.h"
+#include "m_noise.h"
+#include "m_pcmin.h"
+#include "m_pcmout.h"
+#include "m_quantizer.h"
+#include "m_ringmod.h"
+#include "m_scmcv.h"
+#include "m_scope.h"
+#include "m_scquantizer.h"
+#include "m_seq.h"
+#include "m_sh.h"
+#include "m_slew.h"
+#include "m_spectrum.h"
+#include "m_stereomix.h"
 #include "m_v8sequencer.h"
+#include "m_vca.h"
+#include "m_vcdelay.h"
+#include "m_vcdoubledecay.h"
+#include "m_vcenv2.h"
+#include "m_vcenv.h"
+#include "m_vcf.h"
+#include "m_vco2.h"
+#include "m_vco.h"
+#include "m_vcorgan.h"
+#include "m_vcpanning.h"
+#include "m_vcswitch.h"
+#include "m_vquant.h"
+#include "m_wavout.h"
 #include "config.h"
 
 static const char COLOREXT[] = ".acs";
@@ -562,7 +566,8 @@ void ModularSynth::stopSynth()
   synthdata->doSynthesis = false;
   pthread_mutex_unlock(&synthdata->rtMutex);
 }
-//################################################ start add new modules
+
+/* start add new modules */
 void ModularSynth::newM_seq(int seqLen) {
 
     M_seq *m = new M_seq(seqLen, this);
@@ -662,6 +667,27 @@ void ModularSynth::newM_advmcv() {
     }
 }
 
+void ModularSynth::newM_analogmemory() {
+
+    M_analogmemory *m = new M_analogmemory(this);
+    if (m != NULL)
+        initNewModule(m);
+}
+
+void ModularSynth::newM_bitgrind() {
+
+    M_bitgrind *m = new M_bitgrind(this);
+    if (m != NULL)
+        initNewModule(m);
+}
+
+void ModularSynth::newM_hysteresis() {
+
+    M_hysteresis *m = new M_hysteresis(this);
+    if (m != NULL)
+        initNewModule(m);
+}
+
 void ModularSynth::newM_scmcv() {
 
     M_scmcv *m = new M_scmcv(this);
@@ -679,6 +705,13 @@ void ModularSynth::newM_scmcv(QString *p_scalaName) {
 void ModularSynth::newM_env() {
 
     M_env *m = new M_env(this);
+    if (m != NULL)
+        initNewModule(m);
+}
+
+void ModularSynth::newM_vcdelay() {
+
+    M_vcdelay *m = new M_vcdelay(this);
     if (m != NULL)
         initNewModule(m);
 }
@@ -1473,6 +1506,18 @@ void ModularSynth::load(QTextStream& ts)
               break;
           case M_type_v8sequencer:
               newM_v8sequencer(); 
+              break;
+          case M_type_analogmemory:
+              newM_analogmemory(); 
+              break;
+          case M_type_bitgrind:
+              newM_bitgrind(); 
+              break;
+          case M_type_hysteresis:
+              newM_hysteresis(); 
+              break;
+          case M_type_vcdelay:
+              newM_vcdelay(); 
               break;
       }
 

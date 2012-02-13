@@ -14,12 +14,15 @@ nodist_ams_SOURCES = \
 	m_advenv_moc.cpp \
 	m_advmcv_moc.cpp \
 	m_amp_moc.cpp \
+	m_analogmemory_moc.cpp \
+	m_bitgrind_moc.cpp \
 	m_conv_moc.cpp \
 	m_cvs_moc.cpp \
 	m_delay_moc.cpp \
 	m_dynamicwaves_moc.cpp \
 	m_env_moc.cpp \
 	m_function_moc.cpp \
+	m_hysteresis_moc.cpp \
 	m_inv_moc.cpp \
 	m_ladspa_moc.cpp \
 	m_lfo_moc.cpp \
@@ -43,6 +46,7 @@ nodist_ams_SOURCES = \
 	m_stereomix_moc.cpp \
         m_v8sequencer_moc.cpp \
 	m_vca_moc.cpp \
+	m_vcdelay_moc.cpp \
 	m_vcdoubledecay_moc.cpp \
 	m_vcenv_moc.cpp \
 	m_vcenv2_moc.cpp \
@@ -88,12 +92,15 @@ ams_SOURCES = \
 	m_advenv.cpp \
 	m_advmcv.cpp \
 	m_amp.cpp \
+	m_analogmemory.cpp \
+	m_bitgrind.cpp \
 	m_conv.cpp \
 	m_cvs.cpp \
 	m_delay.cpp \
 	m_dynamicwaves.cpp \
 	m_env.cpp \
 	m_function.cpp \
+	m_hysteresis.cpp \
 	m_inv.cpp \
 	m_ladspa.cpp \
 	m_lfo.cpp \
@@ -117,6 +124,7 @@ ams_SOURCES = \
 	m_stereomix.cpp \
         m_v8sequencer.cpp \
 	m_vca.cpp \
+	m_vcdelay.cpp \
 	m_vcdoubledecay.cpp \
 	m_vcenv.cpp \
 	m_vcenv2.cpp \
@@ -166,12 +174,15 @@ noinst_HEADERS = \
 	m_advenv.h \
 	m_advmcv.h \
 	m_amp.h \
+	m_analogmemory.h \
+	m_bitgrind.h \
 	m_conv.h \
 	m_cvs.h \
 	m_delay.h \
 	m_dynamicwaves.h \
 	m_env.h \
 	m_function.h \
+	m_hysteresis.h \
 	m_inv.h \
 	m_ladspa.h \
 	m_lfo.h \
@@ -195,6 +206,7 @@ noinst_HEADERS = \
 	m_stereomix.h \
         m_v8sequencer.h \
 	m_vca.h \
+	m_vcdelay.h \
 	m_vcdoubledecay.h \
 	m_vcenv.h \
 	m_vcenv2.h \
