@@ -1114,37 +1114,42 @@
 <context>
     <name>M_noise2</name>
     <message>
-        <location filename="../m_noise2.cpp" line="24"/>
+        <location filename="../m_noise2.cpp" line="23"/>
         <source>Noise2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="44"/>
+        <location filename="../m_noise2.cpp" line="39"/>
         <source>White</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="44"/>
+        <location filename="../m_noise2.cpp" line="39"/>
         <source>Random</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="44"/>
+        <location filename="../m_noise2.cpp" line="39"/>
         <source>Pink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="45"/>
+        <location filename="../m_noise2.cpp" line="39"/>
+        <source>Pulsetrain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_noise2.cpp" line="40"/>
         <source>&amp;Noise Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="46"/>
+        <location filename="../m_noise2.cpp" line="41"/>
         <source>Random &amp;Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_noise2.cpp" line="47"/>
+        <location filename="../m_noise2.cpp" line="42"/>
         <source>Random &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3254,28 +3259,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="134"/>
-        <source>&amp;Pitch Shift (octaves)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vocoder.cpp" line="136"/>
-        <source>V&amp;C Pitch Shift</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vocoder.cpp" line="138"/>
-        <source>&amp;Frequency (Bode) Shift</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../m_vocoder.cpp" line="140"/>
         <source>VC Fre&amp;q shift</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_vocoder.cpp" line="142"/>
-        <source>P&amp;hase Shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3296,6 +3281,26 @@
     <message>
         <location filename="../m_vocoder.cpp" line="145"/>
         <source>Rectangular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vocoder.cpp" line="134"/>
+        <source>&amp;Pitch shift (octaves)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vocoder.cpp" line="136"/>
+        <source>V&amp;C Pitch shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vocoder.cpp" line="138"/>
+        <source>&amp;Frequency (Bode) shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_vocoder.cpp" line="142"/>
+        <source>P&amp;hase shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3749,11 +3754,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
-        <source>Vocodeer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="146"/>
         <source>Slew Limiter</source>
         <translation type="unfinished"> </translation>
@@ -3913,6 +3913,11 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="103"/>
         <source>Bit Grinder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="144"/>
+        <source>FFT Vocoder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

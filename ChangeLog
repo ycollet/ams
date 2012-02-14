@@ -2,6 +2,8 @@
 	* src/module.h, src/m_vocoder.h, src/m_vocoder.cpp,
 	src/modularsynth.*: Add FFT vocoder module, provided by
 	Bill Yerazunis.
+	* src/m_noise2.*: Add pulsetrain noise type, patch provided by
+	Bill Yerazunis.
 
 2012-02-13 Guido Scholz <guido.scholz@bayernline.de>
 	* src/module.h, src/m_analogmemory.h, src/m_analogmemory.cpp,

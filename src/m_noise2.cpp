@@ -8,8 +8,6 @@
 #include <qslider.h>   
 #include <qcheckbox.h>  
 #include <qlabel.h>
-
-
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -19,6 +17,7 @@
 #include "synthdata.h"
 #include "m_noise2.h"
 #include "port.h"
+
 
 M_noise2::M_noise2(QWidget* parent) 
   : Module(M_type_noise2, 1, parent, tr("Noise2"))
@@ -35,15 +34,11 @@ M_noise2::M_noise2(QWidget* parent)
   
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_NOISE2_HEIGHT);
   port_white = new Port("Out", PORT_OUT, 0, this);          
- /*
-  port_pink = new Port("Pink", PORT_OUT, 1, this, synthdata);          
-  port_random = new Port("Random", PORT_OUT, 2, this, synthdata);          
-  */
 
   QStringList noiseNames;
-  noiseNames << tr("White") << tr("Random") << tr("Pink");
+  noiseNames << tr("White") << tr("Random") << tr("Pink") << tr("Pulsetrain");
   configDialog->addComboBox(tr("&Noise Type"), NoiseType, noiseNames);
-  configDialog->addSlider(tr("Random &Rate"), rate, 0, 10);
+  configDialog->addSlider(tr("Random &Rate"), rate, 0, 100);
   configDialog->addSlider(tr("Random &Level"), level, 0, 1);
   r = 0;
   for (l2 = 0; l2 < 3; ++l2) {
@@ -103,7 +98,21 @@ void M_noise2::generateCycle() {
       		}
       }
       break;
-      }
-    
+      case PULSETRAIN:
+      {
+          float px;
+          px = 1.00 - (1.0 / pow (10, ((100-rate)/20)));
+          for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
+              white_noise = (2 * rand() / ((float)RAND_MAX));
+              for (l1 = 0; l1 < synthdata->poly; ++l1) {
+                  data[0][l1][l2] = -level;
+                  if (white_noise > px)
+                      data[0][l1][l2] = level;
+              }
+          }
+      }		
+      break;
+     }
+     
 }
 

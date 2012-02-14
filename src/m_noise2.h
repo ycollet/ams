@@ -6,7 +6,7 @@
 
 #define MODULE_NOISE2_HEIGHT               75
 
-enum Noises {WHITE,RAND,PINK};
+enum Noises {WHITE,RAND,PINK,PULSETRAIN};
 class M_noise2 : public Module
 {
     Q_OBJECT
@@ -15,7 +15,7 @@ class M_noise2 : public Module
     unsigned int count;
     float rate, level;
     float buf[3], r;
-    Port *port_white, *port_pink, *port_random;
+    Port *port_white, *port_pink, *port_random, *port_pulsetrain;
     float randmax;
 
   public:
