@@ -201,6 +201,7 @@ public:
     void newM_vco2();
     void newM_vcpanning();
     void newM_vquant();
+    void newM_vocoder();
     void newM_dynamicwaves_4();
     void newM_dynamicwaves_6();
     void newM_dynamicwaves_8();

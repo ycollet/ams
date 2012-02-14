@@ -1,3 +1,8 @@
+2012-02-14 Guido Scholz <guido.scholz@bayernline.de>
+	* src/module.h, src/m_vocoder.h, src/m_vocoder.cpp,
+	src/modularsynth.*: Add FFT vocoder module, provided by
+	Bill Yerazunis.
+
 2012-02-13 Guido Scholz <guido.scholz@bayernline.de>
 	* src/module.h, src/m_analogmemory.h, src/m_analogmemory.cpp,
 	src/bitgrind.h, src/m_bitgrind.cpp, src/m_hysteresis.cpp,

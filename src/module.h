@@ -73,7 +73,8 @@ enum M_typeEnum {
   M_type_analogmemory,
   M_type_bitgrind,
   M_type_hysteresis,
-  M_type_vcdelay        // 50
+  M_type_vcdelay,       // 50
+  M_type_vocoder
 };
 
 /*forward declarations*/

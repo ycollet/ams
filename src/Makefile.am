@@ -56,6 +56,7 @@ nodist_ams_SOURCES = \
 	m_vcorgan_moc.cpp \
 	m_vcpanning_moc.cpp \
 	m_vcswitch_moc.cpp \
+	m_vocoder_moc.cpp \
 	m_vquant_moc.cpp \
 	m_wavout_moc.cpp \
 	mainwindow_moc.cpp \
@@ -134,6 +135,7 @@ ams_SOURCES = \
 	m_vcorgan.cpp \
 	m_vcpanning.cpp \
 	m_vcswitch.cpp \
+	m_vocoder.cpp \
 	m_vquant.cpp \
 	m_wavout.cpp \
 	main.cpp \
@@ -216,6 +218,7 @@ noinst_HEADERS = \
 	m_vcorgan.h \
 	m_vcpanning.h \
 	m_vcswitch.h \
+	m_vocoder.h \
 	m_vquant.h \
 	m_wavout.h \
 	macros.h \

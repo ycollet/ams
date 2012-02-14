@@ -77,6 +77,7 @@
 #include "m_vcorgan.h"
 #include "m_vcpanning.h"
 #include "m_vcswitch.h"
+#include "m_vocoder.h"
 #include "m_vquant.h"
 #include "m_wavout.h"
 #include "config.h"
@@ -847,6 +848,13 @@ void ModularSynth::newM_ad_6() {
     newM_ad(6);
 }
 
+void ModularSynth::newM_vocoder() {
+
+    M_vocoder *m = new M_vocoder(this);
+    if (m != NULL)
+        initNewModule(m);
+}
+
 void ModularSynth::newM_vquant() {
 
     M_vquant *m = new M_vquant(this);
@@ -1518,6 +1526,9 @@ void ModularSynth::load(QTextStream& ts)
               break;
           case M_type_vcdelay:
               newM_vcdelay(); 
+              break;
+          case M_type_vocoder:
+              newM_vocoder(); 
               break;
       }
 

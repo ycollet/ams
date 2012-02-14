@@ -89,6 +89,9 @@ AC_CHECK_LIB([m], [roundf], ,
              [AC_MSG_ERROR([required libm missing])])
 AC_CHECK_LIB([dl], [dlopen], ,
              [AC_MSG_ERROR(libdl is required)])
+dnl for vocoder module
+AC_CHECK_LIB([fftw3], [fftw_execute], ,
+             [AC_MSG_ERROR(libfftw3 is required)])
 
 dnl first check for libzita-alsa-pcmi, if not found check for libclalsadrv
 AC_CHECK_LIB([zita-alsa-pcmi], [main], ,
