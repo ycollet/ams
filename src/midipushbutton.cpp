@@ -12,7 +12,7 @@ MidiPushButton::MidiPushButton(MidiControllableDoOnce &mcAble)
   QHBoxLayout *buttonBox = new QHBoxLayout(this);
   buttonBox->setMargin(5);
   buttonBox->addStretch(0);
-  pushButton = new QPushButton(mcAble.name);
+  pushButton = new QPushButton(mcAble.getName());
   buttonBox->addWidget(pushButton);
   buttonBox->addStretch(0);
   QObject::connect(pushButton, SIGNAL(clicked()), this, SLOT(clicked()));

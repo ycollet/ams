@@ -17,25 +17,20 @@ class MCed;
 class MidiControllableBase {
     protected:
         static QString temp;
+        QString name;
 
     public:
         Module &module; 
-        QString name;
         int midiControllableListIndex;
         QList<MidiControllerKey> midiControllerList;
         QList<MCed*> mcws;
         bool midiSign; 
 
-        MidiControllableBase(Module &module, const QString &name)
-            : module(module)
-              , name(name)
-              , midiSign(true)
-        {
-            midiControllableListIndex = module.midiControllables.count();
-            module.midiControllables.append(this);
-        }
-	void disconnect(bool *updateActiveMidiControllers);
+        MidiControllableBase(Module &module, const QString &name);
         virtual ~MidiControllableBase();
+	void disconnect(bool *updateActiveMidiControllers);
+        QString getName();
+        QString getCleanName();
 
         virtual void updateMGCs(MidiGUIcomponent *sender);
 

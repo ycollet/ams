@@ -8,6 +8,14 @@
 
 QString MidiControllableBase::temp;
 
+MidiControllableBase::MidiControllableBase(Module &module,
+        const QString &aname)
+    : name(aname), module(module), midiSign(true)
+{
+    midiControllableListIndex = module.midiControllables.count();
+    module.midiControllables.append(this);
+}
+
 MidiControllableBase:: ~MidiControllableBase()
 {
 }
@@ -40,14 +48,31 @@ void MidiControllableBase::disconnect(bool *updateActiveMidiControllers)
     disconnectController(midiControllerList.at(0), updateActiveMidiControllers);
 }
 
-void MidiControllableBase::disconnectController(MidiControllerKey midiController,
-						bool *updateActiveMidiControllers)
+void MidiControllableBase::disconnectController(
+        MidiControllerKey midiController, bool *updateActiveMidiControllers)
 {
     midiControllerList.removeAll(midiController);
     synthdata->midiWidget->removeMidiControllable(midiController, this);
 }
 
+QString MidiControllableBase::getCleanName()
+{
+    QString cleanname = name;
+    /*strip keyboard shortcut control character*/
+    int idx = cleanname.indexOf('&');
+    if (idx >= 0)
+        cleanname.remove(idx, 1);
+    return cleanname;
+}
 
+
+QString MidiControllableBase::getName()
+{
+    return name;
+}
+
+
+/*MidiControllableDoOnce*/
 void MidiControllableDoOnce::updateMGCs(MidiGUIcomponent */*sender*/)
 {
     trigger();

@@ -1,3 +1,8 @@
+2012-02-16 Guido Scholz <guido.scholz@bayernline.de>
+	* src/midicontrollable.*, src/midiwidget.cpp: Use name with or
+	 without keyboard shortcut control character for MIDI controller.
+	* src/midicheckbox.cpp: Use self contained text for labeling.
+
 2012-02-14 Guido Scholz <guido.scholz@bayernline.de>
 	* src/module.h, src/m_vocoder.h, src/m_vocoder.cpp,
 	src/modularsynth.*: Add FFT vocoder module, provided by

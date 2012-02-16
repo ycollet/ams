@@ -5,8 +5,8 @@
 MidiGUIcomponent::MidiGUIcomponent(MidiControllableBase &mcAble)
 : mcAble(mcAble)
 {
-    setObjectName(mcAble.name);
-    nameLabel.setText(mcAble.name);
+    setObjectName(mcAble.getCleanName());
+    nameLabel.setText(mcAble.getName());
     mcAble.connectTo(this);
     controllerOK = false;
 }

@@ -56,7 +56,7 @@ QVariant MidiControllerModel::data(const QModelIndex &index, int role) const
             if (index.column() > 0)
                 return mcAble->module.configDialog->windowTitle();
             else
-                return mcAble->name;
+                return mcAble->getCleanName();
         } else
             if ((c == NULL) && (index.column() == 0)) {
                 QString qs;
@@ -157,7 +157,7 @@ QVariant ModuleModel::data(const QModelIndex &index, int role) const
                     if (index.column())
                         return mcAble->midiSign ? "1" : "-1";
                     else
-                        return mcAble->name;
+                        return mcAble->getCleanName();
                 }
             }
         }
@@ -577,7 +577,7 @@ void MidiWidget::addToParameterViewClicked()
     else
         synthdata->guiWidget->setFrame(frameIndex);
 
-    qs2 = midiControllable->name + " ID " +
+    qs2 = midiControllable->getCleanName() + " ID " +
         QString().setNum(midiControllable->module.moduleID);
 
     qs = QInputDialog::getText(this, "AlsaModularSynth",

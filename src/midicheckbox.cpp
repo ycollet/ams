@@ -6,20 +6,14 @@ MidiCheckBox::MidiCheckBox(MidiControllable<float> &mcAble)
 {
   componentType = GUIcomponentType_checkbox;
 
-  //  QWidget *dummy1 = new QWidget(this);
   QHBoxLayout *checkFrame = new QHBoxLayout(this);
   checkFrame->setSpacing(5);
   checkFrame->setMargin(5);
 
-  //  QWidget *dummy2 = new QWidget(this);
-//FIXME   setStretchFactor(dummy1, 3);
-//   setStretchFactor(checkFrame, 1);
-//   setStretchFactor(dummy2, 3);
-  checkBox = new QCheckBox();
+  checkBox = new QCheckBox(nameLabel.text());
   checkFrame->addWidget(checkBox);  
   checkFrame->addStretch();  
 
-  checkFrame->addWidget(&nameLabel);  
   QObject::connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
   mcAbleChanged();
 }
