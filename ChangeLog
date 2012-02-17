@@ -1,3 +1,6 @@
+2012-02-17 Guido Scholz <guido.scholz@bayernline.de>
+	* src/modularsynth.cpp: Cleanup string constant handling.
+
 2012-02-16 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midicontrollable.*, src/midiwidget.cpp: Use name with or
 	 without keyboard shortcut control character for MIDI controller.

@@ -84,6 +84,20 @@
 
 static const char COLOREXT[] = ".acs";
 
+/*string constants for user settings file*/
+static const char CF_BACKGROUNDCOLOR[] = "ColorBackground";
+static const char CF_MODULEBACKGROUNDCOLOR[] = "ColorModuleBackground";
+static const char CF_MODULEBORDERCOLOR[] = "ColorModuleBorder";
+static const char CF_MODULEFONTCOLOR[] = "ColorModuleFont";
+static const char CF_JACKCOLOR[] = "ColorJack";
+static const char CF_CABLECOLOR[] = "ColorCable";
+static const char CF_MIDICONTROLLERMODE[] = "MidiControllerMode";
+static const char CF_COLORPATH[] = "ColorPath";
+static const char CF_PATCHPATH[] = "PatchPath";
+static const char CF_EDITINGFLAGS[] = "EditingPath";
+static const char CF_ENABLEGRID[] = "EnableGrid";
+static const char CF_GRIDMESHSIZE[] = "GridMeshSize";
+
 
 SynthData *synthdata;
 
@@ -2140,66 +2154,66 @@ void ModularSynth::loadPreference(QString& line)
 {
     int r, g, b;
 
-    if (line.startsWith("ColorBackground")) {
+    if (line.startsWith(CF_BACKGROUNDCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorBackground = QColor(r, g, b);
 
     }        
-    else if (line.startsWith("ColorModuleBackground")) {
+    else if (line.startsWith(CF_MODULEBACKGROUNDCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBackground = QColor(r, g, b);
     }        
-    else if (line.startsWith("ColorModuleBorder")) {
+    else if (line.startsWith(CF_MODULEBORDERCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBorder = QColor(r, g, b);
     }        
-    else if (line.startsWith("ColorModuleFont")) {
+    else if (line.startsWith(CF_MODULEFONTCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleFont = QColor(r, g, b);
         synthdata->colorPortFont1 = QColor(r, g, b);
     }        
-    else if (line.startsWith("ColorJack")) {
+    else if (line.startsWith(CF_JACKCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorJack = QColor(r, g, b);
     }        
-    else if (line.startsWith("ColorCable")) {
+    else if (line.startsWith(CF_CABLECOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorCable = QColor(r, g, b);
     }       
-    else if (line.startsWith("MidiControllerMode")) {
+    else if (line.startsWith(CF_MIDICONTROLLERMODE)) {
         synthdata->midiControllerMode = line.section(' ', 1, 1).toInt();
     }       
-    else if (line.startsWith("ColorPath")) {
+    else if (line.startsWith(CF_COLORPATH)) {
         if (line.section(' ', 1).isEmpty() )
             synthdata->colorPath = QDir::homePath();
         else
             synthdata->colorPath = line.section(' ', 1);
     }       
-    else if (line.startsWith("PatchPath")) {
+    else if (line.startsWith(CF_PATCHPATH)) {
         if (line.section(' ', 1).isEmpty())
             synthdata->patchPath = QDir::homePath();
         else
             synthdata->patchPath = line.section(' ', 1);
     }       
-    else if (line.startsWith("EditingFlags")) {
+    else if (line.startsWith(CF_EDITINGFLAGS)) {
 	synthdata->editingFlags.f = line.section(' ', 1).toInt();
     }       
-    else if (line.startsWith("EnableGrid")) {
+    else if (line.startsWith(CF_ENABLEGRID)) {
 	enablemodulegrid = line.section(' ', 1).toInt();
     }       
-    else if (line.startsWith("GridMeshSize")) {
+    else if (line.startsWith(CF_GRIDMESHSIZE)) {
 	modulegrid = line.section(' ', 1).toInt();
     }       
 }
@@ -2207,36 +2221,36 @@ void ModularSynth::loadPreference(QString& line)
 
 void ModularSynth::savePreferences(QTextStream& ts)
 {
-    ts << "ColorBackground "
-        << synthdata->colorBackground.red() << " "
-        << synthdata->colorBackground.green() << " "
-        << synthdata->colorBackground.blue() << "\n";
-    ts << "ColorModuleBackground "
-        << synthdata->colorModuleBackground.red() << " "
-        << synthdata->colorModuleBackground.green() << " "
-        << synthdata->colorModuleBackground.blue() << "\n";
-    ts << "ColorModuleBorder "
-        << synthdata->colorModuleBorder.red() << " "
-        << synthdata->colorModuleBorder.green() << " "
-        << synthdata->colorModuleBorder.blue() << "\n";
-    ts << "ColorModuleFont "
-        << synthdata->colorModuleFont.red() << " "
-        << synthdata->colorModuleFont.green() << " "
-        << synthdata->colorModuleFont.blue() << "\n";
-    ts << "ColorJack "
-        << synthdata->colorJack.red() << " "
-        << synthdata->colorJack.green() << " "
-        << synthdata->colorJack.blue() << "\n";
-    ts << "ColorCable "
-        << synthdata->colorCable.red() << " "
-        << synthdata->colorCable.green() << " "
-        << synthdata->colorCable.blue() << "\n";
-    ts << "MidiControllerMode " << synthdata->midiControllerMode << "\n";
-    ts << "ColorPath " << synthdata->colorPath << "\n";
-    ts << "PatchPath " << synthdata->patchPath << "\n";
-    ts << "EditingFlags " << synthdata->editingFlags.f << "\n";
-    ts << "EnableGrid " << enablemodulegrid << endl;
-    ts << "GridMeshSize " << modulegrid << endl;
+    ts << CF_BACKGROUNDCOLOR << ' '
+        << synthdata->colorBackground.red() << ' '
+        << synthdata->colorBackground.green() << ' '
+        << synthdata->colorBackground.blue() << endl;
+    ts << CF_MODULEBACKGROUNDCOLOR << ' '
+        << synthdata->colorModuleBackground.red() << ' '
+        << synthdata->colorModuleBackground.green() << ' '
+        << synthdata->colorModuleBackground.blue() << endl;
+    ts << CF_MODULEBORDERCOLOR << ' '
+        << synthdata->colorModuleBorder.red() << ' '
+        << synthdata->colorModuleBorder.green() << ' '
+        << synthdata->colorModuleBorder.blue() << endl;
+    ts << CF_MODULEFONTCOLOR << ' '
+        << synthdata->colorModuleFont.red() << ' '
+        << synthdata->colorModuleFont.green() << ' '
+        << synthdata->colorModuleFont.blue() << endl;
+    ts << CF_JACKCOLOR << ' '
+        << synthdata->colorJack.red() << ' '
+        << synthdata->colorJack.green() << ' '
+        << synthdata->colorJack.blue() << endl;
+    ts << CF_CABLECOLOR << ' '
+        << synthdata->colorCable.red() << ' '
+        << synthdata->colorCable.green() << ' '
+        << synthdata->colorCable.blue() << endl;
+    ts << CF_MIDICONTROLLERMODE << ' ' << synthdata->midiControllerMode << endl;
+    ts << CF_COLORPATH << ' ' << synthdata->colorPath << endl;
+    ts << CF_PATCHPATH << ' ' << synthdata->patchPath << endl;
+    ts << CF_EDITINGFLAGS << ' ' << synthdata->editingFlags.f << endl;
+    ts << CF_ENABLEGRID << ' ' << enablemodulegrid << endl;
+    ts << CF_GRIDMESHSIZE << ' ' << modulegrid << endl;
 
     refreshColors();
 }
