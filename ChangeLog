@@ -2,6 +2,7 @@
 	* demos/analog_memory_1.ams, demos/bitgrinder_1.ams,
 	demos/hysteresis_1.ams, demos/vcdelay_1.ams: Add demo files for
 	new modules, provided by Bill Yerazunis.
+	* src/mainwindow.cpp: Restructure module menu.
 
 2012-02-17 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.cpp: Cleanup string constant handling.

@@ -4,7 +4,7 @@
 #include "module.h"
 
 
-#define MODULE_VCDOUBLEDECAY_WIDTH                140
+#define MODULE_VCDOUBLEDECAY_WIDTH                130
 #define MODULE_VCDOUBLEDECAY_HEIGHT               200
 
 class M_vcdoubledecay : public Module

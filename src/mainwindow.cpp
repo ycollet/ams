@@ -78,8 +78,10 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           Qt::CTRL + Qt::Key_S);
   filePopup->addAction(tr("Save &as..."), this, SLOT(fileSaveAs()));
   filePopup->addSeparator();
-  filePopup->addAction(tr("&Load Colors..."), modularSynth, SLOT(loadColors()));
-  filePopup->addAction(tr("Save &Colors as..."), modularSynth, SLOT(saveColors()));
+  filePopup->addAction(tr("&Load Colors..."), modularSynth,
+          SLOT(loadColors()));
+  filePopup->addAction(tr("Save &Colors as..."), modularSynth,
+          SLOT(saveColors()));
   filePopup->addSeparator();
   filePopup->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()),
           Qt::CTRL + Qt::Key_Q);
@@ -92,78 +94,166 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   synthesisPopup->addAction(tr("&All Voices Off"), modularSynth,
           SLOT(allVoicesOff()));
 
-  newModulePopup->addAction(tr("Amplifier"), modularSynth, SLOT(newM_amp()));
-  newModulePopup->addAction(tr("Analog Driver (2 Out)"), modularSynth, SLOT(newM_ad_2()));
-  newModulePopup->addAction(tr("Analog Driver (4 Out)"), modularSynth, SLOT(newM_ad_4()));
-  newModulePopup->addAction(tr("Analog Driver (6 Out)"), modularSynth, SLOT(newM_ad_6()));
-  newModulePopup->addAction(tr("Analog Memory"), modularSynth,
-          SLOT(newM_analogmemory()));
-  newModulePopup->addAction(tr("Advanced ENV"), modularSynth, SLOT(newM_advenv()));
-  newModulePopup->addAction(tr("Advanced MCV"), modularSynth, SLOT(newM_advmcv()));
-  newModulePopup->addAction(tr("Bit Grinder"), modularSynth,
-          SLOT(newM_bitgrind()));
-  newModulePopup->addAction(tr("Comment"), modularSynth, SLOT(new_textEdit()));
-  newModulePopup->addAction(tr("Converter"), modularSynth, SLOT(newM_conv()));
-  newModulePopup->addAction(tr("CVS"), modularSynth, SLOT(newM_cvs()));
-  newModulePopup->addAction(tr("Delay"), modularSynth, SLOT(newM_delay()));
-  newModulePopup->addAction(tr("Dynamic Waves (4 Oscillators)"), modularSynth, SLOT(newM_dynamicwaves_4()));
-  newModulePopup->addAction(tr("Dynamic Waves (6 Oscillators)"), modularSynth, SLOT(newM_dynamicwaves_6()));
-  newModulePopup->addAction(tr("Dynamic Waves (8 Oscillators)"), modularSynth, SLOT(newM_dynamicwaves_8()));
-  newModulePopup->addAction(tr("ENV"), modularSynth, SLOT(newM_env()));
-  newModulePopup->addAction(tr("Function 1 --> 1"), modularSynth, SLOT(newM_function_1()));
-  newModulePopup->addAction(tr("Function 1 --> 2"), modularSynth, SLOT(newM_function_2()));
-  newModulePopup->addAction(tr("Function 1 --> 4"), modularSynth, SLOT(newM_function_4()));
-  newModulePopup->addAction(tr("Hysteresis"), modularSynth,
-          SLOT(newM_hysteresis()));
-  newModulePopup->addAction(tr("INV"), modularSynth, SLOT(newM_inv()));
-  newModulePopup->addAction(tr("LFO"), modularSynth, SLOT(newM_lfo()));
-  newModulePopup->addAction(tr("MCV"), modularSynth, SLOT(newM_mcv()));
-  newModulePopup->addAction(tr("MIDI Out"), modularSynth, SLOT(newM_midiout()));
-  newModulePopup->addAction(tr("Mixer 2 -> 1"), modularSynth, SLOT(newM_mix_2()));
-  newModulePopup->addAction(tr("Mixer 4 -> 1"), modularSynth, SLOT(newM_mix_4()));
-  newModulePopup->addAction(tr("Mixer 8 -> 1"), modularSynth, SLOT(newM_mix_8()));
-  newModulePopup->addAction(tr("Multiphase LFO"), modularSynth, SLOT(newM_mphlfo()));
-  newModulePopup->addAction(tr("Noise / Random"), modularSynth, SLOT(newM_noise()));
-  newModulePopup->addAction(tr("Noise / Random 2"), modularSynth, SLOT(newM_noise2()));
-  newModulePopup->addAction(tr("PCM Out"), modularSynth, SLOT(newM_pcmout()));
-  newModulePopup->addAction(tr("PCM In"), modularSynth, SLOT(newM_pcmin()));  
-  newModulePopup->addAction(tr("Quantizer"), modularSynth, SLOT(newM_quantizer()));
-  newModulePopup->addAction(tr("Quantizer 2"), modularSynth, SLOT(newM_vquant()));
-  newModulePopup->addAction(tr("Ring Modulator"), modularSynth, SLOT(newM_ringmod()));
-  newModulePopup->addAction(tr("Sample && Hold"), modularSynth, SLOT(newM_sh()));
-  newModulePopup->addAction(tr("Scala MCV"), modularSynth, SLOT(newM_scmcv()));  
-  newModulePopup->addAction(tr("Scala Quantizer"), modularSynth, SLOT(newM_scquantizer()));
-  newModulePopup->addAction(tr("Scope View"), modularSynth, SLOT(newM_scope()));
-  newModulePopup->addAction(tr("SEQ  8"), modularSynth, SLOT(newM_seq_8()));
-  newModulePopup->addAction(tr("SEQ 12"), modularSynth, SLOT(newM_seq_12()));
-  newModulePopup->addAction(tr("SEQ 16"), modularSynth, SLOT(newM_seq_16()));
-  newModulePopup->addAction(tr("SEQ 24"), modularSynth, SLOT(newM_seq_24()));
-  newModulePopup->addAction(tr("SEQ 32"), modularSynth, SLOT(newM_seq_32()));
-  newModulePopup->addAction(tr("V8 Sequencer"), modularSynth,
-          SLOT(newM_v8sequencer()));
-  newModulePopup->addAction(tr("FFT Vocoder"), modularSynth,
-          SLOT(newM_vocoder()));
-  newModulePopup->addAction(tr("Slew Limiter"), modularSynth, SLOT(newM_slew()));
-  newModulePopup->addAction(tr("Spectrum View"), modularSynth, SLOT(newM_spectrum()));
-  newModulePopup->addAction(tr("Stereo Mixer 2"), modularSynth, SLOT(newM_stereomix_2()));
-  newModulePopup->addAction(tr("Stereo Mixer 4"), modularSynth, SLOT(newM_stereomix_4())); 
-  newModulePopup->addAction(tr("Stereo Mixer 8"), modularSynth, SLOT(newM_stereomix_8())); 
-  newModulePopup->addAction(tr("VC Delay"), modularSynth,
-          SLOT(newM_vcdelay()));
-  newModulePopup->addAction(tr("VC Double Decay"), modularSynth, SLOT(newM_vcdoubledecay()));
-  newModulePopup->addAction(tr("VC Envelope"), modularSynth, SLOT(newM_vcenv()));
-  newModulePopup->addAction(tr("VC Envelope II"), modularSynth, SLOT(newM_vcenv2()));
-  newModulePopup->addAction(tr("VC Organ (4 Oscillators)"), modularSynth, SLOT(newM_vcorgan_4()));
-  newModulePopup->addAction(tr("VC Organ (6 Oscillators)"), modularSynth, SLOT(newM_vcorgan_6()));
-  newModulePopup->addAction(tr("VC Organ (8 Oscillators)"), modularSynth, SLOT(newM_vcorgan_8()));
-  newModulePopup->addAction(tr("VC Panning"), modularSynth, SLOT(newM_vcpanning()));
-  newModulePopup->addAction(tr("VC Switch"), modularSynth, SLOT(newM_vcswitch()));
-  newModulePopup->addAction(tr("VCA lin."), modularSynth, SLOT(newM_vca_lin()));
-  newModulePopup->addAction(tr("VCA exp."), modularSynth, SLOT(newM_vca_exp()));
-  newModulePopup->addAction(tr("VCF"), modularSynth, SLOT(newM_vcf()));
-  newModulePopup->addAction(tr("VCO"), modularSynth, SLOT(newM_vco()));
-  newModulePopup->addAction(tr("VCO2"), modularSynth, SLOT(newM_vco2()));
-  newModulePopup->addAction(tr("WAV Out"), modularSynth, SLOT(newM_wavout()));
+  /*In/Out submenu*/
+  QMenu *newModuleInOut = newModulePopup->addMenu(tr("&In/Out"));
+  newModuleInOut->addAction(tr("PCM &Out"),
+          modularSynth, SLOT(newM_pcmout()));
+  newModuleInOut->addAction(tr("PCM &In"),
+          modularSynth, SLOT(newM_pcmin()));  
+  newModuleInOut->addSeparator();
+  newModuleInOut->addAction(tr("&MCV"),
+          modularSynth, SLOT(newM_mcv()));
+  newModuleInOut->addAction(tr("&Advanced MCV"),
+          modularSynth, SLOT(newM_advmcv()));
+  newModuleInOut->addAction(tr("&Scala MCV"),
+          modularSynth, SLOT(newM_scmcv()));  
+  newModuleInOut->addAction(tr("MI&DI Out"),
+          modularSynth, SLOT(newM_midiout()));
+  newModuleInOut->addAction(tr("&WAV Out"),
+          modularSynth, SLOT(newM_wavout()));
+  newModuleInOut->addSeparator();
+  newModuleInOut->addAction(tr("S&cope View"),
+          modularSynth, SLOT(newM_scope()));
+  newModuleInOut->addAction(tr("S&pectrum View"),
+          modularSynth, SLOT(newM_spectrum()));
+
+  /*Oscillators submenu*/
+  QMenu *newModuleOscillators = newModulePopup->addMenu(tr("&Oscillators"));
+  newModuleOscillators->addAction(tr("&LFO"),
+          modularSynth, SLOT(newM_lfo()));
+  newModuleOscillators->addAction(tr("&VCO"),
+          modularSynth, SLOT(newM_vco()));
+  newModuleOscillators->addAction(tr("V&CO2"),
+          modularSynth, SLOT(newM_vco2()));
+  newModuleOscillators->addAction(tr("&Multiphase LFO"),
+          modularSynth, SLOT(newM_mphlfo()));
+  newModuleOscillators->addAction(tr("VC &Organ (4 Oscillators)"),
+          modularSynth, SLOT(newM_vcorgan_4()));
+  newModuleOscillators->addAction(tr("VC O&rgan (6 Oscillators)"),
+          modularSynth, SLOT(newM_vcorgan_6()));
+  newModuleOscillators->addAction(tr("VC Or&gan (8 Oscillators)"),
+          modularSynth, SLOT(newM_vcorgan_8()));
+  newModuleOscillators->addAction(tr("&Dynamic Waves (4 Oscillators)"),
+          modularSynth, SLOT(newM_dynamicwaves_4()));
+  newModuleOscillators->addAction(tr("D&ynamic Waves (6 Oscillators)"),
+          modularSynth, SLOT(newM_dynamicwaves_6()));
+  newModuleOscillators->addAction(tr("Dy&namic Waves (8 Oscillators)"),
+          modularSynth, SLOT(newM_dynamicwaves_8()));
+
+  /*Spectrum Modifiers submenu*/
+  QMenu *newModuleSpectrumModifiers =
+      newModulePopup->addMenu(tr("Spectrum &modifiers"));
+  newModuleSpectrumModifiers->addAction(tr("&VCF"),
+          modularSynth, SLOT(newM_vcf()));
+  newModuleSpectrumModifiers->addAction(tr("&Analog Driver (2 Out)"),
+          modularSynth, SLOT(newM_ad_2()));
+  newModuleSpectrumModifiers->addAction(tr("A&nalog Driver (4 Out)"),
+          modularSynth, SLOT(newM_ad_4()));
+  newModuleSpectrumModifiers->addAction(tr("Ana&log Driver (6 Out)"),
+          modularSynth, SLOT(newM_ad_6()));
+  newModuleSpectrumModifiers->addAction(tr("&Bit Grinder"),
+          modularSynth, SLOT(newM_bitgrind()));
+  newModuleSpectrumModifiers->addAction(tr("&FFT Vocoder"),
+          modularSynth, SLOT(newM_vocoder()));
+
+  /*Time Modifiers submenu*/
+  QMenu *newModuleTimeModifiers = newModulePopup->addMenu(tr("&Time modifiers"));
+  newModuleTimeModifiers->addAction(tr("&Sample && Hold"),
+          modularSynth, SLOT(newM_sh()));
+  newModuleTimeModifiers->addAction(tr("&Delay"),
+          modularSynth, SLOT(newM_delay()));
+  newModuleTimeModifiers->addAction(tr("&VC Delay"),
+          modularSynth, SLOT(newM_vcdelay()));
+  newModuleTimeModifiers->addAction(tr("&Analog Memory"),
+          modularSynth, SLOT(newM_analogmemory()));
+  newModuleTimeModifiers->addAction(tr("&INV"),
+          modularSynth, SLOT(newM_inv()));
+  newModuleTimeModifiers->addAction(tr("V&C Double Decay"),
+          modularSynth, SLOT(newM_vcdoubledecay()));
+
+  /*Envelopes submenu*/
+  QMenu *newModuleEnvelopes = newModulePopup->addMenu(tr("&Envelopes"));
+  newModuleEnvelopes->addAction(tr("&ENV"),
+          modularSynth, SLOT(newM_env()));
+  newModuleEnvelopes->addAction(tr("&Advanced ENV"),
+          modularSynth, SLOT(newM_advenv()));
+  newModuleEnvelopes->addAction(tr("&VC Envelope"),
+          modularSynth, SLOT(newM_vcenv()));
+  newModuleEnvelopes->addAction(tr("V&C Envelope II"),
+          modularSynth, SLOT(newM_vcenv2()));
+  newModuleEnvelopes->addAction(tr("&Function 1 --> 1"),
+          modularSynth, SLOT(newM_function_1()));
+  newModuleEnvelopes->addAction(tr("F&unction 1 --> 2"),
+          modularSynth, SLOT(newM_function_2()));
+  newModuleEnvelopes->addAction(tr("Fu&nction 1 --> 4"),
+          modularSynth, SLOT(newM_function_4()));
+
+  /*Sequencers submenu*/
+  QMenu *newModuleSequencers = newModulePopup->addMenu(tr("&Sequencers"));
+  newModuleSequencers->addAction(tr("&SEQ  8"),
+          modularSynth, SLOT(newM_seq_8()));
+  newModuleSequencers->addAction(tr("S&EQ 12"),
+          modularSynth, SLOT(newM_seq_12()));
+  newModuleSequencers->addAction(tr("SE&Q 16"),
+          modularSynth, SLOT(newM_seq_16()));
+  newModuleSequencers->addAction(tr("SEQ &24"),
+          modularSynth, SLOT(newM_seq_24()));
+  newModuleSequencers->addAction(tr("SEQ &32"),
+          modularSynth, SLOT(newM_seq_32()));
+  newModuleSequencers->addAction(tr("&V8 Sequencer"),
+          modularSynth, SLOT(newM_v8sequencer()));
+
+  /*VCA & Mix submenu*/
+  QMenu *newModuleVcaMix = newModulePopup->addMenu(tr("&VCA and Mix"));
+  newModuleVcaMix->addAction(tr("&Amplifier"),
+          modularSynth, SLOT(newM_amp()));
+  newModuleVcaMix->addAction(tr("&VCA lin."),
+          modularSynth, SLOT(newM_vca_lin()));
+  newModuleVcaMix->addAction(tr("V&CA exp."),
+          modularSynth, SLOT(newM_vca_exp()));
+  newModuleVcaMix->addAction(tr("&Ring Modulator"),
+          modularSynth, SLOT(newM_ringmod()));
+  newModuleVcaMix->addAction(tr("&Mixer 2 -> 1"),
+          modularSynth, SLOT(newM_mix_2()));
+  newModuleVcaMix->addAction(tr("M&ixer 4 -> 1"),
+          modularSynth, SLOT(newM_mix_4()));
+  newModuleVcaMix->addAction(tr("Mi&xer 8 -> 1"),
+          modularSynth, SLOT(newM_mix_8()));
+  newModuleVcaMix->addAction(tr("&Stereo Mixer 2"),
+          modularSynth, SLOT(newM_stereomix_2()));
+  newModuleVcaMix->addAction(tr("S&tereo Mixer 4"),
+          modularSynth, SLOT(newM_stereomix_4())); 
+  newModuleVcaMix->addAction(tr("St&ereo Mixer 8"),
+          modularSynth, SLOT(newM_stereomix_8())); 
+  newModuleVcaMix->addAction(tr("VC &Panning"),
+          modularSynth, SLOT(newM_vcpanning()));
+  newModuleVcaMix->addAction(tr("VC S&witch"),
+          modularSynth, SLOT(newM_vcswitch()));
+
+  /*CV Operations*/
+  QMenu *newModuleCvOps = newModulePopup->addMenu(tr("&CV Operations"));
+  newModuleCvOps->addAction(tr("&CVS"),
+          modularSynth, SLOT(newM_cvs()));
+  newModuleCvOps->addAction(tr("&Slew Limiter"),
+          modularSynth, SLOT(newM_slew()));
+  newModuleCvOps->addAction(tr("&Noise/ Random"),
+          modularSynth, SLOT(newM_noise()));
+  newModuleCvOps->addAction(tr("N&oise/Random 2"),
+          modularSynth, SLOT(newM_noise2()));
+  newModuleCvOps->addAction(tr("Sa&mple && Hold"),
+          modularSynth, SLOT(newM_sh()));
+  newModuleCvOps->addAction(tr("&Quantizer"),
+          modularSynth, SLOT(newM_quantizer()));
+  newModuleCvOps->addAction(tr("Q&uantizer 2"),
+          modularSynth, SLOT(newM_vquant()));
+  newModuleCvOps->addAction(tr("Sc&ala Quantizer"),
+          modularSynth, SLOT(newM_scquantizer()));
+  newModuleCvOps->addAction(tr("C&onverter"),
+          modularSynth, SLOT(newM_conv()));
+  newModuleCvOps->addAction(tr("&Hysteresis"),
+          modularSynth, SLOT(newM_hysteresis()));
+
+  newModulePopup->addAction(tr("Co&mment"), modularSynth, SLOT(new_textEdit()));
 
   modulePopup->addAction(tr("&Show Ladspa Browser..."), modularSynth,
           SLOT(displayLadspaPlugins()));
