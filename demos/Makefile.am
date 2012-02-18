@@ -2,9 +2,11 @@
 
 demosdatadir = $(pkgdatadir)/demos
 dist_demosdata_DATA = \
+	analog_memory_1.ams \
 	bass_advenv.ams \
 	bass.ams \
 	bass_reverb.ams \
+	bitgrinder_1.ams \
 	chorus_drops2.ams \
 	chorus_drops.ams \
 	classical.ams \
@@ -81,6 +83,7 @@ dist_demosdata_DATA = \
 	example_vc_panning_lfo.ams \
 	example_vcswitch.ams \
 	example_wind.ams \
+	hysteresis_1.ams \
 	JungleBird.ams \
 	living_phaser.ams \
 	organ01.ams \
@@ -97,4 +100,5 @@ dist_demosdata_DATA = \
 	SineSolo.ams \
 	v8_seq_demo_1.ams \
 	v8_seq_demo_2.ams \
-	v8_seq_demo_3.ams
+	v8_seq_demo_3.ams \
+	vcdelay_1.ams

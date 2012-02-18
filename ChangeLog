@@ -1,3 +1,8 @@
+2012-02-18 Guido Scholz <guido.scholz@bayernline.de>
+	* demos/analog_memory_1.ams, demos/bitgrinder_1.ams,
+	demos/hysteresis_1.ams, demos/vcdelay_1.ams: Add demo files for
+	new modules, provided by Bill Yerazunis.
+
 2012-02-17 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.cpp: Cleanup string constant handling.
 
@@ -90,7 +95,6 @@
 	this feature is handled automatically.
 	* src/m_lfo.cpp: Fix triggered reset of LFO saw signals; patch
 	provided by Bill Yerazunis.
-
 
 2012-01-30 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp:
