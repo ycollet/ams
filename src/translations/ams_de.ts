@@ -6,33 +6,33 @@
     <message>
         <location filename="../aboutdialog.cpp" line="51"/>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Über %1</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="75"/>
         <source>AlsaModularSynth (ams) is a realtime modular sythesizer
 and effect processor.</source>
-        <translation type="unfinished"></translation>
+        <translation>AlsaModularSynth (ams) ist ein modularer Echtzeitsynthesizer und Effektprozessor</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="104"/>
         <source>&amp;Authors</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Autoren</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="125"/>
         <source>&amp;Contributors</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mitwirkende</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="151"/>
         <source>&amp;Thanks</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Danke</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="163"/>
         <source>&amp;License</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lizenz</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@ and effect processor.</source>
     <message>
         <location filename="../ladspadialog.cpp" line="181"/>
         <source>Create &amp;Poly Plugin</source>
-        <translation>Erzeuge &amp;Poly Plugin</translation>
+        <translation>Erzeuge &amp;Poly-Plugin</translation>
     </message>
     <message>
         <location filename="../ladspadialog.cpp" line="218"/>
