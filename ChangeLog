@@ -1,3 +1,7 @@
+2012-02-19 Guido Scholz <guido.scholz@bayernline.de>
+	* src/aboutdialog.*, src/mainwindow.cpp, src/modularsynth.*: Add
+	new about dialog.
+
 2012-02-18 Guido Scholz <guido.scholz@bayernline.de>
 	* demos/analog_memory_1.ams, demos/bitgrinder_1.ams,
 	demos/hysteresis_1.ams, demos/vcdelay_1.ams: Add demo files for

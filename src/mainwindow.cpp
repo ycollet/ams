@@ -3,6 +3,7 @@
 #include <QMenuBar>
 #include <QScrollArea>
 
+#include "aboutdialog.h"
 #include "mainwindow.h"
 #include "synthdata.h"
 
@@ -265,8 +266,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   midiMenu->addAction(tr("Pre&ferences..."), this,
           SLOT(displayPreferences()));
 
-  helpMenu->addAction(tr("&About AlsaModularSynth..."), modularSynth,
-          SLOT(displayAbout()));
+  helpMenu->addAction(tr("&About AlsaModularSynth..."), this,
+          SLOT(helpAboutAms()));
   helpMenu->addAction(tr("About &Qt..."), this,
           SLOT(helpAboutQt()));
 
@@ -780,4 +781,16 @@ void MainWindow::applyPreferences()
 
     /*at least*/
     modularSynth->refreshColors();
+}
+
+/*show about ams dialog*/
+void MainWindow::helpAboutAms()
+{
+    AboutDialog* ad = new AboutDialog(this);
+    if (ad == NULL)
+        return;
+
+    ad->exec();
+    delete ad;
+
 }

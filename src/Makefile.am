@@ -4,6 +4,7 @@ bin_PROGRAMS = ams
 
 # list of all generated (and not distributed) sources
 nodist_ams_SOURCES = \
+	aboutdialog_moc.cpp \
 	box_moc.cpp \
 	canvas_moc.cpp \
 	configdialog_moc.cpp \
@@ -80,6 +81,7 @@ nodist_ams_SOURCES = \
 
 # list of all c++ source files
 ams_SOURCES = \
+	aboutdialog.cpp \
 	box.cpp \
 	canvas.cpp \
 	canvasfunction.cpp \
@@ -163,6 +165,7 @@ ams_SOURCES = \
 
 # list of all header files
 noinst_HEADERS = \
+	aboutdialog.h \
 	box.h \
 	canvas.h \
 	canvasfunction.h \

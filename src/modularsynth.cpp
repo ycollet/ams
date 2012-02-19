@@ -341,38 +341,6 @@ int ModularSynth::go(bool forceJack, bool forceAlsa)
     return 0;
 }
 
-void ModularSynth::displayAbout() {
- 
-    aboutWidget->about(this, tr("About ") + AMS_LONGNAME,
-            AMS_LONGNAME " " VERSION 
-            "\nby Matthias Nagorni and Fons Adriaensen\n"
-            "(c)2002-2003 SuSE AG Nuremberg\n"
-            "(c)2003 Fons Adriaensen\n"
-            "(c)2007 Malte Steiner\n"
-            "(c)2007-2011 Karsten Wiese\n"
-            "(c)2008-2012 Guido Scholz\n\n"
-            "Documentation and examples can be found in\n"
-            "/usr/share/ams\n\n"
-            "More presets and updates are available from\n"
-            "http://alsamodular.sourceforge.net/"
-    "\n\nAcknowledgements\n"
-    "----------------------\n\n"
-    "The VCF Module uses the resonant low-pass filter by Paul Kellett and\n" 
-    "the Cookbook formulae for audio EQ biquad filter coefficients by\n"
-    "Robert Bristow-Johnson. The experimental 24 dB Lowpass filters have\n" 
-    "been taken from http://musicdsp.org/. They are based on the CSound source\n"
-    "code, the paper by Stilson/Smith and modifications by Paul Kellett\n" 
-    "and Timo Tossavainen. The pink noise conversion formula is by Paul\n" 
-    "Kellett and has been taken from http://musicdsp.org/ as well.\n\n"
-    "The author is grateful to Takashi Iwai for instructions about ALSA.\n"
-    "Klaas Freitag, Helmut Herold, Stefan Hundhammer and Arvin Schnell\n"
-    "answered many questions about Qt. Thanks to Jörg Arndt for valuable\n"
-    "hints regarding speed optimization. Torsten Rahn has helped to\n" 
-    "improve the color scheme of the program. Thanks to Bernhard Kaindl\n"
-    "for helpful discussion.\n");
-    aboutWidget->raise();
-}
-
 void ModularSynth::displayMidiController()
 {
   if (!midiWidget->isVisible())

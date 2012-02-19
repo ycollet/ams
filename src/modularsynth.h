@@ -139,7 +139,6 @@ public:
     TextEdit* getTextEditAt(int);
     
   public slots: 
-    void displayAbout();
     void displayMidiController();
     void displayParameterView();
     void displayLadspaPlugins();

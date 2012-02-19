@@ -49,6 +49,7 @@ private slots:
     void fileSave();
     void fileSaveAs();
     void updateWindowTitle();
+    void helpAboutAms();
     void helpAboutQt();
     void recentFileActivated(QAction*);
     void setupRecentFilesMenu();
