@@ -59,6 +59,8 @@ class Port : public QWidget
     void removeAllConnectedPorts();
     void removeAllConnectionsTo(Port*);
     void setHighlighted(bool);
+    void setJackColor(QColor& color);
+    void setCableColor(QColor& color);
 
   protected:
     virtual void paintEvent(QPaintEvent*);

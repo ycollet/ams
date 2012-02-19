@@ -246,7 +246,7 @@ void Port::jackColorClicked() {
 
   QColor tmp;
 
-  tmp = QColorDialog::getColor (jackColor);
+  tmp = QColorDialog::getColor(jackColor);
   if (tmp.isValid()) {
     jackColor = tmp;
   }
@@ -257,7 +257,7 @@ void Port::cableColorClicked() {
 
   QColor tmp;
   
-  tmp = QColorDialog::getColor (cableColor);
+  tmp = QColorDialog::getColor(cableColor);
   if (tmp.isValid()) {
     cableColor = tmp;
   }
@@ -293,3 +293,14 @@ void Port::setHighlighted(bool lighton)
         update();
     }
 }
+
+void Port::setJackColor(QColor& color)
+{
+    jackColor = color;
+}
+
+void Port::setCableColor(QColor& color)
+{
+    cableColor = color;
+}
+

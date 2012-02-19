@@ -149,6 +149,66 @@ void Module::addPort(Port *p)
     connect(p, SIGNAL(portDisconnected()), this, SIGNAL(portDisconnected()));
 }
 
+void Module::paintCablesToConnectedPorts(QPainter& painter)
+{
+    int inportx, inporty, outportx, outporty;
+
+    for (int i = 0; i < portList.count(); ++i) {
+        Port* inport = portList.at(i);
+        Port* outport = inport->needsConnectionToPort();
+        if (outport == NULL) 
+            continue;
+
+        QColor cableColor, jackColor;
+        QPen pen;
+        QPainterPath path;
+        int xShift = 30;
+        cableColor = inport->cableColor;
+        jackColor = inport->jackColor;
+
+        // calculate cable path
+        inportx = inport->pos().x() + x() - 10;
+        outportx = outport->pos().x() + outport->width() +
+            outport->module->x() + 10;
+        inporty = inport->pos().y() + y() + inport->height()/2;
+        outporty = outport->pos().y() + outport->module->y() +
+            outport->height()/2;
+        if (outportx > inportx)
+            xShift += (outportx - inportx) >> 3;
+
+        path.moveTo(inportx, inporty);
+        path.cubicTo(inportx - xShift, inporty + 3,
+                outportx + xShift, outporty + 3, outportx, outporty);
+
+        // paint cable
+        pen.setWidth(5);
+        pen.setColor(cableColor.dark(120));
+        painter.strokePath(path, pen);
+
+        pen.setWidth(3);
+        pen.setColor(cableColor);
+        painter.strokePath(path, pen);
+
+        pen.setWidth(1);
+        pen.setColor(cableColor.light(120));
+        painter.strokePath(path, pen);
+
+        // paint jack
+        painter.fillRect(inportx, inporty - 3, 11, 7,
+                QBrush(jackColor.dark(120)));
+        painter.fillRect(outportx - 11, outporty - 3, 11, 7,
+                QBrush(jackColor.dark(120)));
+        painter.fillRect(inportx, inporty - 2, 11, 5,
+                QBrush(jackColor));
+        painter.fillRect(outportx - 11, outporty - 2, 11, 5,
+                QBrush(jackColor));
+        painter.fillRect(inportx, inporty - 1, 11, 3,
+                QBrush(jackColor.light(120)));
+        painter.fillRect(outportx - 11, outporty - 1, 11, 3,
+                QBrush(jackColor.light(120)));
+    }
+}
+
 void Module::paint(QPainter &p)
 {
   QString  qs;
@@ -467,62 +527,26 @@ Port* Module::getOutPortWithIndex(int idx)
     return p;
 }
 
-void Module::paintCablesToConnectedPorts(QPainter& painter)
+void Module::setJackColor(QColor& color)
 {
-    int inportx, inporty, outportx, outporty;
+    Port* p = NULL;
 
     for (int i = 0; i < portList.count(); ++i) {
-        Port* inport = portList.at(i);
-        Port* outport = inport->needsConnectionToPort();
-        if (outport == NULL) 
-            continue;
+        p = portList.at(i);
+        if (p != NULL && p->isInPort()) {
+            p->setJackColor(color);
+        }
+    }
+}
 
-        QColor cableColor, jackColor;
-        QPen pen;
-        QPainterPath path;
-        int xShift = 30;
-        cableColor = inport->cableColor;
-        jackColor = outport->jackColor;
+void Module::setCableColor(QColor& color)
+{
+    Port* p = NULL;
 
-        // calculate cable path
-        inportx = inport->pos().x() + x() - 10;
-        outportx = outport->pos().x() + outport->width() +
-            outport->module->x() + 10;
-        inporty = inport->pos().y() + y() + inport->height()/2;
-        outporty = outport->pos().y() + outport->module->y() +
-            outport->height()/2;
-        if (outportx > inportx)
-            xShift += (outportx - inportx) >> 3;
-
-        path.moveTo(inportx, inporty);
-        path.cubicTo(inportx - xShift, inporty + 3,
-                outportx + xShift, outporty + 3, outportx, outporty);
-
-        // paint cable
-        pen.setWidth(5);
-        pen.setColor(cableColor.dark(120));
-        painter.strokePath(path, pen);
-
-        pen.setWidth(3);
-        pen.setColor(cableColor);
-        painter.strokePath(path, pen);
-
-        pen.setWidth(1);
-        pen.setColor(cableColor.light(120));
-        painter.strokePath(path, pen);
-
-        // paint jack
-        painter.fillRect(inportx, inporty - 3, 11, 7,
-                QBrush(jackColor.dark(120)));
-        painter.fillRect(outportx - 11, outporty - 3, 11, 7,
-                QBrush(jackColor.dark(120)));
-        painter.fillRect(inportx, inporty - 2, 11, 5,
-                QBrush(jackColor));
-        painter.fillRect(outportx - 11, outporty - 2, 11, 5,
-                QBrush(jackColor));
-        painter.fillRect(inportx, inporty - 1, 11, 3,
-                QBrush(jackColor.light(120)));
-        painter.fillRect(outportx - 11, outporty - 1, 11, 3,
-                QBrush(jackColor.light(120)));
+    for (int i = 0; i < portList.count(); ++i) {
+        p = portList.at(i);
+        if (p != NULL && p->isInPort()) {
+            p->setCableColor(color);
+        }
     }
 }

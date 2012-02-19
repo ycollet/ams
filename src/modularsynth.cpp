@@ -153,7 +153,6 @@ ModularSynth::~ModularSynth()
   synthdata->midiWidget->clearAllClicked();
 
   guiWidget->close();
-  //prefWidget->close();
   midiWidget->close();
   delete synthdata;
 }
@@ -2380,7 +2379,16 @@ QColor ModularSynth::getCableColor() const
 
 void ModularSynth::setCableColor(QColor color)
 {
+    Module* m = NULL;
+
     synthdata->colorCable = color;
+
+    for (int i = 0; i < listModule.count(); ++i) {
+        m = listModule.at(i);
+        if (m != NULL) {
+            m->setCableColor(color);
+        }
+    }
 }
 
 QColor ModularSynth::getJackColor() const
@@ -2390,7 +2398,16 @@ QColor ModularSynth::getJackColor() const
 
 void ModularSynth::setJackColor(QColor color)
 {
+    Module* m = NULL;
+
     synthdata->colorJack = color;
+
+    for (int i = 0; i < listModule.count(); ++i) {
+        m = listModule.at(i);
+        if (m != NULL) {
+            m->setJackColor(color);
+        }
+    }
 }
 
 int ModularSynth::getMidiControllerMode()

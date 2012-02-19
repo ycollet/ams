@@ -94,7 +94,7 @@ class Module : public Box
 protected:
     virtual ~Module();
 
-  public: 
+public: 
     ConfigDialog *configDialog;
     float ***data; 
     bool cycleReady;
@@ -104,7 +104,6 @@ protected:
     QColor colorBackground, colorBorder, colorFont;
     static int portmemAllocated;
 
-public:
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
 	   const QString &name);
     void Delete();
@@ -131,6 +130,8 @@ public:
     Port* getInPortWithIndex(int);
     Port* getOutPortWithIndex(int);
     void paintCablesToConnectedPorts(QPainter&);
+    void setJackColor(QColor& color);
+    void setCableColor(QColor& color);
 
   protected:
     virtual void generateCycle() = 0;
