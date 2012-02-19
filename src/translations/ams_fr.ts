@@ -178,16 +178,6 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="74"/>
-        <source>D&amp;etune %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_ad.cpp" line="78"/>
-        <source>Dr&amp;ift %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../m_ad.cpp" line="88"/>
         <source>Auto&amp;tune</source>
         <translation type="unfinished"></translation>
@@ -198,12 +188,14 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../m_ad.cpp" line="74"/>
         <location filename="../m_ad.cpp" line="172"/>
         <location filename="../m_ad.cpp" line="176"/>
         <source>Detune %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../m_ad.cpp" line="78"/>
         <location filename="../m_ad.cpp" line="174"/>
         <location filename="../m_ad.cpp" line="178"/>
         <source>Drift %1</source>

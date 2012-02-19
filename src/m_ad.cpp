@@ -71,11 +71,11 @@ M_ad::M_ad(int outCount, QWidget* parent)
     configDialog->addComboBox(tr("&Voice"), voice[l1], voiceNames, displayTab);
     QObject::connect(configDialog->midiComboBoxList.at(l1)->comboBox, 
                      SIGNAL(highlighted(int)), this, SLOT(updateVoices(int)));
-    qs = tr("D&etune %1").arg(l1);
+    qs = tr("Detune %1").arg(l1);
     configDialog->addLabel(qs, displayTab);                                    
     detuneBox[l1] = configDialog->addHBox(displayTab);                          
     configDialog->addLabel(" 0.000 ", detuneBox[l1]);
-    qs = tr("Dr&ift %1").arg(l1);
+    qs = tr("Drift %1").arg(l1);
     configDialog->addLabel(qs, displayTab);
     driftBox[l1] = configDialog->addHBox(displayTab);
     for (l2 = 0; l2 < outCount; l2++) {
