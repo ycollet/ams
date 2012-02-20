@@ -19,29 +19,29 @@
 
 #define AMSDIR ".alsamodular"
 
-static struct option options[] =
-        {{"periodsize", 1, 0, 'b'},
-         {"frag", 1, 0, 'f'},   
-         {"poly", 1, 0, 'p'},   
-         {"rate", 1, 0, 'r'},   
-         {"edge", 1, 0, 'e'},   
-         {"help", 0, 0, 'h'},
-         {"verbose", 0, 0, 'v'},
-         {"version", 0, 0, 'V'},
-         {"soundcard", 1, 0, 'c'},
-#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
-         {"capture", 1, 0, 'C'},
-         {"playback", 1, 0, 'P'},
-#endif
-         {"presetpath", 1, 0, 'd'},
-         {"nogui", 0, 0, 'n'},
+static struct option options[] = {
          {"jack", 0, 0, 'J'},
 #ifdef JACK_SESSION
          {"jack_session_uuid", 1, 0, 'U' },
 #endif
          {"alsa", 0, 0, 'A'},
+         {"device", 1, 0, 'd'},
+#if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
+         {"capture", 1, 0, 'C'},
+         {"playback", 1, 0, 'P'},
+#endif
+         {"periodsize", 1, 0, 'p'},
+         {"nfrag", 1, 0, 'n'},   
+         {"rate", 1, 0, 'r'},   
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
+         {"poly", 1, 0, 'y'},   
+         {"edge", 1, 0, 'e'},   
+         {"presetdir", 1, 0, 'D'},
+         {"nogui", 0, 0, 'n'},
+         {"help", 0, 0, 'h'},
+         {"verbose", 0, 0, 'v'},
+         {"version", 0, 0, 'V'},
          {"name", 1, 0, 'N'},
          {0, 0, 0, 0}};
 
@@ -108,13 +108,6 @@ int makeSynthName(QString &name)
 int main(int argc, char *argv[])  
 {
   char aboutText[] = AMS_LONGNAME " " VERSION;
-  /*                 "\nby Matthias Nagorni and Fons Adriaensen\n"
-                     "(c)2002-2003 SuSE AG Nuremberg\n"
-                     "(c)2003 Fons Adriaensen\n"
-		     "Additional programming:\n"
-		     "2007 Malte Steiner, Karsten Wiese\n"
-		     "2008 Guido Scholz\n";
- */
   QApplication app(argc, argv);
 
   // translator for Qt library strings
@@ -139,10 +132,10 @@ int main(int argc, char *argv[])
   
   int getopt_return;
   int option_index;
+  QString pcmname = DEFAULT_PCMNAME;
   ModularSynthOptions msoptions;
 
   msoptions.synthName = "ams";
-  msoptions.pcmname = DEFAULT_PCMNAME;
   msoptions.cname = "";
   msoptions.pname = "";
   msoptions.frsize = DEFAULT_PERIODSIZE;
@@ -165,33 +158,32 @@ int main(int argc, char *argv[])
 #endif
 
   while ((getopt_return = getopt_long(argc, argv,
-                  "hnJjAab:p:f:e:c:d:r:i:o:vVN:"
+                  "AaD:d:e:ghi:JjN:n:o:p:r:vVy:"
 #ifdef JACK_SESSION
                   "U:"
 #endif
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
                   "C:P:"
 #endif
-                  ,
-                  options, &option_index)) >= 0) {
+                  , options, &option_index)) >= 0) {
     switch(getopt_return) {
-    case 'p': 
-        msoptions.poly = atoi(optarg);
+    case 'J':
+    case 'j':
+        msoptions.forceJack = true;
+        msoptions.forceAlsa = false;
         break;
-    case 'b': 
-        msoptions.frsize = atoi(optarg);
+#ifdef JACK_SESSION
+    case 'U': 
+        msoptions.global_jack_session_uuid = QString(optarg);
         break;
-    case 'f': 
-        msoptions.nfrags = atoi(optarg);
+#endif
+    case 'A':
+    case 'a':
+        msoptions.forceJack = false;
+        msoptions.forceAlsa = true;
         break;
-    case 'e': 
-        msoptions.edge = atof(optarg);
-        break;
-    case 'r': 
-        msoptions.fsamp = atoi(optarg);
-        break;
-    case 'c': 
-        msoptions.pcmname = optarg;
+    case 'd': 
+        pcmname = optarg;
         break; 
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
     case 'C': 
@@ -201,22 +193,14 @@ int main(int argc, char *argv[])
         msoptions.pname = optarg;
         break; 
 #endif
-    case 'd': 
-        msoptions.presetPath = optarg;
-        msoptions.havePresetPath = true;
-        break; 
-    case 'n':
-        msoptions.noGui = true;
+    case 'p': 
+        msoptions.frsize = atoi(optarg);
         break;
-    case 'J':
-    case 'j':
-        msoptions.forceJack = true;
-        msoptions.forceAlsa = false;
+    case 'n': 
+        msoptions.nfrags = atoi(optarg);
         break;
-    case 'A':
-    case 'a':
-        msoptions.forceJack = false;
-        msoptions.forceAlsa = true;
+    case 'r': 
+        msoptions.fsamp = atoi(optarg);
         break;
     case 'i': 
         msoptions.ncapt = atoi(optarg);
@@ -224,11 +208,19 @@ int main(int argc, char *argv[])
     case 'o': 
         msoptions.nplay = atoi(optarg);
         break;
-#ifdef JACK_SESSION
-    case 'U': 
-        msoptions.global_jack_session_uuid = QString(optarg);
+    case 'y': 
+        msoptions.poly = atoi(optarg);
         break;
-#endif
+    case 'e': 
+        msoptions.edge = atof(optarg);
+        break;
+    case 'D': 
+        msoptions.presetPath = optarg;
+        msoptions.havePresetPath = true;
+        break; 
+    case 'g':
+        msoptions.noGui = true;
+        break;
     case 'v':
         msoptions.verbose++;
         break;
@@ -243,25 +235,26 @@ int main(int argc, char *argv[])
 	printf("%s\n\n", aboutText);
 	printf("Usage:\tams [OPTION]... [PRESETFILE]\n\nOptions:\n");
         printf("  -J, --jack                    Force JACK\n");
+#ifdef JACK_SESSION
+        printf("  -U, --jack_session_uuid       JACK session UUID\n");
+#endif
         printf("  -A, --alsa                    Force ALSA\n");
-        printf("    -c, --soundcard <plug>        Soundcard [%s]\n", DEFAULT_PCMNAME);
+        printf("    -d, --device <device>       ALSA device [%s]\n", DEFAULT_PCMNAME);
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
         printf("    -C, --capture <device>        Capture device\n");
         printf("    -P, --playback <device>       Playback device\n");
 #endif
-        printf("    -b, --periodsize <frames>     Periodsize [%d]\n", DEFAULT_PERIODSIZE);
-        printf("    -f, --frag <num>              Number of fragments [%d]\n", DEFAULT_PERIODS);
+        printf("    -p, --periodsize <frames>     Period size [%d]\n", DEFAULT_PERIODSIZE);
+        printf("    -n, --nfrag <nfrags>          Number of fragments [%d]\n", DEFAULT_PERIODS);
         printf("    -r, --rate <samples/s>        Samplerate [%d]\n", DEFAULT_RATE);
         printf("  -i, --in <num>                Number of ALSA/JACK input ports\n");
         printf("  -o, --out <num>               Number of ALSA/JACK output ports\n");
-        printf("  -p, --poly <num>              Polyphony [1]\n");
+        printf("  -y, --poly <num>              Polyphony [1]\n");
         printf("  -e, --edge <0..10>            VCO Edge [1.0]\n");
-        printf("  -d, --presetdir <dir>         Preset directory\n");
-        printf("  -n, --nogui                   Start without GUI\n");
-#ifdef JACK_SESSION
-        printf("  -U, --jack_session_uuid       JACK session UUID\n");
-#endif
-        printf("  -v				verbose\n");
+        printf("  -D, --presetdir <dir>         Preset directory\n");
+        printf("  -g, --nogui                   Start without GUI\n");
+        printf("  -h, --help                    Show this message\n");
+        printf("  -v, --verbose 		verbose warning messages\n");
         printf("  -V, --version			Display program version information\n");
         printf("  -N, --name <name>             ALSA/JACK clientname, windowtitle\n\n");
         exit(EXIT_SUCCESS);
@@ -271,12 +264,12 @@ int main(int argc, char *argv[])
 
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
   if (msoptions.cname.isEmpty() && msoptions.pname.isEmpty()) {
-      msoptions.cname = msoptions.pcmname;
-      msoptions.pname = msoptions.pcmname;
+      msoptions.cname = pcmname;
+      msoptions.pname = pcmname;
   }
 #else
-  msoptions.cname = msoptions.pcmname;
-  msoptions.pname = msoptions.pcmname;
+  msoptions.cname = pcmname;
+  msoptions.pname = pcmname;
 #endif
 
   if (optind < argc){

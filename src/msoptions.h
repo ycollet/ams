@@ -11,7 +11,6 @@
 
 struct ModularSynthOptions {
     QString synthName;
-    QString pcmname;
     QString cname;
     QString pname;
     QString presetName;
