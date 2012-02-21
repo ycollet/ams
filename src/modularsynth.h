@@ -40,7 +40,6 @@ class ModularSynth : public QWidget
 {
   Q_OBJECT
 
-    QMessageBox *aboutWidget;
     QList<Module*> listModule;
     QList<class TextEdit*> listTextEdit;
     connectorStyleType connectorStyle;    
@@ -83,7 +82,6 @@ public:
     ModularSynth(QWidget* parent, const ModularSynthOptions&);
     ~ModularSynth();
 
-    void setPreferencesWidgetColors();
     bool clearConfig(bool restart);
     QMenu *contextMenu;
     int go(bool forceJack, bool forceAlsa);

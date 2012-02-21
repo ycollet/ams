@@ -122,7 +122,6 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   selectedPort = NULL;
   connectorStyle = CONNECTOR_BEZIER;
   portPopup = new PopupMenu(this);
-  aboutWidget = new QMessageBox(parent); 
 
   synthdata = new SynthData(this, mso);
 #ifdef JACK_SESSION
@@ -1227,7 +1226,6 @@ void ModularSynth::loadColors() {
         synthdata->colorPortFont1 = synthdata->colorModuleFont;
         synthdata->colorPortFont2 = QColor(255, 240, 140);
         refreshColors();
-        setPreferencesWidgetColors();
     }        
 }
 
@@ -2226,13 +2224,6 @@ void ModularSynth::savePreferences(QTextStream& ts)
 void ModularSynth::showContextMenu(const QPoint& pos) {
   
     contextMenu->popup(mapToGlobal(pos));
-}
-
-
-void ModularSynth::setPreferencesWidgetColors()
-{
-  //prefWidget->recallColors();
-  //prefWidget->refreshColors();
 }
 
 
