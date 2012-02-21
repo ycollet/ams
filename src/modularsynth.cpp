@@ -2237,10 +2237,7 @@ void ModularSynth::refreshColors() {
         }
     }
 
-    /*redraw synth background, cables and jacks*/
-    QPalette pal = palette();
-    pal.setColor(backgroundRole(), synthdata->colorBackground);
-    setPalette(pal);
+    setPalette(synthdata->colorBackground);
     update();
 }
 
