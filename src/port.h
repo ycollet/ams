@@ -29,6 +29,7 @@ class Port : public QWidget
     bool highlighted;
     dirType dir;
     QList<Port*> connectedPortList;
+    void disconnectPort(int);  
 
   public:
     Port(const QString &p_portName, dirType p_dir, int p_index,
@@ -61,6 +62,8 @@ class Port : public QWidget
     void setHighlighted(bool);
     void setJackColor(QColor& color);
     void setCableColor(QColor& color);
+    bool runOutPortPopupAt(const QPoint& point);
+    QString getName();
 
   protected:
     virtual void paintEvent(QPaintEvent*);

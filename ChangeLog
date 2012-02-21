@@ -1,3 +1,7 @@
+2012-02-21 Guido Scholz <guido.scholz@bayernline.de>
+	* src/modularsynth.cpp, src/port.*: Add context menu to
+	disconnect module output ports.
+
 2012-02-20 Guido Scholz <guido.scholz@bayernline.de>
 	* src/main.cpp, src/msoptions.h: Rename commandline options
 	"-d" (ALSA device), "-p" (Period size) and "-n" (Number of

@@ -210,12 +210,17 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
 	    QWidget *pw = childAt(ev->pos());
 	    if (pw) {
 	      Port *pp = qobject_cast<Port *>(pw);
-	      if (pp) {
+	      if (pp != NULL && pp->hasConnectedPort()) {
+		  // show in port popup menu
 		if (pp->isInPort()) {
-		  // show port popup menu
 		  pp->popupMenuClicked(portPopup->runAt(ev->globalPos()));
 		  update();
 		}
+		  // show out port popup menu
+                else {
+                    if (pp->runOutPortPopupAt(ev->globalPos()))
+                        update();
+                }
 	      } else {
 		Module *mb = qobject_cast<Module *>(pw);
 		if (mb) {

@@ -34,46 +34,6 @@ private:
   QAction* acYellowCable;
   QAction* acSetJackColor;
   QAction* acSetCableColor;
-
-
-/*
-public slots:
-  void disconnectClicked() {
-    port->disconnectClicked();
-  }
-  void cableGrayClicked() {
-    port->cableGrayClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableRedClicked() {
-    port->cableRedClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableGreenClicked() {
-    port->cableGreenClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableBlueClicked() {
-    port->cableBlueClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableYellowClicked() {
-    port->cableYellowClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableDefaultClicked() {
-    port->cableDefaultClicked();
-    port->module->modularSynth()->update();
-  }
-  void jackColorClicked() {
-    port->jackColorClicked();
-    port->module->modularSynth()->update();
-  }
-  void cableColorClicked() {
-    port->cableColorClicked();
-    port->module->modularSynth()->update();
-  }
-  */
 };
 
 #endif

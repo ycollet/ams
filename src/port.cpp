@@ -172,8 +172,28 @@ void Port::popupMenuClicked(PopupMenu::portAction ac)
     }
 }
 
-void Port::disconnectClicked() {
+/*disconnect out port*/
+void Port::disconnectPort(int pidx)
+{
+    if (pidx < 0)
+        return;
 
+    synthdata->port_sem.acquire();
+    if (pidx <= connectedPortList.count() - 1) {
+        Port* cport = connectedPortList.at(pidx);
+        /*remove only one connection, may be there are more*/
+        cport->connectedPortList.removeOne(this);
+        cport->module->decConnections();
+        connectedPortList.removeAt(pidx);
+        module->decConnections();
+    }
+    synthdata->port_sem.release();
+    emit portDisconnected();
+}
+
+/*disconnect in port*/
+void Port::disconnectClicked()
+{
     synthdata->port_sem.acquire();
     if (connectedPortList.count() > 0) {
         Port* cport = connectedPortList.at(0);
@@ -304,3 +324,61 @@ void Port::setCableColor(QColor& color)
     cableColor = color;
 }
 
+/* run popup menu and return true if some action has occured*/
+bool Port::runOutPortPopupAt(const QPoint& point)
+{
+    bool result = false;
+
+    if (connectedPortList.count() == 0)
+        return false;
+
+    QMenu* menu = new QMenu(this);
+    QAction* singleaction = NULL;
+    QList<QAction *> actionList;
+
+    if (connectedPortList.count() == 1) {
+        singleaction = menu->addAction(tr("&Disconnect"));
+    }
+    else {
+        QMenu* disconnectmenu = menu->addMenu(tr("&Disconnect"));
+        for (int i = 0; i < connectedPortList.count(); i++) {
+            Port *port = connectedPortList.at(i);
+            if (port != NULL) {
+                QString mn = port->module->objectName();
+                QString pn = port->getName();
+                actionList.append(disconnectmenu->addAction(
+                        tr("&%1 (ID %2) %3")
+                        .arg(mn)
+                        .arg(port->module->moduleID)
+                        .arg(pn)
+                        ));
+            }
+        }
+    }
+
+    /*run context menu*/
+    QAction* ac = menu->exec(point);
+    delete menu;
+
+    if (ac == NULL)
+        return false;
+
+    if (ac == singleaction) {
+        disconnectPort(0);
+        result = true;
+    }
+    else {
+        int idx = actionList.indexOf(ac);
+        if (idx != -1) {
+            disconnectPort(idx);
+            result = true;
+        }
+    }
+
+    return result;
+}
+
+QString Port::getName()
+{
+    return portName;
+}
