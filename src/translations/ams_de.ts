@@ -4303,7 +4303,7 @@ Save changes?</source>
         <location filename="../port.cpp" line="340"/>
         <location filename="../port.cpp" line="343"/>
         <source>&amp;Disconnect</source>
-        <translation type="unfinished">&amp;Trennen</translation>
+        <translation>&amp;Trennen</translation>
     </message>
     <message>
         <location filename="../port.cpp" line="350"/>
