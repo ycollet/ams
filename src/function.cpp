@@ -21,65 +21,68 @@
 static const qreal SCALE = 5.0 * FUNCTION_SCALE;
 
 
-Function::Function(int p_functionCount, int *p_mode, int *p_editIndex, tFunction &point, int p_pointCount, QWidget *parent, const char *name) 
-  : QGraphicsView(new QGraphicsScene(), parent)
-  , point(point)
+Function::Function(int p_functionCount, int *p_mode, int *p_editIndex,
+                   tFunction & point, int p_pointCount, QWidget * parent,
+                   const char *name)
+:QGraphicsView(new QGraphicsScene(), parent)
+, point(point)
 {
-  int l1;
-  QString qs;
+    int l1;
+    QString qs;
 
 //?   scene()->setGrid(FUNCTION_BORDER_L, FUNCTION_BORDER_R, FUNCTION_BORDER_B, FUNCTION_BORDER_T, FUNCTION_SCALE, 
 //                                 FUNCTION_WIDTH, FUNCTION_HEIGHT, FUNCTION_GRID, FUNCTION_GRID);
-  
-  functionCount = p_functionCount;
-  mode = p_mode;
-  editIndex = p_editIndex;
-  mousePressed = false, 
-  activeFunction = -1;
-  activePoint = -1;
-  zoom = 1.0;
-  updateScale();
+
+    functionCount = p_functionCount;
+    mode = p_mode;
+    editIndex = p_editIndex;
+    mousePressed = false, activeFunction = -1;
+    activePoint = -1;
+    zoom = 1.0;
+    updateScale();
 //   for (l1 = 0; l1 < MAX_FUNCTIONS; l1++) {
 //     points[l1] = p_points[l1];
     setPointCount(MAX_POINTS);
     //    screenPoints[l1] = new QPolygon(MAX_POINTS);
     //  }
-  setMinimumWidth(FUNCTION_MINIMUM_WIDTH);
-  setMinimumHeight(FUNCTION_MINIMUM_HEIGHT);
-  setPalette(QPalette(QColor(FUNCTION_COLOR_FG), QColor(FUNCTION_COLOR_BG)));
-  colorTable[0] = QColor(FUNCTION_COLOR_1);
-  colorTable[1] = QColor(FUNCTION_COLOR_2);
-  colorTable[2] = QColor(FUNCTION_COLOR_3);
-  colorTable[3] = QColor(FUNCTION_COLOR_4);
+    setMinimumWidth(FUNCTION_MINIMUM_WIDTH);
+    setMinimumHeight(FUNCTION_MINIMUM_HEIGHT);
+    setPalette(QPalette
+               (QColor(FUNCTION_COLOR_FG), QColor(FUNCTION_COLOR_BG)));
+    colorTable[0] = QColor(FUNCTION_COLOR_1);
+    colorTable[1] = QColor(FUNCTION_COLOR_2);
+    colorTable[2] = QColor(FUNCTION_COLOR_3);
+    colorTable[3] = QColor(FUNCTION_COLOR_4);
 //  colorTable[4] = QColor(FUNCTION_COLOR_5);
 //  colorTable[5] = QColor(FUNCTION_COLOR_6);
 //  colorTable[6] = QColor(FUNCTION_COLOR_7);
 //  colorTable[7] = QColor(FUNCTION_COLOR_8);
 //?  setBackgroundBrush(QColor(FUNCTION_COLOR_BG));
 
-  scene()->setSceneRect(-5 * FUNCTION_SCALE, -5 * FUNCTION_SCALE,
-			10 * FUNCTION_SCALE, 10 * FUNCTION_SCALE);
+    scene()->setSceneRect(-5 * FUNCTION_SCALE, -5 * FUNCTION_SCALE,
+                          10 * FUNCTION_SCALE, 10 * FUNCTION_SCALE);
 
-  for (l1 = 0; l1 < functionCount; l1++) {
-    CanvasFunction *canvasFunction = new CanvasFunction(*this, l1);
-    canvasFunctionList.append(canvasFunction);
-    updateFunction(l1);
-    qs = tr("Out %1").arg(l1);
-    QGraphicsSimpleTextItem *canvasText = new QGraphicsSimpleTextItem(qs, 0, scene());
-    canvasText->setPos(8 + 50 * l1, 4);
-    //    canvasText->setColor(colorTable[l1]);
-    canvasText->setFont(synthdata->bigFont);
-    canvasText->setVisible(TRUE);
-    canvasTextList.append(canvasText);
-  }
+    for (l1 = 0; l1 < functionCount; l1++) {
+        CanvasFunction *canvasFunction = new CanvasFunction(*this, l1);
+        canvasFunctionList.append(canvasFunction);
+        updateFunction(l1);
+        qs = tr("Out %1").arg(l1);
+        QGraphicsSimpleTextItem *canvasText =
+            new QGraphicsSimpleTextItem(qs, 0, scene());
+        canvasText->setPos(8 + 50 * l1, 4);
+        //    canvasText->setColor(colorTable[l1]);
+        canvasText->setFont(synthdata->bigFont);
+        canvasText->setVisible(TRUE);
+        canvasTextList.append(canvasText);
+    }
 }
 
 Function::~Function()
 {
 }
 
-void Function::updateFunction(int index) {
-
+void Function::updateFunction(int index)
+{
 //   int l1, z;
 //   QPoint qp;
 
@@ -99,72 +102,76 @@ void Function::updateFunction(int index) {
 //     f[1][index][l1 + 1] = (double)(FUNCTION_HEIGHT - points[index]->point(l1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
 //     canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y(), z);
 //   }
-  //  repaint(false);
+    //  repaint(false);
 }
 
-void Function::setPointCount(int count) {
-  
-  pointCount = count;
-}
-
-QSize Function::sizeHint() const {
-
-  return QSize(FUNCTION_MINIMUM_WIDTH, FUNCTION_MINIMUM_HEIGHT); 
-}
-
-QSizePolicy Function::sizePolicy() const {
-
-  return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-}
-
-void Function::resizeEvent (QResizeEvent* )
+void Function::setPointCount(int count)
 {
-  updateScale();
-  //  scene()->setSceneRect(0, 0, zoom * width(), zoom * height());
+    pointCount = count;
+}
+
+QSize Function::sizeHint() const const
+{
+    return QSize(FUNCTION_MINIMUM_WIDTH, FUNCTION_MINIMUM_HEIGHT);
+}
+
+QSizePolicy Function::sizePolicy() const const
+{
+    return QSizePolicy(QSizePolicy::MinimumExpanding,
+                       QSizePolicy::MinimumExpanding);
+}
+
+void Function::resizeEvent(QResizeEvent *)
+{
+    updateScale();
+    //  scene()->setSceneRect(0, 0, zoom * width(), zoom * height());
 //  redrawGrid();
-  redrawFunction();
-  //  updateContents();
+    redrawFunction();
+    //  updateContents();
 }
 
-void Function::redrawFunction() {
-
-  int l1;
-
-  if (canvasFunctionList.count() == functionCount) {
-    for (l1 = 0; l1 < functionCount; l1++) {
-      updateFunction(l1);
-    }
-  }
-}
-#include <iostream>
-void Function::drawBackground(QPainter *painter, const QRectF &rect)
+void Function::redrawFunction()
 {
-  QString s;
-  QFont f;
-  f.setPointSizeF(250.0 / zoom);
-  painter->setFont(f);
-  {
-    qreal y = ceil(rect.topLeft().y() * zoom / FUNCTION_SCALE);
-    y *= FUNCTION_SCALE / zoom;
-    QLineF l(qMax(-SCALE, rect.topLeft().x()), y, qMin(SCALE, rect.topRight().x()), y);
-    while (l.y1() < rect.bottomLeft().y()) {
-      painter->drawLine(l);
-      painter->drawText(l.p1(), s.setNum(l.y1() / FUNCTION_SCALE));
-      l.translate(0, (qreal)FUNCTION_SCALE / zoom);
+    int l1;
+
+    if (canvasFunctionList.count() == functionCount) {
+        for (l1 = 0; l1 < functionCount; l1++) {
+            updateFunction(l1);
+        }
     }
-  }
-  {
-    qreal x = ceil(rect.topLeft().x() * zoom / FUNCTION_SCALE);
-    x *= FUNCTION_SCALE / zoom;
-    QLineF l(x, qMax(-SCALE, rect.topLeft().y()), x, qMin(SCALE, rect.bottomLeft().y()));
-    while (l.x1() < rect.bottomRight().x()) {
-      painter->drawLine(l);
-      painter->drawText(l.p1(), s.setNum(l.x1() / FUNCTION_SCALE));
-      //std::cout << l.x1() << std::endl;
-      l.translate((qreal)FUNCTION_SCALE / zoom, 0);
-      //std::cout << l.x1() << std::endl;
+}
+
+#include <iostream>
+void Function::drawBackground(QPainter * painter, const QRectF & rect)
+{
+    QString s;
+    QFont f;
+    f.setPointSizeF(250.0 / zoom);
+    painter->setFont(f);
+    {
+        qreal y = ceil(rect.topLeft().y() * zoom / FUNCTION_SCALE);
+        y *= FUNCTION_SCALE / zoom;
+        QLineF l(qMax(-SCALE, rect.topLeft().x()), y,
+                 qMin(SCALE, rect.topRight().x()), y);
+        while (l.y1() < rect.bottomLeft().y()) {
+            painter->drawLine(l);
+            painter->drawText(l.p1(), s.setNum(l.y1() / FUNCTION_SCALE));
+            l.translate(0, (qreal) FUNCTION_SCALE / zoom);
+        }
     }
-  }
+    {
+        qreal x = ceil(rect.topLeft().x() * zoom / FUNCTION_SCALE);
+        x *= FUNCTION_SCALE / zoom;
+        QLineF l(x, qMax(-SCALE, rect.topLeft().y()), x,
+                 qMin(SCALE, rect.bottomLeft().y()));
+        while (l.x1() < rect.bottomRight().x()) {
+            painter->drawLine(l);
+            painter->drawText(l.p1(), s.setNum(l.x1() / FUNCTION_SCALE));
+            //std::cout << l.x1() << std::endl;
+            l.translate((qreal) FUNCTION_SCALE / zoom, 0);
+            //std::cout << l.x1() << std::endl;
+        }
+    }
 }
 
 void Function::redrawGrid()
@@ -210,7 +217,8 @@ void Function::redrawGrid()
 //   }
 }
 
-void Function::contentsMousePressEvent(QMouseEvent *ev) {
+void Function::contentsMousePressEvent(QMouseEvent * ev)
+{
 
 //   int l1, l2;
 //   QList<QGraphicsItem *> hitList;
@@ -264,11 +272,12 @@ void Function::contentsMousePressEvent(QMouseEvent *ev) {
 //   }
 }
 
-void Function::contentsMouseReleaseEvent(QMouseEvent *ev) {
+void Function::contentsMouseReleaseEvent(QMouseEvent * ev)
+{
 
 //   QPoint qp;
 //   int l1;
-  
+
 //   mousePressed = false;
 //   if ((activeFunction >=0) && (activePoint >= 0)) {
 //     switch (*mode) {
@@ -290,8 +299,8 @@ void Function::contentsMouseReleaseEvent(QMouseEvent *ev) {
 //   }  
 }
 
-void Function::contentsMouseMoveEvent(QMouseEvent *ev) {
-
+void Function::contentsMouseMoveEvent(QMouseEvent * ev)
+{
 //   QMatrix invMatrix;
 //   QPoint qp;
 //   int l1, delta;
@@ -373,43 +382,45 @@ void Function::contentsMouseMoveEvent(QMouseEvent *ev) {
 
 void Function::setZoom(float p_zoom)
 {
-  zoom = p_zoom;
-  updateScale();
+    zoom = p_zoom;
+    updateScale();
 }
 
 void Function::updateScale()
 {
-  double scale[2];
-  
-  scale[0] = (double)zoom * width() / (11 * FUNCTION_SCALE);
-  scale[1] = (double)zoom * height() / (11 * FUNCTION_SCALE);
-  matrix.reset();
-  matrix.scale(scale[0], scale[1]);
-  setMatrix(matrix);
+    double scale[2];
+
+    scale[0] = (double) zoom *width() / (11 * FUNCTION_SCALE);
+    scale[1] = (double) zoom *height() / (11 * FUNCTION_SCALE);
+    matrix.reset();
+    matrix.scale(scale[0], scale[1]);
+    setMatrix(matrix);
 }
+
 #include <iostream>
 void Function::setPoint(int f_index, int p_index, int x, int y)
 {
-  /*std::cout << __PRETTY_FUNCTION__ << f_index << " " << p_index << " " <<
-    x << ", " << y << std::endl;*/
+    /*std::cout << __PRETTY_FUNCTION__ << f_index << " " << p_index << " " <<
+       x << ", " << y << std::endl; */
 
-  FunctionPointT &pf = point[f_index][p_index];
-  pf.x = (float)(x - FUNCTION_CENTER_X) / FUNCTION_SCALE;
-  pf.y = (float)(y - FUNCTION_CENTER_Y) / FUNCTION_SCALE;
-  canvasFunctionList.at(f_index)->setPoint(p_index);
+    FunctionPointT & pf = point[f_index][p_index];
+    pf.x = (float) (x - FUNCTION_CENTER_X) / FUNCTION_SCALE;
+    pf.y = (float) (y - FUNCTION_CENTER_Y) / FUNCTION_SCALE;
+    canvasFunctionList.at(f_index)->setPoint(p_index);
 }
 
 QPoint Function::getPoint(int f_index, int p_index)
 {
-  FunctionPointT &pf = point[f_index][p_index];
-  QPoint p;
-  p.setX((int)(pf.x * FUNCTION_SCALE) + FUNCTION_CENTER_X);
-  p.setY((int)(pf.y * FUNCTION_SCALE) + FUNCTION_CENTER_Y);
-  return p;
+    FunctionPointT & pf = point[f_index][p_index];
+    QPoint p;
+    p.setX((int) (pf.x * FUNCTION_SCALE) + FUNCTION_CENTER_X);
+    p.setY((int) (pf.y * FUNCTION_SCALE) + FUNCTION_CENTER_Y);
+    return p;
 }
 
 void Function::highlightFunction(int index)
 {
     for (int l1 = 0; l1 < functionCount; l1++)
-      canvasFunctionList.at(l1)->setZ((index ? (index - 1 == l1 ? 20 : 10) : 20) + l1);
-}        
+        canvasFunctionList.at(l1)->
+            setZ((index ? (index - 1 == l1 ? 20 : 10) : 20) + l1);
+}
