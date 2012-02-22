@@ -48,13 +48,13 @@ M_function::M_function(int p_functionCount, QWidget * parent)
         out_port_list.append(audio_out_port);
     }
     qs = tr("Function %1 -> 1 ID %2").arg(outPortCount).arg(moduleID);
+    mode = 0;
+    editIndex = 0;
     configDialog->setAddStretch(-1);
     configDialog->addFunction(outPortCount, &mode, &editIndex, point,
                               MAX_POINTS);
     zoomIndex = 0;
     zoom = 1.0;
-    mode = 0;
-    editIndex = 0;
     QStringList zoomNames;
     zoomNames << "   1  " << "   2  " << "   4  " << "   8  ";
     QStringList modeNames;

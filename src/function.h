@@ -9,7 +9,7 @@
 #include <qsize.h>
 #include <QGraphicsView>
 #include <qevent.h>
-#include <qmatrix.h>
+#include <QTransform>
 #include <QResizeEvent>
 #include <QMouseEvent>
 
@@ -43,35 +43,38 @@
 #define FUNCTION_COLOR_FG 0x505080
 
 typedef float float_function[2][MAX_FUNCTIONS + 2][MAX_POINTS + 2];
+
 struct FunctionPointT {
     float x, y;
     operator  QPointF() {
         return QPointF(x * FUNCTION_SCALE, y * FUNCTION_SCALE);
-}};
+    }
+};
 
 typedef FunctionPointT tFunction[MAX_FUNCTIONS][MAX_POINTS];
 
-class Function:public QGraphicsView {
-    Q_OBJECT friend class CanvasFunction;
+class Function: public QGraphicsView {
+    Q_OBJECT
+    friend class CanvasFunction;
     friend class CanvasPoint;
 
   private:
     int *mode, *editIndex;
     //    QPolygon *screenPoints[MAX_FUNCTIONS];
-     tFunction & point;
+    tFunction & point;
     QColor colorTable[MAX_FUNCTIONS];
     int deltaArray[MAX_POINTS];
-     QList < QGraphicsLineItem * >gridX, gridY;
-     QList < class CanvasFunction * >canvasFunctionList;
-     QList < class QGraphicsSimpleTextItem * >canvasTextList;
-    QMatrix matrix;
+    QList < QGraphicsLineItem * >gridX, gridY;
+    QList < class CanvasFunction * >canvasFunctionList;
+    QList < class QGraphicsSimpleTextItem * >canvasTextList;
+    QTransform matrix;
     float zoom;
     bool mousePressed;
     int activeFunction, activePoint;
     QPoint mousePressPos;
 
   public:
-     float_function f;
+    float_function f;
     int pointCount;
     int functionCount;
 
@@ -83,9 +86,9 @@ class Function:public QGraphicsView {
     virtual void contentsMouseMoveEvent(QMouseEvent *);
 
   public:
-     Function(int p_functionCount, int *p_mode, int *p_editIndex,
-              tFunction & point, int p_pointCount, QWidget * parent =
-              0, const char *name = 0);
+    Function(int p_functionCount, int *p_mode, int *p_editIndex,
+              tFunction & point, int p_pointCount, QWidget * parent = 0,
+              const char *name = 0);
     ~Function();
     void setPointCount(int count);
     void setFunctionCount(int count);
@@ -97,9 +100,10 @@ class Function:public QGraphicsView {
     void redrawGrid();
     void updateScale();
 
-     signals: void mousePos(int, int);
+  signals: void mousePos(int, int);
 
-    public slots:void updateFunction(int index);
+  public slots:
+    void updateFunction(int index);
     void setZoom(float p_zoom);
     void highlightFunction(int index);
 };

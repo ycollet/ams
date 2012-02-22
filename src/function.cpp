@@ -24,8 +24,7 @@ static const qreal SCALE = 5.0 * FUNCTION_SCALE;
 Function::Function(int p_functionCount, int *p_mode, int *p_editIndex,
                    tFunction & point, int p_pointCount, QWidget * parent,
                    const char *name)
-:QGraphicsView(new QGraphicsScene(), parent)
-, point(point)
+:QGraphicsView(new QGraphicsScene(), parent), point(point)
 {
     int l1;
     QString qs;
@@ -57,7 +56,7 @@ Function::Function(int p_functionCount, int *p_mode, int *p_editIndex,
 //  colorTable[5] = QColor(FUNCTION_COLOR_6);
 //  colorTable[6] = QColor(FUNCTION_COLOR_7);
 //  colorTable[7] = QColor(FUNCTION_COLOR_8);
-//?  setBackgroundBrush(QColor(FUNCTION_COLOR_BG));
+    setBackgroundBrush(QColor(FUNCTION_COLOR_BG));
 
     scene()->setSceneRect(-5 * FUNCTION_SCALE, -5 * FUNCTION_SCALE,
                           10 * FUNCTION_SCALE, 10 * FUNCTION_SCALE);
@@ -82,27 +81,27 @@ Function::~Function()
 }
 
 void Function::updateFunction(int index)
-{
-//   int l1, z;
-//   QPoint qp;
+{/*
+   int l1, z;
+   QPoint qp;
 
-//   *screenPoints[index] = matrix.map(*points[index]);
-//   if (*editIndex && (index == *editIndex - 1)) {
-//     z = 20;
-//   } else {
-//     z = 10; 
-//   }
-//   f[0][index][0] = -1e30;
-//   f[0][index][pointCount+1] = 1e30;
-//   f[1][index][0] = 0;
-//   f[1][index][pointCount+1] = 0;
-//   for (l1 = 0; l1 < pointCount; l1++) {
-//     qp = screenPoints[index]->point(l1);
-//     f[0][index][l1 + 1] = (points[index]->point(l1).x() - FUNCTION_CENTER_X) / FUNCTION_SCALE;
-//     f[1][index][l1 + 1] = (double)(FUNCTION_HEIGHT - points[index]->point(l1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
-//     canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y(), z);
-//   }
-    //  repaint(false);
+   *screenPoints[index] = matrix.map(*points[index]);
+   if (*editIndex && (index == *editIndex - 1)) {
+     z = 20;
+   } else {
+     z = 10; 
+   }
+   f[0][index][0] = -1e30;
+   f[0][index][pointCount+1] = 1e30;
+   f[1][index][0] = 0;
+   f[1][index][pointCount+1] = 0;
+   for (l1 = 0; l1 < pointCount; l1++) {
+     qp = screenPoints[index]->point(l1);
+     f[0][index][l1 + 1] = (points[index]->point(l1).x() - FUNCTION_CENTER_X) / FUNCTION_SCALE;
+     f[1][index][l1 + 1] = (double)(FUNCTION_HEIGHT - points[index]->point(l1).y() - FUNCTION_CENTER_Y) / (double)FUNCTION_SCALE;
+     canvasFunctionList.at(index)->setPoint(l1, qp.x(), qp.y(), z);
+   }
+    //  repaint(false);*/
 }
 
 void Function::setPointCount(int count)
@@ -125,7 +124,7 @@ void Function::resizeEvent(QResizeEvent *)
 {
     updateScale();
     //  scene()->setSceneRect(0, 0, zoom * width(), zoom * height());
-//  redrawGrid();
+    //  redrawGrid();
     redrawFunction();
     //  updateContents();
 }
@@ -141,7 +140,6 @@ void Function::redrawFunction()
     }
 }
 
-#include <iostream>
 void Function::drawBackground(QPainter * painter, const QRectF & rect)
 {
     QString s;
@@ -167,217 +165,226 @@ void Function::drawBackground(QPainter * painter, const QRectF & rect)
         while (l.x1() < rect.bottomRight().x()) {
             painter->drawLine(l);
             painter->drawText(l.p1(), s.setNum(l.x1() / FUNCTION_SCALE));
-            //std::cout << l.x1() << std::endl;
             l.translate((qreal) FUNCTION_SCALE / zoom, 0);
-            //std::cout << l.x1() << std::endl;
         }
     }
 }
 
 void Function::redrawGrid()
 {
-//   int l1, l2, x0, y0, ix0, iy0;
-//   QPoint qp_in[2], qp_out[2];
-//   QMatrix invMatrix, zoomMatrix;
+    int l1, l2, ix0, iy0;
+    QPoint qp_in[2], qp_out[2];
+    QTransform invMatrix, zoomMatrix;
 
-//   if (matrix.isInvertible()) {
-//     invMatrix = matrix.invert();
-//   } else {
-//     fprintf(stderr, "Function::redrawGrid: Could not invert Matrix.\n");
-//     return;
-//   }
-//   //  contentsToViewport(0, 0, x0, y0);
-//   qp_in[0] = QPoint(x0, y0);
-//   qp_out[0] = invMatrix.map(qp_in[0]);
-//   ix0 =  qp_out[0].x() / (FUNCTION_GRID * 2);
-//   iy0 =  qp_out[0].y() / (FUNCTION_GRID * 2);
-// //  fprintf(stderr, "x0: %d  y0: %d qp.x(): %d, qp.y(): %d  ix0: %d  iy0: %d\n", x0, y0, qp_out[0].x(), qp_out[0].y(), ix0, iy0);
-//   qp_in[0].setX(0);
-//   qp_in[1].setX(FUNCTION_WIDTH);
-//   qp_in[1].setY(0);
-//   zoomMatrix = matrix;
-//   zoomMatrix.scale(1.0/zoom, 1.0/zoom);
-//   zoomMatrix.translate(-ix0 * zoom * 2 * FUNCTION_GRID, -iy0 * zoom * 2 * FUNCTION_GRID);
-//   for (l1 = 0; l1 <gridX.count(); l1++) {
-//     qp_in[0].setY(l1 * FUNCTION_GRID);
-//     for (l2 = 0; l2 < 2; l2++) {
-//       qp_out[l2] = zoomMatrix.map(qp_in[l2]);
-//     }
-//     gridX.at(l1)->setLine(qp_out[0].x(), qp_out[0].y(), qp_out[1].x(), qp_out[0].y());
-//   }
-//   qp_in[0].setY(0);
-//   qp_in[1].setY(FUNCTION_HEIGHT);
-//   qp_in[1].setX(0);
-//   for (l1 = 0; l1 <gridY.count(); l1++) {
-//     qp_in[0].setX(l1 * FUNCTION_GRID);
-//     for (l2 = 0; l2 < 2; l2++) {
-//       qp_out[l2] = zoomMatrix.map(qp_in[l2]);
-//     }
-//     gridY.at(l1)->setLine(qp_out[0].x(), qp_out[0].y(), qp_out[0].x(), qp_out[1].y());
-//   }
+    if (matrix.isInvertible()) {
+        invMatrix = matrix.inverted();
+    } else {
+        fprintf(stderr, "Function::redrawGrid: Could not invert Matrix.\n");
+        return;
+    }
+    //contentsToViewport(0, 0, x0, y0);
+    //qp_in[0] = QPoint(x0, y0);
+    qp_in[0] = mapFromScene(0, 0);
+    qp_out[0] = invMatrix.map(qp_in[0]);
+    ix0 =  qp_out[0].x() / (FUNCTION_GRID * 2);
+    iy0 =  qp_out[0].y() / (FUNCTION_GRID * 2);
+    //  fprintf(stderr, "x0: %d  y0: %d qp.x(): %d, qp.y(): %d  ix0: %d  iy0: %d\n", x0, y0, qp_out[0].x(), qp_out[0].y(), ix0, iy0);
+    qp_in[0].setX(0);
+    qp_in[1].setX(FUNCTION_WIDTH);
+    qp_in[1].setY(0);
+    zoomMatrix = matrix;
+    zoomMatrix.scale(1.0/zoom, 1.0/zoom);
+    zoomMatrix.translate(-ix0 * zoom * 2 * FUNCTION_GRID, -iy0 * zoom * 2 * FUNCTION_GRID);
+    for (l1 = 0; l1 <gridX.count(); l1++) {
+        qp_in[0].setY(l1 * FUNCTION_GRID);
+        for (l2 = 0; l2 < 2; l2++) {
+            qp_out[l2] = zoomMatrix.map(qp_in[l2]);
+        }
+        gridX.at(l1)->setLine(qp_out[0].x(), qp_out[0].y(), qp_out[1].x(), qp_out[0].y());
+    }
+    qp_in[0].setY(0);
+    qp_in[1].setY(FUNCTION_HEIGHT);
+    qp_in[1].setX(0);
+    for (l1 = 0; l1 <gridY.count(); l1++) {
+        qp_in[0].setX(l1 * FUNCTION_GRID);
+        for (l2 = 0; l2 < 2; l2++) {
+            qp_out[l2] = zoomMatrix.map(qp_in[l2]);
+        }
+        gridY.at(l1)->setLine(qp_out[0].x(), qp_out[0].y(), qp_out[0].x(), qp_out[1].y());
+    }
 }
 
 void Function::contentsMousePressEvent(QMouseEvent * ev)
 {
+   int l1, l2;
+   QList<QGraphicsItem *> hitList;
+   QTransform invMatrix;
+   QPoint qp;
+   bool foundHit;
 
-//   int l1, l2;
-//   QList<QGraphicsItem *> hitList;
-//   QMatrix invMatrix;
-//   QPoint qp;
-//   bool foundHit;
-
-//   if (matrix.isInvertible()) {
-//     invMatrix = matrix.invert();
-//     qp = invMatrix.map(ev->pos());
-//     emit mousePos(qp.x(), qp.y());
-//   }
-//   mousePressPos = ev->pos();
-//   mousePressed = true;
-//   foundHit = false;
-//   hitList = scene()->items(ev->pos());
-//   if (hitList.count()) {
-//     for (l1 = 0; l1 < functionCount; l1++) {
-//       for (l2 = 0; l2 < pointCount; l2++) {
-//         for(QList<QGraphicsItem *>::Iterator it=hitList.begin(); it!=hitList.end(); it++) {
-//           if (canvasFunctionList.at(l1)->canvasPoints.at(l2) == *it) {
-// //            fprintf(stderr, "Hit %d %d\n", l1, l2);
-//             if (!*editIndex || (l1 == *editIndex - 1)) {
-//               activeFunction = l1;
-//               activePoint = l2;
-// //              fprintf(stderr, "activeFunction: %d  activePoint: %d\n", l1, l2);
-//               foundHit = true;
-//               break;
-//             } else {
-//               activePoint = -1;
-// //              fprintf(stderr, "activePoint: %d\n", l2);
-//             }
-//           }
-//         }
-//       }  
-//       if (foundHit) {
-//         break;
-//       }
-//     }
-//     if (*mode == 3) {
-//       for (l1 = 0; l1 < pointCount; l1++) {
-//         deltaArray[l1] = points[activeFunction]->point(l1).x() - FUNCTION_CENTER_X;
-//       }
-//     } else if (*mode == 4) {
-//       for (l1 = 0; l1 < pointCount; l1++) {
-//         deltaArray[l1] = points[activeFunction]->point(l1).y() - FUNCTION_CENTER_Y;
-//       }
-//     }                                                                      
-//   } else {
-//     activePoint = -1;
-//   }
+   if (matrix.isInvertible()) {
+     invMatrix = matrix.inverted();
+     qp = invMatrix.map(ev->pos());
+     emit mousePos(qp.x(), qp.y());
+   }
+   mousePressPos = ev->pos();
+   mousePressed = true;
+   foundHit = false;
+   hitList = scene()->items(ev->pos());
+   if (hitList.count()) {
+     for (l1 = 0; l1 < functionCount; l1++) {
+       for (l2 = 0; l2 < pointCount; l2++) {
+         for(QList<QGraphicsItem *>::Iterator it=hitList.begin(); it!=hitList.end(); it++) {
+           if (canvasFunctionList.at(l1)->canvasPoints.at(l2) == *it) {
+ //            fprintf(stderr, "Hit %d %d\n", l1, l2);
+             if (!*editIndex || (l1 == *editIndex - 1)) {
+               activeFunction = l1;
+               activePoint = l2;
+ //              fprintf(stderr, "activeFunction: %d  activePoint: %d\n", l1, l2);
+               foundHit = true;
+               break;
+             } else {
+               activePoint = -1;
+ //              fprintf(stderr, "activePoint: %d\n", l2);
+             }
+           }
+         }
+       }  
+       if (foundHit) {
+         break;
+       }
+     }
+     if (*mode == 3) {
+       for (l1 = 0; l1 < pointCount; l1++) {
+         deltaArray[l1] = point[activeFunction][l1].x - FUNCTION_CENTER_X;
+       }
+     } else if (*mode == 4) {
+       for (l1 = 0; l1 < pointCount; l1++) {
+         deltaArray[l1] = point[activeFunction][l1].y - FUNCTION_CENTER_Y;
+       }
+     }                                                                      
+   } else {
+     activePoint = -1;
+   }
 }
 
 void Function::contentsMouseReleaseEvent(QMouseEvent * ev)
 {
+   QPoint qp;
+   int l1;
 
-//   QPoint qp;
-//   int l1;
-
-//   mousePressed = false;
-//   if ((activeFunction >=0) && (activePoint >= 0)) {
-//     switch (*mode) {
-//       case 5:
-//         for (l1 = 0; l1 < pointCount; l1++) {
-//           qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), FUNCTION_HEIGHT >> 1);
-//           points[activeFunction]->setPoint(l1, qp);                              
-//         }
-//         break;
-//       case 6:
-//         for (l1 = 0; l1 < pointCount; l1++) {
-//           qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), (pointCount - 1 - l1) * FUNCTION_WIDTH / (pointCount - 1));
-//           points[activeFunction]->setPoint(l1, qp);                              
-//         }
-//         break;
-//     } 
-//     updateFunction(activeFunction);
-//     //    repaintContents(false);
-//   }  
+   mousePressed = false;
+   if ((activeFunction >=0) && (activePoint >= 0)) {
+     switch (*mode) {
+       case 5:
+         for (l1 = 0; l1 < pointCount; l1++) {
+           qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), FUNCTION_HEIGHT >> 1);
+           point[activeFunction][l1].x = qp.x();
+           point[activeFunction][l1].y = qp.y();
+         }
+         break;
+       case 6:
+         for (l1 = 0; l1 < pointCount; l1++) {
+           qp = QPoint(l1 * FUNCTION_WIDTH / (pointCount - 1), (pointCount - 1 - l1) * FUNCTION_WIDTH / (pointCount - 1));
+           point[activeFunction][l1].x = qp.x();
+           point[activeFunction][l1].y = qp.y();
+         }
+         break;
+     } 
+     updateFunction(activeFunction);
+     //    repaintContents(false);
+   }  
 }
 
 void Function::contentsMouseMoveEvent(QMouseEvent * ev)
 {
-//   QMatrix invMatrix;
-//   QPoint qp;
-//   int l1, delta;
-//   float scaleFactor;
+   QTransform invMatrix;
+   QPoint qp;
+   int l1, delta;
+   float scaleFactor;
 
-//   if (matrix.isInvertible()) {
-//     invMatrix = matrix.invert();
-//     qp = invMatrix.map(ev->pos());
-//     emit mousePos(qp.x(), qp.y());
-//     if (mousePressed && (activeFunction >=0) && (activePoint >= 0)) {
-// //    fprintf(stderr, "mouseMoveEvent scale[0] = %f, scale[1] = %f\n", scale[0], scale[1]);
-//       switch (*mode) {
-//         case 0:
-//           if ((activePoint > 0) && (qp.x() < points[activeFunction]->point(activePoint - 1).x())) {
-//             qp.setX(points[activeFunction]->point(activePoint-1).x() + 1);     // a minimum dx of 1 corresponds to 0.002 V
-//           } else if ((activePoint < pointCount - 1) && (qp.x() > points[activeFunction]->point(activePoint + 1).x())) {
-//             qp.setX(points[activeFunction]->point(activePoint+1).x() - 1); 
-//           }
-//           if (qp.x() < 0) qp.setX(0);
-//           if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
-//           if (qp.y() < 0) qp.setY(0);
-//           if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
-//           points[activeFunction]->setPoint(activePoint, qp);
-//           break;
-//         case 1:
-//           delta = qp.x() - points[activeFunction]->point(activePoint).x();
-//           for (l1 = 0; l1 < pointCount; l1++) {
-//             qp = QPoint(points[activeFunction]->point(l1).x() + delta, points[activeFunction]->point(l1).y());
-//             if (qp.x() < 0) qp.setX(0);
-//             if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
-//             points[activeFunction]->setPoint(l1, qp);                              
-//           }
-//           break;
-//         case 2:
-//           delta = qp.y() - points[activeFunction]->point(activePoint).y();
-//           for (l1 = 0; l1 < pointCount; l1++) {
-//             qp = QPoint(points[activeFunction]->point(l1).x(), points[activeFunction]->point(l1).y()+delta);
-//             if (qp.y() < 0) qp.setY(0);
-//             if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
-//             points[activeFunction]->setPoint(l1, qp);                              
-//           }
-//           break;
-//         case 3:
-//           delta = qp.x() - FUNCTION_CENTER_X;
-//           scaleFactor = (deltaArray[activePoint] != 0) 
-//                       ? (double)delta / (double)deltaArray[activePoint] : 1.0;
-//           for (l1 = 0; l1 < pointCount; l1++) {
-//             qp = QPoint((double)FUNCTION_CENTER_X + scaleFactor * (double)deltaArray[l1], 
-//                         points[activeFunction]->point(l1).y());
-//             if (qp.x() < 0) qp.setX(0);
-//             if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
-//             points[activeFunction]->setPoint(l1, qp);                              
-//           }
-//           break;  
-//         case 4:
-//           delta = qp.y() - FUNCTION_CENTER_Y;
-//           scaleFactor = (deltaArray[activePoint] != 0) 
-//                       ? (double)delta / (double)deltaArray[activePoint] : 1.0;
-//           for (l1 = 0; l1 < pointCount; l1++) {
-//             qp = QPoint(points[activeFunction]->point(l1).x(), 
-//                         (double)FUNCTION_CENTER_Y + scaleFactor * (double)deltaArray[l1]);
-//             if (qp.y() < 0) qp.setY(0);
-//             if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
-//             points[activeFunction]->setPoint(l1, qp);                              
-//           }
-//           break;
-//       } 
-// //      fprintf(stderr, "mouseMoveEvent points[%d]->point(%d) = %d %d\n", activeFunction, activePoint, 
-// //              points[activeFunction]->point(activePoint).x(), points[activeFunction]->point(activePoint).y());
-//       updateFunction(activeFunction);
-// //      fprintf(stderr, "mouseMoveEvent f[0][%d][%d+1] = %f f[1][%d][%d+1] = %f\n", activeFunction, activePoint, f[0][activeFunction][activePoint+1],
-// //              activeFunction, activePoint, f[1][activeFunction][activePoint+1]);
-// //      repaintContents(false);
-//     }
-//   } else {
-//     fprintf(stderr, "Matrix not invertible !\n");
-//   }
+   if (matrix.isInvertible()) {
+     invMatrix = matrix.inverted();
+     qp = invMatrix.map(ev->pos());
+     emit mousePos(qp.x(), qp.y());
+     if (mousePressed && (activeFunction >=0) && (activePoint >= 0)) {
+ //    fprintf(stderr, "mouseMoveEvent scale[0] = %f, scale[1] = %f\n", scale[0], scale[1]);
+       switch (*mode) {
+         case 0:
+           if ((activePoint > 0) && (qp.x() < point[activeFunction][activePoint - 1].x)) {
+             // a minimum dx of 1 corresponds to 0.002 V
+             qp.setX(point[activeFunction][activePoint-1].x + 1);
+           } else if ((activePoint < pointCount - 1) && (qp.x() >
+                       point[activeFunction][activePoint + 1].x)) {
+             qp.setX(point[activeFunction][activePoint+1].x - 1); 
+           }
+           if (qp.x() < 0) qp.setX(0);
+           if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
+           if (qp.y() < 0) qp.setY(0);
+           if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
+           point[activeFunction][activePoint].x = qp.x();
+           point[activeFunction][activePoint].y = qp.y();
+           break;
+         case 1:
+           delta = qp.x() - point[activeFunction][activePoint].x;
+           for (l1 = 0; l1 < pointCount; l1++) {
+             qp = QPoint(point[activeFunction][l1].x + delta,
+                     point[activeFunction][l1].y);
+             if (qp.x() < 0) qp.setX(0);
+             if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
+
+             point[activeFunction][l1].x = qp.x();
+             point[activeFunction][l1].y = qp.y();
+           }
+           break;
+         case 2:
+           delta = qp.y() - point[activeFunction][activePoint].y;
+           for (l1 = 0; l1 < pointCount; l1++) {
+             qp = QPoint(point[activeFunction][l1].x,
+                     point[activeFunction][l1].y + delta);
+             if (qp.y() < 0) qp.setY(0);
+             if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
+             point[activeFunction][l1].x = qp.x();
+             point[activeFunction][l1].y = qp.y();
+           }
+           break;
+         case 3:
+           delta = qp.x() - FUNCTION_CENTER_X;
+           scaleFactor = (deltaArray[activePoint] != 0) 
+                       ? (double)delta / (double)deltaArray[activePoint] : 1.0;
+           for (l1 = 0; l1 < pointCount; l1++) {
+             qp = QPoint((double)FUNCTION_CENTER_X + scaleFactor * (double)deltaArray[l1],
+                     point[activeFunction][l1].y);
+             if (qp.x() < 0) qp.setX(0);
+             if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
+             point[activeFunction][l1].x = qp.x();
+             point[activeFunction][l1].y = qp.y();
+           }
+           break;  
+         case 4:
+           delta = qp.y() - FUNCTION_CENTER_Y;
+           scaleFactor = (deltaArray[activePoint] != 0) 
+                       ? (double)delta / (double)deltaArray[activePoint] : 1.0;
+           for (l1 = 0; l1 < pointCount; l1++) {
+             qp = QPoint(point[activeFunction][l1].x, 
+                         (double)FUNCTION_CENTER_Y + scaleFactor * (double)deltaArray[l1]);
+             if (qp.y() < 0) qp.setY(0);
+             if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
+             point[activeFunction][l1].x = qp.x();
+             point[activeFunction][l1].y = qp.y();
+           }
+           break;
+       } 
+ // fprintf(stderr, "mouseMoveEvent points[%d]->point(%d) = %d %d\n", activeFunction, activePoint, 
+ //   points[activeFunction]->point(activePoint).x(), points[activeFunction]->point(activePoint).y());
+       updateFunction(activeFunction);
+ // fprintf(stderr, "mouseMoveEvent f[0][%d][%d+1] = %f f[1][%d][%d+1] = %f\n", activeFunction, activePoint, f[0][activeFunction][activePoint+1],
+ //    activeFunction, activePoint, f[1][activeFunction][activePoint+1]);
+ //    repaintContents(false);
+     }
+   } else {
+     fprintf(stderr, "Matrix not invertible !\n");
+   }
 }
 
 void Function::setZoom(float p_zoom)
@@ -394,15 +401,11 @@ void Function::updateScale()
     scale[1] = (double) zoom *height() / (11 * FUNCTION_SCALE);
     matrix.reset();
     matrix.scale(scale[0], scale[1]);
-    setMatrix(matrix);
+    setTransform(matrix);
 }
 
-#include <iostream>
 void Function::setPoint(int f_index, int p_index, int x, int y)
 {
-    /*std::cout << __PRETTY_FUNCTION__ << f_index << " " << p_index << " " <<
-       x << ", " << y << std::endl; */
-
     FunctionPointT & pf = point[f_index][p_index];
     pf.x = (float) (x - FUNCTION_CENTER_X) / FUNCTION_SCALE;
     pf.y = (float) (y - FUNCTION_CENTER_Y) / FUNCTION_SCALE;
