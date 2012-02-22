@@ -46,7 +46,7 @@ and effect processor.</source>
 <context>
     <name>Function</name>
     <message>
-        <location filename="../function.cpp" line="67"/>
+        <location filename="../function.cpp" line="69"/>
         <source>Out %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -690,52 +690,52 @@ and effect processor.</source>
 <context>
     <name>M_function</name>
     <message>
-        <location filename="../m_function.cpp" line="23"/>
+        <location filename="../m_function.cpp" line="24"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="31"/>
+        <location filename="../m_function.cpp" line="32"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="44"/>
+        <location filename="../m_function.cpp" line="45"/>
         <source>Out %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="48"/>
+        <location filename="../m_function.cpp" line="50"/>
         <source>Function %1 -&gt; 1 ID %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="59"/>
+        <location filename="../m_function.cpp" line="62"/>
         <source>Move Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="60"/>
+        <location filename="../m_function.cpp" line="63"/>
         <source>Shift X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="61"/>
+        <location filename="../m_function.cpp" line="64"/>
         <source>Shift Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="62"/>
+        <location filename="../m_function.cpp" line="65"/>
         <source>Scale X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="63"/>
+        <location filename="../m_function.cpp" line="65"/>
         <source>Scale Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="64"/>
+        <location filename="../m_function.cpp" line="65"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -760,7 +760,7 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="77"/>
+        <location filename="../m_function.cpp" line="78"/>
         <source>&amp;Zoom</source>
         <translation type="unfinished"></translation>
     </message>

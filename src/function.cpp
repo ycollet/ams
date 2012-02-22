@@ -110,12 +110,12 @@ void Function::setPointCount(int count)
     pointCount = count;
 }
 
-QSize Function::sizeHint() const const
+QSize Function::sizeHint() const
 {
     return QSize(FUNCTION_MINIMUM_WIDTH, FUNCTION_MINIMUM_HEIGHT);
 }
 
-QSizePolicy Function::sizePolicy() const const
+QSizePolicy Function::sizePolicy() const
 {
     return QSizePolicy(QSizePolicy::MinimumExpanding,
                        QSizePolicy::MinimumExpanding);

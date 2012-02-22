@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -27,12 +27,9 @@
 
 
 
-class M_function : public Module
-{
-  Q_OBJECT
-
-  private:
-    QList<Port*> out_port_list;
+class M_function:public Module {
+  Q_OBJECT private:
+    QList < Port * >out_port_list;
     Port *port_in;
     float zoom;
     float y[MAX_FUNCTIONS][MAXPOLY], old_y[MAX_FUNCTIONS][MAXPOLY];
@@ -40,18 +37,17 @@ class M_function : public Module
     int i[MAXPOLY][MAX_FUNCTIONS];
     int zoomIndex, editIndex;
     int mode;
-        
-  public: 
-    float **inData;
-                            
+
   public:
-    M_function(int p_functionCount, QWidget* parent=0);
+    float **inData;
+
+  public:
+     M_function(int p_functionCount, QWidget * parent = 0);
 
     void generateCycle();
 
-  public slots:
-    void updateZoom(int p_zoomIndex);
+    public slots: void updateZoom(int p_zoomIndex);
     void updateMouseLabels(int x, int y);
 };
-  
+
 #endif
