@@ -22,6 +22,7 @@ ams-2.1.0 (2012-??-??)
     o Basic support for libclalsadrv API version 2.0.0
     o Improved port selection handling, patch provided by Sebastien
       Alaiwan
+    o New context menu to disconnect module output ports
     o Support for JACK session handling
     o Rewritten preferences dialog
     o New option for saving window geometry (session handling)
