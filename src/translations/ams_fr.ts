@@ -1417,7 +1417,7 @@ and effect processor.</source>
     </message>
     <message>
         <location filename="../m_scmcv.cpp" line="63"/>
-        <location filename="../m_scmcv.cpp" line="171"/>
+        <location filename="../m_scmcv.cpp" line="172"/>
         <source>   Scale: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1432,7 +1432,7 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="167"/>
+        <location filename="../m_scmcv.cpp" line="168"/>
         <source>Could not load Scala file &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>

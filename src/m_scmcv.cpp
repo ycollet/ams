@@ -148,9 +148,10 @@ void M_scmcv::generateCycle()
 void M_scmcv::openBrowser() {
 
   if (!fileDialog) {
-    fileDialog = new QFileDialog(NULL, tr("Load Scala"), dirpath,
+    fileDialog = new QFileDialog(this, tr("Load Scala"), dirpath,
             tr("Scala files (*.scl)"));
-    QObject::connect(fileDialog, SIGNAL(currentChanged(const QString &)), this, SLOT(loadScale(const QString &)));
+    QObject::connect(fileDialog, SIGNAL(currentChanged(const QString &)),
+            this, SLOT(loadScale(const QString &)));
   }
   fileDialog->show();
 }
