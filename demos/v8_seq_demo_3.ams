@@ -178,5 +178,5 @@ FSlider 12 1 0 0 0 16384 1
 FSlider 12 2 0 0 0 102940 1
 Comment 0 0 464 291 200 170
 #PARA# 0 0 0
-Like demo 2, but step forward with one LFO and  back with the other.  The first seq keeps track of the state number, the rest just follow. 
+Like demo 2, but step forward with one LFO and  back with the other.  The first seq keeps track of the state number, the rest just follow.
 #ARAP#

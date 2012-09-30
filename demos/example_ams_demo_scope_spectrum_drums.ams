@@ -129,14 +129,14 @@ ComboBox 27 0 9 1
 ComboBox 27 1 2 1
 Comment 0 0 182 160 433 206
 #PARA# 0 0 0
-This patch has been contributed by Bill Allen.  
+This patch has been contributed by Bill Allen.
 #ARAP#
 #PARA# 0 0 1
- 
+
 #ARAP#
 #PARA# 0 0 2
-Here, a MIDI Out module adds some percussion which is sent on the MIDI drum channel. You have to connect the first readable MIDI port of AlsaModularSynth with a GM MIDI compatible sound source to hear the drums. You can play with the Gain 0 and Offset 0 parameters of the  
+Here, a MIDI Out module adds some percussion which is sent on the MIDI drum channel. You have to connect the first readable MIDI port of AlsaModularSynth with a GM MIDI compatible sound source to hear the drums. You can play with the Gain 0 and Offset 0 parameters of the
 #ARAP#
 #PARA# 0 0 3
-MIDI Out module to modify the percussion. 
+MIDI Out module to modify the percussion.
 #ARAP#

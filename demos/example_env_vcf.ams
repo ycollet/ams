@@ -62,7 +62,7 @@ Comment 0 0 386 318 306 182
 Here, both the pulse width and the frequency of the VCO wave are modulated by a LFO. The inverse envelope modifies the cutoff frequency of the VCF. You can reduce (or stop) this effect with the "Exp. FM Gain" slider of the VCF.
 #ARAP#
 #PARA# 0 0 1
- 
+
 #ARAP#
 #PARA# 0 0 2
 Try out the pitchbender and modulation wheels!

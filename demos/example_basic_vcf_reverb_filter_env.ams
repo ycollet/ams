@@ -79,8 +79,8 @@ FSlider 16 0 104490 0 0 1638400 1
 FSlider 16 1 0 0 0 102940 1
 Comment 0 0 466 301 200 170
 #PARA# 0 0 0
-In addition to some parameter modifications, a filter envelope and a LFO have been added. 
+In addition to some parameter modifications, a filter envelope and a LFO have been added.
 #ARAP#
 #PARA# 0 0 1
-The filter envelope modifies the cutoff frequency and the LFO introduces a vibrato. 
+The filter envelope modifies the cutoff frequency and the LFO introduces a vibrato.
 #ARAP#

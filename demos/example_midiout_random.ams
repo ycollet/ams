@@ -45,8 +45,8 @@ Port 0 2 8 5
 ComboBox 8 0 6 1
 Comment 0 0 253 156 311 192
 #PARA# 0 0 0
-Just connect the two readable MIDI ports of AlsaModularSynth with a GM compatible MIDI sound source and listen :-)  
+Just connect the two readable MIDI ports of AlsaModularSynth with a GM compatible MIDI sound source and listen :-)
 #ARAP#
 #PARA# 0 0 1
-To make this sound more interesting, it is recommended to select two different MIDI instruments for the two instruments played on MIDI channel 0. 
+To make this sound more interesting, it is recommended to select two different MIDI instruments for the two instruments played on MIDI channel 0.
 #ARAP#

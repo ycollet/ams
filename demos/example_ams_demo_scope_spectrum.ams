@@ -117,11 +117,11 @@ ComboBox 25 5 4 1
 CheckBox 25 0 1 1
 Comment 0 0 262 175 315 174
 #PARA# 0 0 0
-This patch has been contributed by Bill Allen.  
+This patch has been contributed by Bill Allen.
 #ARAP#
 #PARA# 0 0 1
- 
+
 #ARAP#
 #PARA# 0 0 2
-Here, a scope and two spectrum modules have been added. Just right-click on the modules to open the scope and spectrum views.  
+Here, a scope and two spectrum modules have been added. Just right-click on the modules to open the scope and spectrum views.
 #ARAP#

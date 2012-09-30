@@ -52,11 +52,11 @@ ISlider 9 0 24 1
 ComboBox 9 0 0 1
 Comment 0 0 309 300 414 187
 #PARA# 0 0 0
-In this patch a VCF filter module has been added to the basic patch. The cutoff frequency of the filter is shifted according to the frequency voltage supplied by the MCV ("VCF tracking").  
+In this patch a VCF filter module has been added to the basic patch. The cutoff frequency of the filter is shifted according to the frequency voltage supplied by the MCV ("VCF tracking").
 #ARAP#
 #PARA# 0 0 1
- 
+
 #ARAP#
 #PARA# 0 0 2
-The pitchbender is connected to the "Pitch" parameter of the MCV. The modulation wheel has been bound to the "Frequency" parameter of the VCF.  
+The pitchbender is connected to the "Pitch" parameter of the MCV. The modulation wheel has been bound to the "Frequency" parameter of the VCF.
 #ARAP#

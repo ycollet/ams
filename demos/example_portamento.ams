@@ -39,14 +39,14 @@ ISlider 13 0 24 1
 ComboBox 13 0 0 1
 Comment 0 0 207 299 330 186
 #PARA# 0 0 0
-This patch demonstrates the Slew Limiter. This module limits the slope of the input control signal.  
+This patch demonstrates the Slew Limiter. This module limits the slope of the input control signal.
 #ARAP#
 #PARA# 0 0 1
-Different values can be supplied for rising and falling signals.  
+Different values can be supplied for rising and falling signals.
 #ARAP#
 #PARA# 0 0 2
- 
+
 #ARAP#
 #PARA# 0 0 3
-Here, the slew limiter features a portamento. You might want to add ENV and VCA modules as well.  
+Here, the slew limiter features a portamento. You might want to add ENV and VCA modules as well.
 #ARAP#

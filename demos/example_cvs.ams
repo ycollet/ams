@@ -84,8 +84,8 @@ FSlider 16 0 989 0 0 16431 1
 FSlider 16 1 989 0 0 16431 1
 Comment 0 0 482 278 200 170
 #PARA# 0 0 0
-The CVS module provides constant control voltages.  
+The CVS module provides constant control voltages.
 #ARAP#
 #PARA# 0 0 1
-Slew limiters are used to create smooth parameter changes.  
+Slew limiters are used to create smooth parameter changes.
 #ARAP#

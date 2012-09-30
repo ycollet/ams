@@ -53,5 +53,5 @@ FSlider 9 5 16384 0 -16384 16384 1
 LSlider 9 0 30 1
 Comment 0 0 37 303 351 180
 #PARA# 0 0 0
-This patch demonstrates the phaser plugin by Fons Adriaensen. Use the ModWheel to modify the phaser frequency. Modifying the "Sections" parameter while playing a note creates a funny sound.  
+This patch demonstrates the phaser plugin by Fons Adriaensen. Use the ModWheel to modify the phaser frequency. Modifying the "Sections" parameter while playing a note creates a funny sound.
 #ARAP#
