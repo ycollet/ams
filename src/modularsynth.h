@@ -119,6 +119,8 @@ public:
     void setModuleGrid(int grid);
     bool getEnableModuleGrid();
     void setEnableModuleGrid(bool enable);
+    void loadPreference(QString&);
+    void savePreferences(QTextStream&);
 
   protected:
     class QAbstractScrollArea *scrollArea() {
@@ -223,8 +225,6 @@ public:
     void loadColors();
     void saveColors();
     void allVoicesOff();
-    void loadPreference(QString&);
-    void savePreferences(QTextStream&);
     void refreshColors();
     void redrawPortConnections();
 };

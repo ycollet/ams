@@ -466,7 +466,7 @@ void ModularSynth::midiAction(int fd)
             if (mcK.type() == SND_SEQ_EVENT_CONTROLLER ||
                     mcK.type() == SND_SEQ_EVENT_CONTROL14 ||
                     mcK.type() == SND_SEQ_EVENT_PITCHBEND ||
-                    (midiWidget->noteControllerEnabled &&
+                    (midiWidget->noteControllerEnabled() &&
                      (mcK.type() == SND_SEQ_EVENT_NOTEON ||
                       mcK.type() == SND_SEQ_EVENT_NOTEOFF)))
                 midiWidget->addMidiController(mcK);
@@ -1299,8 +1299,8 @@ void ModularSynth::load(QTextStream& ts)
   int currentProgram;
   QStringList tokens;
 
-  followConfig = midiWidget->followConfig;
-  midiWidget->followConfig = false;
+  followConfig = midiWidget->followConfig();
+  midiWidget->setFollowConfig(false);
   currentProgram = -1;
 
   bool restartSynth = clearConfig(false);
@@ -2002,7 +2002,7 @@ void ModularSynth::load(QTextStream& ts)
     StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
     StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
   }
-  midiWidget->followConfig = followConfig;
+  midiWidget->setFollowConfig(followConfig);
   guiWidget->refreshGui();
   modified = false;
 }
@@ -2186,6 +2186,8 @@ void ModularSynth::loadPreference(QString& line)
     else if (line.startsWith(CF_GRIDMESHSIZE)) {
 	modulegrid = line.section(' ', 1).toInt();
     }       
+    else
+        midiWidget->loadPreference(line);
 }
 
 
@@ -2221,6 +2223,8 @@ void ModularSynth::savePreferences(QTextStream& ts)
     ts << CF_EDITINGFLAGS << ' ' << synthdata->editingFlags.f << endl;
     ts << CF_ENABLEGRID << ' ' << enablemodulegrid << endl;
     ts << CF_GRIDMESHSIZE << ' ' << modulegrid << endl;
+
+    midiWidget->savePreferences(ts);
 
     refreshColors();
 }

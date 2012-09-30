@@ -1,3 +1,7 @@
+2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
+	* src/midiwidget.*, src/modularsynth.*: Make control center MIDI
+	settings persistent.
+
 2012-02-21 Guido Scholz <guido.scholz@bayernline.de>
 	* src/modularsynth.cpp, src/port.*: Add context menu to
 	disconnect module output ports.

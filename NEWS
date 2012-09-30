@@ -30,7 +30,7 @@ ams-2.1.0 (2012-??-??)
     o Add keyboard shortcuts for module configuration dialogs
     o New option for module position grid (snap to grid)
     o New V8 Sequencer module, provided by Bill Yerazunis
-    o 
+    o Make control center MIDI settings persistent
 
   General Changes
     o Separate handling of color scheme directory from patch file

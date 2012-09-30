@@ -3,6 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QItemSelectionModel>
 #include <QLabel>
 #include <QPushButton>
@@ -79,6 +80,10 @@ class MidiWidget : public QWidget
     QTreeView* moduleListView;
     QVBoxLayout *currentGUIcontrol;
     QCheckBox *logCheck;
+    QCheckBox* follwoMidiCb;
+    QCheckBox* enableNoteEventsCb;
+    QCheckBox* configCheck;
+    QComboBox *midiChannelCb;
     QPushButton *newMinButton;
     QPushButton *newMaxButton;
     QPushButton *resetMinMaxButton;
@@ -96,7 +101,6 @@ class MidiWidget : public QWidget
     void showFloatHelpers(bool show);
 
   public:
-    bool noteControllerEnabled, followConfig, followMidi;
 
     MidiWidget(QWidget* parent, const char *name=0);
     ~MidiWidget();
@@ -113,15 +117,17 @@ class MidiWidget : public QWidget
     void removeModule(Module *m);
     void guiComponentTouched(MidiControllableBase &mcAble);
     void midiTouched(MidiControllableBase &mcAble);
+    void loadPreference(QString&);
+    void savePreferences(QTextStream&);
+    bool noteControllerEnabled();
+    bool followConfig();
+    void setFollowConfig(bool follow);
 
   public slots:
     void clearAllClicked();
     void clearClicked();
     void bindClicked();
     void addToParameterViewClicked();
-    void noteControllerCheckToggle(int);
-    void configCheckToggle(int);
-    void midiCheckToggle(int);
     void toggleMidiSign();
     void guiControlChanged(const QItemSelection &selected,
 			   const QItemSelection &deselected);

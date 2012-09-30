@@ -17,8 +17,14 @@
 #include "synthdata.h"
 
 
+static const char CF_MIDIENABLENOTEEVENTS[] = "MidiEnableNoteEvents";
+static const char CF_MIDIFOLLOWCONFIGDIALOG[] = "MidiFollowConfigDialog";
+static const char CF_MIDIFOLLOWMIDI[] = "MidiFollowMidi";
+static const char CF_MIDICHANNEL[] = "MidiChannel";
+
+
 MidiControllerModel::MidiControllerModel(QList<MidiController> &rMidiControllers,
-					 QObject *parent)
+         QObject *parent)
     : QAbstractItemModel(parent)
     , rMidiControllers(rMidiControllers)
 {
@@ -219,10 +225,6 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     vbox.setMargin(10);
     vbox.setSpacing(5);
 
-    noteControllerEnabled = false;
-    followConfig = false;
-    followMidi = false;
-
     QSplitter *listViewBox = new QSplitter();
     vbox.addWidget(listViewBox, 2);
 
@@ -286,6 +288,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     controlFrame->addLayout(checkbuttonBox);
     checkbuttonBox->setSpacing(10);
     checkbuttonBox->setMargin(5);
+
     QStringList channelNames;
     channelNames << tr("Omni");
     //TODO: remove obsolete empty spaces
@@ -298,15 +301,15 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     controlFrame->addLayout(midiChannelBox);
     QLabel *channelText = new QLabel(tr("MIDI C&hannel:"));
     midiChannelBox->addWidget(channelText);
-    QComboBox *comboBox = new QComboBox();
-    channelText->setBuddy(comboBox);
-    midiChannelBox->addWidget(comboBox);
+    midiChannelCb = new QComboBox();
+    channelText->setBuddy(midiChannelCb);
+    midiChannelBox->addWidget(midiChannelCb);
     midiChannelBox->addStretch();
     midiChannelBox->addStretch();
     midiChannelBox->addStretch();
-    comboBox->addItems(channelNames);
-    comboBox->setFixedSize(comboBox->sizeHint());
-    QObject::connect(comboBox, SIGNAL(highlighted(int)),
+    midiChannelCb->addItems(channelNames);
+    midiChannelCb->setFixedSize(midiChannelCb->sizeHint());
+    QObject::connect(midiChannelCb, SIGNAL(highlighted(int)),
             this, SLOT(updateMidiChannel(int)));
     midiChannelBox->addStretch();
 
@@ -323,24 +326,14 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     buttonBox->setMargin(5);
     buttonBox->addStretch();
 
-    QCheckBox* noteCheck = new QCheckBox(tr("&Enable note events"));
-    checkbuttonBox->addWidget(noteCheck);
-    noteCheck->setChecked(noteControllerEnabled);
+    enableNoteEventsCb = new QCheckBox(tr("&Enable note events"));
+    checkbuttonBox->addWidget(enableNoteEventsCb);
 
-    QCheckBox* configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
+    configCheck = new QCheckBox(tr("&Follow Configuration Dialog"));
     checkbuttonBox->addWidget(configCheck);
-    configCheck->setChecked(followConfig);
 
-    QCheckBox* midiCheck = new QCheckBox(tr("Follow &MIDI"));
-    checkbuttonBox->addWidget(midiCheck);
-    midiCheck->setChecked(followMidi);
-
-    QObject::connect(noteCheck, SIGNAL(stateChanged(int)),
-            this, SLOT(noteControllerCheckToggle(int)));
-    QObject::connect(configCheck, SIGNAL(stateChanged(int)),
-            this, SLOT(configCheckToggle(int)));
-    QObject::connect(midiCheck, SIGNAL(stateChanged(int)),
-            this, SLOT(midiCheckToggle(int)));
+    follwoMidiCb = new QCheckBox(tr("Follow &MIDI"));
+    checkbuttonBox->addWidget(follwoMidiCb);
     buttonBox->addStretch();
 
     bindButton = new QPushButton(tr("&Bind"));
@@ -408,7 +401,7 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
         if (c != midiControllers.end()) {
             if (*c == mc) {
                 /* controller is found, now update selection */
-                if (followMidi) {
+                if (follwoMidiCb->isChecked()) {
                     int row = midiControllers.indexOf(mc);
                     QModelIndex index = midiControllerModel.index(row, 0);
                     midiControllerView->scrollTo(index);
@@ -597,24 +590,6 @@ void MidiWidget::bindClicked()
         midiControllable->connectToController(selectedController);
         setActiveMidiControllers();
     }
-}
-
-
-void MidiWidget::noteControllerCheckToggle(int state)
-{
-    noteControllerEnabled = state;
-}
-
-
-void MidiWidget::configCheckToggle(int state)
-{
-    followConfig = state;
-}
-
-
-void MidiWidget::midiCheckToggle(int state)
-{
-    followMidi = state;
 }
 
 
@@ -828,7 +803,7 @@ const MidiControllerKey MidiWidget::getSelectedController()
 
 void MidiWidget::guiComponentTouched(MidiControllableBase &mcAble)
 {
-    if (followConfig)
+    if (configCheck->isChecked())
         selectMcAble(mcAble);
 }
 
@@ -837,6 +812,55 @@ void MidiWidget::guiComponentTouched(MidiControllableBase &mcAble)
  * controller view selection */
 void MidiWidget::midiTouched(MidiControllableBase &mcAble)
 {
-    if (followMidi)
+    if (follwoMidiCb->isChecked())
         selectMcAble(mcAble);
 }
+
+void MidiWidget::loadPreference(QString& line)
+{
+    int value;
+
+    if (line.startsWith(CF_MIDIENABLENOTEEVENTS)) {
+	value = line.section(' ', 1).toInt();
+        enableNoteEventsCb->setChecked(value != 0);
+    }
+    else if (line.startsWith(CF_MIDIFOLLOWCONFIGDIALOG)) {
+	value = line.section(' ', 1).toInt();
+        configCheck->setChecked(value != 0);
+    }
+    else if (line.startsWith(CF_MIDIFOLLOWMIDI)) {
+	value = line.section(' ', 1).toInt();
+        follwoMidiCb->setChecked(value != 0);
+    }
+    else if (line.startsWith(CF_MIDICHANNEL)) {
+	value = line.section(' ', 1).toInt();
+        midiChannelCb->setCurrentIndex(value);
+        updateMidiChannel(value);
+    }
+}
+
+void MidiWidget::savePreferences(QTextStream& ts)
+{
+    ts << CF_MIDIENABLENOTEEVENTS << ' ' << enableNoteEventsCb->isChecked() << endl;
+    ts << CF_MIDIFOLLOWCONFIGDIALOG << ' ' << configCheck->isChecked() << endl;
+    ts << CF_MIDIFOLLOWMIDI << ' ' << follwoMidiCb->isChecked() << endl;
+    ts << CF_MIDICHANNEL << ' ' << midiChannelCb->currentIndex() << endl;
+}
+
+bool MidiWidget::noteControllerEnabled()
+{
+    return enableNoteEventsCb->isChecked();
+
+}
+
+bool MidiWidget::followConfig()
+{
+    return configCheck->isChecked();
+
+}
+
+void MidiWidget::setFollowConfig(bool follow)
+{
+    configCheck->setChecked(follow);
+}
+
