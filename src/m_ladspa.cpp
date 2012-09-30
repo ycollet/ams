@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -23,7 +23,7 @@
 
 
 M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
-        bool poly, bool extCtrlPorts) 
+        bool poly, bool extCtrlPorts)
   : Module(M_type_ladspa, 0, parent, QString(poly ? tr("Poly ") : "")
           + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
   , ladspa_dsc(synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n))
@@ -40,7 +40,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
     bool tabMode;
     QVBoxLayout *ladspaTab;
 
-    setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
+    setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH,
             MODULE_LADSPA_HEIGHT);
     logo = QPixmap(ladspa_logo_xpm);
     ladspaTab = 0;
@@ -108,23 +108,23 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
         if (LADSPA_IS_PORT_AUDIO(ladspa_dsc->PortDescriptors[l1])) {
             if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
                 Port *audio_in_port = new Port(ladspa_dsc->PortNames[l1],
-                        PORT_IN, in_port_list.count() + 
+                        PORT_IN, in_port_list.count() +
                         in_ctrl_port_list.count(), this);
                 in_port_list.append(audio_in_port);
                 for (l2 = 0; l2 < ladspaPoly; l2++)
-                    ladspa_dsc->connect_port(ladspa_handle[l2], l1, 
+                    ladspa_dsc->connect_port(ladspa_handle[l2], l1,
                             ladspaDataIn[audio_in_index][l2]);
 
                 audio_in_index++;
             }
             if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
                 Port *audio_out_port = new Port(ladspa_dsc->PortNames[l1],
-                        PORT_OUT, out_port_list.count() + 
+                        PORT_OUT, out_port_list.count() +
                         out_ctrl_port_list.count(), this);
                 out_port_list.append(audio_out_port);
                 for (l2 = 0; l2 < ladspaPoly; l2++)
                     ladspa_dsc->connect_port(ladspa_handle[l2], l1,
-                            data[out_port_list.count() + 
+                            data[out_port_list.count() +
                             out_ctrl_port_list.count() - 1][l2]);
 
                 audio_index[audio_out_index] = out_port_list.count() +
@@ -179,7 +179,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
                                 ladspa_ctrl_in_count);
                     }
                     ladspaTab = configDialog->addVBoxTab(qs);
-                }     
+                }
                 if (LADSPA_IS_HINT_TOGGLED(
                             ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
                     configDialog->addCheckBox(ladspa_dsc->PortNames[l1],
@@ -304,7 +304,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
                         control_data[ctrl_in_index] = 440.0 * rate_factor;
                     }
                     if (LADSPA_IS_HINT_LOGARITHMIC(
-                                ladspa_dsc->PortRangeHints[l1].HintDescriptor)) { 
+                                ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {
                         configDialog->addSlider(
                                 ladspa_dsc->PortNames[l1],
                                 control_gui[ctrl_in_index],
@@ -340,11 +340,11 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
         }
     }
     itmp = ((out_port_list.count() + out_ctrl_port_list.count())
-            > (in_port_list.count() + in_ctrl_port_list.count())) 
+            > (in_port_list.count() + in_ctrl_port_list.count()))
         ? (out_port_list.count() + out_ctrl_port_list.count())
         : (in_port_list.count() + in_ctrl_port_list.count());
 
-    setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH, 
+    setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH,
             MODULE_LADSPA_HEIGHT + 20 * itmp);
     pluginName.sprintf("%s", ladspa_dsc->Label);
     //  fprintf(stderr, "--> isPoly: %d  ladspa_dsc->Label: %s  moduleID: %d\n", isPoly, ladspa_dsc->Label, moduleID);
@@ -356,7 +356,7 @@ M_ladspa::~M_ladspa()
 
   for (l1 = 0; l1 < ladspaPoly; l1++) {
     for (l2 = 0; l2 < ladspa_audio_in_count; l2++)
-      free(ladspaDataIn[l2][l1]); 
+      free(ladspaDataIn[l2][l1]);
 
     if (ladspa_dsc->deactivate)
       ladspa_dsc->deactivate(ladspa_handle[l1]);
@@ -424,12 +424,12 @@ void M_ladspa::generateCycle()
       if (ctrlVal < control_data_min[l3]) ctrlVal = control_data_min[l3];
       if (ctrlVal > control_data_max[l3]) ctrlVal = control_data_max[l3];
       control_data[l3] = ctrlVal;
-    } 
+    }
     for (l1 = 0; l1 < synthdata->poly; l1++) {
       for (l3 = 0; l3 < out_ctrl_port_list.count(); l3++) {
-	for (l2 = 0; l2 < synthdata->cyclesize; l2++) {    
-	  data[ctrl_index[l3]][l1][l2] = control_out[l3];              
-	}    
+	for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
+	  data[ctrl_index[l3]][l1][l2] = control_out[l3];
+	}
       }
     }
   } else {

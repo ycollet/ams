@@ -102,7 +102,7 @@ void M_stereomix::updateSolos(MidiGUIcomponent *sender)
 }
 
 
-M_stereomix::M_stereomix(int p_in_channels, QWidget* parent) 
+M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
   : Module(M_type_stereomix, 2, parent, tr("Stereo Mixer %1")
           .arg(p_in_channels))
   , solo_index(-1)
@@ -111,7 +111,7 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
   QHBoxLayout *hbox;
 
   in_channels = p_in_channels;
-  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_STEREOMIX_WIDTH, 
+  setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_STEREOMIX_WIDTH,
               MODULE_STEREOMIX_HEIGHT + 40 + 20 * in_channels);
   gain = 1.0;
   configDialog->addSlider(tr("M&aster Volume"), gain, 0, 10, true);
@@ -124,16 +124,16 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
     mute[l1] = 0.0;
     qs = tr("&Mute %1").arg(l1);
     configDialog->addCheckBox(*new MCableMute(*this, qs, mute[l1]), hbox);
-    solo[l1] = 0.0;    
+    solo[l1] = 0.0;
     qs = tr("&Solo %1").arg(l1);
     configDialog->addCheckBox(*new MCableSolo(*this, qs, solo[l1]), hbox);
-    mixer_gain[l1] = 1.0;    
+    mixer_gain[l1] = 1.0;
     qs = tr("&Volume %1").arg(l1);
     MidiSlider *slider = configDialog->addSlider(qs, mixer_gain[l1],
             0, 2, true, hbox);
     slider->setMinimumWidth(200);
     hbox->setStretchFactor(slider, 100);
-    pan[l1] = 0.0;    
+    pan[l1] = 0.0;
     qs = tr("&Pan %1").arg(l1);
     slider = configDialog->addSlider(qs, pan[l1], -1, 1, false, hbox);
     slider->setMinimumWidth(150);
@@ -164,8 +164,8 @@ void M_stereomix::generateCycle()
   mixgain[1] = gain * (1.0 + pan[0]) * mixer_gain[0];
   for (l1 = 0; l1 < synthdata->poly; l1++)
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-      data[0][l1][l2] = mixgain[0] * inData[0][l1][l2];     
-      data[1][l1][l2] = mixgain[1] * inData[0][l1][l2];     
+      data[0][l1][l2] = mixgain[0] * inData[0][l1][l2];
+      data[1][l1][l2] = mixgain[1] * inData[0][l1][l2];
     }
 
   for (unsigned l3 = 0; l3 < in_channels; l3++) {
@@ -195,7 +195,7 @@ void M_stereomix::soloToggled(bool) {
     else {
       if (checkbox->isChecked()) {
         solo_index = l1;
-      } else { 
+      } else {
         solo_index = -1;
       }
       //!!configDialog->midiCheckBoxList.at(2 * l1)->updateCheck(false);
@@ -214,11 +214,11 @@ void M_stereomix::muteToggled(bool) {
   ignore_check = true;
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count() >> 1; l1++) {
     if ((configDialog->midiCheckBoxList.at(2 * l1)->checkBox == checkbox)
-        && configDialog->midiCheckBoxList.at(2 * l1)->checkBox->isChecked() 
+        && configDialog->midiCheckBoxList.at(2 * l1)->checkBox->isChecked()
         && configDialog->midiCheckBoxList.at(2 * l1 + 1)->checkBox->isChecked()) {
       //!!configDialog->midiCheckBoxList.at(2 * l1 + 1)->updateCheck(false);
       solo_index = -1;
-    } 
+    }
   }
   ignore_check = false;
 }

@@ -54,7 +54,7 @@ void Envelope::paintEvent(QPaintEvent *)
   yscale = (float)(height()-6);
   x = delayRef * xscale;
   points.setPoint(0, (int)x, height());
-  x += attackRef * xscale; 
+  x += attackRef * xscale;
   points.setPoint(1, (int)x, 6);
   x += holdRef * xscale;
   points.setPoint(2, (int)x, 6);
@@ -86,7 +86,7 @@ void Envelope::mcAbleChanged()
 
 QSize Envelope::sizeHint() const {
 
-  return QSize(ENVELOPE_MINIMUM_WIDTH, ENVELOPE_MINIMUM_HEIGHT); 
+  return QSize(ENVELOPE_MINIMUM_WIDTH, ENVELOPE_MINIMUM_HEIGHT);
 }
 
 QSizePolicy Envelope::sizePolicy() const {

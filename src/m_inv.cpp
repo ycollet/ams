@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -19,16 +19,16 @@
 #include "m_inv.h"
 #include "port.h"
 
-M_inv::M_inv(QWidget* parent) 
+M_inv::M_inv(QWidget* parent)
   : Module(M_type_inv, 1, parent, tr("Inverter"))
 {
   QString qs;
 
   M_type = M_type_inv;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_INV_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port("In", PORT_IN, 0, this);
   cv.out_off = 55;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port("Out", PORT_OUT, 0, this);
 }
 
 void M_inv::generateCycle() {

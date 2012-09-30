@@ -12,7 +12,7 @@
 #include "port.h"
 #include "midicontrollable.h"
 
-M_env::M_env(QWidget* parent) 
+M_env::M_env(QWidget* parent)
   : Module(M_type_env, 2, parent, tr("ENV"))
 {
   QString qs;
@@ -28,8 +28,8 @@ M_env::M_env(QWidget* parent)
   port_gate = new Port(tr("Gate"), PORT_IN, 0, this);
   port_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this);
   cv.out_off = 75;
-  port_gain_out = new Port(tr("Out"), PORT_OUT, 0, this);          
-  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);          
+  port_gain_out = new Port(tr("Out"), PORT_OUT, 0, this);
+  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);
 
   configDialog->initTabWidget();
   QVBoxLayout *adsrTab = configDialog->addVBoxTab(tr("&ADSR"));
@@ -66,16 +66,16 @@ void M_env::generateCycle()
   tscale = timeScale * (float)synthdata->rate;
   de_attack = (attack > 0) ? 1.0 / (attack * tscale) : 0;
   de_decay = (decay > 0) ? (1.0 - sustain) / (decay * tscale) : 0;
-  a = tscale * attack;    
+  a = tscale * attack;
   dl = tscale * delay;
   idl = (int)dl;
-  h = tscale * hold;         
-  dc = tscale * decay;    
+  h = tscale * hold;
+  dc = tscale * decay;
   idla = (int)(dl + a);
   idlah = idla + (int)h;
   if (idlah == idla)
     ++idlah;
-  idlahdc = idlah + (int)dc;    
+  idlahdc = idlah + (int)dc;
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       if (!gate[l1] && (gateData[l1][l2] > 0.5)) {
@@ -90,7 +90,7 @@ void M_env::generateCycle()
 	gate[l1] = false;
 	e_noteOff[l1] = e[l1];
       }
-      if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
+      if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) {
 	retrigger[l1] = true;
 	if (e[l1] > 0)
 	  noteOnOfs[l1] = (de_attack > 0) ? (int)(e[l1] / de_attack) : 0;
@@ -111,7 +111,7 @@ void M_env::generateCycle()
 	if (noteOnOfs[l1] >= idlah)
 	  status = 4;
 	if (noteOnOfs[l1] >= idlahdc)
-	  status = 5; 
+	  status = 5;
 	switch (status) {
 	case 0: e[l1] -= de[l1];
 	  break;
@@ -133,7 +133,7 @@ void M_env::generateCycle()
 	data[0][l1][l2] = e[l1];
 	data[1][l1][l2] = -e[l1];
 	noteOnOfs[l1]++;
-      } else {                          // Release      
+      } else {                          // Release
 	de_release = (release > 0) ? e_noteOff[l1] / (release * tscale) : 0;
 	e[l1] -= de_release;
 

@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -19,15 +19,15 @@
 #include "m_vquant.h"
 #include "port.h"
 
-M_vquant::M_vquant(QWidget* parent) 
+M_vquant::M_vquant(QWidget* parent)
   : Module(M_type_vquant, 1, parent, tr("Quantizer 2"))
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_VQUANT_HEIGHT);
-  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_quant = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_quant = new Port(tr("Out"), PORT_OUT, 0, this);
   gain = 1.0;
   configDialog->addSlider(tr("&Gain"), gain, 0, 10);
 }

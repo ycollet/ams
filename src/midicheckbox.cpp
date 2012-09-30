@@ -11,8 +11,8 @@ MidiCheckBox::MidiCheckBox(MidiControllable<float> &mcAble)
   checkFrame->setMargin(5);
 
   checkBox = new QCheckBox(nameLabel.text());
-  checkFrame->addWidget(checkBox);  
-  checkFrame->addStretch();  
+  checkFrame->addWidget(checkBox);
+  checkFrame->addStretch();
 
   QObject::connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
   mcAbleChanged();

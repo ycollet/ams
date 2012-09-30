@@ -62,7 +62,7 @@ QModelIndex LadspaModel::parent(const QModelIndex &child) const
 {
   if (child.isValid() && child.internalId() != -1)
     return index(child.internalId(), 0);
-  
+
   return QModelIndex();
 }
 
@@ -229,7 +229,7 @@ void LadspaDialog::search(bool select)
 {
   if (!synthdata->ladspaLib.count())
     return;
-  
+
   int lib = 0, desc = 0;
   int _lib, _desc;
 

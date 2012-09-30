@@ -343,7 +343,7 @@ void PrefWidget::colorJackClicked()
 
     tmp = QColorDialog::getColor(getJackColor());
     if (tmp.isValid())
-        colorJackLabel->setPalette(tmp);    
+        colorJackLabel->setPalette(tmp);
 }
 
 void PrefWidget::setMidiControllerMode(int mode)

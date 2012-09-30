@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -32,10 +32,10 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SEQ_HEIGHT);
   port_trigger = new Port(tr("Trigger"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
-  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
-  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
-  port_trigger_out = new Port(tr("Trigger"), PORT_OUT, 3, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);
+  port_trigger_out = new Port(tr("Trigger"), PORT_OUT, 3, this);
 
   configDialog->initTabWidget();
   QVBoxLayout *generalTab = configDialog->addVBoxTab(
@@ -77,7 +77,7 @@ M_seq::M_seq(int p_seqLen, QWidget* parent)
     configDialog->addIntSlider(str, pitch[l1], 0, 64, pitchTab[l1 / 8]);
     sprintf(str, "Velocity &%d", l1);
     configDialog->addIntSlider(str, velocity[l1], 0, 127, velocityTab[l1 / 8]);
-  } 
+  }
 }
 
 
@@ -141,7 +141,7 @@ void M_seq::nextStep()
   if (tick == 0) {
     seq_freq = float(pitch[seq_pos] + pitch_ofs) / 12.0;
 
-// Search for next free voice    
+// Search for next free voice
     osc = -1;
     noteCount = 0;
     for (l2 = 0; l2 < synthdata->poly; l2++) {
@@ -149,15 +149,15 @@ void M_seq::nextStep()
         noteCount = synthdata->noteCounter[l2];
         osc = l2;
       }
-    }  
-    
+    }
+
     seq_gate = (osc < 0) ? 0 : (float)gate[seq_pos];
     seq_velocity = float(velocity[seq_pos]) / 127.0;
     seq_pos++;
     if (seq_pos >= seqLen)
       seq_pos = 0;
 
-  } 
+  }
   if (tick == len)
     seq_gate = 0;
 

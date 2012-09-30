@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -20,17 +20,17 @@
 #include "m_mcv.h"
 #include "port.h"
 
-M_mcv::M_mcv(QWidget* parent) 
+M_mcv::M_mcv(QWidget* parent)
   : Module(M_type_mcv, 4, parent, tr("MCV"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_MCV_HEIGHT);
-  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
-  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
-  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
-  port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);
+  port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);
 
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
@@ -57,14 +57,14 @@ void M_mcv::generateCycle()
     gate = (synthdata->channel[l1] == channel - 1 || channel == 0) &&
 	   synthdata->noteCounter[l1] < 1000000;
     freq[l1] = pitchbend + float(synthdata->notes[l1]+pitch-60) / 12.0;
-      
+
     //      if (freq[l1] < 0) freq[l1] = 0;
     velocity = (float)synthdata->velocity[l1] / 127.0;
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       data[0][l1][l2] = gate;
       data[1][l1][l2] = freq[l1];
       data[2][l1][l2] = velocity;
-    } 
+    }
     memset(data[3][l1], 0, synthdata->cyclesize * sizeof(float));
     //      data[3][l1][0] = trig[l1];
     data[3][l1][15] = synthdata->noteCounter[l1] == 0; // Added for interpolated input ports (e.g. m_vcenv.cpp)

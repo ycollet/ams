@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -19,19 +19,19 @@
 #include "m_quantizer.h"
 #include "port.h"
 
-M_quantizer::M_quantizer(QWidget* parent) 
+M_quantizer::M_quantizer(QWidget* parent)
   : Module(M_type_quantizer, 2, parent, tr("Quantizer"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_QUANTIZER_HEIGHT);
-  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
-  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this); 
-  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this);
+  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this);
+  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this);
   cv.out_off = 95;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
-  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);          
+  port_out = new Port("Out", PORT_OUT, 0, this);
+  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);
   quantum = QUANT_12;
   QStringList quantumNames ;
   quantumNames <<
@@ -179,19 +179,19 @@ void M_quantizer::generateCycle() {
             if (qsig[l1] != lutquant) {
               qsig[l1] = lutquant;
               data[1][l1][l2] = 1.0;
-              trigCount[l1] = 512;  
+              trigCount[l1] = 512;
             } else {
               if (trigCount[l1] > 0) {
-                data[1][l1][l2] = 1;  
+                data[1][l1][l2] = 1;
                 trigCount[l1]--;
               } else {
                 data[1][l1][l2] = 0;
               }
-            }  
+            }
             transpose = (int)(transposeData[l1][l2] * 12.0);
             data[0][l1][l2] = (float)qsig[l1] / 12.0 - 100 + (float)transpose / 12.0;
           }
-         } 
+         }
     } else {
         for (l1 = 0; l1 < synthdata->poly; l1++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
@@ -212,9 +212,9 @@ void M_quantizer::generateCycle() {
               data[1][l1][l2] = 0;
             }
             transpose = (int)(transposeData[l1][l2] * 12.0);
-            data[0][l1][l2] = (float)lut[quantum][qsig[l1] % 12] / 12.0 + qsig[l1] / 12 - 100  
+            data[0][l1][l2] = (float)lut[quantum][qsig[l1] % 12] / 12.0 + qsig[l1] / 12 - 100
                             + (float)transpose / 12.0;
-          }   
+          }
         }
     }
 }

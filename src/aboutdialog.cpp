@@ -1,4 +1,4 @@
-/* 
+/*
   About ams dialog
 
   Copyright (C) 2012 Guido Scholz <guido.scholz@bayernline.de>
@@ -101,7 +101,7 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
             );
 
     authorsLayout->addWidget(authorslist);
-    tab->addTab(authors, tr("&Authors")); 
+    tab->addTab(authors, tr("&Authors"));
 
     /*Contributors tab*/
     QWidget* contributors = new QWidget(this);
@@ -122,7 +122,7 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
             ));
 
     contributorsLayout->addWidget(contributorslist);
-    tab->addTab(contributors, tr("&Contributors")); 
+    tab->addTab(contributors, tr("&Contributors"));
 
     /*Thanks tab*/
     QWidget* thanks = new QWidget(this);
@@ -132,23 +132,23 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
     thankslist->setReadOnly(true);
     thankslist->setLineWrapMode(QTextEdit::NoWrap);
     thankslist->setText(QString::fromUtf8(
-    "The VCF Module uses the resonant low-pass filter by Paul Kellett and\n" 
+    "The VCF Module uses the resonant low-pass filter by Paul Kellett and\n"
     "the Cookbook formulae for audio EQ biquad filter coefficients by\n"
-    "Robert Bristow-Johnson. The experimental 24 dB Lowpass filters have\n" 
+    "Robert Bristow-Johnson. The experimental 24 dB Lowpass filters have\n"
     "been taken from http://musicdsp.org/. They are based on the CSound\n"
-    "source code, the paper by Stilson/Smith and modifications by Paul\n" 
-    "Kellett and Timo Tossavainen. The pink noise conversion formula is by\n" 
+    "source code, the paper by Stilson/Smith and modifications by Paul\n"
+    "Kellett and Timo Tossavainen. The pink noise conversion formula is by\n"
     "Paul Kellett and has been taken from http://musicdsp.org/ as well.\n\n"
     "The author is grateful to Takashi Iwai for instructions about ALSA.\n"
     "Klaas Freitag, Helmut Herold, Stefan Hundhammer and Arvin Schnell\n"
     "answered many questions about Qt. Thanks to Jörg Arndt for valuable\n"
-    "hints regarding speed optimization. Torsten Rahn has helped to\n" 
+    "hints regarding speed optimization. Torsten Rahn has helped to\n"
     "improve the color scheme of the program. Thanks to Bernhard Kaindl\n"
     "for helpful discussion.\n"
     ));
 
     thanksLayout->addWidget(thankslist);
-    tab->addTab(thanks, tr("&Thanks")); 
+    tab->addTab(thanks, tr("&Thanks"));
 
     /*License tab*/
     QWidget* license = new QWidget(this);
@@ -160,7 +160,7 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
     licenselist->setText(LICENSE_TEXT);
 
     licenseLayout->addWidget(licenselist);
-    tab->addTab(license, tr("&License")); 
+    tab->addTab(license, tr("&License"));
 
     baseLayout->addWidget(tab);
 

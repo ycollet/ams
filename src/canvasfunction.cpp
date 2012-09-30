@@ -45,10 +45,10 @@ void CanvasFunction::mouseMoveEvent(int p, QGraphicsSceneMouseEvent *event)
     {
       if (p > 0)
 	x = qMax(x, canvasPoints.at(p - 1)->scenePos().x());
-      
+
       if (p < function.pointCount - 1)
 	x = qMin(x, canvasPoints.at(p + 1)->scenePos().x());
-      
+
       QPointF newPos(x, y);
       setPoint(p, newPos);
     }

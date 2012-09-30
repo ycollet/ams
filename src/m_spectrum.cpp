@@ -3,15 +3,15 @@
 #include "m_spectrum.h"
 
 
-M_spectrum::M_spectrum(QWidget* parent) 
+M_spectrum::M_spectrum(QWidget* parent)
   : Module(M_type_spectrum, 0, parent, tr("Spectrum"))
 {
   QString qs;
- 
+
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SPECTRUM_HEIGHT);
 
-  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
-  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);
   configDialog->addLabel(
 	"This modules source-code is outdated.\n"
 	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
@@ -27,8 +27,8 @@ M_spectrum::M_spectrum(QWidget* parent)
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -44,21 +44,21 @@ M_spectrum::M_spectrum(QWidget* parent)
 #include "module.h"
 #include "port.h"
 
-M_spectrum::M_spectrum(QWidget* parent, const char *name) 
+M_spectrum::M_spectrum(QWidget* parent, const char *name)
               : Module(0, parent, name)
 {
   QString qs;
   Q3HBox *hbox1, *labelBox;
   Q3VBox *vbox1, *vbox2;
- 
+
   M_type = M_type_spectrum;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_SPECTRUM_WIDTH, MODULE_SPECTRUM_HEIGHT);
   gain = 0;
   mixer_gain[0] = 1.0;
   mixer_gain[1] = 1.0;
   agc = 1;
-  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);          
-  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);          
+  port_in[0] = new Port(tr("In 0"), PORT_IN, 0, this);
+  port_in[1] = new Port(tr("In 1"), PORT_IN, 1, this);
   qs = tr("Spectrum ID %1").arg(moduleID);
   configDialog->setWindowTitle(qs);
   configDialog->initTabWidget();
@@ -68,7 +68,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   normMode = 0;
   f_min = 0;
   f_max = (double)synthdata->rate / 2.0;
-  freqZoom = 0;  
+  freqZoom = 0;
   refreshMode = 0;
   fftMode = 1;
   window = 2;
@@ -100,7 +100,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   configDialog->addCheckBox(freqZoom, tr("Frequency Zoom"), &freqZoom, zoomTab);
   QObject::connect(configDialog->midiCheckBoxList.at(0)->checkBox, SIGNAL(toggled(bool)),
                    this, SLOT(freqZoomToggled(bool)));
-  
+
   hbox1 = configDialog->addHBox(paramTab);
   vbox1 = configDialog->addVBox(hbox1);
   vbox2 = configDialog->addVBox(hbox1);
@@ -160,7 +160,7 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
   configDialog->spectrumScreenList.at(0)->writeofs = 0;
-  timer = new QTimer(this);   
+  timer = new QTimer(this);
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
   startSpectrum();
@@ -199,7 +199,7 @@ void M_spectrum::generateCycle()
         {
             for (l3 = 0; l3 < synthdata->poly; l3++)
             {
-                floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
+                floatdata[2 * l2 + l1] += mixgain * indata[l3][l2];
             }
         }
     }
@@ -207,7 +207,7 @@ void M_spectrum::generateCycle()
     spectrumdata = configDialog->spectrumScreenList.at(0)->spectrumdata;
     ofs = configDialog->spectrumScreenList.at(0)->writeofs;
     for (l1 = 0; l1 < synthdata->cyclesize; l1++)
-    {   
+    {
         spectrumdata[2 * ofs] = wavgain * floatdata[2 * l1];
         spectrumdata[2 * ofs + 1] = wavgain * floatdata[2 * l1 + 1];
         if (++ofs >= SPECTRUM_BUFSIZE >> 1) ofs -= SPECTRUM_BUFSIZE >> 1;
@@ -220,8 +220,8 @@ void M_spectrum::showConfigDialog()
 }
 
 void M_spectrum::timerProc()
-{          
- 
+{
+
   if (configDialog->spectrumScreenList.at(0)->getTriggerMode() == SPECTRUM_TRIGGERMODE_CONTINUOUS) {
     startSpectrum();
   }
@@ -248,7 +248,7 @@ void M_spectrum::update_f_min(int val)
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_min(f_min);
-  qs.sprintf("%d Hz", (int)rint(f_min));   
+  qs.sprintf("%d Hz", (int)rint(f_min));
   minLabel->setText(qs);
 }
 
@@ -280,13 +280,13 @@ void M_spectrum::updateRefreshMode(int val)
 {
   if (refreshMode == 0)
   {
-    configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_CONTINUOUS); 
+    configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_CONTINUOUS);
     startSpectrum();
   }
   else
   {
     configDialog->spectrumScreenList.at(0)->setTriggerMode(SPECTRUM_TRIGGERMODE_SINGLE);
-  } 
+  }
   if (refreshMode == 2)
   {
     configDialog->spectrumScreenList.at(0)->setEnableMouse(true);

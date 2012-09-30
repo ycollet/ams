@@ -5,8 +5,8 @@
 #include <time.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -40,7 +40,7 @@
 
 */
 
-M_lfo::M_lfo(QWidget* parent) 
+M_lfo::M_lfo(QWidget* parent)
   : Module(M_type_lfo, 6, parent, tr("LFO"))
   , wave_period((double)synthdata->rate / (16.0 * freq))
   , sa(-1)
@@ -52,15 +52,15 @@ M_lfo::M_lfo(QWidget* parent)
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LFO_WIDTH, MODULE_LFO_HEIGHT);
   freq = 5;
   phi0 = 0;
-  
-  port_M_trigger = new Port(tr("Reset"), PORT_IN, 0, this);          
+
+  port_M_trigger = new Port(tr("Reset"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);          
-  port_tri = new Port(tr("Triangle"), PORT_OUT, 1, this);          
-  port_sawup = new Port(tr("Saw Up"), PORT_OUT, 2, this);          
-  port_sawdown = new Port(tr("Saw Down"), PORT_OUT, 3, this);          
-  port_rect = new Port(tr("Rectangle"), PORT_OUT, 4, this);          
-  port_sh = new Port(tr("S & H"), PORT_OUT, 5, this);          
+  port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);
+  port_tri = new Port(tr("Triangle"), PORT_OUT, 1, this);
+  port_sawup = new Port(tr("Saw Up"), PORT_OUT, 2, this);
+  port_sawdown = new Port(tr("Saw Down"), PORT_OUT, 3, this);
+  port_rect = new Port(tr("Rectangle"), PORT_OUT, 4, this);
+  port_sh = new Port(tr("S & H"), PORT_OUT, 5, this);
 
   configDialog->addSlider(tr("&Frequency"), freq, 0, 100, true);
   configDialog->addSlider(tr("&Phi0"), phi0, 0, 6.283);
@@ -74,8 +74,8 @@ void M_lfo::generateCycle() {
   double ldsi, ldsa, ldt, ldr, ldsh, dt0, dsa;
 
     float **triggerData = port_M_trigger->getinputdata();
-   /* 
-    wave_period = (double)synthdata->rate / (16.0 * freq); 
+   /*
+    wave_period = (double)synthdata->rate / (16.0 * freq);
     dsa = 2.0 / wave_period;
     dt0 = 4.0 / wave_period;
     phi0i = (int)(phi0 / 6.283 * wave_period);
@@ -89,7 +89,7 @@ void M_lfo::generateCycle() {
         l2 += k;
 
         /*update frequency change on every pass*/
-        wave_period = (double)synthdata->rate / (16.0 * freq); 
+        wave_period = (double)synthdata->rate / (16.0 * freq);
         dsa = 2.0 / wave_period;
         dt0 = 4.0 / wave_period;
         phi0i = (int)(phi0 / 6.283 * wave_period);
@@ -152,7 +152,7 @@ void M_lfo::generateCycle() {
           data[5][l1][l2_out] = old_sh[l1];
           l2_out++;
         }
-      } while(len);  
-    }  
+      } while(len);
+    }
 }
 

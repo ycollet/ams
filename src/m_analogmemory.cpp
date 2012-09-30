@@ -33,8 +33,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -46,20 +46,20 @@
 #include "m_analogmemory.h"
 #include "port.h"
 
-M_analogmemory::M_analogmemory(QWidget* parent) 
+M_analogmemory::M_analogmemory(QWidget* parent)
   : Module(M_type_analogmemory, 1, parent, tr("Analog Mem"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_ANALOGMEMORY_HEIGHT);
-  port_M_in_data = new Port(tr("In CV"), PORT_IN, 0, this); 
-  port_M_in_addr = new Port(tr("Write Addr"), PORT_IN, 1, this); 
-  port_M_in_WrEna = new Port(tr("Write Ena"), PORT_IN, 2, this); 
-  port_M_out_addr = new Port(tr("Read Addr"), PORT_IN, 3, this); 
+  port_M_in_data = new Port(tr("In CV"), PORT_IN, 0, this);
+  port_M_in_addr = new Port(tr("Write Addr"), PORT_IN, 1, this);
+  port_M_in_WrEna = new Port(tr("Write Ena"), PORT_IN, 2, this);
+  port_M_out_addr = new Port(tr("Read Addr"), PORT_IN, 3, this);
   cv.out_off = 35;
-  port_outcv = new Port(tr("Out CV"), PORT_OUT, 0, this);          
-  
+  port_outcv = new Port(tr("Out CV"), PORT_OUT, 0, this);
+
   addrmode = 1;
   QStringList mappingNames;
   mappingNames << tr("Direct (no fill)");
@@ -68,9 +68,9 @@ M_analogmemory::M_analogmemory(QWidget* parent)
   mappingNames << tr("Linear down only, no fill");
   mappingNames << tr("Linear down only, fill");
   mappingNames << tr("Reflected");
-  configDialog->addComboBox(tr("&Write addressing mode"), 
+  configDialog->addComboBox(tr("&Write addressing mode"),
 			     addrmode, mappingNames);
-  
+
   int cells;
   cell2n = MAX_ANALOGMEMORY_2N_FRAMES;
   cells = 1<<MAX_ANALOGMEMORY_2N_FRAMES;
@@ -89,9 +89,9 @@ M_analogmemory::M_analogmemory(QWidget* parent)
 }
 
 M_analogmemory::~M_analogmemory() {
-  
+
   int l1;
-  
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     free(buf[l1]);
   }
@@ -100,24 +100,24 @@ M_analogmemory::~M_analogmemory() {
 }
 
 void M_analogmemory::generateCycle() {
-  
+
   int l1;
   unsigned int l2;
   int cells;
   int i;
-  
+
   inData = port_M_in_data->getinputdata();
   inAddr = port_M_in_addr->getinputdata();
   inWrEna = port_M_in_WrEna->getinputdata();
   outAddr = port_M_out_addr->getinputdata();
   cells = 1 << cell2n;
-  
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       // First we write, then we read.
       // Calculate addresses, scaled -1 to +1 to match LFOs
       offset = (int) (cells * ((((float) inAddr[l1][l2]) + 1.0)/ 2.0));
-      if (offset >= cells) 
+      if (offset >= cells)
 	offset = cells - 1;
       if (offset < 0) offset = 0;
       if (inWrEna[l1][l2] >= writethresh)
@@ -134,10 +134,10 @@ void M_analogmemory::generateCycle() {
 	      if ( offset > lastwrite[l1])  // Simpler case- lw < wo
 		{
 		  //fprintf (stderr, "L");
-		  for (i = lastwrite[l1]+1; i <= offset; i++) 
+		  for (i = lastwrite[l1]+1; i <= offset; i++)
 		    buf[l1][i] = inData[l1][l2];
 		}
-	      //else 
+	      //else
 	      //if (offset < lastwrite[l1]) // Split case, wrapping past 0
 	      //  {
 	      // //fprintf (stderr, "W\n");
@@ -155,10 +155,10 @@ void M_analogmemory::generateCycle() {
 	  if (addrmode == 4)   // Downward, fill.
 	    if ( offset < lastwrite[l1])  // Simpler case- lw < wo
 	      {
-		for (i = lastwrite[l1]-1; i >= offset; i--) 
+		for (i = lastwrite[l1]-1; i >= offset; i--)
 		  buf[l1][i] = inData[l1][l2];
 	      };
-	  //else 
+	  //else
 	  //  if (offset < lastwrite[l1]) // Split case, wrapping past 0
 	  //  {
 	  //    fprintf (stderr, "W\n");
@@ -168,10 +168,10 @@ void M_analogmemory::generateCycle() {
 	  //      buf[l1][i] = inData[l1][l2];
 	};
       lastwrite[l1] = offset;
-      
+
       // then read..
       offset = (int) (cells * ((((float)outAddr[l1][l2]) + 1.0)/ 2.0));
-      if (offset >= cells) 
+      if (offset >= cells)
 	offset = cells - 1;
       if (offset < 0) offset = 0;
       data[0][l1][l2] = buf[l1][offset];

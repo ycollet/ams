@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -25,9 +25,9 @@ M_slew::M_slew(QWidget* parent)
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SLEW_HEIGHT);
-  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);
   timeUp = 0.5;
   timeDown = 0.5;
   configDialog->addSlider(tr("Time &Up"), timeUp, 0, 10);

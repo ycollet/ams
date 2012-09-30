@@ -17,7 +17,7 @@ MidiComboBox::MidiComboBox(MidiControllableNames &mcAble)
 
   comboFrame->addWidget(&nameLabel);
   //  nameLabel->setFixedHeight(nameLabel->sizeHint().height());
-  comboBox = new QComboBox();  
+  comboBox = new QComboBox();
   comboBox->addItems(mcAble.itemNames);
   comboBox->setFixedSize(comboBox->sizeHint());
   comboFrame->addWidget(comboBox);
@@ -65,15 +65,15 @@ void MidiComboBox::setMidiValue(int value) {
 
 void MidiComboBox::updateValue(int value) {
 
-  *valueRef = value;    
+  *valueRef = value;
   comboBox->setCurrentIndex(value);
   emit guiComponentTouched();
 }
 
 int MidiComboBox::getMidiValue() {
 
-  int x;  
- 
+  int x;
+
   x = (int)rint(127.0 * comboBox->currentIndex() / (comboBox->count()-1));
   return(x);
 }

@@ -1,5 +1,5 @@
-#include <sys/time.h> 
-#include <sys/resource.h> 
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <math.h>
 #include <pthread.h>
 #include <QApplication>
@@ -113,7 +113,7 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
       exit(-1);
     }
   }
-  dy = 2.0 / (float)(WAVE_PERIOD - decaytime);  
+  dy = 2.0 / (float)(WAVE_PERIOD - decaytime);
   dyd = 2.0 / decaytime;
   l2 = 0;
   for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
@@ -141,18 +141,18 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
     wave_rect[l2++] = (float)l1 * dyd;
 
   for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
-    wave_rect[l2++] = 1.0; 
+    wave_rect[l2++] = 1.0;
 
   for (l1 = 0; l1 < decaytime>>1; l1++)
     wave_rect[l2++] = 1.0 - (float)l1 * dyd;
 
   for (l1 = 0; l1 < (WAVE_PERIOD - decaytime)>>1; l1++)
-    wave_rect[l2++] = -1.0; 
+    wave_rect[l2++] = -1.0;
 
   for (l1 = 0; l1 < decaytime>>2; l1++)
     wave_rect[l2++] = -1.0 + (float)l1 * dyd;
 
-  dy = 4.0 / (float)WAVE_PERIOD;  
+  dy = 4.0 / (float)WAVE_PERIOD;
   for (l1 = 0; l1 < (WAVE_PERIOD>>2); l1++)
     wave_tri[l1] = (float)l1 * dy;
 
@@ -253,7 +253,7 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
        li < ladspaLib.constEnd(); ++li, ++l1)
     if (setName == li->name.trimmed()) {
       subID1 = l1;
-      
+
       QList<const LADSPA_Descriptor *>::const_iterator di =
 	li->desc.constBegin();
       for (int l2 = 0; di < li->desc.constEnd(); ++di, ++l2) {
@@ -262,11 +262,11 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
         if (pluginName == qsl.trimmed()) {
           subID2Label = l2;
           break;
-        } 
+        }
         if (pluginName == qsn.trimmed()) {
           subID2Name = l2;                            // No break to give the priority to "Label"
         }
-      }  
+      }
       break;
     }
 
@@ -283,7 +283,7 @@ float SynthData::exp_table(float x) {
   if (index >= EXP_TABLE_LEN) index = EXP_TABLE_LEN - 1;
   else if (index < 0) index = 0;
   return(exp_data[index]);
-}     
+}
 
 // float SynthData::exp_table_ln2(float x)
 // { older version, less precise
@@ -392,7 +392,7 @@ int SynthData::initAlsa(const QString& cname, const QString& pname,
     {
         qCritical("Can't connect to ALSA");
         return -ENODEV;
-    } 
+    }
     capt_ports = alsa_handle->ncapt();
     play_ports = alsa_handle->nplay();
     if (capt_ports > ncapt)
@@ -407,14 +407,14 @@ int SynthData::initAlsa(const QString& cname, const QString& pname,
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
     if (capt_ports > 0)
         qWarning("ALSA capture device \"%s\" opened with %d inputs",
-                cname.toUtf8().constData(), capt_ports); 
+                cname.toUtf8().constData(), capt_ports);
     if (play_ports > 0)
         qWarning("ALSA playback device \"%s\" opened with %d outputs",
-                pname.toUtf8().constData(), play_ports); 
+                pname.toUtf8().constData(), play_ports);
 #else
     qWarning("ALSA device \"%s\" opened with %d inputs "
             "and %d outputs",
-            pname.toUtf8().constData(), capt_ports, play_ports); 
+            pname.toUtf8().constData(), capt_ports, play_ports);
 #endif
 
     rate = fsamp;
@@ -518,7 +518,7 @@ void *SynthData::alsa_thr_main (void)
 		    }
 		}
                 alsa_handle->play_done (cyclesize);
-	    }       
+	    }
 
             if (doSynthesis) call_modules ();
 
@@ -526,7 +526,7 @@ void *SynthData::alsa_thr_main (void)
 	}
 	pthread_mutex_unlock(&rtMutex);
     }
- 
+
     alsa_handle->pcm_stop ();
 
     return 0;
@@ -565,7 +565,7 @@ int SynthData::initJack (int ncapt, int nplay)
         return -ENODEV;
     }
     jack_set_process_callback (jack_handle, jack_static_callback, (void *)this);
- 
+
     rate = jack_get_sample_rate (jack_handle);
     periodsize = MAXIMUM_PERIODSIZE;
     create_zero_data ();
@@ -607,7 +607,7 @@ int SynthData::initJack (int ncapt, int nplay)
 
     if (synthoptions->verbose == 1)
         qWarning("Connected to JACK with %d inputs and %d outputs",
-            capt_ports, play_ports); 
+            capt_ports, play_ports);
 
     return 0;
 }
@@ -619,7 +619,7 @@ int SynthData::closeJack()
 
     if (synthoptions->verbose == 1)
         qWarning("%s", QObject::tr("Closing JACK...").toUtf8().constData());
-    
+
     int result = jack_client_close(jack_handle);
     if (result)
         qWarning("JACK client close failed: %d.", result);
@@ -705,7 +705,7 @@ int SynthData::jack_callback(jack_nframes_t nframes)
 {
     int         i, j;
 
-    if (nframes > MAXIMUM_PERIODSIZE) { 
+    if (nframes > MAXIMUM_PERIODSIZE) {
         fprintf(stderr, "nframes exceeds allowed value %d\n", MAXIMUM_PERIODSIZE);
         return 0;
     }
@@ -738,7 +738,7 @@ int SynthData::jack_callback(jack_nframes_t nframes)
 
     if (doSynthesis)
       call_modules();
- 
+
    pthread_mutex_unlock(&rtMutex);
    return 0;
 }
@@ -746,7 +746,7 @@ int SynthData::jack_callback(jack_nframes_t nframes)
 void SynthData::call_modules(void)
 {
   int i;
-     
+
   for (i = 0; i < wavoutModuleList.count(); i++)
     wavoutModuleList.at(i)->generateCycle();
   for (i = 0; i < scopeModuleList.count(); i++)
@@ -864,7 +864,7 @@ void SynthData::handleMidiEventNoteOn(snd_seq_event_t *ev)
             notes[osc] = ev->data.note.note;
 	    if (poly == 1)
 		noteList.pushNote(ev->data.note.note);
-        }  
+        }
 
     }
 
@@ -879,7 +879,7 @@ void SynthData::handleMidiEventNoteOff(snd_seq_event_t *ev)
     if (midiChannel < 0 || midiChannel == ev->data.control.channel) {
 	for (int i = 0; i < poly; ++i)
 	    if (channel[i] == ev->data.note.channel) {
-		if (poly == 1)  
+		if (poly == 1)
 		    noteList.deleteNote(ev->data.note.note);
 		if (notes[i] == ev->data.note.note && noteCounter[i] < 1000000) {
 		    if (poly == 1 && noteList.anyNotesPressed()) {
@@ -937,7 +937,7 @@ void SynthData::handleMidiEventPitchbend(snd_seq_event_t *ev)
 
     for (int i = 0; i < synthdata->listM_advmcv.count(); ++i)
         synthdata->listM_advmcv.at(i)->pitchbendEvent(
-                ev->data.control.value); 
+                ev->data.control.value);
 }
 
 void SynthData::handleMidiEventChanPress(snd_seq_event_t *ev)

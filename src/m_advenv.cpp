@@ -1,8 +1,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -18,7 +18,7 @@
 #include "midicontrollable.h"
 
 
-M_advenv::M_advenv(QWidget* parent) 
+M_advenv::M_advenv(QWidget* parent)
   : Module(M_type_advenv, 2, parent, tr("Advanced ENV"))
 {
   QString qs;
@@ -44,7 +44,7 @@ M_advenv::M_advenv(QWidget* parent)
   port_retrigger = new Port(tr("Retrigger"), PORT_IN, 1, this);
   cv.out_off = 75;
   port_gain_out = new Port("Out", PORT_OUT, 0, this);
-  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);          
+  port_inverse_out = new Port(tr("Inverse Out"), PORT_OUT, 1, this);
 
   MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(1,
           &timeScale, attack, &sustain, release);
@@ -133,7 +133,7 @@ void M_advenv::generateCycle() {
           de_release[l1] = (release[0] > 0) ? (release[1] - e_noteOff[l1]) / (tscale * release[0]) : 0;
   //        fprintf(stderr, "de_release[%d]: %f, e_noteOff: %f\n", l1, de_release[l1], e_noteOff[l1]);
         }
-        if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) { 
+        if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) {
           retrigger[l1] = true;
           if (e[l1] > 0) {
             noteOnOfs[l1] = -ADVENVELOPE_RESPONSE;
@@ -148,7 +148,7 @@ void M_advenv::generateCycle() {
         if (gate[l1]) {
             status = 1;
             if (noteOnOfs[l1] < 0) status = 0;
-            if (noteOnOfs[l1] >= long(t[0])) status = 2; 
+            if (noteOnOfs[l1] >= long(t[0])) status = 2;
             if (noteOnOfs[l1] >= long(t[1])) status = 3;
             if (noteOnOfs[l1] >= long(t[2])) status = 4;
             if (noteOnOfs[l1] >= long(t[3])) status = 5;
@@ -175,7 +175,7 @@ void M_advenv::generateCycle() {
             data[0][l1][l2] = e[l1];
             data[1][l1][l2] = -e[l1];
             noteOnOfs[l1]++;
-        } else {                          // Release      
+        } else {                          // Release
           if (noteActive[l1]) {
             status = 1;
             if (noteOffOfs[l1] < 0) status = 0;

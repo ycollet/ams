@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -25,7 +25,7 @@
 #include "port.h"
 
 
-M_wavout::M_wavout(QWidget* parent) 
+M_wavout::M_wavout(QWidget* parent)
   : Module(M_type_wavout, 0, parent, tr("WAV Out"))
 {
   QString qs;
@@ -37,8 +37,8 @@ M_wavout::M_wavout(QWidget* parent)
   mixer_gain[1] = 0.5;
   agc = 1;
   doRecord = 0;
-  port_in[0] = new Port("In 0", PORT_IN, 0, this);          
-  port_in[1] = new Port("In 1", PORT_IN, 1, this);          
+  port_in[0] = new Port("In 0", PORT_IN, 0, this);
+  port_in[1] = new Port("In 1", PORT_IN, 1, this);
 
   configDialog->initTabWidget();
   QVBoxLayout *fileTab = configDialog->addVBoxTab(tr("&File"));
@@ -56,11 +56,11 @@ M_wavout::M_wavout(QWidget* parent)
   MidiControllableDoOnce *do2 = configDialog->addPushButton(
           tr("Re&cord"), hbox2);
   MidiControllableDoOnce *do3 = configDialog->addPushButton(
-          tr("&Stop"), hbox2);  
-  QObject::connect(do0, SIGNAL(triggered()), this, SLOT(openBrowser())); 
-  QObject::connect(do1, SIGNAL(triggered()), this, SLOT(createWav())); 
-  QObject::connect(do2, SIGNAL(triggered()), this, SLOT(recordClicked())); 
-  QObject::connect(do3, SIGNAL(triggered()), this, SLOT(stopClicked())); 
+          tr("&Stop"), hbox2);
+  QObject::connect(do0, SIGNAL(triggered()), this, SLOT(openBrowser()));
+  QObject::connect(do1, SIGNAL(triggered()), this, SLOT(createWav()));
+  QObject::connect(do2, SIGNAL(triggered()), this, SLOT(recordClicked()));
+  QObject::connect(do3, SIGNAL(triggered()), this, SLOT(stopClicked()));
   configDialog->midiPushButtonList.at(2)->pushButton->setEnabled(false);
   configDialog->midiPushButtonList.at(3)->pushButton->setEnabled(false);
   configDialog->addSlider(tr("G&ain"), gain, 0, 1, false, gainTab);
@@ -111,7 +111,7 @@ void M_wavout::generateCycle()
       mixgain = gain * mixer_gain[l1];
       for (l2 = 0; l2 < synthdata->cyclesize; ++l2)
       {
-        for (l3 = 0; l3 < synthdata->poly; ++l3) floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
+        for (l3 = 0; l3 < synthdata->poly; ++l3) floatdata[2 * l2 + l1] += mixgain * indata[l3][l2];
       }
       if (agc)
       {
@@ -132,11 +132,11 @@ void M_wavout::generateCycle()
       for (l2 = 0; l2 < 2; ++l2)
       {
           for (l1 = 0; l1 < synthdata->cyclesize; ++l1)
-          {   
+          {
               s = (short)(wavgain * floatdata[2 * l1 + l2]);
               wavdata[4*l1+2*l2] = (unsigned char)s;
               wavdata[4*l1+2*l2+1] = s >> 8;
-          }   
+          }
       }
       wavfile.write(wavdata, synthdata->cyclesize * 4);
       wavDataSize += synthdata->cyclesize * 4;
@@ -246,13 +246,13 @@ void M_wavout::openBrowser() {
     wavname = QFileDialog::getSaveFileName(this, tr("Choose Wave File"),
             buf, tr("WAV files (*.wav)"));
     if (!wavname.isEmpty()) {
-        configDialog->lineEditList.at(0)->setText(wavname);    
+        configDialog->lineEditList.at(0)->setText(wavname);
         createWav();
     }
 }
 
-void M_wavout::timerProc() {          
- 
+void M_wavout::timerProc() {
+
   QString qs1, qs2, qs3;
   int seconds, minutes, displaySeconds;
 

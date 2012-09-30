@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -19,16 +19,16 @@
 #include "m_delay.h"
 #include "port.h"
 
-M_delay::M_delay(QWidget* parent) 
+M_delay::M_delay(QWidget* parent)
   : Module(M_type_delay, 1, parent, tr("Delay"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_DELAY_HEIGHT);
-  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this);
   cv.out_off = 55;
-  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);
 
   configDialog->addSlider(tr("&Delay"), delay, 0, 10);
   buf = (float **)malloc(synthdata->poly * sizeof(float *));
@@ -42,7 +42,7 @@ M_delay::M_delay(QWidget* parent)
 M_delay::~M_delay() {
 
   int l1;
-  
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     free(buf[l1]);
   }

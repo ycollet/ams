@@ -5,7 +5,7 @@
 #include "m_vcorgan.h"
 #include "port.h"
 
-M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent) 
+M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
   : Module(M_type_vcorgan, 1, parent, tr("VC Organ"))
 {
   QString qs;
@@ -37,7 +37,7 @@ M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
   port_M_exp = new Port(tr("Exp. FM"), PORT_IN, 1, this);
   port_M_lin = new Port(tr("Lin. FM"), PORT_IN, 2, this);
   cv.out_off = 95;
-  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);
 
   configDialog->initTabWidget();
   QStringList waveFormNames;
@@ -91,7 +91,7 @@ void M_vcorgan::generateCycle() {
 
   int l1, l3;
   unsigned int l2;
-  float dphi, phi1; 
+  float dphi, phi1;
   float freq_const[MODULE_VCORGAN_MAX_OSC], freq_tune[MODULE_VCORGAN_MAX_OSC];
   float gain_linfm, wave_period_2, current_gain;
   float gain_const[MODULE_VCORGAN_MAX_OSC], phi_const[MODULE_VCORGAN_MAX_OSC];
@@ -109,12 +109,12 @@ void M_vcorgan::generateCycle() {
       freq_const[l3] = wave_period / (float)synthdata->rate * (float)harmonic[l3] / (float)subharmonic[l3];
       phi_const[l3] = phi0[l3] * wave_period / (2.0 * M_PI);
     }
-    for (l1 = 0; l1 < synthdata->poly; l1++) {  
+    for (l1 = 0; l1 < synthdata->poly; l1++) {
       memset(data[0][l1], 0, synthdata->cyclesize * sizeof(float));
       for (l3 = 0; l3 < oscCount; l3++) {
         if (phi0[l3] == 0) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-            dphi = freq_const[l3] * (synthdata->exp2_table(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2]) 
+            dphi = freq_const[l3] * (synthdata->exp2_table(freq_tune[l3] + freqData[l1][l2] + expFMGain * expFMData[l1][l2])
                                                          + gain_linfm * linFMData[l1][l2]);
             if (dphi > wave_period_2) {
               dphi = wave_period_2;
@@ -123,19 +123,19 @@ void M_vcorgan::generateCycle() {
               current_gain = gain_const[l3];
             }
             switch (waveForm[l3]) {
-              case ORGAN_SINE: 
+              case ORGAN_SINE:
                 data[0][l1][l2] += current_gain * synthdata->wave_sine[(int)phi[l1][l3]];
                 break;
-              case ORGAN_SAW: 
+              case ORGAN_SAW:
                 data[0][l1][l2] += current_gain * synthdata->wave_saw[(int)phi[l1][l3]];
                 break;
-              case ORGAN_TRI: 
+              case ORGAN_TRI:
                 data[0][l1][l2] += current_gain * synthdata->wave_tri[(int)phi[l1][l3]];
                 break;
-              case ORGAN_RECT: 
+              case ORGAN_RECT:
                 data[0][l1][l2] += current_gain * synthdata->wave_rect[(int)phi[l1][l3]];
                 break;
-              case ORGAN_SAW2: 
+              case ORGAN_SAW2:
                 data[0][l1][l2] += current_gain * synthdata->wave_saw2[(int)phi[l1][l3]];
                 break;
             }
@@ -157,19 +157,19 @@ void M_vcorgan::generateCycle() {
             if (phi1 < 0) phi1 += wave_period;
             else if (phi1 >= wave_period) phi1 -= wave_period;
             switch (waveForm[l3]) {
-              case ORGAN_SINE: 
+              case ORGAN_SINE:
                 data[0][l1][l2] += current_gain * synthdata->wave_sine[(int)phi1];
                 break;
-              case ORGAN_SAW: 
+              case ORGAN_SAW:
                 data[0][l1][l2] += current_gain * synthdata->wave_saw[(int)phi1];
                 break;
-              case ORGAN_TRI: 
+              case ORGAN_TRI:
                 data[0][l1][l2] += current_gain * synthdata->wave_tri[(int)phi1];
                 break;
-              case ORGAN_RECT: 
+              case ORGAN_RECT:
                 data[0][l1][l2] += current_gain * synthdata->wave_rect[(int)phi1];
                 break;
-              case ORGAN_SAW2: 
+              case ORGAN_SAW2:
                 data[0][l1][l2] += current_gain * synthdata->wave_saw2[(int)phi1];
                 break;
             }

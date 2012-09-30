@@ -8,7 +8,7 @@
 #include "m_vco.h"
 #include "port.h"
 
-M_vco::M_vco(QWidget* parent) 
+M_vco::M_vco(QWidget* parent)
     : Module(M_type_vco, 5, parent, tr("VCO"))
 {
     QString qs;
@@ -40,11 +40,11 @@ M_vco::M_vco(QWidget* parent)
     port_M_pw = new Port(tr("PW"), PORT_IN, 4, this);
 
     cv.out_off = 115;
-    port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);          
-    port_tri = new Port(tr("Triangle"), PORT_OUT, 1, this);          
-    port_saw = new Port(tr("Saw"), PORT_OUT, 2, this);          
-    port_rect = new Port(tr("Rectangle"), PORT_OUT, 3, this);          
-    port_aux = new Port(tr("Aux"), PORT_OUT, 4, this);          
+    port_sine = new Port(tr("Sine"), PORT_OUT, 0, this);
+    port_tri = new Port(tr("Triangle"), PORT_OUT, 1, this);
+    port_saw = new Port(tr("Saw"), PORT_OUT, 2, this);
+    port_rect = new Port(tr("Rectangle"), PORT_OUT, 3, this);
+    port_aux = new Port(tr("Aux"), PORT_OUT, 4, this);
 
     configDialog->initTabWidget();
     QVBoxLayout *freqTab = configDialog->addVBoxTab(tr("&Frequency"));
@@ -72,7 +72,7 @@ void M_vco::generateCycle() {
 
     int l1, phint;
     unsigned int l2;
-    float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
+    float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave;
     float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
 
 
@@ -103,16 +103,16 @@ void M_vco::generateCycle() {
                 data[0][l1][l2] = synthdata->wave_sine[phint];
                 data[1][l1][l2] = synthdata->wave_tri[phint];
                 switch (waveForm) {
-                    case WAVE_SAW: 
+                    case WAVE_SAW:
                         data[4][l1][l2] = synthdata->wave_saw2[phint];
                         break;
                     case WAVE_SAW2:
-                        half_wave = wave_period_2;// * 0.5f;// / 2.0;              
-                        data[4][l1][l2] = (phi1 < half_wave) 
+                        half_wave = wave_period_2;// * 0.5f;// / 2.0;
+                        data[4][l1][l2] = (phi1 < half_wave)
                             ? synthdata->wave_saw2[(int)(2.0f * phi1)]
                             : 0.0f;
                         break;
-                    case WAVE_SAW3: 
+                    case WAVE_SAW3:
                         third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
                         data[4][l1][l2] = (phi1 < third_wave)
                             ? synthdata->wave_saw2[(int)(3.0f * phi1)]
@@ -132,7 +132,7 @@ void M_vco::generateCycle() {
                     if (phi1 <= pw - d) {
                         data[3][l1][l2] = 1.0f;
                         data[2][l1][l2] = 1.0f - (phi1 - d) * dsaw;
-                    } else { 
+                    } else {
                         if (phi1 <= pw + d) {
                             data[3][l1][l2] = (pw - phi1) * dd;
                             data[2][l1][l2] = 1.0f - (phi1 - d) * dsaw;
@@ -143,7 +143,7 @@ void M_vco::generateCycle() {
                             } else {
                                 data[3][l1][l2] = (phi1 - wave_period) * dd;
                                 data[2][l1][l2] = data[3][l1][l2];  //(phi1 - wave_period) * dd;
-                            } 
+                            }
                         }
                     }
                 }
@@ -161,7 +161,7 @@ void M_vco::generateCycle() {
                 data[0][l1][l2] = synthdata->wave_sine[phint];
                 data[1][l1][l2] = synthdata->wave_tri[phint];
                 switch (waveForm) {
-                    case WAVE_SAW: 
+                    case WAVE_SAW:
                         data[4][l1][l2] = synthdata->wave_saw2[phint];
                         break;
                     case WAVE_SAW2:
@@ -178,7 +178,7 @@ void M_vco::generateCycle() {
                         break;
                 }
                 pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
-                if (pw < pw_low) pw = pw_low;  
+                if (pw < pw_low) pw = pw_low;
                 else if (pw > pw_high) pw = pw_high;
                 d = edge * dphi;
                 dd = 1.0f / d;
@@ -190,7 +190,7 @@ void M_vco::generateCycle() {
                     if (phi[l1] <= pw - d) {
                         data[3][l1][l2] = 1.0f;
                         data[2][l1][l2] = 1.0f - (phi[l1] - d) * dsaw;
-                    } else { 
+                    } else {
                         if (phi[l1] <= pw + d) {
                             data[3][l1][l2] = (pw - phi[l1]) * dd;
                             data[2][l1][l2] = 1.0f - (phi[l1] - d) * dsaw;
@@ -201,7 +201,7 @@ void M_vco::generateCycle() {
                             } else {
                                 data[3][l1][l2] = (phi[l1] - wave_period) * dd;
                                 data[2][l1][l2] = data[3][l1][l2];//(phi[l1] - wave_period) * dd;
-                            } 
+                            }
                         }
                     }
                 }

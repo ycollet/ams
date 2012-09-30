@@ -100,14 +100,14 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModuleInOut->addAction(tr("PCM &Out"),
           modularSynth, SLOT(newM_pcmout()));
   newModuleInOut->addAction(tr("PCM &In"),
-          modularSynth, SLOT(newM_pcmin()));  
+          modularSynth, SLOT(newM_pcmin()));
   newModuleInOut->addSeparator();
   newModuleInOut->addAction(tr("&MCV"),
           modularSynth, SLOT(newM_mcv()));
   newModuleInOut->addAction(tr("&Advanced MCV"),
           modularSynth, SLOT(newM_advmcv()));
   newModuleInOut->addAction(tr("&Scala MCV"),
-          modularSynth, SLOT(newM_scmcv()));  
+          modularSynth, SLOT(newM_scmcv()));
   newModuleInOut->addAction(tr("MI&DI Out"),
           modularSynth, SLOT(newM_midiout()));
   newModuleInOut->addAction(tr("&WAV Out"),
@@ -223,9 +223,9 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   newModuleVcaMix->addAction(tr("&Stereo Mixer 2"),
           modularSynth, SLOT(newM_stereomix_2()));
   newModuleVcaMix->addAction(tr("S&tereo Mixer 4"),
-          modularSynth, SLOT(newM_stereomix_4())); 
+          modularSynth, SLOT(newM_stereomix_4()));
   newModuleVcaMix->addAction(tr("St&ereo Mixer 8"),
-          modularSynth, SLOT(newM_stereomix_8())); 
+          modularSynth, SLOT(newM_stereomix_8()));
   newModuleVcaMix->addAction(tr("VC &Panning"),
           modularSynth, SLOT(newM_vcpanning()));
   newModuleVcaMix->addAction(tr("VC S&witch"),
@@ -297,7 +297,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   if (mso.havePresetPath) {
     if (mso.verbose)
         qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
-            .toUtf8().constData()); 
+            .toUtf8().constData());
     modularSynth->setPatchPath(mso.presetPath);
   }
   modularSynth->go(mso.forceJack, mso.forceAlsa);
@@ -306,7 +306,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   if (mso.havePreset) {
     if (mso.verbose)
         qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
-            .toUtf8().constData()); 
+            .toUtf8().constData());
     openFile(mso.presetName);
   }
 
@@ -380,13 +380,13 @@ bool MainWindow::isModified()
 int MainWindow::querySaveChanges()
 {
     QString queryStr;
-    
+
     if (fileName.isEmpty())
         queryStr = tr("Unnamed file was changed.\nSave changes?");
     else
         queryStr = tr("File '%1' was changed.\n"
                 "Save changes?").arg(fileName);
-    
+
     return QMessageBox::warning(this, tr("Save changes"), queryStr,
             QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 }
@@ -419,15 +419,15 @@ void MainWindow::chooseDemoFile()
 
 
 void MainWindow::fileNew()
-{           
+{
     if (isSave())
         newFile();
 }
 
 void MainWindow::newFile()
-{  
+{
     modularSynth->clearConfig(true);
- 
+
     fileName = "";
     updateWindowTitle();
 }
@@ -488,7 +488,7 @@ void MainWindow::openFile(const QString& fn)
     ts.setCodec("UTF-8");
     modularSynth->load(ts);
     f.close();
-    
+
     addRecentlyOpenedFile(fileName, recentFiles);
     updateWindowTitle();
 }
@@ -517,7 +517,7 @@ bool MainWindow::saveFile()
     QTextStream ts(&f);
     ts.setCodec("UTF-8");
     modularSynth->save(ts);
-    
+
     f.close();
     updateWindowTitle();
     return true;
@@ -559,7 +559,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 {
   if (isSave())
     e->accept();
-  else 
+  else
     e->ignore();
 }
 
@@ -585,7 +585,7 @@ void MainWindow::readConfig()
     QTextStream ts(&file);
 
     while (!ts.atEnd()) {
-        s = ts.readLine(); 
+        s = ts.readLine();
         if (s.startsWith(CF_RECENTFILE))
             appendRecentlyOpenedFile(s.section(' ', 1), recentFiles);
         else if (s.startsWith(CF_RESTOREGEOMETRY))
@@ -606,7 +606,7 @@ void MainWindow::readConfig()
             modularSynth->loadPreference(s);
     }
     file.close();
-    
+
     modularSynth->refreshColors();
 }
 
@@ -636,7 +636,7 @@ void MainWindow::writeConfig()
         }
     }
     ts << CF_RESTOREGEOMETRY << ' ' << restoregeometry << endl;
-    if (!this->isFullScreen()) 
+    if (!this->isFullScreen())
         ts << CF_GEOMETRY << ' '
             << this->geometry().x() << ' '
             << this->geometry().y() << ' '
@@ -741,7 +741,7 @@ void MainWindow::displayPreferences()
     prefDialog->setJackColor(modularSynth->getJackColor());
 
     prefDialog->setMidiControllerMode(modularSynth->getMidiControllerMode());
-    
+
     prefDialog->setModuleMoveMode(modularSynth->getModuleMoveMode());
     prefDialog->setEnableModuleGrid(modularSynth->getEnableModuleGrid());
     prefDialog->setGridMesh(modularSynth->getModuleGrid());

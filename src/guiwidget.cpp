@@ -14,7 +14,7 @@
 #include "midipushbutton.h"
 
 
-GuiWidget::GuiWidget(QWidget* parent, const char *name) 
+GuiWidget::GuiWidget(QWidget* parent, const char *name)
     : QDialog(parent), vLayout(this)
 {
     setObjectName(name);
@@ -40,12 +40,12 @@ GuiWidget::GuiWidget(QWidget* parent, const char *name)
     QPushButton *addPresetButton = new QPushButton(tr("&Add Preset"));
     presetContainerLayout->addWidget(addPresetButton);
     QObject::connect(addPresetButton, SIGNAL(clicked()),
-            this, SLOT(addPreset()));  
+            this, SLOT(addPreset()));
     QPushButton *overwritePresetButton =
         new QPushButton(tr("&Overwrite Preset"));
     presetContainerLayout->addWidget(overwritePresetButton);
     QObject::connect(overwritePresetButton, SIGNAL(clicked()),
-            this, SLOT(overwritePreset()));  
+            this, SLOT(overwritePreset()));
     presetCountLabel = new QLabel();
     presetCountLabel->setText(tr("Presets for this configuration: 0"));
     presetContainerLayout->addWidget(presetCountLabel);
@@ -81,7 +81,7 @@ int GuiWidget::addFrame(const QString &frameName)
     guiFrame->tabIndex = currentTabIndex;
     frameBoxList.append(guiFrame);
     currentGroupBox = vbox;
-    return(0);  
+    return(0);
 }
 
 int GuiWidget::setFrame(int index) {
@@ -89,7 +89,7 @@ int GuiWidget::setFrame(int index) {
     GuiFrame* gf = getGuiFrame(index);
     if (gf != NULL)
         currentGroupBox = gf->frameBox;
-    return(0);  
+    return(0);
 }
 
 int GuiWidget::addTab(const QString &tabName)
@@ -101,14 +101,14 @@ int GuiWidget::addTab(const QString &tabName)
     currentTabIndex = tabNameList.count() - 1;
     tabWidget->insertTab(-1, tab, tabName);
     tabList.append(currentTab);
-    return(0);  
+    return(0);
 }
 
 int GuiWidget::setTab(int index)
 {
     currentTab = tabList.at(index);
     currentTabIndex = index;
-    return(0);  
+    return(0);
 }
 
 int GuiWidget::addParameter(MidiControllableBase *mcAble,
@@ -243,7 +243,7 @@ void GuiWidget::overwritePreset()
         MidiControllableBase* mcb = getMidiControllableParameter(l1);
         if (mcb != NULL)
             presetList[currentPreset].append(mcb->sliderVal());
-    } 
+    }
     for (QStringList::Iterator it = presetNameList.begin();
             it != presetNameList.end(); it++) {
         qs = (*it).mid(0, 3);
@@ -256,7 +256,7 @@ void GuiWidget::overwritePreset()
 
 void GuiWidget::clearPresets() {
 
-    int l1; 
+    int l1;
 
     for (l1 = 0; l1 < MAX_PRESETS; l1++) {
         presetList[l1].clear();
@@ -334,7 +334,7 @@ void GuiWidget::save(QTextStream& ts)
 
     // save MIDI controller window configuration
     for (int i = 0; i < tabList.count(); ++i)
-        ts << "Tab \"" << tabNameList.at(i) << "\"" << endl; 
+        ts << "Tab \"" << tabNameList.at(i) << "\"" << endl;
 
     for (int i = 0; i < frameBoxList.count(); ++i) {
         ts << "Frame \""
@@ -367,5 +367,5 @@ void GuiWidget::save(QTextStream& ts)
     for (presetit = presetNameList.begin();
             presetit != presetNameList.end(); ++presetit) {
         ts << "PresetName \"" << (*presetit).mid(3) << "\"" << endl;
-    } 
+    }
 }

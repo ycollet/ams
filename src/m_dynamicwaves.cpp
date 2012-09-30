@@ -1,7 +1,7 @@
 #include <math.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -17,7 +17,7 @@
 #include "midicontrollable.h"
 
 
-M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent) 
+M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   : Module(M_type_dynamicwaves, 1, parent,
           tr("DynamicWaves %1").arg(p_oscCount))
 {
@@ -64,7 +64,7 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
   port_gate = new Port("Gate", PORT_IN, 3, this);
   port_retrigger = new Port("Retrigger", PORT_IN, 4, this);
   cv.out_off = 135;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port("Out", PORT_OUT, 0, this);
 
   configDialog->initTabWidget();
   QStringList waveFormNames;
@@ -139,7 +139,7 @@ void M_dynamicwaves::generateCycle() {
 
   int l1, l3, l4, status;
   unsigned int l2;
-  float dphi, phi1; 
+  float dphi, phi1;
   float freq_const[MODULE_DYNAMICWAVES_MAX_OSC], freq_tune[MODULE_DYNAMICWAVES_MAX_OSC];
   float gain_linfm, wave_period_2, current_gain;
   float gain_const[MODULE_DYNAMICWAVES_MAX_OSC], phi_const[MODULE_DYNAMICWAVES_MAX_OSC];
@@ -178,14 +178,14 @@ void M_dynamicwaves::generateCycle() {
       t[6][l3] = t[5][l3] + tscale * release[2][l3];
       t[7][l3] = t[6][l3] + tscale * release[4][l3];
     }
-    for (l1 = 0; l1 < synthdata->poly; l1++) {  
+    for (l1 = 0; l1 < synthdata->poly; l1++) {
       memset(data[0][l1], 0, synthdata->cyclesize * sizeof(float));
       for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
         noteActive[l1] = !allEnvTerminated;
         allEnvTerminated = true;
         if (!retrigger[l1] && (retriggerData[l1][l2] > 0.5)) {
           retrigger[l1] = true;
-        }  
+        }
         if (retrigger[l1] && (retriggerData[l1][l2] < 0.5)) {
           retrigger[l1] = false;
         }
@@ -197,8 +197,8 @@ void M_dynamicwaves::generateCycle() {
               noteActive[l1] = true;
               for (l4 = 0; l4 < oscCount; l4++) {
                 oscActive[l1][l4] = true;
-                if (e[l1][l4] > 0) {  
-                  noteOnOfs[l1][l4] = -DYNAMICWAVES_ENVELOPE_RESPONSE; 
+                if (e[l1][l4] > 0) {
+                  noteOnOfs[l1][l4] = -DYNAMICWAVES_ENVELOPE_RESPONSE;
                   de[l1][l4] = e[l1][l4] / (float)DYNAMICWAVES_ENVELOPE_RESPONSE;
                 } else {
                   noteOnOfs[l1][l4] = 0;
@@ -281,7 +281,7 @@ void M_dynamicwaves::generateCycle() {
                          break;
               }
               if (e[l1][l3] < 0) e[l1][l3] = 0;
-            } 
+            }
             noteOffOfs[l1][l3]++;
             if (noteOffOfs[l1][l3] >= int(t[7][l3])) {
               oscActive[l1][l3] = false;
@@ -315,13 +315,13 @@ void M_dynamicwaves::generateCycle() {
             case DYNAMICWAVE_SAW:
               data[0][l1][l2] += current_gain * synthdata->wave_saw[(int)phi1];
               break;
-            case DYNAMICWAVE_TRI: 
+            case DYNAMICWAVE_TRI:
               data[0][l1][l2] += current_gain * synthdata->wave_tri[(int)phi1];
               break;
-            case DYNAMICWAVE_RECT: 
+            case DYNAMICWAVE_RECT:
               data[0][l1][l2] += current_gain * synthdata->wave_rect[(int)phi1];
               break;
-            case DYNAMICWAVE_SAW2: 
+            case DYNAMICWAVE_SAW2:
               data[0][l1][l2] += current_gain * synthdata->wave_saw2[(int)phi1];
               break;
           }
@@ -329,7 +329,7 @@ void M_dynamicwaves::generateCycle() {
           while (phi[l1][l3] < 0) phi[l1][l3] += wave_period;
           while (phi[l1][l3] >= wave_period) phi[l1][l3] -= wave_period;
         }
-      } 
+      }
     }
 }
 

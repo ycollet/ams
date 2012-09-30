@@ -17,7 +17,7 @@
 
 
 ScopeScreen::ScopeScreen(float &timeScale, int &mode, int &edge,
-			 int &triggerMode, float &triggerThrs, float &zoom) 
+			 int &triggerMode, float &triggerThrs, float &zoom)
   : timeScale(timeScale)
   , mode(mode)
   , edge(edge)
@@ -25,7 +25,7 @@ ScopeScreen::ScopeScreen(float &timeScale, int &mode, int &edge,
   , triggerThrs(triggerThrs)
   , zoom(zoom)
 {
-  
+
   scopebuf = (float *)malloc(SCOPE_BUFSIZE * sizeof(float));
   scopedata= (float *)malloc(SCOPE_BUFSIZE * sizeof(float));
   scopebufValidFrames = 0;
@@ -61,13 +61,13 @@ void ScopeScreen::calcY(int offset)
     if (ch2 < 0) {
       s2 = 0;
     } else {
-      s2 = scopebuf[2 * offset + ch2]; 
+      s2 = scopebuf[2 * offset + ch2];
     }
     switch (mode) {
     case MODE_NORMAL:
       y2ch1 = int(yscale * s1);
       y2ch2 = int(yscale * s2);
-      break;    
+      break;
     case MODE_SUM:
       y2ch1 = int(yscale * (s1+s2));
       break;
@@ -106,7 +106,7 @@ void ScopeScreen::paintEvent(QPaintEvent *) {
     if (x2 == x1)
       continue;
 
-    switch (mode) {  
+    switch (mode) {
     case MODE_NORMAL:
       if (ch1 >= 0) {
         p.setPen(QColor(0, 220, 0));
@@ -116,7 +116,7 @@ void ScopeScreen::paintEvent(QPaintEvent *) {
         p.setPen(QColor(255, 255, 0));
         p.drawLine(x1, vh_2 - y1ch2, x2, vh_2 - y2ch2);
       }
-      break;      
+      break;
     case MODE_SUM:
       if ((ch1 >= 0) && (ch2 >= 0)) {
         p.setPen(QColor(0, 220, 0));
@@ -148,7 +148,7 @@ void ScopeScreen::refreshScope() {
   float s1, s2;
 
   readofs = writeofs - synthdata->cyclesize - timeScaleFrames();
-  if (readofs < 0 ) {  
+  if (readofs < 0 ) {
     readofs+=SCOPE_BUFSIZE >> 1;
   }
   ofs = readofs;
@@ -158,7 +158,7 @@ void ScopeScreen::refreshScope() {
     while(l1 < TRIGGER_RANGE) {
       s1 = scopedata[2 * ofs + ch1];
       ofs--;
-      if (ofs < 0 ) {  
+      if (ofs < 0 ) {
         ofs += SCOPE_BUFSIZE >> 1;
       }
       s2 = scopedata[2 * ofs +ch1];
@@ -177,7 +177,7 @@ void ScopeScreen::refreshScope() {
       }
       ofs--;
       if (ofs < 0 ) {
-        ofs += SCOPE_BUFSIZE >> 1;  
+        ofs += SCOPE_BUFSIZE >> 1;
       }
       l1++;
     }
@@ -206,7 +206,7 @@ void ScopeScreen::singleShot() {
 
 QSize ScopeScreen::sizeHint() const {
 
-  return QSize(MINIMUM_WIDTH, MINIMUM_HEIGHT); 
+  return QSize(MINIMUM_WIDTH, MINIMUM_HEIGHT);
 }
 
 QSizePolicy ScopeScreen::sizePolicy() const {
@@ -221,12 +221,12 @@ int ScopeScreen::setCh1(int p_ch1) {
   return(ch1);
 }
 
-int ScopeScreen::setCh2(int p_ch2) {       
+int ScopeScreen::setCh2(int p_ch2) {
 
-  ch2 = p_ch2;  
+  ch2 = p_ch2;
   update();
-  return(ch2); 
-}              
+  return(ch2);
+}
 
 void ScopeScreen::mcAbleChanged()
 {

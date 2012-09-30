@@ -8,8 +8,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -25,16 +25,16 @@
 #include "midicontrollable.h"
 #include "port.h"
 
-M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname) 
+M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   : Module(M_type_scmcv, 4, parent, tr("Scala MCV"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SCMCV_HEIGHT);
-  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);          
-  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);          
-  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);          
+  port_gate_out = new Port(tr("Gate"), PORT_OUT, 0, this);
+  port_note_out = new Port(tr("Freq"), PORT_OUT, 1, this);
+  port_velocity_out = new Port(tr("Velocity"), PORT_OUT, 2, this);
   port_trig_out = new Port(tr("Trigger"), PORT_OUT, 3, this);
 
   QStringList channelNames;
@@ -48,7 +48,7 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   pitch = 0;
   lastbase = 12;
   pitchbend = 0;
-  for (l1 = 0; l1 < 12; l1++) {       
+  for (l1 = 0; l1 < 12; l1++) {
     scale_lut_isRatio[l1] = false;
     scale_lut[l1] = 100.0 + (float)l1 * 100.0;
   }
@@ -63,12 +63,12 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
   configDialog->addLabel(tr("   Scale: ") + sclname);
   configDialog->addLabel("   ");
   MidiControllableDoOnce * doO = configDialog->addPushButton(tr("&Load Scale"));
-  QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser())); 
+  QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser()));
   fileDialog = NULL;
   dirpath.sprintf("%s", getenv("SCALA_PATH"));
   if (dirpath.length() < 1) {
     qWarning("\nSCALA_PATH not set, assuming SCALA_PATH=/usr/share/scala");
-    dirpath = "/usr/share/scala";   
+    dirpath = "/usr/share/scala";
   } else
     StdErr << "SCALA_PATH: " << dirpath << endl;
 
@@ -84,11 +84,11 @@ void M_scmcv::calcScale() {
   lastbase = base;
   base_cv = base / 12.0 - 5.0;
   base_freq = synthdata->exp2_table(8.0313842 + base_cv);
-  fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);  
+  fprintf(stderr, "base: %d, base_cv: %f, base_freq: %f\n", base, base_cv, base_freq);
   scale_notes[0] = base_cv;
   index = 1;
   while (index < 128) {
-    for (l1 = 0; l1 < scale_lut_length; l1++) {      
+    for (l1 = 0; l1 < scale_lut_length; l1++) {
       if (scale_lut_isRatio[l1]) {
         scale_notes[index] = log(base_freq * scale_lut[l1])/M_LN2 - 8.0313842;
       } else {
@@ -116,7 +116,7 @@ void M_scmcv::generateCycle()
 	   synthdata->noteCounter[l1] < 1000000;
     lastfreq[l1] = freq[l1];
     index = synthdata->notes[l1] + pitch;
-      
+
     freq[l1] = ((index >=0) && (index < 128)) ? pitchbend + scale_notes[index] : 0;
     //      if (freq[l1] < 0) freq[l1] = 0;
     velocity = (float)synthdata->velocity[l1] / 127.0;
@@ -161,7 +161,7 @@ void M_scmcv::loadScale(const QString &p_sclname) {
   QString qs, qs2, qs3;
   int index, n;
 
-  sclname = p_sclname;  
+  sclname = p_sclname;
   QFile qfile(sclname);
   if (!qfile.open(QIODevice::ReadOnly)) {
     QMessageBox::information( this, "AlsaModularSynth",
@@ -172,13 +172,13 @@ void M_scmcv::loadScale(const QString &p_sclname) {
   configDialog->labelList.at(0)->setText(tr("   Scale: ") + sclname);
   QTextStream stream(&qfile);
   while (!stream.atEnd()) {
-    qs = stream.readLine(); 
-    if (!qs.contains("!")) 
+    qs = stream.readLine();
+    if (!qs.contains("!"))
       break;
   }
   configDialog->labelList.at(0)->setText("   " + qs);
   StdErr << "Scale: " << qs << endl;
-  while (!stream.atEnd()) {  
+  while (!stream.atEnd()) {
     qs = stream.readLine();
     if (!qs.contains("!"))
       break;
@@ -192,7 +192,7 @@ void M_scmcv::loadScale(const QString &p_sclname) {
     qs2 = qs.simplified();
     if (qs2.contains(".")) {
       if ((n = qs2.indexOf(" ")) > 0) {
-        qs = qs2.left(n); 
+        qs = qs2.left(n);
       } else {
         qs = qs2;
       }
@@ -205,14 +205,14 @@ void M_scmcv::loadScale(const QString &p_sclname) {
         qs = qs2.left(qs2.indexOf("/"));
         qs3 = qs2.mid(qs2.indexOf("/") + 1);
         if ((n = qs3.indexOf(" ")) > 0) {
-          qs2 = qs3.left(n); 
+          qs2 = qs3.left(n);
         } else {
           qs2 = qs3;
         }
         scale_lut[index] = qs.toFloat() / qs2.toFloat();
       } else {
         if ((n = qs2.indexOf(" ")) > 0)
-          qs = qs2.left(n); 
+          qs = qs2.left(n);
         else
           qs = qs2;
         scale_lut[index] = qs.toFloat();

@@ -8,7 +8,7 @@
 #include "port.h"
 
 
-M_pcmout::M_pcmout(QWidget* parent, int port) 
+M_pcmout::M_pcmout(QWidget* parent, int port)
   : Module(M_type_pcmout, 0, parent, tr("PCM Out"))
 {
   QString qs;
@@ -22,9 +22,9 @@ M_pcmout::M_pcmout(QWidget* parent, int port)
   polyroot = sqrt((double)synthdata->poly);
   agc = 0;
   qs.sprintf (" -> Out %2d", port);
-  port_in[0] = new Port(qs, PORT_IN, 0, this);          
+  port_in[0] = new Port(qs, PORT_IN, 0, this);
   qs.sprintf(" -> Out %2d", port + 1);
-  port_in[1] = new Port(qs, PORT_IN, 1, this);          
+  port_in[1] = new Port(qs, PORT_IN, 1, this);
 
   configDialog->addSlider(tr("&Gain"), gain, 0, 1, false);
   configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false);
@@ -44,7 +44,7 @@ void M_pcmout::mcAbleChanged(MidiControllableBase *mcAble)
   if (configDialog->midiComboBoxList.count() < 1 ||
       mcAble != &configDialog->midiComboBoxList.at(0)->mcAble)
     return;
- 
+
   if (ag == ag_displayed)
     return;
 

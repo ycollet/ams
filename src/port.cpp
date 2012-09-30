@@ -3,7 +3,7 @@
 #include <qrect.h>
 #include <qpoint.h>
 #include <qcolor.h>
-#include <qcolordialog.h> 
+#include <qcolordialog.h>
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include "modularsynth.h"
@@ -14,7 +14,7 @@
 
 
 Port::Port(const QString &p_portName, dirType dir, int p_index,
-        Module *parent, int p_color) 
+        Module *parent, int p_color)
            : QWidget(parent)
 	   , portNameWidth(0)
 	   , dir(dir)
@@ -24,7 +24,7 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
 {
   module = parent;
   portName = p_portName;
-  
+
   if (dir == PORT_IN)
     outTypeAcceptList.append(outType_audio);
   else
@@ -79,7 +79,7 @@ Port* Port::needsConnectionToPort()
 {
     if ((dir == PORT_IN) && (connectedPortList.count() > 0))
         return connectedPortList.at(0);
-    else 
+    else
         return NULL;
 }
 
@@ -90,13 +90,13 @@ bool Port::hasConnectedPort()
 
 void Port::paintEvent(QPaintEvent *) {
 
-    QPainter p(this);  
+    QPainter p(this);
     QRect textRect;
 
     p.setFont(synthdata->smallFont);
     p.setPen(colorFont);
 
-    if (dir == PORT_IN) { 
+    if (dir == PORT_IN) {
         if (highlighted) {
             p.fillRect(0, height()/2 - 2, 3, 5, QBrush(QColor(240, 0, 0)));
         }
@@ -117,11 +117,11 @@ void Port::paintEvent(QPaintEvent *) {
         p.drawText(width() - portNameWidth - 6, 11, portName);
     }
 }
-   
+
 void Port::mousePressEvent(QMouseEvent *ev)
 {
     switch (ev->button()) {
-        case Qt::LeftButton:   
+        case Qt::LeftButton:
             emit portClicked(this);
             ev->accept();
             break;
@@ -129,8 +129,8 @@ void Port::mousePressEvent(QMouseEvent *ev)
             ev->ignore();
             break;
     }
-}  
-   
+}
+
 bool Port::isInPort()
 {
     return (dir == PORT_IN);
@@ -215,7 +215,7 @@ float **Port::getinputdata (void)
         outport = connectedPortList.at(0);
         M = outport->module;
         return M->getData(outport->index);
-    } 
+    }
     else
         return synthdata->zeroModuleData;
 }
@@ -276,7 +276,7 @@ void Port::jackColorClicked() {
 void Port::cableColorClicked() {
 
   QColor tmp;
-  
+
   tmp = QColorDialog::getColor(cableColor);
   if (tmp.isValid()) {
     cableColor = tmp;

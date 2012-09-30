@@ -29,7 +29,7 @@ Function::Function(int p_functionCount, int *p_mode, int *p_editIndex,
     int l1;
     QString qs;
 
-//?   scene()->setGrid(FUNCTION_BORDER_L, FUNCTION_BORDER_R, FUNCTION_BORDER_B, FUNCTION_BORDER_T, FUNCTION_SCALE, 
+//?   scene()->setGrid(FUNCTION_BORDER_L, FUNCTION_BORDER_R, FUNCTION_BORDER_B, FUNCTION_BORDER_T, FUNCTION_SCALE,
 //                                 FUNCTION_WIDTH, FUNCTION_HEIGHT, FUNCTION_GRID, FUNCTION_GRID);
 
     functionCount = p_functionCount;
@@ -89,7 +89,7 @@ void Function::updateFunction(int index)
    if (*editIndex && (index == *editIndex - 1)) {
      z = 20;
    } else {
-     z = 10; 
+     z = 10;
    }
    f[0][index][0] = -1e30;
    f[0][index][pointCount+1] = 1e30;
@@ -249,7 +249,7 @@ void Function::contentsMousePressEvent(QMouseEvent * ev)
              }
            }
          }
-       }  
+       }
        if (foundHit) {
          break;
        }
@@ -262,7 +262,7 @@ void Function::contentsMousePressEvent(QMouseEvent * ev)
        for (l1 = 0; l1 < pointCount; l1++) {
          deltaArray[l1] = point[activeFunction][l1].y - FUNCTION_CENTER_Y;
        }
-     }                                                                      
+     }
    } else {
      activePoint = -1;
    }
@@ -290,10 +290,10 @@ void Function::contentsMouseReleaseEvent(QMouseEvent * ev)
            point[activeFunction][l1].y = qp.y();
          }
          break;
-     } 
+     }
      updateFunction(activeFunction);
      //    repaintContents(false);
-   }  
+   }
 }
 
 void Function::contentsMouseMoveEvent(QMouseEvent * ev)
@@ -316,7 +316,7 @@ void Function::contentsMouseMoveEvent(QMouseEvent * ev)
              qp.setX(point[activeFunction][activePoint-1].x + 1);
            } else if ((activePoint < pointCount - 1) && (qp.x() >
                        point[activeFunction][activePoint + 1].x)) {
-             qp.setX(point[activeFunction][activePoint+1].x - 1); 
+             qp.setX(point[activeFunction][activePoint+1].x - 1);
            }
            if (qp.x() < 0) qp.setX(0);
            if (qp.x() > FUNCTION_WIDTH) qp.setX(FUNCTION_WIDTH);
@@ -350,7 +350,7 @@ void Function::contentsMouseMoveEvent(QMouseEvent * ev)
            break;
          case 3:
            delta = qp.x() - FUNCTION_CENTER_X;
-           scaleFactor = (deltaArray[activePoint] != 0) 
+           scaleFactor = (deltaArray[activePoint] != 0)
                        ? (double)delta / (double)deltaArray[activePoint] : 1.0;
            for (l1 = 0; l1 < pointCount; l1++) {
              qp = QPoint((double)FUNCTION_CENTER_X + scaleFactor * (double)deltaArray[l1],
@@ -360,13 +360,13 @@ void Function::contentsMouseMoveEvent(QMouseEvent * ev)
              point[activeFunction][l1].x = qp.x();
              point[activeFunction][l1].y = qp.y();
            }
-           break;  
+           break;
          case 4:
            delta = qp.y() - FUNCTION_CENTER_Y;
-           scaleFactor = (deltaArray[activePoint] != 0) 
+           scaleFactor = (deltaArray[activePoint] != 0)
                        ? (double)delta / (double)deltaArray[activePoint] : 1.0;
            for (l1 = 0; l1 < pointCount; l1++) {
-             qp = QPoint(point[activeFunction][l1].x, 
+             qp = QPoint(point[activeFunction][l1].x,
                          (double)FUNCTION_CENTER_Y + scaleFactor * (double)deltaArray[l1]);
              if (qp.y() < 0) qp.setY(0);
              if (qp.y() > FUNCTION_HEIGHT) qp.setY(FUNCTION_HEIGHT);
@@ -374,8 +374,8 @@ void Function::contentsMouseMoveEvent(QMouseEvent * ev)
              point[activeFunction][l1].y = qp.y();
            }
            break;
-       } 
- // fprintf(stderr, "mouseMoveEvent points[%d]->point(%d) = %d %d\n", activeFunction, activePoint, 
+       }
+ // fprintf(stderr, "mouseMoveEvent points[%d]->point(%d) = %d %d\n", activeFunction, activePoint,
  //   points[activeFunction]->point(activePoint).x(), points[activeFunction]->point(activePoint).y());
        updateFunction(activeFunction);
  // fprintf(stderr, "mouseMoveEvent f[0][%d][%d+1] = %f f[1][%d][%d+1] = %f\n", activeFunction, activePoint, f[0][activeFunction][activePoint+1],

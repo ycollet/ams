@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -21,7 +21,7 @@
 #include "port.h"
 
 
-M_pcmin::M_pcmin(QWidget* parent, int port) 
+M_pcmin::M_pcmin(QWidget* parent, int port)
   : Module(M_type_pcmin, 2, parent, tr("PCM In"))
  {
   QString qs;
@@ -31,9 +31,9 @@ M_pcmin::M_pcmin(QWidget* parent, int port)
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
   qs.sprintf ("In %2d -> ", port);
-  port_out[0] = new Port(qs, PORT_OUT, 0, this);          
+  port_out[0] = new Port(qs, PORT_OUT, 0, this);
   qs.sprintf ("In %2d -> ", port + 1);
-  port_out[1] = new Port(qs, PORT_OUT, 1, this);          
+  port_out[1] = new Port(qs, PORT_OUT, 1, this);
   configDialog->addSlider(tr("&Gain"), gain, 0, 1, false);
   configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false);
   configDialog->addSlider(tr("V&olume 2"), mixer_gain[1], 0, 1, false);
@@ -62,6 +62,6 @@ void M_pcmin::generateCycle() {
           data[l1][l3][l2] = mixgain * pcmdata[l1][l2];
         }
       }
-    }  
+    }
 }
 

@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -21,7 +21,7 @@
 #include "m_conv.h"
 #include "port.h"
 
-M_conv::M_conv(QWidget* parent) 
+M_conv::M_conv(QWidget* parent)
   : Module(M_type_conv, 1, parent, tr("Converter"))
 {
   QString qs;
@@ -29,9 +29,9 @@ M_conv::M_conv(QWidget* parent)
   convMode = 0;
   octave = 0;
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_CONV_HEIGHT);
-  port_M_in = new Port("In", PORT_IN, 0, this); 
+  port_M_in = new Port("In", PORT_IN, 0, this);
   cv.out_off = 55;
-  port_out = new Port("Out", PORT_OUT, 0, this);          
+  port_out = new Port("Out", PORT_OUT, 0, this);
 
   QStringList convModeNames;
   convModeNames << tr("V/Octave --> Hz");
@@ -68,6 +68,6 @@ void M_conv::generateCycle() {
           data[0][l1][l2] = exp(M_LN2 * (offset + inData[l1][l2])) / 20000.0;
         }
       }
-    } 
+    }
 }
 

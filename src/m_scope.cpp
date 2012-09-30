@@ -4,8 +4,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -24,7 +24,7 @@
 #include "port.h"
 
 
-M_scope::M_scope(QWidget* parent) 
+M_scope::M_scope(QWidget* parent)
   : Module(M_type_scope, 0, parent, tr("Scope"))
 {
   QString qs;
@@ -49,7 +49,7 @@ M_scope::M_scope(QWidget* parent)
   QVBoxLayout *scopeTab = configDialog->addVBoxTab(tr("&Scope"));
   configDialog->setAddStretch(-1);
   //  scopeTab->setMinimumHeight(200);
-  configDialog->addScopeScreen(timeScale, mode, edge, triggerMode, 
+  configDialog->addScopeScreen(timeScale, mode, edge, triggerMode,
                                triggerThrs, zoom, scopeTab);
 
   configDialog->addSlider(tr("T&ime Scale"), timeScale, 10, 1000, false,
@@ -78,7 +78,7 @@ M_scope::M_scope(QWidget* parent)
   floatdata = (float *)malloc(2 * synthdata->periodsize * sizeof(float));
   memset(floatdata, 0, 2 * synthdata->periodsize * sizeof(float));
   configDialog->scopeScreenList.at(0)->writeofs = 0;
-  timer = new QTimer(this);   
+  timer = new QTimer(this);
   QObject::connect(timer, SIGNAL(timeout()),
                    this, SLOT(timerProc()));
   timer->setSingleShot(true);
@@ -118,26 +118,26 @@ void M_scope::generateCycle()
       {
           for (l3 = 0; l3 < synthdata->poly; ++l3)
           {
-              floatdata[2 * l2 + l1] += mixgain * indata[l3][l2]; 
+              floatdata[2 * l2 + l1] += mixgain * indata[l3][l2];
           }
       }
   }
 
   scopedata = configDialog->scopeScreenList.at(0)->scopedata;
   ofs = configDialog->scopeScreenList.at(0)->writeofs;
-  for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {   
+  for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
     scopedata[2 * ofs] = wavgain * floatdata[2 * l2];
     scopedata[2 * ofs + 1] = wavgain * floatdata[2 * l2 + 1];
     ofs++;
     if (ofs >= SCOPE_BUFSIZE >> 1) {
       ofs -= SCOPE_BUFSIZE >> 1;
     }
-  }   
+  }
   configDialog->scopeScreenList.at(0)->writeofs = ofs;
 }
 
-void M_scope::timerProc() {          
- 
+void M_scope::timerProc() {
+
   if (triggerMode < 2) {
     timer->setSingleShot(true);
     timer->start((int)(timeScale));

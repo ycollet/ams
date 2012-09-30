@@ -11,7 +11,7 @@ NoteList::NoteList()
   first = -1;
   last = -1;
 }
-  
+
 bool NoteList::hasNote(int note)
 {
   return note >= 0 && note < NB_MIDI_NOTES && notesPressed[note];
@@ -40,7 +40,7 @@ void NoteList::deleteNote(int note)
     notesPressed[note] = false;
     if (note != last && note != first) {
       prev[next[note]] = prev[note];
-      next[prev[note]] = next[note];    
+      next[prev[note]] = next[note];
       prev[note] = -1;
       next[note] = -1;
     } else if(note == first && note == last) {
@@ -49,12 +49,12 @@ void NoteList::deleteNote(int note)
     } else if (note == last) {
       last = prev[last];
       prev[next[note]] = prev[note];
-      next[prev[note]] = next[note];    
+      next[prev[note]] = next[note];
       prev[note] = -1;
     } else if (note == first) {
       first = next[first];
       prev[next[note]] = prev[note];
-      next[prev[note]] = next[note];    
+      next[prev[note]] = next[note];
       next[note] = -1;
     }
   }

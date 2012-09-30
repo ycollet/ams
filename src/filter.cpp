@@ -51,7 +51,7 @@ float Filter::logfilt(float logf, float cutoff, float resonance, float rising,
   sn = smoothness;
   rn = resonance;
   hw = hwidth;
-  c1 = sr / (2.0 * sn);  
+  c1 = sr / (2.0 * sn);
   c2 = - sr / (2.0 * hw);
   c3 = - sf / (2.0 * hw);
   c4 = sf / (2.0 * sn);
@@ -68,12 +68,12 @@ float Filter::logfilt(float logf, float cutoff, float resonance, float rising,
   r3 = 1.0 + c3 * hw * hw;
   if (r3 < 0.5) {
     r3 = 0.5;
-    c3 = (r3 - 1.0) / (hw * hw); 
+    c3 = (r3 - 1.0) / (hw * hw);
   }
   r4 = c4 * sn * sn;
   if (r4 > 0.5) {
     r4 = 0.5;
-    c4 = r4 / (sn * sn); 
+    c4 = r4 / (sn * sn);
   }
   logf4 = log(cutoff) / M_LN2;
   logf3 = logf4 - hw;
@@ -82,7 +82,7 @@ float Filter::logfilt(float logf, float cutoff, float resonance, float rising,
   logf1 = logf2 - sn;
   logf6 = logf5 + (r3 - r4) / sf;
   logf7 = logf6 + sn;
-  if (logf < logf1) { 
+  if (logf < logf1) {
     response = 1.0 - rn;
   }
   if ((logf >= logf1) && (logf < logf2)) {
@@ -121,7 +121,7 @@ float Filter::filt(float f, float cutoff, float resonance, float rising,
 
 void Filter::paintEvent(QPaintEvent *)
 {
-  //  QPixmap pm(width(), height());  
+  //  QPixmap pm(width(), height());
   QPainter p(this);
   int l1;
   float x1, y1, x2, y2, xscale, yscale;
@@ -164,7 +164,7 @@ void Filter::updateFilter(int value) {
 
 QSize Filter::sizeHint() const {
 
-  return QSize(FILTER_MINIMUM_WIDTH, FILTER_MINIMUM_HEIGHT); 
+  return QSize(FILTER_MINIMUM_WIDTH, FILTER_MINIMUM_HEIGHT);
 }
 
 QSizePolicy Filter::sizePolicy() const {

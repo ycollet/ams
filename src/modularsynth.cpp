@@ -101,7 +101,7 @@ static const char CF_GRIDMESHSIZE[] = "GridMeshSize";
 
 SynthData *synthdata;
 
-ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso) 
+ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   : QWidget(parent)
   , cname(mso.cname)
   , pname(mso.pname)
@@ -132,11 +132,11 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle(tr("AlsaModularSynth Control Center"));
   synthdata->midiWidget = midiWidget;
-  
+
   guiWidget = new GuiWidget(NULL);
   guiWidget->setWindowTitle(tr("AlsaModularSynth Parameter View"));
   synthdata->guiWidget = guiWidget;
-  
+
   ladspaDialog = new LadspaDialog();
   connect(static_cast<QWidget *>(ladspaDialog),
 		   SIGNAL(createLadspaModule(int, int, bool, bool)),
@@ -173,18 +173,18 @@ void ModularSynth::paintEvent(QPaintEvent *)
 
     for (int l1 = 0; l1 < listModule.count(); ++l1) {
         Module* m = listModule.at(l1);
-        
+
         if (m == NULL)
             continue;
 
         m->paintCablesToConnectedPorts(p);
     }
 }
- 
+
 void ModularSynth::mousePressEvent(QMouseEvent *ev)
 {
     switch (ev->button()) {
-        case Qt::LeftButton:  
+        case Qt::LeftButton:
             {
                 QWidget *pw = childAt(ev->pos());
                 if (pw != NULL) {
@@ -241,7 +241,7 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
             ev->ignore();
             break;
     }
-}  
+}
 
 void ModularSynth::mouseMoveEvent(QMouseEvent *ev)
 {
@@ -283,7 +283,7 @@ void ModularSynth::mouseMoveEvent(QMouseEvent *ev)
     adjustSize();
     update();
     modified = true;
-}  
+}
 
 void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
 {
@@ -293,9 +293,9 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
         case Qt::LeftButton:
             if (dragWidget != NULL) {
 
-                if (enablemodulegrid) { 
+                if (enablemodulegrid) {
                     QPoint position = dragWidget->pos();
-               
+
                     delta = position.x() % modulegrid;
                     position.setX((position.x() / modulegrid) * modulegrid);
                     if (delta >= (modulegrid/2))
@@ -319,7 +319,7 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
             ev->ignore();
             break;
     }
-}  
+}
 
 int ModularSynth::go(bool forceJack, bool forceAlsa)
 {
@@ -361,8 +361,8 @@ void ModularSynth::displayParameterView() {
 }
 
 void ModularSynth::displayLadspaPlugins() {
-   
-  ladspaDialog->show();  
+
+  ladspaDialog->show();
   ladspaDialog->raise();
 }
 
@@ -818,17 +818,17 @@ void ModularSynth::newM_ad(int outCount) {
         initNewModule(m);
 }
 
-void ModularSynth::newM_ad_2() { 
+void ModularSynth::newM_ad_2() {
 
     newM_ad(2);
 }
 
-void ModularSynth::newM_ad_4() { 
+void ModularSynth::newM_ad_4() {
 
     newM_ad(4);
 }
 
-void ModularSynth::newM_ad_6() { 
+void ModularSynth::newM_ad_6() {
 
     newM_ad(6);
 }
@@ -1008,17 +1008,17 @@ void ModularSynth::newM_midiout() {
 void ModularSynth::newM_pcmout()
 {
     int k;
-    M_pcmout *m; 
+    M_pcmout *m;
 
     k = synthdata->find_play_mod (0);
-    if (k >= 0) 
+    if (k >= 0)
     {
         m = new M_pcmout (this, 2 * k);
         if (m != NULL) {
             initNewModule(m);
             synthdata->set_play_mod (k, m);
         }
-    } 
+    }
     else
         qWarning("%s", QObject::tr("All available output ports are in use").toUtf8().constData());
 }
@@ -1026,17 +1026,17 @@ void ModularSynth::newM_pcmout()
 void ModularSynth::newM_pcmin()
 {
     int k;
-    M_pcmin *m; 
+    M_pcmin *m;
 
     k = synthdata->find_capt_mod (0);
-    if (k >= 0) 
+    if (k >= 0)
     {
         m = new M_pcmin(this, 2 * k);
         if (m != NULL) {
             initNewModule(m);
             synthdata->set_capt_mod (k, m);
         }
-    } 
+    }
     else
         qWarning("%s", QObject::tr("All available input ports are in use").toUtf8().constData());
 }
@@ -1074,12 +1074,12 @@ void ModularSynth::resizeTextEdit(const QPoint& pos) {
   int l1;
   TextEdit *te;
   int cx, cy;
-  
+
   for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
     if ((te = listTextEdit.at(l1)) == sender()) {
       cx = pos.x();
       cy = pos.y();
-      if ((cx > 200) && (cy > 170)) { 
+      if ((cx > 200) && (cy > 170)) {
         te->setFixedSize(cx + 3, cy + 3);
       }
     }
@@ -1121,7 +1121,7 @@ void ModularSynth::portSelected(Port* p)
 void ModularSynth::deleteModule() {
 
   Module *m;
- 
+
   m = (Module *)sender();
   listModule.removeAll(m);
   m->Delete();
@@ -1178,9 +1178,9 @@ static int Fscanf(FILE *f, const char *format, ...)
 static void setColor(FILE *f, QColor &c)
 {
   int r, g, b;
-  Fscanf(f, "%d", &r);   
-  Fscanf(f, "%d", &g);   
-  Fscanf(f, "%d", &b);   
+  Fscanf(f, "%d", &r);
+  Fscanf(f, "%d", &g);
+  Fscanf(f, "%d", &b);
   c = QColor(r, g, b);
 }
 
@@ -1208,30 +1208,30 @@ void ModularSynth::loadColors() {
             qs = QString(sc);
             if (qs.contains("ColorBackground", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorBackground);
-            }        
+            }
             else if (qs.contains("ColorModuleBackground", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleBackground);
-            }        
+            }
             else if (qs.contains("ColorModuleBorder", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleBorder);
-            }        
+            }
             else if (qs.contains("ColorModuleFont", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleFont);
-            }        
+            }
             else if (qs.contains("ColorJack", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorJack);
-            }        
+            }
             else if (qs.contains("ColorCable", Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorCable);
-            }        
-        }      
+            }
+        }
         fclose(f);
 
         /*some defaults*/
         synthdata->colorPortFont1 = synthdata->colorModuleFont;
         synthdata->colorPortFont2 = QColor(255, 240, 140);
         refreshColors();
-    }        
+    }
 }
 
 void ModularSynth::saveColors() {
@@ -1240,7 +1240,7 @@ void ModularSynth::saveColors() {
     QString config_fn, qs;
 
     config_fn = QFileDialog::getSaveFileName(this, tr("Save Colors"),
-            synthdata->colorPath, tr("AlsaModularSynth color files") + 
+            synthdata->colorPath, tr("AlsaModularSynth color files") +
             " (*" + COLOREXT + ")");
     if (config_fn.isEmpty())
         return;
@@ -1249,7 +1249,7 @@ void ModularSynth::saveColors() {
     if (!config_fn.endsWith(COLOREXT))
         config_fn.append(COLOREXT);
 
-    if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) { 
+    if (!(f = fopen(config_fn.toLatin1().constData(), "w"))) {
         QMessageBox::information( this, "AlsaModularSynth",
                 tr("Could not save file."));
     }
@@ -1279,7 +1279,7 @@ void ModularSynth::saveColors() {
                 synthdata->colorCable.green(), synthdata->colorCable.blue());
         fclose(f);
     }
-}                             
+}
 
 void ModularSynth::load(QTextStream& ts)
 {
@@ -1329,11 +1329,11 @@ void ModularSynth::load(QTextStream& ts)
       newBoxPos.setY(tokens[4].toInt());
 
       switch (M_type) {
-          case M_type_ladspa: 
+          case M_type_ladspa:
               newLadspaPolyFlag = tokens[5].toInt();
               ladspaLibName = tokens[6];
               pluginName = qs.section(' ', 7);
-              qWarning("%s", tr("Loading LADSPA plugin \"%1\" from library \"%2\".") 
+              qWarning("%s", tr("Loading LADSPA plugin \"%1\" from library \"%2\".")
                       .arg(pluginName).arg(ladspaLibName).toUtf8().constData());
 
               if (!synthdata->getLadspaIDs(ladspaLibName, pluginName,
@@ -1345,136 +1345,136 @@ void ModularSynth::load(QTextStream& ts)
                   ladspaLoadErr = true;
               }
               break;
-          case M_type_scquantizer: 
-          case M_type_scmcv: 
+          case M_type_scquantizer:
+          case M_type_scmcv:
               scalaName = tokens[5];
               break;
-          default: 
+          default:
               subID1 = tokens[5].toInt();
               subID2 = tokens[6].toInt();
               break;
       }
 
       switch(M_type) {
-          case M_type_custom: 
+          case M_type_custom:
               break;
-          case M_type_vco: 
+          case M_type_vco:
               newM_vco();
               break;
-          case M_type_vco2: 
+          case M_type_vco2:
               newM_vco2();
               break;
 
-          case M_type_vca: 
-              if (subID1) 
+          case M_type_vca:
+              if (subID1)
                   newM_vca_exp();
               else
                   newM_vca_lin();
               break;
-          case M_type_vcf: 
+          case M_type_vcf:
               newM_vcf();
               break;
-          case M_type_lfo: 
+          case M_type_lfo:
               newM_lfo();
               break;
-          case M_type_mphlfo: 
+          case M_type_mphlfo:
               newM_mphlfo();
               break;
-          case M_type_noise: 
+          case M_type_noise:
               newM_noise();
               break;
-          case M_type_noise2: 
+          case M_type_noise2:
               newM_noise2();
               break;
-          case M_type_delay: 
+          case M_type_delay:
               newM_delay();
               break;
-          case M_type_seq: 
+          case M_type_seq:
               newM_seq(subID1);
               break;
-          case M_type_env: 
+          case M_type_env:
               newM_env();
               break;
-          case M_type_vcenv: 
+          case M_type_vcenv:
               newM_vcenv();
               break;
-          case M_type_vcenv2: 
+          case M_type_vcenv2:
               newM_vcenv2();
               break;
-          case M_type_vcdoubledecay: 
+          case M_type_vcdoubledecay:
               newM_vcdoubledecay();
               break;
-          case M_type_vcpanning: 
+          case M_type_vcpanning:
               newM_vcpanning();
               break;
-          case M_type_advenv: 
+          case M_type_advenv:
               newM_advenv();
               break;
-          case M_type_mcv: 
+          case M_type_mcv:
               newM_mcv();
               break;
-          case M_type_advmcv: 
+          case M_type_advmcv:
               newM_advmcv();
               break;
-          case M_type_scmcv: 
+          case M_type_scmcv:
               newM_scmcv(&scalaName);
               break;
-          case M_type_ringmod: 
+          case M_type_ringmod:
               newM_ringmod();
               break;
-          case M_type_inv: 
+          case M_type_inv:
               newM_inv();
               break;
-          case M_type_amp: 
+          case M_type_amp:
               newM_amp();
               break;
-          case M_type_vquant: 
+          case M_type_vquant:
               newM_vquant();
               break;
-          case M_type_conv: 
+          case M_type_conv:
               newM_conv();
               break;
-          case M_type_sh: 
+          case M_type_sh:
               newM_sh();
               break;
-          case M_type_vcswitch: 
+          case M_type_vcswitch:
               newM_vcswitch();
               break;
-          case M_type_cvs: 
+          case M_type_cvs:
               newM_cvs();
               break;
-          case M_type_slew: 
+          case M_type_slew:
               newM_slew();
               break;
-          case M_type_quantizer: 
+          case M_type_quantizer:
               newM_quantizer();
               break;
-          case M_type_scquantizer: 
+          case M_type_scquantizer:
               newM_scquantizer(&scalaName);
               break;
-          case M_type_ad: 
+          case M_type_ad:
               newM_ad(subID1);
               break;
-          case M_type_mix: 
+          case M_type_mix:
               newM_mix(subID1);
               break;
-          case M_type_function: 
+          case M_type_function:
               newM_function(subID1);
               break;
-          case M_type_stereomix: 
+          case M_type_stereomix:
               newM_stereomix(subID1);
               break;
-          case M_type_vcorgan: 
+          case M_type_vcorgan:
               newM_vcorgan(subID1);
               break;
-          case M_type_dynamicwaves: 
+          case M_type_dynamicwaves:
               newM_dynamicwaves(subID1);
               break;
-          case M_type_ladspa: 
+          case M_type_ladspa:
               if (!ladspaLoadErr) {
                   newM_ladspa(subID1, subID2, newLadspaPolyFlag & 2,
                           newLadspaPolyFlag & 1);
-              } 
+              }
               break;
           case M_type_pcmout:
           case M_type_jackout:
@@ -1485,34 +1485,34 @@ void ModularSynth::load(QTextStream& ts)
               newM_pcmin();
               break;
           case M_type_wavout:
-              newM_wavout(); 
+              newM_wavout();
               break;
           case M_type_midiout:
-              newM_midiout(); 
+              newM_midiout();
               break;
           case M_type_scope:
-              newM_scope(); 
+              newM_scope();
               break;
           case M_type_spectrum:
-              newM_spectrum(); 
+              newM_spectrum();
               break;
           case M_type_v8sequencer:
-              newM_v8sequencer(); 
+              newM_v8sequencer();
               break;
           case M_type_analogmemory:
-              newM_analogmemory(); 
+              newM_analogmemory();
               break;
           case M_type_bitgrind:
-              newM_bitgrind(); 
+              newM_bitgrind();
               break;
           case M_type_hysteresis:
-              newM_hysteresis(); 
+              newM_hysteresis();
               break;
           case M_type_vcdelay:
-              newM_vcdelay(); 
+              newM_vcdelay();
               break;
           case M_type_vocoder:
-              newM_vocoder(); 
+              newM_vocoder();
               break;
       }
 
@@ -1529,11 +1529,11 @@ void ModularSynth::load(QTextStream& ts)
       }
     }
 
-    // Comment <id> <..> <xpos> <ypos> <width> <height> 
+    // Comment <id> <..> <xpos> <ypos> <width> <height>
     else if (qs.startsWith("Comment", Qt::CaseInsensitive) && !commentFlag) {
         tokens = qs.split(' ');
-        textEditID = tokens[1].toInt(); 
-        //textEditID = tokens[2].toInt(); 
+        textEditID = tokens[1].toInt();
+        //textEditID = tokens[2].toInt();
         newBoxPos.setX(tokens[3].toInt());
         newBoxPos.setY(tokens[4].toInt());
         w = tokens[5].toInt();
@@ -1551,8 +1551,8 @@ void ModularSynth::load(QTextStream& ts)
 
     // Port <idx1> <idx2> <modid11> <modid2>
     if (qs.startsWith("Port", Qt::CaseInsensitive)) {
-        index1 = tokens[1].toInt(); 
-        index2 = tokens[2].toInt(); 
+        index1 = tokens[1].toInt();
+        index2 = tokens[2].toInt();
         moduleID1 = tokens[3].toInt();
         moduleID2 = tokens[4].toInt();
 
@@ -1590,16 +1590,16 @@ void ModularSynth::load(QTextStream& ts)
 
     // ColorP <idx1> <idx2> <modid11> <modid2> <r1> <g1> <b1> <r2> <g2> <b2>
     else if (qs.startsWith("ColorP", Qt::CaseInsensitive)) {
-        index1 = tokens[1].toInt(); 
-        index2 = tokens[2].toInt(); 
+        index1 = tokens[1].toInt();
+        index2 = tokens[2].toInt();
         moduleID1 = tokens[3].toInt();
         moduleID2 = tokens[4].toInt();
-        red1 = tokens[5].toInt(); 
-        green1 = tokens[6].toInt(); 
-        blue1 = tokens[7].toInt(); 
-        red2 = tokens[8].toInt(); 
-        green2 = tokens[9].toInt(); 
-        blue2 = tokens[10].toInt(); 
+        red1 = tokens[5].toInt();
+        green1 = tokens[6].toInt();
+        blue1 = tokens[7].toInt();
+        red2 = tokens[8].toInt();
+        green2 = tokens[9].toInt();
+        blue2 = tokens[10].toInt();
 
         Module* mod1 = NULL;
         Module* mod2 = NULL;
@@ -1632,14 +1632,14 @@ void ModularSynth::load(QTextStream& ts)
     // FSlider <modid> <idx> <value> <islog> <s_min> <s_max> <midisign>
     //   0        1      2      3      4        5       6        7
     else if (qs.startsWith("FSlider", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       value = tokens[3].toInt();
       isLog = (tokens[4].toInt() == 1);
-      sliderMin = tokens[5].toInt(); 
-      sliderMax = tokens[6].toInt(); 
+      sliderMin = tokens[5].toInt();
+      sliderMax = tokens[6].toInt();
       if (tokens.count() > 6)
-          midiSign = tokens[7].toInt(); 
+          midiSign = tokens[7].toInt();
 
       m = getModuleWithId(moduleID);
       if (m != NULL) {
@@ -1665,14 +1665,14 @@ void ModularSynth::load(QTextStream& ts)
     // integer slider
     // ISlider <modid> <idx> <value> <midisign>
     else if (qs.startsWith("ISlider", Qt::CaseInsensitive)) {
-        moduleID = tokens[1].toInt(); 
-        index = tokens[2].toInt(); 
+        moduleID = tokens[1].toInt();
+        index = tokens[2].toInt();
         value = tokens[3].toInt();
         midiSign = tokens[4].toInt();
 
         m = getModuleWithId(moduleID);
         if (m != NULL) {
-            IntMidiSlider* ims = m->configDialog->getIntMidiSlider(index); 
+            IntMidiSlider* ims = m->configDialog->getIntMidiSlider(index);
             if (ims != NULL) {
                 MidiControllableBase &mcAble = ims->mcAble;
                 mcAble.midiSign = midiSign;
@@ -1687,14 +1687,14 @@ void ModularSynth::load(QTextStream& ts)
     // float slider
     // LSlider <modid> <idx> <value> <midisign>
     else if (qs.startsWith("LSlider", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       value = tokens[3].toInt();
       midiSign = tokens[4].toInt();
 
       m = getModuleWithId(moduleID);
       if (m != NULL) {
-          IntMidiSlider* ims = m->configDialog->getFloatIntMidiSlider(index); 
+          IntMidiSlider* ims = m->configDialog->getFloatIntMidiSlider(index);
           if (ims != NULL) {
               MidiControllableBase &mcAble = ims->mcAble;
               mcAble.midiSign = midiSign;
@@ -1707,8 +1707,8 @@ void ModularSynth::load(QTextStream& ts)
     }
 
     else if (qs.startsWith("ComboBox", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       value = tokens[3].toInt();
       midiSign = tokens[4].toInt();
 
@@ -1725,8 +1725,8 @@ void ModularSynth::load(QTextStream& ts)
     }
 
     else if (qs.startsWith("CheckBox", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       value = tokens[3].toInt();
       midiSign = tokens[4].toInt();
 
@@ -1741,8 +1741,8 @@ void ModularSynth::load(QTextStream& ts)
     }
 
     else if (qs.startsWith("Function", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       subID1 = tokens[3].toInt();
       subID2 = tokens[4].toInt();
 
@@ -1755,8 +1755,8 @@ void ModularSynth::load(QTextStream& ts)
     }
 
     else if (qs.startsWith("Point", Qt::CaseInsensitive)) {
-      moduleID = tokens[1].toInt(); 
-      index = tokens[2].toInt(); 
+      moduleID = tokens[1].toInt();
+      index = tokens[2].toInt();
       subID1 = tokens[3].toInt();
       subID2 = tokens[4].toInt();
       x = tokens[5].toInt();
@@ -1771,8 +1771,8 @@ void ModularSynth::load(QTextStream& ts)
     }
 
     else if (qs.contains("MIDI", Qt::CaseInsensitive)) {
-        moduleID = tokens[1].toInt(); 
-        index = tokens[2].toInt(); 
+        moduleID = tokens[1].toInt();
+        index = tokens[2].toInt();
         type = tokens[3].toInt();
         ch = tokens[4].toInt();
         param = tokens[5].toInt();
@@ -1808,7 +1808,7 @@ void ModularSynth::load(QTextStream& ts)
         else if (qs.startsWith("LSMIDI", Qt::CaseInsensitive)) {
             m = getModuleWithId(moduleID);
             if (m != NULL) {
-                IntMidiSlider* ims = 
+                IntMidiSlider* ims =
                     m->configDialog->getFloatIntMidiSlider(index);
                 if (ims != NULL)
                     ims->mcAble.connectToController(mck);
@@ -1837,8 +1837,8 @@ void ModularSynth::load(QTextStream& ts)
 
     // #PARA# <te_id> <..> <line_idx>
     else if (qs.startsWith("#PARA#", Qt::CaseInsensitive)) {
-        textEditID = tokens[1].toInt(); 
-        //textEditID = tokens[2].toInt(); 
+        textEditID = tokens[1].toInt();
+        //textEditID = tokens[2].toInt();
         index = tokens[3].toInt();
         qs = ts.readLine();
 
@@ -1851,7 +1851,7 @@ void ModularSynth::load(QTextStream& ts)
             qs = ts.readLine();
 
             if (!qs.startsWith("#ARAP#", Qt::CaseInsensitive)) {
-                para.append(qs + " "); 
+                para.append(qs + " ");
             }
         }
         TextEdit* te = getTextEditAt(textEditID);
@@ -1957,7 +1957,7 @@ void ModularSynth::load(QTextStream& ts)
 
     else if (qs.startsWith("Program", Qt::CaseInsensitive)) {
 
-        index = tokens[1].toInt(); 
+        index = tokens[1].toInt();
         value = tokens[2].toInt();
 
         if (index != currentProgram) {
@@ -1966,7 +1966,7 @@ void ModularSynth::load(QTextStream& ts)
         }
         guiWidget->presetList[currentProgram].append(value);
     }
-    
+
     else if (qs.startsWith("PresetName", Qt::CaseInsensitive)) {
         QRegExp rx("\"([^\"]+)\"");
         int pos = rx.indexIn(qs);
@@ -2020,7 +2020,7 @@ void ModularSynth::save(QTextStream& ts)
     // adjust modules y position
     if (childrenRect().top() > 66)
       offY = childrenRect().top() - 66;
-    
+
     // save module parameters
     for (l1 = 0; l1 < listModule.count(); ++l1) {
       ts << "Module "
@@ -2031,31 +2031,31 @@ void ModularSynth::save(QTextStream& ts)
 
       switch(listModule.at(l1)->M_type)
       {
-        case M_type_custom: 
+        case M_type_custom:
           break;
-        case M_type_vca: 
+        case M_type_vca:
           ts << (int)((M_vca *)listModule.at(l1))->expMode << " 0" << endl;
           break;
-        case M_type_ad: 
-        case M_type_function: 
+        case M_type_ad:
+        case M_type_function:
           ts << listModule.at(l1)->outPortCount << " 0" << endl;
           break;
-        case M_type_mix: 
+        case M_type_mix:
           ts << ((M_mix *)listModule.at(l1))->in_channels << " 0" << endl;
           break;
-        case M_type_stereomix: 
+        case M_type_stereomix:
           ts << ((M_stereomix *)listModule.at(l1))->in_channels << " 0" << endl;
           break;
-        case M_type_vcorgan: 
+        case M_type_vcorgan:
           ts << ((M_vcorgan *)listModule.at(l1))->oscCount << " 0" << endl;
           break;
-        case M_type_dynamicwaves: 
+        case M_type_dynamicwaves:
           ts << ((M_dynamicwaves *)listModule.at(l1))->oscCount << " 0" << endl;
           break;
-        case M_type_seq: 
+        case M_type_seq:
           ts << ((M_seq *)listModule.at(l1))->seqLen << " 0" << endl;
           break;
-        case M_type_ladspa: 
+        case M_type_ladspa:
           ts << 2 * (int)((M_ladspa *)listModule.at(l1))->isPoly
                   + (int)((M_ladspa *)listModule.at(l1))->hasExtCtrlPorts
              << ' '
@@ -2064,23 +2064,23 @@ void ModularSynth::save(QTextStream& ts)
              << ' '
              << ((M_ladspa *)listModule.at(l1))->pluginName << endl;
           break;
-        case M_type_scquantizer: 
+        case M_type_scquantizer:
           qs = ((M_scquantizer *)listModule.at(l1))->sclname;
           if (qs.contains('/')) {
-            qs = qs.mid(qs.lastIndexOf('/') + 1);             
+            qs = qs.mid(qs.lastIndexOf('/') + 1);
           }
           ts << qs << endl;
           break;
-        case M_type_scmcv: 
+        case M_type_scmcv:
           qs = ((M_scmcv *)listModule.at(l1))->sclname;
           if (qs.contains('/')) {
-            qs = qs.mid(qs.lastIndexOf('/') + 1);             
+            qs = qs.mid(qs.lastIndexOf('/') + 1);
           }
           ts << qs << endl;
           break;
         default:
           ts << "0 0" << endl;
-          break; 
+          break;
       }
       listModule.at(l1)->save(ts);
     }
@@ -2089,7 +2089,7 @@ void ModularSynth::save(QTextStream& ts)
     for (l1 = 0; l1 < listTextEdit.count(); ++l1) {
         TextEdit *te = listTextEdit.at(l1);
         if (te != NULL) {
-            ts << "Comment " 
+            ts << "Comment "
                 << te->textEditID << ' '
                 << l1 << ' '
                 << te->x() - offX << ' '
@@ -2102,8 +2102,8 @@ void ModularSynth::save(QTextStream& ts)
             for (l2 = 0; l2 < tD->blockCount(); ++l2, tB = tB.next()) {
                 ts << "#PARA# " << te->textEditID << ' '
                     << l1 << ' ' << l2 << endl;
-                ts << tB.text() << endl; 
-                ts << "#ARAP#" << endl; 
+                ts << tB.text() << endl;
+                ts << "#ARAP#" << endl;
             }
         }
     }
@@ -2130,62 +2130,62 @@ void ModularSynth::loadPreference(QString& line)
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorBackground = QColor(r, g, b);
 
-    }        
+    }
     else if (line.startsWith(CF_MODULEBACKGROUNDCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBackground = QColor(r, g, b);
-    }        
+    }
     else if (line.startsWith(CF_MODULEBORDERCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleBorder = QColor(r, g, b);
-    }        
+    }
     else if (line.startsWith(CF_MODULEFONTCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleFont = QColor(r, g, b);
         synthdata->colorPortFont1 = QColor(r, g, b);
-    }        
+    }
     else if (line.startsWith(CF_JACKCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorJack = QColor(r, g, b);
-    }        
+    }
     else if (line.startsWith(CF_CABLECOLOR)) {
         r = line.section(' ', 1, 1).toInt();
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorCable = QColor(r, g, b);
-    }       
+    }
     else if (line.startsWith(CF_MIDICONTROLLERMODE)) {
         synthdata->midiControllerMode = line.section(' ', 1, 1).toInt();
-    }       
+    }
     else if (line.startsWith(CF_COLORPATH)) {
         if (line.section(' ', 1).isEmpty() )
             synthdata->colorPath = QDir::homePath();
         else
             synthdata->colorPath = line.section(' ', 1);
-    }       
+    }
     else if (line.startsWith(CF_PATCHPATH)) {
         if (line.section(' ', 1).isEmpty())
             synthdata->patchPath = QDir::homePath();
         else
             synthdata->patchPath = line.section(' ', 1);
-    }       
+    }
     else if (line.startsWith(CF_EDITINGFLAGS)) {
 	synthdata->editingFlags.f = line.section(' ', 1).toInt();
-    }       
+    }
     else if (line.startsWith(CF_ENABLEGRID)) {
 	enablemodulegrid = line.section(' ', 1).toInt();
-    }       
+    }
     else if (line.startsWith(CF_GRIDMESHSIZE)) {
 	modulegrid = line.section(' ', 1).toInt();
-    }       
+    }
     else
         midiWidget->loadPreference(line);
 }
@@ -2231,7 +2231,7 @@ void ModularSynth::savePreferences(QTextStream& ts)
 
 
 void ModularSynth::showContextMenu(const QPoint& pos) {
-  
+
     contextMenu->popup(mapToGlobal(pos));
 }
 

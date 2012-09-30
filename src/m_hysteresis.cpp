@@ -1,4 +1,4 @@
-/* 
+/*
   Hysteresis translater - derived from m_delay.cpp
 
   Copyright (C) 2011 Bill Yerazunis <yerazunis@yahoo.com>
@@ -24,8 +24,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -39,16 +39,16 @@
 #include "m_hysteresis.h"
 #include "port.h"
 
-M_hysteresis::M_hysteresis(QWidget* parent) 
+M_hysteresis::M_hysteresis(QWidget* parent)
     : Module(M_type_hysteresis, 1, parent, tr("Hysteresis"))
 {
     QString qs;
     int l1;
 
     setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_HYSTERESIS_HEIGHT);
-    port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
+    port_M_in = new Port(tr("In"), PORT_IN, 0, this);
     cv.out_off = 55;
-    port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+    port_out = new Port(tr("Out"), PORT_OUT, 0, this);
 
     // Set up the config screen
     configDialog->setAddStretch(1);
@@ -88,7 +88,7 @@ void M_hysteresis::generateCycle() {
                 currentsegment[l1] = 0;
             if (inData[l1][l2] > (center + overlap))
                 currentsegment[l1] = 1;
-            // Set output values 
+            // Set output values
             if (currentsegment[l1] == 0)
                 data[0][l1][l2] =  // -1;
             (inData[l1][l2] * lowslope)-1;

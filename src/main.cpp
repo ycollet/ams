@@ -1,6 +1,6 @@
-#include <stdio.h>      
-#include <stdlib.h>     
-#include <getopt.h>  
+#include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -31,12 +31,12 @@ static struct option options[] = {
          {"playback", 1, 0, 'P'},
 #endif
          {"periodsize", 1, 0, 'p'},
-         {"nfrag", 1, 0, 'n'},   
-         {"rate", 1, 0, 'r'},   
+         {"nfrag", 1, 0, 'n'},
+         {"rate", 1, 0, 'r'},
          {"in", 1, 0, 'i'},
          {"out", 1, 0, 'o'},
-         {"poly", 1, 0, 'y'},   
-         {"edge", 1, 0, 'e'},   
+         {"poly", 1, 0, 'y'},
+         {"edge", 1, 0, 'e'},
          {"presetdir", 1, 0, 'D'},
          {"nogui", 0, 0, 'n'},
          {"help", 0, 0, 'h'},
@@ -105,7 +105,7 @@ int makeSynthName(QString &name)
 }
 
 
-int main(int argc, char *argv[])  
+int main(int argc, char *argv[])
 {
   char aboutText[] = AMS_LONGNAME " " VERSION;
   QApplication app(argc, argv);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
   else
       qWarning("No Qt translation for locale '%s' found.",
               loc.name().toLatin1().constData());
-  
+
   // translator for ams strings
   QTranslator amsTr;
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
   else
       qWarning("No " AMS_LONGNAME " translation for locale '%s' found.",
               loc.name().toLatin1().constData());
-  
+
   int getopt_return;
   int option_index;
   QString pcmname = DEFAULT_PCMNAME;
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
         msoptions.forceAlsa = false;
         break;
 #ifdef JACK_SESSION
-    case 'U': 
+    case 'U':
         msoptions.global_jack_session_uuid = QString(optarg);
         break;
 #endif
@@ -182,42 +182,42 @@ int main(int argc, char *argv[])
         msoptions.forceJack = false;
         msoptions.forceAlsa = true;
         break;
-    case 'd': 
+    case 'd':
         pcmname = optarg;
-        break; 
+        break;
 #if defined (HAVE_CLALSADRV_API2) || defined (HAVE_LIBZITA_ALSA_PCMI)
-    case 'C': 
+    case 'C':
         msoptions.cname = optarg;
-        break; 
-    case 'P': 
+        break;
+    case 'P':
         msoptions.pname = optarg;
-        break; 
+        break;
 #endif
-    case 'p': 
+    case 'p':
         msoptions.frsize = atoi(optarg);
         break;
-    case 'n': 
+    case 'n':
         msoptions.nfrags = atoi(optarg);
         break;
-    case 'r': 
+    case 'r':
         msoptions.fsamp = atoi(optarg);
         break;
-    case 'i': 
+    case 'i':
         msoptions.ncapt = atoi(optarg);
         break;
-    case 'o': 
+    case 'o':
         msoptions.nplay = atoi(optarg);
         break;
-    case 'y': 
+    case 'y':
         msoptions.poly = atoi(optarg);
         break;
-    case 'e': 
+    case 'e':
         msoptions.edge = atof(optarg);
         break;
-    case 'D': 
+    case 'D':
         msoptions.presetPath = optarg;
         msoptions.havePresetPath = true;
-        break; 
+        break;
     case 'g':
         msoptions.noGui = true;
         break;

@@ -1,4 +1,4 @@
-/* 
+/*
   Voltage-controlled delay - derived from m_delay.cpp
 
   Copyright (C) 2011 Bill Yerazunis <yerazunis@yahoo.com>
@@ -24,8 +24,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -38,17 +38,17 @@
 #include "port.h"
 
 
-M_vcdelay::M_vcdelay(QWidget* parent) 
+M_vcdelay::M_vcdelay(QWidget* parent)
     : Module(M_type_vcdelay, 1, parent, tr("VC Delay"))
 {
     QString qs;
     int l1;
 
     setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_VCDELAY_HEIGHT);
-    port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
-    port_M_delay = new Port(tr("Delay"), PORT_IN, 1, this); 
+    port_M_in = new Port(tr("In"), PORT_IN, 0, this);
+    port_M_delay = new Port(tr("Delay"), PORT_IN, 1, this);
     cv.out_off = 55;
-    port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
+    port_out = new Port(tr("Out"), PORT_OUT, 0, this);
 
     delay = 0;
     configDialog->addSlider(tr("&Delay"), delay, 0, 10);

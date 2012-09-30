@@ -14,21 +14,21 @@ class M_scmcv : public Module
 
   private:
     float pitchbend;
-    float scale_lut[128]; 
+    float scale_lut[128];
     bool scale_lut_isRatio[128];
     int scale_lut_length, pitch;
     float scale_notes[128];
     Port *port_note_out, *port_gate_out, *port_velocity_out, *port_trig_out;
     QFileDialog *fileDialog;
-    
-  private:
-    void calcScale();   
 
-  public: 
+  private:
+    void calcScale();
+
+  public:
     int base, lastbase, channel;
     QString sclname, dirpath;
     PolyArr<float> freq, lastfreq;
-                
+ 
   public:
     M_scmcv(QWidget* parent=0, QString *p_sclname = 0);
 
@@ -38,5 +38,5 @@ class M_scmcv : public Module
     void loadScale(const QString &p_sclname);
     void openBrowser();
 };
-  
+
 #endif

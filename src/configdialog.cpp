@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -28,7 +28,7 @@
 #include "function.h"
 
 
-ConfigDialog::ConfigDialog(Module &module) 
+ConfigDialog::ConfigDialog(Module &module)
   : QDialog(&module),
     addStretch(1)
   , removeButton(new QPushButton(tr("&Remove Module")))
@@ -101,7 +101,7 @@ IntMidiSlider *ConfigDialog::addIntSlider(const QString &name, int &valueRef, in
 MidiComboBox *ConfigDialog::addComboBox(const QString &name, int &valueRef, const QStringList &itemNames, QBoxLayout *layout) {
   MidiControllableNames * mcAble =
     new MidiControllableNames(module, name, valueRef, itemNames);
- 
+
   MidiComboBox *midiComboBox = new MidiComboBox(*mcAble);
   insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
 
@@ -134,7 +134,7 @@ MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLay
 {
   MidiControllableDoOnce *mcAble =
     new MidiControllableDoOnce(module, name);
-  
+
   MidiPushButton *midiPushButton;
 
   midiPushButton = new MidiPushButton(*mcAble);
@@ -145,7 +145,7 @@ MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLay
   return mcAble;
 }
 
-int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
+int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef,
 			      MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout)
 {
   Envelope *envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef);
@@ -252,7 +252,7 @@ int ConfigDialog::addLineEdit(const char *Name, QBoxLayout *layout) {
   return 0;
 }
 
-int ConfigDialog::addScopeScreen(float &timeScaleRef, int &modeRef, int &edgeRef, int &triggerModeRef, 
+int ConfigDialog::addScopeScreen(float &timeScaleRef, int &modeRef, int &edgeRef, int &triggerModeRef,
                                  float &triggerThrsRef, float &zoomRef, QBoxLayout *layout) {
 
   ScopeScreen *scopeScreen;

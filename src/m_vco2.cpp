@@ -5,7 +5,7 @@
 #include "m_vco2.h"
 #include "port.h"
 
-M_vco2::M_vco2(QWidget* parent) 
+M_vco2::M_vco2(QWidget* parent)
   : Module(M_type_vco2, 1, parent, tr("VCO2"))
 {
   QString qs;
@@ -37,12 +37,12 @@ M_vco2::M_vco2(QWidget* parent)
   port_M_pw = new Port(tr("PW"), PORT_IN, 4, this);
 
   cv.out_off = 115;
-  port_sine = new Port(tr("Out"), PORT_OUT, 0, this);          
+  port_sine = new Port(tr("Out"), PORT_OUT, 0, this);
   /*
-  port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);          
-  port_saw = new Port("Saw", PORT_OUT, 2, this, synthdata);          
-  port_rect = new Port("Rectangle", PORT_OUT, 3, this, synthdata);          
-  port_aux = new Port("Aux", PORT_OUT, 4, this, synthdata);          
+  port_tri = new Port("Triangle", PORT_OUT, 1, this, synthdata);
+  port_saw = new Port("Saw", PORT_OUT, 2, this, synthdata);
+  port_rect = new Port("Rectangle", PORT_OUT, 3, this, synthdata);
+  port_aux = new Port("Aux", PORT_OUT, 4, this, synthdata);
   */
 
   configDialog->initTabWidget();
@@ -79,7 +79,7 @@ void M_vco2::generateCycle()
   int l1;
   unsigned int l2;
   unsigned phint;
-  float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave; 
+  float dphi, phi1, phi_const, pw, d, dd, dsaw, half_wave, third_wave;
   float freq_const, freq_tune, gain_linfm,  pw_low, pw_high;
 
   edge = 0.01f + 1.8f * synthdata->edge;
@@ -115,22 +115,22 @@ void M_vco2::generateCycle()
 	case TRIANGLE:
 	  data[0][l1][l2] = synthdata->wave_tri[phint];
 	  break;
-	case AWAVE_SAW: 
+	case AWAVE_SAW:
 	  data[0][l1][l2] = synthdata->wave_saw2[phint];
 	  break;
 	case AWAVE_SAW2:
-	  half_wave = wave_period_2;// * 0.5f;// / 2.0;              
-	  data[0][l1][l2] = (phi1 < half_wave) 
+	  half_wave = wave_period_2;// * 0.5f;// / 2.0;
+	  data[0][l1][l2] = (phi1 < half_wave)
 	    ? synthdata->wave_saw2[(int)(2.0f * phi1)]
 	    : 0.0f;
 	  break;
-	case AWAVE_SAW3: 
+	case AWAVE_SAW3:
 	  third_wave = wave_period_3;// * 0.3333333333334f;// / 3.0f;
 	  data[0][l1][l2] = (phi1 < third_wave)
 	    ? synthdata->wave_saw2[(int)(3.0f * phi1)]
 	    : 0.0f;
 	  break;
-            
+
 	case SAWTOOTH:
 	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
@@ -144,7 +144,7 @@ void M_vco2::generateCycle()
             } else {
               if (phi1 <= pw - d) {
                 data[0][l1][l2] = 1.0f - (phi1 - d) * dsaw;
-              } else { 
+              } else {
                 if (phi1 <= pw + d) {
                   data[0][l1][l2] = 1.0f - (phi1 - d) * dsaw;
                 } else {
@@ -152,7 +152,7 @@ void M_vco2::generateCycle()
                     data[0][l1][l2] = 1.0f - (phi1 - d) * dsaw;
                   } else {
                     data[0][l1][l2] = (phi1 - wave_period) * dd;
-                  } 
+                  }
                 }
               }
             }
@@ -170,7 +170,7 @@ void M_vco2::generateCycle()
             } else {
               if (phi1 <= pw - d) {
                 data[0][l1][l2] = 1.0f;
-              } else { 
+              } else {
                 if (phi1 <= pw + d) {
                   data[0][l1][l2] = (pw - phi1) * dd;
                 } else {
@@ -178,7 +178,7 @@ void M_vco2::generateCycle()
                     data[0][l1][l2] = -1.0f;
                   } else {
                     data[0][l1][l2] = (phi1 - wave_period) * dd;
-                  } 
+                  }
                 }
               }
             }
@@ -203,7 +203,7 @@ void M_vco2::generateCycle()
 	case TRIANGLE:
 	  data[0][l1][l2] = synthdata->wave_tri[phint];
 	  break;
-	case AWAVE_SAW: 
+	case AWAVE_SAW:
 	  data[0][l1][l2] = synthdata->wave_saw2[phint];
 	  break;
 	case AWAVE_SAW2:
@@ -218,11 +218,11 @@ void M_vco2::generateCycle()
 	    ? synthdata->wave_saw2[(int)(3.0f * phi[l1])]
 	    : 0.0f;
 	  break;
-            
+
 	case SAWTOOTH:
 	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
-            if (pw < pw_low) pw = pw_low;  
+            if (pw < pw_low) pw = pw_low;
             else if (pw > pw_high) pw = pw_high;
             d = edge * dphi;
             dd = 1.0f / d;
@@ -232,7 +232,7 @@ void M_vco2::generateCycle()
             } else {
               if (phi[l1] <= pw - d) {
                 data[0][l1][l2] = 1.0f - (phi[l1] - d) * dsaw;
-              } else { 
+              } else {
                 if (phi[l1] <= pw + d) {
                   data[0][l1][l2] = 1.0f - (phi[l1] - d) * dsaw;
                 } else {
@@ -240,7 +240,7 @@ void M_vco2::generateCycle()
                     data[0][l1][l2] = 1.0f - (phi[l1] - d) * dsaw;
                   } else {
                     data[0][l1][l2] = (phi[l1] - wave_period) * dd;
-                  } 
+                  }
                 }
               }
             }
@@ -249,7 +249,7 @@ void M_vco2::generateCycle()
 	case RECTANGLE:
 	  {
             pw = (pw0 + pwGain * pwData[l1][l2]) * wave_period;
-            if (pw < pw_low) pw = pw_low;  
+            if (pw < pw_low) pw = pw_low;
             else if (pw > pw_high) pw = pw_high;
             d = edge * dphi;
             dd = 1.0f / d;
@@ -258,7 +258,7 @@ void M_vco2::generateCycle()
             } else {
               if (phi[l1] <= pw - d) {
                 data[0][l1][l2] = 1.0f;
-              } else { 
+              } else {
                 if (phi[l1] <= pw + d) {
                   data[0][l1][l2] = (pw - phi[l1]) * dd;
                 } else {
@@ -266,7 +266,7 @@ void M_vco2::generateCycle()
                     data[0][l1][l2] = -1.0f;
                   } else {
                     data[0][l1][l2] = (phi[l1] - wave_period) * dd;
-                  } 
+                  }
                 }
               }
             }

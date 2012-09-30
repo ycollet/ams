@@ -5,8 +5,8 @@
 #include <time.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -19,7 +19,7 @@
 #include "port.h"
 
 
-M_noise2::M_noise2(QWidget* parent) 
+M_noise2::M_noise2(QWidget* parent)
   : Module(M_type_noise2, 1, parent, tr("Noise2"))
 {
   QString qs;
@@ -29,11 +29,11 @@ M_noise2::M_noise2(QWidget* parent)
   rate = 5;
   level = 0.5;
   count = 0;
-  NoiseType=WHITE; 
+  NoiseType=WHITE;
   randmax = 2.0f / (float)RAND_MAX;
-  
+
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_NOISE2_HEIGHT);
-  port_white = new Port("Out", PORT_OUT, 0, this);          
+  port_white = new Port("Out", PORT_OUT, 0, this);
 
   QStringList noiseNames;
   noiseNames << tr("White") << tr("Random") << tr("Pink") << tr("Pulsetrain");
@@ -71,7 +71,7 @@ void M_noise2::generateCycle() {
       {
         unsigned int random_rate = (unsigned int)(5000.0 * (double)rate + 100.0);
     	for (l2 = 0; l2 < synthdata->cyclesize; ++l2) {
-      		count++; 
+      		count++;
       		if (count > random_rate) {
         		count = 0;
         		r = level * rand() * randmax - 1.0f;
@@ -113,6 +113,6 @@ void M_noise2::generateCycle() {
       }		
       break;
      }
-     
+
 }
 

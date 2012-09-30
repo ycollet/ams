@@ -7,8 +7,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -25,19 +25,19 @@
 #include "m_scquantizer.h"
 #include "port.h"
 
-M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname) 
+M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
   : Module(M_type_scquantizer, 2, parent, tr("Scala Quantizer"))
 {
   QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SCQUANTIZER_HEIGHT);
-  port_M_in = new Port(tr("In"), PORT_IN, 0, this); 
-  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this); 
-  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this); 
+  port_M_in = new Port(tr("In"), PORT_IN, 0, this);
+  port_M_trigger = new Port(tr("Trigger"), PORT_IN, 1, this);
+  port_M_transpose = new Port(tr("Transpose"), PORT_IN, 2, this);
   cv.out_off = 95;
-  port_out = new Port(tr("Out"), PORT_OUT, 0, this);          
-  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);          
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);
+  port_trigger_out = new Port(tr("Trigger Out"), PORT_OUT, 1, this);
   base = 0;
   lastbase = 12;
   configDialog->addIntSlider(tr("&Note Offset"), base, -36, 36);
@@ -92,7 +92,7 @@ void M_scquantizer::calcScale() {
     base_cv = scale_notes[index - 1];
     base_freq = synthdata->exp2_table(4.0313842 + base_cv);
   }
-}  
+}
 
 void M_scquantizer::generateCycle() {
 
@@ -126,19 +126,19 @@ void M_scquantizer::generateCycle() {
             if (qsig[l1] != lutquant) {
               qsig[l1] = lutquant;
               data[1][l1][l2] = 1.0;
-              trigCount[l1] = 512;  
+              trigCount[l1] = 512;
             } else {
               if (trigCount[l1] > 0) {
-                data[1][l1][l2] = 1;  
+                data[1][l1][l2] = 1;
                 trigCount[l1]--;
               } else {
                 data[1][l1][l2] = 0;
               }
-            }  
+            }
             transpose = (int)(transposeData[l1][l2] * 12.0);
             data[0][l1][l2] = (float)qsig[l1] - 4.0 + (float)(transpose + base) / 12.0;
           }
-         } 
+         }
     } else {
         for (l1 = 0; l1 < synthdata->poly; l1++) {
           for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
@@ -147,8 +147,8 @@ void M_scquantizer::generateCycle() {
               quant = 1;
               for (l3 = 0; l3 < 128; l3++) {
                 if (scale_notes[quant] > 4.0 + inData[l1][l2]) {
-                  break;  
-                } else {  
+                  break;
+                } else {
                   quant++;
                 }
               }
@@ -168,7 +168,7 @@ void M_scquantizer::generateCycle() {
             }
             transpose = (int)(transposeData[l1][l2] * 12.0);
             data[0][l1][l2] = (float)qsig[l1] - 4.0 + (float)(transpose + base) / 12.0;
-          }   
+          }
         }
     }
 }
@@ -187,24 +187,24 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
   QString qs, qs2, qs3;
   int index, n;
 
-  sclname = p_sclname;  
+  sclname = p_sclname;
   QFile qfile(sclname);
   if (!qfile.open(QIODevice::ReadOnly)) {
     QMessageBox::information( this, "AlsaModularSynth",
             tr("Could not load Scala file '%1'").arg(sclname));
     sclname = "No_Scale_loaded";
-    return; 
+    return;
   }
   configDialog->labelList.at(0)->setText(tr("   Scale: ") + sclname);
   QTextStream stream(&qfile);
   while (!stream.atEnd()) {
-    qs = stream.readLine(); 
-    if (!qs.contains("!")) 
+    qs = stream.readLine();
+    if (!qs.contains("!"))
       break;
   }
   configDialog->labelList.at(1)->setText("   " + qs);
   StdErr << "Scale: " << qs << endl;
-  while (!stream.atEnd()) { 
+  while (!stream.atEnd()) {
     qs = stream.readLine();
     if (!qs.contains("!"))
       break;
@@ -218,24 +218,24 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
     qs2 = qs.simplified();
     if (qs2.contains(".")) {
       if ((n = qs2.indexOf(" ")) > 0) {
-        qs = qs2.left(n); 
+        qs = qs2.left(n);
       } else {
         qs = qs2;
       }
       scale_lut_isRatio[index] = false;
-      scale_lut[index] = qs.toFloat(); 
+      scale_lut[index] = qs.toFloat();
       index++;
-    } else {  
+    } else {
       scale_lut_isRatio[index] = true;
       if (qs.contains("/")) {
         qs = qs2.left(qs2.indexOf("/"));
         qs3 = qs2.mid(qs2.indexOf("/") + 1);
-        if ((n = qs3.indexOf(" ")) > 0) {   
-          qs2 = qs3.left(n); 
+        if ((n = qs3.indexOf(" ")) > 0) {
+          qs2 = qs3.left(n);
         } else {
           qs2 = qs3;
         }
-        scale_lut[index] = qs.toFloat() / qs2.toFloat(); 
+        scale_lut[index] = qs.toFloat() / qs2.toFloat();
       } else {
         if ((n = qs2.indexOf(" ")) > 0) {
           qs = qs2.left(n);
@@ -246,7 +246,7 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
       }
       index++;
     }
-  }  
+  }
   scale_lut_length = index;
   calcScale();
 }

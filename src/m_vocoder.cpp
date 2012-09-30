@@ -1,4 +1,4 @@
-/* 
+/*
   Vocoder - derived from m_delay.cpp
 
   Copyright (C) 2011 Bill Yerazunis <yerazunis@yahoo.com>
@@ -24,8 +24,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -79,17 +79,17 @@ float M_vocoder::windowcurve (int windowfunc, int len, int elem, float alpha)
       //  Tukey window
       out = 1;
       if ( elem <= (alpha * len / 2) )
-	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len)) 
+	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len))
 				   - 1))) / 2;
       if (elem >= (len * (1 - alpha/2)))
-	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len)) 
-				   - (2 * alpha) 
+	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len))
+				   - (2 * alpha)
 				   + 1))) / 2;
       break;
-    case 5: 
+    case 5:
       //  Blackman-Nutall (least spillover)
-      out = 
-	0.3635819 
+      out =
+	0.3635819
 	- 0.4891775 * cos (2 * 3.14159 * elem / (len - 1))
 	+ 0.1365995 * cos (4 * 3.14159 * elem / (len - 1))
 	- 0.0106411 * cos (6 * 3.14159 * elem / (len - 1));
@@ -97,8 +97,8 @@ float M_vocoder::windowcurve (int windowfunc, int len, int elem, float alpha)
     }
   return (out);
 }
-  
-M_vocoder::M_vocoder(QWidget* parent) 
+
+M_vocoder::M_vocoder(QWidget* parent)
   : Module(M_type_vocoder, 5, parent, tr("FFT Vocoder"))
 {
   QString  qs;
@@ -106,14 +106,14 @@ M_vocoder::M_vocoder(QWidget* parent)
   unsigned int l2;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VOCODER_WIDTH, MODULE_VOCODER_HEIGHT);
-  port_M_modulator = new Port(tr("Modulator"), PORT_IN, 0, this); 
+  port_M_modulator = new Port(tr("Modulator"), PORT_IN, 0, this);
   port_M_pitchshift = new Port(tr("Pitch Shift"), PORT_IN, 1, this);
   port_M_freqshift = new Port(tr("Freq Shift"), PORT_IN, 2, this);
   port_M_channels = new Port(tr("Channels"), PORT_IN, 3, this);
   port_M_carrier = new Port(tr("Carrier"), PORT_IN, 4, this);
   cv.out_off = 65;
   port_altmodulator_out = new Port (tr("Altered Mod"), PORT_OUT, 0, this);
-  port_vocoder_out = new Port(tr("Vocoder Out"), PORT_OUT, 1, this);          
+  port_vocoder_out = new Port(tr("Vocoder Out"), PORT_OUT, 1, this);
   port_modfft_out = new Port (tr("Modulator FFT"), PORT_OUT, 2, this);
   port_firstharmonic_out = new Port (tr("Mod 1st H"), PORT_OUT, 3, this);
 
@@ -121,8 +121,8 @@ M_vocoder::M_vocoder(QWidget* parent)
   //  fprintf (stderr, "FFTSize = %d\n", fftsize);
 
   channels = 16;
-  configDialog->addSlider(tr("&Bins/Channel"), channels, 1, 
-			  (999 < synthdata->cyclesize 
+  configDialog->addSlider(tr("&Bins/Channel"), channels, 1,
+			  (999 < synthdata->cyclesize
 			   ? 999 : synthdata->cyclesize));
   vcchannels = 0;
   configDialog->addSlider(tr("&VC Bins/Channels"), vcchannels, -100, 100);
@@ -137,7 +137,7 @@ M_vocoder::M_vocoder(QWidget* parent)
   freqshift = 0;
   configDialog->addSlider(tr("&Frequency (Bode) shift"), freqshift, -999, 999);
   vcfreqshift = 0;
-  configDialog->addSlider(tr("VC Fre&q shift"), vcfreqshift, -500, 500); 
+  configDialog->addSlider(tr("VC Fre&q shift"), vcfreqshift, -500, 500);
   phaseshift = 0;
   configDialog->addSlider(tr("P&hase shift"), phaseshift, -6.283, 6.283);
   myFFTWindowFunc = 0;
@@ -158,14 +158,14 @@ M_vocoder::M_vocoder(QWidget* parent)
   modbuf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     modbuf[l1] = (float *)malloc( fftsize * sizeof(float));
-    memset( modbuf[l1], 0, fftsize * sizeof(float));  
+    memset( modbuf[l1], 0, fftsize * sizeof(float));
   }
   carrbuf = (float **)malloc(synthdata->poly * sizeof(float *));
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     carrbuf[l1] = (float *)malloc( fftsize * sizeof(float));
-    memset( carrbuf[l1], 0, fftsize * sizeof(float));  
+    memset( carrbuf[l1], 0, fftsize * sizeof(float));
   }
-  
+
   modmap = (float *) malloc (sizeof (float) * fftsize);
   armodmap = (float *) malloc (sizeof (float) * fftsize);
 
@@ -175,21 +175,21 @@ M_vocoder::M_vocoder(QWidget* parent)
     window[l2] = windowcurve (whichwin, fftsize, l2, 0.25);
 
   //  FFTW setup stuff
-  carrinforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  carrinforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					    * fftsize);
-  carrinbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  carrinbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					     * fftsize);
-  carroutforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  carroutforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					     * fftsize);
-  carroutbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  carroutbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					      * fftsize);
-  modinforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  modinforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					    * fftsize);
-  modinbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  modinbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					     * fftsize);
-  modoutforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  modoutforward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					     * fftsize);
-  modoutbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex) 
+  modoutbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					      * fftsize);
   fftw_set_timelimit (0.1);
   planmodforward = fftw_plan_dft_1d (fftsize, modinforward,
@@ -205,7 +205,7 @@ M_vocoder::M_vocoder(QWidget* parent)
 M_vocoder::~M_vocoder() {
 
   int l1;
-  
+
   for (l1 = 0; l1 < synthdata->poly; l1++) {
     free(modbuf[l1]);
     free(carrbuf[l1]);
@@ -231,7 +231,7 @@ M_vocoder::~M_vocoder() {
   fftw_free (modinbackward);
   fftw_free (modoutforward);
   fftw_free (modoutbackward);
-#endif    
+#endif
 }
 
 void M_vocoder::generateCycle() {
@@ -247,7 +247,7 @@ void M_vocoder::generateCycle() {
 
   //       *** Insuring continuity across FFTs  ***
   //    One problem with shifting, etc. is to insure
-  //    that the output is continuous in position 
+  //    that the output is continuous in position
   //    across FFT frames.  If *all* you do is forward and
   //    reverse FFT, then there's no problem.  However, if you
   //    do any manipulation of the FFT-format data, then you can
@@ -255,7 +255,7 @@ void M_vocoder::generateCycle() {
   //    when you transform back.  This is audible as a series of
   //    signal-dependent pulses at the frame rate (about 48 Hz for
   //    a cycle size of 1024 and a 48 KHz sample rate. )
-  //    
+  //
   //    The hack fix we use here is to keep a buffer of the last
   //    cyclesize samples we saw, and append them together, then
   //    pick a chunk with level- and gradient-matching to use as
@@ -290,7 +290,7 @@ void M_vocoder::generateCycle() {
 
     //    Copy the input buffer to modinforward
     for (l2 = 0; l2 < (unsigned int)fftsize ; l2++) {
-      modinforward[l2] = modbuf[l1][l2] * window[l2]; 
+      modinforward[l2] = modbuf[l1][l2] * window[l2];
     }
 
 //#define QUICKCHECK
@@ -306,7 +306,7 @@ void M_vocoder::generateCycle() {
     for (l2 = 0; l2 < (unsigned int)fftsize; l2++)
       modinbackward[l2] = modoutforward[l2];
 
-    //     Send the FFT of the modulator to the output for giggles 
+    //     Send the FFT of the modulator to the output for giggles
     //     and get an approximation of the first harmonic too.
     float firstharmonicval;
     int firstharmonicindex;
@@ -321,7 +321,7 @@ void M_vocoder::generateCycle() {
     };
     data[2][l1][0] = -10.0;
     for (l2 = 0; l2 < (unsigned int) synthdata->cyclesize; l2++) {
-      data[3][l1][l2] = log2 (firstharmonicindex); 
+      data[3][l1][l2] = log2 (firstharmonicindex);
     };
 
     //   intermediate frequency-domain munging of modulator
@@ -333,7 +333,7 @@ void M_vocoder::generateCycle() {
       //   positive frequencies (first half) of the FFT result
       lclfrq = l2 + (int)freqshift + vcfreqshift * inFreqShift[l1][0];
       lclfrq = lclfrq > 0 ? lclfrq : 0;
-      lclfrq = lclfrq < ((fftsize/2)-1) ? lclfrq : (fftsize/2)-1; 
+      lclfrq = lclfrq < ((fftsize/2)-1) ? lclfrq : (fftsize/2)-1;
       modinbackward[ lclfrq ] = modoutforward [l2];
       //   Negative frequencies (second half of the fft result)
       modinbackward[fftsize - lclfrq] = modoutforward [ fftsize - l2];
@@ -354,10 +354,10 @@ void M_vocoder::generateCycle() {
       //   positive frequencies (first half) of the FFT result
       lclfrq = l2 * psfactor;
       lclfrq = lclfrq > 0 ? lclfrq : 0;
-      lclfrq = lclfrq < ((fftsize/2)-1) ? lclfrq : (fftsize/2)-1; 
+      lclfrq = lclfrq < ((fftsize/2)-1) ? lclfrq : (fftsize/2)-1;
       //   Old way to pitch shift: just move the bucket.  But this puts
-      //   nulls wherever the energy is split between two buckets with 
-      //   a 180 degree phase difference. 
+      //   nulls wherever the energy is split between two buckets with
+      //   a 180 degree phase difference.
       if (rtheta == 0) {
             modinbackward[lclfrq] += modoutforward [l2];
             modinbackward[fftsize - lclfrq] += modoutforward [ fftsize - l2];
@@ -366,12 +366,12 @@ void M_vocoder::generateCycle() {
 	{
 	  //
 	  //   Better way: move freq. bin, multiply angle by octave motion.
-	  //      
-	  modinbackward[lclfrq] += 
+	  //
+	  modinbackward[lclfrq] +=
 	    cabs (modoutforward [l2])
-	    * cexp (I * ( carg (modoutforward [l2]) 
+	    * cexp (I * ( carg (modoutforward [l2])
 			  + (l2 * phaseshift * psfactor)));
-	  modinbackward[fftsize - lclfrq] += 
+	  modinbackward[fftsize - lclfrq] +=
 	    cabs (modoutforward [ fftsize - l2])
 	    * cexp (I * ( carg (modoutforward [ fftsize - l2])
 			  + (l2 * phaseshift * psfactor)));
@@ -380,7 +380,7 @@ void M_vocoder::generateCycle() {
     //     The munged modulator is now in "inbackward"
     //     so inverse-FFT it and output it as altered modulator.
     fftw_execute (planmodbackward);
-    
+
     //   renormalize the time-domain modulator output
     for (l2 = 0; l2 < (unsigned)fftsize; l2++) {
       modoutbackward [l2] = modoutbackward[l2] / float (fftsize) ;
@@ -395,18 +395,18 @@ void M_vocoder::generateCycle() {
     //     Splicing the new output to the results
     if (dynsplice == 0.0)
       {
-	//   output it as the altered modulator.  
+	//   output it as the altered modulator.
 	for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
-	  data[0][l1][l2] = creal ( modoutbackward [l2 + 
-						    fftsize/2 - 
+	  data[0][l1][l2] = creal ( modoutbackward [l2 +
+						    fftsize/2 -
 						    synthdata->cyclesize/2 ]);
 	}
 	clomatch_index = fftsize - synthdata->cyclesize;
       }
     else
       {
-	//   find where in our altered modulator output where a "close match" 
-	//   exists to our previous output value, then output one 
+	//   find where in our altered modulator output where a "close match"
+	//   exists to our previous output value, then output one
 	//   cyclesize worth starting there.  Note that since we start at the
 	//   start, we get almost a complete fftsize worth of range to
 	//   choose from.
@@ -420,13 +420,13 @@ void M_vocoder::generateCycle() {
 	spliceval = data[0][l1][synthdata->cyclesize - 1];
 	dspliceval = spliceval - data[0][l1][synthdata->cyclesize - 2];
 	clov_sofar= fabs(creal(modoutbackward[clomatch_index])-spliceval );
-	for (l2 = searchstart; 
-	     l2 < (searchstart + synthdata->cyclesize); 
-	     l2++) 
+	for (l2 = searchstart;
+	     l2 < (searchstart + synthdata->cyclesize);
+	     l2++)
 	  {
 	    tval = creal (modoutbackward[l2]);
 	    dtval = tval - creal (modoutbackward [l2-1]);
-	    if ( 
+	    if (
 		((fabs (tval - spliceval )) < clov_sofar )
 		&& ((dtval * dspliceval ) >= 0)
 		 )
@@ -436,28 +436,28 @@ void M_vocoder::generateCycle() {
 		// fprintf (stderr, "%f %d ", clov_sofar, clomatch_index);
 	      }
 	  };
-	//  fprintf (stderr, "%d %f %f ", 
+	//  fprintf (stderr, "%d %f %f ",
 	//      clomatch_index, clov_sofar, clodv_sofar);
 	
 	//   What's our residual error, so that we can splice this
 	//   with minimal "click"?
 	residual = + spliceval - creal( modoutbackward[clomatch_index]);
-       
-	//  Move our wave, with the best match so far established, to 
+
+	//  Move our wave, with the best match so far established, to
 	//   the output buffer area.
 	for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
 	  data[0][l1][l2] = creal ( modoutbackward [ clomatch_index + l2])
-	    + ((1.0 - (float(l2) / float(synthdata->cyclesize))) * residual); 
+	    + ((1.0 - (float(l2) / float(synthdata->cyclesize))) * residual);
 	};
 
       };
 
     // fprintf (stderr, "%f %d  \n", residual, clomatch_index);
-    
+
     //     Now it's time to do the carrier.
     //
     for (l2 = 0; l2 < fftsize - synthdata->cyclesize; l2++) {
-      carrbuf [l1][l2] = carrbuf [l1][l2 + synthdata->cyclesize]; 
+      carrbuf [l1][l2] = carrbuf [l1][l2 + synthdata->cyclesize];
     }
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       carrbuf [l1][l2 + fftsize - synthdata->cyclesize] = inCarrier[l1][l2];
@@ -473,12 +473,12 @@ void M_vocoder::generateCycle() {
       carrinbackward[l2] = carroutforward[l2];
     };
 
-    //   carroutforward now has the carrier, 
+    //   carroutforward now has the carrier,
 
     //      modoutforward now has the modulator.
     //   Group the modulator into channels, and multipy the channels
     //   over the carrier.
-    
+
     int localchannels;
     localchannels = channels + vcchannels * inChannels[l1][0];
     if (localchannels < 1) localchannels = 1;
@@ -486,7 +486,7 @@ void M_vocoder::generateCycle() {
     for (l2 = 0; l2 < (unsigned) fftsize; l2++) {
       modmap[l2] = 0;
       //       initial conditions...
-      if (l2 == 0) 
+      if (l2 == 0)
 	for (i = 0; i < channels; i++)
 	  modmap[l2] += cabs (modoutforward[l2 + i]);
       else
@@ -494,7 +494,7 @@ void M_vocoder::generateCycle() {
 
       //    add the heads, subtract the tails
       i = l2 + channels;
-      if (l2 < (unsigned)fftsize - 2) 
+      if (l2 < (unsigned)fftsize - 2)
 	modmap[l2] += cabs( modoutforward [i] );
       i = l2 - channels;
       if (l2 >= channels)
@@ -505,14 +505,14 @@ void M_vocoder::generateCycle() {
     for (l2 = 0; l2 < (unsigned) fftsize; l2++)
       modmap[l2] = modmap[l2] / localchannels;
 
-    //   Do attack/release 
+    //   Do attack/release
     for (l2 = 0; l2 < (unsigned) fftsize; l2++) {
       if (modmap [l2] > armodmap[l2])
 	armodmap [l2] += (1 - attack) * (modmap[l2] - armodmap[l2]);
       if (modmap [l2] < armodmap[l2])
 	armodmap [l2] += (1 - release) * (modmap[l2] - armodmap[l2]);
     }
- 
+
     //   multiply the carrier by the modulation map.
     for (l2 = 0; l2 < (unsigned) fftsize; l2++) {
       carrinbackward[l2] = carroutforward[l2] * armodmap [l2];
@@ -524,7 +524,7 @@ void M_vocoder::generateCycle() {
     int offset;
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       offset = l2 + (fftsize/2) - (synthdata->cyclesize / 2);
-      data[1][l1][l2]= 
+      data[1][l1][l2]=
 	(creal(
 	       carroutbackward[offset]/window[offset]))
 	 / (fftsize * 100) ;

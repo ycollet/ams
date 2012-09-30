@@ -1,4 +1,4 @@
-/* 
+/*
   V8 sequencer - derived from m_vcdelay.cpp
 
   Copyright (C) 2011 Bill Yerazunis <yerazunis@yahoo.com>
@@ -24,8 +24,8 @@
 #include <math.h>
 #include <qwidget.h>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 
 
@@ -41,7 +41,7 @@
 #include "m_v8sequencer.h"
 #include "port.h"
 
-M_v8sequencer::M_v8sequencer(QWidget* parent) 
+M_v8sequencer::M_v8sequencer(QWidget* parent)
   : Module(M_type_v8sequencer, 18, parent, tr("V8 Seq"))
 {
   QString qs;
@@ -68,29 +68,29 @@ M_v8sequencer::M_v8sequencer(QWidget* parent)
   port_M_s7 = new Port(tr("S 7"), PORT_IN, 17, this);
 
   cv.out_off = 35;
-  port_out0 = new Port(tr("Out 0"), PORT_OUT, 0, this);          
-  port_out1 = new Port(tr("Out 1"), PORT_OUT, 1, this);          
-  port_out2 = new Port(tr("Out 2"), PORT_OUT, 2, this);          
-  port_out3 = new Port(tr("Out 3"), PORT_OUT, 3, this);          
-  port_seqstate = new Port(tr("A State"), PORT_OUT, 4, this);          
-  port_seqtrig = new Port(tr("A Trig"), PORT_OUT, 5, this);          
-  port_aux0 = new Port(tr("Aux 0"), PORT_OUT, 6, this);          
-  port_aux1 = new Port(tr("Aux 1"), PORT_OUT, 7, this);          
-  port_gate = new Port(tr("Gate"), PORT_OUT, 8, this);          
-  port_pulse = new Port(tr("Pulse"), PORT_OUT, 9, this);          
-  port_state0 = new Port(tr("S 0"), PORT_OUT, 10, this);          
-  port_state1 = new Port(tr("S 1"), PORT_OUT, 11, this);          
-  port_state2 = new Port(tr("S 2"), PORT_OUT, 12, this);          
-  port_state3 = new Port(tr("S 3"), PORT_OUT, 13, this);          
-  port_state4 = new Port(tr("S 4"), PORT_OUT, 14, this);          
-  port_state5 = new Port(tr("S 5"), PORT_OUT, 15, this);          
-  port_state6 = new Port(tr("S 6"), PORT_OUT, 16, this);          
-  port_state7 = new Port(tr("S 7"), PORT_OUT, 17, this);          
+  port_out0 = new Port(tr("Out 0"), PORT_OUT, 0, this);
+  port_out1 = new Port(tr("Out 1"), PORT_OUT, 1, this);
+  port_out2 = new Port(tr("Out 2"), PORT_OUT, 2, this);
+  port_out3 = new Port(tr("Out 3"), PORT_OUT, 3, this);
+  port_seqstate = new Port(tr("A State"), PORT_OUT, 4, this);
+  port_seqtrig = new Port(tr("A Trig"), PORT_OUT, 5, this);
+  port_aux0 = new Port(tr("Aux 0"), PORT_OUT, 6, this);
+  port_aux1 = new Port(tr("Aux 1"), PORT_OUT, 7, this);
+  port_gate = new Port(tr("Gate"), PORT_OUT, 8, this);
+  port_pulse = new Port(tr("Pulse"), PORT_OUT, 9, this);
+  port_state0 = new Port(tr("S 0"), PORT_OUT, 10, this);
+  port_state1 = new Port(tr("S 1"), PORT_OUT, 11, this);
+  port_state2 = new Port(tr("S 2"), PORT_OUT, 12, this);
+  port_state3 = new Port(tr("S 3"), PORT_OUT, 13, this);
+  port_state4 = new Port(tr("S 4"), PORT_OUT, 14, this);
+  port_state5 = new Port(tr("S 5"), PORT_OUT, 15, this);
+  port_state6 = new Port(tr("S 6"), PORT_OUT, 16, this);
+  port_state7 = new Port(tr("S 7"), PORT_OUT, 17, this);
 
   //    Now the joy of setting up a config screen.
   //    There is one line per sequencer state
   //
-  //    
+  //
   QHBoxLayout *hbox;
   int i;
   configDialog->setAddStretch(1);
@@ -99,7 +99,7 @@ M_v8sequencer::M_v8sequencer(QWidget* parent)
   InternalExternal << tr("Use step/direction and forward/backward");
   InternalExternal << tr("Use external analog input on StateIn input");
   int_ext_mode = 0;
-  configDialog->addComboBox (tr("Internal vs. External State Control"), 
+  configDialog->addComboBox (tr("Internal vs. External State Control"),
 				int_ext_mode, InternalExternal, hbox);
   maxstate = 8;
   configDialog->addIntSlider (tr("Max States"), maxstate, 1, 64, hbox);
@@ -145,7 +145,7 @@ M_v8sequencer::M_v8sequencer(QWidget* parent)
   configDialog->addComboBox(tr("Aux 1 offset"), aux1offset, AuxOffsets, hbox);
   aux1map = 0;
   configDialog->addComboBox(tr("Aux 1 mapping"), aux1map, AuxBehaviors, hbox);
-  
+
   MidiSlider *slider;
   QStringList StateActions;
   StateActions << tr("Normal");
@@ -153,14 +153,14 @@ M_v8sequencer::M_v8sequencer(QWidget* parent)
   StateActions << tr("Pause");
   StateActions << tr("Reset");
   for (i = 0; i < MODULE_V8SEQUENCER_STATES; i++)
-    {      
+    {
       hbox = configDialog->addHBox();
       qs = tr ("Step S%1").arg(i);
       stateaction[i] = 0;\
       configDialog->addComboBox(qs, stateaction[i], StateActions, hbox);
       qs = tr ("Out 0 S%1").arg(i);
       out0[i] = 0.0;
-      slider = configDialog->addSlider 
+      slider = configDialog->addSlider
 	(qs, out0[i], -2, 2, false, hbox);
       slider->setMinimumWidth (151);
       qs = tr ("Out 1 S%1").arg(i);
@@ -196,7 +196,7 @@ void M_v8sequencer::generateCycle() {
   //   For referencing into the output data array "data[l0][l1][l2]"
   //  int l0 // l0 is the output port number
   int l1;    //  l1 is for cyclesize
-  unsigned int l2;  //  l2 is for polyphony 
+  unsigned int l2;  //  l2 is for polyphony
 
   int statepause;  //   are we in a "pause" state?
 
@@ -244,7 +244,7 @@ void M_v8sequencer::generateCycle() {
 	//    level-sensitive on seqtrig, and the S(n) states are
 	//    state-sensitive, and highest state number wins.
 	//
-	//    Further magic: if we're in "external" mode, then 
+	//    Further magic: if we're in "external" mode, then
 	//    we do _nothing_ with respect to state except bound it to
 	//    between 0 and maxstate.  In "internal" mode, the first
 	//    sequencer in the chain (the one with myfirststate == 0)
@@ -262,33 +262,33 @@ void M_v8sequencer::generateCycle() {
 	  {
 
 	    //   Do "normal (that is, Moog 960 style) motion.
-	    //    Note that step and direction are only meaningful if 
+	    //    Note that step and direction are only meaningful if
 	    //     we are the first sequencer in the chain; otherwise S/D
 	    //      and F/B are disregarded.
 	    //
 	    //    Past that, we _also_ disregard S/D/F/B
-	    //     if we're in a "pause" state.  In pause, we obey only 
+	    //     if we're in a "pause" state.  In pause, we obey only
 	    //      "jump to" inputs.
 	    //
-	    //   if seqtrig > 0 (i.e. connected and active) then the 
+	    //   if seqtrig > 0 (i.e. connected and active) then the
 	    //     the first sequencer should switch to it, because that's
 	    //      an update.
-	    //   This leaves out how to relay pause/reset.  Pause is simple 
+	    //   This leaves out how to relay pause/reset.  Pause is simple
 	    //    enough... seqtrig < 0 should inhibit SDFB, and all sequencers
 	    //     including the first should accept and pass thru seqstate
 	    //      unmodified (unless they've got Jump-To-State input set,
 	    //       in which case seqtrig > 0 and seqstate = state).
-	    //   Reset on the other hand is handled by seqtrig > 0 and 
-	    //     seqstate = -1 (= -1 because we normalize state to 
-	    //      the range [-1.0, 1.0] and thus state 0 is always -1.0 
+	    //   Reset on the other hand is handled by seqtrig > 0 and
+	    //     seqstate = -1 (= -1 because we normalize state to
+	    //      the range [-1.0, 1.0] and thus state 0 is always -1.0
 	    //   Note that this means you can have the SEQSTATE direct-access
 	    //    functionality OR the Jump-to functionality, but not both
-	    //     without some other trickery.  
-	    
-	    //   Step/Direction and Forward/Backward for secondary 
-	    //    sequencers is ignored.   
+	    //     without some other trickery.
+	
+	    //   Step/Direction and Forward/Backward for secondary
+	    //    sequencers is ignored.
 	    if (myfirststate > 0.0)
-	      {    
+	      {
 		state[l1] = int ((m_seqstate[l1][l2]+1.0)*maxstate*0.5);
 	      }
 	    else
@@ -303,17 +303,17 @@ void M_v8sequencer::generateCycle() {
 		    if ((oldstep[l1] <= 0 ) && (m_step[l1][l2] > 0))
 		      {
 			if (m_direction[l1][l2] < 0)
-			  { state[l1]--;} 
-			else 
+			  { state[l1]--;}
+			else
 			  { state[l1]++;};
 		      };
-		    
+		
 		    //   backward/forward
-		    if ((oldforward[l1] <= 0.0) && (m_forward[l1][l2] > 0.0) ) 
+		    if ((oldforward[l1] <= 0.0) && (m_forward[l1][l2] > 0.0) )
 		      {
 			state[l1]++;
 		      };
-		    
+		
 		    if ((oldbackward[l1] <= 0.0) && (m_backward[l1][l2] > 0.0))
 		      {
 			state[l1]--;
@@ -323,14 +323,14 @@ void M_v8sequencer::generateCycle() {
 		  {    //  seqtrig > 0 means load state, one way or another.
 		    if (m_seqtrig [l1][l2] > 0)   //  load seqstate
 		      state[l1] = int((m_seqstate[l1][l2]+1.0)*maxstate*0.5);
-		  };	    
+		  };	
 		oldstep[l1] = m_step[l1][l2];
 		oldforward[l1] = m_forward[l1][l2];
 		oldbackward[l1] = m_backward[l1][l2];
 	      }
 	  }
 
-	//   Does our current state do anything "funny", like reset, 
+	//   Does our current state do anything "funny", like reset,
 	//   pause, etc?
 	statepause = m_seqtrig[l1][l2];
 	if (state[l1]-myfirststate > -0.5 && state[l1]-myfirststate < 7.5)
@@ -339,7 +339,7 @@ void M_v8sequencer::generateCycle() {
 	  case 0:    //  normal
 	    {
 	      statepause = 0;
-	      break;  
+	      break;
 	    }
 	  case 1:   //   skip
 	    {
@@ -361,9 +361,9 @@ void M_v8sequencer::generateCycle() {
 	    }
 	  }
 
-	if (state[l1] >= maxstate - 0.5) 
+	if (state[l1] >= maxstate - 0.5)
 	  state[l1] = 0;
-	if (state[l1] < -0.5) 
+	if (state[l1] < -0.5)
 	  state[l1] = maxstate-1;
 	
 	//    Direct state setting - overrides everything else assuming
@@ -379,13 +379,13 @@ void M_v8sequencer::generateCycle() {
 	if (m_s7[l1][l2] > 0) state[l1] = 7 + myfirststate;	
 
 	//    Firewall against impossibility...
-	if (state[l1] >= maxstate) 
+	if (state[l1] >= maxstate)
 	  state[l1] = maxstate - 1;
 	if (state[l1] < 0) state[l1] = 0;
 	
 	//     Global State is now set.  Determine our outputs.
 	//
-	//   state and trig - note we always pass accurate state output; 
+	//   state and trig - note we always pass accurate state output;
 	//    but that trig has three states:
 	//     > 0 == forced load in effect, from jump-to-S inputs
 	//     = 0 == obey S/D, F/B.
@@ -395,21 +395,21 @@ void M_v8sequencer::generateCycle() {
 
 	data[5][l1][l2] = statepause;
 		
-	//    Data 0...7 are out1, 2, 3, 4, aux1, 2, state, trig 
+	//    Data 0...7 are out1, 2, 3, 4, aux1, 2, state, trig
 	//
-	//   Deal with daisychaining 
-	if ((state[l1] - myfirststate) > -0.5 
+	//   Deal with daisychaining
+	if ((state[l1] - myfirststate) > -0.5
 	    && (state[l1] - myfirststate) < 7.5 )
 	  {   //  yes, we're the active subblock
 	    data[0][l1][l2] = oldout0[l1] = out0[state[l1] - myfirststate];
 	    data[1][l1][l2] = oldout1[l1] = out1[state[l1] - myfirststate];
-	    if (sticky2[state[l1] - myfirststate]) 
+	    if (sticky2[state[l1] - myfirststate])
 	      {
 		data[2][l1][l2] = oldout2[l1] = out2[state[l1] - myfirststate];
 	      }
 	    else
 	      data[2][l1][l2] = oldout2[l1];
-	    if (sticky3[state[l1] - myfirststate]) 
+	    if (sticky3[state[l1] - myfirststate])
 	      {
 		data[3][l1][l2] = oldout3[l1] = out3[state[l1] - myfirststate];
 	      }
@@ -423,9 +423,9 @@ void M_v8sequencer::generateCycle() {
 	    data[2][l1][l2] = oldout2[l1] = m_in2[l1][l2];
 	    data[3][l1][l2] = oldout3[l1] = m_in3[l1][l2];
 	  };
-	  
-	//    
-	//   aux0 and aux1 - 
+	
+	//
+	//   aux0 and aux1 -
 	int aux0state, aux1state;
 	float aux0lcl = 0;
 	float aux1lcl = 0;
@@ -468,8 +468,8 @@ void M_v8sequencer::generateCycle() {
 	data[7][l1][l2] = aux1lcl;   // aux1
 
 	//    Gate out - did we take a step?
-	data[8][l1][l2] = m_step[1l][l2] 
-	  + m_forward[l1][l2] 
+	data[8][l1][l2] = m_step[1l][l2]
+	  + m_forward[l1][l2]
 	  + m_backward[l1][l2];
 
 	//    pulse out - did we change state?

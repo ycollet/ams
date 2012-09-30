@@ -20,7 +20,7 @@ TextEdit::TextEdit(QWidget* parent, const char *name)
 //  synthdata->incTextEditCount();
 //  textEditID = synthdata->getTextEditID();
 //  synthdata->textEditList.append(this);
-  textEditID = 0;  // TODO assign this 
+  textEditID = 0;  // TODO assign this
   setPalette(QPalette(QColor(77, 70, 64), QColor(77, 70, 64)));
   setGeometry(TEXTEDIT_NEW_X, TEXTEDIT_NEW_Y, TEXTEDIT_DEFAULT_WIDTH, TEXTEDIT_DEFAULT_HEIGHT);
   sizeDrag = false;
@@ -33,11 +33,11 @@ TextEdit::~TextEdit() {
 }
 
 void TextEdit::paintEvent(QPaintEvent *) {
-  
+
   QPainter p(this);
   int l1;
 
-  for (l1 = 0; l1 < 4; l1++) { 
+  for (l1 = 0; l1 < 4; l1++) {
     p.setPen(QColor(195 + 20*l1, 195 + 20*l1, 195 + 20*l1));
     p.drawRect(l1, l1, width()-2*l1, height()-2*l1);
   }
@@ -54,7 +54,7 @@ void TextEdit::mousePressEvent(QMouseEvent *ev)
             ev->ignore();
             break;
     }
-}  
+}
 
 void TextEdit::mouseReleaseEvent(QMouseEvent *ev)
 {
@@ -66,18 +66,18 @@ void TextEdit::mouseReleaseEvent(QMouseEvent *ev)
             ev->ignore();
             break;
     }
-}  
-   
+}
+
 void TextEdit::mouseMoveEvent(QMouseEvent *ev)
 {
-    if (sizeDrag) {   
-        emit sizeDragged(ev->pos());  
+    if (sizeDrag) {
+        emit sizeDragged(ev->pos());
         ev->accept();
     }
     else
         ev->ignore();
-}  
-            
+}
+
 void TextEdit::removeThisTextEdit() {
 
   emit removeTextEdit();
