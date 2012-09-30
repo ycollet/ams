@@ -20,8 +20,8 @@ FSlider 3 2 8192 0 0 16384 1
 ComboBox 3 0 1 1
 Comment 0 0 218 222 324 218
 #PARA# 0 0 0
-This simple patch demonstrates the Note / Velocity mode of the MIDI Out module. If the Trigger input is not connected, a new note event is triggered whenever the input signal changes. The input of In 1 port now determines the velocity of the note events. The Note events are sent to the first readable MIDI port of AlsaModularSynth.  
+This simple patch demonstrates the Note / Velocity mode of the MIDI Out module. If the Trigger input is not connected, a new note event is triggered whenever the input signal changes. The input of In 1 port now determines the velocity of the note events. The Note events are sent to the first readable MIDI port of AlsaModularSynth.
 #ARAP#
 #PARA# 0 0 1
-The dummy PCM Out module is just there to stabilize timing. 
+The dummy PCM Out module is just there to stabilize timing.
 #ARAP#

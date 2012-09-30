@@ -107,140 +107,26 @@ FSlider 46 1 7611 0 0 16384 1
 FSMIDI 46 1 10 0 3
 Comment 0 0 198 152 327 239
 #PARA# 0 0 0
-This patch has been contributed by Christoph Eckert.  
+This patch has been contributed by Christoph Eckert.
 #ARAP#
 #PARA# 0 0 1
  
 #ARAP#
 #PARA# 0 0 2
-In addition to Pitchbender and ModWheel, the following MIDI bindings exist:  
+In addition to Pitchbender and ModWheel, the following MIDI bindings exist:
 #ARAP#
 #PARA# 0 0 3
-CC02 and CC03 Valve Saturation  
+CC02 and CC03 Valve Saturation
 #ARAP#
 #PARA# 0 0 4
-CC04 Detune  
+CC04 Detune
 #ARAP#
 #PARA# 0 0 5
-CC05 Crossfade between Sine Triangle  
+CC05 Crossfade between Sine Triangle
 #ARAP#
 #PARA# 0 0 6
-CC06 Glide on/off (switch)  
+CC06 Glide on/off (switch)
 #ARAP#
 #PARA# 0 0 7
-CC07 Reverb  
-#ARAP#
-#PARA# 0 0 8
- 
-#ARAP#
-#PARA# 0 0 9
- 
-#ARAP#
-#PARA# 0 0 10
- 
-#ARAP#
-#PARA# 0 0 11
- 
-#ARAP#
-#PARA# 0 0 12
- 
-#ARAP#
-#PARA# 0 0 13
- 
-#ARAP#
-#PARA# 0 0 14
- 
-#ARAP#
-#PARA# 0 0 15
- 
-#ARAP#
-#PARA# 0 0 16
- 
-#ARAP#
-#PARA# 0 0 17
- 
-#ARAP#
-#PARA# 0 0 18
- 
-#ARAP#
-#PARA# 0 0 19
- 
-#ARAP#
-#PARA# 0 0 20
- 
-#ARAP#
-#PARA# 0 0 21
- 
-#ARAP#
-#PARA# 0 0 22
- 
-#ARAP#
-#PARA# 0 0 23
- 
-#ARAP#
-#PARA# 0 0 24
- 
-#ARAP#
-#PARA# 0 0 25
- 
-#ARAP#
-#PARA# 0 0 26
- 
-#ARAP#
-#PARA# 0 0 27
- 
-#ARAP#
-#PARA# 0 0 28
- 
-#ARAP#
-#PARA# 0 0 29
- 
-#ARAP#
-#PARA# 0 0 30
- 
-#ARAP#
-#PARA# 0 0 31
- 
-#ARAP#
-#PARA# 0 0 32
- 
-#ARAP#
-#PARA# 0 0 33
- 
-#ARAP#
-#PARA# 0 0 34
- 
-#ARAP#
-#PARA# 0 0 35
- 
-#ARAP#
-#PARA# 0 0 36
- 
-#ARAP#
-#PARA# 0 0 37
- 
-#ARAP#
-#PARA# 0 0 38
- 
-#ARAP#
-#PARA# 0 0 39
- 
-#ARAP#
-#PARA# 0 0 40
- 
-#ARAP#
-#PARA# 0 0 41
- 
-#ARAP#
-#PARA# 0 0 42
- 
-#ARAP#
-#PARA# 0 0 43
- 
-#ARAP#
-#PARA# 0 0 44
- 
-#ARAP#
-#PARA# 0 0 45
- 
+CC07 Reverb
 #ARAP#

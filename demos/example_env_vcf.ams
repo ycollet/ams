@@ -59,53 +59,11 @@ ISlider 9 0 24 1
 ComboBox 9 0 0 1
 Comment 0 0 386 318 306 182
 #PARA# 0 0 0
-Here, both the pulse width and the frequency of the VCO wave are modulated by a LFO. The inverse envelope modifies the cutoff frequency of the VCF. You can reduce (or stop) this effect with the "Exp. FM Gain" slider of the VCF.  
+Here, both the pulse width and the frequency of the VCO wave are modulated by a LFO. The inverse envelope modifies the cutoff frequency of the VCF. You can reduce (or stop) this effect with the "Exp. FM Gain" slider of the VCF.
 #ARAP#
 #PARA# 0 0 1
  
 #ARAP#
 #PARA# 0 0 2
-Try out the pitchbender and modulation wheels!  
-#ARAP#
-#PARA# 0 0 3
- 
-#ARAP#
-#PARA# 0 0 4
- 
-#ARAP#
-#PARA# 0 0 5
- 
-#ARAP#
-#PARA# 0 0 6
- 
-#ARAP#
-#PARA# 0 0 7
- 
-#ARAP#
-#PARA# 0 0 8
- 
-#ARAP#
-#PARA# 0 0 9
- 
-#ARAP#
-#PARA# 0 0 10
- 
-#ARAP#
-#PARA# 0 0 11
- 
-#ARAP#
-#PARA# 0 0 12
- 
-#ARAP#
-#PARA# 0 0 13
- 
-#ARAP#
-#PARA# 0 0 14
- 
-#ARAP#
-#PARA# 0 0 15
- 
-#ARAP#
-#PARA# 0 0 16
- 
+Try out the pitchbender and modulation wheels!
 #ARAP#

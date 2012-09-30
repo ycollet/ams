@@ -57,12 +57,3 @@ Comment 0 0 372 288 319 213
 #PARA# 0 0 0
 This patch demonstrates frequency modulation (FM) synthesis which is very flexible and powerful. Most important parameters are the ratio of the frequencies involved and the strength of the modulation. You can experiment with the "Harmonic" parameter of the modulating VCO and the "Lin. FM Gain" parameter of the modulated VCO. The latter parameter has been bound to the modulation wheel.  
 #ARAP#
-#PARA# 0 0 1
- 
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
-#ARAP#

@@ -102,14 +102,8 @@ ISlider 12 0 24 1
 ComboBox 12 0 0 1
 Comment 0 0 118 32 200 170
 #PARA# 0 0 0
-This patch demonstrates additive synthesis. The harmonics of the sound to be generated are weighted in the mixer.  
+This patch demonstrates additive synthesis. The harmonics of the sound to be generated are weighted in the mixer.
 #ARAP#
 #PARA# 0 0 1
-Open the mixer dialog and try out the modulation wheel! 
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
+Open the mixer dialog and try out the modulation wheel!
 #ARAP#

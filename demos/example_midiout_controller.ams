@@ -176,8 +176,8 @@ FSlider 12 0 -35966 1 -75451 75451 1
 FSlider 12 1 0 0 0 102940 1
 Comment 0 0 62 133 396 216
 #PARA# 0 0 0
-This patch demonstrates the MIDI controller mode of the MIDI Out module. If the Trigger input is not connected, controller events are emitted whenever the input signal of In 0 or In 1 changes. 
+This patch demonstrates the MIDI controller mode of the MIDI Out module. If the Trigger input is not connected, controller events are emitted whenever the input signal of In 0 or In 1 changes.
 #ARAP#
 #PARA# 0 0 1
-In this patch the controller events sent by the midiout module are bound to the Attack and Decay parameters of the envelope. If you  connect the two readable MIDI ports of AlsaModularSynth using e.g. the kaconnect patchbay, you can see the envelope moving. 
+In this patch the controller events sent by the midiout module are bound to the Attack and Decay parameters of the envelope. If you  connect the two readable MIDI ports of AlsaModularSynth using e.g. the kaconnect patchbay, you can see the envelope moving.
 #ARAP#

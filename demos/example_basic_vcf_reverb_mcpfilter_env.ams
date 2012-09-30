@@ -83,11 +83,5 @@ Comment 0 0 257 327 302 193
 This patch demonstrates the excellent low pass filter by Fons Adriaensen. 
 #ARAP#
 #PARA# 0 0 1
-ModWheel is bound to filter cutoff. Try what happens when you  modify  
-#ARAP#
-#PARA# 0 0 2
-the filter resonance. 
-#ARAP#
-#PARA# 0 0 3
- 
+ModWheel is bound to filter cutoff. Try what happens when you modify the filter resonance. 
 #ARAP#

@@ -20,7 +20,7 @@ FSlider 4 1 0 0 0 16384 1
 FSlider 4 2 0 0 0 102940 1
 Comment 0 0 327 244 200 170
 #PARA# 0 0 0
-Delay time is modulated by the LFO.  
+Delay time is modulated by the LFO.
 #ARAP#
 #PARA# 0 0 1
 

@@ -116,14 +116,8 @@ FSlider 26 1 16384 0 0 32768 1
 FSlider 26 2 20463 0 0 32768 1
 Comment 0 0 211 207 317 181
 #PARA# 0 0 0
-This patch demonstrates the excellent low pass filter by Fons Adriaensen. 
+This patch demonstrates the excellent low pass filter by Fons Adriaensen.
 #ARAP#
 #PARA# 0 0 1
-ModWheel is bound to filter cutoff. Try what happens when you  modify  
-#ARAP#
-#PARA# 0 0 2
-the filter resonance. 
-#ARAP#
-#PARA# 0 0 3
- 
+ModWheel is bound to filter cutoff. Try what happens when you modify the filter resonance.
 #ARAP#

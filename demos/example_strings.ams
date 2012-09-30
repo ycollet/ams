@@ -99,14 +99,5 @@ FSlider 22 5 0 0 -245760 245760 1
 LSlider 22 0 3 1
 Comment 0 0 31 290 200 170
 #PARA# 0 0 0
-This patch is based on the article "Synth Secrets, Synthesizing Strings" by Gordon Reid, published in Sound on Sound, Vol. 18(4), Feb. 2003  
-#ARAP#
-#PARA# 0 0 1
- 
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
+This patch is based on the article "Synth Secrets, Synthesizing Strings" by Gordon Reid, published in Sound on Sound, Vol. 18(4), Feb. 2003
 #ARAP#

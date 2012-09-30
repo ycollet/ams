@@ -87,14 +87,8 @@ FSlider 28 0 81920 0 0 163840 1
 FSlider 28 1 8192 0 0 16384 1
 Comment 0 0 15 326 317 180
 #PARA# 0 0 0
-This patch is based on the JungleBirds. It uses random voltages to automatically play the sound. 
+This patch is based on the JungleBirds. It uses random voltages to automatically play the sound.
 #ARAP#
 #PARA# 0 0 1
-If you connect the readable MIDI ports of AlsaModularSynth with its writeable port (using e.g. Kaconnect), pitch and envelope will change. 
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
+If you connect the readable MIDI ports of AlsaModularSynth with its writeable port (using e.g. Kaconnect), pitch and envelope will change.
 #ARAP#

@@ -39,14 +39,8 @@ FSlider 7 2 8192 0 0 16384 1
 ComboBox 7 0 1 1
 Comment 0 0 276 279 200 170
 #PARA# 0 0 0
-This patch demonstrates the voltage controlled switch. It's a silent patch where the scopes show how it works.  
+This patch demonstrates the voltage controlled switch. It's a silent patch where the scopes show how it works.
 #ARAP#
 #PARA# 0 0 1
-The PCM Out is just there to stabilize timing.  
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
+The PCM Out is just there to stabilize timing.
 #ARAP#

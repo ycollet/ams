@@ -59,17 +59,8 @@ FSlider 8 3 9163 0 0 32768 1
 FSlider 8 4 16384 0 0 32768 1
 Comment 0 0 6 319 263 179
 #PARA# 0 0 0
-The sample & hold module is used as in a patch found in the book "Vintage Synthesizers" by Mark Vail.  
+The sample & hold module is used as in a patch found in the book "Vintage Synthesizers" by Mark Vail.
 #ARAP#
 #PARA# 0 0 1
-The best burst noise sounds are produced at high pitches on the keyboard. You can experiment with the parameters "In1" and "In2" of the VCA. Try what happens if you connect the output of the Sample & Hold to the Exp. FM input of the VCF and turn the Exp. FM Gain up.  
-#ARAP#
-#PARA# 0 0 2
- 
-#ARAP#
-#PARA# 0 0 3
- 
-#ARAP#
-#PARA# 0 0 4
- 
+The best burst noise sounds are produced at high pitches on the keyboard. You can experiment with the parameters "In1" and "In2" of the VCA. Try what happens if you connect the output of the Sample & Hold to the Exp. FM input of the VCF and turn the Exp. FM Gain up.
 #ARAP#
