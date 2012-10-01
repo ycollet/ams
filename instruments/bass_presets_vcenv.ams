@@ -127,11 +127,11 @@ Tab "Filter"
 Tab "Envelopes"
 Tab "Reverb"
 Frame "Oscillators" 0
-Parameter "Octave ID 14" 14 0 
+Parameter "Octave ID 14" 14 0
 Parameter "Tune ID 14" 14 1 0 8192 0
-Parameter "Octave ID 15" 15 0 
+Parameter "Octave ID 15" 15 0
 Parameter "Tune ID 15" 15 1 0 8192 0
-Parameter "Octave ID 5" 5 0 
+Parameter "Octave ID 5" 5 0
 Parameter "Tune ID 5" 5 1 0 8192 0
 Frame "Mixer" 1
 Parameter "Volume 0 ID 16" 16 1 0 32768 0
@@ -149,13 +149,13 @@ Parameter "Attack" 25 0 0 16384 0
 Parameter "Decay" 25 1 0 16384 0
 Parameter "Sustain" 25 2 0 16384 0
 Parameter "Release" 25 3 0 16384 0
-Parameter "Time Scale" 25 8 
+Parameter "Time Scale" 25 8
 Frame "Filter Envelope" 3
 Parameter "Attack" 24 0 0 16384 0
 Parameter "Decay" 24 1 0 16384 0
 Parameter "Sustain" 24 2 0 16384 0
 Parameter "Release" 24 3 0 16384 0
-Parameter "Time Scale" 24 8 
+Parameter "Time Scale" 24 8
 Frame "Reverb" 4
 Parameter "Dry sound" 26 4 -1310720 0 0
 Parameter "Reflections ID 26" 26 5 -1310720 0 0

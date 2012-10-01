@@ -172,8 +172,7 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
   colorModuleBackground = QColor(COLOR_MODULE_BG);
   colorModuleBorder = QColor(195, 195, 195);
   colorModuleFont = QColor(255, 255, 255);
-  colorPortFont1 = QColor(255, 255, 255);
-  colorPortFont2 = QColor(255, 240, 140);
+  colorPortFont = QColor(255, 255, 255);
   colorCable = QColor(180, 180, 180);
   colorJack = QColor(250, 200, 50);
 

@@ -139,14 +139,14 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
                 if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
                     Port *ctrl_in_port = new Port(ladspa_dsc->PortNames[l1],
                             PORT_IN, in_port_list.count() +
-                            in_ctrl_port_list.count(), this, 1);
+                            in_ctrl_port_list.count(), this);
                     in_ctrl_port_list.append(ctrl_in_port);
                     // fprintf(stderr, "input: %s\n", ladspa_dsc->PortNames[l1]);
                 }
                 if (LADSPA_IS_PORT_OUTPUT(ladspa_dsc->PortDescriptors[l1])) {
                     Port *ctrl_out_port = new Port(ladspa_dsc->PortNames[l1],
                             PORT_OUT, out_port_list.count() +
-                            out_ctrl_port_list.count(), this, 1);
+                            out_ctrl_port_list.count(), this);
                     out_ctrl_port_list.append(ctrl_out_port);
                     if (LADSPA_IS_HINT_SAMPLE_RATE(
                                 ladspa_dsc->PortRangeHints[l1].HintDescriptor)) {

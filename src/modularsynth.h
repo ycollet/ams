@@ -103,12 +103,14 @@ public:
     QColor getModuleBackgroundColor() const;
     QColor getModuleBorderColor() const;
     QColor getModuleFontColor() const;
+    QColor getPortFontColor() const;
     QColor getCableColor() const;
     QColor getJackColor() const;
     void setBackgroundColor(QColor color);
     void setModuleBackgroundColor(QColor color);
     void setModuleBorderColor(QColor color);
     void setModuleFontColor(QColor color);
+    void setPortFontColor(QColor color);
     void setCableColor(QColor color);
     void setJackColor(QColor color);
     int getMidiControllerMode();

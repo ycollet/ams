@@ -189,11 +189,11 @@ CheckBox 42 0 0 1
 Tab "Oscillators / LFO / Mixer / Phaser"
 Tab "Filter / Envelopes / Reverb"
 Frame "Oscillators" 0
-Parameter "VCO 1 Octave" 10 0 
+Parameter "VCO 1 Octave" 10 0
 Parameter "VCO 1 Tune" 10 1 0 545 0
-Parameter "VCO 2 Octave" 8 0 
+Parameter "VCO 2 Octave" 8 0
 Parameter "VCO 2 Tune" 8 1 0 545 0
-Parameter "VCO 3 Octave" 9 0 
+Parameter "VCO 3 Octave" 9 0
 Parameter "VCO 3 Tune" 9 1 0 545 0
 Frame "LFO" 0
 Parameter "Frequency" 26 0 -75451 75448 1
@@ -221,7 +221,7 @@ Parameter "Attack" 2 0 0 16384 0
 Parameter "Decay" 2 1 0 16384 0
 Parameter "Sustain" 2 2 0 16384 0
 Parameter "Release" 2 3 0 16384 0
-Parameter "Time Scale" 2 8 
+Parameter "Time Scale" 2 8
 Parameter "Envelope to Filter Cutoff" 13 1 0 32768 0
 Parameter "Inverse Envelope to Filter Cutoff" 13 3 0 32768 0
 Parameter "Envelope to Resonance" 28 1 0 16384 0
@@ -230,7 +230,7 @@ Parameter "Attack" 3 0 0 16384 0
 Parameter "Decay" 3 1 0 16384 0
 Parameter "Sustain" 3 2 0 16384 0
 Parameter "Release" 3 3 0 16384 0
-Parameter "Time Scale" 3 8 
+Parameter "Time Scale" 3 8
 Frame "Reverb" 1
 Parameter "Early Reflections" 21 5 -1310720 0 0
 Parameter "Reverb Tail" 21 6 -1310720 0 0
@@ -243,7 +243,7 @@ Parameter "Input from Phaser" 12 3 0 32768 0
 Frame "Phaser" 0
 Parameter "Frequency" 37 2 -81920 81920 0
 Parameter "Feedback gain" 37 5 -16384 16384 0
-Parameter "Sections" 37 1 
+Parameter "Sections" 37 1
 Parameter "Input gain (dB)" 37 0 -655360 163840 0
 Parameter "Output mix" 37 6 -16384 16384 0
 Parameter "Phaser Modulation Amount" 40 1 0 32768 0

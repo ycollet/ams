@@ -1,4 +1,9 @@
 2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
+	* src/m_ladspa.cpp, src/mainwindow.cpp, src/modularsynth.*,
+	src/port.*, src/prefwidget.*, src/synthdata.*: Make port font
+	color editable.
+
+2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
 	* src/midiwidget.*, src/modularsynth.*: Make control center MIDI
 	settings persistent.
 	* src/m_scmcv.cpp: Fix memory leak caused by not deleted file

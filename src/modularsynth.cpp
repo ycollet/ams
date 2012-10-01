@@ -89,6 +89,7 @@ static const char CF_BACKGROUNDCOLOR[] = "ColorBackground";
 static const char CF_MODULEBACKGROUNDCOLOR[] = "ColorModuleBackground";
 static const char CF_MODULEBORDERCOLOR[] = "ColorModuleBorder";
 static const char CF_MODULEFONTCOLOR[] = "ColorModuleFont";
+static const char CF_PORTFONTCOLOR[] = "ColorPortFont";
 static const char CF_JACKCOLOR[] = "ColorJack";
 static const char CF_CABLECOLOR[] = "ColorCable";
 static const char CF_MIDICONTROLLERMODE[] = "MidiControllerMode";
@@ -1206,30 +1207,32 @@ void ModularSynth::loadColors() {
 
         while (Fscanf(f, "%s", sc) != EOF) {
             qs = QString(sc);
-            if (qs.contains("ColorBackground", Qt::CaseInsensitive)) {
+            if (qs.contains(CF_BACKGROUNDCOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorBackground);
             }
-            else if (qs.contains("ColorModuleBackground", Qt::CaseInsensitive)) {
+            else if (qs.contains(CF_MODULEBACKGROUNDCOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleBackground);
             }
-            else if (qs.contains("ColorModuleBorder", Qt::CaseInsensitive)) {
+            else if (qs.contains(CF_MODULEBORDERCOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleBorder);
             }
-            else if (qs.contains("ColorModuleFont", Qt::CaseInsensitive)) {
+            else if (qs.contains(CF_MODULEFONTCOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorModuleFont);
             }
-            else if (qs.contains("ColorJack", Qt::CaseInsensitive)) {
+            else if (qs.contains(CF_PORTFONTCOLOR, Qt::CaseInsensitive)) {
+                setColor(f, synthdata->colorModuleFont);
+            }
+            else if (qs.contains(CF_JACKCOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorJack);
             }
-            else if (qs.contains("ColorCable", Qt::CaseInsensitive)) {
+            else if (qs.contains(CF_CABLECOLOR, Qt::CaseInsensitive)) {
                 setColor(f, synthdata->colorCable);
             }
         }
         fclose(f);
 
         /*some defaults*/
-        synthdata->colorPortFont1 = synthdata->colorModuleFont;
-        synthdata->colorPortFont2 = QColor(255, 240, 140);
+        synthdata->colorPortFont = synthdata->colorModuleFont;
         refreshColors();
     }
 }
@@ -1257,26 +1260,41 @@ void ModularSynth::saveColors() {
         /*remember last used directory for color files*/
         setColorPath(config_fn.left(config_fn.lastIndexOf('/')));
 
-        fprintf(f, "ColorBackground %d %d %d\n",
+        fprintf(f, "%s %d %d %d\n",
+                CF_BACKGROUNDCOLOR,
                 synthdata->colorBackground.red(),
                 synthdata->colorBackground.green(),
                 synthdata->colorBackground.blue());
-        fprintf(f, "ColorModuleBackground %d %d %d\n",
+        fprintf(f, "%s %d %d %d\n",
+                CF_MODULEBACKGROUNDCOLOR,
                 synthdata->colorModuleBackground.red(),
                 synthdata->colorModuleBackground.green(),
                 synthdata->colorModuleBackground.blue());
-        fprintf(f, "ColorModuleBorder %d %d %d\n",
+        fprintf(f, "%s %d %d %d\n",
+                CF_MODULEBORDERCOLOR,
                 synthdata->colorModuleBorder.red(),
                 synthdata->colorModuleBorder.green(),
                 synthdata->colorModuleBorder.blue());
-        fprintf(f, "ColorModuleFont %d %d %d\n",
+        fprintf(f, "%s %d %d %d\n",
+                CF_MODULEFONTCOLOR,
                 synthdata->colorModuleFont.red(),
                 synthdata->colorModuleFont.green(),
                 synthdata->colorModuleFont.blue());
-        fprintf(f, "ColorJack %d %d %d\n", synthdata->colorJack.red(),
-                synthdata->colorJack.green(), synthdata->colorJack.blue());
-        fprintf(f, "ColorCable %d %d %d\n", synthdata->colorCable.red(),
-                synthdata->colorCable.green(), synthdata->colorCable.blue());
+        fprintf(f, "%s %d %d %d\n",
+                CF_PORTFONTCOLOR,
+                synthdata->colorPortFont.red(),
+                synthdata->colorPortFont.green(),
+                synthdata->colorPortFont.blue());
+        fprintf(f, "%s %d %d %d\n",
+                CF_JACKCOLOR,
+                synthdata->colorJack.red(),
+                synthdata->colorJack.green(),
+                synthdata->colorJack.blue());
+        fprintf(f, "%s %d %d %d\n",
+                CF_CABLECOLOR,
+                synthdata->colorCable.red(),
+                synthdata->colorCable.green(),
+                synthdata->colorCable.blue());
         fclose(f);
     }
 }
@@ -2148,7 +2166,12 @@ void ModularSynth::loadPreference(QString& line)
         g = line.section(' ', 2, 2).toInt();
         b = line.section(' ', 3, 3).toInt();
         synthdata->colorModuleFont = QColor(r, g, b);
-        synthdata->colorPortFont1 = QColor(r, g, b);
+    }
+    else if (line.startsWith(CF_PORTFONTCOLOR)) {
+        r = line.section(' ', 1, 1).toInt();
+        g = line.section(' ', 2, 2).toInt();
+        b = line.section(' ', 3, 3).toInt();
+        synthdata->colorPortFont = QColor(r, g, b);
     }
     else if (line.startsWith(CF_JACKCOLOR)) {
         r = line.section(' ', 1, 1).toInt();
@@ -2209,6 +2232,10 @@ void ModularSynth::savePreferences(QTextStream& ts)
         << synthdata->colorModuleFont.red() << ' '
         << synthdata->colorModuleFont.green() << ' '
         << synthdata->colorModuleFont.blue() << endl;
+    ts << CF_PORTFONTCOLOR << ' '
+        << synthdata->colorPortFont.red() << ' '
+        << synthdata->colorPortFont.green() << ' '
+        << synthdata->colorPortFont.blue() << endl;
     ts << CF_JACKCOLOR << ' '
         << synthdata->colorJack.red() << ' '
         << synthdata->colorJack.green() << ' '
@@ -2367,6 +2394,16 @@ QColor ModularSynth::getModuleFontColor() const
 void ModularSynth::setModuleFontColor(QColor color)
 {
     synthdata->colorModuleFont = color;
+}
+
+QColor ModularSynth::getPortFontColor() const
+{
+    return synthdata->colorPortFont;
+}
+
+void ModularSynth::setPortFontColor(QColor color)
+{
+    synthdata->colorPortFont = color;
 }
 
 QColor ModularSynth::getCableColor() const

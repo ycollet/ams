@@ -19,7 +19,8 @@ ams-2.1.0 (2012-??-??)
   New Features
     o SIGUSR1 handler added to enable LADI session handling on
       application level 1.
-    o Basic support for libclalsadrv API version 2.0.0
+    o Support for libclalsadrv API version 2.0.0
+    o Support for libzita-alsa-pcmi as an alternative for libclalsadrv
     o Improved port selection handling, patch provided by Sebastien
       Alaiwan
     o New context menu to disconnect module output ports
@@ -27,10 +28,16 @@ ams-2.1.0 (2012-??-??)
     o Rewritten preferences dialog
     o New option for saving window geometry (session handling)
     o New option hiding recently used files menu (keep secrets)
-    o Support for libzita-alsa-pcmi as an alternative for libclalsadrv
     o Add keyboard shortcuts for module configuration dialogs
     o New option for module position grid (snap to grid)
     o New V8 Sequencer module, provided by Bill Yerazunis
+    o New Analog Memory module, provided by Bill Yerazunis
+    o New Bitgrinder module, provided by Bill Yerazunis
+    o New Hysteresis module, provided by Bill Yerazunis
+    o New VC-Delay module, provided by Bill Yerazunis
+    o Add Pulsetrain Noise type to Noise 2 module, patch provided by
+      Bill Yerazunis
+    o New FFT Vocoder module, provided by Bill Yerazunis
     o Make control center MIDI settings persistent
 
   General Changes

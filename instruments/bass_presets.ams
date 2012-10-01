@@ -129,9 +129,9 @@ Parameter "Early reflection level" 22 5 -983040 163840 0
 Parameter "Reverb time (s)" 22 1 1638 5898240 0
 Parameter "Tail level (dB)" 22 6 -1146880 0 0
 Frame "Oscillators" 1
-Parameter "Octave" 14 0 
-Parameter "Octave" 15 0 
-Parameter "Octave" 5 0 
+Parameter "Octave" 14 0
+Parameter "Octave" 15 0
+Parameter "Octave" 5 0
 Program 0 360
 Program 0 12648
 Program 0 52981

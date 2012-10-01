@@ -14,13 +14,12 @@
 
 
 Port::Port(const QString &p_portName, dirType dir, int p_index,
-        Module *parent, int p_color)
+        Module *parent)
            : QWidget(parent)
 	   , portNameWidth(0)
+           , highlighted(false)
 	   , dir(dir)
-	   , colorFont(p_color
-                   ? synthdata->colorPortFont2
-                   : synthdata->colorPortFont1)
+	   , colorFont(synthdata->colorPortFont)
 {
   module = parent;
   portName = p_portName;
@@ -32,7 +31,6 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
 
   jackColor = synthdata->colorJack;
   cableColor = synthdata->colorCable;
-  highlighted = false;
   index = p_index;
   portNameWidth = QFontMetrics(QFont(synthdata->smallFont,
               this)).boundingRect(p_portName).width();

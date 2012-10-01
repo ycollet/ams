@@ -125,8 +125,7 @@ class SynthData: public QObject
     QColor colorModuleBackground;
     QColor colorModuleBorder;
     QColor colorModuleFont;
-    QColor colorPortFont1;
-    QColor colorPortFont2;
+    QColor colorPortFont;
     QColor colorCable;
     QColor colorJack;
     QFont bigFont, smallFont;

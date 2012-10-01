@@ -737,6 +737,7 @@ void MainWindow::displayPreferences()
             modularSynth->getModuleBackgroundColor());
     prefDialog->setModuleBorderColor(modularSynth->getModuleBorderColor());
     prefDialog->setModuleFontColor(modularSynth->getModuleFontColor());
+    prefDialog->setPortFontColor(modularSynth->getPortFontColor());
     prefDialog->setCableColor(modularSynth->getCableColor());
     prefDialog->setJackColor(modularSynth->getJackColor());
 
@@ -762,6 +763,7 @@ void MainWindow::applyPreferences()
             prefDialog->getModuleBackgroundColor());
     modularSynth->setModuleBorderColor(prefDialog->getModuleBorderColor());
     modularSynth->setModuleFontColor(prefDialog->getModuleFontColor());
+    modularSynth->setPortFontColor(prefDialog->getPortFontColor());
     modularSynth->setCableColor(prefDialog->getCableColor());
     modularSynth->setJackColor(prefDialog->getJackColor());
 

@@ -30,6 +30,7 @@ class PrefWidget : public QDialog
     QLabel *colorModuleBackgroundLabel;
     QLabel *colorModuleBorderLabel;
     QLabel *colorModuleFontLabel;
+    QLabel *colorPortFontLabel;
     QLabel *colorCableLabel;
     QLabel *colorJackLabel;
 
@@ -51,12 +52,14 @@ class PrefWidget : public QDialog
     void setModuleBackgroundColor(QColor);
     void setModuleBorderColor(QColor);
     void setModuleFontColor(QColor);
+    void setPortFontColor(QColor);
     void setCableColor(QColor);
     void setJackColor(QColor);
     QColor getBackgroundColor();
     QColor getModuleBackgroundColor();
     QColor getModuleBorderColor();
     QColor getModuleFontColor();
+    QColor getPortFontColor();
     QColor getCableColor();
     QColor getJackColor();
     void setMidiControllerMode(int);
@@ -80,6 +83,7 @@ class PrefWidget : public QDialog
     void colorModuleBackgroundClicked();
     void colorModuleBorderClicked();
     void colorModuleFontClicked();
+    void colorPortFontClicked();
     void colorCableClicked();
     void defaultcolorClicked();
     void colorJackClicked();

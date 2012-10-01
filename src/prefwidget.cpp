@@ -123,6 +123,23 @@ void PrefWidget::setupColorTab()
     lineLayout->addWidget(button);
     colorBox->addLayout(lineLayout);
 
+    label = new QLabel(tr("Po&rt font"));
+    colorPortFontLabel = new QLabel();
+    colorPortFontLabel->setMinimumWidth(80);
+    colorPortFontLabel->setAutoFillBackground(true);
+    colorPortFontLabel->setPalette(Qt::black);
+    button = new QPushButton(tr("Change..."));
+    connect(button, SIGNAL(clicked()), this,
+            SLOT(colorPortFontClicked()));
+    label->setBuddy(button);
+
+    lineLayout = new QHBoxLayout();
+    lineLayout->addWidget(label);
+    lineLayout->addStretch();
+    lineLayout->addWidget(colorPortFontLabel);
+    lineLayout->addWidget(button);
+    colorBox->addLayout(lineLayout);
+
     label = new QLabel(tr("&Cables"));
     colorCableLabel = new QLabel();
     colorCableLabel->setMinimumWidth(80);
@@ -328,6 +345,15 @@ void PrefWidget::colorModuleFontClicked()
         colorModuleFontLabel->setPalette(tmp);
 }
 
+void PrefWidget::colorPortFontClicked()
+{
+    QColor tmp;
+
+    tmp = QColorDialog::getColor(getPortFontColor());
+    if (tmp.isValid())
+        colorPortFontLabel->setPalette(tmp);
+}
+
 void PrefWidget::colorCableClicked()
 {
     QColor tmp;
@@ -449,6 +475,16 @@ void PrefWidget::setModuleFontColor(QColor color)
 QColor PrefWidget::getModuleFontColor()
 {
     return colorModuleFontLabel->palette().color(QPalette::Background);
+}
+
+void PrefWidget::setPortFontColor(QColor color)
+{
+    colorPortFontLabel->setPalette(color);
+}
+
+QColor PrefWidget::getPortFontColor()
+{
+    return colorPortFontLabel->palette().color(QPalette::Background);
 }
 
 void PrefWidget::setCableColor(QColor color)

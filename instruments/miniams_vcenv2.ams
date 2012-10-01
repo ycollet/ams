@@ -151,11 +151,11 @@ ColorP 0 0 34 2 250 200 50 180 180 180
 Tab "Oscillators / LFO / Mixer"
 Tab "Filter / Envelopes / Reverb"
 Frame "Oscillators" 0
-Parameter "VCO 1 Octave" 10 0 
+Parameter "VCO 1 Octave" 10 0
 Parameter "VCO 1 Tune" 10 1 0 545 0
-Parameter "VCO 2 Octave" 8 0 
+Parameter "VCO 2 Octave" 8 0
 Parameter "VCO 2 Tune" 8 1 0 545 0
-Parameter "VCO 3 Octave" 9 0 
+Parameter "VCO 3 Octave" 9 0
 Parameter "VCO 3 Tune" 9 1 0 545 0
 Frame "LFO" 0
 Parameter "Frequency" 26 0 -75451 75448 1

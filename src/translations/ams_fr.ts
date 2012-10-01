@@ -4161,12 +4161,12 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="133"/>
+        <location filename="../modularsynth.cpp" line="134"/>
         <source>AlsaModularSynth Control Center</source>
         <translation>Centre de Contrôle AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="137"/>
+        <location filename="../modularsynth.cpp" line="138"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>Vue Paramètres AlsaModularSynth</translation>
     </message>
@@ -4175,48 +4175,48 @@ Save changes?</source>
         <translation type="obsolete">A propos de</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1193"/>
+        <location filename="../modularsynth.cpp" line="1194"/>
         <source>Load Colors</source>
         <translation>Charger les couleurs</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1194"/>
-        <location filename="../modularsynth.cpp" line="1243"/>
+        <location filename="../modularsynth.cpp" line="1195"/>
+        <location filename="../modularsynth.cpp" line="1246"/>
         <source>AlsaModularSynth color files</source>
         <translation>Fichiers couleurs AlsaModularSynth (*.acs)</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1201"/>
+        <location filename="../modularsynth.cpp" line="1202"/>
         <source>Could not open file.</source>
         <translation>Echec d&apos;ouverture du fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1242"/>
+        <location filename="../modularsynth.cpp" line="1245"/>
         <source>Save Colors</source>
         <translation>Enregistrer les couleurs</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1254"/>
+        <location filename="../modularsynth.cpp" line="1257"/>
         <source>Could not save file.</source>
         <translation>Echec d&apos;enregistrement fichier.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1342"/>
+        <location filename="../modularsynth.cpp" line="1360"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation>Plugin LADSPA &quot;%1&quot; de la librairie &quot;%2&quot; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1577"/>
+        <location filename="../modularsynth.cpp" line="1595"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
         <translation>Le port d&apos;entrée %1 du module %2 est déjà connecté. Nouvelle connexion au module %3 ignorée.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1834"/>
+        <location filename="../modularsynth.cpp" line="1852"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation>Controleur MIDI inconnu détecté: %1</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1336"/>
+        <location filename="../modularsynth.cpp" line="1354"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation>Chargement du plugin LADSPA &quot;%1&quot; de la bibliothèque &quot;%2&quot;.</translation>
     </message>
@@ -4306,13 +4306,13 @@ Save changes?</source>
 <context>
     <name>Port</name>
     <message>
-        <location filename="../port.cpp" line="340"/>
-        <location filename="../port.cpp" line="343"/>
+        <location filename="../port.cpp" line="338"/>
+        <location filename="../port.cpp" line="341"/>
         <source>&amp;Disconnect</source>
         <translation type="unfinished">&amp;Déconnecter</translation>
     </message>
     <message>
-        <location filename="../port.cpp" line="350"/>
+        <location filename="../port.cpp" line="348"/>
         <source>&amp;%1 (ID %2) %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4320,32 +4320,37 @@ Save changes?</source>
 <context>
     <name>PrefWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="173"/>
+        <location filename="../prefwidget.cpp" line="190"/>
         <source>&amp;Colors</source>
         <translation>&amp;Couleurs</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="209"/>
+        <location filename="../prefwidget.cpp" line="226"/>
         <source>&amp;MIDI</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="161"/>
+        <location filename="../prefwidget.cpp" line="178"/>
         <source>&amp;Default colors</source>
         <translation>Couleurs &amp;Standards</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="269"/>
+        <location filename="../prefwidget.cpp" line="126"/>
+        <source>Po&amp;rt font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="286"/>
         <source>&amp;Remember window geometry</source>
         <translation>&amp;Garder la géométrie de la fenêtre en mémoire</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="270"/>
+        <location filename="../prefwidget.cpp" line="287"/>
         <source>Save and restore main window position and size for next ams session.</source>
         <translation>Sauvegarder et restaurer la position et la taille de la fenêtre principale à la prochaine session ams.</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="281"/>
+        <location filename="../prefwidget.cpp" line="298"/>
         <source>&amp;Editing</source>
         <translation>&amp;Editer</translation>
     </message>
@@ -4366,6 +4371,7 @@ Save changes?</source>
         <location filename="../prefwidget.cpp" line="114"/>
         <location filename="../prefwidget.cpp" line="131"/>
         <location filename="../prefwidget.cpp" line="148"/>
+        <location filename="../prefwidget.cpp" line="165"/>
         <source>Change...</source>
         <translation>Changer...</translation>
     </message>
@@ -4385,77 +4391,77 @@ Save changes?</source>
         <translation>&amp;Police des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="126"/>
+        <location filename="../prefwidget.cpp" line="143"/>
         <source>&amp;Cables</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="143"/>
+        <location filename="../prefwidget.cpp" line="160"/>
         <source>&amp;Jacks</source>
         <translation>Co&amp;nnecteurs</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="183"/>
+        <location filename="../prefwidget.cpp" line="200"/>
         <source>MIDI controller mode</source>
         <translation>Mode contrôleurs MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="187"/>
+        <location filename="../prefwidget.cpp" line="204"/>
         <source>&amp;Avoid parameter jumps</source>
         <translation>&amp;Eviter les sauts de paramètres</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="192"/>
+        <location filename="../prefwidget.cpp" line="209"/>
         <source>&amp;Init MIDI controller</source>
         <translation>&amp;Initialiser le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="196"/>
+        <location filename="../prefwidget.cpp" line="213"/>
         <source>&amp;Follow MIDI controller</source>
         <translation>&amp;Suivre le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="239"/>
+        <location filename="../prefwidget.cpp" line="256"/>
         <source>Module position</source>
         <translation>Position des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="242"/>
+        <location filename="../prefwidget.cpp" line="259"/>
         <source>Enable module &amp;position grid</source>
         <translation>Activer la grille de &amp;position des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="246"/>
+        <location filename="../prefwidget.cpp" line="263"/>
         <source>&amp;Grid mesh size</source>
         <translation>Taille de la &amp;grille</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="253"/>
+        <location filename="../prefwidget.cpp" line="270"/>
         <source>Valid mesh size range is %1 to %2 pixel</source>
         <translation>Les tailles de grille sont valides entre %1 et %2 pixels</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="274"/>
+        <location filename="../prefwidget.cpp" line="291"/>
         <source>&amp;Hide recently used files</source>
         <translation>&amp;Cacher les fichiers récemment utilisés</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="275"/>
+        <location filename="../prefwidget.cpp" line="292"/>
         <source>Do not show list of recently used files in file menu.</source>
         <translation>Ne pas montrer la liste des fichiers récemment utilisés dans le menu.</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="220"/>
+        <location filename="../prefwidget.cpp" line="237"/>
         <source>Module movement</source>
         <translation>Déplacement des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="224"/>
+        <location filename="../prefwidget.cpp" line="241"/>
         <source>&amp;Standard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="229"/>
+        <location filename="../prefwidget.cpp" line="246"/>
         <source>&amp;No topleft border</source>
         <translation>&amp;Pas de bordure en haut à gauche</translation>
     </message>
@@ -4503,92 +4509,92 @@ Save changes?</source>
         <translation>Echec de déverouillage du fichier de préférences.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="329"/>
+        <location filename="../modularsynth.cpp" line="330"/>
         <source>Alsa MIDI wont work!</source>
         <translation>ALSA MIDI ne fonctionnera pas!</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="381"/>
+        <location filename="../modularsynth.cpp" line="382"/>
         <source>Error opening ALSA sequencer.</source>
         <translation>Erreur d&apos;ouverture du séquenceur ALSA.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="393"/>
+        <location filename="../modularsynth.cpp" line="394"/>
         <source>Error creating sequencer write port.</source>
         <translation>Erreur de création du port d&apos;écriture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="402"/>
+        <location filename="../modularsynth.cpp" line="403"/>
         <source>Error creating sequencer read port.</source>
         <translation>Erreur de création du port de lecture du séquenceur.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1023"/>
+        <location filename="../modularsynth.cpp" line="1024"/>
         <source>All available output ports are in use</source>
         <translation>Tous les ports de sortie disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1041"/>
+        <location filename="../modularsynth.cpp" line="1042"/>
         <source>All available input ports are in use</source>
         <translation>Tous les ports d&apos;entrée disponibles sont déjà utilisés</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1870"/>
+        <location filename="../modularsynth.cpp" line="1888"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation>Titre pour l&apos;onglet &apos;%1&apos; introuvable.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1886"/>
+        <location filename="../modularsynth.cpp" line="1904"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation>Données pour le cadre &apos;%1&apos; non trouvées.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1901"/>
+        <location filename="../modularsynth.cpp" line="1919"/>
         <source>No parameter values found.</source>
         <translation>Valeurs de paramètre introuvables.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1910"/>
+        <location filename="../modularsynth.cpp" line="1928"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation>Nom du paramètre &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1976"/>
+        <location filename="../modularsynth.cpp" line="1994"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation>Nom du Preset &apos;%1&apos; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="440"/>
+        <location filename="../synthdata.cpp" line="439"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation>Echec d&apos;établir un fil ALSA avec priorité RT</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="447"/>
+        <location filename="../synthdata.cpp" line="446"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation>Echec d&apos;établir un fil ALSA</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="456"/>
+        <location filename="../synthdata.cpp" line="455"/>
         <source>Closing ALSA...</source>
         <translation>Fermeture d&apos;ALSA...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="563"/>
+        <location filename="../synthdata.cpp" line="562"/>
         <source>Can&apos;t connect to JACK</source>
         <translation>Echec de connexion à JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="603"/>
+        <location filename="../synthdata.cpp" line="602"/>
         <source>Can&apos;t activate JACK</source>
         <translation>Echec d&apos;activation de JACK</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="621"/>
+        <location filename="../synthdata.cpp" line="620"/>
         <source>Closing JACK...</source>
         <translation>Fermeture de JACK...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="649"/>
+        <location filename="../synthdata.cpp" line="648"/>
         <source>No JACK session event set.</source>
         <translation>Evênement JACK session non-défini.</translation>
     </message>

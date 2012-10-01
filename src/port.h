@@ -33,16 +33,17 @@ class Port : public QWidget
 
   public:
     Port(const QString &p_portName, dirType p_dir, int p_index,
-            Module *parent, int p_color = 0);
+            Module *parent);
     ~Port();
-    void connectTo(Port*);
-    float **getinputdata (void);
 
     Module *module;
     int index;
     QColor jackColor, cableColor, &colorFont;
     outTypeEnum outType;
     QList<outTypeEnum> outTypeAcceptList;
+
+    void connectTo(Port*);
+    float **getinputdata (void);
     void popupMenuClicked(PopupMenu::portAction);
     bool hasConnectedPort();
     Port* needsConnectionToPort();
