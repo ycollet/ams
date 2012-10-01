@@ -28,6 +28,7 @@ ams-2.1.0 (2012-??-??)
     o Rewritten preferences dialog
     o New option for saving window geometry (session handling)
     o New option hiding recently used files menu (keep secrets)
+    o Add new menu item to open demo patch files directly
     o Add keyboard shortcuts for module configuration dialogs
     o New option for module position grid (snap to grid)
     o New V8 Sequencer module, provided by Bill Yerazunis
