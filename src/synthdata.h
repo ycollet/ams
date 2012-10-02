@@ -132,7 +132,7 @@ class SynthData: public QObject
     
     struct EditingFlags {
 	enum {
-	    CrossTopLeft = 1,
+	    CrossTopLeft = 1
 	};
 	int f;
 	bool crossTopLeft() {
