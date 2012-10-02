@@ -13,7 +13,6 @@ ams-2.1.0 (2012-??-??)
       Yerazunis
     o Reorganized commandline options for input and output to
       be valid for Alsa and JACK
-    o 
 
 
   New Features
@@ -26,6 +25,7 @@ ams-2.1.0 (2012-??-??)
     o New context menu to disconnect module output ports
     o Support for JACK session handling
     o Rewritten preferences dialog
+    o New about dialog
     o New option for saving window geometry (session handling)
     o New option hiding recently used files menu (keep secrets)
     o Add new menu item to open demo patch files directly
