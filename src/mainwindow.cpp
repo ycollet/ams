@@ -793,5 +793,4 @@ void MainWindow::helpAboutAms()
 
     ad->exec();
     delete ad;
-
 }

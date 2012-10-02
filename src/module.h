@@ -10,9 +10,9 @@
 #include <QTextStream>
 #include <alsa/asoundlib.h>
 
+#include "box.h"
 #include "synthdata.h"
 #include "configdialog.h"
-#include "box.h"
 
 
 enum {
@@ -22,6 +22,7 @@ enum {
    MODULE_NEW_Y = 50
 };
 
+// types jackin and jackout kept to ensure existing patches will load. FA
 enum M_typeEnum {
   M_type_custom,
   M_type_vco,
@@ -82,8 +83,6 @@ class Port;
 class MidiControllableBase;
 
 
-// types jackin and jackout kept to ensure existing patches will load. FA
-
 class Module : public Box
 {
   Q_OBJECT
@@ -102,7 +101,7 @@ public:
     QList<MidiControllableBase*> midiControllables;
     int moduleID, outPortCount;
     QColor colorBackground, colorBorder, colorFont;
-    static int portmemAllocated;
+    static size_t portmemAllocated;
 
     Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
 	   const QString &name);

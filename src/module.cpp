@@ -15,7 +15,7 @@
 #include "synthdata.h"
 
 
-int Module::portmemAllocated;
+size_t Module::portmemAllocated;
 Module::CtorVar Module::cv;
 
 Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
@@ -24,11 +24,11 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
   , alive(true)
   , connections(0)
   , data(NULL)
+  , cycleReady(false)
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
   cv.reset();
-  cycleReady = false;
 
   synthdata->incModuleCount();
   moduleID = synthdata->getModuleID();
@@ -41,7 +41,7 @@ Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
   configDialog->setWindowTitle(name + " ID " + QString::number(moduleID));
   QObject::connect(configDialog, SIGNAL(removeModuleClicked()),
           this, SLOT(removeThisModule()));
-  if (outPortCount)
+  if (outPortCount > 0)
     portMemAlloc(outPortCount, true);
 }
 
@@ -54,7 +54,7 @@ void Module::portMemAlloc(int outports, bool poly)
 
     for (int l1 = 0; l1 < outPortCount; ++l1) {
         data[l1] = (float **)malloc(synthdata->poly * sizeof(float *));
-        int size = voices * synthdata->periodsize * sizeof(float);
+        size_t size = voices * synthdata->periodsize * sizeof(float);
         data[l1][0] = (float *)malloc(size);
         memset(data[l1][0], 0, size);
         portmemAllocated += size;

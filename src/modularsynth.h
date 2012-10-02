@@ -67,7 +67,7 @@ class ModularSynth : public QWidget
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
     snd_seq_t *open_seq(); 
-    int initSeqNotifier();  
+    void initSeqNotifier();  
     void newM_mix(int in_channels);
     void newM_function(int functionCount);
     void newM_stereomix(int in_channels);

@@ -322,28 +322,31 @@ float SynthData::exp2_table(float f)
   return uexp2.f;
 }
 
-void SynthData::create_zero_data (void)
+void SynthData::create_zero_data(void)
 {
-  zeroModuleData = (float **) malloc (poly * sizeof(float *));
+  zeroModuleData = (float **) malloc(poly * sizeof(float *));
   for (int i = 0; i < poly; i++)
     if (i == 0) {
-      zeroModuleData[0] = (float *) malloc (periodsize * sizeof(float));
-      memset (zeroModuleData[0], 0, periodsize * sizeof(float));
+      zeroModuleData[0] = (float *) malloc(periodsize * sizeof(float));
+      memset(zeroModuleData[0], 0, periodsize * sizeof(float));
     } else
       zeroModuleData[i] = zeroModuleData[0];
 }
 
 
-
-int SynthData::find_play_mod (void *M)
+int SynthData::find_play_mod(void *M)
 {
-    for (int i = 0; i < play_ports / 2; i++) if (play_mods [i] == M) return i;
+    for (int i = 0; i < play_ports / 2; i++)
+        if (play_mods[i] == M)
+            return i;
     return -1;
 }
 
-int SynthData::find_capt_mod (void *M)
+int SynthData::find_capt_mod(void *M)
 {
-    for (int i = 0; i < capt_ports / 2; i++) if (capt_mods [i] == M) return i;
+    for (int i = 0; i < capt_ports / 2; i++)
+        if (capt_mods[i] == M)
+            return i;
     return -1;
 }
 

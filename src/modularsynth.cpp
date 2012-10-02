@@ -114,12 +114,14 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
   , verbose(mso.verbose)
   , paintFastly(false)
   , _zoomFactor(1.0)
+  , newBoxPos(0, 0)
+  , lastMousePos(0, 0)
   , enablemodulegrid(true)
   , modulegrid(20)
 {
   setAutoFillBackground(true);
-  modified = false;
   dragWidget = NULL;
+  modified = false;
   selectedPort = NULL;
   connectorStyle = CONNECTOR_BEZIER;
   portPopup = new PopupMenu(this);
@@ -130,10 +132,12 @@ ModularSynth::ModularSynth(QWidget* parent, const ModularSynthOptions& mso)
           parent, SLOT(handleJackSessionEvent(int)));
 #endif
 
+  //deleted by synthdata
   midiWidget = new MidiWidget(NULL);
   midiWidget->setWindowTitle(tr("AlsaModularSynth Control Center"));
   synthdata->midiWidget = midiWidget;
 
+  //deleted by synthdata
   guiWidget = new GuiWidget(NULL);
   guiWidget->setWindowTitle(tr("AlsaModularSynth Parameter View"));
   synthdata->guiWidget = guiWidget;
@@ -154,7 +158,9 @@ ModularSynth::~ModularSynth()
 
   guiWidget->close();
   midiWidget->close();
-  delete synthdata;
+  ladspaDialog->close();
+  delete ladspaDialog;
+  //synthdata is child of modularsynth => !delete synthdata;
 }
 
 QSize ModularSynth::sizeHint() const
@@ -190,7 +196,7 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
                 QWidget *pw = childAt(ev->pos());
                 if (pw != NULL) {
                     Box* mb = qobject_cast<Box *>(pw);
-                    if (mb != 0) {
+                    if (mb != NULL) {
                         lastMousePos = ev->globalPos();
                         dragWidget = mb;
                         mb->raise();
@@ -425,13 +431,12 @@ Bad result: it doesn't work, don't know why.
     return seq_handle;
 }
 
-int ModularSynth::initSeqNotifier()
+void ModularSynth::initSeqNotifier()
 {
     seqNotifier = new QSocketNotifier(synthdata->pipeFd[0],
 				      QSocketNotifier::Read, this);
     QObject::connect(seqNotifier, SIGNAL(activated(int)),
 		     this, SLOT(midiAction(int)));
-    return(0);
 }
 
 void ModularSynth::midiAction(int fd)
@@ -1011,13 +1016,13 @@ void ModularSynth::newM_pcmout()
     int k;
     M_pcmout *m;
 
-    k = synthdata->find_play_mod (0);
+    k = synthdata->find_play_mod(0);
     if (k >= 0)
     {
-        m = new M_pcmout (this, 2 * k);
+        m = new M_pcmout(this, 2 * k);
         if (m != NULL) {
             initNewModule(m);
-            synthdata->set_play_mod (k, m);
+            synthdata->set_play_mod(k, m);
         }
     }
     else
@@ -1029,13 +1034,13 @@ void ModularSynth::newM_pcmin()
     int k;
     M_pcmin *m;
 
-    k = synthdata->find_capt_mod (0);
+    k = synthdata->find_capt_mod(0);
     if (k >= 0)
     {
         m = new M_pcmin(this, 2 * k);
         if (m != NULL) {
             initNewModule(m);
-            synthdata->set_capt_mod (k, m);
+            synthdata->set_capt_mod(k, m);
         }
     }
     else
@@ -1949,11 +1954,6 @@ void ModularSynth::load(QTextStream& ts)
                         mcAbleF->setNewMin(sliderMin);
                         mcAbleF->setNewMax(sliderMax);
                         mcAbleF->setLog(isLog);
-
-                        /*listModule.at(l1)->configDialog->midiGUIcomponentList.at(index)->componentType == GUIcomponentType_slider)*/
-                        //!! ((MidiSlider *)guiWidget->parameterList.last())->setNewMin(sliderMin);
-                        // ((MidiSlider *)guiWidget->parameterList.last())->setNewMax(sliderMax);
-                        // ((MidiSlider *)guiWidget->parameterList.last())->setLogMode(isLog);
                     }
                     else
                         qWarning("MIDI controllable at index %d for "
@@ -2013,13 +2013,16 @@ void ModularSynth::load(QTextStream& ts)
   adjustSize();
   update();
   midiWidget->setActiveMidiControllers();
+
   if (restartSynth)
     startSynth();
+  
   if (verbose) {
     StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
     StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
     StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
   }
+  
   midiWidget->setFollowConfig(followConfig);
   guiWidget->refreshGui();
   modified = false;
