@@ -1793,6 +1793,13 @@ void ModularSynth::load(QTextStream& ts)
       }
     }
 
+    else if (qs.startsWith("ConfigDialog", Qt::CaseInsensitive)) {
+        m = getModuleWithId(moduleID);
+        if (m != NULL) {
+            m->readConfigDialog(qs);
+        }
+    }
+
     else if (qs.contains("MIDI", Qt::CaseInsensitive)) {
         moduleID = tokens[1].toInt();
         index = tokens[2].toInt();

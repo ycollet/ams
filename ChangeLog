@@ -1,5 +1,7 @@
 2012-10-04 Guido Scholz <guido.scholz@bayernline.de>
 	* demos/vocoder_1.ams: Add demo file for new vocoder module.
+	* src/module.*, src/modularsynth.*: Make visibility, position 
+	and size of module config dialog persistent.
 
 2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
 	* src/m_ladspa.cpp, src/mainwindow.cpp, src/modularsynth.*,

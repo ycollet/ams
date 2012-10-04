@@ -250,6 +250,7 @@ void Module::save(QTextStream& ts)
   saveConnections(ts);
   saveParameters(ts);
   saveBindings(ts);
+  saveConfigDialog(ts);
 }
 
 int Module::connected()
@@ -393,6 +394,36 @@ void Module::saveBindings(QTextStream& ts)
               ->mcAble.midiControllerList.at(l2).param() << endl;
     }
   }
+}
+
+/*Write visibility, position and size parameters of config dialog*/
+void Module::saveConfigDialog(QTextStream& ts)
+{
+
+    ts << "ConfigDialog " << configDialog->isVisible() << ' '
+        << configDialog->geometry().x() << ' '
+        << configDialog->geometry().y() << ' '
+        << configDialog->geometry().width() << ' '
+        << configDialog->geometry().height() << endl;
+}
+
+/*Read visibility, position and size parameters of config dialog*/
+void Module::readConfigDialog(QString& line)
+{
+    QStringList tokens = line.split(' ');
+    if (tokens.count() < 6) {
+        qWarning("Config dialog geometry parameterlist too short "
+                "(module = %d).", moduleID);
+        return;
+    }
+    bool isvisible = (tokens[1].toInt() > 0);
+    int x = tokens[2].toInt();
+    int y = tokens[3].toInt();
+    int width = tokens[4].toInt();
+    int height = tokens[5].toInt();
+    configDialog->setGeometry(x, y, width, height);
+    if (isvisible)
+        configDialog->show();
 }
 
 void Module::getColors(void)

@@ -114,9 +114,11 @@ public:
     void incConnections();
     void decConnections();
     void save(QTextStream&);
-    virtual void saveConnections(QTextStream&); 
-    virtual void saveParameters(QTextStream&);
-    virtual void saveBindings(QTextStream&); 
+    void saveConnections(QTextStream&); 
+    void saveParameters(QTextStream&);
+    void saveBindings(QTextStream&); 
+    void saveConfigDialog(QTextStream&); 
+    void readConfigDialog(QString&);
     virtual void mcAbleChanged(MidiControllableBase *) {}
     void getColors(void);
     float **getData(int);

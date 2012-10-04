@@ -515,7 +515,7 @@ void M_vocoder::generateCycle() {
 
     //   multiply the carrier by the modulation map.
     for (l2 = 0; l2 < (unsigned) fftsize; l2++) {
-      carrinbackward[l2] = carroutforward[l2] * armodmap [l2];
+      carrinbackward[l2] = carroutforward[l2] * armodmap[l2];
     }
 
     //   reverse transform to final output, and renormalize by 1/fftsize.
@@ -525,9 +525,7 @@ void M_vocoder::generateCycle() {
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       offset = l2 + (fftsize/2) - (synthdata->cyclesize / 2);
       data[1][l1][l2]=
-	(creal(
-	       carroutbackward[offset]/window[offset]))
-	 / (fftsize * 100) ;
+	(creal(carroutbackward[offset]/window[offset])) / (fftsize * 100);
     };
   };
 }
