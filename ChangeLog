@@ -1,3 +1,6 @@
+2012-10-04 Guido Scholz <guido.scholz@bayernline.de>
+	* demos/vocoder_1.ams: Add demo file for new vocoder module.
+
 2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
 	* src/m_ladspa.cpp, src/mainwindow.cpp, src/modularsynth.*,
 	src/port.*, src/prefwidget.*, src/synthdata.*: Make port font

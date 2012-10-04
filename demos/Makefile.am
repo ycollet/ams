@@ -101,4 +101,5 @@ dist_demosdata_DATA = \
 	v8_seq_demo_1.ams \
 	v8_seq_demo_2.ams \
 	v8_seq_demo_3.ams \
-	vcdelay_1.ams
+	vcdelay_1.ams \
+	vocoder_1.ams
