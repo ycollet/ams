@@ -494,35 +494,35 @@ void *SynthData::alsa_thr_main (void)
                     C = doSynthesis ? (M_pcmin *)(capt_mods [i / 2]) : 0;
                     if (C)
                     {
-                        alsa_handle->capt_chan (i,     C->pcmdata [0], cyclesize);
-                        alsa_handle->capt_chan (i + 1, C->pcmdata [1], cyclesize);
+                        alsa_handle->capt_chan(i,     C->pcmdata[0], cyclesize);
+                        alsa_handle->capt_chan(i + 1, C->pcmdata[1], cyclesize);
 		    }
 		}
-                alsa_handle->capt_done (cyclesize);
+                alsa_handle->capt_done(cyclesize);
 	    }
 
             if (play_ports)
 	    {
-                alsa_handle->play_init (cyclesize);
+                alsa_handle->play_init(cyclesize);
                 for (i = 0; i < play_ports; i += 2)
                 {
                     P = doSynthesis ? (M_pcmout *)(play_mods [i / 2]) : 0;
                     if (P)
                     {
-                        P->generateCycle ();
-                        alsa_handle->play_chan (i,     P->pcmdata [0], cyclesize);
-                        alsa_handle->play_chan (i + 1, P->pcmdata [1], cyclesize);
+                        P->generateCycle();
+                        alsa_handle->play_chan(i,     P->pcmdata[0], cyclesize);
+                        alsa_handle->play_chan(i + 1, P->pcmdata[1], cyclesize);
 		    }
 	            else
                     {
-                        alsa_handle->clear_chan (i, cyclesize);
-                        alsa_handle->clear_chan (i + 1, cyclesize);
+                        alsa_handle->clear_chan(i, cyclesize);
+                        alsa_handle->clear_chan(i + 1, cyclesize);
 		    }
 		}
-                alsa_handle->play_done (cyclesize);
+                alsa_handle->play_done(cyclesize);
 	    }
 
-            if (doSynthesis) call_modules ();
+            if (doSynthesis) call_modules();
 
             k -= cyclesize;
 	}
@@ -705,7 +705,7 @@ int SynthData::jack_static_callback (jack_nframes_t nframes, void *arg)
 
 int SynthData::jack_callback(jack_nframes_t nframes)
 {
-    int         i, j;
+    int i, j;
 
     if (nframes > MAXIMUM_PERIODSIZE) {
         fprintf(stderr, "nframes exceeds allowed value %d\n", MAXIMUM_PERIODSIZE);

@@ -1,3 +1,7 @@
+2012-10-19 Guido Scholz <guido.scholz@bayernline.de>
+	* src/mainwindow.*: Add file menu item to open demo instruments 
+	directly.
+
 2012-10-04 Guido Scholz <guido.scholz@bayernline.de>
 	* demos/vocoder_1.ams: Add demo file for new vocoder module.
 	* src/module.*, src/modularsynth.*: Make visibility, position 

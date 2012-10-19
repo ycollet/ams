@@ -267,7 +267,7 @@ EXTRA_DIST = $(translations)
 CLEANFILES = $(nodist_ams_SOURCES) $(translations_DATA)
 
 ams_CXXFLAGS = $(QT_CXXFLAGS) $(AMS_CXXFLAGS)
-DEFS = -D_REENTRANT -DLADSPA_PATH=\"$(LADSPA_PATH)\" -DTRANSLATIONSDIR=\"$(translationsdir)\" -DDEMOFILEPATH=\"$(pkgdatadir)/demos\" @DEFS@
+DEFS = -D_REENTRANT -DLADSPA_PATH=\"$(LADSPA_PATH)\" -DTRANSLATIONSDIR=\"$(translationsdir)\" -DDEMOFILEPATH=\"$(pkgdatadir)/demos\" -DINSTRUMENTFILEPATH=\"$(pkgdatadir)/instruments\" @DEFS@
 
 # rule for moc-file generation
 SUFFIXES = _moc.cpp

@@ -74,6 +74,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           Qt::CTRL + Qt::Key_O);
   filePopup->addAction(tr("Open &demo..."), this, SLOT(fileOpenDemo()),
           Qt::CTRL + Qt::Key_D);
+  filePopup->addAction(tr("Open demo &instrument..."), this,
+          SLOT(fileOpenDemoInstrument()), Qt::CTRL + Qt::Key_I);
   fileRecentlyOpenedFiles = filePopup->addMenu(tr("&Recently opened files"));
   filePopup->addAction(tr("&Save"), this, SLOT(fileSave()),
           Qt::CTRL + Qt::Key_S);
@@ -418,6 +420,19 @@ void MainWindow::chooseDemoFile()
 }
 
 
+void MainWindow::chooseDemoInstrumentFile()
+{
+    QString fn = QFileDialog::getOpenFileName(this,
+        tr("Open demo instrument file"), INSTRUMENTFILEPATH,
+        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
+
+    if (fn.isEmpty())
+        return;
+    else
+        openFile(fn);
+}
+
+
 void MainWindow::fileNew()
 {
     if (isSave())
@@ -444,6 +459,13 @@ void MainWindow::fileOpenDemo()
 {
     if (isSave())
         chooseDemoFile();
+}
+
+
+void MainWindow::fileOpenDemoInstrument()
+{
+    if (isSave())
+        chooseDemoInstrumentFile();
 }
 
 

@@ -35,6 +35,7 @@ class MainWindow: public QMainWindow {
     void openFile(const QString&);
     void chooseFile();
     void chooseDemoFile();
+    void chooseDemoInstrumentFile();
     bool isSave();
     int querySaveChanges();
     bool isModified();
@@ -46,6 +47,7 @@ private slots:
     void fileNew();
     void fileOpen();
     void fileOpenDemo();
+    void fileOpenDemoInstrument();
     void fileSave();
     void fileSaveAs();
     void updateWindowTitle();
