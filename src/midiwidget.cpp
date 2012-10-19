@@ -849,7 +849,6 @@ void MidiWidget::loadPreference(QString& line)
         int y = tokens[3].toInt();
         int width = tokens[4].toInt();
         int height = tokens[5].toInt();
-        qWarning("MidiWidget position set: i%d %d.", x, y);
         setGeometry(x, y, width, height);
         if (isvisible) {
             //FIXME: window is not shown in front of main window because
