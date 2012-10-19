@@ -21,6 +21,7 @@ static const char CF_MIDIENABLENOTEEVENTS[] = "MidiEnableNoteEvents";
 static const char CF_MIDIFOLLOWCONFIGDIALOG[] = "MidiFollowConfigDialog";
 static const char CF_MIDIFOLLOWMIDI[] = "MidiFollowMidi";
 static const char CF_MIDICHANNEL[] = "MidiChannel";
+static const char CF_MIDIWIDGETGEOMETRY[] = "MidiWidgetGeometry";
 
 
 MidiControllerModel::MidiControllerModel(QList<MidiController> &rMidiControllers,
@@ -837,6 +838,27 @@ void MidiWidget::loadPreference(QString& line)
         midiChannelCb->setCurrentIndex(value);
         updateMidiChannel(value);
     }
+    else if (line.startsWith(CF_MIDIWIDGETGEOMETRY)) {
+        QStringList tokens = line.split(' ');
+        if (tokens.count() < 6) {
+            qWarning("Position widget geometry parameterlist too short.");
+            return;
+        }
+        bool isvisible = (tokens[1].toInt() > 0);
+        //FIXME: position may be off screen if size of current screen is
+        //smaller than screen used for saving
+        int x = tokens[2].toInt();
+        int y = tokens[3].toInt();
+        int width = tokens[4].toInt();
+        int height = tokens[5].toInt();
+        qWarning("MidiWidget position set: i%d %d.", x, y);
+        setGeometry(x, y, width, height);
+        if (isvisible) {
+            //FIXME: window is not shown in front of main window because
+            //it is not a child of main window
+            show();
+        }
+    }
 }
 
 void MidiWidget::savePreferences(QTextStream& ts)
@@ -845,6 +867,12 @@ void MidiWidget::savePreferences(QTextStream& ts)
     ts << CF_MIDIFOLLOWCONFIGDIALOG << ' ' << configCheck->isChecked() << endl;
     ts << CF_MIDIFOLLOWMIDI << ' ' << follwoMidiCb->isChecked() << endl;
     ts << CF_MIDICHANNEL << ' ' << midiChannelCb->currentIndex() << endl;
+    ts << CF_MIDIWIDGETGEOMETRY << ' '
+        << isVisible() << ' '
+        << geometry().x() << ' '
+        << geometry().y() << ' '
+        << geometry().width() << ' '
+        << geometry().height() << endl;
 }
 
 bool MidiWidget::noteControllerEnabled()

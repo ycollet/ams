@@ -40,7 +40,7 @@ ams-2.1.0 (2012-??-??)
     o Add Pulsetrain Noise type to Noise 2 module, patch provided by
       Bill Yerazunis
     o New FFT Vocoder module, provided by Bill Yerazunis
-    o Make control center MIDI settings persistent
+    o Make control center window position and MIDI settings persistent
 
   General Changes
     o Separate handling of color scheme directory from patch file
