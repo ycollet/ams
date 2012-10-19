@@ -4153,12 +4153,12 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="552"/>
+        <location filename="../midiwidget.cpp" line="550"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="578"/>
+        <location filename="../midiwidget.cpp" line="576"/>
         <source>Parameter name:</source>
         <translation>Parametername:</translation>
     </message>

@@ -4159,12 +4159,12 @@ Save changes?</source>
         <translation>Ajouter le cadre à l&apos;onglet:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="552"/>
+        <location filename="../midiwidget.cpp" line="550"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation>L&apos;onglet &apos;%1&apos; n&apos;existe pas. Créer?</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="578"/>
+        <location filename="../midiwidget.cpp" line="576"/>
         <source>Parameter name:</source>
         <translation>Nom du paramètre:</translation>
     </message>

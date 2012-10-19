@@ -494,7 +494,7 @@ void MidiWidget::clearClicked()
 void MidiWidget::addToParameterViewClicked()
 {
     QString qs, qs2, qs3;
-    bool ok, foundFrameName, foundTabName;
+    bool ok, foundFrameName;
     int l1, frameIndex, tabIndex;
 
     if (midiControllable == NULL)
@@ -538,12 +538,10 @@ void MidiWidget::addToParameterViewClicked()
                     tr("Add frame to tab:"), QLineEdit::Normal,
                     currentTabName, &ok);
             currentTabName = qs3;
-            foundTabName = false;
             tabIndex = 0;
 
             if ((l1 =synthdata->guiWidget->tabNameList.indexOf(
                             qs3.trimmed())) >= 0) {
-                foundTabName = true;
                 tabIndex = l1;
                 synthdata->guiWidget->setTab(tabIndex);
             }
