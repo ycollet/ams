@@ -70,7 +70,7 @@ M_lfo::M_lfo(QWidget* parent)
 
 void M_lfo::generateCycle() {
 
-  int l1, l2, k, len, phi0i, l2_out;
+  int l1, l2, k, len, /*phi0i,*/ l2_out;
   double ldsi, ldsa, ldt, ldr, ldsh, dt0, dsa;
 
     float **triggerData = port_M_trigger->getinputdata();
@@ -92,7 +92,7 @@ void M_lfo::generateCycle() {
         wave_period = (double)synthdata->rate / (16.0 * freq);
         dsa = 2.0 / wave_period;
         dt0 = 4.0 / wave_period;
-        phi0i = (int)(phi0 / 6.283 * wave_period);
+        /*phi0i = (int)(phi0 / 6.283 * wave_period);*/
 
 
         if (!trigger[l1] && (triggerData[l1][l2] > 0.5)) {

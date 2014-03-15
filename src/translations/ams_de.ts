@@ -46,7 +46,7 @@ and effect processor.</source>
 <context>
     <name>Function</name>
     <message>
-        <location filename="../function.cpp" line="68"/>
+        <location filename="../function.cpp" line="69"/>
         <source>Out %1</source>
         <translation type="unfinished"></translation>
     </message>

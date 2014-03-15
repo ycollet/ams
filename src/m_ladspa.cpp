@@ -32,7 +32,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
   , isPoly(poly)
 {
     QString qs;
-    int l1, l2, itmp, port_ofs;
+    int l1, l2, itmp/*, port_ofs*/;
     int audio_in_index = 0, audio_out_index = 0,
         ctrl_in_index = 0, ctrl_out_index = 0,
         control_port_count = 0;
@@ -102,7 +102,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
     if (tabMode)
         configDialog->initTabWidget();
 
-    port_ofs = 35;
+    /*port_ofs = 35;*/
 
     for (unsigned l1 = 0; l1 < ladspa_dsc->PortCount; l1++) {
         if (LADSPA_IS_PORT_AUDIO(ladspa_dsc->PortDescriptors[l1])) {

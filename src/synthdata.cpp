@@ -677,7 +677,7 @@ bool SynthData::jack_session_event()
     command.append(" -U ");
     command.append(jsession_ev->client_uuid);
 
-    jsession_ev->command_line = strdup(command.toAscii());
+    jsession_ev->command_line = strdup(command.toLatin1());
     jack_session_reply(jack_handle, jsession_ev);
 
     /* prepare application quit if requested by jack */

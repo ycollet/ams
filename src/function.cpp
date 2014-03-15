@@ -14,6 +14,7 @@
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QGraphicsScene>
+#include <QGraphicsSimpleTextItem>
 
 #include "function.h"
 #include "canvasfunction.h"
@@ -67,11 +68,13 @@ Function::Function(int p_functionCount, int *p_mode, int *p_editIndex,
         updateFunction(l1);
         qs = tr("Out %1").arg(l1);
         QGraphicsSimpleTextItem *canvasText =
-            new QGraphicsSimpleTextItem(qs, 0, scene());
+            new QGraphicsSimpleTextItem(qs);
+        scene()->addItem(canvasText);
+           // new QGraphicsSimpleTextItem(qs, 0, scene());
         canvasText->setPos(8 + 50 * l1, 4);
         //    canvasText->setColor(colorTable[l1]);
         canvasText->setFont(synthdata->bigFont);
-        canvasText->setVisible(TRUE);
+        canvasText->setVisible(true);
         canvasTextList.append(canvasText);
     }
 }

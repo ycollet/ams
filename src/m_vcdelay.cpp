@@ -53,7 +53,7 @@ M_vcdelay::M_vcdelay(QWidget* parent)
     delay = 0;
     configDialog->addSlider(tr("&Delay"), delay, 0, 10);
     vmod = 0;
-    configDialog->addSlider(tr("V &Mod"), vmod, 0, 1, TRUE );
+    configDialog->addSlider(tr("V &Mod"), vmod, 0, 1, true);
 
     buf = (float **)malloc(synthdata->poly * sizeof(float *));
     for (l1 = 0; l1 < synthdata->poly; l1++) {
