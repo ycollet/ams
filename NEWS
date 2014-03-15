@@ -1,4 +1,4 @@
-ams-2.1.0 (2012-??-??)
+ams-2.1.0 (2014-03-15)
 
   Fixed Bugs
     o Linker error "undefined reference to symbol 'dlsym@@GLIBC_2.2.5'"
@@ -41,6 +41,7 @@ ams-2.1.0 (2012-??-??)
       Bill Yerazunis
     o New FFT Vocoder module, provided by Bill Yerazunis
     o Make control center window position and MIDI settings persistent
+    o Add support for Qt5 (configure option --enable-qt5)
 
   General Changes
     o Separate handling of color scheme directory from patch file

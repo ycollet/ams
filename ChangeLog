@@ -1,3 +1,11 @@
++++ Release 2.1.0 (2014-03-15) +++
+
+2014-03-15 Guido Scholz <guido-scholz@gmx.net>
+	* configure.ac, src/function.cpp, src/m_ladspa.cpp,
+	 src/m_lfo.cpp, src/m_vcdelay.cpp, src/ringbuffer.h,
+	 src/synthdata.cpp: Add support for Qt5 (configure option  
+	--enable-qt5).
+
 2012-10-19 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.*: Add file menu item to open demo instruments 
 	directly.
