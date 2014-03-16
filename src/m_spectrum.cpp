@@ -15,7 +15,7 @@ M_spectrum::M_spectrum(QWidget* parent)
   configDialog->addLabel(
 	"This modules source-code is outdated.\n"
 	"Replace this module by a \"PCM Out\" and connect the pcm-out's jack"
-	" ports to i.e. JAAA, JAPA, CLAM ... to obtain spectral informations.\n"
+	" ports to i.e. JAAA, JAPA, CLAM ... to obtain spectral information.\n"
 	"See http://apps.linuxaudio.org");
 }
 
