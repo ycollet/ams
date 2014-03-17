@@ -5,6 +5,7 @@ FSlider 1 0 8192 0 0 16384 1
 FSlider 1 1 8192 0 0 16384 1
 FSlider 1 2 8192 0 0 16384 1
 ComboBox 1 0 0 1
+ConfigDialog 0 0 0 100 30
 Module 1 2 338 11 0 0
 ColorP 1 0 2 4 250 200 50 180 180 180
 FSlider 2 0 0 0 0 16384 1
@@ -17,6 +18,7 @@ ISlider 2 0 5 1
 ISlider 2 1 1 1
 ISlider 2 2 1 1
 ComboBox 2 0 0 1
+ConfigDialog 0 0 0 100 30
 Module 46 4 171 103 0 0
 ColorP 6 4 4 5 250 200 50 180 180 180
 FSlider 4 0 10570 0 -32768 32768 1
@@ -84,10 +86,11 @@ CheckBox 4 12 0 1
 CheckBox 4 13 0 1
 CheckBox 4 14 0 1
 CheckBox 4 15 0 1
+ConfigDialog 0 0 0 100 30
 Module 3 5 27 146 0 0
 FSlider 5 0 26369 1 -150902 75451 1
 FSlider 5 1 30720 0 0 16384 1
-FSlider 5 2 0 0 0 102940 1
+ConfigDialog 0 0 0 100 30
 Module 9 6 508 183 0 0
 ColorP 0 2 6 2 250 200 50 180 180 180
 ColorP 1 0 6 4 250 200 50 180 180 180
@@ -99,7 +102,8 @@ FSlider 6 3 0 0 0 163840 1
 FSlider 6 4 8821 0 163 16384 1
 FSlider 6 5 5428 0 0 16384 1
 ComboBox 6 0 0 1
+ConfigDialog 0 0 0 100 30
 Comment 0 0 291 308 200 170
 #PARA# 0 0 0
-This is a basic sequencer patch.  Out 0 of the sequencer controls the VCO frequency, and Out1 controls the resonance
+This is a basic sequencer patch.  Out 0 of the sequencer controls the VCO frequency, and Out1 controls the resonance 
 #ARAP#
