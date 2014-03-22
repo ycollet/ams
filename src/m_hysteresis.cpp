@@ -39,8 +39,8 @@
 #include "m_hysteresis.h"
 #include "port.h"
 
-M_hysteresis::M_hysteresis(QWidget* parent)
-    : Module(M_type_hysteresis, 1, parent, tr("Hysteresis"))
+M_hysteresis::M_hysteresis(QWidget* parent, int id)
+    : Module(M_type_hysteresis, id, 1, parent, tr("Hysteresis"))
 {
     QString qs;
     int l1;

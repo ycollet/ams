@@ -21,8 +21,8 @@
 #include "port.h"
 
 
-M_pcmin::M_pcmin(QWidget* parent, int port)
-  : Module(M_type_pcmin, 2, parent, tr("PCM In"))
+M_pcmin::M_pcmin(QWidget* parent, int port, int id)
+  : Module(M_type_pcmin, id, 2, parent, tr("PCM In"))
  {
   QString qs;
 

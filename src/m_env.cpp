@@ -12,8 +12,8 @@
 #include "port.h"
 #include "midicontrollable.h"
 
-M_env::M_env(QWidget* parent)
-  : Module(M_type_env, 2, parent, tr("ENV"))
+M_env::M_env(QWidget* parent, int id)
+  : Module(M_type_env, id, 2, parent, tr("ENV"))
 {
   QString qs;
 

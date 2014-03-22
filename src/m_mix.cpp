@@ -19,8 +19,8 @@
 #include "m_mix.h"
 #include "port.h"
 
-M_mix::M_mix(int p_in_channels, QWidget* parent)
-  : Module(M_type_mix, 1, parent, tr("Mixer %1").arg(p_in_channels))
+M_mix::M_mix(int p_in_channels, QWidget* parent, int id)
+  : Module(M_type_mix, id, 1, parent, tr("Mixer %1").arg(p_in_channels))
 {
   QString qs;
   int l1;

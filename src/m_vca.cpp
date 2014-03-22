@@ -19,8 +19,9 @@
 #include "m_vca.h"
 #include "port.h"
 
-M_vca::M_vca(bool p_expMode, QWidget* parent)
-  : Module(M_type_vca, 1, parent, p_expMode ? tr("Exp. VCA") : tr("Lin. VCA"))
+M_vca::M_vca(bool p_expMode, QWidget* parent, int id)
+  : Module(M_type_vca, id, 1, parent,
+          p_expMode ? tr("Exp. VCA") : tr("Lin. VCA"))
 {
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_VCA_WIDTH, MODULE_VCA_HEIGHT);
   gain1 = 0;

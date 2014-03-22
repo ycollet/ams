@@ -25,8 +25,8 @@
 #include "port.h"
 
 
-M_wavout::M_wavout(QWidget* parent)
-  : Module(M_type_wavout, 0, parent, tr("WAV Out"))
+M_wavout::M_wavout(QWidget* parent, int id)
+  : Module(M_type_wavout, id, 0, parent, tr("WAV Out"))
 {
   QString qs;
   QHBoxLayout *hbox1, *hbox2;

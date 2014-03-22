@@ -16,8 +16,8 @@
 #include "m_mphlfo.h"
 #include "port.h"
 
-M_mphlfo::M_mphlfo(QWidget* parent)
-  : Module(M_type_mphlfo, 16, parent, tr("Multiphase LFO")) {
+M_mphlfo::M_mphlfo(QWidget* parent, int id)
+  : Module(M_type_mphlfo, id, 16, parent, tr("Multiphase LFO")) {
 
   QString qs;
   int l1;

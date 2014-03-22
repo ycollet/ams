@@ -30,7 +30,7 @@ class M_scmcv : public Module
     PolyArr<float> freq, lastfreq;
  
   public:
-    M_scmcv(QWidget* parent=0, QString *p_sclname = 0);
+    M_scmcv(QWidget* parent=0, QString *p_sclname = 0, int id = 0);
 
     void generateCycle();
 

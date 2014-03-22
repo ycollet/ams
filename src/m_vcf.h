@@ -25,16 +25,16 @@ class M_vcf : public Module
     double b_noise;
     PolyArr<double[5]> in, buf;
    
-
     int vcfType, vcfTypeUsed;
-    Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp, *port_M_lin, *port_out;
+    Port *port_M_in, *port_M_resonance, *port_M_freq, *port_M_exp,
+         *port_M_lin, *port_out;
                             
-    void generateCycle();
     void initBuf();
 
   public:
-    M_vcf(QWidget* parent=0);
+    M_vcf(QWidget* parent=0, int id = 0);
                                       
+    void generateCycle();
 };
   
 #endif

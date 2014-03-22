@@ -102,8 +102,8 @@ void M_stereomix::updateSolos(MidiGUIcomponent *sender)
 }
 
 
-M_stereomix::M_stereomix(int p_in_channels, QWidget* parent)
-  : Module(M_type_stereomix, 2, parent, tr("Stereo Mixer %1")
+M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, int id)
+  : Module(M_type_stereomix, id, 2, parent, tr("Stereo Mixer %1")
           .arg(p_in_channels))
   , solo_index(-1)
 {

@@ -10,8 +10,8 @@
 #include "port.h"
 
 
-M_ad::M_ad(int outCount, QWidget* parent)
-  : Module(M_type_ad, outCount, parent,
+M_ad::M_ad(int outCount, QWidget* parent, int id)
+  : Module(M_type_ad, id, outCount, parent,
 	   tr("Analog Driver %1 Out").arg(outCount))
 {
   QString qs;

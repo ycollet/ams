@@ -23,7 +23,7 @@ class M_advmcv : public Module
     float controller_cv[MODULE_ADVMCV_CONTROLLER_PORTS];
                 
   public:
-    M_advmcv(QWidget* parent=0);
+    M_advmcv(QWidget* parent=0, int id = 0);
     ~M_advmcv();
 
     void aftertouchEvent(int value);

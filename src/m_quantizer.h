@@ -23,7 +23,7 @@ class M_quantizer : public Module
     float **inData, **triggerData, **transposeData;       
                             
   public:
-    M_quantizer(QWidget* parent=0);
+    M_quantizer(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

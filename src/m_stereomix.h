@@ -31,7 +31,7 @@ public:
     unsigned in_channels;
                             
   public:
-    M_stereomix(int p_in_channels, QWidget* parent=0);
+    M_stereomix(int p_in_channels, QWidget* parent=0, int id = 0);
 
     void generateCycle();
 

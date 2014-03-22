@@ -19,7 +19,7 @@ class M_mphlfo : public Module
     int mode;
         
   public:
-    M_mphlfo(QWidget* parent=0);
+    M_mphlfo(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

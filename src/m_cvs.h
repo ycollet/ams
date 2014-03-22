@@ -15,7 +15,7 @@ class M_cvs : public Module
     float cv[MODULE_CVS_CV_COUNT], cv_fine[MODULE_CVS_CV_COUNT];
                 
   public:
-    M_cvs(QWidget* parent=0);
+    M_cvs(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

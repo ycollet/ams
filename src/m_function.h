@@ -42,7 +42,7 @@ class M_function:public Module {
     float **inData;
 
   public:
-     M_function(int p_functionCount, QWidget * parent = 0);
+     M_function(int p_functionCount, QWidget * parent = 0, int id = 0);
 
     void generateCycle();
 

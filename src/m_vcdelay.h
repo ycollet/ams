@@ -40,7 +40,7 @@ class M_vcdelay : public Module
     float **inData, **delayData, **buf;       
                             
   public:
-    M_vcdelay(QWidget* parent=0);
+    M_vcdelay(QWidget* parent=0, int id = 0);
     ~M_vcdelay();
 
     void generateCycle();

@@ -43,7 +43,7 @@ class M_analogmemory : public Module
     int *lastwrite;
                             
   public:
-    M_analogmemory(QWidget* parent=0);
+    M_analogmemory(QWidget* parent=0, int id = 0);
     ~M_analogmemory();
 
     void generateCycle();

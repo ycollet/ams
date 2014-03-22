@@ -19,8 +19,8 @@
 #include "m_vcswitch.h"
 #include "port.h"
 
-M_vcswitch::M_vcswitch(QWidget* parent)
-  : Module(M_type_vcswitch, 3, parent, tr("VC Switch"))
+M_vcswitch::M_vcswitch(QWidget* parent, int id)
+  : Module(M_type_vcswitch, id, 3, parent, tr("VC Switch"))
 {
   QString qs;
 

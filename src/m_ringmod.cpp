@@ -19,8 +19,8 @@
 #include "m_ringmod.h"
 #include "port.h"
 
-M_ringmod::M_ringmod(QWidget* parent)
-  : Module(M_type_ringmod, 1, parent, tr("Ring Modulator"))
+M_ringmod::M_ringmod(QWidget* parent, int id)
+  : Module(M_type_ringmod, id, 1, parent, tr("Ring Modulator"))
 {
   QString qs;
 

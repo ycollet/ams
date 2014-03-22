@@ -20,7 +20,7 @@ class M_vcpanning : public Module
     int panMode;
                                     
   public:
-    M_vcpanning(QWidget* parent=0);
+    M_vcpanning(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

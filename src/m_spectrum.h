@@ -33,7 +33,7 @@ class M_spectrum : public Module
   Port *port_in[2];
 
 public:
-  M_spectrum(QWidget* parent=0);
+  M_spectrum(QWidget* parent=0, int id = 0);
 
   void generateCycle() {}
 };

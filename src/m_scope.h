@@ -26,7 +26,7 @@ class M_scope : public Module
     float **inData[2];
                             
   public:
-    M_scope(QWidget* parent=0);
+    M_scope(QWidget* parent=0, int id = 0);
     ~M_scope();
 
     void generateCycle();

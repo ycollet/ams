@@ -18,21 +18,21 @@
 size_t Module::portmemAllocated;
 Module::CtorVar Module::cv;
 
-Module::Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
-        const QString &name)
+
+Module::Module(M_typeEnum M_type, int id, int outPortCount,
+        QWidget* parent, const QString &name)
   : Box(parent, name)
   , alive(true)
   , connections(0)
+  , moduleID(id)
   , data(NULL)
   , cycleReady(false)
   , M_type(M_type)
   , outPortCount(outPortCount)
 {
   cv.reset();
-
-  synthdata->incModuleCount();
-  moduleID = synthdata->getModuleID();
   getColors();
+  //FIXME: module owner is modularsynth class
   synthdata->moduleList.append(this);
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH,
           MODULE_DEFAULT_HEIGHT);
@@ -471,19 +471,6 @@ void Module::decConnections()
 bool Module::hasModuleId(int id)
 {
     return (moduleID == id);
-}
-
-void Module::setModuleId(int id)
-{
-    QString qs, qs2;
-
-    if (moduleID != id) {
-        moduleID = id;
-        qs = configDialog->windowTitle();
-        qs2 = qs.left(qs.lastIndexOf(' '));
-        qs.sprintf(" %d", moduleID);
-        configDialog->setWindowTitle(qs2+qs);
-    }
 }
 
 MidiControllableBase* Module::getMidiControlableBase(int idx)

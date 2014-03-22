@@ -19,8 +19,8 @@
 #include "m_vcdoubledecay.h"
 #include "port.h"
 
-M_vcdoubledecay::M_vcdoubledecay(QWidget* parent)
-  : Module(M_type_vcdoubledecay, 1, parent, tr("VC Double Decay"))
+M_vcdoubledecay::M_vcdoubledecay(QWidget* parent, int id)
+  : Module(M_type_vcdoubledecay, id, 1, parent, tr("VC Double Decay"))
 {
   QString qs;
 

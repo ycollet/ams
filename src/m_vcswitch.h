@@ -14,7 +14,7 @@ class M_vcswitch : public Module
     Port *port_M_in[2], *port_M_cv, *port_out[2], *port_mix;
     
   public:
-    M_vcswitch(QWidget* parent=0);
+    M_vcswitch(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

@@ -8,8 +8,8 @@
 #include "port.h"
 
 
-M_pcmout::M_pcmout(QWidget* parent, int port)
-  : Module(M_type_pcmout, 0, parent, tr("PCM Out"))
+M_pcmout::M_pcmout(QWidget* parent, int port, int id)
+  : Module(M_type_pcmout, id, 0, parent, tr("PCM Out"))
 {
   QString qs;
 

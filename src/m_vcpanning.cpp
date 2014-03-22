@@ -19,8 +19,8 @@
 #include "m_vcpanning.h"
 #include "port.h"
 
-M_vcpanning::M_vcpanning(QWidget* parent)
-  : Module(M_type_vcpanning, 2, parent, tr("VC Panning"))
+M_vcpanning::M_vcpanning(QWidget* parent, int id)
+  : Module(M_type_vcpanning, id, 2, parent, tr("VC Panning"))
 {
   QString qs;
   int l1, l2;

@@ -18,8 +18,8 @@
 #include "port.h"
 
 
-M_advmcv::M_advmcv(QWidget* parent)
-  : Module(M_type_advmcv, 10, parent, tr("Advanced MCV"))
+M_advmcv::M_advmcv(QWidget* parent, int id)
+  : Module(M_type_advmcv, id, 10, parent, tr("Advanced MCV"))
 {
   QString qs;
   int l1, l2;

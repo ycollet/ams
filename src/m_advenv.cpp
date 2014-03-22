@@ -18,8 +18,8 @@
 #include "midicontrollable.h"
 
 
-M_advenv::M_advenv(QWidget* parent)
-  : Module(M_type_advenv, 2, parent, tr("Advanced ENV"))
+M_advenv::M_advenv(QWidget* parent, int id)
+  : Module(M_type_advenv, id, 2, parent, tr("Advanced ENV"))
 {
   QString qs;
 

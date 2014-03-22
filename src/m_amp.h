@@ -17,7 +17,7 @@ class M_amp : public Module
     float **inData;       
                             
   public:
-    M_amp(QWidget* parent=0);
+    M_amp(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

@@ -15,11 +15,10 @@ class M_vca : public Module
     Port *port_M_gain1, *port_M_in1, *port_M_gain2, *port_M_in2, *port_out;
     
   public: 
-    bool expMode;
-                            
-  public:
-    M_vca(bool p_expMode, QWidget* parent=0);
+    M_vca(bool p_expMode, QWidget* parent=0, int id = 0);
 
+    bool expMode;
+    
     void generateCycle();
 };
   

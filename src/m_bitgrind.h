@@ -42,7 +42,7 @@ class M_bitgrind : public Module
     float *sval;
     
   public:
-    M_bitgrind(QWidget* parent=0);
+    M_bitgrind(QWidget* parent=0, int id = 0);
     ~M_bitgrind();
 
     void generateCycle();

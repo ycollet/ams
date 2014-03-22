@@ -3,8 +3,8 @@
 #include "m_spectrum.h"
 
 
-M_spectrum::M_spectrum(QWidget* parent)
-  : Module(M_type_spectrum, 0, parent, tr("Spectrum"))
+M_spectrum::M_spectrum(QWidget* parent, int id)
+  : Module(M_type_spectrum, id, 0, parent, tr("Spectrum"))
 {
   QString qs;
 
@@ -45,7 +45,7 @@ M_spectrum::M_spectrum(QWidget* parent)
 #include "port.h"
 
 M_spectrum::M_spectrum(QWidget* parent, const char *name)
-              : Module(0, parent, name)
+              : Module(M_type_spectrum, id, 0, parent, name)
 {
   QString qs;
   Q3HBox *hbox1, *labelBox;

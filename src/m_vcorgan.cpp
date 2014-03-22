@@ -5,8 +5,8 @@
 #include "m_vcorgan.h"
 #include "port.h"
 
-M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent)
-  : Module(M_type_vcorgan, 1, parent, tr("VC Organ"))
+M_vcorgan::M_vcorgan(int p_oscCount, QWidget* parent, int id)
+  : Module(M_type_vcorgan, id, 1, parent, tr("VC Organ"))
 {
   QString qs;
   int l1, l2;

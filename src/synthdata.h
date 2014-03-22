@@ -97,8 +97,6 @@ class SynthData: public QObject
     unsigned int cyclesize;
     snd_pcm_uframes_t periodsize;
     int periods;
-    int moduleCount;
-    int moduleID;
 
     QList<class M_wavout *> wavoutModuleList;
     QList<class M_midiout *> midioutModuleList;
@@ -192,10 +190,6 @@ public:
 
   float exp_table(float x);
   float exp2_table(float ) FATTR_FLOAT_ARG;
-  int incModuleCount();
-  int decModuleCount();
-  int getModuleCount();
-  int getModuleID();
   int getLadspaIDs(QString setName, QString pluginName, int *index, int *n);
 
   int find_capt_mod(void *);

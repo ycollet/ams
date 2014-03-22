@@ -11,7 +11,9 @@ class M_vcdoubledecay : public Module
 {
     Q_OBJECT
 
-    Port *port_M_gate, *port_M_retrigger, *port_M_attack, *port_M_decay, *port_M_sustain, *port_M_ratio, *port_M_release, *port_out;
+    Port *port_M_gate, *port_M_retrigger, *port_M_attack,
+         *port_M_decay, *port_M_sustain, *port_M_ratio,
+         *port_M_release, *port_out;
     
   public: 
     float **gateData, **retriggerData, **attackData, **decayData, **sustainData, **releaseData, **ratioData;        
@@ -21,7 +23,7 @@ class M_vcdoubledecay : public Module
     PolyArr<bool> noteActive, gate, retrigger;
                                     
   public:
-    M_vcdoubledecay(QWidget* parent=0);
+    M_vcdoubledecay(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

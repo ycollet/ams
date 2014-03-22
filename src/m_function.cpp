@@ -20,8 +20,8 @@
 #include "port.h"
 
 
-M_function::M_function(int p_functionCount, QWidget * parent)
-:Module(M_type_function, p_functionCount, parent, tr("Function"))
+M_function::M_function(int p_functionCount, QWidget * parent, int id)
+:Module(M_type_function, id, p_functionCount, parent, tr("Function"))
 {
     QString qs;
     QHBoxLayout *hbox;

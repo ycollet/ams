@@ -23,8 +23,8 @@
 
 
 M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
-        bool poly, bool extCtrlPorts)
-  : Module(M_type_ladspa, 0, parent, QString(poly ? tr("Poly ") : "")
+        bool poly, bool extCtrlPorts, int id)
+  : Module(M_type_ladspa, id, 0, parent, QString(poly ? tr("Poly ") : "")
           + synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n)->Label)
   , ladspa_dsc(synthdata->ladspaLib.at(ladspaDesFuncIndex).desc.at(n))
   , ladspaPoly(poly ? synthdata->poly : 1)

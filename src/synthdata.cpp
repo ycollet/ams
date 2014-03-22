@@ -75,8 +75,6 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
   periods = 0;
   periodsize = 0;
   cyclesize = 0;
-  moduleCount = 0;
-  moduleID = 0;
   doSynthesis = false;
   sustainFlag = false;
   midiChannel = -1;
@@ -216,28 +214,6 @@ SynthData::~SynthData()
     delete (guiWidget);
 }
 
-int SynthData::incModuleCount() {
-
-  moduleCount++;
-  moduleID++;
-  return(0);
-}
-
-int SynthData::decModuleCount() {
-
-  moduleCount--;
-  return(0);
-}
-
-int SynthData::getModuleCount() {
-
-  return(moduleCount);
-}
-
-int SynthData::getModuleID() {
-
-  return moduleID;
-}
 
 int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int *n)
 {
@@ -263,14 +239,16 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
           break;
         }
         if (pluginName == qsn.trimmed()) {
-          subID2Name = l2;                            // No break to give the priority to "Label"
+            // No break to give the priority to "Label"
+            subID2Name = l2;
         }
       }
       break;
     }
 
   *index = subID1;
-  *n = (subID2Label < 0) ? subID2Name : subID2Label; // Use "Name" only if no match for "Label"
+  // Use "Name" only if no match for "Label"
+  *n = (subID2Label < 0) ? subID2Name : subID2Label;
   return( (subID1 >= 0) && ( (subID2Name >= 0) || (subID2Label >= 0) ) );
 }
 
@@ -751,16 +729,22 @@ void SynthData::call_modules(void)
 
   for (i = 0; i < wavoutModuleList.count(); i++)
     wavoutModuleList.at(i)->generateCycle();
+  
   for (i = 0; i < scopeModuleList.count(); i++)
     scopeModuleList.at(i)->generateCycle();
+
 #ifdef OUTDATED_CODE
   for (i = 0; i < spectrumModuleList.count(); i++)
     spectrumModuleList.at(i)->generateCycle();
 #endif
+
   for (i = 0; i < midioutModuleList.count(); i++)
     midioutModuleList.at(i)->generateCycle();
+
+  //FIXME: moduleList is member of modularsynth class
   for (i = 0; i < moduleList.count(); i++)
     moduleList.at(i)->cycleReady = false;
+  
   for (i = 0; i < poly; i++) {
     noteCounter[i]++;
     if (noteCounter[i] > 1000000000)

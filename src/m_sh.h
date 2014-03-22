@@ -20,7 +20,7 @@ class M_sh : public Module
     float **inData, **trigData;       
                             
   public:
-    M_sh(QWidget* parent=0);
+    M_sh(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

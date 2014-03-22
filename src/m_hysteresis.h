@@ -38,7 +38,7 @@ class M_hysteresis : public Module
     float center, overlap, lowslope, lowoffset, highslope, highoffset;
                             
   public:
-    M_hysteresis(QWidget* parent=0);
+    M_hysteresis(QWidget* parent=0, int id = 0);
     ~M_hysteresis();
 
     void generateCycle();

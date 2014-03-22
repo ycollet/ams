@@ -25,8 +25,8 @@
 #include "midicontrollable.h"
 #include "port.h"
 
-M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname)
-  : Module(M_type_scmcv, 4, parent, tr("Scala MCV"))
+M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname, int id)
+  : Module(M_type_scmcv, id, 4, parent, tr("Scala MCV"))
 {
   QString qs;
   int l1;

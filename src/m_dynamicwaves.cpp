@@ -17,8 +17,8 @@
 #include "midicontrollable.h"
 
 
-M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent)
-  : Module(M_type_dynamicwaves, 1, parent,
+M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, int id)
+  : Module(M_type_dynamicwaves, id, 1, parent,
           tr("DynamicWaves %1").arg(p_oscCount))
 {
   QString qs;

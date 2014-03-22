@@ -98,8 +98,8 @@ float M_vocoder::windowcurve (int windowfunc, int len, int elem, float alpha)
   return (out);
 }
 
-M_vocoder::M_vocoder(QWidget* parent)
-  : Module(M_type_vocoder, 5, parent, tr("FFT Vocoder"))
+M_vocoder::M_vocoder(QWidget* parent, int id)
+  : Module(M_type_vocoder, id, 5, parent, tr("FFT Vocoder"))
 {
   QString  qs;
   int l1;

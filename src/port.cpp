@@ -13,17 +13,17 @@
 #include "main.h"
 
 
-Port::Port(const QString &p_portName, dirType dir, int p_index,
+Port::Port(const QString &p_portName, dirType p_dir, int p_index,
         Module *parent)
            : QWidget(parent)
+	   , portName(p_portName)
 	   , portNameWidth(0)
            , highlighted(false)
-	   , dir(dir)
+	   , dir(p_dir)
+	   , module(parent)
+	   , index(p_index)
 	   , colorFont(synthdata->colorPortFont)
 {
-  module = parent;
-  portName = p_portName;
-
   if (dir == PORT_IN)
     outTypeAcceptList.append(outType_audio);
   else
@@ -31,7 +31,6 @@ Port::Port(const QString &p_portName, dirType dir, int p_index,
 
   jackColor = synthdata->colorJack;
   cableColor = synthdata->colorCable;
-  index = p_index;
   portNameWidth = QFontMetrics(QFont(synthdata->smallFont,
               this)).boundingRect(p_portName).width();
   int width = 10 + portNameWidth;

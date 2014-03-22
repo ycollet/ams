@@ -41,8 +41,8 @@
 #include "m_v8sequencer.h"
 #include "port.h"
 
-M_v8sequencer::M_v8sequencer(QWidget* parent)
-  : Module(M_type_v8sequencer, 18, parent, tr("V8 Seq"))
+M_v8sequencer::M_v8sequencer(QWidget* parent, int id)
+  : Module(M_type_v8sequencer, id, 18, parent, tr("V8 Seq"))
 {
   QString qs;
 

@@ -20,8 +20,8 @@
 #include "port.h"
 
 
-M_midiout::M_midiout(QWidget* parent)
-  : Module(M_type_midiout, 0, parent, tr("Midi Out"))
+M_midiout::M_midiout(QWidget* parent, int id)
+  : Module(M_type_midiout, id, 0, parent, tr("Midi Out"))
 {
   QString qs;
   int l1, l2;

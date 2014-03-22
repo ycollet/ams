@@ -13,8 +13,8 @@
 #include "m_vcf.h"
 #include "port.h"
 
-M_vcf::M_vcf(QWidget* parent)
-  : Module(M_type_vcf, 1, parent, tr("VCF"))
+M_vcf::M_vcf(QWidget* parent, int id)
+  : Module(M_type_vcf, id, 1, parent, tr("VCF"))
   , vcfType(VCF_LR)
   , vcfTypeUsed(-1)
 {

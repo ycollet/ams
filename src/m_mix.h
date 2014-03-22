@@ -22,7 +22,7 @@ class M_mix : public Module
     int in_channels;
                             
   public:
-    M_mix(int p_in_channels, QWidget* parent=0);
+    M_mix(int p_in_channels, QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

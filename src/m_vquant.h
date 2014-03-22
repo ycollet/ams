@@ -16,7 +16,7 @@ class M_vquant : public Module
     float gain;
                                 
   public:
-    M_vquant(QWidget* parent=0);
+    M_vquant(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

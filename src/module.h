@@ -85,26 +85,29 @@ class MidiControllableBase;
 
 class Module : public Box
 {
-  Q_OBJECT
-  bool alive;
-  int connections;
-  QList<Port*> portList;
+    Q_OBJECT
+
+    bool alive;
+    int connections;
+    QList<Port*> portList;
 
 protected:
     virtual ~Module();
 
 public: 
+    Module(M_typeEnum M_type, int id, int outPortCount, QWidget* parent,
+	   const QString &name);
+
+    int moduleID;
     ConfigDialog *configDialog;
     float ***data; 
     bool cycleReady;
     M_typeEnum M_type;  
     QList<MidiControllableBase*> midiControllables;
-    int moduleID, outPortCount;
+    int outPortCount;
     QColor colorBackground, colorBorder, colorFont;
     static size_t portmemAllocated;
 
-    Module(M_typeEnum M_type, int outPortCount, QWidget* parent,
-	   const QString &name);
     void Delete();
     bool isAlive() {
 	return alive;
@@ -124,7 +127,6 @@ public:
     float **getData(int);
     void showConfigDialog(const QPoint&);
     bool hasModuleId(int);
-    void setModuleId(int);
     MidiControllableBase * getMidiControlableBase(int);
     Port* getPortAt(int);
     Port* getPortWithIndex(int);

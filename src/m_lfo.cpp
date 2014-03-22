@@ -40,8 +40,8 @@
 
 */
 
-M_lfo::M_lfo(QWidget* parent)
-  : Module(M_type_lfo, 6, parent, tr("LFO"))
+M_lfo::M_lfo(QWidget* parent, int id)
+  : Module(M_type_lfo, id, 6, parent, tr("LFO"))
   , wave_period((double)synthdata->rate / (16.0 * freq))
   , sa(-1)
   , dt(4.0 / wave_period)

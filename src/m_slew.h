@@ -18,7 +18,7 @@ class M_slew : public Module
     float **inData;       
                             
   public:
-    M_slew(QWidget* parent=0);
+    M_slew(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

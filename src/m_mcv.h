@@ -18,7 +18,7 @@ class M_mcv : public Module
     int  pitch, channel;
                 
   public:
-    M_mcv(QWidget* parent=0);
+    M_mcv(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

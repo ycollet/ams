@@ -18,7 +18,7 @@ class M_pcmin : public Module
     float *pcmdata[2];
                             
   public:
-    M_pcmin(QWidget* parent, int port);
+    M_pcmin(QWidget* parent, int port, int id = 0);
     ~M_pcmin();
 
     void generateCycle();

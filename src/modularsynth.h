@@ -40,30 +40,35 @@ class ModularSynth : public QWidget
 {
   Q_OBJECT
 
-    QList<Module*> listModule;
-    QList<class TextEdit*> listTextEdit;
-    connectorStyleType connectorStyle;    
     Port *selectedPort;
-    QSocketNotifier *seqNotifier;
-    LadspaDialog *ladspaDialog;
-    MidiWidget *midiWidget;
-    class GuiWidget *guiWidget;
-    bool loadingPatch;
+    connectorStyleType connectorStyle;    
+    bool modified;
+    bool enablemodulegrid;
+    bool paintFastly;
     QString cname;
     QString pname;
     unsigned int fsamp;
     snd_pcm_uframes_t frsize;
     unsigned int nfrags;
-    int   ncapt;
-    int   nplay;
-    int   verbose;
-    bool paintFastly;
+    int ncapt;
+    int nplay;
+    int verbose;
     double _zoomFactor;
     QPoint newBoxPos;
     QPoint lastMousePos;
-    bool enablemodulegrid;
     int modulegrid;
+    QWidget* dragWidget;
+    int nextmoduleid;
+    PopupMenu* portPopup;
+    QList<Module*> listModule;
+    QList<class TextEdit*> listTextEdit;
+    QSocketNotifier *seqNotifier;
+    LadspaDialog *ladspaDialog;
+    MidiWidget *midiWidget;
+    class GuiWidget *guiWidget;
 
+    Module* getModuleWithId(int);
+    TextEdit* getTextEditAt(int);
     void initNewModule(Module *m);
     snd_pcm_t *open_pcm(bool openCapture);
     snd_seq_t *open_seq(); 
@@ -78,6 +83,59 @@ class ModularSynth : public QWidget
     void new_textEdit(int w, int h);
     void showContextMenu(const QPoint&);
             
+    void add_vco(int id);
+    void add_vco2(int id);
+    void add_vca_exp(int id);
+    void add_vca_lin(int id);
+    void add_vcf(int id);
+    void add_lfo(int id);
+    void add_mphlfo(int id);
+    void add_noise(int id);
+    void add_noise2(int id);
+    void add_delay(int id);
+    void add_seq(int seqLen, int id);
+    void add_env(int id);
+    void add_vcenv(int id);
+    void add_vcenv2(int id);
+    void add_vcdoubledecay(int id);
+    void add_vcpanning(int id);
+    void add_advenv(int id);
+    void add_mcv(int id);
+    void add_advmcv(int id);
+    void add_scmcv(QString *p_scalaName, int id);
+    void add_ringmod(int id);
+    void add_inv(int id);
+    void add_amp(int id);
+    void add_vquant(int id);
+    void add_conv(int id);
+    void add_sh(int id);
+    void add_vcswitch(int id);
+    void add_cvs(int id);
+    void add_slew(int id);
+    void add_quantizer(int id);
+    void add_scquantizer(QString *p_scalaName, int id);
+    void add_ad(int outCount, int id);
+    void add_mix(int in_channels, int id);
+    void add_function(int functionCount, int id);
+    void add_stereomix(int in_channels, int id);
+    void add_vcorgan(int oscCount, int id);
+    void add_dynamicwaves(int oscCount, int id);
+    void add_ladspa(int p_ladspaDesFuncIndex, int n,
+        bool p_newLadspaPoly, bool p_extCtrlPorts, int id);
+    void add_pcmout(int id);
+    void add_pcmin(int id);
+    void add_wavout(int id);
+    void add_midiout(int id);
+    void add_scope(int id);
+    void add_spectrum(int id);
+    void add_v8sequencer(int id);
+    void add_analogmemory(int id);
+    void add_bitgrind(int id);
+    void add_hysteresis(int id);
+    void add_vcdelay(int id);
+    void add_vocoder(int id);
+
+
 public:
     ModularSynth(QWidget* parent, const ModularSynthOptions&);
     ~ModularSynth();
@@ -124,7 +182,7 @@ public:
     void loadPreference(QString&);
     void savePreferences(QTextStream&);
 
-  protected:
+protected:
     class QAbstractScrollArea *scrollArea() {
       return (QAbstractScrollArea *)parent();
     }
@@ -133,14 +191,7 @@ public:
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void mouseMoveEvent(QMouseEvent*);
 
-  private:
-    QWidget* dragWidget;
-    bool modified;
-    PopupMenu* portPopup;
-    Module* getModuleWithId(int);
-    TextEdit* getTextEditAt(int);
-    
-  public slots: 
+public slots: 
     void displayMidiController();
     void displayParameterView();
     void displayLadspaPlugins();

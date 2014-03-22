@@ -608,7 +608,7 @@ void MidiWidget::addModule(Module *m)
 void MidiWidget::removeModule(Module *m)
 {
     synthdata->moduleList.removeAll(m);
-    synthdata->decModuleCount();
+    //synthdata->decModuleCount();
 
     int row = moduleModel.list.indexOf(m);
     if (row == -1)

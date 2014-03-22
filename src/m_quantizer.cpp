@@ -19,8 +19,8 @@
 #include "m_quantizer.h"
 #include "port.h"
 
-M_quantizer::M_quantizer(QWidget* parent)
-  : Module(M_type_quantizer, 2, parent, tr("Quantizer"))
+M_quantizer::M_quantizer(QWidget* parent, int id)
+  : Module(M_type_quantizer, id, 2, parent, tr("Quantizer"))
 {
   QString qs;
   int l1;

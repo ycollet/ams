@@ -25,7 +25,7 @@ class M_pcmout : public Module
     float *pcmdata[2];
                             
   public:
-    M_pcmout(QWidget* parent, int port);
+    M_pcmout(QWidget* parent, int port, int id = 0);
     ~M_pcmout();
 
     void generateCycle();

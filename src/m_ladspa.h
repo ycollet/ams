@@ -40,8 +40,8 @@ private:
   QPixmap logo;
     
 public:
-  M_ladspa(QWidget* parent, int ladspaDesFuncIndex,
-	   int p_n=0, bool poly = false, bool extCtrlPorts = false);
+  M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int p_n=0,
+          bool poly = false, bool extCtrlPorts = false, int id = 0);
   ~M_ladspa();
 
   void generateCycle();

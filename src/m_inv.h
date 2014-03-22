@@ -16,7 +16,7 @@ class M_inv : public Module
     float **inData;       
                             
   public:
-    M_inv(QWidget* parent=0);
+    M_inv(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

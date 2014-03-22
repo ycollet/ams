@@ -18,8 +18,8 @@
 #include "m_seq.h"
 #include "port.h"
 
-M_seq::M_seq(int p_seqLen, QWidget* parent)
-  : Module(M_type_seq, 4, parent, tr("SEQ"))
+M_seq::M_seq(int p_seqLen, QWidget* parent, int id)
+  : Module(M_type_seq, id, 4, parent, tr("SEQ"))
   , tickFrames(0)
   , tickFramesRemain(0)
 {

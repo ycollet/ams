@@ -19,8 +19,8 @@
 #include "m_slew.h"
 #include "port.h"
 
-M_slew::M_slew(QWidget* parent)
-  : Module(M_type_slew, 1, parent, tr("Slew Limiter"))
+M_slew::M_slew(QWidget* parent, int id)
+  : Module(M_type_slew, id, 1, parent, tr("Slew Limiter"))
 {
   QString qs;
 

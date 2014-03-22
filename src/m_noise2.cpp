@@ -19,8 +19,8 @@
 #include "port.h"
 
 
-M_noise2::M_noise2(QWidget* parent)
-  : Module(M_type_noise2, 1, parent, tr("Noise2"))
+M_noise2::M_noise2(QWidget* parent, int id)
+  : Module(M_type_noise2, id, 1, parent, tr("Noise2"))
 {
   QString qs;
   int l2;

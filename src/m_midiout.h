@@ -20,7 +20,7 @@ class M_midiout : public Module
     float **inData[2], **triggerData;
                             
   public:
-    M_midiout(QWidget* parent=0);
+    M_midiout(QWidget* parent=0, int id = 0);
     ~M_midiout();
 
     void generateCycle();

@@ -22,10 +22,11 @@ class M_lfo : public Module
     dt;
   PolyArr<int> state;
   PolyArr<bool> trigger;
-  Port *port_M_trigger, *port_sine, *port_tri, *port_sawup, *port_sawdown, *port_rect, *port_sh;
+  Port *port_M_trigger, *port_sine, *port_tri, *port_sawup,
+       *port_sawdown, *port_rect, *port_sh;
                                 
 public:
-  M_lfo(QWidget* parent=0);
+  M_lfo(QWidget* parent=0, int id = 0);
 
   void generateCycle();
 };

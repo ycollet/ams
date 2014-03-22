@@ -19,8 +19,8 @@
 #include "m_sh.h"
 #include "port.h"
 
-M_sh::M_sh(QWidget* parent)
-  : Module(M_type_sh, 2, parent, tr("Sample & Hold"))
+M_sh::M_sh(QWidget* parent, int id)
+  : Module(M_type_sh, id, 2, parent, tr("Sample & Hold"))
 {
   QString qs;
 

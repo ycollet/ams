@@ -19,8 +19,8 @@
 #include "m_delay.h"
 #include "port.h"
 
-M_delay::M_delay(QWidget* parent)
-  : Module(M_type_delay, 1, parent, tr("Delay"))
+M_delay::M_delay(QWidget* parent, int id)
+  : Module(M_type_delay, id, 1, parent, tr("Delay"))
 {
   QString qs;
   int l1;

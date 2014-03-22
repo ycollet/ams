@@ -38,8 +38,8 @@
 #include "port.h"
 
 
-M_vcdelay::M_vcdelay(QWidget* parent)
-    : Module(M_type_vcdelay, 1, parent, tr("VC Delay"))
+M_vcdelay::M_vcdelay(QWidget* parent, int id)
+    : Module(M_type_vcdelay, id, 1, parent, tr("VC Delay"))
 {
     QString qs;
     int l1;

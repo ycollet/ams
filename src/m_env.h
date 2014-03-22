@@ -22,7 +22,7 @@ class M_env : public Module
     float **gateData, **retriggerData;
                 
   public:
-    M_env(QWidget* parent=0);
+    M_env(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

@@ -5,8 +5,8 @@
 #include "m_vco2.h"
 #include "port.h"
 
-M_vco2::M_vco2(QWidget* parent)
-  : Module(M_type_vco2, 1, parent, tr("VCO2"))
+M_vco2::M_vco2(QWidget* parent, int id)
+  : Module(M_type_vco2, id, 1, parent, tr("VCO2"))
 {
   QString qs;
 

@@ -25,8 +25,8 @@
 #include "m_scquantizer.h"
 #include "port.h"
 
-M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname)
-  : Module(M_type_scquantizer, 2, parent, tr("Scala Quantizer"))
+M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname, int id)
+  : Module(M_type_scquantizer, id, 2, parent, tr("Scala Quantizer"))
 {
   QString qs;
   int l1;

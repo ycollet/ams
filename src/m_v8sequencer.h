@@ -74,7 +74,7 @@ class M_v8sequencer : public Module
       out3[MODULE_V8SEQUENCER_STATES], sticky3[MODULE_V8SEQUENCER_STATES];
                             
   public:
-    M_v8sequencer(QWidget* parent=0);
+    M_v8sequencer(QWidget* parent=0, int id = 0);
     ~M_v8sequencer();
 
     void generateCycle();

@@ -19,7 +19,7 @@ class M_delay : public Module
     float **inData, **buf;       
                             
   public:
-    M_delay(QWidget* parent=0);
+    M_delay(QWidget* parent=0, int id = 0);
     ~M_delay();
 
     void generateCycle();

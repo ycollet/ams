@@ -17,7 +17,7 @@ class M_noise : public Module
     double randmax;
 
   public:
-    M_noise(QWidget* parent=0);
+    M_noise(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };

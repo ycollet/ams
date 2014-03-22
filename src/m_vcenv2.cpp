@@ -19,8 +19,8 @@
 #include "m_vcenv2.h"
 #include "port.h"
 
-M_vcenv2::M_vcenv2(QWidget* parent)
-  : Module(M_type_vcenv2, 1, parent, tr("VC Envelope II"))
+M_vcenv2::M_vcenv2(QWidget* parent, int id)
+  : Module(M_type_vcenv2, id, 1, parent, tr("VC Envelope II"))
 {
   QString qs;
 

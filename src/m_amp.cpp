@@ -19,8 +19,8 @@
 #include "m_amp.h"
 #include "port.h"
 
-M_amp::M_amp(QWidget* parent)
-  : Module(M_type_amp, 1, parent, tr("Amplifier"))
+M_amp::M_amp(QWidget* parent, int id)
+  : Module(M_type_amp, id, 1, parent, tr("Amplifier"))
 {
   QString qs;
 

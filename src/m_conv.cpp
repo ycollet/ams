@@ -21,8 +21,8 @@
 #include "m_conv.h"
 #include "port.h"
 
-M_conv::M_conv(QWidget* parent)
-  : Module(M_type_conv, 1, parent, tr("Converter"))
+M_conv::M_conv(QWidget* parent, int id)
+  : Module(M_type_conv, id, 1, parent, tr("Converter"))
 {
   QString qs;
 

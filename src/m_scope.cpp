@@ -24,8 +24,8 @@
 #include "port.h"
 
 
-M_scope::M_scope(QWidget* parent)
-  : Module(M_type_scope, 0, parent, tr("Scope"))
+M_scope::M_scope(QWidget* parent, int id)
+  : Module(M_type_scope, id, 0, parent, tr("Scope"))
 {
   QString qs;
   QHBoxLayout *hbox;

@@ -37,8 +37,8 @@
 #include "m_bitgrind.h"
 #include "port.h"
 
-M_bitgrind::M_bitgrind(QWidget* parent)
-  : Module(M_type_bitgrind, 1, parent, tr("Bit Grinder"))
+M_bitgrind::M_bitgrind(QWidget* parent, int id)
+  : Module(M_type_bitgrind, id, 1, parent, tr("Bit Grinder"))
 {
   QString qs;
 

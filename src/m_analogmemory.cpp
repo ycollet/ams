@@ -46,8 +46,8 @@
 #include "m_analogmemory.h"
 #include "port.h"
 
-M_analogmemory::M_analogmemory(QWidget* parent)
-  : Module(M_type_analogmemory, 1, parent, tr("Analog Mem"))
+M_analogmemory::M_analogmemory(QWidget* parent, int id)
+  : Module(M_type_analogmemory, id, 1, parent, tr("Analog Mem"))
 {
   QString qs;
   int l1;

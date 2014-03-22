@@ -29,7 +29,7 @@ class M_ad : public Module
     float **inData;
                             
   public:
-    M_ad(int p_outCount, QWidget* parent=0);
+    M_ad(int p_outCount, QWidget* parent=0, int id = 0);
 
     void generateCycle();
 

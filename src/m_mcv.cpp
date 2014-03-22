@@ -20,8 +20,8 @@
 #include "m_mcv.h"
 #include "port.h"
 
-M_mcv::M_mcv(QWidget* parent)
-  : Module(M_type_mcv, 4, parent, tr("MCV"))
+M_mcv::M_mcv(QWidget* parent, int id)
+  : Module(M_type_mcv, id, 4, parent, tr("MCV"))
 {
   QString qs;
   int l1;

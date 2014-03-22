@@ -69,7 +69,7 @@ class M_vocoder : public Module
 
   public:
     float windowcurve (int windowfunc, int len, int elem, float alpha );
-    M_vocoder(QWidget* parent=0);
+    M_vocoder(QWidget* parent=0, int id = 0);
     ~M_vocoder();
     void generateCycle();
 };

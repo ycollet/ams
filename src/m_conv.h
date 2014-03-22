@@ -17,7 +17,7 @@ class M_conv : public Module
     float **inData;       
                             
   public:
-    M_conv(QWidget* parent=0);
+    M_conv(QWidget* parent=0, int id = 0);
 
     void generateCycle();
 };
