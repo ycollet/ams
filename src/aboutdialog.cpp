@@ -97,7 +97,7 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
             "(C) 2003 Fons Adriaensen\n"
             "(C) 2007 Malte Steiner\n"
             "(C) 2007-2011 Karsten Wiese\n"
-            "(C) 2008-2012 Guido Scholz\n"
+            "(C) 2008-2014 Guido Scholz\n"
             );
 
     authorsLayout->addWidget(authorslist);
