@@ -4418,12 +4418,12 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="256"/>
         <source>Module position</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulposition</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="263"/>
-        <source>&amp;Grid mesh size</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Grid mesh size [pixels]</source>
+        <translation>&amp;Gitterraster [Pixel]</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="286"/>
@@ -4438,7 +4438,7 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="237"/>
         <source>Module movement</source>
-        <translation type="unfinished"></translation>
+        <translation>Module verschieben</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="126"/>
@@ -4458,12 +4458,12 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="259"/>
         <source>Enable module &amp;position grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul&amp;positionsraster aktivieren</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="270"/>
         <source>Valid mesh size range is %1 to %2 pixel</source>
-        <translation type="unfinished"></translation>
+        <translation>Gültige Rasterwerte sind von %1 bis %2 Pixel</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="298"/>

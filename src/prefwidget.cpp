@@ -260,7 +260,7 @@ void PrefWidget::setupEditingTab()
     connect(enableGrid, SIGNAL(toggled(bool)),
             this, SLOT(enableGridToggled(bool)));
 
-    gridMeshLabel = new QLabel(tr("&Grid mesh size"));
+    gridMeshLabel = new QLabel(tr("&Grid mesh size [pixels]"));
     gridMeshEditline = new QLineEdit();
     gridMeshEditline->setMaxLength(3);
     QIntValidator* meshValidator = new QIntValidator(2, 200,  //MAGIC

@@ -4351,6 +4351,11 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../prefwidget.cpp" line="263"/>
+        <source>&amp;Grid mesh size [pixels]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../prefwidget.cpp" line="286"/>
         <source>&amp;Remember window geometry</source>
         <translation>&amp;Garder la géométrie de la fenêtre en mémoire</translation>
@@ -4442,9 +4447,8 @@ Save changes?</source>
         <translation>Activer la grille de &amp;position des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="263"/>
         <source>&amp;Grid mesh size</source>
-        <translation>Taille de la &amp;grille</translation>
+        <translation type="obsolete">Taille de la &amp;grille</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="270"/>
