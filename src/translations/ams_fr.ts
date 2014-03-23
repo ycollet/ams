@@ -4334,13 +4334,13 @@ Save changes?</source>
 <context>
     <name>Port</name>
     <message>
-        <location filename="../port.cpp" line="337"/>
-        <location filename="../port.cpp" line="340"/>
+        <location filename="../port.cpp" line="343"/>
+        <location filename="../port.cpp" line="346"/>
         <source>&amp;Disconnect</source>
         <translation type="unfinished">&amp;Déconnecter</translation>
     </message>
     <message>
-        <location filename="../port.cpp" line="347"/>
+        <location filename="../port.cpp" line="353"/>
         <source>&amp;%1 (ID %2) %3</source>
         <translation type="unfinished"></translation>
     </message>
