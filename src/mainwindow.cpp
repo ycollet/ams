@@ -62,7 +62,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   QMenu *filePopup = menuBar()->addMenu(tr("&File"));
   QMenu *synthesisPopup = menuBar()->addMenu(tr("&Synthesis"));
   QMenu *modulePopup = menuBar()->addMenu(tr("&Module"));
-  QMenu *midiMenu = menuBar()->addMenu(tr("&View"));
+  QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
   QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
   QMenu *newModulePopup = modulePopup->addMenu(tr("&New"));
@@ -261,11 +261,11 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   modulePopup->addAction(tr("&Show Ladspa Browser..."), modularSynth,
           SLOT(displayLadspaPlugins()));
 
-  midiMenu->addAction(tr("&Control Center..."), modularSynth,
+  viewMenu->addAction(tr("&Control Center..."), modularSynth,
           SLOT(displayMidiController()));
-  midiMenu->addAction(tr("&Parameter View..."), modularSynth,
+  viewMenu->addAction(tr("&Parameter View..."), modularSynth,
           SLOT(displayParameterView()));
-  midiMenu->addAction(tr("Pre&ferences..."), this,
+  viewMenu->addAction(tr("Pre&ferences..."), this,
           SLOT(displayPreferences()));
 
   helpMenu->addAction(tr("&About AlsaModularSynth..."), this,
