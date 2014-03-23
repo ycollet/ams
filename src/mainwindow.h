@@ -57,6 +57,7 @@ private slots:
     void setupRecentFilesMenu();
     void applyPreferences();
     void displayPreferences();
+    void viewFullscreen();
 
 #ifdef JACK_SESSION
 public slots:

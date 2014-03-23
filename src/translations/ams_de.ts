@@ -3926,70 +3926,75 @@ and effect processor.</source>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="271"/>
+        <source>&amp;Full screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="274"/>
         <source>&amp;About AlsaModularSynth...</source>
         <translation>&amp;Über AlsaModularSynth...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="387"/>
+        <location filename="../mainwindow.cpp" line="390"/>
         <source>Unnamed file was changed.
 Save changes?</source>
         <translation>Die unbenannte Datei wurde geändert.
 Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="389"/>
+        <location filename="../mainwindow.cpp" line="392"/>
         <source>File &apos;%1&apos; was changed.
 Save changes?</source>
         <translation>Die Datei &apos;%1&apos; wurde geändert.
 Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="395"/>
         <source>Save changes</source>
         <translation>Änderungen speichern</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="400"/>
+        <location filename="../mainwindow.cpp" line="403"/>
         <source>Open patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="413"/>
+        <location filename="../mainwindow.cpp" line="416"/>
         <source>Open demo patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="426"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Open demo instrument file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="502"/>
+        <location filename="../mainwindow.cpp" line="505"/>
         <source>Could not read file &apos;%1&apos;</source>
         <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="534"/>
+        <location filename="../mainwindow.cpp" line="537"/>
         <source>Could not open file &apos;%1&apos;</source>
         <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="552"/>
+        <location filename="../mainwindow.cpp" line="555"/>
         <source>Save patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="566"/>
+        <location filename="../mainwindow.cpp" line="569"/>
         <source>Saving aborted</source>
         <translation>Speichern abgebrochen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="575"/>
+        <location filename="../mainwindow.cpp" line="578"/>
         <source>noname</source>
         <translation>unbenannt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="273"/>
+        <location filename="../mainwindow.cpp" line="276"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
@@ -4014,15 +4019,15 @@ Save changes?</source>
         <translation>&amp;Kommentar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="401"/>
-        <location filename="../mainwindow.cpp" line="414"/>
-        <location filename="../mainwindow.cpp" line="427"/>
-        <location filename="../mainwindow.cpp" line="553"/>
+        <location filename="../mainwindow.cpp" line="404"/>
+        <location filename="../mainwindow.cpp" line="417"/>
+        <location filename="../mainwindow.cpp" line="430"/>
+        <location filename="../mainwindow.cpp" line="556"/>
         <source>AlsaModularSynth patch files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="590"/>
+        <location filename="../mainwindow.cpp" line="593"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>
@@ -4479,12 +4484,12 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="301"/>
+        <location filename="../mainwindow.cpp" line="304"/>
         <source>Preset path now %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="310"/>
+        <location filename="../mainwindow.cpp" line="313"/>
         <source>Loading preset %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4589,12 +4594,12 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="325"/>
+        <location filename="../mainwindow.cpp" line="328"/>
         <source>Closing synthesizer...</source>
         <translation>Schließe Synthesizer...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="333"/>
+        <location filename="../mainwindow.cpp" line="336"/>
         <source>Could not unlock preferences file.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -267,6 +267,9 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
           SLOT(displayParameterView()));
   viewMenu->addAction(tr("Pre&ferences..."), this,
           SLOT(displayPreferences()));
+  viewMenu->addSeparator();
+  viewMenu->addAction(tr("&Full screen"), this,
+          SLOT(viewFullscreen()), Qt::Key_F11);
 
   helpMenu->addAction(tr("&About AlsaModularSynth..."), this,
           SLOT(helpAboutAms()));
@@ -815,4 +818,9 @@ void MainWindow::helpAboutAms()
 
     ad->exec();
     delete ad;
+}
+
+void MainWindow::viewFullscreen()
+{
+    setWindowState(windowState() ^ Qt::WindowFullScreen);
 }
