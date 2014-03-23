@@ -78,7 +78,7 @@ and effect processor.</source>
     <name>LadspaDialog</name>
     <message>
         <location filename="../ladspadialog.cpp" line="89"/>
-        <source>Ladspa Browser</source>
+        <source>LADSPA Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -120,9 +120,13 @@ and effect processor.</source>
 <context>
     <name>LadspaModel</name>
     <message>
-        <location filename="../ladspadialog.cpp" line="47"/>
         <source>Available Ladspa Plugins</source>
-        <translation>Verfügbare Ladspa Plugins</translation>
+        <translation type="obsolete">Verfügbare Ladspa Plugins</translation>
+    </message>
+    <message>
+        <location filename="../ladspadialog.cpp" line="47"/>
+        <source>Available LADSPA Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3905,11 +3909,6 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="261"/>
-        <source>&amp;Show Ladspa Browser...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="264"/>
         <source>&amp;Control Center...</source>
         <translation>&amp;Kontrollzentrum...</translation>
@@ -4017,6 +4016,11 @@ Save changes?</source>
         <location filename="../mainwindow.cpp" line="259"/>
         <source>Co&amp;mment</source>
         <translation>&amp;Kommentar</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="261"/>
+        <source>&amp;Show LADSPA Browser...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="404"/>

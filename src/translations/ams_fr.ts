@@ -77,9 +77,13 @@ and effect processor.</source>
 <context>
     <name>LadspaDialog</name>
     <message>
-        <location filename="../ladspadialog.cpp" line="89"/>
         <source>Ladspa Browser</source>
-        <translation>Explorateur LADSPA</translation>
+        <translation type="obsolete">Explorateur LADSPA</translation>
+    </message>
+    <message>
+        <location filename="../ladspadialog.cpp" line="89"/>
+        <source>LADSPA Browser</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ladspadialog.cpp" line="148"/>
@@ -120,9 +124,13 @@ and effect processor.</source>
 <context>
     <name>LadspaModel</name>
     <message>
-        <location filename="../ladspadialog.cpp" line="47"/>
         <source>Available Ladspa Plugins</source>
-        <translation>Greffons Ladspa disponibles</translation>
+        <translation type="obsolete">Greffons Ladspa disponibles</translation>
+    </message>
+    <message>
+        <location filename="../ladspadialog.cpp" line="47"/>
+        <source>Available LADSPA Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3928,9 +3936,8 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="261"/>
         <source>&amp;Show Ladspa Browser...</source>
-        <translation>&amp;Afficher l&apos;explorateur LADSPA...</translation>
+        <translation type="obsolete">&amp;Afficher l&apos;explorateur LADSPA...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="264"/>
@@ -4007,6 +4014,11 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="259"/>
         <source>Co&amp;mment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="261"/>
+        <source>&amp;Show LADSPA Browser...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

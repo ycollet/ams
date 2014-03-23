@@ -258,7 +258,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
 
   newModulePopup->addAction(tr("Co&mment"), modularSynth, SLOT(new_textEdit()));
 
-  modulePopup->addAction(tr("&Show Ladspa Browser..."), modularSynth,
+  modulePopup->addAction(tr("&Show LADSPA Browser..."), modularSynth,
           SLOT(displayLadspaPlugins()));
 
   viewMenu->addAction(tr("&Control Center..."), modularSynth,

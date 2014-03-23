@@ -44,7 +44,7 @@ QVariant LadspaModel::headerData(int /*section*/, Qt::Orientation orientation,
 				  int role) const
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-    return tr("Available Ladspa Plugins");
+    return tr("Available LADSPA Plugins");
 
   return QVariant();
 }
@@ -86,7 +86,7 @@ LadspaDialog::LadspaDialog()
   int colon, lastcolon;
   glob_t globbuf;
 
-  setWindowTitle(tr("Ladspa Browser"));
+  setWindowTitle(tr("LADSPA Browser"));
   vbox.setMargin(10);
   vbox.setSpacing(10);
   const char *_lp = getenv("LADSPA_PATH");
@@ -113,12 +113,12 @@ LadspaDialog::LadspaDialog()
     for (l1 = 0; l1 < globbuf.gl_pathc; l1++) {
 //      fprintf(stderr, "    found %s\n", globbuf.gl_pathv[l1]);
       if (!(so_handle = dlopen(globbuf.gl_pathv[l1], RTLD_LAZY))) {
-        fprintf(stderr, "Error opening shared ladspa object %s.\n", globbuf.gl_pathv[l1]);
+        fprintf(stderr, "Error opening shared LADSPA object %s.\n", globbuf.gl_pathv[l1]);
         continue;
       }
       ladspa_dsc_func =(LADSPA_Descriptor_Function)dlsym(so_handle, "ladspa_descriptor");
       if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "Error accessing ladspa descriptor in %s.\n", globbuf.gl_pathv[l1]);
+        fprintf(stderr, "Error accessing LADSPA descriptor in %s.\n", globbuf.gl_pathv[l1]);
         continue;
       }
       qs = globbuf.gl_pathv[l1];
