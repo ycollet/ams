@@ -108,7 +108,7 @@ SynthData *synthdata;
     connectorStyle(CONNECTOR_BEZIER),
     modified(false),
     enablemodulegrid(true),
-    paintFastly(false),
+    paintFast(false),
     cname(mso.cname),
     pname(mso.pname),
     fsamp(mso.fsamp),
@@ -175,7 +175,7 @@ void ModularSynth::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
 
-    if (!paintFastly)
+    if (!paintFast)
         p.setRenderHint(QPainter::Antialiasing);
 
     for (int l1 = 0; l1 < listModule.count(); ++l1) {
@@ -200,7 +200,7 @@ void ModularSynth::mousePressEvent(QMouseEvent *ev)
                         lastMousePos = ev->globalPos();
                         dragWidget = mb;
                         mb->raise();
-                        setPaintFastly(true);
+                        setPaintFast(true);
                     }
                 }
                 ev->accept();
@@ -318,7 +318,7 @@ void ModularSynth::mouseReleaseEvent(QMouseEvent *ev)
 
                 dragWidget = NULL;
             }
-            setPaintFastly(false);
+            setPaintFast(false);
             update();
             ev->accept();
             break;

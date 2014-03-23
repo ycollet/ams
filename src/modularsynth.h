@@ -44,7 +44,7 @@ class ModularSynth : public QWidget
     connectorStyleType connectorStyle;    
     bool modified;
     bool enablemodulegrid;
-    bool paintFastly;
+    bool paintFast;
     QString cname;
     QString pname;
     unsigned int fsamp;
@@ -143,8 +143,8 @@ public:
     bool clearConfig(bool restart);
     QMenu *contextMenu;
     int go(bool forceJack, bool forceAlsa);
-    void setPaintFastly(bool v) {
-      paintFastly = v;
+    void setPaintFast(bool v) {
+      paintFast = v;
     }
     void moveAllBoxes(const QPoint &delta);
     bool isModified();
