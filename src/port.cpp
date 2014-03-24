@@ -25,9 +25,6 @@ Port::Port(const QString & p_portName, dirType p_dir, int p_index,
     index(p_index),
     colorFont(synthdata->colorPortFont)
 {
-    //enalbel mouse tracking to update port background
-    setMouseTracking(true);
-
     if (dir == PORT_IN)
         outTypeAcceptList.append(outType_audio);
     else
