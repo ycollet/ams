@@ -19,11 +19,15 @@ Port::Port(const QString & p_portName, dirType p_dir, int p_index,
     portName(p_portName),
     portNameWidth(0),
     highlighted(false),
+    mousein(false),
     dir(p_dir),
     module(parent),
     index(p_index),
     colorFont(synthdata->colorPortFont)
 {
+    //enalbel mouse tracking to update port background
+    setMouseTracking(true);
+
     if (dir == PORT_IN)
         outTypeAcceptList.append(outType_audio);
     else
@@ -93,6 +97,13 @@ void Port::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     QRect textRect;
+    QColor bgcolor;
+
+    if (mousein) {
+        bgcolor = palette().highlight().color();
+        bgcolor.setAlpha(160);
+        p.fillRect(rect(), bgcolor);
+    }
 
     p.setFont(synthdata->smallFont);
     p.setPen(colorFont);
@@ -134,10 +145,26 @@ void Port::mousePressEvent(QMouseEvent * ev)
     }
 }
 
+
+void Port::enterEvent(QEvent*)
+{
+    mousein = true;
+    update();
+}
+
+
+void Port::leaveEvent(QEvent*)
+{
+    mousein = false;
+    update();
+}
+
+
 bool Port::isInPort()
 {
     return (dir == PORT_IN);
 }
+
 
 void Port::popupMenuClicked(PopupMenu::portAction ac)
 {

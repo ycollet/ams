@@ -27,8 +27,10 @@ class Port : public QWidget
     QString portName;
     int portNameWidth;
     bool highlighted;
+    bool mousein;
     dirType dir;
     QList<Port*> connectedPortList;
+
     void disconnectPort(int);  
 
   public:
@@ -67,8 +69,10 @@ class Port : public QWidget
     QString getName();
 
   protected:
-    virtual void paintEvent(QPaintEvent*);
-    virtual void mousePressEvent(QMouseEvent*);
+    void paintEvent(QPaintEvent*);
+    void mousePressEvent(QMouseEvent*);
+    void enterEvent(QEvent*);
+    void leaveEvent(QEvent*);
     
   signals:
     void portClicked(Port*);

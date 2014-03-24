@@ -187,9 +187,9 @@ protected:
       return (QAbstractScrollArea *)parent();
     }
     void paintEvent(QPaintEvent*);
-    virtual void mousePressEvent(QMouseEvent*);
-    virtual void mouseReleaseEvent(QMouseEvent*);
-    virtual void mouseMoveEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
 
 public slots: 
     void displayMidiController();
