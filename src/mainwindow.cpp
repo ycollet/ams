@@ -294,6 +294,7 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
   memset(&action, 0, sizeof(action));
   action.sa_handler = sighandler;
   sigaction(SIGINT, &action, NULL);
+  sigaction(SIGTERM, &action, NULL);
   sigaction(SIGUSR1, &action, NULL);
 
   readConfig();
