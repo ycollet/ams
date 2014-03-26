@@ -42,352 +42,353 @@ nsm_client_t *MainWindow::nsm = 0;
 
 MainWindow::MainWindow(const ModularSynthOptions& mso)
 {
-  /*make sure the window destructor is called on program exit*/
-  setAttribute(Qt::WA_DeleteOnClose);
-  setWindowIcon(QPixmap(ams_32_xpm));
-  setObjectName("MainWindow");
-  fileName = "";
-  restoregeometry = true;
-  hiderecentfiles = false;
-  prefDialog = NULL;
-  resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-  rcFd = mso.rcFd;
-  synthoptions = &mso;
+    /*make sure the window destructor is called on program exit*/
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowIcon(QPixmap(ams_32_xpm));
+    setObjectName("MainWindow");
+    fileName = "";
+    restoregeometry = true;
+    hiderecentfiles = false;
+    prefDialog = NULL;
+    resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    rcFd = mso.rcFd;
+    synthoptions = &mso;
 
-  /*init synthesizer*/
-  modularSynth = new ModularSynth(this, mso);
+    /*init synthesizer*/
+    modularSynth = new ModularSynth(this, mso);
 
-  /*init window*/
-  ScrollArea *scrollArea = new ScrollArea();
-  scrollArea->setWidget(modularSynth);
-  setCentralWidget(scrollArea);
+    /*init window*/
+    ScrollArea *scrollArea = new ScrollArea();
+    scrollArea->setWidget(modularSynth);
+    setCentralWidget(scrollArea);
 
-  QMenu *filePopup = menuBar()->addMenu(tr("&File"));
-  QMenu *synthesisPopup = menuBar()->addMenu(tr("&Synthesis"));
-  QMenu *modulePopup = menuBar()->addMenu(tr("&Module"));
-  QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
-  QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+    QMenu *filePopup = menuBar()->addMenu(tr("&File"));
+    QMenu *synthesisPopup = menuBar()->addMenu(tr("&Synthesis"));
+    QMenu *modulePopup = menuBar()->addMenu(tr("&Module"));
+    QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
-  QMenu *newModulePopup = modulePopup->addMenu(tr("&New"));
-  modularSynth->contextMenu = newModulePopup;
+    QMenu *newModulePopup = modulePopup->addMenu(tr("&New"));
+    modularSynth->contextMenu = newModulePopup;
 
 #ifdef NSM_SUPPORT
-  fileNewAction = new QAction(tr("&New"), this);
-  fileNewAction->setShortcut(Qt::CTRL + Qt::Key_N);
-  connect(fileNewAction, SIGNAL(triggered()), this, SLOT(fileNew()));
-  filePopup->addAction(fileNewAction);
+    fileNewAction = new QAction(tr("&New"), this);
+    fileNewAction->setShortcut(Qt::CTRL + Qt::Key_N);
+    connect(fileNewAction, SIGNAL(triggered()), this, SLOT(fileNew()));
+    filePopup->addAction(fileNewAction);
 
-  fileOpenAction = new QAction(tr("&Open..."), this);
-  fileOpenAction->setShortcut(Qt::CTRL + Qt::Key_O);
-  connect(fileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()));
-  filePopup->addAction(fileOpenAction);
+    fileOpenAction = new QAction(tr("&Open..."), this);
+    fileOpenAction->setShortcut(Qt::CTRL + Qt::Key_O);
+    connect(fileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()));
+    filePopup->addAction(fileOpenAction);
 
-  fileOpenDemoAction = new QAction(tr("Open &demo..."), this);
-  fileOpenDemoAction->setShortcut(Qt::CTRL + Qt::Key_D);
-  connect(fileOpenDemoAction, SIGNAL(triggered()), this, SLOT(fileOpenDemo()));
-  filePopup->addAction(fileOpenDemoAction);
+    fileOpenDemoAction = new QAction(tr("Open &demo..."), this);
+    fileOpenDemoAction->setShortcut(Qt::CTRL + Qt::Key_D);
+    connect(fileOpenDemoAction, SIGNAL(triggered()), this,
+            SLOT(fileOpenDemo()));
+    filePopup->addAction(fileOpenDemoAction);
 
-  fileOpenDemoInstrumentAction = new QAction(tr("Open demo &instrument..."), this);
-  fileOpenDemoInstrumentAction->setShortcut(Qt::CTRL + Qt::Key_I);
-  connect(fileOpenDemoInstrumentAction, SIGNAL(triggered()), this, SLOT(fileOpenDemoInstrument()));
-  filePopup->addAction(fileOpenDemoInstrumentAction);
+    fileOpenDemoInstrumentAction = new QAction(
+            tr("Open demo &instrument..."), this);
+    fileOpenDemoInstrumentAction->setShortcut(Qt::CTRL + Qt::Key_I);
+    connect(fileOpenDemoInstrumentAction, SIGNAL(triggered()), this,
+            SLOT(fileOpenDemoInstrument()));
+    filePopup->addAction(fileOpenDemoInstrumentAction);
 #else
-  filePopup->addAction(tr("&New"), this, SLOT(fileNew()),
-          Qt::CTRL + Qt::Key_N);
-  filePopup->addAction(tr("&Open..."), this, SLOT(fileOpen()),
-          Qt::CTRL + Qt::Key_O);
-  filePopup->addAction(tr("Open &demo..."), this, SLOT(fileOpenDemo()),
-          Qt::CTRL + Qt::Key_D);
-  filePopup->addAction(tr("Open demo &instrument..."), this,
-          SLOT(fileOpenDemoInstrument()), Qt::CTRL + Qt::Key_I);
+    filePopup->addAction(tr("&New"), this, SLOT(fileNew()),
+            Qt::CTRL + Qt::Key_N);
+    filePopup->addAction(tr("&Open..."), this, SLOT(fileOpen()),
+            Qt::CTRL + Qt::Key_O);
+    filePopup->addAction(tr("Open &demo..."), this, SLOT(fileOpenDemo()),
+            Qt::CTRL + Qt::Key_D);
+    filePopup->addAction(tr("Open demo &instrument..."), this,
+            SLOT(fileOpenDemoInstrument()), Qt::CTRL + Qt::Key_I);
 #endif
-  fileRecentlyOpenedFiles = filePopup->addMenu(tr("&Recently opened files"));
-  filePopup->addAction(tr("&Save"), this, SLOT(fileSave()),
-          Qt::CTRL + Qt::Key_S);
+    fileRecentlyOpenedFiles = filePopup->addMenu(tr("&Recently opened files"));
+    filePopup->addAction(tr("&Save"), this, SLOT(fileSave()),
+            Qt::CTRL + Qt::Key_S);
 #ifdef NSM_SUPPORT
-  fileSaveAsAction = new QAction(tr("Save &as..."), this);
-  connect(fileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
-  filePopup->addAction(fileSaveAsAction);
+    fileSaveAsAction = new QAction(tr("Save &as..."), this);
+    connect(fileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
+    filePopup->addAction(fileSaveAsAction);
 #else
-  filePopup->addAction(tr("Save &as..."), this, SLOT(fileSaveAs()));
+    filePopup->addAction(tr("Save &as..."), this, SLOT(fileSaveAs()));
 #endif
-  filePopup->addSeparator();
-  filePopup->addAction(tr("&Load Colors..."), modularSynth,
-          SLOT(loadColors()));
-  filePopup->addAction(tr("Save &Colors as..."), modularSynth,
-          SLOT(saveColors()));
-  filePopup->addSeparator();
-  filePopup->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()),
-          Qt::CTRL + Qt::Key_Q);
-  connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
+    filePopup->addSeparator();
+    filePopup->addAction(tr("&Load Colors..."), modularSynth,
+            SLOT(loadColors()));
+    filePopup->addAction(tr("Save &Colors as..."), modularSynth,
+            SLOT(saveColors()));
+    filePopup->addSeparator();
+    filePopup->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()),
+            Qt::CTRL + Qt::Key_Q);
+    connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));
 
-  synthesisPopup->addAction(tr("&Start"), modularSynth, SLOT(startSynth()),
-          Qt::CTRL + Qt::Key_B);
-  synthesisPopup->addAction(tr("Sto&p"), modularSynth, SLOT(stopSynth()),
-          Qt::CTRL + Qt::Key_H);
-  synthesisPopup->addAction(tr("&All Voices Off"), modularSynth,
-          SLOT(allVoicesOff()));
+    synthesisPopup->addAction(tr("&Start"), modularSynth, SLOT(startSynth()),
+            Qt::CTRL + Qt::Key_B);
+    synthesisPopup->addAction(tr("Sto&p"), modularSynth, SLOT(stopSynth()),
+            Qt::CTRL + Qt::Key_H);
+    synthesisPopup->addAction(tr("&All Voices Off"), modularSynth,
+            SLOT(allVoicesOff()));
 
-  /*In/Out submenu*/
-  QMenu *newModuleInOut = newModulePopup->addMenu(tr("&In/Out"));
-  newModuleInOut->addAction(tr("PCM &Out"),
-          modularSynth, SLOT(newM_pcmout()));
-  newModuleInOut->addAction(tr("PCM &In"),
-          modularSynth, SLOT(newM_pcmin()));
-  newModuleInOut->addSeparator();
-  newModuleInOut->addAction(tr("&MCV"),
-          modularSynth, SLOT(newM_mcv()));
-  newModuleInOut->addAction(tr("&Advanced MCV"),
-          modularSynth, SLOT(newM_advmcv()));
-  newModuleInOut->addAction(tr("&Scala MCV"),
-          modularSynth, SLOT(newM_scmcv()));
-  newModuleInOut->addAction(tr("MI&DI Out"),
-          modularSynth, SLOT(newM_midiout()));
-  newModuleInOut->addAction(tr("&WAV Out"),
-          modularSynth, SLOT(newM_wavout()));
-  newModuleInOut->addSeparator();
-  newModuleInOut->addAction(tr("S&cope View"),
-          modularSynth, SLOT(newM_scope()));
-  newModuleInOut->addAction(tr("S&pectrum View"),
-          modularSynth, SLOT(newM_spectrum()));
+    /*In/Out submenu*/
+    QMenu *newModuleInOut = newModulePopup->addMenu(tr("&In/Out"));
+    newModuleInOut->addAction(tr("PCM &Out"),
+            modularSynth, SLOT(newM_pcmout()));
+    newModuleInOut->addAction(tr("PCM &In"),
+            modularSynth, SLOT(newM_pcmin()));
+    newModuleInOut->addSeparator();
+    newModuleInOut->addAction(tr("&MCV"),
+            modularSynth, SLOT(newM_mcv()));
+    newModuleInOut->addAction(tr("&Advanced MCV"),
+            modularSynth, SLOT(newM_advmcv()));
+    newModuleInOut->addAction(tr("&Scala MCV"),
+            modularSynth, SLOT(newM_scmcv()));
+    newModuleInOut->addAction(tr("MI&DI Out"),
+            modularSynth, SLOT(newM_midiout()));
+    newModuleInOut->addAction(tr("&WAV Out"),
+            modularSynth, SLOT(newM_wavout()));
+    newModuleInOut->addSeparator();
+    newModuleInOut->addAction(tr("S&cope View"),
+            modularSynth, SLOT(newM_scope()));
+    newModuleInOut->addAction(tr("S&pectrum View"),
+            modularSynth, SLOT(newM_spectrum()));
 
-  /*Oscillators submenu*/
-  QMenu *newModuleOscillators = newModulePopup->addMenu(tr("&Oscillators"));
-  newModuleOscillators->addAction(tr("&LFO"),
-          modularSynth, SLOT(newM_lfo()));
-  newModuleOscillators->addAction(tr("&VCO"),
-          modularSynth, SLOT(newM_vco()));
-  newModuleOscillators->addAction(tr("V&CO2"),
-          modularSynth, SLOT(newM_vco2()));
-  newModuleOscillators->addAction(tr("&Multiphase LFO"),
-          modularSynth, SLOT(newM_mphlfo()));
-  newModuleOscillators->addAction(tr("VC &Organ (4 Oscillators)"),
-          modularSynth, SLOT(newM_vcorgan_4()));
-  newModuleOscillators->addAction(tr("VC O&rgan (6 Oscillators)"),
-          modularSynth, SLOT(newM_vcorgan_6()));
-  newModuleOscillators->addAction(tr("VC Or&gan (8 Oscillators)"),
-          modularSynth, SLOT(newM_vcorgan_8()));
-  newModuleOscillators->addAction(tr("&Dynamic Waves (4 Oscillators)"),
-          modularSynth, SLOT(newM_dynamicwaves_4()));
-  newModuleOscillators->addAction(tr("D&ynamic Waves (6 Oscillators)"),
-          modularSynth, SLOT(newM_dynamicwaves_6()));
-  newModuleOscillators->addAction(tr("Dy&namic Waves (8 Oscillators)"),
-          modularSynth, SLOT(newM_dynamicwaves_8()));
+    /*Oscillators submenu*/
+    QMenu *newModuleOscillators = newModulePopup->addMenu(tr("&Oscillators"));
+    newModuleOscillators->addAction(tr("&LFO"),
+            modularSynth, SLOT(newM_lfo()));
+    newModuleOscillators->addAction(tr("&VCO"),
+            modularSynth, SLOT(newM_vco()));
+    newModuleOscillators->addAction(tr("V&CO2"),
+            modularSynth, SLOT(newM_vco2()));
+    newModuleOscillators->addAction(tr("&Multiphase LFO"),
+            modularSynth, SLOT(newM_mphlfo()));
+    newModuleOscillators->addAction(tr("VC &Organ (4 Oscillators)"),
+            modularSynth, SLOT(newM_vcorgan_4()));
+    newModuleOscillators->addAction(tr("VC O&rgan (6 Oscillators)"),
+            modularSynth, SLOT(newM_vcorgan_6()));
+    newModuleOscillators->addAction(tr("VC Or&gan (8 Oscillators)"),
+            modularSynth, SLOT(newM_vcorgan_8()));
+    newModuleOscillators->addAction(tr("&Dynamic Waves (4 Oscillators)"),
+            modularSynth, SLOT(newM_dynamicwaves_4()));
+    newModuleOscillators->addAction(tr("D&ynamic Waves (6 Oscillators)"),
+            modularSynth, SLOT(newM_dynamicwaves_6()));
+    newModuleOscillators->addAction(tr("Dy&namic Waves (8 Oscillators)"),
+            modularSynth, SLOT(newM_dynamicwaves_8()));
 
-  /*Spectrum Modifiers submenu*/
-  QMenu *newModuleSpectrumModifiers =
-      newModulePopup->addMenu(tr("Spectrum &modifiers"));
-  newModuleSpectrumModifiers->addAction(tr("&VCF"),
-          modularSynth, SLOT(newM_vcf()));
-  newModuleSpectrumModifiers->addAction(tr("&Analog Driver (2 Out)"),
-          modularSynth, SLOT(newM_ad_2()));
-  newModuleSpectrumModifiers->addAction(tr("A&nalog Driver (4 Out)"),
-          modularSynth, SLOT(newM_ad_4()));
-  newModuleSpectrumModifiers->addAction(tr("Ana&log Driver (6 Out)"),
-          modularSynth, SLOT(newM_ad_6()));
-  newModuleSpectrumModifiers->addAction(tr("&Bit Grinder"),
-          modularSynth, SLOT(newM_bitgrind()));
-  newModuleSpectrumModifiers->addAction(tr("&FFT Vocoder"),
-          modularSynth, SLOT(newM_vocoder()));
+    /*Spectrum Modifiers submenu*/
+    QMenu *newModuleSpectrumModifiers =
+        newModulePopup->addMenu(tr("Spectrum &modifiers"));
+    newModuleSpectrumModifiers->addAction(tr("&VCF"),
+            modularSynth, SLOT(newM_vcf()));
+    newModuleSpectrumModifiers->addAction(tr("&Analog Driver (2 Out)"),
+            modularSynth, SLOT(newM_ad_2()));
+    newModuleSpectrumModifiers->addAction(tr("A&nalog Driver (4 Out)"),
+            modularSynth, SLOT(newM_ad_4()));
+    newModuleSpectrumModifiers->addAction(tr("Ana&log Driver (6 Out)"),
+            modularSynth, SLOT(newM_ad_6()));
+    newModuleSpectrumModifiers->addAction(tr("&Bit Grinder"),
+            modularSynth, SLOT(newM_bitgrind()));
+    newModuleSpectrumModifiers->addAction(tr("&FFT Vocoder"),
+            modularSynth, SLOT(newM_vocoder()));
 
-  /*Time Modifiers submenu*/
-  QMenu *newModuleTimeModifiers = newModulePopup->addMenu(tr("&Time modifiers"));
-  newModuleTimeModifiers->addAction(tr("&Sample && Hold"),
-          modularSynth, SLOT(newM_sh()));
-  newModuleTimeModifiers->addAction(tr("&Delay"),
-          modularSynth, SLOT(newM_delay()));
-  newModuleTimeModifiers->addAction(tr("&VC Delay"),
-          modularSynth, SLOT(newM_vcdelay()));
-  newModuleTimeModifiers->addAction(tr("&Analog Memory"),
-          modularSynth, SLOT(newM_analogmemory()));
-  newModuleTimeModifiers->addAction(tr("&INV"),
-          modularSynth, SLOT(newM_inv()));
-  newModuleTimeModifiers->addAction(tr("V&C Double Decay"),
-          modularSynth, SLOT(newM_vcdoubledecay()));
+    /*Time Modifiers submenu*/
+    QMenu *newModuleTimeModifiers = newModulePopup->addMenu(tr("&Time modifiers"));
+    newModuleTimeModifiers->addAction(tr("&Sample && Hold"),
+            modularSynth, SLOT(newM_sh()));
+    newModuleTimeModifiers->addAction(tr("&Delay"),
+            modularSynth, SLOT(newM_delay()));
+    newModuleTimeModifiers->addAction(tr("&VC Delay"),
+            modularSynth, SLOT(newM_vcdelay()));
+    newModuleTimeModifiers->addAction(tr("&Analog Memory"),
+            modularSynth, SLOT(newM_analogmemory()));
+    newModuleTimeModifiers->addAction(tr("&INV"),
+            modularSynth, SLOT(newM_inv()));
+    newModuleTimeModifiers->addAction(tr("V&C Double Decay"),
+            modularSynth, SLOT(newM_vcdoubledecay()));
 
-  /*Envelopes submenu*/
-  QMenu *newModuleEnvelopes = newModulePopup->addMenu(tr("&Envelopes"));
-  newModuleEnvelopes->addAction(tr("&ENV"),
-          modularSynth, SLOT(newM_env()));
-  newModuleEnvelopes->addAction(tr("&Advanced ENV"),
-          modularSynth, SLOT(newM_advenv()));
-  newModuleEnvelopes->addAction(tr("&VC Envelope"),
-          modularSynth, SLOT(newM_vcenv()));
-  newModuleEnvelopes->addAction(tr("V&C Envelope II"),
-          modularSynth, SLOT(newM_vcenv2()));
-  newModuleEnvelopes->addAction(tr("&Function 1 --> 1"),
-          modularSynth, SLOT(newM_function_1()));
-  newModuleEnvelopes->addAction(tr("F&unction 1 --> 2"),
-          modularSynth, SLOT(newM_function_2()));
-  newModuleEnvelopes->addAction(tr("Fu&nction 1 --> 4"),
-          modularSynth, SLOT(newM_function_4()));
+    /*Envelopes submenu*/
+    QMenu *newModuleEnvelopes = newModulePopup->addMenu(tr("&Envelopes"));
+    newModuleEnvelopes->addAction(tr("&ENV"),
+            modularSynth, SLOT(newM_env()));
+    newModuleEnvelopes->addAction(tr("&Advanced ENV"),
+            modularSynth, SLOT(newM_advenv()));
+    newModuleEnvelopes->addAction(tr("&VC Envelope"),
+            modularSynth, SLOT(newM_vcenv()));
+    newModuleEnvelopes->addAction(tr("V&C Envelope II"),
+            modularSynth, SLOT(newM_vcenv2()));
+    newModuleEnvelopes->addAction(tr("&Function 1 --> 1"),
+            modularSynth, SLOT(newM_function_1()));
+    newModuleEnvelopes->addAction(tr("F&unction 1 --> 2"),
+            modularSynth, SLOT(newM_function_2()));
+    newModuleEnvelopes->addAction(tr("Fu&nction 1 --> 4"),
+            modularSynth, SLOT(newM_function_4()));
 
-  /*Sequencers submenu*/
-  QMenu *newModuleSequencers = newModulePopup->addMenu(tr("&Sequencers"));
-  newModuleSequencers->addAction(tr("&SEQ  8"),
-          modularSynth, SLOT(newM_seq_8()));
-  newModuleSequencers->addAction(tr("S&EQ 12"),
-          modularSynth, SLOT(newM_seq_12()));
-  newModuleSequencers->addAction(tr("SE&Q 16"),
-          modularSynth, SLOT(newM_seq_16()));
-  newModuleSequencers->addAction(tr("SEQ &24"),
-          modularSynth, SLOT(newM_seq_24()));
-  newModuleSequencers->addAction(tr("SEQ &32"),
-          modularSynth, SLOT(newM_seq_32()));
-  newModuleSequencers->addAction(tr("&V8 Sequencer"),
-          modularSynth, SLOT(newM_v8sequencer()));
+    /*Sequencers submenu*/
+    QMenu *newModuleSequencers = newModulePopup->addMenu(tr("&Sequencers"));
+    newModuleSequencers->addAction(tr("&SEQ  8"),
+            modularSynth, SLOT(newM_seq_8()));
+    newModuleSequencers->addAction(tr("S&EQ 12"),
+            modularSynth, SLOT(newM_seq_12()));
+    newModuleSequencers->addAction(tr("SE&Q 16"),
+            modularSynth, SLOT(newM_seq_16()));
+    newModuleSequencers->addAction(tr("SEQ &24"),
+            modularSynth, SLOT(newM_seq_24()));
+    newModuleSequencers->addAction(tr("SEQ &32"),
+            modularSynth, SLOT(newM_seq_32()));
+    newModuleSequencers->addAction(tr("&V8 Sequencer"),
+            modularSynth, SLOT(newM_v8sequencer()));
 
-  /*VCA & Mix submenu*/
-  QMenu *newModuleVcaMix = newModulePopup->addMenu(tr("&VCA and Mix"));
-  newModuleVcaMix->addAction(tr("&Amplifier"),
-          modularSynth, SLOT(newM_amp()));
-  newModuleVcaMix->addAction(tr("&VCA lin."),
-          modularSynth, SLOT(newM_vca_lin()));
-  newModuleVcaMix->addAction(tr("V&CA exp."),
-          modularSynth, SLOT(newM_vca_exp()));
-  newModuleVcaMix->addAction(tr("&Ring Modulator"),
-          modularSynth, SLOT(newM_ringmod()));
-  newModuleVcaMix->addAction(tr("&Mixer 2 -> 1"),
-          modularSynth, SLOT(newM_mix_2()));
-  newModuleVcaMix->addAction(tr("M&ixer 4 -> 1"),
-          modularSynth, SLOT(newM_mix_4()));
-  newModuleVcaMix->addAction(tr("Mi&xer 8 -> 1"),
-          modularSynth, SLOT(newM_mix_8()));
-  newModuleVcaMix->addAction(tr("&Stereo Mixer 2"),
-          modularSynth, SLOT(newM_stereomix_2()));
-  newModuleVcaMix->addAction(tr("S&tereo Mixer 4"),
-          modularSynth, SLOT(newM_stereomix_4()));
-  newModuleVcaMix->addAction(tr("St&ereo Mixer 8"),
-          modularSynth, SLOT(newM_stereomix_8()));
-  newModuleVcaMix->addAction(tr("VC &Panning"),
-          modularSynth, SLOT(newM_vcpanning()));
-  newModuleVcaMix->addAction(tr("VC S&witch"),
-          modularSynth, SLOT(newM_vcswitch()));
+    /*VCA & Mix submenu*/
+    QMenu *newModuleVcaMix = newModulePopup->addMenu(tr("&VCA and Mix"));
+    newModuleVcaMix->addAction(tr("&Amplifier"),
+            modularSynth, SLOT(newM_amp()));
+    newModuleVcaMix->addAction(tr("&VCA lin."),
+            modularSynth, SLOT(newM_vca_lin()));
+    newModuleVcaMix->addAction(tr("V&CA exp."),
+            modularSynth, SLOT(newM_vca_exp()));
+    newModuleVcaMix->addAction(tr("&Ring Modulator"),
+            modularSynth, SLOT(newM_ringmod()));
+    newModuleVcaMix->addAction(tr("&Mixer 2 -> 1"),
+            modularSynth, SLOT(newM_mix_2()));
+    newModuleVcaMix->addAction(tr("M&ixer 4 -> 1"),
+            modularSynth, SLOT(newM_mix_4()));
+    newModuleVcaMix->addAction(tr("Mi&xer 8 -> 1"),
+            modularSynth, SLOT(newM_mix_8()));
+    newModuleVcaMix->addAction(tr("&Stereo Mixer 2"),
+            modularSynth, SLOT(newM_stereomix_2()));
+    newModuleVcaMix->addAction(tr("S&tereo Mixer 4"),
+            modularSynth, SLOT(newM_stereomix_4()));
+    newModuleVcaMix->addAction(tr("St&ereo Mixer 8"),
+            modularSynth, SLOT(newM_stereomix_8()));
+    newModuleVcaMix->addAction(tr("VC &Panning"),
+            modularSynth, SLOT(newM_vcpanning()));
+    newModuleVcaMix->addAction(tr("VC S&witch"),
+            modularSynth, SLOT(newM_vcswitch()));
 
-  /*CV Operations*/
-  QMenu *newModuleCvOps = newModulePopup->addMenu(tr("&CV Operations"));
-  newModuleCvOps->addAction(tr("&CVS"),
-          modularSynth, SLOT(newM_cvs()));
-  newModuleCvOps->addAction(tr("&Slew Limiter"),
-          modularSynth, SLOT(newM_slew()));
-  newModuleCvOps->addAction(tr("&Noise/ Random"),
-          modularSynth, SLOT(newM_noise()));
-  newModuleCvOps->addAction(tr("N&oise/Random 2"),
-          modularSynth, SLOT(newM_noise2()));
-  newModuleCvOps->addAction(tr("Sa&mple && Hold"),
-          modularSynth, SLOT(newM_sh()));
-  newModuleCvOps->addAction(tr("&Quantizer"),
-          modularSynth, SLOT(newM_quantizer()));
-  newModuleCvOps->addAction(tr("Q&uantizer 2"),
-          modularSynth, SLOT(newM_vquant()));
-  newModuleCvOps->addAction(tr("Sc&ala Quantizer"),
-          modularSynth, SLOT(newM_scquantizer()));
-  newModuleCvOps->addAction(tr("C&onverter"),
-          modularSynth, SLOT(newM_conv()));
-  newModuleCvOps->addAction(tr("&Hysteresis"),
-          modularSynth, SLOT(newM_hysteresis()));
+    /*CV Operations*/
+    QMenu *newModuleCvOps = newModulePopup->addMenu(tr("&CV Operations"));
+    newModuleCvOps->addAction(tr("&CVS"),
+            modularSynth, SLOT(newM_cvs()));
+    newModuleCvOps->addAction(tr("&Slew Limiter"),
+            modularSynth, SLOT(newM_slew()));
+    newModuleCvOps->addAction(tr("&Noise/ Random"),
+            modularSynth, SLOT(newM_noise()));
+    newModuleCvOps->addAction(tr("N&oise/Random 2"),
+            modularSynth, SLOT(newM_noise2()));
+    newModuleCvOps->addAction(tr("Sa&mple && Hold"),
+            modularSynth, SLOT(newM_sh()));
+    newModuleCvOps->addAction(tr("&Quantizer"),
+            modularSynth, SLOT(newM_quantizer()));
+    newModuleCvOps->addAction(tr("Q&uantizer 2"),
+            modularSynth, SLOT(newM_vquant()));
+    newModuleCvOps->addAction(tr("Sc&ala Quantizer"),
+            modularSynth, SLOT(newM_scquantizer()));
+    newModuleCvOps->addAction(tr("C&onverter"),
+            modularSynth, SLOT(newM_conv()));
+    newModuleCvOps->addAction(tr("&Hysteresis"),
+            modularSynth, SLOT(newM_hysteresis()));
 
-  newModulePopup->addAction(tr("Co&mment"), modularSynth, SLOT(new_textEdit()));
+    newModulePopup->addAction(tr("Co&mment"), modularSynth, SLOT(new_textEdit()));
 
-  modulePopup->addAction(tr("&Show LADSPA Browser..."), modularSynth,
-          SLOT(displayLadspaPlugins()));
+    modulePopup->addAction(tr("&Show LADSPA Browser..."), modularSynth,
+            SLOT(displayLadspaPlugins()));
 
-  viewMenu->addAction(tr("&Control Center..."), modularSynth,
-          SLOT(displayMidiController()));
-  viewMenu->addAction(tr("&Parameter View..."), modularSynth,
-          SLOT(displayParameterView()));
-  viewMenu->addAction(tr("Pre&ferences..."), this,
-          SLOT(displayPreferences()));
-  viewMenu->addSeparator();
-  viewMenu->addAction(tr("&Full screen"), this,
-          SLOT(viewFullscreen()), Qt::Key_F11);
+    viewMenu->addAction(tr("&Control Center..."), modularSynth,
+            SLOT(displayMidiController()));
+    viewMenu->addAction(tr("&Parameter View..."), modularSynth,
+            SLOT(displayParameterView()));
+    viewMenu->addAction(tr("Pre&ferences..."), this,
+            SLOT(displayPreferences()));
+    viewMenu->addSeparator();
+    viewMenu->addAction(tr("&Full screen"), this,
+            SLOT(viewFullscreen()), Qt::Key_F11);
 
-  helpMenu->addAction(tr("&About AlsaModularSynth..."), this,
-          SLOT(helpAboutAms()));
-  helpMenu->addAction(tr("About &Qt..."), this,
-          SLOT(helpAboutQt()));
+    helpMenu->addAction(tr("&About AlsaModularSynth..."), this,
+            SLOT(helpAboutAms()));
+    helpMenu->addAction(tr("About &Qt..."), this,
+            SLOT(helpAboutQt()));
 
-  connect(filePopup, SIGNAL(aboutToShow()), this,
-          SLOT(setupRecentFilesMenu()));
-  connect(fileRecentlyOpenedFiles, SIGNAL(triggered(QAction*)), this,
-        SLOT(recentFileActivated(QAction*)));
+    connect(filePopup, SIGNAL(aboutToShow()), this,
+            SLOT(setupRecentFilesMenu()));
+    connect(fileRecentlyOpenedFiles, SIGNAL(triggered(QAction*)), this,
+            SLOT(recentFileActivated(QAction*)));
 
 
-  if (pipe(pipeFd) < 0)
-    return;
+    if (pipe(pipeFd) < 0)
+        return;
 
-  QSocketNotifier *sigNotifier = new QSocketNotifier(pipeFd[0],
-          QSocketNotifier::Read, this);
-  QObject::connect(sigNotifier, SIGNAL(activated(int)), this,
-          SLOT(unixSignal(int)));
+    QSocketNotifier *sigNotifier = new QSocketNotifier(pipeFd[0],
+            QSocketNotifier::Read, this);
+    QObject::connect(sigNotifier, SIGNAL(activated(int)), this,
+            SLOT(unixSignal(int)));
 
-  struct sigaction action;
-  memset(&action, 0, sizeof(action));
-  action.sa_handler = sighandler;
-  sigaction(SIGINT, &action, NULL);
-  sigaction(SIGTERM, &action, NULL);
-  sigaction(SIGUSR1, &action, NULL);
+    struct sigaction action;
+    memset(&action, 0, sizeof(action));
+    action.sa_handler = sighandler;
+    sigaction(SIGINT, &action, NULL);
+    sigaction(SIGTERM, &action, NULL);
+    sigaction(SIGUSR1, &action, NULL);
 
-  readConfig();
-  updateWindowTitle();
+    readConfig();
+    updateWindowTitle();
 
-  if (mso.havePresetPath) {
-    if (mso.verbose)
-        qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
-            .toUtf8().constData());
-    modularSynth->setPatchPath(mso.presetPath);
-  }
-  modularSynth->go(mso.forceJack, mso.forceAlsa);
+    if (mso.havePresetPath) {
+        if (mso.verbose)
+            qWarning("%s", QObject::tr("Preset path now %1").arg(mso.presetPath)
+                    .toUtf8().constData());
+        modularSynth->setPatchPath(mso.presetPath);
+    }
+    modularSynth->go(mso.forceJack, mso.forceAlsa);
 
 #ifdef NSM_SUPPORT
-  const char *nsm_url = getenv( "NSM_URL" );
+    const char *nsm_url = getenv("NSM_URL");
 
-  if ( nsm_url )
-  {
-      nsm = nsm_new();
+    if (nsm_url) {
+        nsm = nsm_new();
 
-      nsm_set_open_callback( nsm, cb_nsm_open, this );
-      nsm_set_save_callback( nsm, cb_nsm_save, this );
+        nsm_set_open_callback(nsm, cb_nsm_open, this);
+        nsm_set_save_callback(nsm, cb_nsm_save, this);
 
-      if ( 0 == nsm_init_thread( nsm, nsm_url ) )
-      {
-          connect(this, SIGNAL(nsmOpenFile(const QString &)), this,
-                  SLOT(openFile(const QString &)));
-          nsm_send_announce( nsm, PACKAGE, ":switch:", synthoptions->execName.toLatin1().constData());
-          nsm_thread_start(nsm);
-      }
-      else
-      {
-          nsm_free( nsm );
-          nsm = 0;
-      }
-  }
+        if (0 == nsm_init_thread(nsm, nsm_url)) {
+            connect(this, SIGNAL(nsmOpenFile(const QString &)), this,
+                    SLOT(openFile(const QString &)));
+            nsm_send_announce( nsm, PACKAGE, ":switch:",
+                    synthoptions->execName.toLatin1().constData());
+            nsm_thread_start(nsm);
+        }
+        else {
+            nsm_free(nsm);
+            nsm = 0;
+        }
+    }
 
-  if (nsm)
-  {
-      fileNewAction->setText(tr("Clear"));
-      fileOpenAction->setText(tr("Import to session..."));
-      fileOpenDemoAction->setText(tr("Import demo to session..."));
-      fileOpenDemoInstrumentAction->setText(tr("Import demo instrument to session..."));
-      fileSaveAsAction->setText(tr("Export from session..."));
-      fileRecentlyOpenedFiles->setDisabled(true);
-      hiderecentfiles = true;
-  }
+    if (nsm) {
+        fileNewAction->setText(tr("Clear"));
+        fileOpenAction->setText(tr("Import to session..."));
+        fileOpenDemoAction->setText(tr("Import demo to session..."));
+        fileOpenDemoInstrumentAction->setText(
+                tr("Import demo instrument to session..."));
+        fileSaveAsAction->setText(tr("Export from session..."));
+        fileRecentlyOpenedFiles->setDisabled(true);
+        hiderecentfiles = true;
+    }
 #endif // NSM_SUPPORT
 
 
-  // autoload patch file
-  if (mso.havePreset) {
-    if (mso.verbose)
-        qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
-            .toUtf8().constData());
-    openFile(mso.presetName);
-  }
+    // autoload patch file
+    if (mso.havePreset) {
+        if (mso.verbose)
+            qWarning("%s", QObject::tr("Loading preset %1").arg(mso.presetName)
+                    .toUtf8().constData());
+        openFile(mso.presetName);
+    }
 
-  if (mso.noGui)
-      hide();
-  else
-      show();
+    if (mso.noGui)
+        hide();
+    else
+        show();
 }
 
 
@@ -470,8 +471,8 @@ int MainWindow::querySaveChanges()
 void MainWindow::chooseFile()
 {
     QString fn = QFileDialog::getOpenFileName(this,
-        tr("Open patch file"), modularSynth->getPatchPath(),
-        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
+            tr("Open patch file"), modularSynth->getPatchPath(),
+            tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
 
     if (fn.isEmpty())
         return;
@@ -490,8 +491,8 @@ void MainWindow::chooseFile()
 void MainWindow::chooseDemoFile()
 {
     QString fn = QFileDialog::getOpenFileName(this,
-        tr("Open demo patch file"), DEMOFILEPATH,
-        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
+            tr("Open demo patch file"), DEMOFILEPATH,
+            tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
 
     if (fn.isEmpty())
         return;
@@ -510,8 +511,8 @@ void MainWindow::chooseDemoFile()
 void MainWindow::chooseDemoInstrumentFile()
 {
     QString fn = QFileDialog::getOpenFileName(this,
-        tr("Open demo instrument file"), INSTRUMENTFILEPATH,
-        tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
+            tr("Open demo instrument file"), INSTRUMENTFILEPATH,
+            tr("AlsaModularSynth patch files") + " (*" + PATCHEXT + ")");
 
     if (fn.isEmpty())
         return;
@@ -687,9 +688,9 @@ void MainWindow::fileSaveAs()
 void MainWindow::updateWindowTitle()
 {
     QString title = QString("%1 - (%2) - [%3]").
-	arg(synthdata->name).
-	arg(modularSynth->getSynthDataPoly()).
-	arg(fileName.isEmpty() ? tr("noname") : fileName);
+        arg(synthdata->name).
+        arg(modularSynth->getSynthDataPoly()).
+        arg(fileName.isEmpty() ? tr("noname") : fileName);
     setWindowTitle(title);
 }
 
@@ -697,16 +698,16 @@ void MainWindow::updateWindowTitle()
 void MainWindow::closeEvent(QCloseEvent *e)
 {
 #ifdef NSM_SUPPORT
-  if (nsm) {
-    e->accept();
-    return;
-  }
+    if (nsm) {
+        e->accept();
+        return;
+    }
 #endif
 
-  if (isSave())
-    e->accept();
-  else
-    e->ignore();
+    if (isSave())
+        e->accept();
+    else
+        e->ignore();
 }
 
 void MainWindow::helpAboutQt()
@@ -735,19 +736,19 @@ void MainWindow::readConfig()
         if (s.startsWith(CF_RECENTFILE))
             appendRecentlyOpenedFile(s.section(' ', 1), recentFiles);
         else if (s.startsWith(CF_RESTOREGEOMETRY))
-               restoregeometry = s.section(' ', 1, 1).toInt();
+            restoregeometry = s.section(' ', 1, 1).toInt();
         else if (s.startsWith(CF_GEOMETRY) && restoregeometry) {
-                QStringList tokens = s.split(' ');
-                if (tokens.count() < 5) {
-                    qWarning("Geometry parameterlist too short.");
-                    continue;
-                }
-                int x = tokens[1].toInt();
-                int y = tokens[2].toInt();
-                int width = tokens[3].toInt();
-                int height = tokens[4].toInt();
-                this->setGeometry(x, y, width, height);
+            QStringList tokens = s.split(' ');
+            if (tokens.count() < 5) {
+                qWarning("Geometry parameterlist too short.");
+                continue;
             }
+            int x = tokens[1].toInt();
+            int y = tokens[2].toInt();
+            int width = tokens[3].toInt();
+            int height = tokens[4].toInt();
+            this->setGeometry(x, y, width, height);
+        }
         else
             modularSynth->loadPreference(s);
     }
@@ -945,23 +946,30 @@ void MainWindow::helpAboutAms()
     delete ad;
 }
 
+
 void MainWindow::viewFullscreen()
 {
     setWindowState(windowState() ^ Qt::WindowFullScreen);
 }
 
+
 #ifdef NSM_SUPPORT
-int MainWindow::cb_nsm_open(const char *name, const char *display_name, const char *client_id, char **out_msg, void *userdata)
+int MainWindow::cb_nsm_open(const char *name, const char *display_name,
+        const char *client_id, char **out_msg, void *userdata)
 {
-    return ((MainWindow *)userdata)->nsm_open(name, display_name, client_id, out_msg);
+    return ((MainWindow *)userdata)->nsm_open(name, display_name,
+            client_id, out_msg);
 }
+
 
 int MainWindow::cb_nsm_save ( char **out_msg, void *userdata )
 {
     return ((MainWindow *)userdata)->nsm_save(out_msg);
 }
 
-int MainWindow::nsm_open(const char *name, const char *display_name, const char *client_id, char **out_msg)
+
+int MainWindow::nsm_open(const char *name, const char *display_name,
+        const char *client_id, char **out_msg)
 {
     configFile = name;
 
@@ -970,15 +978,16 @@ int MainWindow::nsm_open(const char *name, const char *display_name, const char 
     synthdata->initJack(synthoptions->ncapt, synthoptions->nplay);
 
     configFile.append(".ams");
-    emit nsmOpenFile(configFile);
+    nsmOpenFile(configFile);
 
     return ERR_OK;
 }
 
+
 int MainWindow::nsm_save(char **out_msg)
 {
     int err = ERR_OK;
-    emit fileSave();
+    fileSave();
     return err;
 }
 #endif // NSM_SUPPORT
