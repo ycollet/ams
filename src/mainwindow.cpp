@@ -365,12 +365,12 @@ MainWindow::MainWindow(const ModularSynthOptions& mso)
     }
 
     if (nsm) {
-        fileNewAction->setText(tr("Clear"));
-        fileOpenAction->setText(tr("Import to session..."));
-        fileOpenDemoAction->setText(tr("Import demo to session..."));
+        fileNewAction->setText(tr("&Clear"));
+        fileOpenAction->setText(tr("Import to &session..."));
+        fileOpenDemoAction->setText(tr("Import &demo to session..."));
         fileOpenDemoInstrumentAction->setText(
-                tr("Import demo instrument to session..."));
-        fileSaveAsAction->setText(tr("Export from session..."));
+                tr("Import demo &instrument to session..."));
+        fileSaveAsAction->setText(tr("&Export from session..."));
         fileRecentlyOpenedFiles->setDisabled(true);
         hiderecentfiles = true;
     }

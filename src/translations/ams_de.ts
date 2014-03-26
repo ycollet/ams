@@ -79,7 +79,7 @@ and effect processor.</source>
     <message>
         <location filename="../ladspadialog.cpp" line="89"/>
         <source>LADSPA Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>LADSPA-Module</translation>
     </message>
     <message>
         <location filename="../ladspadialog.cpp" line="148"/>
@@ -120,13 +120,9 @@ and effect processor.</source>
 <context>
     <name>LadspaModel</name>
     <message>
-        <source>Available Ladspa Plugins</source>
-        <translation type="obsolete">Verfügbare Ladspa Plugins</translation>
-    </message>
-    <message>
         <location filename="../ladspadialog.cpp" line="47"/>
         <source>Available LADSPA Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Verfügbare LADSPA-Plugins</translation>
     </message>
 </context>
 <context>
@@ -3635,7 +3631,7 @@ and effect processor.</source>
         <location filename="../mainwindow.cpp" line="92"/>
         <location filename="../mainwindow.cpp" line="104"/>
         <source>Open demo &amp;instrument...</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne Demo-&amp;Instrument..</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="147"/>
@@ -3930,37 +3926,12 @@ and effect processor.</source>
     <message>
         <location filename="../mainwindow.cpp" line="305"/>
         <source>&amp;Full screen</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vollbildansicht</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="308"/>
         <source>&amp;About AlsaModularSynth...</source>
         <translation>&amp;Über AlsaModularSynth...</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="368"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="369"/>
-        <source>Import to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="370"/>
-        <source>Import demo to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="372"/>
-        <source>Import demo instrument to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="373"/>
-        <source>Export from session...</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="461"/>
@@ -4052,6 +4023,31 @@ Save changes?</source>
         <location filename="../mainwindow.cpp" line="295"/>
         <source>&amp;Show LADSPA Browser...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="368"/>
+        <source>&amp;Clear</source>
+        <translation>&amp;Löschen</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="369"/>
+        <source>Import to &amp;session...</source>
+        <translation>In &amp;Sitzung importieren...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="370"/>
+        <source>Import &amp;demo to session...</source>
+        <translation>&amp;Demo in Sitzung importieren...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="372"/>
+        <source>Import demo &amp;instrument to session...</source>
+        <translation>Demo-&amp;Instrument in Sitzung importieren...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="373"/>
+        <source>&amp;Export from session...</source>
+        <translation>&amp;Exportiere aus Sitzung...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="475"/>
@@ -4155,17 +4151,17 @@ Save changes?</source>
     <message>
         <location filename="../midiwidget.cpp" line="340"/>
         <source>&amp;Bind</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verbinden</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="345"/>
         <source>&amp;Clear Binding</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindun &amp;lösen</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="350"/>
         <source>Clear &amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Alles löschen</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="354"/>
@@ -4234,10 +4230,6 @@ Save changes?</source>
         <location filename="../modularsynth.cpp" line="1568"/>
         <source>Could not save file.</source>
         <translation>Konnte Datei nicht speichern.</translation>
-    </message>
-    <message>
-        <source>About </source>
-        <translation type="obsolete">Über </translation>
     </message>
     <message>
         <location filename="../modularsynth.cpp" line="1506"/>
@@ -4626,7 +4618,7 @@ Save changes?</source>
     <message>
         <location filename="../main.cpp" line="82"/>
         <source>Failed to open file &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="398"/>

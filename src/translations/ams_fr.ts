@@ -3975,6 +3975,31 @@ and effect processor.</source>
         <translation>A propos de &amp;Qt...</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="368"/>
+        <source>&amp;Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="369"/>
+        <source>Import to &amp;session...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="370"/>
+        <source>Import &amp;demo to session...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="372"/>
+        <source>Import demo &amp;instrument to session...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="373"/>
+        <source>&amp;Export from session...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="461"/>
         <source>Unnamed file was changed.
 Save changes?</source>
@@ -4024,31 +4049,6 @@ Save changes?</source>
     <message>
         <location filename="../mainwindow.cpp" line="295"/>
         <source>&amp;Show LADSPA Browser...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="368"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="369"/>
-        <source>Import to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="370"/>
-        <source>Import demo to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="372"/>
-        <source>Import demo instrument to session...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="373"/>
-        <source>Export from session...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
