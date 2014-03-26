@@ -96,14 +96,18 @@ void Port::paintEvent(QPaintEvent *)
     QRect textRect;
     QColor bgcolor;
 
+    p.setFont(synthdata->smallFont);
+
+    // mouse hover effect
     if (mousein) {
         bgcolor = palette().highlight().color();
         bgcolor.setAlpha(160);
         p.fillRect(rect(), bgcolor);
+        p.setPen(palette().highlightedText().color());
     }
-
-    p.setFont(synthdata->smallFont);
-    p.setPen(colorFont);
+    else {
+        p.setPen(colorFont);
+    }
 
     if (dir == PORT_IN) {
         if (highlighted) {
