@@ -30,7 +30,8 @@ PrefWidget::PrefWidget(QWidget* parent): QDialog(parent)
 
     setupColorTab();
     setupMidiTab();
-    setupEditingTab();
+    setupModuleTab();
+    setupMiscTab();
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(
             QDialogButtonBox::Ok |
@@ -228,10 +229,10 @@ void PrefWidget::setupMidiTab()
 
 
 /*Editing tab*/
-void PrefWidget::setupEditingTab()
+void PrefWidget::setupModuleTab()
 {
-    QWidget *editingWidget = new QWidget(this);
-    QVBoxLayout *editingBox = new QVBoxLayout(editingWidget);
+    QWidget *moduleWidget = new QWidget(this);
+    QVBoxLayout *moduleBox = new QVBoxLayout(moduleWidget);
 
     /*Module movement mode radio buttons*/
     QGroupBox *moduleMoveGroup = new QGroupBox(tr("Module movement"));
@@ -250,7 +251,7 @@ void PrefWidget::setupEditingTab()
     moduleMoveLayout->addWidget(standardRadioButton);
     moduleMoveLayout->addWidget(noborderRadioButton);
     moduleMoveGroup->setLayout(moduleMoveLayout);
-    editingBox->addWidget(moduleMoveGroup);
+    moduleBox->addWidget(moduleMoveGroup);
 
     /*Module position grid*/
     QGroupBox *modulePositionGroup = new QGroupBox(tr("Module position"));
@@ -280,22 +281,35 @@ void PrefWidget::setupEditingTab()
     modulePositionLayout->addWidget(enableGrid);
     modulePositionLayout->addLayout(gridMeshLayout);
     modulePositionGroup->setLayout(modulePositionLayout);
-    editingBox->addWidget(modulePositionGroup);
+    moduleBox->addWidget(modulePositionGroup);
+
+    moduleBox->addStretch();
+
+    tabWidget->addTab(moduleWidget, tr("M&odule"));
+}
+
+
+/*Editing tab*/
+void PrefWidget::setupMiscTab()
+{
+    QWidget *miscWidget = new QWidget(this);
+    QVBoxLayout *miscBox = new QVBoxLayout(miscWidget);
+
 
     /*checkboxes*/
     rememberGeometry = new QCheckBox(tr("&Remember window geometry"));
     rememberGeometry->setToolTip(tr("Save and restore main window "
                 "position and size for next ams session."));
-    editingBox->addWidget(rememberGeometry);
+    miscBox->addWidget(rememberGeometry);
 
     hideRecentFiles = new QCheckBox(tr("&Hide recently used files"));
     hideRecentFiles->setToolTip(tr("Do not show list of recently used "
                 "files in file menu."));
-    editingBox->addWidget(hideRecentFiles);
+    miscBox->addWidget(hideRecentFiles);
 
-    editingBox->addStretch();
+    miscBox->addStretch();
 
-    tabWidget->addTab(editingWidget, tr("&Editing"));
+    tabWidget->addTab(miscWidget, tr("M&isc"));
 }
 
 

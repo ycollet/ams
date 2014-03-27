@@ -4379,44 +4379,47 @@ Save changes?</source>
 <context>
     <name>PrefWidget</name>
     <message>
-        <location filename="../prefwidget.cpp" line="190"/>
+        <location filename="../prefwidget.cpp" line="191"/>
         <source>&amp;Colors</source>
         <translation>&amp;Couleurs</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="226"/>
+        <location filename="../prefwidget.cpp" line="227"/>
         <source>&amp;MIDI</source>
         <translation>&amp;MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="178"/>
+        <location filename="../prefwidget.cpp" line="179"/>
         <source>&amp;Default colors</source>
         <translation>Couleurs &amp;Standards</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="126"/>
+        <location filename="../prefwidget.cpp" line="127"/>
         <source>Po&amp;rt font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="263"/>
+        <location filename="../prefwidget.cpp" line="264"/>
         <source>&amp;Grid mesh size [pixels]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="286"/>
+        <source>&amp;Module</source>
+        <translation type="obsolete">&amp;Module</translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="300"/>
         <source>&amp;Remember window geometry</source>
         <translation>&amp;Garder la géométrie de la fenêtre en mémoire</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="287"/>
+        <location filename="../prefwidget.cpp" line="301"/>
         <source>Save and restore main window position and size for next ams session.</source>
         <translation>Sauvegarder et restaurer la position et la taille de la fenêtre principale à la prochaine session ams.</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="298"/>
         <source>&amp;Editing</source>
-        <translation>&amp;Editer</translation>
+        <translation type="obsolete">&amp;Editer</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="28"/>
@@ -4424,107 +4427,117 @@ Save changes?</source>
         <translation>Editer les préférences</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="58"/>
+        <location filename="../prefwidget.cpp" line="59"/>
         <source>&amp;Background</source>
         <translation>&amp;Arrière plan</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="63"/>
-        <location filename="../prefwidget.cpp" line="80"/>
-        <location filename="../prefwidget.cpp" line="97"/>
-        <location filename="../prefwidget.cpp" line="114"/>
-        <location filename="../prefwidget.cpp" line="131"/>
-        <location filename="../prefwidget.cpp" line="148"/>
-        <location filename="../prefwidget.cpp" line="165"/>
+        <location filename="../prefwidget.cpp" line="64"/>
+        <location filename="../prefwidget.cpp" line="81"/>
+        <location filename="../prefwidget.cpp" line="98"/>
+        <location filename="../prefwidget.cpp" line="115"/>
+        <location filename="../prefwidget.cpp" line="132"/>
+        <location filename="../prefwidget.cpp" line="149"/>
+        <location filename="../prefwidget.cpp" line="166"/>
         <source>Change...</source>
         <translation>Changer...</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="75"/>
+        <location filename="../prefwidget.cpp" line="76"/>
         <source>&amp;Module background</source>
         <translation>&amp;Arrière plan des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="92"/>
+        <location filename="../prefwidget.cpp" line="93"/>
         <source>M&amp;odule border</source>
         <translation>B&amp;ordure des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="109"/>
+        <location filename="../prefwidget.cpp" line="110"/>
         <source>Module &amp;font</source>
         <translation>&amp;Police des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="143"/>
+        <location filename="../prefwidget.cpp" line="144"/>
         <source>&amp;Cables</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="160"/>
+        <location filename="../prefwidget.cpp" line="161"/>
         <source>&amp;Jacks</source>
         <translation>Co&amp;nnecteurs</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="200"/>
+        <location filename="../prefwidget.cpp" line="201"/>
         <source>MIDI controller mode</source>
         <translation>Mode contrôleurs MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="204"/>
+        <location filename="../prefwidget.cpp" line="205"/>
         <source>&amp;Avoid parameter jumps</source>
         <translation>&amp;Eviter les sauts de paramètres</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="209"/>
+        <location filename="../prefwidget.cpp" line="210"/>
         <source>&amp;Init MIDI controller</source>
         <translation>&amp;Initialiser le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="213"/>
+        <location filename="../prefwidget.cpp" line="214"/>
         <source>&amp;Follow MIDI controller</source>
         <translation>&amp;Suivre le controleur MIDI</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="256"/>
+        <location filename="../prefwidget.cpp" line="257"/>
         <source>Module position</source>
         <translation>Position des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="259"/>
+        <location filename="../prefwidget.cpp" line="260"/>
         <source>Enable module &amp;position grid</source>
         <translation>Activer la grille de &amp;position des modules</translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="312"/>
+        <source>M&amp;isc</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Grid mesh size</source>
         <translation type="obsolete">Taille de la &amp;grille</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="270"/>
+        <location filename="../prefwidget.cpp" line="271"/>
         <source>Valid mesh size range is %1 to %2 pixel</source>
         <translation>Les tailles de grille sont valides entre %1 et %2 pixels</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="291"/>
+        <location filename="../prefwidget.cpp" line="288"/>
+        <source>M&amp;odule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../prefwidget.cpp" line="305"/>
         <source>&amp;Hide recently used files</source>
         <translation>&amp;Cacher les fichiers récemment utilisés</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="292"/>
+        <location filename="../prefwidget.cpp" line="306"/>
         <source>Do not show list of recently used files in file menu.</source>
         <translation>Ne pas montrer la liste des fichiers récemment utilisés dans le menu.</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="237"/>
+        <location filename="../prefwidget.cpp" line="238"/>
         <source>Module movement</source>
         <translation>Déplacement des modules</translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="241"/>
+        <location filename="../prefwidget.cpp" line="242"/>
         <source>&amp;Standard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../prefwidget.cpp" line="246"/>
+        <location filename="../prefwidget.cpp" line="247"/>
         <source>&amp;No topleft border</source>
         <translation>&amp;Pas de bordure en haut à gauche</translation>
     </message>

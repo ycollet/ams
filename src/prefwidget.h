@@ -44,7 +44,8 @@ class PrefWidget : public QDialog
    
     void setupColorTab();
     void setupMidiTab();
-    void setupEditingTab();
+    void setupModuleTab();
+    void setupMiscTab();
 
   public:
     PrefWidget(QWidget* parent = 0);
