@@ -53,7 +53,6 @@ class ModularSynth : public QWidget
     int ncapt;
     int nplay;
     int verbose;
-    double _zoomFactor;
     QPoint newBoxPos;
     QPoint lastMousePos;
     int modulegrid;

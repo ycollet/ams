@@ -102,7 +102,7 @@ static const char CF_GRIDMESHSIZE[] = "GridMeshSize";
 
 SynthData *synthdata;
 
-    ModularSynth::ModularSynth(QWidget* parent,
+ModularSynth::ModularSynth(QWidget* parent,
             const ModularSynthOptions& mso): QWidget(parent),
     selectedPort(NULL),
     connectorStyle(CONNECTOR_BEZIER),
@@ -117,7 +117,6 @@ SynthData *synthdata;
     ncapt(mso.ncapt),
     nplay(mso.nplay),
     verbose(mso.verbose),
-    _zoomFactor(1.0),
     newBoxPos(0, 0),
     lastMousePos(0, 0),
     modulegrid(20),
