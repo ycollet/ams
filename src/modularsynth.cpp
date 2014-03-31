@@ -1847,17 +1847,6 @@ void ModularSynth::load(QTextStream& ts)
 
       if (nextmoduleid <= moduleID)
           nextmoduleid = moduleID + 1;
-      /*if (listModule.count() > 0) {
-          m = listModule.last();
-          if (m != NULL) {
-              m->setModuleId(moduleID);
-              midiWidget->addModule(m);
-          }
-      }
-
-      if (synthdata->moduleID <= moduleID) {
-          synthdata->moduleID = moduleID + 1;
-      }*/
     }
 
     // Comment <id> <..> <xpos> <ypos> <width> <height>
@@ -1986,12 +1975,6 @@ void ModularSynth::load(QTextStream& ts)
                   mcAbleF.setNewMin(sliderMin);
                   mcAbleF.setNewMax(sliderMax);
                   mcAbleF.midiSign = midiSign;
-                  /*listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
-                    listModule.at(l1)->configDialog->midiSliderList.at(index)->updateValue(value);
-                    listModule.at(l1)->configDialog->midiSliderList.at(index)->setLogMode(isLog);
-                    listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMin(sliderMin);
-                    listModule.at(l1)->configDialog->midiSliderList.at(index)->setNewMax(sliderMax);
-                    listModule.at(l1)->configDialog->midiSliderList.at(index)->midiSign = midiSign;*/
           }
       }
     }
@@ -2011,9 +1994,6 @@ void ModularSynth::load(QTextStream& ts)
                 MidiControllableBase &mcAble = ims->mcAble;
                 mcAble.midiSign = midiSign;
                 mcAble.setVal(value, NULL);
-                /* listModule.at(l1)->configDialog->intMidiSliderList.at(index)->midiSign = midiSign;
-                   listModule.at(l1)->configDialog->intMidiSliderList.at(index)->updateValue((int)value);
-                   listModule.at(l1)->configDialog->intMidiSliderList.at(index)->slider->setValue((int)value);*/
             }
         }
     }
@@ -2033,9 +2013,6 @@ void ModularSynth::load(QTextStream& ts)
               MidiControllableBase &mcAble = ims->mcAble;
               mcAble.midiSign = midiSign;
               mcAble.setVal(value, NULL);
-              /*listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->midiSign = midiSign;
-                listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->updateValue((int)value);
-                listModule.at(l1)->configDialog->floatIntMidiSliderList.at(index)->slider->setValue((int)value);*/
           }
       }
     }
@@ -2120,16 +2097,7 @@ void ModularSynth::load(QTextStream& ts)
 
         MidiControllerKey mck(type, ch, param);
         midiWidget->addMidiController(mck);
-        // MidiControllerKey const midiController =
-        //    new MidiController(type, ch, param);
-        // if (!midiWidget->midiControllerList.contains(midiController)) {
-        //    *midiWidget->midiController(MidiController(type, ch, param));
-        // } else {
-        //  QList<MidiController*>::iterator midiIndex =
-        //     midiWidget->midiControllerList.find(midiController);
-        //  delete(midiController);
-        //  midiController = *midiIndex;
-        //  }
+
         if (qs.startsWith("FSMIDI", Qt::CaseInsensitive)) {
             m = getModuleWithId(moduleID);
             if (m != NULL) {
