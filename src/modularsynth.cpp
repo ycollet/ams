@@ -1660,13 +1660,14 @@ void ModularSynth::load(QTextStream& ts)
               newLadspaPolyFlag = tokens[5].toInt();
               ladspaLibName = tokens[6];
               pluginName = qs.section(' ', 7);
-              qWarning("%s",
-                      tr("Loading LADSPA plugin \"%1\" from library \"%2\".")
-                      .arg(pluginName)
-                      .arg(ladspaLibName).toUtf8().constData());
 
               if (!synthdata->getLadspaIDs(ladspaLibName, pluginName,
                           &subID1, &subID2)) {
+                  qWarning("%s",
+                          tr("Loading LADSPA plugin \"%1\" from library \"%2\" failed.")
+                          .arg(pluginName)
+                          .arg(ladspaLibName).toUtf8().constData());
+
                   QMessageBox::information(this, "AlsaModularSynth",
                           tr("Could not find LADSPA plugin "
                               "\"%1\" from library \"%2\".")
