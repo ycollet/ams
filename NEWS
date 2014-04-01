@@ -1,3 +1,20 @@
+ams-2.1.1 (2014-04-01)
+
+  Fixed Bugs
+    o Fix crash on loading patches with missing LADSPA libraries.
+
+  New Features
+    o SIGTERM handler.
+    o NSM support (programmed by Roy Vegard Ovesen)
+    o Mouse hover port highlighting.
+    o Full screen mode view (F11).
+
+  General Changes
+    o German translation update.
+    o Some internal cleanups.
+
+
+
 ams-2.1.0 (2014-03-15)
 
   Fixed Bugs
@@ -45,7 +62,7 @@ ams-2.1.0 (2014-03-15)
 
   General Changes
     o Separate handling of color scheme directory from patch file
-      directoy.
+      directory.
     o Improved handling of CXXFLAGS variables
     o Add check for Ladspa header file.
     o Obsolete commandline option -l (preset file) removed

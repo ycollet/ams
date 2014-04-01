@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(ams, [2.1.0], [alsamodular-devel@lists.sourceforge.net])
+AC_INIT(ams, [2.1.1], [alsamodular-devel@lists.sourceforge.net])
 AC_CANONICAL_SYSTEM
 AC_CONFIG_SRCDIR([src/box.h])
 AC_CONFIG_HEADER([src/config.h])
@@ -237,6 +237,29 @@ if test "$jack_session" != "no"; then
                   [Define to enable JACK session support])
         fi
     fi
+
+# NSM support
+dnl NSM
+AC_ARG_ENABLE(nsm,
+    [AS_HELP_STRING(--disable-nsm, [Disable Non Session Manager support])],
+    [nsm=$enableval],
+    [nsm=yes])
+
+if test "$nsm" != "no"; then
+    PKG_CHECK_MODULES(LIBLO, liblo >= 0.26, [have_liblo=yes], [have_liblo=no])
+    if test "$have_liblo" = "yes"; then
+        AC_DEFINE(NSM_SUPPORT, 1,
+                  [Define to enable NSM support])
+        LIBSsave=$LIBS
+        CFLAGSsave=$CFLAGS
+        CFLAGS=$LIBLO_CFLAGS
+        LIBS=$LIBLO_LIBS
+        AC_SUBST(LIBLO_CFLAGS)
+        AC_SUBST(LIBLO_LIBS)
+        LIBS+=$LIBSsave
+        CFLAGS+=$CFLAGSsave
+    fi
+fi
 
 
 AC_CONFIG_FILES([Makefile])

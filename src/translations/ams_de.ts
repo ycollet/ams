@@ -3631,7 +3631,7 @@ and effect processor.</source>
         <location filename="../mainwindow.cpp" line="92"/>
         <location filename="../mainwindow.cpp" line="104"/>
         <source>Open demo &amp;instrument...</source>
-        <translation>Öffne Demo-&amp;Instrument..</translation>
+        <translation>Öffne Demo-&amp;Instrument...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="147"/>

@@ -1,3 +1,125 @@
++++ Release 2.1.1 (2014-04-01) +++
+
+2014-03-31 18:08  Guido Scholz <guido-scholz@gmx.net>
+	* src/modularsynth.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Move LADSPA warning to report only
+	  errors.
+
+2014-03-31 18:05  Guido Scholz <guido-scholz@gmx.net>
+	* src/modularsynth.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Remove outdated comments
+
+2014-03-30 08:14  Guido Scholz <guido-scholz@gmx.net>
+	* src/modularsynth.cpp, modularsynth.h, translations/ams_de.ts,
+	  translations/ams_fr.ts: Remove unused _zoomFactor variable
+
+2014-03-27 22:06  Guido Scholz <guido-scholz@gmx.net>
+	* src/prefwidget.cpp, prefwidget.h, translations/ams_de.ts,
+	  translations/ams_fr.ts: Divide editing tab of preferences dialog
+
+2014-03-26 22:09  Guido Scholz <guido-scholz@gmx.net>
+	* src/port.cpp, translations/ams_de.ts, translations/ams_fr.ts:
+	  Set port text to highlighted color if hovered
+
+2014-03-26 20:57  Guido Scholz <guido-scholz@gmx.net>
+	* src/ mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Update German translation
+
+2014-03-26 20:40  Guido Scholz <guido-scholz@gmx.net>
+	* src/nsm.h: Add missing header file
+
+2014-03-26 20:37  Guido Scholz <guido-scholz@gmx.net>
+	* src/mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Some code beautification
+
+2014-03-26 20:17  Guido Scholz <guido-scholz@gmx.net>
+	* Makefile.am, main.cpp, mainwindow.cpp, mainwindow.h,
+	  msoptions.h, prefwidget.cpp, prefwidget.h,
+	  translations/ams_de.ts, translations/ams_fr.ts: Add nsm support
+	  by Roy Vegard Ovesen <royvegard@users.sourceforge.net> (stripped
+	  from https://github.com/royvegard/ams)
+
+2014-03-26 20:09  Guido Scholz <guido-scholz@gmx.net>
+	* src/mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Handle SIGTERM
+
+2014-03-24 18:23  Guido Scholz <guido-scholz@gmx.net>
+	* src/port.cpp, translations/ams_de.ts, translations/ams_fr.ts:
+	  Disable unnecessary mouse tracking
+
+2014-03-24 18:14  Guido Scholz <guido-scholz@gmx.net>
+	* src/modularsynth.h, port.cpp, port.h, translations/ams_de.ts,
+	  translations/ams_fr.ts: Highlight selected port
+
+2014-03-23 20:59  Guido Scholz <guido-scholz@gmx.net>
+	* src/port.cpp, translations/ams_de.ts, translations/ams_fr.ts:
+	  Streamlining by indent
+
+2014-03-23 11:00  Guido Scholz <guido-scholz@gmx.net>
+	* src/modularsynth.cpp, modularsynth.h: Rename Fastly to Fast
+
+2014-03-23 10:51  Guido Scholz <guido-scholz@gmx.net>
+	* src/ladspadialog.cpp, mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Use Ladspa abbreviation in capital
+	  letters only
+
+2014-03-23 10:47  Guido Scholz <guido-scholz@gmx.net>
+	* src/mainwindow.cpp, mainwindow.h, translations/ams_de.ts,
+	  translations/ams_fr.ts: Add full screen mode view
+
+2014-03-23 10:17  Guido Scholz <guido-scholz@gmx.net>
+	* src/mainwindow.cpp: Rename midiMenu to viewMenu
+
+2014-03-22 23:29  Guido Scholz <guido-scholz@gmx.net>
+	* src/prefwidget.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Update German translation
+
+2014-03-22 22:53  Guido Scholz <guido-scholz@gmx.net>
+	* src/aboutdialog.cpp: Update copyright year
+
+2014-03-22 22:47  Guido Scholz <guido-scholz@gmx.net>
+	* src/m_ad.cpp, m_ad.h, m_advenv.cpp, m_advenv.h, m_advmcv.cpp,
+	  m_advmcv.h, m_amp.cpp, m_amp.h, m_analogmemory.cpp,
+	  m_analogmemory.h, m_bitgrind.cpp, m_bitgrind.h, m_conv.cpp,
+	  m_conv.h, m_cvs.cpp, m_cvs.h, m_delay.cpp, m_delay.h,
+	  m_dynamicwaves.cpp, m_dynamicwaves.h, m_env.cpp, m_env.h,
+	  m_function.cpp, m_function.h, m_hysteresis.cpp, m_hysteresis.h,
+	  m_inv.cpp, m_inv.h, m_ladspa.cpp, m_ladspa.h, m_lfo.cpp, m_lfo.h,
+	  m_mcv.cpp, m_mcv.h, m_midiout.cpp, m_midiout.h, m_mix.cpp,
+	  m_mix.h, m_mphlfo.cpp, m_mphlfo.h, m_noise.cpp, m_noise.h,
+	  m_noise2.cpp, m_noise2.h, m_pcmin.cpp, m_pcmin.h, m_pcmout.cpp,
+	  m_pcmout.h, m_quantizer.cpp, m_quantizer.h, m_ringmod.cpp,
+	  m_ringmod.h, m_scmcv.cpp, m_scmcv.h, m_scope.cpp, m_scope.h,
+	  m_scquantizer.cpp, m_scquantizer.h, m_seq.cpp, m_seq.h, m_sh.cpp,
+	  m_sh.h, m_slew.cpp, m_slew.h, m_spectrum.cpp, m_spectrum.h,
+	  m_stereomix.cpp, m_stereomix.h, m_v8sequencer.cpp,
+	  m_v8sequencer.h, m_vca.cpp, m_vca.h, m_vcdelay.cpp, m_vcdelay.h,
+	  m_vcdoubledecay.cpp, m_vcdoubledecay.h, m_vcenv.cpp, m_vcenv.h,
+	  m_vcenv2.cpp, m_vcenv2.h, m_vcf.cpp, m_vcf.h, m_vco.cpp, m_vco.h,
+	  m_vco2.cpp, m_vco2.h, m_vcorgan.cpp, m_vcorgan.h,
+	  m_vcpanning.cpp, m_vcpanning.h, m_vcswitch.cpp, m_vcswitch.h,
+	  m_vocoder.cpp, m_vocoder.h, m_vquant.cpp, m_vquant.h,
+	  m_wavout.cpp, m_wavout.h, midiwidget.cpp, modularsynth.cpp,
+	  modularsynth.h, module.cpp, module.h, port.cpp, synthdata.cpp,
+	  synthdata.h, translations/ams_de.ts, translations/ams_fr.ts: Fix
+	  crash if ladspa module loading fails, improve module-id handling
+
+2014-03-17 23:13  Guido Scholz <guido-scholz@gmx.net>
+	* demos/analog_memory_1.ams, bitgrinder_1.ams,
+	  example_ams_demo_scope_spectrum.ams,
+	  example_ams_demo_scope_spectrum_drums.ams,
+	  example_ams_demo_scope_spectrum_mcp_phaser.ams,
+	  example_ams_demo_scope_spectrum_mcpvcf.ams,
+	  example_phaser_bassclang.ams, example_phaser_basspad.ams,
+	  hysteresis_1.ams, v8_seq_demo_1.ams, v8_seq_demo_2.ams,
+	  vcdelay_1.ams: Update example patches to current file save
+	  capabilities
+
+2014-03-16 11:05  Guido Scholz <guido-scholz@gmx.net>
+	* src/m_spectrum.cpp: Fix spelling error
+
+
+
 +++ Release 2.1.0 (2014-03-15) +++
 
 2014-03-15 Guido Scholz <guido-scholz@gmx.net>
