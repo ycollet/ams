@@ -1,6 +1,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMenuBar>
+#include <QSettings>
 #include <QScrollArea>
 
 #include "aboutdialog.h"
@@ -53,6 +54,12 @@ MainWindow::MainWindow(const ModularSynthOptions& mso): QMainWindow(),
     setWindowIcon(QPixmap(ams_32_xpm));
     setObjectName("MainWindow");
     resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+    /* clear global filedialog settings to avoid cross application
+       history spying */
+    QSettings settings( QSettings::UserScope, "Trolltech");
+    settings.beginGroup("Qt");
+    settings.remove("filedialog");
 
     /*init synthesizer*/
     modularSynth = new ModularSynth(this, mso);
