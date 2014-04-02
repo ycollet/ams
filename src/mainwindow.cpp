@@ -55,9 +55,9 @@ MainWindow::MainWindow(const ModularSynthOptions& mso): QMainWindow(),
     setObjectName("MainWindow");
     resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-    /* clear global filedialog settings to avoid cross application
-       history spying */
-    QSettings settings( QSettings::UserScope, "Trolltech");
+    /*clear global filedialog settings to avoid cross application
+      history spying*/
+    QSettings settings(QSettings::UserScope, "Trolltech");
     settings.beginGroup("Qt");
     settings.remove("filedialog");
 
@@ -201,7 +201,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso): QMainWindow(),
             modularSynth, SLOT(newM_vocoder()));
 
     /*Time Modifiers submenu*/
-    QMenu *newModuleTimeModifiers = newModulePopup->addMenu(tr("&Time modifiers"));
+    QMenu *newModuleTimeModifiers = newModulePopup->addMenu(
+            tr("&Time modifiers"));
     newModuleTimeModifiers->addAction(tr("&Sample && Hold"),
             modularSynth, SLOT(newM_sh()));
     newModuleTimeModifiers->addAction(tr("&Delay"),
@@ -297,7 +298,8 @@ MainWindow::MainWindow(const ModularSynthOptions& mso): QMainWindow(),
     newModuleCvOps->addAction(tr("&Hysteresis"),
             modularSynth, SLOT(newM_hysteresis()));
 
-    newModulePopup->addAction(tr("Co&mment"), modularSynth, SLOT(new_textEdit()));
+    newModulePopup->addAction(tr("Co&mment"), modularSynth,
+            SLOT(new_textEdit()));
 
     modulePopup->addAction(tr("&Show LADSPA Browser..."), modularSynth,
             SLOT(displayLadspaPlugins()));

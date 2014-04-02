@@ -3721,222 +3721,222 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="204"/>
+        <location filename="../mainwindow.cpp" line="205"/>
         <source>&amp;Time modifiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="205"/>
+        <location filename="../mainwindow.cpp" line="206"/>
         <source>&amp;Sample &amp;&amp; Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="207"/>
+        <location filename="../mainwindow.cpp" line="208"/>
         <source>&amp;Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="209"/>
+        <location filename="../mainwindow.cpp" line="210"/>
         <source>&amp;VC Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="212"/>
         <source>&amp;Analog Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="213"/>
+        <location filename="../mainwindow.cpp" line="214"/>
         <source>&amp;INV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="215"/>
+        <location filename="../mainwindow.cpp" line="216"/>
         <source>V&amp;C Double Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="219"/>
+        <location filename="../mainwindow.cpp" line="220"/>
         <source>&amp;Envelopes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
+        <location filename="../mainwindow.cpp" line="221"/>
         <source>&amp;ENV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="222"/>
+        <location filename="../mainwindow.cpp" line="223"/>
         <source>&amp;Advanced ENV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
+        <location filename="../mainwindow.cpp" line="225"/>
         <source>&amp;VC Envelope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="227"/>
         <source>V&amp;C Envelope II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="228"/>
+        <location filename="../mainwindow.cpp" line="229"/>
         <source>&amp;Function 1 --&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="230"/>
+        <location filename="../mainwindow.cpp" line="231"/>
         <source>F&amp;unction 1 --&gt; 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="232"/>
+        <location filename="../mainwindow.cpp" line="233"/>
         <source>Fu&amp;nction 1 --&gt; 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="236"/>
+        <location filename="../mainwindow.cpp" line="237"/>
         <source>&amp;Sequencers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="237"/>
+        <location filename="../mainwindow.cpp" line="238"/>
         <source>&amp;SEQ  8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="239"/>
+        <location filename="../mainwindow.cpp" line="240"/>
         <source>S&amp;EQ 12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="241"/>
+        <location filename="../mainwindow.cpp" line="242"/>
         <source>SE&amp;Q 16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="243"/>
+        <location filename="../mainwindow.cpp" line="244"/>
         <source>SEQ &amp;24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="245"/>
+        <location filename="../mainwindow.cpp" line="246"/>
         <source>SEQ &amp;32</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="247"/>
+        <location filename="../mainwindow.cpp" line="248"/>
         <source>&amp;V8 Sequencer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="251"/>
+        <location filename="../mainwindow.cpp" line="252"/>
         <source>&amp;VCA and Mix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="253"/>
         <source>&amp;Amplifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="255"/>
         <source>&amp;VCA lin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="256"/>
+        <location filename="../mainwindow.cpp" line="257"/>
         <source>V&amp;CA exp.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="258"/>
+        <location filename="../mainwindow.cpp" line="259"/>
         <source>&amp;Ring Modulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="260"/>
+        <location filename="../mainwindow.cpp" line="261"/>
         <source>&amp;Mixer 2 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="262"/>
+        <location filename="../mainwindow.cpp" line="263"/>
         <source>M&amp;ixer 4 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="264"/>
+        <location filename="../mainwindow.cpp" line="265"/>
         <source>Mi&amp;xer 8 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="266"/>
+        <location filename="../mainwindow.cpp" line="267"/>
         <source>&amp;Stereo Mixer 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="268"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <source>S&amp;tereo Mixer 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="270"/>
+        <location filename="../mainwindow.cpp" line="271"/>
         <source>St&amp;ereo Mixer 8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="272"/>
+        <location filename="../mainwindow.cpp" line="273"/>
         <source>VC &amp;Panning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="274"/>
+        <location filename="../mainwindow.cpp" line="275"/>
         <source>VC S&amp;witch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="278"/>
+        <location filename="../mainwindow.cpp" line="279"/>
         <source>&amp;CV Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>&amp;CVS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="281"/>
+        <location filename="../mainwindow.cpp" line="282"/>
         <source>&amp;Slew Limiter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="283"/>
+        <location filename="../mainwindow.cpp" line="284"/>
         <source>&amp;Noise/ Random</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="285"/>
+        <location filename="../mainwindow.cpp" line="286"/>
         <source>N&amp;oise/Random 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="289"/>
+        <location filename="../mainwindow.cpp" line="290"/>
         <source>&amp;Quantizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="291"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>Q&amp;uantizer 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="295"/>
+        <location filename="../mainwindow.cpp" line="296"/>
         <source>C&amp;onverter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="297"/>
+        <location filename="../mainwindow.cpp" line="298"/>
         <source>&amp;Hysteresis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3945,84 +3945,84 @@ and effect processor.</source>
         <translation type="obsolete">&amp;Afficher l&apos;explorateur LADSPA...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="305"/>
+        <location filename="../mainwindow.cpp" line="307"/>
         <source>&amp;Control Center...</source>
         <translation>&amp;Centre de Contrôle...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="307"/>
+        <location filename="../mainwindow.cpp" line="309"/>
         <source>&amp;Parameter View...</source>
         <translation>Vue &amp;Paramètres...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="309"/>
+        <location filename="../mainwindow.cpp" line="311"/>
         <source>Pre&amp;ferences...</source>
         <translation>Pré&amp;férences...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="312"/>
+        <location filename="../mainwindow.cpp" line="314"/>
         <source>&amp;Full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="315"/>
+        <location filename="../mainwindow.cpp" line="317"/>
         <source>&amp;About AlsaModularSynth...</source>
         <translation>&amp;A propos d&apos;AlsaModularSynth...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../mainwindow.cpp" line="319"/>
         <source>About &amp;Qt...</source>
         <translation>A propos de &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="377"/>
         <source>&amp;Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="376"/>
+        <location filename="../mainwindow.cpp" line="378"/>
         <source>Import to &amp;session...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="377"/>
+        <location filename="../mainwindow.cpp" line="379"/>
         <source>Import &amp;demo to session...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="379"/>
+        <location filename="../mainwindow.cpp" line="381"/>
         <source>Import demo &amp;instrument to session...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="380"/>
+        <location filename="../mainwindow.cpp" line="382"/>
         <source>&amp;Export from session...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="468"/>
+        <location filename="../mainwindow.cpp" line="470"/>
         <source>Unnamed file was changed.
 Save changes?</source>
         <translation>Le fichier sans nom a été modifié. Enregistrer les modifications?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="470"/>
+        <location filename="../mainwindow.cpp" line="472"/>
         <source>File &apos;%1&apos; was changed.
 Save changes?</source>
         <translation>Le fichier &apos;%1&apos; a été modifié. Enregistrer les modifications?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="473"/>
+        <location filename="../mainwindow.cpp" line="475"/>
         <source>Save changes</source>
         <translation>Enregistrer les modifications</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="501"/>
+        <location filename="../mainwindow.cpp" line="503"/>
         <source>Open demo patch file</source>
         <translation>Ouvrir un fichier de démonstration</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="481"/>
+        <location filename="../mainwindow.cpp" line="483"/>
         <source>Open patch file</source>
         <translation>Ouvrir fichier patch</translation>
     </message>
@@ -4032,66 +4032,66 @@ Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="287"/>
+        <location filename="../mainwindow.cpp" line="288"/>
         <source>Sa&amp;mple &amp;&amp; Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="294"/>
         <source>Sc&amp;ala Quantizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="300"/>
+        <location filename="../mainwindow.cpp" line="301"/>
         <source>Co&amp;mment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="302"/>
+        <location filename="../mainwindow.cpp" line="304"/>
         <source>&amp;Show LADSPA Browser...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="482"/>
-        <location filename="../mainwindow.cpp" line="502"/>
-        <location filename="../mainwindow.cpp" line="522"/>
-        <location filename="../mainwindow.cpp" line="672"/>
+        <location filename="../mainwindow.cpp" line="484"/>
+        <location filename="../mainwindow.cpp" line="504"/>
+        <location filename="../mainwindow.cpp" line="524"/>
+        <location filename="../mainwindow.cpp" line="674"/>
         <source>AlsaModularSynth patch files</source>
         <translation>Fichier patch AlsaModularSynth</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="521"/>
+        <location filename="../mainwindow.cpp" line="523"/>
         <source>Open demo instrument file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="615"/>
-        <location filename="../mainwindow.cpp" line="620"/>
+        <location filename="../mainwindow.cpp" line="617"/>
+        <location filename="../mainwindow.cpp" line="622"/>
         <source>Could not read file &apos;%1&apos;</source>
         <translation>Echec de lecture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="653"/>
+        <location filename="../mainwindow.cpp" line="655"/>
         <source>Could not open file &apos;%1&apos;</source>
         <translation>Echec d&apos;ouverture du fichier &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="671"/>
+        <location filename="../mainwindow.cpp" line="673"/>
         <source>Save patch file</source>
         <translation>Enregistrer fichier patch</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="691"/>
+        <location filename="../mainwindow.cpp" line="693"/>
         <source>Saving aborted</source>
         <translation>Enregistrement annulé</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="700"/>
+        <location filename="../mainwindow.cpp" line="702"/>
         <source>noname</source>
         <translation>sansnom</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="722"/>
+        <location filename="../mainwindow.cpp" line="724"/>
         <source>About Qt</source>
         <translation>A propos de Qt</translation>
     </message>
@@ -4569,22 +4569,22 @@ Save changes?</source>
         <translation>Nom du client &apos;%1&apos; déjà occupé.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="346"/>
+        <location filename="../mainwindow.cpp" line="348"/>
         <source>Preset path now %1</source>
         <translation>Chemin des Presets: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="390"/>
+        <location filename="../mainwindow.cpp" line="392"/>
         <source>Loading preset %1</source>
         <translation>Chargement du Preset %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="405"/>
+        <location filename="../mainwindow.cpp" line="407"/>
         <source>Closing synthesizer...</source>
         <translation>Fermeture du synthétiseur...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="413"/>
+        <location filename="../mainwindow.cpp" line="415"/>
         <source>Could not unlock preferences file.</source>
         <translation>Echec de déverouillage du fichier de préférences.</translation>
     </message>
