@@ -40,19 +40,19 @@ int MainWindow::pipeFd[2];
 nsm_client_t *MainWindow::nsm = 0;
 #endif
 
-MainWindow::MainWindow(const ModularSynthOptions& mso)
+MainWindow::MainWindow(const ModularSynthOptions& mso): QMainWindow(),
+    restoregeometry(true),
+    hiderecentfiles(false),
+    rcFd(mso.rcFd),
+    fileName(""),
+    prefDialog(NULL),
+    synthoptions(&mso)
 {
     /*make sure the window destructor is called on program exit*/
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowIcon(QPixmap(ams_32_xpm));
     setObjectName("MainWindow");
-    fileName = "";
-    restoregeometry = true;
-    hiderecentfiles = false;
-    prefDialog = NULL;
     resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    rcFd = mso.rcFd;
-    synthoptions = &mso;
 
     /*init synthesizer*/
     modularSynth = new ModularSynth(this, mso);
