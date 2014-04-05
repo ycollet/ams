@@ -4156,7 +4156,7 @@ Save changes?</source>
     <message>
         <location filename="../midiwidget.cpp" line="345"/>
         <source>&amp;Clear Binding</source>
-        <translation>Verbindun &amp;lösen</translation>
+        <translation>Verbindung &amp;lösen</translation>
     </message>
     <message>
         <location filename="../midiwidget.cpp" line="350"/>
