@@ -41,7 +41,6 @@ public:
     
 public:
   LadspaDialog();
-  ~LadspaDialog();
     
 signals:
   void createLadspaModule(int index, int n, bool poly, bool extCtrlPorts);  

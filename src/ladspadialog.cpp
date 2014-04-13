@@ -185,8 +185,6 @@ LadspaDialog::LadspaDialog()
           SLOT(insertPolyClicked()));
 }
 
-LadspaDialog::~LadspaDialog() {
-}
 
 void LadspaDialog::insertClicked()
 {

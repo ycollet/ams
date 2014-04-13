@@ -36,7 +36,7 @@
 #include "synthdata.h"
 #include "midicheckbox.h"
 #include "midislider.h"
-// For FFTW to be happy...
+// For FFTW to be happy we must include complex.h before fftw3.h
 #include <complex.h>
 #include <fftw3.h>
 #include "port.h"
@@ -69,22 +69,22 @@ float M_vocoder::windowcurve (int windowfunc, int len, int elem, float alpha)
       break;
     case 2:
       //  Hann window (raised cosine)
-      out = 0.5 * (1.0 - cos (3.14159 * 2 * elem / (len - 1)));
+      out = 0.5 * (1.0 - cos (3.14159 * 2 * (elem / (len - 1.0))));
       break;
     case 3:
       //  Hamming window
-      out = 0.54 - 0.46 * cos (3.14159 * 2 * elem / (len - 1));
+      out = 0.54 - 0.46 * cos (3.14159 * 2 * (elem / (len - 1.0)));
       break;
     case 4:
       //  Tukey window
       out = 1;
       if ( elem <= (alpha * len / 2) )
 	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len))
-				   - 1))) / 2;
+				   - 1))) / 2.0;
       if (elem >= (len * (1 - alpha/2)))
 	out = (1 + cos (3.14159 * (((2 * elem) / (alpha * len))
 				   - (2 * alpha)
-				   + 1))) / 2;
+				   + 1))) / 2.0;
       break;
     case 5:
       //  Blackman-Nutall (least spillover)
@@ -145,7 +145,7 @@ M_vocoder::M_vocoder(QWidget* parent, int id)
   windowFormats << tr("Rectangular");
   windowFormats << tr("Trapezoidal");
   windowFormats << tr("Hann (Cosine)");
-  windowFormats << tr("Hamming (Cosine)");
+  windowFormats << tr("Hamming (min 1st sidelobe)");
   windowFormats << tr("Tukey (flattop cosine)");
   windowFormats << tr("Blackman-Nutall (minimum spill)");
   configDialog->addComboBox (tr("FFT &Window function"),
@@ -191,7 +191,7 @@ M_vocoder::M_vocoder(QWidget* parent, int id)
 					     * fftsize);
   modoutbackward = (fftw_complex *) fftw_malloc (sizeof (fftw_complex)
 					      * fftsize);
-  fftw_set_timelimit (0.1);
+  fftw_set_timelimit (5.0);
   planmodforward = fftw_plan_dft_1d (fftsize, modinforward,
 				  modoutforward, FFTW_FORWARD, FFTW_MEASURE);
   planmodbackward = fftw_plan_dft_1d (fftsize, modinbackward,
@@ -279,24 +279,31 @@ void M_vocoder::generateCycle() {
   //  Our outside loop is the polyphony loop.
   for (l1 = 0; l1 < synthdata->poly; l1++) {
 
-    //  copy the modulator input into inbuf
+    //  copy the modulator input into inbuf (remember that fftsize is
+    //   generally much larger than cyclesize, so that we actually
+    //   have several cyclesize-worths of data in the FFT input buffers
+    //   and we slide them down by cyclesize on every cycle.
 
+    //  Slide down what's already in...
     for (l2 = 0; l2 < fftsize - synthdata->cyclesize; l2++) {
       modbuf[l1][l2] = modbuf [l1] [l2 + synthdata->cyclesize];
     }
+    //  And pack in the new data.
     for (l2 = 0; l2 < synthdata->cyclesize; l2++) {
       modbuf[l1][l2 + fftsize - synthdata->cyclesize ] = inModulator[l1][l2];
     }
 
-    //    Copy the input buffer to modinforward
+    //    window the input buffer to modinforward
     for (l2 = 0; l2 < (unsigned int)fftsize ; l2++) {
       modinforward[l2] = modbuf[l1][l2] * window[l2];
     }
 
+    //   QUICKCHECK just copies modulator-in to vocoder-out.  It
+    //    verifies that nothing grotesque got broken.
 //#define QUICKCHECK
 #ifdef QUICKCHECK
     for (l2 = 0; l2 < (unsigned int) synthdata->cyclesize; l2++)
-      data[0][l1][l2] = creal (modinforward[l2 + fftsize/4]);
+      data[1][l1][l2] = creal (modinforward[l2 + fftsize/4]);
     return;
 #endif
     //   and forward FFT the modulator
@@ -334,9 +341,9 @@ void M_vocoder::generateCycle() {
       lclfrq = l2 + (int)freqshift + vcfreqshift * inFreqShift[l1][0];
       lclfrq = lclfrq > 0 ? lclfrq : 0;
       lclfrq = lclfrq < ((fftsize/2)-1) ? lclfrq : (fftsize/2)-1;
-      modinbackward[ lclfrq ] = modoutforward [l2];
+      modinbackward [lclfrq] = modoutforward [l2];
       //   Negative frequencies (second half of the fft result)
-      modinbackward[fftsize - lclfrq] = modoutforward [ fftsize - l2];
+      modinbackward [fftsize - lclfrq] = modoutforward [ fftsize - l2];
     }
 
     //    Pitchshifting (multiplicative, harmonic-retaining) shifting.

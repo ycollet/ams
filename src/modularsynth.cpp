@@ -158,6 +158,8 @@ ModularSynth::~ModularSynth()
   guiWidget->close();
   midiWidget->close();
   ladspaDialog->close();
+  delete guiWidget;
+  delete midiWidget;
   delete ladspaDialog;
   //synthdata is child of modularsynth => !delete synthdata;
 }
