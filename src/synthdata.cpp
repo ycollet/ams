@@ -210,6 +210,8 @@ SynthData::~SynthData()
     if (poly > 0)
       free(zeroModuleData[0]);
     free (zeroModuleData);
+    delete (midiWidget);
+    delete (guiWidget);
 }
 
 

@@ -115,7 +115,7 @@ Module::~Module()
 {
     int l1;
 
-    //delete configDialog;
+    delete configDialog;
 
     qDeleteAll(midiControllables.begin(), midiControllables.end());
 

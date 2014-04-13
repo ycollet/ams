@@ -29,7 +29,7 @@
 
 
 ConfigDialog::ConfigDialog(Module &module)
-  : QDialog(this),
+  : QDialog(&module),
     addStretch(1)
   , removeButton(new QPushButton(tr("&Remove Module")))
   , removeFrame(new QHBoxLayout())
