@@ -1720,7 +1720,7 @@ void ModularSynth::load(QTextStream& ts)
               add_delay(moduleID);
               break;
           case M_type_seq:
-              add_seq(moduleID, subID1);
+              add_seq(subID1, moduleID);
               break;
           case M_type_env:
               add_env(moduleID);
