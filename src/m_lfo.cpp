@@ -42,6 +42,7 @@
 
 M_lfo::M_lfo(QWidget* parent, int id)
   : Module(M_type_lfo, id, 6, parent, tr("LFO"))
+  , freq(5)
   , wave_period((double)synthdata->rate / (16.0 * freq))
   , sa(-1)
   , dt(4.0 / wave_period)
@@ -50,7 +51,6 @@ M_lfo::M_lfo(QWidget* parent, int id)
   long tm;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LFO_WIDTH, MODULE_LFO_HEIGHT);
-  freq = 5;
   phi0 = 0;
 
   port_M_trigger = new Port(tr("Reset"), PORT_IN, 0, this);
