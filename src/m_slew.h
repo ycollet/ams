@@ -10,8 +10,9 @@ class M_slew : public Module
 {
     Q_OBJECT
 
-    Port *port_M_in, *port_out;
-    float timeUp, timeDown;
+    Port *port_M_in, *port_out, *port_legato;
+    float timeUp, timeDown, *legatoData;
+    bool noteDown;
     PolyArr<float> lastData;
     
   public: 

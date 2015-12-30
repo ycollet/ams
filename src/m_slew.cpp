@@ -21,11 +21,13 @@
 
 M_slew::M_slew(QWidget* parent, int id)
   : Module(M_type_slew, id, 1, parent, tr("Slew Limiter"))
+  , noteDown(false)
 {
   QString qs;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SLEW_HEIGHT);
   port_M_in = new Port(tr("In"), PORT_IN, 0, this);
+  port_legato = new Port(tr("Legato"), PORT_IN, 1, this);
   cv.out_off = 55;
   port_out = new Port(tr("Out"), PORT_OUT, 0, this);
   timeUp = 0.5;
@@ -39,8 +41,11 @@ void M_slew::generateCycle() {
   int l1;
   unsigned int l2;
   float ds, slewUp, slewDown;
+  bool watch_legato = port_legato->hasConnectedPort() && synthdata->poly == 1 ;
 
     inData = port_M_in->getinputdata ();
+    if (watch_legato)
+      legatoData = port_legato->getinputdata()[0];
 
     if (timeUp > 0.0001) {
       slewUp = 1.0 / (timeUp * (float)synthdata->rate);
@@ -60,9 +65,14 @@ void M_slew::generateCycle() {
         } else {
           if (ds < slewDown) ds = slewDown;
         }
-        data[0][l1][l2] = lastData[l1] + ds;
-        lastData[l1] = data[0][l1][l2];
+	if (!watch_legato || noteDown) {
+	  data[0][l1][l2] = lastData[l1] + ds;
+	  lastData[l1] = data[0][l1][l2];
+	} else {
+	  data[0][0][l2] = lastData[0] = inData[0][l2];
+	}
+	if (watch_legato)
+	  noteDown = legatoData[l2] > 0.5;
       }
     }
 }
-
