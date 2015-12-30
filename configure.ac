@@ -110,7 +110,7 @@ LDFLAGS="$saved_libs"
 AC_LANG_POP(C++)
 fi
 
-dnl option to enable Qt4 instead of default Qt3 library 
+dnl option to enable Qt5 instead of default Qt4 library 
 AC_ARG_ENABLE(qt5, AC_HELP_STRING([--enable-qt5],
                           [enable Qt5 instead of Qt4 library]),,
                           enable_qt4=yes)
@@ -220,7 +220,7 @@ AC_ARG_WITH(ladspa-path,
   [ if test "x$withval" != "x" ; then
      LADSPA_PATH="$withval"
     fi ],
-  [LADSPA_PATH="/usr/lib/ladspa:/usr/local/lib/ladspa"])
+  [LADSPA_PATH="/usr/lib/ladspa:/usr/lib64/ladspa:/usr/local/lib/ladspa:/usr/local/lib64/ladspa"])
 AC_SUBST(LADSPA_PATH)
 
 dnl JACK session
