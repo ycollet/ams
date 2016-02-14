@@ -22,7 +22,6 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, int id)
           tr("DynamicWaves %1").arg(p_oscCount))
 {
   QString qs;
-  int l1;
   QVBoxLayout *oscTab[MODULE_DYNAMICWAVES_MAX_OSC];
   QVBoxLayout *envelopeTab[MODULE_DYNAMICWAVES_MAX_OSC];
 
@@ -35,7 +34,7 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, int id)
   oscCount = p_oscCount;
   allEnvTerminated = true;
   timeScale = 1;
-  for (l1 = 0; l1 < oscCount; l1++) {
+  for (int l1 = 0; l1 < oscCount; l1++) {
     gain[l1] = 1;
     osc_tune[l1] = 0;
     harmonic[l1] = 1 + l1;
@@ -58,32 +57,39 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, int id)
     release[3][l1] = 0.5;
     release[4][l1] = 0.01;
   }
-  port_M_freq = new Port("Freq", PORT_IN, 0, this);
-  port_M_exp = new Port("Exp. FM", PORT_IN, 1, this);
-  port_M_lin = new Port("Lin. FM", PORT_IN, 2, this);
-  port_gate = new Port("Gate", PORT_IN, 3, this);
-  port_retrigger = new Port("Retrigger", PORT_IN, 4, this);
+  port_M_freq = new Port(tr("Freq"), PORT_IN, 0, this);
+  port_M_exp = new Port(tr("Exp. FM"), PORT_IN, 1, this);
+  port_M_lin = new Port(tr("Lin. FM"), PORT_IN, 2, this);
+  port_gate = new Port(tr("Gate"), PORT_IN, 3, this);
+  port_retrigger = new Port(tr("Retrigger"), PORT_IN, 4, this);
   cv.out_off = 135;
-  port_out = new Port("Out", PORT_OUT, 0, this);
+  port_out = new Port(tr("Out"), PORT_OUT, 0, this);
 
   configDialog->initTabWidget();
   QStringList waveFormNames;
-  waveFormNames << "Sine" << "Saw" << "Tri" << "Rect" << "Saw 2";
-  QVBoxLayout *generalTab = configDialog->addVBoxTab("Tune/&Modulation");
-  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(oscCount, &timeScale, attack[0], sustain, release[0], generalTab);
-  configDialog->addIntSlider("&Octave", octave, 0, 6, generalTab);
-  configDialog->addSlider("&Tune", tune, 0, 1, false, generalTab);
-  configDialog->addSlider("&Exp. FM Gain", expFMGain, 0, 10, false, generalTab);
-  configDialog->addSlider("&Lin. FM Gain", linFMGain, 0, 10, false, generalTab);
-  configDialog->addSlider("&Timescale", timeScale, 0.1, 10, false, generalTab);
+  waveFormNames << tr("Sine") << tr("Saw") << tr("Tri") << tr("Rect") <<
+      tr("Saw 2");
+  QVBoxLayout *generalTab =
+      configDialog->addVBoxTab(tr("Tune/&Modulation"));
+  MultiEnvelope *multiEnv = configDialog->addMultiEnvelope(oscCount,
+          &timeScale, attack[0], sustain, release[0], generalTab);
+  configDialog->addIntSlider(tr("&Octave"), octave, 0, 6, generalTab);
+  configDialog->addSlider(tr("&Tune"), tune, 0, 1, false, generalTab);
+  configDialog->addSlider(tr("&Exp. FM Gain"), expFMGain, 0, 10, false,
+          generalTab);
+  configDialog->addSlider(tr("&Lin. FM Gain"), linFMGain, 0, 10, false,
+          generalTab);
+  configDialog->addSlider(tr("&Timescale"), timeScale, 0.1, 10, false,
+          generalTab);
 
-  QVBoxLayout *mixTab = configDialog->addVBoxTab("Mi&xer");
-  for (l1 = 0; l1 < oscCount; l1++) {
-    qs.sprintf("Volume &%d", l1);
+  QVBoxLayout *mixTab = configDialog->addVBoxTab(tr("Mi&xer"));
+  for (int l1 = 0; l1 < oscCount; l1++) {
+    qs = tr("Volume &%1").arg(l1);
     configDialog->addSlider(qs, gain[l1], 0, 1, false, mixTab);
   }
+  mixTab->addStretch();
 
-  for (l1 = 0; l1 < oscCount; l1++) {
+  for (int l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("Osc &%d", l1);
     oscTab[l1] = configDialog->addVBoxTab(qs);
     qs.sprintf("Wave &form %d", l1);
@@ -98,11 +104,13 @@ M_dynamicwaves::M_dynamicwaves(int p_oscCount, QWidget* parent, int id)
     configDialog->addIntSlider(qs, subharmonic[l1], 1, 16, oscTab[l1]);
     qs.sprintf("&Phi0 %d", l1);
     configDialog->addSlider(qs, phi0[l1], 0, 6.283, false, oscTab[l1]);
+    oscTab[l1]->addStretch();
   }
   int multiEnvFromListen = midiControllables.count();
-  for (l1 = 0; l1 < oscCount; l1++) {
+  for (int l1 = 0; l1 < oscCount; l1++) {
     qs.sprintf("&Envelope %d", l1);
-    envelopeTab[l1] = configDialog->addVBoxTab(qs);
+    //envelopeTab[l1] = configDialog->addVBoxTab(qs);
+    envelopeTab[l1] = configDialog->addScrollAreaTab(qs);
     qs.sprintf("&Delay %d", l1);
     configDialog->addSlider(qs, attack[0][l1], 0, 1, false, envelopeTab[l1]);
     qs.sprintf("Attack &Time 0 %d", l1);

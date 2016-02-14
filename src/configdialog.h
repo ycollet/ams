@@ -52,7 +52,7 @@ class ConfigDialog : public QDialog
     QTabWidget *tabWidget;
 
   protected:
-    void insertWidget(QBoxLayout *layout, QWidget *widget,
+    void insertWidget(QBoxLayout *layout = NULL, QWidget *widget = NULL,
             int stretch = 0, Qt::Alignment alignment = 0, int pos = -1);
 
   public:
@@ -97,6 +97,7 @@ class ConfigDialog : public QDialog
     }
     QVBoxLayout *addVBoxTab(const char *tabLabel);
     QVBoxLayout *addVBoxTab(const QString &tabLabel);
+    QVBoxLayout *addScrollAreaTab(const QString &tabLabel);
     QHBoxLayout *addHBox(QBoxLayout *layout = NULL);
     QVBoxLayout *addVBox(QBoxLayout *layout = NULL);
     int addLineEdit(const char *lineName, QBoxLayout *layout = NULL);

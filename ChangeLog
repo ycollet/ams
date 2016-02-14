@@ -1,3 +1,56 @@
++++ Release 2.1.2 (2016-01-24) +++
+
+2015-12-30 11:16  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/: m_slew.cpp, m_slew.h: Add portamento input to VC slew
+	  module, patch provided by Christopher Oliver
+
+2015-12-30 11:13  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/m_lfo.cpp: Fix initialization of freq parameter in lfo
+	  module, patch provided by Christopher Oliver
+
+2015-12-30 10:57  Guido Scholz <guido-scholz@gmx.net>
+
+	* configure.ac: Add 64bit alternative to ladspa search path
+
+2015-04-18 17:42  Guido Scholz <guido-scholz@gmx.net>
+
+	* NEWS, src/modularsynth.cpp: Fix reading of sequencer module id
+
+2014-04-13 11:38  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/: configdialog.cpp, modularsynth.cpp, module.cpp,
+	  synthdata.cpp, translations/ams_de.ts, translations/ams_fr.ts:
+	  Revert changes of widget destruction
+
+2014-04-13 11:15  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/: configdialog.cpp, ladspadialog.cpp, ladspadialog.h,
+	  m_vocoder.cpp, modularsynth.cpp, module.cpp, synthdata.cpp,
+	  translations/ams_de.ts, translations/ams_fr.ts: Fix vocoder
+	  module, patch provided by Bill Yerazunis
+
+2014-04-05 15:02  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/translations/ams_de.ts: Fix typo
+
+2014-04-02 19:06  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/: mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Cosmetics
+
+2014-04-02 18:30  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/: mainwindow.cpp, translations/ams_de.ts,
+	  translations/ams_fr.ts: Clear global filedialog settings to avoid
+	  cross application history spying
+
+2014-04-02 18:22  Guido Scholz <guido-scholz@gmx.net>
+
+	* src/mainwindow.cpp: Move member variable initialization
+
+
 +++ Release 2.1.1 (2014-04-01) +++
 
 2014-03-31 18:08  Guido Scholz <guido-scholz@gmx.net>

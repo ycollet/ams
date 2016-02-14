@@ -621,6 +621,101 @@ and effect processor.</source>
         <source>DynamicWaves %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="60"/>
+        <source>Freq</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="61"/>
+        <source>Exp. FM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="62"/>
+        <source>Lin. FM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="63"/>
+        <source>Gate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="64"/>
+        <source>Retrigger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="66"/>
+        <source>Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="70"/>
+        <source>Sine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="70"/>
+        <source>Saw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="70"/>
+        <source>Tri</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="70"/>
+        <source>Rect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="71"/>
+        <source>Saw 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="73"/>
+        <source>Tune/&amp;Modulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="76"/>
+        <source>&amp;Octave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="77"/>
+        <source>&amp;Tune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="78"/>
+        <source>&amp;Exp. FM Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="80"/>
+        <source>&amp;Lin. FM Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="82"/>
+        <source>&amp;Timescale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="85"/>
+        <source>Mi&amp;xer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="87"/>
+        <source>Volume &amp;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>M_env</name>
@@ -1652,22 +1747,27 @@ and effect processor.</source>
         <translation type="unfinished"> </translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="28"/>
+        <location filename="../m_slew.cpp" line="29"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_slew.cpp" line="30"/>
+        <source>Legato</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_slew.cpp" line="32"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="33"/>
+        <location filename="../m_slew.cpp" line="35"/>
         <source>Time &amp;Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_slew.cpp" line="34"/>
+        <location filename="../m_slew.cpp" line="36"/>
         <source>Time &amp;Down</source>
         <translation type="unfinished"></translation>
     </message>

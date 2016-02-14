@@ -1,13 +1,34 @@
-ams-2.1.2 (2015-0x-xx)
+ams-2.1.3 (2016-0x-yy)
+
+  Fixed Bugs
+    o Fix envelope tabs in Dynamic Waves config dialog to be usable on
+      small displays.
+    o 
+
+  New Features
+    o 
+
+  General Changes
+    o 
+
+
+
+ams-2.1.2 (2016-01-24)
 
   Fixed Bugs
     o Fix sequencer module id reading.
+    o Fix vocoder module, patch provided by Bill Yerazunis
+    o Fix initialization of freq parameter in lfo module, patch provided
+      by Christopher Oliver
 
   New Features
-    o .
+    o Add portamento input to VC slew module, patch provided by
+      Christopher Oliver
 
   General Changes
-    o .
+    o Clear global filedialog settings to avoid cross application
+      history spying
+    o Add 64bit alternative to ladspa search path
 
 
 

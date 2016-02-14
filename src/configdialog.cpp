@@ -63,7 +63,11 @@ MidiSlider *ConfigDialog::addSlider(const QString &name, float &valueRef, float 
     new MidiControllableFloat(module, name, valueRef, minValue, maxValue, isLog);
 
   MidiSlider *midiSlider = new MidiSlider(*mcAble);
-  insertWidget(layout, midiSlider);
+  //insertWidget(layout, midiSlider);
+  if (layout == NULL)
+    layout = configBox;
+
+  layout->addWidget(midiSlider);
 
   midiSliderList.append(midiSlider);
 
@@ -78,6 +82,9 @@ int ConfigDialog::addFloatIntSlider(const QString &name,
 
   IntMidiSlider *intMidiSlider = new IntMidiSlider(
           GUIcomponentType_floatintslider, *mcAble);
+  if (layout == NULL)
+    layout = configBox;
+
   insertWidget(layout, intMidiSlider);
 
   floatIntMidiSliderList.append(intMidiSlider);
@@ -91,7 +98,11 @@ IntMidiSlider *ConfigDialog::addIntSlider(const QString &name, int &valueRef, in
     new MidiControllable<int>(module, name, valueRef, minValue, maxValue);
 
   IntMidiSlider *intMidiSlider = new IntMidiSlider(GUIcomponentType_intslider, *mcAble);
-  insertWidget(layout, intMidiSlider);
+  //insertWidget(layout, intMidiSlider);
+  if (layout == NULL)
+    layout = configBox;
+
+  layout->addWidget(intMidiSlider);
 
   intMidiSliderList.append(intMidiSlider);
 
@@ -103,7 +114,11 @@ MidiComboBox *ConfigDialog::addComboBox(const QString &name, int &valueRef, cons
     new MidiControllableNames(module, name, valueRef, itemNames);
 
   MidiComboBox *midiComboBox = new MidiComboBox(*mcAble);
-  insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
+  //insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
+  if (layout == NULL)
+    layout = configBox;
+
+  layout->addWidget(midiComboBox, 0, Qt::AlignCenter);
 
   midiComboBoxList.append(midiComboBox);
 
@@ -123,7 +138,11 @@ int ConfigDialog::addCheckBox(MidiControllable<float> &mcAble, QBoxLayout *layou
   MidiCheckBox *midiCheckBox;
 
   midiCheckBox = new MidiCheckBox(mcAble);
-  insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
+  //insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
+  if (layout == NULL)
+    layout = configBox;
+
+  layout->addWidget(midiCheckBox, 0, Qt::AlignCenter);
 
   midiCheckBoxList.append(midiCheckBox);
 
@@ -138,7 +157,11 @@ MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLay
   MidiPushButton *midiPushButton;
 
   midiPushButton = new MidiPushButton(*mcAble);
-  insertWidget(layout, midiPushButton, 0, Qt::AlignCenter);
+  //insertWidget(layout, midiPushButton, 0, Qt::AlignCenter);
+  if (layout == NULL)
+    layout = configBox;
+
+  layout->addWidget(midiPushButton, 0, Qt::AlignCenter);
 
   midiPushButtonList.append(midiPushButton);
 
@@ -167,10 +190,12 @@ MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef,
 
 int ConfigDialog::addLabel(const QString& label, QBoxLayout *layout) {
 
-  QLabel *configLabel;
+  QLabel *configLabel = new QLabel();
+  //insertWidget(layout, configLabel);
+  if (layout == NULL)
+    layout = configBox;
 
-  configLabel = new QLabel();
-  insertWidget(layout, configLabel);
+  layout->addWidget(configLabel);
 
   configLabel->setAlignment(/*Qt::WordBreak |*/ Qt::AlignLeft);
   configLabel->setText(label);
@@ -231,6 +256,16 @@ QVBoxLayout *ConfigDialog::addVBoxTab(const QString &tabLabel)
   QWidget *w = new QWidget();
   tabWidget->addTab(w, tabLabel);
   return new QVBoxLayout(w);
+}
+
+QVBoxLayout *ConfigDialog::addScrollAreaTab(const QString &tabLabel)
+{
+    QScrollArea *sa = new QScrollArea(this);
+    QWidget *w = new QWidget();
+    sa->setWidget(w);
+    sa->setWidgetResizable(true);
+    tabWidget->addTab(sa, tabLabel);
+    return new QVBoxLayout(w);
 }
 
 int ConfigDialog::addLineEdit(const char *Name, QBoxLayout *layout) {
@@ -294,12 +329,12 @@ int ConfigDialog::addFunction(int p_functionCount, int *p_mode,
 void ConfigDialog::insertWidget(QBoxLayout *layout, QWidget *widget,
 				int stretch, Qt::Alignment alignment, int pos)
 {
-  if (!layout)
-    layout = configBox;
+    if (layout == NULL)
+        layout = configBox;
 
-  layout->insertWidget(pos, widget, stretch, alignment);
-  if (addStretch > 0)
-    layout->addStretch(addStretch);
+    layout->insertWidget(pos, widget, stretch, alignment);
+    if (addStretch > 0)
+        layout->addStretch(addStretch);
 }
 
 void ConfigDialog::removeButtonShow(bool show)
