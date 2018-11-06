@@ -6,7 +6,7 @@ AC_INIT(ams, [2.1.2], [alsamodular-devel@lists.sourceforge.net])
 AC_CANONICAL_SYSTEM
 AC_CONFIG_SRCDIR([src/box.h])
 AC_CONFIG_HEADER([src/config.h])
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([dist-bzip2 dist-xz])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -183,6 +183,11 @@ ac_qtversion=qt5
 ])
 dnl endo of qt version test
 
+dnl check for qtchooser
+AC_PATH_PROGS(QTCHOOSER, qtchooser, no, [$PATH:$QTDIR/bin])
+if test "x$QTCHOOSER" = "xno" ; then
+dnl qtchooser not found, try to find Qt tools by old search style 
+
 dnl check for moc
 AC_PATH_PROGS(MOC, moc-$ac_qtversion moc, no, [$PATH:$QTDIR/bin])
 if test "x$MOC" = "xno" ; then
@@ -203,7 +208,19 @@ if test "x$LRELEASE" = "xno" ; then
   AC_MSG_ERROR(
     [cannot find 'lrelease', please install the Qt development tools package.])
 fi
-
+dnl end of alternative Qt tools check
+else
+  dnl qtchooser found, set tool calls manually 
+  MOC="$QTCHOOSER -run-tool=moc -qt=$ac_qtversion"
+  AC_SUBST(MOC)
+  AC_MSG_RESULT(moc: $MOC)
+  LUPDATE="$QTCHOOSER -run-tool=lupdate -qt=$ac_qtversion"
+  AC_SUBST(LUPDATE)
+  AC_MSG_RESULT(lupdate: $LUPDATE)
+  LRELEASE="$QTCHOOSER -run-tool=lrelease -qt=$ac_qtversion"
+  AC_SUBST(LRELEASE)
+  AC_MSG_RESULT(lrelease: $LRELEASE)
+fi
 
 
 # Checks for special library functions.
@@ -250,14 +267,14 @@ if test "$nsm" != "no"; then
     if test "$have_liblo" = "yes"; then
         AC_DEFINE(NSM_SUPPORT, 1,
                   [Define to enable NSM support])
-        LIBSsave=$LIBS
-        CFLAGSsave=$CFLAGS
-        CFLAGS=$LIBLO_CFLAGS
-        LIBS=$LIBLO_LIBS
+        LIBSsave="$LIBS"
+        CFLAGSsave="$CFLAGS"
+        CFLAGS="$LIBLO_CFLAGS"
+        LIBS="$LIBLO_LIBS"
         AC_SUBST(LIBLO_CFLAGS)
         AC_SUBST(LIBLO_LIBS)
-        LIBS+=$LIBSsave
-        CFLAGS+=$CFLAGSsave
+        LIBS+=" $LIBSsave"
+        CFLAGS+="$CFLAGSsave"
     fi
 fi
 
