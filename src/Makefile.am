@@ -278,7 +278,7 @@ SUFFIXES = _moc.cpp
 
 # rule for translation file updates
 $(translations): $(ams_SOURCES)
-	        $(LUPDATE) -verbose $(ams_SOURCES) -ts $@
+	$(LUPDATE) -verbose $(ams_SOURCES) -ts $@
 
 # rule to generate binary translation files
 .ts.qm: $(translations)
