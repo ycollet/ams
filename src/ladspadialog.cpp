@@ -20,7 +20,7 @@ int LadspaModel::rowCount(const QModelIndex &parent) const
   if (!parent.isValid())
     return ::synthdata->ladspaLib.count();
 
-  if (parent.internalId() == -1) {
+  if (parent.internalId() == (quintptr) -1) {
     const LadspaLib &l = synthdata->ladspaLib.at(parent.row());
     return l.desc.count();
   }
@@ -33,7 +33,7 @@ QVariant LadspaModel::data(const QModelIndex &index, int role) const
   if (!index.isValid() || role != Qt::DisplayRole)
     return QVariant();
 
-  if (index.internalId() == -1) {
+  if (index.internalId() == (quintptr) -1) {
     const LadspaLib &l = synthdata->ladspaLib.at(index.row());
     return l.name;
   }
@@ -53,14 +53,14 @@ QModelIndex LadspaModel::index(int row, int column,
 			       const QModelIndex &parent) const
 {
   if (!parent.isValid())
-    return createIndex(row, column, -1);
+    return createIndex(row, column, -1); //  FIXME: quintptr is unsigned!
 
   return createIndex(row, column, parent.row());
 }
 
 QModelIndex LadspaModel::parent(const QModelIndex &child) const
 {
-  if (child.isValid() && child.internalId() != -1)
+  if (child.isValid() && child.internalId() != (quintptr) -1)
     return index(child.internalId(), 0);
 
   return QModelIndex();
@@ -203,7 +203,7 @@ void LadspaDialog::pluginHighlighted(const QItemSelection &selected, const QItem
   selectedLib = selectedDesc = -1;
   if (selected.indexes().count() > 0) {
     const QModelIndex mi = selected.indexes().at(0);
-    if (mi.internalId() != -1) {
+    if (mi.internalId() != (quintptr) -1) {
       selectedLib = mi.internalId();
       selectedDesc = mi.row();
     }
