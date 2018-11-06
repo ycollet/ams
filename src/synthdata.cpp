@@ -729,7 +729,7 @@ void SynthData::call_modules(void)
 
   for (i = 0; i < wavoutModuleList.count(); i++)
     wavoutModuleList.at(i)->generateCycle();
-  
+
   for (i = 0; i < scopeModuleList.count(); i++)
     scopeModuleList.at(i)->generateCycle();
 
@@ -744,7 +744,7 @@ void SynthData::call_modules(void)
   //FIXME: moduleList is member of modularsynth class
   for (i = 0; i < moduleList.count(); i++)
     moduleList.at(i)->cycleReady = false;
-  
+
   for (i = 0; i < poly; i++) {
     noteCounter[i]++;
     if (noteCounter[i] > 1000000000)
@@ -897,10 +897,11 @@ void SynthData::handleMidiEventController(snd_seq_event_t *ev)
         mcctx->setMidiValueRT(
                 (ev->data.control.value << 7) + ev->data.control.value);
 
-    if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF)
+    if (ev->data.control.param == MIDI_CTL_ALL_NOTES_OFF){
         for (int i = 0; i < poly; ++i)
             if (noteCounter[i] < 1000000 && channel[i] == ev->data.note.channel)
                 noteCounter[i] = 1000000;
+    }
 
     else if (ev->data.control.param == MIDI_CTL_SUSTAIN) {
         bool sustainFlag = ev->data.control.value > 63;
