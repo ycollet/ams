@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<TS version="2.1" language="fr">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -3323,142 +3323,142 @@ and effect processor.</source>
 <context>
     <name>M_vocoder</name>
     <message>
-        <location filename="../m_vocoder.cpp" line="102"/>
+        <location filename="../m_vocoder.cpp" line="96"/>
         <source>FFT Vocoder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="109"/>
+        <location filename="../m_vocoder.cpp" line="103"/>
         <source>Modulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="110"/>
+        <location filename="../m_vocoder.cpp" line="104"/>
         <source>Pitch Shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="111"/>
+        <location filename="../m_vocoder.cpp" line="105"/>
         <source>Freq Shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="112"/>
+        <location filename="../m_vocoder.cpp" line="106"/>
         <source>Channels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="113"/>
+        <location filename="../m_vocoder.cpp" line="107"/>
         <source>Carrier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="115"/>
+        <location filename="../m_vocoder.cpp" line="109"/>
         <source>Altered Mod</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="116"/>
+        <location filename="../m_vocoder.cpp" line="110"/>
         <source>Vocoder Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="117"/>
+        <location filename="../m_vocoder.cpp" line="111"/>
         <source>Modulator FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="118"/>
+        <location filename="../m_vocoder.cpp" line="112"/>
         <source>Mod 1st H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="124"/>
+        <location filename="../m_vocoder.cpp" line="118"/>
         <source>&amp;Bins/Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="128"/>
+        <location filename="../m_vocoder.cpp" line="122"/>
         <source>&amp;VC Bins/Channels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="130"/>
+        <location filename="../m_vocoder.cpp" line="124"/>
         <source>&amp;Attack time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="132"/>
+        <location filename="../m_vocoder.cpp" line="126"/>
         <source>&amp;Release time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="140"/>
+        <location filename="../m_vocoder.cpp" line="134"/>
         <source>VC Fre&amp;q shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="148"/>
+        <location filename="../m_vocoder.cpp" line="142"/>
         <source>Hamming (min 1st sidelobe)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="151"/>
+        <location filename="../m_vocoder.cpp" line="145"/>
         <source>FFT &amp;Window function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="154"/>
+        <location filename="../m_vocoder.cpp" line="148"/>
         <source>Dynamic &amp;splicing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="156"/>
+        <location filename="../m_vocoder.cpp" line="150"/>
         <source>R-&amp;Theta modulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="145"/>
+        <location filename="../m_vocoder.cpp" line="139"/>
         <source>Rectangular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="134"/>
+        <location filename="../m_vocoder.cpp" line="128"/>
         <source>&amp;Pitch shift (octaves)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="136"/>
+        <location filename="../m_vocoder.cpp" line="130"/>
         <source>V&amp;C Pitch shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="138"/>
+        <location filename="../m_vocoder.cpp" line="132"/>
         <source>&amp;Frequency (Bode) shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="142"/>
+        <location filename="../m_vocoder.cpp" line="136"/>
         <source>P&amp;hase shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="146"/>
+        <location filename="../m_vocoder.cpp" line="140"/>
         <source>Trapezoidal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="147"/>
+        <location filename="../m_vocoder.cpp" line="141"/>
         <source>Hann (Cosine)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="149"/>
+        <location filename="../m_vocoder.cpp" line="143"/>
         <source>Tukey (flattop cosine)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_vocoder.cpp" line="150"/>
+        <location filename="../m_vocoder.cpp" line="144"/>
         <source>Blackman-Nutall (minimum spill)</source>
         <translation type="unfinished"></translation>
     </message>
