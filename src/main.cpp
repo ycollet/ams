@@ -117,18 +117,12 @@ int main(int argc, char *argv[])
   if (qtTr.load(QString("qt_") + loc.name(),
               QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
       app.installTranslator(&qtTr);
-  else
-      qWarning("No Qt translation for locale '%s' found.",
-              loc.name().toLatin1().constData());
 
   // translator for ams strings
   QTranslator amsTr;
 
   if (amsTr.load(QString("ams_") + loc.name(), TRANSLATIONSDIR))
       app.installTranslator(&amsTr);
-  else
-      qWarning("No " AMS_LONGNAME " translation for locale '%s' found.",
-              loc.name().toLatin1().constData());
 
   int getopt_return;
   int option_index;
