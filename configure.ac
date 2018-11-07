@@ -110,10 +110,10 @@ LDFLAGS="$saved_libs"
 AC_LANG_POP(C++)
 fi
 
-dnl option to enable Qt5 instead of default Qt4 library 
-AC_ARG_ENABLE(qt5, AC_HELP_STRING([--enable-qt5],
-                          [enable Qt5 instead of Qt4 library]),,
-                          enable_qt4=yes)
+dnl option to enable Qt4 instead of default Qt5 library 
+AC_ARG_ENABLE(qt4, AC_HELP_STRING([--enable-qt4],
+                          [enable Qt4 instead of Qt5 library]),,
+                          enable_qt5=yes)
 AS_IF([test x$enable_qt4 = xyes],
 dnl Check for Qt4 library files
 [
