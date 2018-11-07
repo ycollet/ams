@@ -166,7 +166,7 @@ M_vocoder::M_vocoder(QWidget* parent, int id)
 
   whichwin = 0;
   window = (float *) malloc (sizeof (float) * fftsize);
-  for (l2 = 0; l2 < (unsigned int) fftsize; l2++)
+  for (l2 = 0; l2 < fftsize; l2++)
     window[l2] = windowcurve (whichwin, fftsize, l2, 0.25);
 
   //  FFTW setup stuff
