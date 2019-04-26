@@ -56,9 +56,6 @@ void M_pcmout::mcAbleChanged(MidiControllableBase *mcAble)
 
   QList<MCed*>::const_iterator it;
   for (it = mcAble->mcws.constBegin(); it != mcAble->mcws.constEnd(); ++it) {
-  //for (typeof(mcAble->mcws.constBegin()) mcw = mcAble->mcws.constBegin();
-  //     mcw != mcAble->mcws.constEnd();  mcw++) {
-    //MidiComboBox *b = dynamic_cast<MidiComboBox *>(*mcw);
     MidiComboBox *b = dynamic_cast<MidiComboBox *>(*it);
     if (b) {
       b->comboBox->setItemText(2, i3Name);

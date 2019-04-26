@@ -946,11 +946,19 @@ MidiControllerContext* SynthData::getMidiControllerContext(snd_seq_event_t *ev)
     MidiControllerContext* result = NULL;
     MidiControllerKey mcK(ev);
 
+    QList<MidiController>::const_iterator it =
+        qBinaryFind(activeMidiControllers->constBegin(),
+                activeMidiControllers->constEnd(), mcK);
+    if (it != activeMidiControllers->constEnd())
+        result = it->context;
+
+/*
     typeof(activeMidiControllers->constBegin()) mc =
         qBinaryFind(activeMidiControllers->constBegin(),
                 activeMidiControllers->constEnd(), mcK);
     if (mc != activeMidiControllers->constEnd())
         result = mc->context;
+        */
     if (midiWidget->isVisible()) {
         mckRead.put(mcK);
         pipeMessage |= 2;
