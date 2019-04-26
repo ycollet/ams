@@ -23,10 +23,11 @@ MidiControllableBase:: ~MidiControllableBase()
 void MidiControllableBase::updateMGCs(MidiGUIcomponent *sender)
 {
     module.mcAbleChanged(this);
-    for (typeof(mcws.constBegin()) mcw = mcws.constBegin();
-            mcw != mcws.constEnd();  mcw++)
-        if (*mcw != sender)
-            (*mcw)->mcAbleChanged();
+
+    QList<MCed*>::const_iterator it;
+    for (it = mcws.constBegin(); it != mcws.constEnd(); it++)
+        if (*it != sender)
+            (*it)->mcAbleChanged();
 
     if (sender)
         synthdata->midiWidget->guiComponentTouched(*this);
@@ -206,9 +207,9 @@ void MidiControllableFloat::resetMinMax()
 
 void MidiControllableFloat::updateFloatMGCs()
 {
-    for (typeof(mcws.constBegin()) mcw = mcws.constBegin();
-            mcw != mcws.constEnd();  mcw++) {
-        MidiSlider * s = dynamic_cast<MidiSlider *>(*mcw);
+    QList<MCed*>::const_iterator it;
+    for (it = mcws.constBegin(); it != mcws.constEnd(); it++) {
+        MidiSlider * s = dynamic_cast<MidiSlider *>(*it);
         if (s)
             s->minMaxChanged();
     }

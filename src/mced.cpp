@@ -10,20 +10,21 @@
 
 MCedThing::~MCedThing()
 {
-  if (module)
-    for (typeof(module->midiControllables.constBegin()) mcAble =
-	   module->midiControllables.constBegin();
-	 mcAble != module->midiControllables.constEnd(); ++mcAble)
-      (*mcAble)->disconnect(this);
+  if (module) {
+    QList<MidiControllableBase*>::const_iterator it;
+    for (it = module->midiControllables.constBegin();
+	 it != module->midiControllables.constEnd(); ++it)
+      (*it)->disconnect(this);
+  }
 }
 
 void MCedThing::listenTo(Module *m)
 {
   module = m;
-  for (typeof(module->midiControllables.constBegin()) mcAble =
-	 module->midiControllables.constBegin();
-       mcAble != module->midiControllables.constEnd(); ++mcAble)
-    (*mcAble)->connectTo(this);
+  QList<MidiControllableBase*>::const_iterator it;
+  for (it = module->midiControllables.constBegin();
+       it != module->midiControllables.constEnd(); ++it)
+    (*it)->connectTo(this);
 }
 
 void MCedThing::listenTo(Module *m, int from)

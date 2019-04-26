@@ -101,11 +101,12 @@ void Module::Delete()
 
   bool updateActiveMidiControllers = true;
   alive = false;
-  for (typeof(midiControllables.begin()) mcAI = midiControllables.begin();
-       mcAI != midiControllables.end();
-       ++mcAI)
-    (*mcAI)->disconnect(&updateActiveMidiControllers);
 
+  QList<MidiControllableBase*>::const_iterator it;
+  for (it = midiControllables.begin(); it != midiControllables.end();
+          it++) {
+      (*it)->disconnect(&updateActiveMidiControllers);
+  }
   synthdata->midiWidget->removeModule(this);
 
   deleteLater();
