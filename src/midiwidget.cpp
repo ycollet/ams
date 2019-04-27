@@ -762,15 +762,15 @@ void MidiWidget::setActiveMidiControllers()
        it != midiControllers.constEnd(); ++it) {
     MidiControllerContext *amcc = NULL;
 
-    for (typeof(it->context->mcAbles.constBegin()) mca =
-	   it->context->mcAbles.constBegin();
-	 mca != it->context->mcAbles.constEnd(); ++mca)
-      if ((*mca)->module.isAlive()) {
+    QList <MidiControllableBase*>::const_iterator it2;
+    for (it2 = it->context->mcAbles.constBegin();
+	 it2 != it->context->mcAbles.constEnd(); ++it2)
+      if ((*it2)->module.isAlive()) {
 	if (!amcc) {
 	  New->append(it->getKey());
 	  amcc = New->back().context = new MidiControllerContext();
 	}
-	amcc->mcAbles.append(*mca);
+	amcc->mcAbles.append(*it2);
       }
   }
 
