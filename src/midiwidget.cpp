@@ -754,8 +754,7 @@ void MidiWidget::updateMidiChannel(int index)
 
 void MidiWidget::setActiveMidiControllers()
 {
-  typeof(synthdata->activeMidiControllers) New =
-    new typeof(*synthdata->activeMidiControllers);
+  QList<MidiController>* newList = new QList<MidiController>();
 
   QList<MidiController>::const_iterator it;
   for (it = midiControllers.constBegin();
@@ -765,23 +764,23 @@ void MidiWidget::setActiveMidiControllers()
     QList <MidiControllableBase*>::const_iterator it2;
     for (it2 = it->context->mcAbles.constBegin();
 	 it2 != it->context->mcAbles.constEnd(); ++it2)
+
       if ((*it2)->module.isAlive()) {
 	if (!amcc) {
-	  New->append(it->getKey());
-	  amcc = New->back().context = new MidiControllerContext();
+	  newList->append(it->getKey());
+	  amcc = newList->back().context = new MidiControllerContext();
 	}
 	amcc->mcAbles.append(*it2);
       }
   }
 
-  typeof(synthdata->activeMidiControllers) old =
-    synthdata->activeMidiControllers;
+  QList<MidiController>* oldList = synthdata->activeMidiControllers;
 
   pthread_mutex_lock(&synthdata->rtMutex);
-  synthdata->activeMidiControllers = New;
+  synthdata->activeMidiControllers = newList;
   pthread_mutex_unlock(&synthdata->rtMutex);
 
-  delete old;
+  delete oldList;
 }
 
 
