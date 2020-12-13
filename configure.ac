@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(ams, [2.1.2], [alsamodular-devel@lists.sourceforge.net])
+AC_INIT(ams, [2.2.0], [alsamodular-devel@lists.sourceforge.net])
 AC_CANONICAL_SYSTEM
 AC_CONFIG_SRCDIR([src/box.h])
 AC_CONFIG_HEADER([src/config.h])

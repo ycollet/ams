@@ -1,15 +1,13 @@
-ams-2.1.3 (2016-0x-yy)
+ams-2.2.0 (2020-12-13)
 
   Fixed Bugs
     o Fix envelope tabs in Dynamic Waves config dialog to be usable on
       small displays.
-    o 
-
-  New Features
-    o 
+    o Fix several C++11 compatibility issues
 
   General Changes
-    o 
+    o Set Qt5 as default instead of Qt4
+    o Use qtchooser to check for qt-tools
 
 
 
