@@ -435,10 +435,11 @@ int SynthData::initAlsa(const QString& cname, const QString& pname,
 int SynthData::closeAlsa ()
 {
     qWarning("%s", QObject::tr("Closing ALSA...").toUtf8().constData());
-    withAlsa = false;
     //TODO: check pthread_join(alsa_thread, &thr_result);
     sleep (1);
-    delete alsa_handle;
+    if (withAlso)
+      delete alsa_handle;
+    withAlsa = false;
     return 0;
 }
 
