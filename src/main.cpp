@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "msoptions.h"
 #include "config.h"
+#include "resources.h"
 
 
 #define AMSDIR ".alsamodular"
@@ -76,7 +77,7 @@ int makeSynthName(QString &name)
 
     for (unsigned int index = 1; index <= 9; index++) {
         QString rcPath = amsRcPath(amsSynthName(name, index));
-        //StdOut << "Resource file path: " << rcPath << endl;
+        //StdOut << "Resource file path: " << rcPath << QT_ENDL;
         fd = open(rcPath.toLatin1().data(), O_CREAT|O_RDWR, 0666);
         if (fd == -1) {
             qWarning("%s", QObject::tr("Failed to open file '%1'")
@@ -87,7 +88,7 @@ int makeSynthName(QString &name)
         struct flock lock = {F_WRLCK, SEEK_SET, 0, 0, 0};
         if (fcntl(fd, F_SETLK, &lock) == -1) {
             close(fd);
-            StdOut << "File occupied: " << rcPath << endl;
+            StdOut << "File occupied: " << rcPath << QT_ENDL;
         } else {
             lock.l_type = F_RDLCK;
             if (fcntl(fd, F_SETLK, &lock) == -1) {
@@ -254,6 +255,7 @@ int main(int argc, char *argv[])
         printf("  -v, --verbose 		verbose warning messages\n");
         printf("  -V, --version			Display program version information\n");
         printf("  -N, --name <name>             ALSA/JACK clientname, windowtitle\n\n");
+
         exit(EXIT_SUCCESS);
         break;
     }

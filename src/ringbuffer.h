@@ -42,7 +42,9 @@ public:
   }
 
   int count() {
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+    return _count.loadRelaxed();
+#elif QT_VERSION >= 0x050000
     return _count.load();
 #else
     return _count;

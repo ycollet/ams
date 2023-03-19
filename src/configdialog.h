@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include <qstring.h>
-#include <qslider.h>   
-#include <qcheckbox.h>  
+#include <qslider.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qradiobutton.h>
@@ -23,7 +23,7 @@ template <typename t> class MidiControllable;
 
 /** configuration dialog for each module
  *
- */ 
+ */
 class ConfigDialog : public QDialog
 {
     Q_OBJECT
@@ -33,10 +33,10 @@ class ConfigDialog : public QDialog
     QPushButton *removeButton;
     QHBoxLayout *removeFrame;
 
-  public: 
-    QList<class MidiSlider*> midiSliderList; 
-    QList<class IntMidiSlider*> intMidiSliderList; 
-    QList<class IntMidiSlider*> floatIntMidiSliderList; 
+  public:
+    QList<class MidiSlider*> midiSliderList;
+    QList<class IntMidiSlider*> intMidiSliderList;
+    QList<class IntMidiSlider*> floatIntMidiSliderList;
     QList<class MidiComboBox*> midiComboBoxList;
     QList<class MidiCheckBox*> midiCheckBoxList;
     QList<class MidiPushButton*> midiPushButtonList;
@@ -53,7 +53,7 @@ class ConfigDialog : public QDialog
 
   protected:
     void insertWidget(QBoxLayout *layout = NULL, QWidget *widget = NULL,
-            int stretch = 0, Qt::Alignment alignment = 0, int pos = -1);
+            int stretch = 0, Qt::Alignment alignment = Qt::AlignJustify, int pos = -1);
 
   public:
     ConfigDialog(Module &module);
@@ -77,12 +77,11 @@ class ConfigDialog : public QDialog
     class MidiControllableDoOnce *addPushButton(const QString &name,
             QBoxLayout *layout = NULL);
     int addEnvelope(class MidiControllableFloat &delayRef,
-            MidiControllableFloat &attackRef, MidiControllableFloat &holdRef, 
+            MidiControllableFloat &attackRef, MidiControllableFloat &holdRef,
             MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef,
-            MidiControllableFloat &releaseRef, QBoxLayout *layout = NULL);
+            MidiControllableFloat &releaseRef);
     class MultiEnvelope *addMultiEnvelope(int envCount, float *timeScaleRef,
-            float *attackRef, float *sustainRef, float *releaseRef,
-            QBoxLayout *layout = NULL);
+            float *attackRef, float *sustainRef, float *releaseRef);
     int addFunction(int p_functionCount, int *p_mode, int *p_editIndex,
             tFunction &, int p_pointCount, QBoxLayout *layout = NULL);
     int addLabel(const QString& label, QBoxLayout *layout = NULL);
@@ -103,8 +102,8 @@ class ConfigDialog : public QDialog
     int addLineEdit(const char *lineName, QBoxLayout *layout = NULL);
     int initTabWidget();
     MidiSlider* getMidiSlider(int);
-    IntMidiSlider* getIntMidiSlider(int); 
-    IntMidiSlider* getFloatIntMidiSlider(int); 
+    IntMidiSlider* getIntMidiSlider(int);
+    IntMidiSlider* getFloatIntMidiSlider(int);
     MidiComboBox* getMidiComboBox(int);
     MidiCheckBox* getMidiCheckBox(int);
     MidiPushButton* getMidiPushButton(int);
@@ -113,8 +112,8 @@ class ConfigDialog : public QDialog
   signals:
     void removeModuleClicked();
 
-  public slots: 
+  public slots:
     void removeButtonClicked();
 };
-  
+
 #endif

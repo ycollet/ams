@@ -81,9 +81,9 @@ M_spectrum::M_spectrum(QWidget* parent, const char *name)
   labelBox->setStretchFactor(minLabel, 1);
   labelBox->setStretchFactor(dummy, 20);
   labelBox->setStretchFactor(maxLabel, 1);
-  qs.sprintf("%d Hz", (int)rint(f_min));
+  qs = QString("%1 Hz").arg((int)rint(f_min));
   minLabel->setText(qs);
-  qs.sprintf("%d Hz", (int)rint(f_max));
+  qs = QString("%1 Hz").arg((int)rint(f_max));
   maxLabel->setText(qs);
   configDialog->addTab(spectrumTab, tr("Spectrum"));
   Q3VBox *paramTab = new Q3VBox(configDialog->tabWidget);
@@ -248,7 +248,7 @@ void M_spectrum::update_f_min(int val)
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_min(f_min);
-  qs.sprintf("%d Hz", (int)rint(f_min));
+  qs = QString("%1 Hz").arg((int)rint(f_min));
   minLabel->setText(qs);
 }
 
@@ -257,7 +257,7 @@ void M_spectrum::update_f_max(int val)
   QString qs;
 
   configDialog->spectrumScreenList.at(0)->set_f_max(f_max);
-  qs.sprintf("%d Hz", (int)rint(f_max));
+  qs = QString("%1 Hz").arg((int)rint(f_max));
   maxLabel->setText(qs);
 }
 

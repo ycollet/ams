@@ -31,7 +31,7 @@ M_vcpanning::M_vcpanning(QWidget* parent, int id)
   port_M_pan = new Port(tr("Pan CV"), PORT_IN, 1, this);
   cv.out_off = 75;
   for (l1 = 0; l1 < 2; l1++) {
-    qs.sprintf("Out %d", l1);
+    qs = QString("Out %1").arg(l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
   }
   q = 2.0 / ((double)synthdata->poly - 1.0);

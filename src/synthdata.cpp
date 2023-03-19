@@ -22,6 +22,7 @@
 #include "m_wavout.h"
 #include "m_midiout.h"
 #include "m_scope.h"
+#include "resources.h"
 
 
 union uf {
@@ -57,11 +58,11 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
 {
   setObjectName("SynthData");
   if (pthread_mutex_init(&rtMutex, NULL) < 0) {
-    StdErr << __PRETTY_FUNCTION__ << ": pthread_mutex_init() failed" << endl;
+    StdErr << __PRETTY_FUNCTION__ << ": pthread_mutex_init() failed" << QT_ENDL;
     exit(-1);
   }
   if (pipe(pipeFd) < 0) {
-    StdErr << __PRETTY_FUNCTION__ << ": pipe() failed" << endl;
+    StdErr << __PRETTY_FUNCTION__ << ": pipe() failed" << QT_ENDL;
     exit(-1);
   }
 
@@ -107,7 +108,7 @@ SynthData::SynthData(QObject* parent, const ModularSynthOptions& mso)
       exp2_data[u++] = e.f;
     }
     if (u != EXP2_BUF_LEN) {
-      StdErr << __PRETTY_FUNCTION__ << ": exp2_data initialisation failed" << endl;
+      StdErr << __PRETTY_FUNCTION__ << ": exp2_data initialisation failed" << QT_ENDL;
       exit(-1);
     }
   }
@@ -232,8 +233,8 @@ int SynthData::getLadspaIDs(QString setName, QString pluginName, int *index, int
       QList<const LADSPA_Descriptor *>::const_iterator di =
 	li->desc.constBegin();
       for (int l2 = 0; di < li->desc.constEnd(); ++di, ++l2) {
-        qsl.sprintf("%s", (*di)->Label);
-        qsn.sprintf("%s", (*di)->Name);
+        qsl = (*di)->Label;
+        qsn = (*di)->Name;
         if (pluginName == qsl.trimmed()) {
           subID2Label = l2;
           break;
@@ -434,11 +435,10 @@ int SynthData::initAlsa(const QString& cname, const QString& pname,
 int SynthData::closeAlsa ()
 {
     qWarning("%s", QObject::tr("Closing ALSA...").toUtf8().constData());
+    withAlsa = false;
     //TODO: check pthread_join(alsa_thread, &thr_result);
     sleep (1);
-    if (withAlsa)
-      delete alsa_handle;
-    withAlsa = false;
+    delete alsa_handle;
     return 0;
 }
 
@@ -553,14 +553,14 @@ int SynthData::initJack (int ncapt, int nplay)
 
     for (int i = 0; i < play_ports; i++)
     {
-        qs.sprintf("out_%d", i);
+        qs = QString("out_%1").arg(i);
         jack_out [i] = jack_port_register(jack_handle,
                 qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE,
                 JackPortIsOutput, 0);
     }
     for (int i = 0; i < capt_ports; i++)
     {
-        qs.sprintf("in_%d", i);
+        qs = QString("in_%1").arg(i);
         jack_in [i] = jack_port_register (jack_handle,
                 qs.toLatin1().constData(), JACK_DEFAULT_AUDIO_TYPE,
                 JackPortIsInput, 0);
@@ -948,7 +948,7 @@ MidiControllerContext* SynthData::getMidiControllerContext(snd_seq_event_t *ev)
     MidiControllerKey mcK(ev);
 
     QList<MidiController>::const_iterator it =
-        qBinaryFind(activeMidiControllers->constBegin(),
+        std::lower_bound(activeMidiControllers->constBegin(),
                 activeMidiControllers->constEnd(), mcK);
     if (it != activeMidiControllers->constEnd())
         result = it->context;

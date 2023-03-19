@@ -2,6 +2,7 @@
 #include <qpen.h>
 #include <qbrush.h>
 #include <QPolygon>
+
 #include "envelope.h"
 #include "midicontrollable.h"
 

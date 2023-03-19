@@ -95,6 +95,8 @@ LadspaDialog::LadspaDialog()
     ladspapath = LADSPA_PATH;
   } else {
     ladspapath = _lp;
+    // left trim colons
+    ladspapath.erase(0, ladspapath.find_first_not_of(':'));
     std::cerr << "LADSPA_PATH: " << ladspapath << std::endl;
   }
   colon = -1;
@@ -107,7 +109,7 @@ LadspaDialog::LadspaDialog()
       ladspadir = (lastcolon) ? ladspapath.substr(lastcolon + 1, ladspapath.length() - lastcolon - 1)
                               : ladspapath;
     }
-//    fprintf(stderr, "Searching for LADSPA plugins in %s\n", ladspadir.latin1());
+    //fprintf(stderr, "Searching for LADSPA plugins in %s\n", ladspadir.c_str());
     ladspadir += "/*.so";
     glob(ladspadir.c_str(), GLOB_MARK, NULL, &globbuf);
     for (l1 = 0; l1 < globbuf.gl_pathc; l1++) {

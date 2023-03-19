@@ -5,6 +5,7 @@
 #include <qsizepolicy.h>
 #include <qsize.h>
 #include <QPaintEvent>
+
 #include "synthdata.h"
 #include "mced.h"
 
@@ -18,7 +19,7 @@ class Envelope : public QWidget, public MCed
 
 protected:
   virtual void paintEvent(QPaintEvent *);
-    
+
 public:
   Envelope(MidiControllableFloat &p_delayRef, MidiControllableFloat &p_attackRef,
 	   MidiControllableFloat &p_holdRef,  MidiControllableFloat &p_decayRef,
@@ -30,5 +31,5 @@ public:
 
   void mcAbleChanged();
 };
-  
+
 #endif

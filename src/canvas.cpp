@@ -55,7 +55,7 @@ void Canvas::drawBackground(QPainter * painter, const QRectF & clip)
         qp_out[1] = matrix.map(qp_in[1]);
         painter->drawLine(qp_out[0], qp_out[1]);
         if (floor(val) == ceil(val)) {
-            qs.sprintf("%6.0f", val);
+            qs = QString("%1").arg(val, 6, 'f',0);
             painter->setFont(synthdata->bigFont);
             painter->
                 drawText(QPointF(qp_out[1].x() - 20, qp_out[1].y() + 15),
@@ -78,7 +78,7 @@ void Canvas::drawBackground(QPainter * painter, const QRectF & clip)
         qp_out[1] = matrix.map(qp_in[1]);
         painter->drawLine(qp_out[0], qp_out[1]);
         if (floor(val) == ceil(val)) {
-            qs.sprintf("%7.0f", val);
+            qs = QString("%1").arg(val, 7, 'f',0);
             painter->setFont(synthdata->bigFont);
             painter->
                 drawText(QPointF(qp_out[0].x() - 44, qp_out[0].y() + 4),

@@ -1,11 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.61)
-AC_INIT(ams, [2.2.0], [alsamodular-devel@lists.sourceforge.net])
-AC_CANONICAL_SYSTEM
+AC_PREREQ([2.71])
+AC_INIT([ams],[2.2.1],[alsamodular-devel@lists.sourceforge.net])
+AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR([src/box.h])
-AC_CONFIG_HEADER([src/config.h])
+AC_CONFIG_HEADERS([src/config.h])
 AM_INIT_AUTOMAKE([dist-bzip2 dist-xz])
 
 # Checks for programs.
@@ -14,10 +14,24 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_RANLIB
+
+# If macro PKG_PROG_PKG_CONFIG is not available, Autoconf generates
+# a misleading error message, so check for existence first, and
+# otherwise provide helpful advice.
+#
+m4_ifndef([PKG_PROG_PKG_CONFIG], [m4_fatal(
+    [Macro PKG_PROG_PKG_CONFIG is not available. It is usually
+defined in file pkg.m4 provided by package pkg-config.]
+)])
+
 PKG_PROG_PKG_CONFIG
 
 # Checks for header files.
-AC_HEADER_STDC
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -111,9 +125,8 @@ AC_LANG_POP(C++)
 fi
 
 dnl option to enable Qt4 instead of default Qt5 library 
-AC_ARG_ENABLE(qt4, AC_HELP_STRING([--enable-qt4],
-                          [enable Qt4 instead of Qt5 library]),,
-                          enable_qt5=yes)
+AC_ARG_ENABLE(qt4, AS_HELP_STRING([--enable-qt4],
+              [enable Qt4 instead of Qt5 library]),,enable_qt5=yes)
 AS_IF([test x$enable_qt4 = xyes],
 dnl Check for Qt4 library files
 [
@@ -232,8 +245,7 @@ AC_CHECK_HEADER([ladspa.h], ,
 
 # Check for ladspa plugins path
 AC_ARG_WITH(ladspa-path,
-  [AC_HELP_STRING([--with-ladspa-path=DIR],
-    [directory for ladspa plugins])],
+  [AS_HELP_STRING([--with-ladspa-path=DIR],[directory for ladspa plugins])],
   [ if test "x$withval" != "x" ; then
      LADSPA_PATH="$withval"
     fi ],

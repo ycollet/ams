@@ -36,12 +36,6 @@ M_advmcv::M_advmcv(QWidget* parent, int id)
     port_controller_out[l1] = new Port(qs, PORT_OUT, 6+l1, this);
   }
 
-//  QStrList *channelNames = new QStrList(true);
-//  channelNames->append("RESERVED FOR LATER USE");
-//  for (l1 = 1; l1 < 17; l1++) {
-//    qs.sprintf("RESERVED FOR LATER USE", l1);
-//    channelNames->append(qs);
-//  }
   channel = 0;
   pitch = 0;
   pitchbend = 0;

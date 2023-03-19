@@ -23,7 +23,6 @@
 M_midiout::M_midiout(QWidget* parent, int id)
   : Module(M_type_midiout, id, 0, parent, tr("Midi Out"))
 {
-  QString qs;
   int l1, l2;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_MIDIOUT_HEIGHT);
@@ -45,8 +44,7 @@ M_midiout::M_midiout(QWidget* parent, int id)
   QVBoxLayout *midiTab = configDialog->addVBoxTab(tr("MIDI &Settings"));
   QStringList channelNames;
   for (l1 = 0; l1 < 16; l1++) {
-    qs.sprintf("%4d", l1);
-    channelNames << qs;
+    channelNames << QString("%1").arg(l1, 4);
   }
   channel = 0;
   configDialog->addComboBox(tr("MIDI &channel"), channel, channelNames, midiTab);

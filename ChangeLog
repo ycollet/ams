@@ -1,3 +1,8 @@
++++ Release 2.2.2 (2023-03-14) +++
+
+        * src/: For detailed changelog messages see git repository
+
+
 +++ Release 2.2.0 (2020-12-13) +++
 
         * src/: For detailed changelog messages see git repository
@@ -183,18 +188,18 @@
 2014-03-15 Guido Scholz <guido-scholz@gmx.net>
 	* configure.ac, src/function.cpp, src/m_ladspa.cpp,
 	 src/m_lfo.cpp, src/m_vcdelay.cpp, src/ringbuffer.h,
-	 src/synthdata.cpp: Add support for Qt5 (configure option  
+	 src/synthdata.cpp: Add support for Qt5 (configure option
 	--enable-qt5).
 
 2012-10-19 Guido Scholz <guido.scholz@bayernline.de>
-	* src/mainwindow.*: Add file menu item to open demo instruments 
+	* src/mainwindow.*: Add file menu item to open demo instruments
 	directly.
 	* src/midiwidget.*: Make visibility, position and size of midi
 	widget window persistent.
 
 2012-10-04 Guido Scholz <guido.scholz@bayernline.de>
 	* demos/vocoder_1.ams: Add demo file for new vocoder module.
-	* src/module.*, src/modularsynth.*: Make visibility, position 
+	* src/module.*, src/modularsynth.*: Make visibility, position
 	and size of module config dialog persistent.
 
 2012-09-30 Guido Scholz <guido.scholz@bayernline.de>
@@ -271,7 +276,7 @@
 
 2012-02-08 Guido Scholz <guido.scholz@bayernline.de>
 	* src/mainwindow.cpp, src/modularsynth.*, src/module.h,
-	src/m_v8sequencer.h, m_v8sequencer.cpp: Add new V8 Sequencer 
+	src/m_v8sequencer.h, m_v8sequencer.cpp: Add new V8 Sequencer
 	module by Bill Yerazunis.
 
 2012-02-07 Guido Scholz <guido.scholz@bayernline.de>
@@ -301,7 +306,7 @@
 	Add commandline option for program version (--version).
 	* src/mainwindow.*, src/ladspadialog.cpp, src/synthdata.cpp: Enable
 	"--verbose" commandline option to make startup more quiet.
-	* src/m_lfo.cpp: Fix frequency update of LFO, patch provided by 
+	* src/m_lfo.cpp: Fix frequency update of LFO, patch provided by
 	Bill Yerazunis.
 
 2012-02-02 Guido Scholz <guido.scholz@bayernline.de>
@@ -456,7 +461,7 @@
 2009-05-18 Karsten Wiese <fzuuzf@googlemail.com>
 	* M_pcmout: Fix noise after disconnection.
 	* Module deletion fixed to allow midibound activity also for
-	  unconnected modules. 
+	  unconnected modules.
 	* M_type_pcmout deletion fixed to avoid crash.
 
 2009-05-17 Karsten Wiese <fzuuzf@googlemail.com>
@@ -485,7 +490,7 @@
 	* Rework commandline options. Started by Atte Andre Jensen. Tweaked to
 	  resemble Fons Adriaensen's programs.
 	* configure.ac: bump VERSION to "2.0.1-rc1".
-	
+
 2009-03-02 Karsten Wiese <fzuuzf@googlemail.com>
 	* midiwidget.*: Fix crash if second controller is about to show
 	after 1st controller is bound to controllable.

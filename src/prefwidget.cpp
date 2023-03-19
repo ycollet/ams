@@ -465,7 +465,11 @@ void PrefWidget::setBackgroundColor(QColor color)
 
 QColor PrefWidget::getBackgroundColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorBackgroundLabel->palette().color(QPalette::Window);
+#else
     return colorBackgroundLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setModuleBackgroundColor(QColor color)
@@ -475,7 +479,11 @@ void PrefWidget::setModuleBackgroundColor(QColor color)
 
 QColor PrefWidget::getModuleBackgroundColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorModuleBackgroundLabel->palette().color(QPalette::Window);
+#else
     return colorModuleBackgroundLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setModuleBorderColor(QColor color)
@@ -485,7 +493,11 @@ void PrefWidget::setModuleBorderColor(QColor color)
 
 QColor PrefWidget::getModuleBorderColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorModuleBorderLabel->palette().color(QPalette::Window);
+#else
     return colorModuleBorderLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setModuleFontColor(QColor color)
@@ -495,7 +507,11 @@ void PrefWidget::setModuleFontColor(QColor color)
 
 QColor PrefWidget::getModuleFontColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorModuleFontLabel->palette().color(QPalette::Window);
+#else
     return colorModuleFontLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setPortFontColor(QColor color)
@@ -505,7 +521,11 @@ void PrefWidget::setPortFontColor(QColor color)
 
 QColor PrefWidget::getPortFontColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorPortFontLabel->palette().color(QPalette::Window);
+#else
     return colorPortFontLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setCableColor(QColor color)
@@ -515,7 +535,11 @@ void PrefWidget::setCableColor(QColor color)
 
 QColor PrefWidget::getCableColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorCableLabel->palette().color(QPalette::Window);
+#else
     return colorCableLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::setJackColor(QColor color)
@@ -525,7 +549,11 @@ void PrefWidget::setJackColor(QColor color)
 
 QColor PrefWidget::getJackColor()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
+    return colorJackLabel->palette().color(QPalette::Window);
+#else
     return colorJackLabel->palette().color(QPalette::Background);
+#endif
 }
 
 void PrefWidget::enableGridToggled(bool checked)

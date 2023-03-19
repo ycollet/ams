@@ -81,6 +81,8 @@
 #include "m_vquant.h"
 #include "m_wavout.h"
 #include "config.h"
+#include "resources.h"
+
 
 static const char COLOREXT[] = ".acs";
 
@@ -332,7 +334,7 @@ int ModularSynth::go(bool forceJack, bool forceAlsa)
     if ((synthdata->seq_handle = open_seq()))
         initSeqNotifier();
     else
-        qWarning("%s", QObject::tr("Alsa MIDI wont work!").toUtf8().constData());
+        qWarning("%s", QObject::tr("Alsa MIDI won't work!").toUtf8().constData());
 
     midiWidget->setActiveMidiControllers();
 
@@ -445,12 +447,12 @@ void ModularSynth::midiAction(int fd)
     ssize_t pipeRed = read(fd, pipeIn, sizeof(pipeIn));
 
     if (pipeRed < 0) {
-        StdErr << __PRETTY_FUNCTION__ << ": read() " << endl;
+        StdErr << __PRETTY_FUNCTION__ << ": read() " << QT_ENDL;
         perror(NULL);
         exit(-1);
     }
     if (pipeRed < 1 || pipeRed >= (ssize_t)sizeof(pipeIn))
-        StdErr << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << endl;
+        StdErr << __PRETTY_FUNCTION__ << ": read() " << pipeRed << " bytes" << QT_ENDL;
     if (pipeRed == 0)
         return;
 
@@ -482,11 +484,11 @@ void ModularSynth::midiAction(int fd)
 	MidiControllerKey mcK = synthdata->mckDump.get();
 	switch (mcK.type()) {
 	case SND_SEQ_EVENT_SYSEX:
-	    StdErr << "SYSEX MIDI events are not supported" << endl;
+	    StdErr << "SYSEX MIDI events are not supported" << QT_ENDL;
 	    break;
 	default:
 	    StdErr << "Unsupported MIDI event received (type = " <<
-		mcK.type() << ")" << endl;
+		mcK.type() << ")" << QT_ENDL;
 	    break;
 	}
     }
@@ -2283,7 +2285,7 @@ void ModularSynth::load(QTextStream& ts)
             continue;
         }
 
-      qs2.sprintf("%3d", guiWidget->presetNameList.count());
+      qs2 = QString("%1%").arg(guiWidget->presetNameList.count(), 3);
       guiWidget->presetNameList.append(qs2+qs);
     }
     /*For debugging only, 'Module' and 'Comment' will also apear
@@ -2301,13 +2303,13 @@ void ModularSynth::load(QTextStream& ts)
 
   if (restartSynth)
     startSynth();
-  
+
   if (verbose) {
-    StdOut << "synthdata->periodsize = " << synthdata->periodsize << endl;
-    StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << endl;
-    StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << endl;
+    StdOut << "synthdata->periodsize = " << synthdata->periodsize << "\n";
+    StdOut << "synthdata->cyclesize = " << synthdata->cyclesize << "\n";
+    StdOut << "Module::portmemAllocated = " << Module::portmemAllocated << "\n";
   }
-  
+
   midiWidget->setFollowConfig(followConfig);
   guiWidget->refreshGui();
   modified = false;
@@ -2340,26 +2342,26 @@ void ModularSynth::save(QTextStream& ts)
         case M_type_custom:
           break;
         case M_type_vca:
-          ts << (int)((M_vca *)listModule.at(l1))->expMode << " 0" << endl;
+          ts << (int)((M_vca *)listModule.at(l1))->expMode << " 0" << QT_ENDL;
           break;
         case M_type_ad:
         case M_type_function:
-          ts << listModule.at(l1)->outPortCount << " 0" << endl;
+          ts << listModule.at(l1)->outPortCount << " 0" << QT_ENDL;
           break;
         case M_type_mix:
-          ts << ((M_mix *)listModule.at(l1))->in_channels << " 0" << endl;
+          ts << ((M_mix *)listModule.at(l1))->in_channels << " 0" << QT_ENDL;
           break;
         case M_type_stereomix:
-          ts << ((M_stereomix *)listModule.at(l1))->in_channels << " 0" << endl;
+          ts << ((M_stereomix *)listModule.at(l1))->in_channels << " 0" << QT_ENDL;
           break;
         case M_type_vcorgan:
-          ts << ((M_vcorgan *)listModule.at(l1))->oscCount << " 0" << endl;
+          ts << ((M_vcorgan *)listModule.at(l1))->oscCount << " 0" << QT_ENDL;
           break;
         case M_type_dynamicwaves:
-          ts << ((M_dynamicwaves *)listModule.at(l1))->oscCount << " 0" << endl;
+          ts << ((M_dynamicwaves *)listModule.at(l1))->oscCount << " 0" << QT_ENDL;
           break;
         case M_type_seq:
-          ts << ((M_seq *)listModule.at(l1))->seqLen << " 0" << endl;
+          ts << ((M_seq *)listModule.at(l1))->seqLen << " 0" << QT_ENDL;
           break;
         case M_type_ladspa:
           ts << 2 * (int)((M_ladspa *)listModule.at(l1))->isPoly
@@ -2368,24 +2370,24 @@ void ModularSynth::save(QTextStream& ts)
              << synthdata->ladspaLib.at(((M_ladspa *)listModule.at(l1))
                          ->ladspaDesFuncIndex).name
              << ' '
-             << ((M_ladspa *)listModule.at(l1))->pluginName << endl;
+             << ((M_ladspa *)listModule.at(l1))->pluginName << QT_ENDL;
           break;
         case M_type_scquantizer:
           qs = ((M_scquantizer *)listModule.at(l1))->sclname;
           if (qs.contains('/')) {
             qs = qs.mid(qs.lastIndexOf('/') + 1);
           }
-          ts << qs << endl;
+          ts << qs << QT_ENDL;
           break;
         case M_type_scmcv:
           qs = ((M_scmcv *)listModule.at(l1))->sclname;
           if (qs.contains('/')) {
             qs = qs.mid(qs.lastIndexOf('/') + 1);
           }
-          ts << qs << endl;
+          ts << qs << QT_ENDL;
           break;
         default:
-          ts << "0 0" << endl;
+          ts << "0 0" << QT_ENDL;
           break;
       }
       listModule.at(l1)->save(ts);
@@ -2401,15 +2403,15 @@ void ModularSynth::save(QTextStream& ts)
                 << te->x() - offX << ' '
                 << te->y() - offY << ' '
                 << te->width() << ' '
-                << te->height() << endl;
+                << te->height() << QT_ENDL;
 
             QTextDocument *tD = te->textEdit->document();
             QTextBlock tB = tD->begin();
             for (l2 = 0; l2 < tD->blockCount(); ++l2, tB = tB.next()) {
                 ts << "#PARA# " << te->textEditID << ' '
-                    << l1 << ' ' << l2 << endl;
-                ts << tB.text() << endl;
-                ts << "#ARAP#" << endl;
+                    << l1 << ' ' << l2 << QT_ENDL;
+                ts << tB.text() << QT_ENDL;
+                ts << "#ARAP#" << QT_ENDL;
             }
         }
     }
@@ -2507,37 +2509,37 @@ void ModularSynth::savePreferences(QTextStream& ts)
     ts << CF_BACKGROUNDCOLOR << ' '
         << synthdata->colorBackground.red() << ' '
         << synthdata->colorBackground.green() << ' '
-        << synthdata->colorBackground.blue() << endl;
+        << synthdata->colorBackground.blue() << QT_ENDL;
     ts << CF_MODULEBACKGROUNDCOLOR << ' '
         << synthdata->colorModuleBackground.red() << ' '
         << synthdata->colorModuleBackground.green() << ' '
-        << synthdata->colorModuleBackground.blue() << endl;
+        << synthdata->colorModuleBackground.blue() << QT_ENDL;
     ts << CF_MODULEBORDERCOLOR << ' '
         << synthdata->colorModuleBorder.red() << ' '
         << synthdata->colorModuleBorder.green() << ' '
-        << synthdata->colorModuleBorder.blue() << endl;
+        << synthdata->colorModuleBorder.blue() << QT_ENDL;
     ts << CF_MODULEFONTCOLOR << ' '
         << synthdata->colorModuleFont.red() << ' '
         << synthdata->colorModuleFont.green() << ' '
-        << synthdata->colorModuleFont.blue() << endl;
+        << synthdata->colorModuleFont.blue() << QT_ENDL;
     ts << CF_PORTFONTCOLOR << ' '
         << synthdata->colorPortFont.red() << ' '
         << synthdata->colorPortFont.green() << ' '
-        << synthdata->colorPortFont.blue() << endl;
+        << synthdata->colorPortFont.blue() << QT_ENDL;
     ts << CF_JACKCOLOR << ' '
         << synthdata->colorJack.red() << ' '
         << synthdata->colorJack.green() << ' '
-        << synthdata->colorJack.blue() << endl;
+        << synthdata->colorJack.blue() << QT_ENDL;
     ts << CF_CABLECOLOR << ' '
         << synthdata->colorCable.red() << ' '
         << synthdata->colorCable.green() << ' '
-        << synthdata->colorCable.blue() << endl;
-    ts << CF_MIDICONTROLLERMODE << ' ' << synthdata->midiControllerMode << endl;
-    ts << CF_COLORPATH << ' ' << synthdata->colorPath << endl;
-    ts << CF_PATCHPATH << ' ' << synthdata->patchPath << endl;
-    ts << CF_EDITINGFLAGS << ' ' << synthdata->editingFlags.f << endl;
-    ts << CF_ENABLEGRID << ' ' << enablemodulegrid << endl;
-    ts << CF_GRIDMESHSIZE << ' ' << modulegrid << endl;
+        << synthdata->colorCable.blue() << QT_ENDL;
+    ts << CF_MIDICONTROLLERMODE << ' ' << synthdata->midiControllerMode << QT_ENDL;
+    ts << CF_COLORPATH << ' ' << synthdata->colorPath << QT_ENDL;
+    ts << CF_PATCHPATH << ' ' << synthdata->patchPath << QT_ENDL;
+    ts << CF_EDITINGFLAGS << ' ' << synthdata->editingFlags.f << QT_ENDL;
+    ts << CF_ENABLEGRID << ' ' << enablemodulegrid << QT_ENDL;
+    ts << CF_GRIDMESHSIZE << ' ' << modulegrid << QT_ENDL;
 
     midiWidget->savePreferences(ts);
 

@@ -1,3 +1,16 @@
+ams-2.2.1 (2023-03-14)
+
+  Fixed Bugs
+    o Optimize layout of envelope view in config dialogs for several
+      modules.
+    o Left trim colons in LADSPA_PATH
+
+  General Changes
+    o Fix warnings for deprecated Qt5 functions
+    o Add check for availability of PKG_PROG_PKG_CONFIG macro
+
+
+
 ams-2.2.0 (2020-12-13)
 
   Fixed Bugs

@@ -67,7 +67,7 @@ M_wavout::M_wavout(QWidget* parent, int id)
   configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false, gainTab);
   configDialog->addSlider(tr("V&olume 2"), mixer_gain[1], 0, 1, false, gainTab);
   QStringList agcNames;
-  agcNames << tr("Disbled") << tr("Enabled");
+  agcNames << tr("Disabled") << tr("Enabled");
   configDialog->addComboBox(tr("&Automatic Gain Control"), agc,
           agcNames, gainTab);
 
@@ -262,17 +262,9 @@ void M_wavout::timerProc() {
     seconds = (wavDataSize >> 2) / synthdata->rate;
     minutes = (seconds % 3600) / 60;
     displaySeconds = seconds % 60;
-    qs1.sprintf("%d", seconds / 3600);
-    if (minutes < 10) {
-      qs2.sprintf("0%d", minutes);
-    } else {
-      qs2.sprintf("%d", minutes);
-    }
-    if (displaySeconds < 10) {
-      qs3.sprintf("0%d", displaySeconds);
-    } else {
-      qs3.sprintf("%d", displaySeconds);
-    }
+    qs1 = QString("%1").arg(seconds / 3600);
+    qs2 = QString("%1").arg(minutes, 2, 10, QChar('0'));
+    qs3 = QString("%1").arg(displaySeconds, 2, 10, QChar('0'));
     configDialog->labelList.at(0)->setText(
             tr("Time: %1:%2:%3 ").arg(qs1).arg(qs2).arg(qs3));
   }

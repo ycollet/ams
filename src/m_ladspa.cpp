@@ -172,11 +172,13 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
             if (LADSPA_IS_PORT_INPUT(ladspa_dsc->PortDescriptors[l1])) {
                 if (tabMode && ((ctrl_in_index % MAX_LADPSA_CONTROLS_PER_TAB) == 0)) {
                     if (ctrl_in_index + MAX_LADPSA_CONTROLS_PER_TAB < ladspa_ctrl_in_count) {
-                        qs.sprintf("%d-%d", ctrl_in_index + 1,
-                                ctrl_in_index + MAX_LADPSA_CONTROLS_PER_TAB);
+                        qs = QString("%1-%2")
+                            .arg(ctrl_in_index + 1)
+                            .arg(ctrl_in_index + MAX_LADPSA_CONTROLS_PER_TAB);
                     } else {
-                        qs.sprintf("%d-%d", ctrl_in_index + 1,
-                                ladspa_ctrl_in_count);
+                        qs = QString("%1-%2")
+                            .arg(ctrl_in_index + 1)
+                            .arg(ladspa_ctrl_in_count);
                     }
                     ladspaTab = configDialog->addVBoxTab(qs);
                 }
@@ -346,7 +348,7 @@ M_ladspa::M_ladspa(QWidget* parent, int ladspaDesFuncIndex, int n,
 
     setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_LADSPA_WIDTH,
             MODULE_LADSPA_HEIGHT + 20 * itmp);
-    pluginName.sprintf("%s", ladspa_dsc->Label);
+    pluginName = ladspa_dsc->Label;
     //  fprintf(stderr, "--> isPoly: %d  ladspa_dsc->Label: %s  moduleID: %d\n", isPoly, ladspa_dsc->Label, moduleID);
 }
 

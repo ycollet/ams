@@ -468,7 +468,7 @@ void M_v8sequencer::generateCycle() {
 	data[7][l1][l2] = aux1lcl;   // aux1
 
 	//    Gate out - did we take a step?
-	data[8][l1][l2] = m_step[l1][l2]
+	data[8][l1][l2] = m_step[1l][l2]
 	  + m_forward[l1][l2]
 	  + m_backward[l1][l2];
 

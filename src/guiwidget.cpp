@@ -12,6 +12,7 @@
 #include "midicombobox.h"
 #include "midicheckbox.h"
 #include "midipushbutton.h"
+#include "resources.h"
 
 
 GuiWidget::GuiWidget(QWidget* parent, const char *name)
@@ -120,7 +121,7 @@ int GuiWidget::addParameter(MidiControllableBase *mcAble,
     }
 
     if (mcAble == NULL) {
-        qWarning("No MIDI controlable item found.");
+        qWarning("No MIDI controllable item found.");
         return -1;
     }
 
@@ -130,7 +131,7 @@ int GuiWidget::addParameter(MidiControllableBase *mcAble,
             mcAble->mcws.at(0))->createTwin();
 
     if (mgc == NULL) {
-        qWarning("No GUI component for MIDI controlable item found.");
+        qWarning("No GUI component for MIDI controllable item found.");
         return -1;
     }
 
@@ -219,13 +220,11 @@ void GuiWidget::presetInc()
 
 void GuiWidget::addPreset()
 {
-    QString qs;
-
     if (presetCount) {
         setPresetCount(presetCount + 1);
         setCurrentPreset(presetCount - 1);
     }
-    qs.sprintf("%3d", currentPreset);
+    QString qs = QString("%1").arg(currentPreset, 3);
     presetNameList.append(qs + presetName->text());
     overwritePreset();
 }
@@ -248,7 +247,7 @@ void GuiWidget::overwritePreset()
             it != presetNameList.end(); it++) {
         qs = (*it).mid(0, 3);
         if (qs.toInt() == currentPreset) {
-            qs.sprintf("%3d", currentPreset);
+            qs = QString("%1").arg(currentPreset, 3);
             *it = qs + presetName->text();
         }
     }
@@ -334,13 +333,13 @@ void GuiWidget::save(QTextStream& ts)
 
     // save MIDI controller window configuration
     for (int i = 0; i < tabList.count(); ++i)
-        ts << "Tab \"" << tabNameList.at(i) << "\"" << endl;
+        ts << "Tab \"" << tabNameList.at(i) << "\"" << QT_ENDL;
 
     for (int i = 0; i < frameBoxList.count(); ++i) {
         ts << "Frame \""
             << frameBoxList.at(i)->frameBox->parentWidget()
             ->objectName() << "\" "
-            << frameBoxList.at(i)->tabIndex << endl;
+            << frameBoxList.at(i)->tabIndex << QT_ENDL;
 
         for (int j = 0; j < parameterList.count(); ++j)
             if (mgcs.at(j)->parent() ==
@@ -354,18 +353,18 @@ void GuiWidget::save(QTextStream& ts)
                 if (mcAbleF)
                     ts << ' ' << mcAbleF->sliderMin() << ' '
                         << mcAbleF->sliderMax() << ' '
-                        << mcAbleF->getLog() << endl;
+                        << mcAbleF->getLog() << QT_ENDL;
                 else
-                    ts << endl;
+                    ts << QT_ENDL;
             }
     }
 
     for (int i = 0; i < presetCount; ++i)
         for (int p = 0; p < presetList[i].count(); p++)
-            ts << "Program " << i << ' ' << presetList[i][p] << endl;
+            ts << "Program " << i << ' ' << presetList[i][p] << QT_ENDL;
 
     for (presetit = presetNameList.begin();
             presetit != presetNameList.end(); ++presetit) {
-        ts << "PresetName \"" << (*presetit).mid(3) << "\"" << endl;
+        ts << "PresetName \"" << (*presetit).mid(3) << "\"" << QT_ENDL;
     }
 }

@@ -30,9 +30,9 @@ M_pcmin::M_pcmin(QWidget* parent, int port, int id)
   gain = 0.5;
   mixer_gain[0] = 0.5;
   mixer_gain[1] = 0.5;
-  qs.sprintf ("In %2d -> ", port);
+  qs = QString("In %1 -> ").arg(port, 2);
   port_out[0] = new Port(qs, PORT_OUT, 0, this);
-  qs.sprintf ("In %2d -> ", port + 1);
+  qs = QString("In %1 -> ").arg(port + 1, 2);
   port_out[1] = new Port(qs, PORT_OUT, 1, this);
   configDialog->addSlider(tr("&Gain"), gain, 0, 1, false);
   configDialog->addSlider(tr("&Volume 1"), mixer_gain[0], 0, 1, false);

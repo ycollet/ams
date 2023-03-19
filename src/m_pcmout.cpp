@@ -21,9 +21,9 @@ M_pcmout::M_pcmout(QWidget* parent, int port, int id)
 
   polyroot = sqrt((double)synthdata->poly);
   agc = 0;
-  qs.sprintf (" -> Out %2d", port);
+  qs = QString(" -> Out %1").arg(port, 2);
   port_in[0] = new Port(qs, PORT_IN, 0, this);
-  qs.sprintf(" -> Out %2d", port + 1);
+  qs = QString(" -> Out %1").arg(port + 1);
   port_in[1] = new Port(qs, PORT_IN, 1, this);
 
   configDialog->addSlider(tr("&Gain"), gain, 0, 1, false);

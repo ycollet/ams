@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="de_DE">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -12,7 +12,8 @@
         <location filename="../aboutdialog.cpp" line="75"/>
         <source>AlsaModularSynth (ams) is a realtime modular sythesizer
 and effect processor.</source>
-        <translation>AlsaModularSynth (ams) ist ein modularer Echtzeitsynthesizer und Effektprozessor</translation>
+        <translation>AlsaModularSynth (ams) ist ein modularer Echtzeitsynthesizer
+und Effektprozessor.</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="104"/>
@@ -38,7 +39,7 @@ and effect processor.</source>
 <context>
     <name>ConfigDialog</name>
     <message>
-        <location filename="../configdialog.cpp" line="34"/>
+        <location filename="../configdialog.cpp" line="35"/>
         <source>&amp;Remove Module</source>
         <translation>&amp;Entferne Modul</translation>
     </message>
@@ -48,28 +49,28 @@ and effect processor.</source>
     <message>
         <location filename="../function.cpp" line="69"/>
         <source>Out %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus %1</translation>
     </message>
 </context>
 <context>
     <name>GuiWidget</name>
     <message>
-        <location filename="../guiwidget.cpp" line="40"/>
+        <location filename="../guiwidget.cpp" line="41"/>
         <source>&amp;Add Preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="45"/>
+        <location filename="../guiwidget.cpp" line="46"/>
         <source>&amp;Overwrite Preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="50"/>
+        <location filename="../guiwidget.cpp" line="51"/>
         <source>Presets for this configuration: 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../guiwidget.cpp" line="153"/>
+        <location filename="../guiwidget.cpp" line="154"/>
         <source>Presets for this configuration: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -82,37 +83,37 @@ and effect processor.</source>
         <translation>LADSPA-Module</translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="148"/>
+        <location filename="../ladspadialog.cpp" line="150"/>
         <source>&amp;Search</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="172"/>
+        <location filename="../ladspadialog.cpp" line="174"/>
         <source>&amp;Export control ports as module ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="176"/>
+        <location filename="../ladspadialog.cpp" line="178"/>
         <source>&amp;Create Plugin</source>
         <translation>&amp;Erzeuge Plugin</translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="181"/>
+        <location filename="../ladspadialog.cpp" line="183"/>
         <source>Create &amp;Poly Plugin</source>
         <translation>Erzeuge &amp;Poly-Plugin</translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="216"/>
+        <location filename="../ladspadialog.cpp" line="218"/>
         <source>Label: </source>
         <translation>Bezeichnung: </translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="217"/>
+        <location filename="../ladspadialog.cpp" line="219"/>
         <source>Author: </source>
         <translation>Autor: </translation>
     </message>
     <message>
-        <location filename="../ladspadialog.cpp" line="218"/>
+        <location filename="../ladspadialog.cpp" line="220"/>
         <source>Copyright: </source>
         <translation>Copyright: </translation>
     </message>
@@ -133,83 +134,83 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="48"/>
+        <location filename="../m_ad.cpp" line="47"/>
         <source>&amp;Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parameter</translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="50"/>
+        <location filename="../m_ad.cpp" line="49"/>
         <source>Detune &amp;Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="52"/>
+        <location filename="../m_ad.cpp" line="51"/>
         <source>Detune &amp;Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="54"/>
+        <location filename="../m_ad.cpp" line="53"/>
         <source>Detune &amp;Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="56"/>
+        <location filename="../m_ad.cpp" line="55"/>
         <source>Drift &amp;Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="58"/>
+        <location filename="../m_ad.cpp" line="57"/>
         <source>Drift &amp;Modulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="60"/>
+        <location filename="../m_ad.cpp" line="59"/>
         <source>Dri&amp;ft Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="63"/>
+        <location filename="../m_ad.cpp" line="62"/>
         <source>&amp;Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="71"/>
+        <location filename="../m_ad.cpp" line="69"/>
         <source>&amp;Voice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="88"/>
+        <location filename="../m_ad.cpp" line="86"/>
         <source>Auto&amp;tune</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="90"/>
+        <location filename="../m_ad.cpp" line="88"/>
         <source>B&amp;ypass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="74"/>
-        <location filename="../m_ad.cpp" line="172"/>
-        <location filename="../m_ad.cpp" line="176"/>
+        <location filename="../m_ad.cpp" line="72"/>
+        <location filename="../m_ad.cpp" line="170"/>
+        <location filename="../m_ad.cpp" line="174"/>
         <source>Detune %1</source>
         <translation>Verstimmung %1</translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="78"/>
-        <location filename="../m_ad.cpp" line="174"/>
-        <location filename="../m_ad.cpp" line="178"/>
+        <location filename="../m_ad.cpp" line="76"/>
+        <location filename="../m_ad.cpp" line="172"/>
+        <location filename="../m_ad.cpp" line="176"/>
         <source>Drift %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_ad.cpp" line="23"/>
         <source>CV In</source>
-        <translation type="unfinished"></translation>
+        <translation>CV Ein</translation>
     </message>
     <message>
-        <location filename="../m_ad.cpp" line="27"/>
+        <location filename="../m_ad.cpp" line="26"/>
         <source>CV Out %1</source>
-        <translation type="unfinished"></translation>
+        <translation>CV Aus %1</translation>
     </message>
 </context>
 <context>
@@ -260,77 +261,77 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="58"/>
+        <location filename="../m_advenv.cpp" line="59"/>
         <source>Ti&amp;me Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="60"/>
+        <location filename="../m_advenv.cpp" line="61"/>
         <source>S&amp;ustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="62"/>
+        <location filename="../m_advenv.cpp" line="63"/>
         <source>Dela&amp;y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="64"/>
+        <location filename="../m_advenv.cpp" line="67"/>
         <source>Attack Time &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="66"/>
+        <location filename="../m_advenv.cpp" line="76"/>
         <source>Attack Level &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="68"/>
+        <location filename="../m_advenv.cpp" line="69"/>
         <source>Attack Time &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="70"/>
+        <location filename="../m_advenv.cpp" line="78"/>
         <source>Attack Level &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="72"/>
+        <location filename="../m_advenv.cpp" line="71"/>
         <source>Attack Time &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="74"/>
+        <location filename="../m_advenv.cpp" line="80"/>
         <source>Attack Level &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="76"/>
+        <location filename="../m_advenv.cpp" line="73"/>
         <source>Attack Time &amp;3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="78"/>
+        <location filename="../m_advenv.cpp" line="84"/>
         <source>Release Time &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="80"/>
+        <location filename="../m_advenv.cpp" line="92"/>
         <source>Release Level &amp;0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="82"/>
+        <location filename="../m_advenv.cpp" line="86"/>
         <source>Release Time &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="84"/>
+        <location filename="../m_advenv.cpp" line="94"/>
         <source>Release Level &amp;1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advenv.cpp" line="86"/>
+        <location filename="../m_advenv.cpp" line="88"/>
         <source>Release Time &amp;2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -350,7 +351,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_advmcv.cpp" line="29"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_advmcv.cpp" line="30"/>
@@ -378,17 +379,17 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advmcv.cpp" line="55"/>
+        <location filename="../m_advmcv.cpp" line="49"/>
         <source>&amp;Note Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advmcv.cpp" line="56"/>
+        <location filename="../m_advmcv.cpp" line="50"/>
         <source>&amp;Pitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_advmcv.cpp" line="58"/>
+        <location filename="../m_advmcv.cpp" line="52"/>
         <source>Controller &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,12 +404,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_amp.cpp" line="28"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_amp.cpp" line="30"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_amp.cpp" line="32"/>
@@ -504,7 +505,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_bitgrind.cpp" line="46"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_bitgrind.cpp" line="47"/>
@@ -519,7 +520,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_bitgrind.cpp" line="50"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_bitgrind.cpp" line="53"/>
@@ -593,12 +594,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_delay.cpp" line="29"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_delay.cpp" line="31"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_delay.cpp" line="33"/>
@@ -616,7 +617,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="60"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="61"/>
@@ -641,17 +642,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="66"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="70"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinus</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="70"/>
         <source>Saw</source>
-        <translation type="unfinished"></translation>
+        <translation>Sägezahn</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="70"/>
@@ -661,7 +662,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="70"/>
         <source>Rect</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechteck</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="71"/>
@@ -676,7 +677,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="76"/>
         <source>&amp;Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oktave</translation>
     </message>
     <message>
         <location filename="../m_dynamicwaves.cpp" line="77"/>
@@ -699,13 +700,123 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_dynamicwaves.cpp" line="85"/>
+        <location filename="../m_dynamicwaves.cpp" line="86"/>
         <source>Mi&amp;xer</source>
+        <translation>Mi&amp;scher</translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="88"/>
+        <source>Volume &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_dynamicwaves.cpp" line="87"/>
-        <source>Volume &amp;%1</source>
+        <location filename="../m_dynamicwaves.cpp" line="94"/>
+        <source>Osc &amp;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="96"/>
+        <source>Wave &amp;form %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="98"/>
+        <source>&amp;Octave %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="100"/>
+        <source>&amp;Tune %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="102"/>
+        <source>&amp;Harmonic %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="104"/>
+        <source>&amp;Subharmonic %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="106"/>
+        <source>&amp;Phi0 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="112"/>
+        <source>&amp;Envelope %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="114"/>
+        <source>&amp;Delay %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="116"/>
+        <source>Attack &amp;Time 0 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="118"/>
+        <source>Attack &amp;Level 0 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="120"/>
+        <source>Attack T&amp;ime 1 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="122"/>
+        <source>Attack Le&amp;vel 1 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="124"/>
+        <source>Attack Ti&amp;me 2 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="126"/>
+        <source>Att&amp;ack Level 2 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="128"/>
+        <source>Atta&amp;ck Time 3 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="130"/>
+        <source>Susta&amp;in %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="132"/>
+        <source>Re&amp;lease Time 0 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="134"/>
+        <source>R&amp;elease &amp;Level 0 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="136"/>
+        <source>Release &amp;Time 1 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="138"/>
+        <source>Release &amp;Level 1 %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_dynamicwaves.cpp" line="140"/>
+        <source>Release &amp;Time 2 %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -717,67 +828,67 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="28"/>
+        <location filename="../m_env.cpp" line="26"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="29"/>
+        <location filename="../m_env.cpp" line="27"/>
         <source>Retrigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="31"/>
+        <location filename="../m_env.cpp" line="29"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="32"/>
+        <location filename="../m_env.cpp" line="30"/>
         <source>Inverse Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="35"/>
+        <location filename="../m_env.cpp" line="34"/>
         <source>&amp;ADSR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="37"/>
+        <location filename="../m_env.cpp" line="36"/>
         <source>&amp;Delay/Hold/Time Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="38"/>
+        <location filename="../m_env.cpp" line="43"/>
         <source>De&amp;lay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="39"/>
+        <location filename="../m_env.cpp" line="38"/>
         <source>At&amp;tack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="40"/>
+        <location filename="../m_env.cpp" line="44"/>
         <source>H&amp;old</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="41"/>
+        <location filename="../m_env.cpp" line="39"/>
         <source>De&amp;cay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="42"/>
+        <location filename="../m_env.cpp" line="40"/>
         <source>&amp;Sustain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="43"/>
+        <location filename="../m_env.cpp" line="41"/>
         <source>&amp;Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_env.cpp" line="44"/>
+        <location filename="../m_env.cpp" line="45"/>
         <source>T&amp;ime Scale</source>
         <translation type="unfinished"></translation>
     </message>
@@ -792,12 +903,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_function.cpp" line="32"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="45"/>
         <source>Out %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus %1</translation>
     </message>
     <message>
         <location filename="../m_function.cpp" line="50"/>
@@ -840,22 +951,22 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="73"/>
+        <location filename="../m_function.cpp" line="72"/>
         <source>Mouse X: _____ Y: _____</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="75"/>
+        <location filename="../m_function.cpp" line="74"/>
         <source>&amp;Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="76"/>
+        <location filename="../m_function.cpp" line="75"/>
         <source>&amp;Edit function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_function.cpp" line="78"/>
+        <location filename="../m_function.cpp" line="77"/>
         <source>&amp;Zoom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -870,12 +981,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_hysteresis.cpp" line="49"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_hysteresis.cpp" line="51"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_hysteresis.cpp" line="56"/>
@@ -949,17 +1060,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_lfo.cpp" line="56"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurücksetzen</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="58"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinus</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="59"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreieck</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="60"/>
@@ -974,7 +1085,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_lfo.cpp" line="62"/>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechteck</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="63"/>
@@ -984,7 +1095,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_lfo.cpp" line="65"/>
         <source>&amp;Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Frequenz</translation>
     </message>
     <message>
         <location filename="../m_lfo.cpp" line="66"/>
@@ -1000,32 +1111,32 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="30"/>
+        <location filename="../m_mcv.cpp" line="29"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="31"/>
+        <location filename="../m_mcv.cpp" line="30"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="32"/>
+        <location filename="../m_mcv.cpp" line="31"/>
         <source>Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="33"/>
+        <location filename="../m_mcv.cpp" line="32"/>
         <source>Trigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="45"/>
+        <location filename="../m_mcv.cpp" line="43"/>
         <source>&amp;Note offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_mcv.cpp" line="46"/>
+        <location filename="../m_mcv.cpp" line="44"/>
         <source>&amp;Pitch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1035,95 +1146,95 @@ and effect processor.</source>
     <message>
         <location filename="../m_midiout.cpp" line="24"/>
         <source>Midi Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Midi Aus</translation>
+    </message>
+    <message>
+        <location filename="../m_midiout.cpp" line="37"/>
+        <source>In 0</source>
+        <translation>Ein 0</translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="38"/>
-        <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <source>In 1</source>
+        <translation>Ein 1</translation>
     </message>
     <message>
         <location filename="../m_midiout.cpp" line="39"/>
-        <source>In 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../m_midiout.cpp" line="40"/>
         <source>Trigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="44"/>
+        <location filename="../m_midiout.cpp" line="43"/>
         <source>&amp;Gain/Offset/Trigger level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="45"/>
+        <location filename="../m_midiout.cpp" line="44"/>
         <source>MIDI &amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="52"/>
+        <location filename="../m_midiout.cpp" line="50"/>
         <source>MIDI &amp;channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="53"/>
+        <location filename="../m_midiout.cpp" line="51"/>
         <source>G&amp;ain 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="54"/>
+        <location filename="../m_midiout.cpp" line="52"/>
         <source>Ga&amp;in 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="55"/>
+        <location filename="../m_midiout.cpp" line="53"/>
         <source>&amp;Offset 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="56"/>
+        <location filename="../m_midiout.cpp" line="54"/>
         <source>O&amp;ffset 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="63"/>
+        <location filename="../m_midiout.cpp" line="61"/>
         <source>MIDI &amp;event type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="64"/>
+        <location filename="../m_midiout.cpp" line="62"/>
         <source>C&amp;ontroller 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="65"/>
+        <location filename="../m_midiout.cpp" line="63"/>
         <source>Co&amp;ntroller 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="66"/>
+        <location filename="../m_midiout.cpp" line="64"/>
         <source>Tri&amp;gger level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="59"/>
+        <location filename="../m_midiout.cpp" line="57"/>
         <source>In 0/1: Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="60"/>
+        <location filename="../m_midiout.cpp" line="58"/>
         <source>In 0: Controller In 1: Pitchbend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="61"/>
+        <location filename="../m_midiout.cpp" line="59"/>
         <source>In 0/1: Note</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_midiout.cpp" line="62"/>
+        <location filename="../m_midiout.cpp" line="60"/>
         <source>In 0: Note, In 1: Velocity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1133,7 +1244,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_mix.cpp" line="23"/>
         <source>Mixer %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mischer %1</translation>
     </message>
     <message>
         <location filename="../m_mix.cpp" line="32"/>
@@ -1148,12 +1259,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_mix.cpp" line="34"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein %1</translation>
     </message>
     <message>
         <location filename="../m_mix.cpp" line="42"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
 </context>
 <context>
@@ -1164,9 +1275,19 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../m_mphlfo.cpp" line="29"/>
+        <source>Saw Out %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_mphlfo.cpp" line="31"/>
+        <source>Tri Out %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../m_mphlfo.cpp" line="44"/>
         <source>&amp;Frequency (Hz)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Frequenz (Hz)</translation>
     </message>
     <message>
         <location filename="../m_mphlfo.cpp" line="45"/>
@@ -1204,22 +1325,22 @@ and effect processor.</source>
     <message>
         <location filename="../m_noise.cpp" line="24"/>
         <source>Noise</source>
-        <translation type="unfinished"></translation>
+        <translation>Rauschen</translation>
     </message>
     <message>
         <location filename="../m_noise.cpp" line="37"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiß</translation>
     </message>
     <message>
         <location filename="../m_noise.cpp" line="38"/>
         <source>Pink</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosa</translation>
     </message>
     <message>
         <location filename="../m_noise.cpp" line="39"/>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällig</translation>
     </message>
     <message>
         <location filename="../m_noise.cpp" line="41"/>
@@ -1242,17 +1363,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_noise2.cpp" line="39"/>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiß</translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="39"/>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällig</translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="39"/>
         <source>Pink</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosa</translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="39"/>
@@ -1262,7 +1383,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_noise2.cpp" line="40"/>
         <source>&amp;Noise Type</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Variante</translation>
     </message>
     <message>
         <location filename="../m_noise2.cpp" line="41"/>
@@ -1323,7 +1444,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_pcmout.cpp" line="33"/>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert</translation>
     </message>
     <message>
         <location filename="../m_pcmout.cpp" line="33"/>
@@ -1357,7 +1478,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_quantizer.cpp" line="29"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_quantizer.cpp" line="30"/>
@@ -1445,17 +1566,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_ringmod.cpp" line="29"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 0</translation>
     </message>
     <message>
         <location filename="../m_ringmod.cpp" line="30"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 1</translation>
     </message>
     <message>
         <location filename="../m_ringmod.cpp" line="32"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_ringmod.cpp" line="34"/>
@@ -1466,27 +1587,27 @@ and effect processor.</source>
 <context>
     <name>M_scmcv</name>
     <message>
-        <location filename="../m_scmcv.cpp" line="29"/>
+        <location filename="../m_scmcv.cpp" line="31"/>
         <source>Scala MCV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="35"/>
+        <location filename="../m_scmcv.cpp" line="36"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="36"/>
+        <location filename="../m_scmcv.cpp" line="37"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="37"/>
+        <location filename="../m_scmcv.cpp" line="38"/>
         <source>Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_scmcv.cpp" line="38"/>
+        <location filename="../m_scmcv.cpp" line="39"/>
         <source>Trigger</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1537,27 +1658,27 @@ and effect processor.</source>
     <message>
         <location filename="../m_scope.cpp" line="28"/>
         <source>Scope</source>
-        <translation type="unfinished"></translation>
+        <translation>Oszillograph</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="38"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 0</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="39"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 1</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="49"/>
         <source>&amp;Scope</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oszillograph</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="55"/>
         <source>T&amp;ime Scale</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zeitskala</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="57"/>
@@ -1587,7 +1708,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_scope.cpp" line="63"/>
         <source>Continuous</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontinuierlich</translation>
     </message>
     <message>
         <location filename="../m_scope.cpp" line="63"/>
@@ -1620,7 +1741,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_scquantizer.cpp" line="35"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_scquantizer.cpp" line="36"/>
@@ -1635,7 +1756,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_scquantizer.cpp" line="39"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_scquantizer.cpp" line="40"/>
@@ -1672,29 +1793,74 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_seq.cpp" line="33"/>
-        <location filename="../m_seq.cpp" line="38"/>
+        <location filename="../m_seq.cpp" line="32"/>
+        <location filename="../m_seq.cpp" line="37"/>
         <source>Trigger</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_seq.cpp" line="35"/>
+        <location filename="../m_seq.cpp" line="34"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_seq.cpp" line="36"/>
+        <location filename="../m_seq.cpp" line="35"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../m_seq.cpp" line="37"/>
+        <location filename="../m_seq.cpp" line="36"/>
         <source>Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_seq.cpp" line="42"/>
+        <location filename="../m_seq.cpp" line="41"/>
         <source>Pitch offset/&amp;Tempo/Gate time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="44"/>
+        <source>&amp;Pitch %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="46"/>
+        <source>&amp;Gate %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="48"/>
+        <source>&amp;Velocity %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="62"/>
+        <source>&amp;Pitch offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="63"/>
+        <source>&amp;Beats per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="66"/>
+        <source>&amp;Gate time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="73"/>
+        <source>Gate &amp;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="75"/>
+        <source>Pitch &amp;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../m_seq.cpp" line="77"/>
+        <source>Velocity &amp;%1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1708,7 +1874,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_sh.cpp" line="28"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_sh.cpp" line="29"/>
@@ -1718,7 +1884,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_sh.cpp" line="30"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_sh.cpp" line="31"/>
@@ -1741,7 +1907,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_slew.cpp" line="29"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_slew.cpp" line="30"/>
@@ -1751,7 +1917,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_slew.cpp" line="32"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_slew.cpp" line="35"/>
@@ -1776,13 +1942,13 @@ and effect processor.</source>
         <location filename="../m_spectrum.cpp" line="13"/>
         <location filename="../m_spectrum.cpp" line="60"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 0</translation>
     </message>
     <message>
         <location filename="../m_spectrum.cpp" line="14"/>
         <location filename="../m_spectrum.cpp" line="61"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 1</translation>
     </message>
     <message>
         <location filename="../m_spectrum.cpp" line="62"/>
@@ -1915,7 +2081,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_stereomix.cpp" line="106"/>
         <source>Stereo Mixer %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Stereo Mischer %1</translation>
     </message>
     <message>
         <location filename="../m_stereomix.cpp" line="117"/>
@@ -1945,7 +2111,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_stereomix.cpp" line="120"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein %1</translation>
     </message>
 </context>
 <context>
@@ -1958,22 +2124,22 @@ and effect processor.</source>
     <message>
         <location filename="../m_v8sequencer.cpp" line="51"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 0</translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="52"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 1</translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="53"/>
         <source>In 2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 2</translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="54"/>
         <source>In 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ein 3</translation>
     </message>
     <message>
         <location filename="../m_v8sequencer.cpp" line="55"/>
@@ -2336,17 +2502,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_vca.cpp" line="35"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 0</translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="36"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 1</translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="38"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="40"/>
@@ -2361,17 +2527,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_vca.cpp" line="42"/>
         <source>In &amp;0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein &amp;0</translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="43"/>
         <source>In &amp;1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein &amp;1</translation>
     </message>
     <message>
         <location filename="../m_vca.cpp" line="44"/>
         <source>&amp;Output level</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ausgangspegel</translation>
     </message>
 </context>
 <context>
@@ -2384,7 +2550,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcdelay.cpp" line="48"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_vcdelay.cpp" line="49"/>
@@ -2394,7 +2560,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcdelay.cpp" line="51"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcdelay.cpp" line="54"/>
@@ -2452,7 +2618,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="36"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcdoubledecay.cpp" line="47"/>
@@ -2545,7 +2711,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcenv.cpp" line="35"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcenv.cpp" line="46"/>
@@ -2648,7 +2814,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcenv2.cpp" line="35"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcenv2.cpp" line="45"/>
@@ -2701,12 +2867,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcf.cpp" line="34"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="35"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="36"/>
@@ -2726,7 +2892,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcf.cpp" line="40"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="43"/>
@@ -2781,7 +2947,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcf.cpp" line="53"/>
         <source>&amp;Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vcf.cpp" line="54"/>
@@ -2814,7 +2980,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco.cpp" line="37"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="38"/>
@@ -2834,23 +3000,23 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco.cpp" line="43"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinus</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="44"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dreieck</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="45"/>
         <location filename="../m_vco.cpp" line="63"/>
         <source>Saw</source>
-        <translation type="unfinished"></translation>
+        <translation>Sägezahn</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="46"/>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechteck</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="47"/>
@@ -2860,12 +3026,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco.cpp" line="50"/>
         <source>&amp;Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="51"/>
         <source>&amp;Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oktave</translation>
     </message>
     <message>
         <location filename="../m_vco.cpp" line="52"/>
@@ -2943,7 +3109,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco2.cpp" line="34"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="35"/>
@@ -2963,22 +3129,22 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco2.cpp" line="40"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="49"/>
         <source>&amp;Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="51"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinus</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="52"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreieck</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="53"/>
@@ -2988,7 +3154,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco2.cpp" line="54"/>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechteck</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="55"/>
@@ -3013,7 +3179,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vco2.cpp" line="59"/>
         <source>&amp;Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oktave</translation>
     </message>
     <message>
         <location filename="../m_vco2.cpp" line="60"/>
@@ -3076,7 +3242,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="36"/>
         <source>Freq</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequenz</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="37"/>
@@ -3091,17 +3257,17 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="40"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="45"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinus</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="46"/>
         <source>Saw</source>
-        <translation type="unfinished"></translation>
+        <translation>Sägezahn</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="47"/>
@@ -3111,7 +3277,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="48"/>
         <source>Rect</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechteck</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="49"/>
@@ -3126,7 +3292,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="51"/>
         <source>&amp;Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Oktave</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="52"/>
@@ -3146,7 +3312,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="57"/>
         <source>&amp;Mixer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mischer</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="59"/>
@@ -3158,12 +3324,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="63"/>
         <source>M&amp;ixer 0-3</source>
-        <translation type="unfinished"></translation>
+        <translation>M&amp;ischer 0-3</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="64"/>
         <source>Mi&amp;xer 4-7</source>
-        <translation type="unfinished"></translation>
+        <translation>Mi&amp;scher 4-7</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="73"/>
@@ -3178,7 +3344,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcorgan.cpp" line="77"/>
         <source>O&amp;ctave %1</source>
-        <translation type="unfinished"></translation>
+        <translation>O&amp;ktave %1</translation>
     </message>
     <message>
         <location filename="../m_vcorgan.cpp" line="79"/>
@@ -3211,7 +3377,7 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcpanning.cpp" line="30"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_vcpanning.cpp" line="31"/>
@@ -3284,22 +3450,22 @@ and effect processor.</source>
     <message>
         <location filename="../m_vcswitch.cpp" line="29"/>
         <source>In 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 0</translation>
     </message>
     <message>
         <location filename="../m_vcswitch.cpp" line="30"/>
         <source>In 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein 1</translation>
     </message>
     <message>
         <location filename="../m_vcswitch.cpp" line="31"/>
         <source>Out 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus 0</translation>
     </message>
     <message>
         <location filename="../m_vcswitch.cpp" line="32"/>
         <source>Out 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus 1</translation>
     </message>
     <message>
         <location filename="../m_vcswitch.cpp" line="33"/>
@@ -3465,12 +3631,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_vquant.cpp" line="28"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein</translation>
     </message>
     <message>
         <location filename="../m_vquant.cpp" line="30"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../m_vquant.cpp" line="32"/>
@@ -3503,12 +3669,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_wavout.cpp" line="45"/>
         <source>&amp;Record</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aufnahme</translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="59"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Stop</translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="46"/>
@@ -3518,12 +3684,12 @@ and effect processor.</source>
     <message>
         <location filename="../m_wavout.cpp" line="44"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Datei</translation>
+        <translation>&amp;Datei</translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="52"/>
         <source>&amp;New file</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Neue Datei</translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="54"/>
@@ -3552,12 +3718,12 @@ and effect processor.</source>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="70"/>
-        <source>Disbled</source>
+        <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../m_wavout.cpp" line="70"/>
-        <source>Enabled</source>
+        <source>Disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3566,7 +3732,7 @@ and effect processor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../m_wavout.cpp" line="277"/>
+        <location filename="../m_wavout.cpp" line="269"/>
         <source>Time: %1:%2:%3 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -3574,606 +3740,606 @@ and effect processor.</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="72"/>
+        <location filename="../mainwindow.cpp" line="73"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="73"/>
+        <location filename="../mainwindow.cpp" line="74"/>
         <source>&amp;Synthesis</source>
         <translation>&amp;Klangsynthese</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="74"/>
+        <location filename="../mainwindow.cpp" line="75"/>
         <source>&amp;Module</source>
         <translation>&amp;Modul</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="75"/>
+        <location filename="../mainwindow.cpp" line="76"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="76"/>
+        <location filename="../mainwindow.cpp" line="77"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="78"/>
-        <location filename="../mainwindow.cpp" line="82"/>
-        <location filename="../mainwindow.cpp" line="105"/>
+        <location filename="../mainwindow.cpp" line="79"/>
+        <location filename="../mainwindow.cpp" line="83"/>
+        <location filename="../mainwindow.cpp" line="106"/>
         <source>&amp;New</source>
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="87"/>
-        <location filename="../mainwindow.cpp" line="107"/>
+        <location filename="../mainwindow.cpp" line="88"/>
+        <location filename="../mainwindow.cpp" line="108"/>
         <source>&amp;Open...</source>
         <translation>&amp;Öffnen...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="115"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="118"/>
-        <location filename="../mainwindow.cpp" line="122"/>
+        <location filename="../mainwindow.cpp" line="119"/>
+        <location filename="../mainwindow.cpp" line="123"/>
         <source>Save &amp;as...</source>
         <translation>Speichern &amp;unter...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="130"/>
+        <location filename="../mainwindow.cpp" line="131"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="134"/>
+        <location filename="../mainwindow.cpp" line="135"/>
         <source>&amp;Start</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="136"/>
+        <location filename="../mainwindow.cpp" line="137"/>
         <source>Sto&amp;p</source>
         <translation>An&amp;halten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="138"/>
+        <location filename="../mainwindow.cpp" line="139"/>
         <source>&amp;All Voices Off</source>
         <translation>&amp;Alle Stimmen aus</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="142"/>
+        <location filename="../mainwindow.cpp" line="143"/>
         <source>&amp;In/Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="143"/>
+        <location filename="../mainwindow.cpp" line="144"/>
         <source>PCM &amp;Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="145"/>
+        <location filename="../mainwindow.cpp" line="146"/>
         <source>PCM &amp;In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="148"/>
+        <location filename="../mainwindow.cpp" line="149"/>
         <source>&amp;MCV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="150"/>
+        <location filename="../mainwindow.cpp" line="151"/>
         <source>&amp;Advanced MCV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>&amp;Scala MCV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="156"/>
+        <location filename="../mainwindow.cpp" line="157"/>
         <source>&amp;WAV Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="159"/>
+        <location filename="../mainwindow.cpp" line="160"/>
         <source>S&amp;cope View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
+        <location filename="../mainwindow.cpp" line="162"/>
         <source>S&amp;pectrum View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="166"/>
         <source>&amp;Oscillators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="189"/>
+        <location filename="../mainwindow.cpp" line="190"/>
         <source>Spectrum &amp;modifiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="205"/>
+        <location filename="../mainwindow.cpp" line="206"/>
         <source>&amp;Time modifiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
+        <location filename="../mainwindow.cpp" line="221"/>
         <source>&amp;Envelopes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="237"/>
+        <location filename="../mainwindow.cpp" line="238"/>
         <source>&amp;Sequencers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="253"/>
         <source>&amp;VCA and Mix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>&amp;CV Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="166"/>
+        <location filename="../mainwindow.cpp" line="167"/>
         <source>&amp;LFO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="99"/>
-        <location filename="../mainwindow.cpp" line="111"/>
+        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="112"/>
         <source>Open demo &amp;instrument...</source>
         <translation>Öffne Demo-&amp;Instrument...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="154"/>
+        <location filename="../mainwindow.cpp" line="155"/>
         <source>MI&amp;DI Out</source>
-        <translation type="unfinished"></translation>
+        <translation>MI&amp;DI Aus</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="168"/>
+        <location filename="../mainwindow.cpp" line="169"/>
         <source>&amp;VCO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="170"/>
+        <location filename="../mainwindow.cpp" line="171"/>
         <source>V&amp;CO2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="172"/>
+        <location filename="../mainwindow.cpp" line="173"/>
         <source>&amp;Multiphase LFO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="174"/>
+        <location filename="../mainwindow.cpp" line="175"/>
         <source>VC &amp;Organ (4 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="176"/>
+        <location filename="../mainwindow.cpp" line="177"/>
         <source>VC O&amp;rgan (6 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="178"/>
+        <location filename="../mainwindow.cpp" line="179"/>
         <source>VC Or&amp;gan (8 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="180"/>
+        <location filename="../mainwindow.cpp" line="181"/>
         <source>&amp;Dynamic Waves (4 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="182"/>
+        <location filename="../mainwindow.cpp" line="183"/>
         <source>D&amp;ynamic Waves (6 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="184"/>
+        <location filename="../mainwindow.cpp" line="185"/>
         <source>Dy&amp;namic Waves (8 Oscillators)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="190"/>
+        <location filename="../mainwindow.cpp" line="191"/>
         <source>&amp;VCF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="192"/>
+        <location filename="../mainwindow.cpp" line="193"/>
         <source>&amp;Analog Driver (2 Out)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="194"/>
+        <location filename="../mainwindow.cpp" line="195"/>
         <source>A&amp;nalog Driver (4 Out)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="196"/>
+        <location filename="../mainwindow.cpp" line="197"/>
         <source>Ana&amp;log Driver (6 Out)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="199"/>
         <source>&amp;Bit Grinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="201"/>
         <source>&amp;FFT Vocoder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="206"/>
+        <location filename="../mainwindow.cpp" line="207"/>
         <source>&amp;Sample &amp;&amp; Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>&amp;Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="210"/>
+        <location filename="../mainwindow.cpp" line="211"/>
         <source>&amp;VC Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="213"/>
         <source>&amp;Analog Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="214"/>
+        <location filename="../mainwindow.cpp" line="215"/>
         <source>&amp;INV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="217"/>
         <source>V&amp;C Double Decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="221"/>
+        <location filename="../mainwindow.cpp" line="222"/>
         <source>&amp;ENV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="224"/>
         <source>&amp;Advanced ENV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="225"/>
+        <location filename="../mainwindow.cpp" line="226"/>
         <source>&amp;VC Envelope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="227"/>
+        <location filename="../mainwindow.cpp" line="228"/>
         <source>V&amp;C Envelope II</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="229"/>
+        <location filename="../mainwindow.cpp" line="230"/>
         <source>&amp;Function 1 --&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="231"/>
+        <location filename="../mainwindow.cpp" line="232"/>
         <source>F&amp;unction 1 --&gt; 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="233"/>
+        <location filename="../mainwindow.cpp" line="234"/>
         <source>Fu&amp;nction 1 --&gt; 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="238"/>
+        <location filename="../mainwindow.cpp" line="239"/>
         <source>&amp;SEQ  8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="240"/>
+        <location filename="../mainwindow.cpp" line="241"/>
         <source>S&amp;EQ 12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="242"/>
+        <location filename="../mainwindow.cpp" line="243"/>
         <source>SE&amp;Q 16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="244"/>
+        <location filename="../mainwindow.cpp" line="245"/>
         <source>SEQ &amp;24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="246"/>
+        <location filename="../mainwindow.cpp" line="247"/>
         <source>SEQ &amp;32</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="248"/>
+        <location filename="../mainwindow.cpp" line="249"/>
         <source>&amp;V8 Sequencer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="253"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>&amp;Amplifier</source>
         <translation>&amp;Verstärker</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="255"/>
+        <location filename="../mainwindow.cpp" line="256"/>
         <source>&amp;VCA lin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="257"/>
+        <location filename="../mainwindow.cpp" line="258"/>
         <source>V&amp;CA exp.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="259"/>
+        <location filename="../mainwindow.cpp" line="260"/>
         <source>&amp;Ring Modulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="261"/>
+        <location filename="../mainwindow.cpp" line="262"/>
         <source>&amp;Mixer 2 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="263"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>M&amp;ixer 4 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="266"/>
         <source>Mi&amp;xer 8 -&gt; 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="267"/>
+        <location filename="../mainwindow.cpp" line="268"/>
         <source>&amp;Stereo Mixer 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="270"/>
         <source>S&amp;tereo Mixer 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="271"/>
+        <location filename="../mainwindow.cpp" line="272"/>
         <source>St&amp;ereo Mixer 8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="273"/>
+        <location filename="../mainwindow.cpp" line="274"/>
         <source>VC &amp;Panning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="275"/>
+        <location filename="../mainwindow.cpp" line="276"/>
         <source>VC S&amp;witch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="281"/>
         <source>&amp;CVS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="282"/>
+        <location filename="../mainwindow.cpp" line="283"/>
         <source>&amp;Slew Limiter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="284"/>
+        <location filename="../mainwindow.cpp" line="285"/>
         <source>&amp;Noise/ Random</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="286"/>
+        <location filename="../mainwindow.cpp" line="287"/>
         <source>N&amp;oise/Random 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="290"/>
+        <location filename="../mainwindow.cpp" line="291"/>
         <source>&amp;Quantizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="292"/>
+        <location filename="../mainwindow.cpp" line="293"/>
         <source>Q&amp;uantizer 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="296"/>
+        <location filename="../mainwindow.cpp" line="297"/>
         <source>C&amp;onverter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="298"/>
+        <location filename="../mainwindow.cpp" line="299"/>
         <source>&amp;Hysteresis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="307"/>
+        <location filename="../mainwindow.cpp" line="308"/>
         <source>&amp;Control Center...</source>
         <translation>&amp;Kontrollzentrum...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="309"/>
+        <location filename="../mainwindow.cpp" line="310"/>
         <source>&amp;Parameter View...</source>
         <translation>&amp;Parameteransicht...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="311"/>
+        <location filename="../mainwindow.cpp" line="312"/>
         <source>Pre&amp;ferences...</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="314"/>
+        <location filename="../mainwindow.cpp" line="315"/>
         <source>&amp;Full screen</source>
         <translation>&amp;Vollbildansicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../mainwindow.cpp" line="318"/>
         <source>&amp;About AlsaModularSynth...</source>
         <translation>&amp;Über AlsaModularSynth...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="470"/>
+        <location filename="../mainwindow.cpp" line="471"/>
         <source>Unnamed file was changed.
 Save changes?</source>
         <translation>Die unbenannte Datei wurde geändert.
 Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="472"/>
+        <location filename="../mainwindow.cpp" line="473"/>
         <source>File &apos;%1&apos; was changed.
 Save changes?</source>
         <translation>Die Datei &apos;%1&apos; wurde geändert.
 Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="475"/>
+        <location filename="../mainwindow.cpp" line="476"/>
         <source>Save changes</source>
         <translation>Änderungen speichern</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="483"/>
+        <location filename="../mainwindow.cpp" line="484"/>
         <source>Open patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="503"/>
+        <location filename="../mainwindow.cpp" line="504"/>
         <source>Open demo patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="523"/>
+        <location filename="../mainwindow.cpp" line="524"/>
         <source>Open demo instrument file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="617"/>
-        <location filename="../mainwindow.cpp" line="622"/>
+        <location filename="../mainwindow.cpp" line="618"/>
+        <location filename="../mainwindow.cpp" line="623"/>
         <source>Could not read file &apos;%1&apos;</source>
         <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="655"/>
+        <location filename="../mainwindow.cpp" line="656"/>
         <source>Could not open file &apos;%1&apos;</source>
         <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="673"/>
+        <location filename="../mainwindow.cpp" line="674"/>
         <source>Save patch file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="693"/>
+        <location filename="../mainwindow.cpp" line="694"/>
         <source>Saving aborted</source>
         <translation>Speichern abgebrochen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="702"/>
+        <location filename="../mainwindow.cpp" line="703"/>
         <source>noname</source>
         <translation>unbenannt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="319"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>About &amp;Qt...</source>
         <translation>Über &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="92"/>
-        <location filename="../mainwindow.cpp" line="109"/>
+        <location filename="../mainwindow.cpp" line="93"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>Open &amp;demo...</source>
         <translation>&amp;Demo öffnen...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="288"/>
+        <location filename="../mainwindow.cpp" line="289"/>
         <source>Sa&amp;mple &amp;&amp; Hold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="294"/>
+        <location filename="../mainwindow.cpp" line="295"/>
         <source>Sc&amp;ala Quantizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="301"/>
+        <location filename="../mainwindow.cpp" line="302"/>
         <source>Co&amp;mment</source>
         <translation>&amp;Kommentar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="304"/>
+        <location filename="../mainwindow.cpp" line="305"/>
         <source>&amp;Show LADSPA Browser...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="377"/>
+        <location filename="../mainwindow.cpp" line="378"/>
         <source>&amp;Clear</source>
         <translation>&amp;Löschen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="378"/>
+        <location filename="../mainwindow.cpp" line="379"/>
         <source>Import to &amp;session...</source>
         <translation>In &amp;Sitzung importieren...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="379"/>
+        <location filename="../mainwindow.cpp" line="380"/>
         <source>Import &amp;demo to session...</source>
         <translation>&amp;Demo in Sitzung importieren...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="381"/>
+        <location filename="../mainwindow.cpp" line="382"/>
         <source>Import demo &amp;instrument to session...</source>
         <translation>Demo-&amp;Instrument in Sitzung importieren...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="382"/>
+        <location filename="../mainwindow.cpp" line="383"/>
         <source>&amp;Export from session...</source>
         <translation>&amp;Exportiere aus Sitzung...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="484"/>
-        <location filename="../mainwindow.cpp" line="504"/>
-        <location filename="../mainwindow.cpp" line="524"/>
-        <location filename="../mainwindow.cpp" line="674"/>
+        <location filename="../mainwindow.cpp" line="485"/>
+        <location filename="../mainwindow.cpp" line="505"/>
+        <location filename="../mainwindow.cpp" line="525"/>
+        <location filename="../mainwindow.cpp" line="675"/>
         <source>AlsaModularSynth patch files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="724"/>
+        <location filename="../mainwindow.cpp" line="725"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="126"/>
         <source>&amp;Load Colors...</source>
         <translation>&amp;Farbschema laden...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="127"/>
+        <location filename="../mainwindow.cpp" line="128"/>
         <source>Save &amp;Colors as...</source>
         <translation>F&amp;arbschema speichern unter...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="114"/>
+        <location filename="../mainwindow.cpp" line="115"/>
         <source>&amp;Recently opened files</source>
         <translation>&amp;Zuletzt geöffnete Dateien</translation>
     </message>
@@ -4181,120 +4347,120 @@ Save changes?</source>
 <context>
     <name>MidiControllerModel</name>
     <message>
-        <location filename="../midiwidget.cpp" line="84"/>
+        <location filename="../midiwidget.cpp" line="85"/>
         <source>Module</source>
         <translation>Modul</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="85"/>
+        <location filename="../midiwidget.cpp" line="86"/>
         <source>MIDI Controller / Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI Controller / Parameter</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="71"/>
+        <location filename="../midiwidget.cpp" line="72"/>
         <source>Type: %1 Channel: %2 Param: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ: %1 Kanal: %2 Parameter: %3</translation>
     </message>
 </context>
 <context>
     <name>MidiWidget</name>
     <message>
-        <location filename="../midiwidget.cpp" line="265"/>
+        <location filename="../midiwidget.cpp" line="266"/>
         <source>&amp;Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="271"/>
+        <location filename="../midiwidget.cpp" line="272"/>
         <source>Set Mi&amp;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="276"/>
+        <location filename="../midiwidget.cpp" line="277"/>
         <source>Set Ma&amp;x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="281"/>
+        <location filename="../midiwidget.cpp" line="282"/>
         <source>&amp;Reset Min/Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="294"/>
+        <location filename="../midiwidget.cpp" line="295"/>
         <source>Omni</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="303"/>
+        <location filename="../midiwidget.cpp" line="304"/>
         <source>MIDI C&amp;hannel:</source>
         <translation>MIDI-&amp;Kanal:</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="317"/>
+        <location filename="../midiwidget.cpp" line="318"/>
         <source>Add to &amp;Parameter View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="330"/>
+        <location filename="../midiwidget.cpp" line="331"/>
         <source>&amp;Enable note events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="333"/>
+        <location filename="../midiwidget.cpp" line="334"/>
         <source>&amp;Follow Configuration Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="336"/>
+        <location filename="../midiwidget.cpp" line="337"/>
         <source>Follow &amp;MIDI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="340"/>
+        <location filename="../midiwidget.cpp" line="341"/>
         <source>&amp;Bind</source>
         <translation>&amp;Verbinden</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="345"/>
+        <location filename="../midiwidget.cpp" line="346"/>
         <source>&amp;Clear Binding</source>
         <translation>Verbindung &amp;lösen</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="350"/>
+        <location filename="../midiwidget.cpp" line="351"/>
         <source>Clear &amp;All</source>
         <translation>&amp;Alles löschen</translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="354"/>
+        <location filename="../midiwidget.cpp" line="355"/>
         <source>&amp;Toggle MIDI Sign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="505"/>
+        <location filename="../midiwidget.cpp" line="506"/>
         <source>This will erase all presets for this configuration. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="516"/>
+        <location filename="../midiwidget.cpp" line="517"/>
         <source>Add this parameter to frame:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="531"/>
+        <location filename="../midiwidget.cpp" line="532"/>
         <source>Frame &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="538"/>
+        <location filename="../midiwidget.cpp" line="539"/>
         <source>Add frame to tab:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="550"/>
+        <location filename="../midiwidget.cpp" line="551"/>
         <source>Tab &apos;%1&apos; does not exist. Create?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="576"/>
+        <location filename="../midiwidget.cpp" line="577"/>
         <source>Parameter name:</source>
         <translation>Parametername:</translation>
     </message>
@@ -4302,58 +4468,58 @@ Save changes?</source>
 <context>
     <name>ModularSynth</name>
     <message>
-        <location filename="../modularsynth.cpp" line="137"/>
+        <location filename="../modularsynth.cpp" line="139"/>
         <source>AlsaModularSynth Control Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="142"/>
+        <location filename="../modularsynth.cpp" line="144"/>
         <source>AlsaModularSynth Parameter View</source>
         <translation>AlsaModularSynth Parameteransicht</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1504"/>
+        <location filename="../modularsynth.cpp" line="1506"/>
         <source>Load Colors</source>
         <translation>Farbscheman laden</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1512"/>
+        <location filename="../modularsynth.cpp" line="1514"/>
         <source>Could not open file.</source>
         <translation>Konnte Datei nicht öffnen.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1555"/>
+        <location filename="../modularsynth.cpp" line="1557"/>
         <source>Save Colors</source>
         <translation>Farbschema speichern</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1567"/>
+        <location filename="../modularsynth.cpp" line="1569"/>
         <source>Could not save file.</source>
         <translation>Konnte Datei nicht speichern.</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1667"/>
+        <location filename="../modularsynth.cpp" line="1669"/>
         <source>Loading LADSPA plugin &quot;%1&quot; from library &quot;%2&quot; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1505"/>
-        <location filename="../modularsynth.cpp" line="1556"/>
+        <location filename="../modularsynth.cpp" line="1507"/>
+        <location filename="../modularsynth.cpp" line="1558"/>
         <source>AlsaModularSynth color files</source>
         <translation>AlsaModularSynth Farbschemadateien</translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1672"/>
+        <location filename="../modularsynth.cpp" line="1674"/>
         <source>Could not find LADSPA plugin &quot;%1&quot; from library &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1899"/>
+        <location filename="../modularsynth.cpp" line="1901"/>
         <source>Input port %1 of module %2 is already connected. New connection to module %3 ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2144"/>
+        <location filename="../modularsynth.cpp" line="2146"/>
         <source>Unknown MIDI controller tag found: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4361,7 +4527,7 @@ Save changes?</source>
 <context>
     <name>Module</name>
     <message>
-        <location filename="../module.cpp" line="227"/>
+        <location filename="../module.cpp" line="260"/>
         <source>ID %1</source>
         <translation>ID %1</translation>
     </message>
@@ -4369,25 +4535,25 @@ Save changes?</source>
 <context>
     <name>ModuleModel</name>
     <message>
-        <location filename="../midiwidget.cpp" line="180"/>
+        <location filename="../midiwidget.cpp" line="181"/>
         <source>MIDI Sign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../midiwidget.cpp" line="180"/>
+        <location filename="../midiwidget.cpp" line="181"/>
         <source>Module / Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul / Parameter</translation>
     </message>
 </context>
 <context>
     <name>MultiEnvelope</name>
     <message>
-        <location filename="../multi_envelope.cpp" line="23"/>
+        <location filename="../multi_envelope.cpp" line="24"/>
         <source>Multi Envelope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../multi_envelope.cpp" line="91"/>
+        <location filename="../multi_envelope.cpp" line="92"/>
         <source>Env. %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4464,7 +4630,7 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="288"/>
         <source>M&amp;odule</source>
-        <translation type="unfinished"></translation>
+        <translation>M&amp;odul</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="305"/>
@@ -4540,12 +4706,12 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="205"/>
         <source>&amp;Avoid parameter jumps</source>
-        <translation type="unfinished"></translation>
+        <translation>P&amp;arametersprünge vermeiden</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="210"/>
         <source>&amp;Init MIDI controller</source>
-        <translation type="unfinished"></translation>
+        <translation>M&amp;IDI-Controller initialisieren</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="214"/>
@@ -4565,7 +4731,7 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="312"/>
         <source>M&amp;isc</source>
-        <translation type="unfinished"></translation>
+        <translation>VerSch&amp;iedenes</translation>
     </message>
     <message>
         <source>&amp;Module</source>
@@ -4594,12 +4760,12 @@ Save changes?</source>
     <message>
         <location filename="../prefwidget.cpp" line="242"/>
         <source>&amp;Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Standard</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="247"/>
         <source>&amp;No topleft border</source>
-        <translation type="unfinished"></translation>
+        <translation>Kei&amp;ne Begrenzung links oben</translation>
     </message>
     <message>
         <location filename="../prefwidget.cpp" line="260"/>
@@ -4619,133 +4785,133 @@ Save changes?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="94"/>
+        <location filename="../main.cpp" line="95"/>
         <source>Ooops in %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="348"/>
+        <location filename="../mainwindow.cpp" line="349"/>
         <source>Preset path now %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="393"/>
         <source>Loading preset %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="387"/>
+        <location filename="../modularsynth.cpp" line="337"/>
+        <source>Alsa MIDI won&apos;t work!</source>
+        <translation>Alsa MIDI wird nicht funktionieren!</translation>
+    </message>
+    <message>
+        <location filename="../modularsynth.cpp" line="389"/>
         <source>Error opening ALSA sequencer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="399"/>
+        <location filename="../modularsynth.cpp" line="401"/>
         <source>Error creating sequencer write port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="408"/>
+        <location filename="../modularsynth.cpp" line="410"/>
         <source>Error creating sequencer read port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1300"/>
+        <location filename="../modularsynth.cpp" line="1302"/>
         <source>All available output ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="1325"/>
+        <location filename="../modularsynth.cpp" line="1327"/>
         <source>All available input ports are in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2180"/>
+        <location filename="../modularsynth.cpp" line="2182"/>
         <source>No title for tab &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2196"/>
+        <location filename="../modularsynth.cpp" line="2198"/>
         <source>No data for frame &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2211"/>
+        <location filename="../modularsynth.cpp" line="2213"/>
         <source>No parameter values found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2220"/>
+        <location filename="../modularsynth.cpp" line="2222"/>
         <source>No parameter name &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modularsynth.cpp" line="2281"/>
+        <location filename="../modularsynth.cpp" line="2283"/>
         <source>No name for preset &apos;%1&apos; found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="420"/>
+        <location filename="../synthdata.cpp" line="421"/>
         <source>Can&apos;t create ALSA thread with RT priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="427"/>
+        <location filename="../synthdata.cpp" line="428"/>
         <source>Can&apos;t create ALSA thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="436"/>
+        <location filename="../synthdata.cpp" line="437"/>
         <source>Closing ALSA...</source>
         <translation>Schließe ALSA-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="543"/>
+        <location filename="../synthdata.cpp" line="544"/>
         <source>Can&apos;t connect to JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="583"/>
+        <location filename="../synthdata.cpp" line="584"/>
         <source>Can&apos;t activate JACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="601"/>
+        <location filename="../synthdata.cpp" line="602"/>
         <source>Closing JACK...</source>
         <translation>Schließe JACK-Verbindung...</translation>
     </message>
     <message>
-        <location filename="../synthdata.cpp" line="629"/>
+        <location filename="../synthdata.cpp" line="630"/>
         <source>No JACK session event set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="71"/>
+        <location filename="../main.cpp" line="72"/>
         <source>Could not create ams home directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
+        <location filename="../main.cpp" line="103"/>
         <source>Client name &apos;%1&apos; occupied.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="83"/>
         <source>Failed to open file &apos;%1&apos;</source>
         <translation>Konnte Datei &apos;%1&apos; nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="407"/>
+        <location filename="../mainwindow.cpp" line="408"/>
         <source>Closing synthesizer...</source>
         <translation>Schließe Synthesizer...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="415"/>
+        <location filename="../mainwindow.cpp" line="416"/>
         <source>Could not unlock preferences file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../modularsynth.cpp" line="335"/>
-        <source>Alsa MIDI wont work!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

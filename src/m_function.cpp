@@ -66,8 +66,7 @@ M_function::M_function(int p_functionCount, QWidget * parent, int id)
     QStringList editNames;
     editNames << "All";
     for (l1 = 0; l1 < outPortCount; l1++) {
-        qs.sprintf("%d", l1);
-        editNames << qs;
+        editNames << QString("%1").arg(l1);
     }
     hbox = configDialog->addHBox();
     configDialog->addLabel(tr("Mouse X: _____ Y: _____"), hbox);
@@ -144,10 +143,8 @@ void M_function::updateZoom(int zoomIndex)
 
 void M_function::updateMouseLabels(int x, int y)
 {
-    QString qs;
-
-    qs.sprintf("Mouse X: %6.3f  Y: %6.3f",
-               (float) (x - FUNCTION_CENTER_X) / (float) FUNCTION_SCALE,
-               (float) (FUNCTION_CENTER_Y - y) / (float) FUNCTION_SCALE);
+    QString qs = QString("Mouse X: %1  Y: %2")
+        .arg((float) (x - FUNCTION_CENTER_X) / (float) FUNCTION_SCALE, 6, 'f', 3)
+        .arg((float) (FUNCTION_CENTER_Y - y) / (float) FUNCTION_SCALE, 6, 'f', 3);
     configDialog->labelList.at(0)->setText(qs);
 }

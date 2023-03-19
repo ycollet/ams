@@ -26,9 +26,9 @@ M_mphlfo::M_mphlfo(QWidget* parent, int id)
               MODULE_MPHLFO_HEIGHT);
   for (l1 = 0; l1 < 16; l1++) {
     if (l1 < 8) {
-      qs.sprintf("Saw Out %4d", l1 * 45);
+      qs = QString(tr("Saw Out %1")).arg(l1 * 45, 4);
     } else {
-      qs.sprintf("Tri Out %4d", (l1-8) * 45);
+      qs = QString(tr("Tri Out %1")).arg((l1-8) * 45, 4);
     }
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
   }

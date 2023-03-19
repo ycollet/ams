@@ -13,6 +13,7 @@
 #include <qsizepolicy.h>
 #include <qlineedit.h>
 #include <alsa/asoundlib.h>
+
 #include "synthdata.h"
 #include "configdialog.h"
 #include "midislider.h"
@@ -63,7 +64,6 @@ MidiSlider *ConfigDialog::addSlider(const QString &name, float &valueRef, float 
     new MidiControllableFloat(module, name, valueRef, minValue, maxValue, isLog);
 
   MidiSlider *midiSlider = new MidiSlider(*mcAble);
-  //insertWidget(layout, midiSlider);
   if (layout == NULL)
     layout = configBox;
 
@@ -98,7 +98,6 @@ IntMidiSlider *ConfigDialog::addIntSlider(const QString &name, int &valueRef, in
     new MidiControllable<int>(module, name, valueRef, minValue, maxValue);
 
   IntMidiSlider *intMidiSlider = new IntMidiSlider(GUIcomponentType_intslider, *mcAble);
-  //insertWidget(layout, intMidiSlider);
   if (layout == NULL)
     layout = configBox;
 
@@ -114,7 +113,6 @@ MidiComboBox *ConfigDialog::addComboBox(const QString &name, int &valueRef, cons
     new MidiControllableNames(module, name, valueRef, itemNames);
 
   MidiComboBox *midiComboBox = new MidiComboBox(*mcAble);
-  //insertWidget(layout, midiComboBox, 0, Qt::AlignCenter);
   if (layout == NULL)
     layout = configBox;
 
@@ -138,7 +136,6 @@ int ConfigDialog::addCheckBox(MidiControllable<float> &mcAble, QBoxLayout *layou
   MidiCheckBox *midiCheckBox;
 
   midiCheckBox = new MidiCheckBox(mcAble);
-  //insertWidget(layout, midiCheckBox, 0, Qt::AlignCenter);
   if (layout == NULL)
     layout = configBox;
 
@@ -157,7 +154,6 @@ MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLay
   MidiPushButton *midiPushButton;
 
   midiPushButton = new MidiPushButton(*mcAble);
-  //insertWidget(layout, midiPushButton, 0, Qt::AlignCenter);
   if (layout == NULL)
     layout = configBox;
 
@@ -168,22 +164,27 @@ MidiControllableDoOnce *ConfigDialog::addPushButton(const QString &name, QBoxLay
   return mcAble;
 }
 
-int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef, MidiControllableFloat &holdRef,
-			      MidiControllableFloat &decayRef, MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef, QBoxLayout *layout)
+int ConfigDialog::addEnvelope(MidiControllableFloat &delayRef, MidiControllableFloat &attackRef,
+        MidiControllableFloat &holdRef, MidiControllableFloat &decayRef,
+        MidiControllableFloat &sustainRef, MidiControllableFloat &releaseRef)
 {
   Envelope *envelope = new Envelope(delayRef, attackRef, holdRef, decayRef, sustainRef, releaseRef);
-  insertWidget(layout, envelope, 100, 0, 0);
+
+  //insert envelope view  at top of config dialog
+  configBox->insertWidget(0, envelope, 100);
 
   envelopeList.append(envelope);
   return(0);
 }
 
-MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef, QBoxLayout *layout) {
+MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef,
+        float *attackRef, float *sustainRef, float *releaseRef) {
 
   MultiEnvelope *envelope;
 
   envelope = new MultiEnvelope(envCount, timeScaleRef, attackRef, sustainRef, releaseRef);
-  insertWidget(layout, envelope, 100);
+  //insert envelope view at top of config dialog
+  configBox->insertWidget(0, envelope, 100);
 
   return envelope;
 }
@@ -191,13 +192,12 @@ MultiEnvelope *ConfigDialog::addMultiEnvelope(int envCount, float *timeScaleRef,
 int ConfigDialog::addLabel(const QString& label, QBoxLayout *layout) {
 
   QLabel *configLabel = new QLabel();
-  //insertWidget(layout, configLabel);
   if (layout == NULL)
     layout = configBox;
 
   layout->addWidget(configLabel);
 
-  configLabel->setAlignment(/*Qt::WordBreak |*/ Qt::AlignLeft);
+  configLabel->setAlignment(Qt::AlignLeft);
   configLabel->setText(label);
   labelList.append(configLabel);
   return(0);
@@ -211,7 +211,7 @@ void ConfigDialog::removeButtonClicked() {
 int ConfigDialog::initTabWidget() {
 
   tabWidget = new QTabWidget();
-  configBox->insertWidget(configBox->count() - 1, tabWidget);
+  configBox->addWidget(tabWidget);
   return 0;
 }
 

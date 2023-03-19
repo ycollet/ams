@@ -23,7 +23,6 @@
 M_mcv::M_mcv(QWidget* parent, int id)
   : Module(M_type_mcv, id, 4, parent, tr("MCV"))
 {
-  QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_MCV_HEIGHT);
@@ -35,8 +34,7 @@ M_mcv::M_mcv(QWidget* parent, int id)
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {
-    qs.sprintf("RESERVED FOR LATER USE");
-    channelNames << qs;
+    channelNames << "RESERVED FOR LATER USE";
   }
   channel = 0;
   pitch = 0;

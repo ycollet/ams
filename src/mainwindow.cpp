@@ -7,6 +7,7 @@
 #include "aboutdialog.h"
 #include "mainwindow.h"
 #include "synthdata.h"
+#include "resources.h"
 
 #include "../pixmaps/ams_32.xpm"
 
@@ -788,16 +789,16 @@ void MainWindow::writeConfig()
     if (recentFiles.count() > 0) {
         QStringList::Iterator it = recentFiles.begin();
         for (; it != recentFiles.end(); ++it) {
-            ts << CF_RECENTFILE << ' ' << *it << endl;
+            ts << CF_RECENTFILE << ' ' << *it << QT_ENDL;
         }
     }
-    ts << CF_RESTOREGEOMETRY << ' ' << restoregeometry << endl;
+    ts << CF_RESTOREGEOMETRY << ' ' << restoregeometry << QT_ENDL;
     if (!this->isFullScreen())
         ts << CF_GEOMETRY << ' '
             << this->geometry().x() << ' '
             << this->geometry().y() << ' '
             << this->geometry().width() << ' '
-            << this->geometry().height() << endl;
+            << this->geometry().height() << QT_ENDL;
 
     file.close();
 }

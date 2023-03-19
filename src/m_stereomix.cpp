@@ -141,7 +141,7 @@ M_stereomix::M_stereomix(int p_in_channels, QWidget* parent, int id)
   }
   cv.out_off += cv.step * in_channels;
   for (unsigned l1 = 0; l1 < 2; l1++) {
-    qs.sprintf("Out %d", l1);
+    qs = QString("Out %1").arg(l1);
     port_out[l1] = new Port(qs, PORT_OUT, l1, this);
   }
 }

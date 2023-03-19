@@ -55,36 +55,46 @@ M_advenv::M_advenv(QWidget* parent, int id)
   QVBoxLayout *attackLevelTab = configDialog->addVBoxTab(tr("Attack &Level"));
   QVBoxLayout *releaseTimeTab = configDialog->addVBoxTab(tr("&Release Time"));
   QVBoxLayout *releaseLevelTab = configDialog->addVBoxTab(tr("Release Le&vel"));
+
   qs = tr("Ti&me Scale");
   configDialog->addSlider(qs, timeScale, 0.1, 10, false, sustainTab);
   qs = tr("S&ustain");
   configDialog->addSlider(qs, sustain, 0, 1, false, sustainTab);
   qs = tr("Dela&y");
   configDialog->addSlider(qs, attack[0], 0, 1, false, sustainTab);
+  sustainTab->addStretch();
+
   qs = tr("Attack Time &0");
   configDialog->addSlider(qs, attack[1], 0, 1, false, attackTimeTab);
-  qs = tr("Attack Level &0");
-  configDialog->addSlider(qs, attack[2], 0, 1, false, attackLevelTab);
   qs = tr("Attack Time &1");
   configDialog->addSlider(qs, attack[3], 0, 1, false, attackTimeTab);
-  qs = tr("Attack Level &1");
-  configDialog->addSlider(qs, attack[4], 0, 1, false, attackLevelTab);
   qs = tr("Attack Time &2");
   configDialog->addSlider(qs, attack[5], 0, 1, false, attackTimeTab);
-  qs = tr("Attack Level &2");
-  configDialog->addSlider(qs, attack[6], 0, 1, false, attackLevelTab);
   qs = tr("Attack Time &3");
   configDialog->addSlider(qs, attack[7], 0, 1, false, attackTimeTab);
+
+  qs = tr("Attack Level &0");
+  configDialog->addSlider(qs, attack[2], 0, 1, false, attackLevelTab);
+  qs = tr("Attack Level &1");
+  configDialog->addSlider(qs, attack[4], 0, 1, false, attackLevelTab);
+  qs = tr("Attack Level &2");
+  configDialog->addSlider(qs, attack[6], 0, 1, false, attackLevelTab);
+  attackLevelTab->addStretch();
+
   qs = tr("Release Time &0");
   configDialog->addSlider(qs, release[0], 0, 1, false, releaseTimeTab);
-  qs = tr("Release Level &0");
-  configDialog->addSlider(qs, release[1], 0, 1, false, releaseLevelTab);
   qs = tr("Release Time &1");
   configDialog->addSlider(qs, release[2], 0, 1, false, releaseTimeTab);
-  qs = tr("Release Level &1");
-  configDialog->addSlider(qs, release[3], 0, 1, false, releaseLevelTab);
   qs = tr("Release Time &2");
   configDialog->addSlider(qs, release[4], 0, 1, false, releaseTimeTab);
+  releaseTimeTab->addStretch();
+
+  qs = tr("Release Level &0");
+  configDialog->addSlider(qs, release[1], 0, 1, false, releaseLevelTab);
+  qs = tr("Release Level &1");
+  configDialog->addSlider(qs, release[3], 0, 1, false, releaseLevelTab);
+  releaseLevelTab->addStretch();
+
   multiEnv->listenTo(this);
 }
 

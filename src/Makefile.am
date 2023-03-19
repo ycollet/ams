@@ -245,6 +245,7 @@ noinst_HEADERS = \
 	port.h \
 	port_popup.h \
 	prefwidget.h \
+        resources.h \
 	ringbuffer.h \
 	scopescreen.h \
 	spectrumscreen.h \
@@ -257,6 +258,7 @@ translations = \
 	translations/ams_de.ts \
 	translations/ams_fr.ts
 
+# generated message files, installed but not distributed
 translations_DATA = \
 	translations/ams_de.qm \
 	translations/ams_fr.qm
@@ -273,7 +275,7 @@ DEFS = -D_REENTRANT -DLADSPA_PATH=\"$(LADSPA_PATH)\" -DTRANSLATIONSDIR=\"$(trans
 # rule for moc-file generation
 SUFFIXES = _moc.cpp
 
-.h_moc.cpp: $(ams_SOURCES)
+.h_moc.cpp:
 	$(MOC) $< -o $@
 
 # rule for translation file updates
@@ -281,5 +283,6 @@ $(translations): $(ams_SOURCES)
 	$(LUPDATE) -verbose $(ams_SOURCES) -ts $@
 
 # rule to generate binary translation files
-.ts.qm: $(translations)
+.ts.qm:
 	$(LRELEASE) -verbose $< -qm $@
+

@@ -10,8 +10,6 @@
 #include <qslider.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
-
-
 #include <qspinbox.h>
 #include <qradiobutton.h>
 #include <qpushbutton.h>
@@ -20,10 +18,12 @@
 #include <qmessagebox.h>
 #include <QTextStream>
 #include <alsa/asoundlib.h>
+
 #include "midipushbutton.h"
 #include "synthdata.h"
 #include "m_scquantizer.h"
 #include "port.h"
+#include "resources.h"
 
 M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname, int id)
   : Module(M_type_scquantizer, id, 2, parent, tr("Scala Quantizer"))
@@ -56,12 +56,12 @@ M_scquantizer::M_scquantizer(QWidget* parent, QString *p_sclname, int id)
   scale_lut_isRatio[12] = true;
   scale_lut[12] = 2.0;
   scale_lut_length = 12;
-  dirpath.sprintf("%s", getenv("SCALA_PATH"));
+  dirpath = getenv("SCALA_PATH");
   if (dirpath.length() < 1) {
     qWarning("\nSCALA_PATH not set, assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";
   } else
-    StdErr << "SCALA_PATH: " << dirpath << endl;
+    StdErr << "SCALA_PATH: " << dirpath << QT_ENDL;
 
   if (p_sclname && !p_sclname->contains("No_Scale_loaded")) {
     loadScale(dirpath + "/" + *p_sclname);
@@ -203,7 +203,7 @@ void M_scquantizer::loadScale(const QString &p_sclname) {
       break;
   }
   configDialog->labelList.at(1)->setText("   " + qs);
-  StdErr << "Scale: " << qs << endl;
+  StdErr << "Scale: " << qs << QT_ENDL;
   while (!stream.atEnd()) {
     qs = stream.readLine();
     if (!qs.contains("!"))

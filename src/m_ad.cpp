@@ -20,8 +20,7 @@ M_ad::M_ad(int outCount, QWidget* parent, int id)
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_AD_WIDTH,
               MODULE_AD_HEIGHT + 20 + 20 * outCount);
-  qs = tr("CV In");
-  port_in = new Port(qs, PORT_IN, 0, this);
+  port_in = new Port(tr("CV In"), PORT_IN, 0, this);
   cv.out_off = 55;
   for (l1 = 0; l1 < outCount; l1++) {
     qs = tr("CV Out %1").arg(l1);
@@ -65,8 +64,7 @@ M_ad::M_ad(int outCount, QWidget* parent, int id)
     voice[l1] = (synthdata->poly > 1) ? l1 : 0;
     QStringList voiceNames;
     for (l2 = 0; l2 < synthdata->poly; l2++) {
-      qs.sprintf("%d", l2);
-      voiceNames << qs;
+      voiceNames << QString("%1").arg(l2);
     }
     configDialog->addComboBox(tr("&Voice"), voice[l1], voiceNames, displayTab);
     QObject::connect(configDialog->midiComboBoxList.at(l1)->comboBox,
@@ -184,16 +182,16 @@ void M_ad::timerProc() {
   QString qs;
   int l1;
 
-  qs.sprintf(" %2.3f", detune_a[voice[0]]);
+  qs = QString(" %1").arg(detune_a[voice[0]], 2, 'f', 3);
   configDialog->labelList.at(1)->setText(qs);
   for (l1 = 0; l1 < outPortCount; l1++) {
-    qs.sprintf(" %2.3f", drift_a[l1][voice[0]]);
+    qs = QString(" %1").arg(drift_a[l1][voice[0]], 2, 'f', 3);
     configDialog->labelList.at(3 + l1)->setText(qs);
   }
-  qs.sprintf(" %2.3f", detune_a[voice[1]]);
+  qs = QString(" %1").arg(detune_a[voice[1]], 2, 'f', 3);
   configDialog->labelList.at(4 + outPortCount)->setText(qs);
   for (l1 = 0; l1 < outPortCount; l1++) {
-    qs.sprintf(" %2.3f", drift_a[l1][voice[1]]);
+    qs = QString(" %1").arg(drift_a[l1][voice[1]], 2, 'f', 3);
     configDialog->labelList.at(6 + outPortCount + l1)->setText(qs);
   }
 }

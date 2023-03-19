@@ -9,6 +9,7 @@
 #include <QResizeEvent>
 #include <QPolygon>
 #include <QPaintEvent>
+
 #include "multi_envelope.h"
 #include "module.h"
 #include "midicontrollable.h"

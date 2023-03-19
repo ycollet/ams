@@ -24,11 +24,12 @@
 #include "m_scmcv.h"
 #include "midicontrollable.h"
 #include "port.h"
+#include "resources.h"
+
 
 M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname, int id)
   : Module(M_type_scmcv, id, 4, parent, tr("Scala MCV"))
 {
-  QString qs;
   int l1;
 
   setGeometry(MODULE_NEW_X, MODULE_NEW_Y, MODULE_DEFAULT_WIDTH, MODULE_SCMCV_HEIGHT);
@@ -40,8 +41,7 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname, int id)
   QStringList channelNames;
   channelNames << "RESERVED FOR LATER USE";
   for (l1 = 1; l1 < 17; l1++) {
-    qs.sprintf("RESERVED FOR LATER USE");
-    channelNames << qs;
+    channelNames << "RESERVED FOR LATER USE";
   }
   channel = 0;
   base = 0;
@@ -65,12 +65,12 @@ M_scmcv::M_scmcv(QWidget* parent, QString *p_sclname, int id)
   MidiControllableDoOnce * doO = configDialog->addPushButton(tr("&Load Scale"));
   QObject::connect(doO, SIGNAL(triggered()), this, SLOT(openBrowser()));
   fileDialog = NULL;
-  dirpath.sprintf("%s", getenv("SCALA_PATH"));
+  dirpath = getenv("SCALA_PATH");
   if (dirpath.length() < 1) {
     qWarning("\nSCALA_PATH not set, assuming SCALA_PATH=/usr/share/scala");
     dirpath = "/usr/share/scala";
   } else
-    StdErr << "SCALA_PATH: " << dirpath << endl;
+    StdErr << "SCALA_PATH: " << dirpath << QT_ENDL;
 
   if (p_sclname && !p_sclname->contains("No_Scale_loaded"))
     loadScale(dirpath + "/" + *p_sclname);
@@ -177,7 +177,7 @@ void M_scmcv::loadScale(const QString &p_sclname) {
       break;
   }
   configDialog->labelList.at(0)->setText("   " + qs);
-  StdErr << "Scale: " << qs << endl;
+  StdErr << "Scale: " << qs << QT_ENDL;
   while (!stream.atEnd()) {
     qs = stream.readLine();
     if (!qs.contains("!"))

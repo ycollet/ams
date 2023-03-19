@@ -12,6 +12,7 @@
 #include "modularsynth.h"
 #include "module.h"
 #include "port.h"
+#include "resources.h"
 #include "synthdata.h"
 
 
@@ -183,7 +184,11 @@ void Module::paintCablesToConnectedPorts(QPainter& painter)
 
         // paint cable
         pen.setWidth(5);
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+        pen.setColor(cableColor.darker(120));
+#else
         pen.setColor(cableColor.dark(120));
+#endif
         painter.strokePath(path, pen);
 
         pen.setWidth(3);
@@ -191,22 +196,46 @@ void Module::paintCablesToConnectedPorts(QPainter& painter)
         painter.strokePath(path, pen);
 
         pen.setWidth(1);
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+        pen.setColor(cableColor.lighter(120));
+#else
         pen.setColor(cableColor.light(120));
+#endif
         painter.strokePath(path, pen);
 
         // paint jack
-        painter.fillRect(inportx, inporty - 3, 11, 7,
-                QBrush(jackColor.dark(120)));
-        painter.fillRect(outportx - 11, outporty - 3, 11, 7,
-                QBrush(jackColor.dark(120)));
+        painter.fillRect(inportx, inporty - 3, 11, 7, QBrush(
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+                jackColor.darker(120)
+#else
+                jackColor.dark(120)
+#endif
+                ));
+        painter.fillRect(outportx - 11, outporty - 3, 11, 7, QBrush(
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+                    jackColor.darker(120)
+#else
+                    jackColor.dark(120)
+#endif
+                    ));
         painter.fillRect(inportx, inporty - 2, 11, 5,
                 QBrush(jackColor));
         painter.fillRect(outportx - 11, outporty - 2, 11, 5,
                 QBrush(jackColor));
-        painter.fillRect(inportx, inporty - 1, 11, 3,
-                QBrush(jackColor.light(120)));
-        painter.fillRect(outportx - 11, outporty - 1, 11, 3,
-                QBrush(jackColor.light(120)));
+        painter.fillRect(inportx, inporty - 1, 11, 3, QBrush(
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+                    jackColor.lighter(120)
+#else
+                    jackColor.light(120)
+#endif
+                    ));
+        painter.fillRect(outportx - 11, outporty - 1, 11, 3, QBrush(
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+                    jackColor.lighter(120)
+#else
+                    jackColor.light(120)
+#endif
+                    ));
     }
 }
 
@@ -217,7 +246,11 @@ void Module::paint(QPainter &p)
   p.setPen(colorBorder);
   for (int i = 0; i < 3; ++i)
   {
+#if QT_VERSION >= QT_VERSION_CHECK(4,3,0)
+      p.setPen(colorBorder.lighter(100 + 15 * i));
+#else
       p.setPen(colorBorder.light(100 + 15 * i));
+#endif
       p.drawRect(i, i, width() - 2 * i - 1, height() - 2 * i - 1);
   }
   p.setPen(colorFont);
@@ -278,7 +311,7 @@ void Module::saveConnections(QTextStream& ts)
                 << inport->jackColor.blue() << ' '
                 << inport->cableColor.red() << ' '
                 << inport->cableColor.green() << ' '
-                << inport->cableColor.blue() << endl;
+                << inport->cableColor.blue() << QT_ENDL;
         }
     }
 }
@@ -294,38 +327,38 @@ void Module::saveParameters(QTextStream& ts)
         << mcAbleF.getLog() << ' '
         << mcAbleF.sliderMin() << ' '
         << mcAbleF.sliderMax() << ' '
-        << mcAbleF.midiSign << endl;
+        << mcAbleF.midiSign << QT_ENDL;
   }
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1)
     ts << "ISlider " << moduleID << ' ' << l1 << ' '
         << configDialog->intMidiSliderList.at(l1)->mcAble.sliderVal() << ' '
-        << configDialog->intMidiSliderList.at(l1)->mcAble.midiSign << endl;
+        << configDialog->intMidiSliderList.at(l1)->mcAble.midiSign << QT_ENDL;
 
   for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1)
       ts << "LSlider " << moduleID << ' ' << l1 << ' '
           << configDialog->floatIntMidiSliderList.at(l1)->mcAble.sliderVal() << ' '
-          << configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiSign << endl;
+          << configDialog->floatIntMidiSliderList.at(l1)->mcAble.midiSign << QT_ENDL;
 
   for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1)
     ts << "ComboBox " << moduleID << ' ' << l1 << ' '
         << configDialog->midiComboBoxList.at(l1)->mcAble.getValue() << ' '
-        << configDialog->midiComboBoxList.at(l1)->mcAble.midiSign << endl;
+        << configDialog->midiComboBoxList.at(l1)->mcAble.midiSign << QT_ENDL;
 
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1)
     ts << "CheckBox " << moduleID << ' ' << l1 << ' '
         << configDialog->midiCheckBoxList.at(l1)->mcAble.getValue() << ' '
-        << configDialog->midiCheckBoxList.at(l1)->mcAble.midiSign << endl;
+        << configDialog->midiCheckBoxList.at(l1)->mcAble.midiSign << QT_ENDL;
 
   for (l1 = 0; l1 < configDialog->functionList.count(); ++l1) {
     ts << "Function " << moduleID << ' ' << l1 << ' '
         << configDialog->functionList.at(l1)->functionCount << ' '
-        << configDialog->functionList.at(l1)->pointCount << endl;
+        << configDialog->functionList.at(l1)->pointCount << QT_ENDL;
 
     for (l2 = 0; l2 < configDialog->functionList.at(l1)->functionCount; l2++)
       for (l3 = 0; l3 < configDialog->functionList.at(l1)->pointCount; l3++) {
         ts << "Point " << moduleID << ' ' << l1 << ' ' << l2 << ' ' << l3 << ' '
             << configDialog->functionList.at(l1)->getPoint(l2, l3).x() << ' '
-            << configDialog->functionList.at(l1)->getPoint(l2, l3).y() << endl;
+            << configDialog->functionList.at(l1)->getPoint(l2, l3).y() << QT_ENDL;
       }
 
   }
@@ -344,7 +377,7 @@ void Module::saveBindings(QTextStream& ts)
            << configDialog->midiSliderList.at(l1)
            ->mcAble.midiControllerList.at(l2).ch() << ' '
            << configDialog->midiSliderList.at(l1)
-           ->mcAble.midiControllerList.at(l2).param() << endl;
+           ->mcAble.midiControllerList.at(l2).param() << QT_ENDL;
      }
   }
   for (l1 = 0; l1 < configDialog->intMidiSliderList.count(); ++l1) {
@@ -356,7 +389,7 @@ void Module::saveBindings(QTextStream& ts)
               << configDialog->intMidiSliderList.at(l1)
               ->mcAble.midiControllerList.at(l2).ch() << ' '
               << configDialog->intMidiSliderList.at(l1)
-              ->mcAble.midiControllerList.at(l2).param() << endl;
+              ->mcAble.midiControllerList.at(l2).param() << QT_ENDL;
     }
   }
   for (l1 = 0; l1 < configDialog->floatIntMidiSliderList.count(); ++l1) {
@@ -368,7 +401,7 @@ void Module::saveBindings(QTextStream& ts)
               << configDialog->floatIntMidiSliderList.at(l1)
               ->mcAble.midiControllerList.at(l2).ch() << ' '
               << configDialog->floatIntMidiSliderList.at(l1)
-              ->mcAble.midiControllerList.at(l2).param() << endl;
+              ->mcAble.midiControllerList.at(l2).param() << QT_ENDL;
     }
   }
   for (l1 = 0; l1 < configDialog->midiComboBoxList.count(); ++l1) {
@@ -380,7 +413,7 @@ void Module::saveBindings(QTextStream& ts)
               << configDialog->midiComboBoxList.at(l1)
               ->mcAble.midiControllerList.at(l2).ch() << ' '
               << configDialog->midiComboBoxList.at(l1)
-              ->mcAble.midiControllerList.at(l2).param() << endl;
+              ->mcAble.midiControllerList.at(l2).param() << QT_ENDL;
     }
   }
   for (l1 = 0; l1 < configDialog->midiCheckBoxList.count(); ++l1) {
@@ -392,7 +425,7 @@ void Module::saveBindings(QTextStream& ts)
               << configDialog->midiCheckBoxList.at(l1)
               ->mcAble.midiControllerList.at(l2).ch() << ' '
               << configDialog->midiCheckBoxList.at(l1)
-              ->mcAble.midiControllerList.at(l2).param() << endl;
+              ->mcAble.midiControllerList.at(l2).param() << QT_ENDL;
     }
   }
 }
@@ -405,7 +438,7 @@ void Module::saveConfigDialog(QTextStream& ts)
         << configDialog->geometry().x() << ' '
         << configDialog->geometry().y() << ' '
         << configDialog->geometry().width() << ' '
-        << configDialog->geometry().height() << endl;
+        << configDialog->geometry().height() << QT_ENDL;
 }
 
 /*Read visibility, position and size parameters of config dialog*/

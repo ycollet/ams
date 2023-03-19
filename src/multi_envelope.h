@@ -12,6 +12,7 @@
 #include <qsize.h>
 #include <QPaintEvent>
 #include <QResizeEvent>
+
 #include "synthdata.h"
 #include "mced.h"
 
@@ -26,10 +27,10 @@ class MultiEnvelope : public QWidget, public MCedThing
     int envCount;
     float *timeScaleRef, *attackRef, *sustainRef, *releaseRef;
     QColor colorTable[8];
-    
+
   protected:
     virtual void paintEvent(QPaintEvent *);
-    
+
   public:
     MultiEnvelope(int p_envCount, float *timeScaleRef, float *attackRef, float *sustainRef, float *releaseRef);
     virtual QSize sizeHint() const;
@@ -37,5 +38,5 @@ class MultiEnvelope : public QWidget, public MCedThing
 
     void mcAbleChanged();
 };
-  
+
 #endif

@@ -14,6 +14,7 @@
 #include "midislider.h"
 #include "midiwidget.h"
 #include "module.h"
+#include "resources.h"
 #include "synthdata.h"
 
 
@@ -106,7 +107,7 @@ QModelIndex MidiControllerModel::parent(const QModelIndex &child) const
             (const MidiController *)child.internalPointer();
 
         QList<MidiController>::const_iterator it =
-            qBinaryFind(rMidiControllers.constBegin(),
+            std::lower_bound(rMidiControllers.constBegin(),
                     rMidiControllers.constEnd(), *mc);
         int row = it - rMidiControllers.begin();
         return index(row, 0);
@@ -294,7 +295,7 @@ MidiWidget::MidiWidget(QWidget* parent, const char *name)
     channelNames << tr("Omni");
     //TODO: remove obsolete empty spaces
     for (l1 = 1; l1 < 17; l1++) {
-        qs.sprintf("%4d", l1);
+        qs = QString("%1").arg(l1,4);
         channelNames << qs;
     }
 
@@ -397,7 +398,7 @@ void MidiWidget::addMidiController(MidiControllerKey mck)
     QList<MidiController>::const_iterator it = midiControllers.end();
 
     if (!midiControllers.empty()) {
-        it = qLowerBound(midiControllers.begin(),
+        it = std::lower_bound(midiControllers.begin(),
 			midiControllers.end(), mck);
         if (it != midiControllers.end()) {
             if (*it == mc) {
@@ -426,11 +427,11 @@ void MidiWidget::addMidiControllable(MidiControllerKey mck,
         MidiControllableBase *mcAble)
 {
     QList<MidiController>::const_iterator it =
-        qBinaryFind(midiControllers.constBegin(),
+        std::lower_bound(midiControllers.constBegin(),
                 midiControllers.constEnd(), mck);
 
     if (it == midiControllers.end()) {
-        StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
+        StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << "\n";
         return;
     }
 
@@ -450,10 +451,10 @@ void MidiWidget::removeMidiControllable(MidiControllerKey mck,
 					bool *updateActiveMidiControllers)
 {
     QList<MidiController>::const_iterator it =
-        qBinaryFind(midiControllers.constBegin(),
+        std::lower_bound(midiControllers.constBegin(),
                 midiControllers.constEnd(), mck);
     if (it == midiControllers.end()) {
-        StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
+        StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << "\n";
         return;
     }
 
@@ -476,10 +477,10 @@ void MidiWidget::clearClicked()
 {
     if (selectedController.isValid() && selectedMcAbleIndex.isValid()) {
         QList<MidiController>::const_iterator it =
-            qBinaryFind(midiControllers.constBegin(),
+            std::lower_bound(midiControllers.constBegin(),
                     midiControllers.constEnd(), selectedController);
         if (it == midiControllers.end()) {
-            StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
+            StdErr  << __PRETTY_FUNCTION__ << ":" << __LINE__ << "\n";
             return;
         }
 
@@ -784,15 +785,6 @@ void MidiWidget::setActiveMidiControllers()
 }
 
 
-// const MidiController* MidiWidget::midiController(MidiControllerKey mck)
-// {
-//     typeof(midiControllers.constEnd()) c =
-//         qBinaryFind(midiControllers.constBegin(),
-// 		    midiControllers.constEnd(), mck);
-//     return c == midiControllers.constEnd() ? NULL : &*c;
-// }
-
-
 const MidiControllerKey MidiWidget::getSelectedController()
 {
     return selectedController;
@@ -859,16 +851,16 @@ void MidiWidget::loadPreference(QString& line)
 
 void MidiWidget::savePreferences(QTextStream& ts)
 {
-    ts << CF_MIDIENABLENOTEEVENTS << ' ' << enableNoteEventsCb->isChecked() << endl;
-    ts << CF_MIDIFOLLOWCONFIGDIALOG << ' ' << configCheck->isChecked() << endl;
-    ts << CF_MIDIFOLLOWMIDI << ' ' << follwoMidiCb->isChecked() << endl;
-    ts << CF_MIDICHANNEL << ' ' << midiChannelCb->currentIndex() << endl;
+    ts << CF_MIDIENABLENOTEEVENTS << ' ' << enableNoteEventsCb->isChecked() << QT_ENDL;
+    ts << CF_MIDIFOLLOWCONFIGDIALOG << ' ' << configCheck->isChecked() << QT_ENDL;
+    ts << CF_MIDIFOLLOWMIDI << ' ' << follwoMidiCb->isChecked() << QT_ENDL;
+    ts << CF_MIDICHANNEL << ' ' << midiChannelCb->currentIndex() << QT_ENDL;
     ts << CF_MIDIWIDGETGEOMETRY << ' '
         << isVisible() << ' '
         << geometry().x() << ' '
         << geometry().y() << ' '
         << geometry().width() << ' '
-        << geometry().height() << endl;
+        << geometry().height() << QT_ENDL;
 }
 
 bool MidiWidget::noteControllerEnabled()

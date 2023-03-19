@@ -46,7 +46,11 @@ void TextEdit::paintEvent(QPaintEvent *) {
 void TextEdit::mousePressEvent(QMouseEvent *ev)
 {
     switch (ev->button()) {
+        #if QT_VERSION >= QT_VERSION_CHECK(4,7,0)
+        case Qt::MiddleButton:
+        #else
         case Qt::MidButton:
+        #endif
             sizeDrag = true;
             mousePressPos = ev->pos();
             ev->accept();
@@ -59,7 +63,11 @@ void TextEdit::mousePressEvent(QMouseEvent *ev)
 void TextEdit::mouseReleaseEvent(QMouseEvent *ev)
 {
     switch (ev->button()) {
+        #if QT_VERSION >= QT_VERSION_CHECK(4,7,0)
+        case Qt::MiddleButton:
+        #else
         case Qt::MidButton:
+        #endif
             sizeDrag = false;
             ev->accept();
         default:
